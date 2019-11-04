@@ -6,7 +6,7 @@ source("computeLikelihood.R")
 #install.packages("RcppArmadillo")
 library(Rcpp)
 library(RcppArmadillo)
-sourceCpp("P:/HHMMFinance/R/LogLike.cpp") # C++ script required for the likelihood evaluation 
+sourceCpp("P:/HHMMFinance/RHHMMFinance/LogLike.cpp") # C++ script required for the likelihood evaluation 
 
 source("transformParameters.R")
 source("initializeEstimation.R")
