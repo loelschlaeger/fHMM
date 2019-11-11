@@ -1,4 +1,4 @@
-source("transformParameters.R")
+source("transformations.R")
 
 simulateHHMM <- function(controls){
   
@@ -12,99 +12,115 @@ simulateHHMM <- function(controls){
 	observations = matrix(0,T,T_star+1)
 
 	## hidden crude scale process
-	Gamma         = diag(M)
-	Gamma[!Gamma] = runif((M-1)*M,0,0.5)
-	Gamma         = Gamma/rowSums(Gamma)
-	delta         = solve(t(diag(M)-Gamma+1),rep(1,M))
+	gammasUncon = log(runif((M-1)*M,0,0.3))
+	Gamma       = gammasUncon2Gamma(gammasUncon,M)
+	delta       = Gamma2delta(Gamma,M)
 
 	## observed crude scale process
-	mu     = seq(-1,1,length.out=M)*10^(-3)
-	sigma  = rev(seq(0.1,1,length.out=M)*10^(-2))
-	if(est_df=="all") {df     = round(seq.int(1,20,length.out=M)) }
-	if(est_df=="fscs"){df     = 5 }
-	if(est_df=="no")  {df     = controls[["set_df_cs"]]}
-	par    = c(mu,sigma,df)
+	mus     = seq(-1,1,length.out=M)*10^(-3)
+	sigmas  = rev(seq(0.1,1,length.out=M)*10^(-2))
+	if(est_df=="all") {
+	  dfsUncon = runif(M,0,1)
+	  dfs      = dfUncon2dfCon(dfsUncon)
+	}
+	if(est_df=="fscs"){
+	  dfsUncon = runif(1,0,1)
+	  dfs      = rep(dfUncon2dfCon(dfsUncon),M)
+	}
+	if(est_df=="no")  {
+	  dfsUncon = c()
+	  dfs      = rep(controls[["set_df_cs"]],M)
+	}
 
 	## hidden fine scale processes
-	Gammas_star <- list()
-	deltas_star <- list()
+	gammasUncon_star = list()
+	Gammas_star = list()
+	deltas_star = list()
 	for(i in 1:M){
-		G <- diag(N)
-		G[!G] <- runif((N-1)*N,0,0.5)
-		G <- G/rowSums(G)
-		d <- solve(t(diag(N)-G+1),rep(1,N))
-		Gammas_star[[i]] <- G
-		deltas_star[[i]] <- d
+		gammasUncon_star[[i]]  = log(runif((N-1)*N,0,0.3))
+		Gammas_star[[i]]       = gammasUncon2Gamma(gammasUncon_star[[i]],N)
+		deltas_star[[i]]       = Gamma2delta(Gammas_star[[i]],N)
 	}
 
 	## observed fine scale processes
-	mus_star <- list()
-	sigmas_star <- list()
-	if(est_df=="all") {dfs_star = list(); for(i in 1:M) {dfs_star[[i]] = round(seq.int(1,20,length.out=N)) } }
-	if(est_df=="fscs"){dfs_star = 1 }
-	if(est_df=="no")  {dfs_star = controls[["set_df_fs"]]}
-	pars_star <- list()
+	mus_star     = list()
+	sigmas_star  = list()
 	for(i in 1:M){
-		mus_star[[i]]    = seq(-1,1,length.out=N)*10^(-3)
-		sigmas_star[[i]] = rev(seq(0.1,1,length.out=N)*10^(-2))
-		if(est_df=="all")  {pars_star[[i]] = c(mus_star[[i]],sigmas_star[[i]],dfs_star[[i]])}
-		if(est_df=="fscs") {pars_star[[i]] = c(mus_star[[i]],sigmas_star[[i]],dfs_star)}
-		if(est_df=="no")   {pars_star[[i]] = c(mus_star[[i]],sigmas_star[[i]],dfs_star)}
+	  mus_star[[i]]      = (seq(-1,1,length.out=N)+i-round(M/2))*10^(-3)
+	  sigmas_star[[i]]   = (rev(seq(0.1,1,length.out=N)+M-i)*10^(-2))
 	}
-
-	## create parameter vector theta for comparison
-	gammas4theta <- c(Gamma2gammas(Gamma))
-	for(i in 1:M){
-		gammas4theta <- c(gammas4theta,Gamma2gammas(Gammas_star[[i]]))
+	dfs_star      = list() 
+	if(est_df=="all") {
+	  dfsUncon_star = list()
+	  for(i in 1:M) {
+	    dfsUncon_star[[i]] = runif(N,0,1)
+	    dfs_star[[i]]      = dfUncon2dfCon(dfsUncon_star[[i]])
+	  } 
 	}
-	mus4theta <- c(mu,unlist(mus_star))
-	sigmas4theta <- c(sigma,unlist(sigmas_star))
-	dfs4theta <- c(df,unlist(dfs_star))
-	theta <- list(
-	  "gammas" = gammas4theta,
-	  "mus"    = mus4theta,
-	  "sigmas" = sigmas4theta,
-	  "dfs"    = dfs4theta
-	)
+	if(est_df=="fscs"){
+	  dfsUncon_star = runif(1,0,1)
+	  for(i in 1:M) {
+	    dfs_star[[i]]      = rep(dfUncon2dfCon(dfsUncon_star),N)
+	  } 
+	}
+	if(est_df=="no")  {
+	  dfsUncon_star = c()
+	  for(i in 1:M) {
+	    dfs_star[[i]]      = rep(controls[["set_df_fs"]],N)
+	  }
+	}
+	
+	## Parameter vector thetaUncon
+	thetaUncon = c(gammasUncon,unlist(gammasUncon_star),mus,unlist(mus_star),sigmaCon2sigmaUncon(sigmas),sigmaCon2sigmaUncon(unlist(sigmas_star)),dfsUncon,unlist(dfsUncon_star))
+	
+	## Parameter vector thetaFull
+	thetaFull = list(
+	  "Gamma"       = Gamma,
+	  "mus"         = mus,
+	  "sigmas"      = sigmas,
+	  "dfs"         = dfs,
+	  "Gammas_star" = Gammas_star,
+	  "mus_star"    = mus_star,
+	  "sigmas_star" = sigmas_star,
+	  "dfs_star"    = dfs_star
+	) 
 
 	## simulate HMMs
-	simulateStates <- function(delta,Gamma,T){
-		N <- length(delta)
-		states <- 1:N
-		seq <- numeric(T)
-		seq[1] <- sample(states,1,prob=delta)
+	simulateStates = function(delta,Gamma,T){
+		N      = length(delta)
+		states = 1:N
+		seq    = numeric(T)
+		seq[1] = sample(states,1,prob=delta)
 		for(t in 2:T){
-			seq[t] <- sample(states,1,prob=Gamma[seq[t-1],])
+			seq[t] = sample(states,1,prob=Gamma[seq[t-1],])
 		}
 		return(seq)
 	}
 
-	simulateObservations <- function(states,par,T,N){
-		mus <- par[1:N]; par <- par[-(1:N)]
-		sigmas <- par[1:N]; par <- par[-(1:N)]
-		if(est_df=="all"){dfs <- par[1:N]}
-		if(est_df=="fscs" || est_df=="no"){dfs <- rep(par[1],N)}
-		obs <- numeric(T)
+	simulateObservations = function(states,mus,sigmas,dfs,T,N){
+		obs = numeric(T)
 		for(t in 1:T){
-			obs[t] <- rt(1,dfs[states[t]])*sigmas[states[t]]+mus[states[t]]
+			obs[t] = rt(1,dfs[states[t]])*sigmas[states[t]]+mus[states[t]]
 		}
 		return(obs)
 	}
 
 	## simulate HHMM
-	states[,1] <- simulateStates(delta,Gamma,T)
-	observations[,1] <- simulateObservations(states[,1],par,T,N=M)
+	states[,1]        = simulateStates(Gamma2delta(thetaFull[["Gamma"]],M),thetaFull[["Gamma"]],T)
+	observations[,1]  = simulateObservations(states[,1],thetaFull[["mus"]],thetaFull[["sigmas"]],thetaFull[["dfs"]],T,M)
 
 	for(t in 1:T){
-		cs_state <- states[t,1]
-		states[t,-1] <- simulateStates(deltas_star[[cs_state]],Gammas_star[[cs_state]],T_star)
-		observations[t,-1] <- simulateObservations(states[t,-1],pars_star[[cs_state]],T_star,N)
+		cs                 = states[t,1]
+		states[t,-1]       = simulateStates(Gamma2delta(thetaFull[["Gammas_star"]][[cs]],N),thetaFull[["Gammas_star"]][[cs]],T_star)
+		observations[t,-1] = simulateObservations(states[t,-1],thetaFull[["mus_star"]][[cs]],thetaFull[["sigmas_star"]][[cs]],thetaFull[["dfs_star"]][[cs]],T_star,N)
 	}
 	
 	output = list(
 	  "observations" = observations,
-	  "states" = states,
-	  "theta" = theta
+	  "states"       = states,
+	  "thetaUncon"   = thetaUncon,
+	  "thetaCon"     = thetaUncon2thetaCon(thetaUncon,controls),
+	  "thetaFull"    = thetaFull
 	)
 
 	return(output)
