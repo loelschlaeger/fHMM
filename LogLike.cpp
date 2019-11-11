@@ -5,7 +5,6 @@ using namespace arma;
 using namespace Rcpp;
 #include<iostream>
 #include<cmath>
-#include<time.h>
 
 // [[Rcpp::export]]
 double LogLikeHMM_Rcpp(mat allprobs, mat Gamma, rowvec delta, int N, int T){
