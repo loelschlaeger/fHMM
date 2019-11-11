@@ -1,71 +1,51 @@
 ### Set working directory
-setwd("P:/HHMMFinance/R")
+setwd("P:/HHMMFinance/RHHMMFinance")
 
 ### Clear memory, suppress warnings
 rm(list = ls()); cat("\f")
 options(warn=-1)
 
-### Load functions
-source("simulateHHMM.R")
-source("readData.R")
-source("maxLikelihood.R")
-source("plotEstimationError.R")
-
-### Set model parameters
+### Set model parameters for new model
 controls = list(
+  modelName = "HHMM32",
+  fileName  = "dax_data.csv",         ### only relevant for real data 
+  
   M         = 3,
   N         = 2,
+  est_df    = "no",                   ### "all" if all dfs estimated, "fscs" if one for fs and cs, "no" if deterministic
+  set_df_cs = 4, set_df_fs = 4,       ### only relevant if est_df="no"
+  T         = 300,                    ### only relevant for simulation 
+  T_star    = 100,
+  t_min     = NULL, t_max = NULL,     ### only relevant for real data 
   
-  est_df    = "no",              ### estimation of degrees of freedom: "all", "fscs" if only one for fs and cs, "no" if deterministic
-  set_df_cs = 4, set_df_fs = 4,  ### only relevant if degrees of freedom are not estimated
-  
-  modelName = "HHMM32",
-  fileName  = "dax_data.csv",
-
-  T         = 500, ### only relevant for simulation of data 
-  T_star    = 50,
-  t_min     = NULL, t_max     = NULL, ### only relevant for real data 
-  
-  runs      = 500,
+  runs      = 100,
   iterlim   = 1000,
-  output    = FALSE,
+  outputFile= FALSE,
   cpp       = TRUE
 )
 
-### SIMULATED DATA
-sim          = simulateHHMM(controls)
-observations = sim[["observations"]] #simulated observations 
-states       = sim[["states"]]       #true states
-theta        = sim[["theta"]]        #true parameter vector
+### Load old model
+load(file="models/HHMM32/est")
 
-#library(foreach)
-#library(doParallel)
-#cores=detectCores()
-#cl <- makeCluster(cores[1]-1) #not to overload your computer
-#registerDoParallel(cl)
-#start = initializeEstimation(controls)
+### Simulation of model
+source("simulateHHMM.R")
+source("maxLikelihood.R")             ### why does this takes so much time?
+source("plotEstimationError.R")
+sim     = simulateHHMM(controls)
+est_sim = maxLikelihood(sim[["observations"]],controls); save(sim,controls,est_sim,file=paste0("models/",controls[["modelName"]]),"/est"); plotEstimationError(sim[["thetaCon"]],est_sim[["thetaCon"]],controls)
 
-#t1 <- Sys.time()
-#logL_hhmm(start,observations,controls)
-#Sys.time() - t1
+### Fit model to real Data
+source("readData.R")
+source("maxLikelihood.R")             ### why does this takes so much time?
+data     = readData(controls)
+est_data = maxLikelihood(data[["observations"]],controls); save(controls,est_data,file=paste0("models/",controls[["modelName"]],"/est"))
 
-est = maxLikelihood(observations,controls); plotEstimationError(theta,est,controls)
+source("applyViterbi.R")
+decStates = applyViterbi(data[["observations"]],est_data[["thetaFull"]],controls)
+#source("drawGraphics.R")
 
-#stopCluster(cl)
+#source("pseudos.R")
 
-### REAL DATA
-
-observations = readData(controls)
-est = maxLikelihood(observations,controls)
-
-### VITERBI
-
-#source("applyViterbi.R")
-#decStates = applyViteri(observations,est,controls)
-
-### PSEUDOS
-
-### GRAPHICS
 
 
 
