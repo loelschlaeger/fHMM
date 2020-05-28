@@ -10,8 +10,8 @@ controls = list(
   N         = 2,
   est_df    = "no",                   ### "all" if all dfs estimated, "fscs" if one for fs and cs, "no" if deterministic
   set_df_cs = 4, set_df_fs = 4,       ### only relevant if est_df="no"
-  T         = 300,                    ### only relevant for simulation 
-  T_star    = 100,
+  T         = 300,                     ### only relevant for simulation 
+  T_star    = 30,
   t_min     = NULL, t_max = NULL,     ### only relevant for real data 
   runs      = 100,
   iterlim   = 1000,
@@ -19,28 +19,29 @@ controls = list(
   cpp       = TRUE
 )
 
+### create path to save models
+dir.create(paste0(getwd(),"/models/"))
+
 ### Load old model
 load(file="models/HHMM32/est")
 
 ### Simulation of model
-source("simulateHHMM.R")
-source("maxLikelihood.R")             
-source("plotEstimationError.R")
+source("data_sim.R")
+source("optimize.R")             
 sim     = simulateHHMM(controls)
-est_sim = maxLikelihood(sim[["observations"]],controls); save(sim,controls,est_sim,file=paste0("models/",controls[["modelName"]]),"/est"); plotEstimationError(sim[["thetaCon"]],est_sim[["thetaCon"]],controls)
+est_sim = maxLikelihood(sim[["observations"]],controls)
+save(sim,controls,est_sim,file=paste0("models/",controls[["modelName"]]))
+source("plotEstimationError.R")
+plotEstimationError(sim[["thetaCon"]],est_sim[["thetaCon"]],controls)
 
 ### Fit model to real Data
 source("readData.R")
-source("maxLikelihood.R")             
+source("optimize.R")             
 data     = readData(controls)
-est_data = maxLikelihood(data[["observations"]],controls); save(controls,est_data,file=paste0("models/",controls[["modelName"]],"/est"))
+est_data = maxLikelihood(data[["observations"]],controls)
+save(controls,est_data,file=paste0("models/",controls[["modelName"]],"/est"))
 
-source("applyViterbi.R")
+source("viterbi.R")
 decStates = applyViterbi(data[["observations"]],est_data[["thetaFull"]],controls)
-#source("drawGraphics.R")
-
-#source("pseudos.R")
-
-
-
-
+source("graphics.R")
+source("pseudos.R")

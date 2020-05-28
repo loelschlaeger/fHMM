@@ -1,6 +1,5 @@
 ### LOG-LIKELIHOOD OF THE HMMS
 
-
 # INPUT:  constrained parameter vector thetaCon, observations (x), fs states (N)
 # OUTPUT: log-likelihood of HMM
 logL_hmm = function(x,thetaCon,N,cpp){
