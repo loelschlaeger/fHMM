@@ -1,13 +1,12 @@
 ### MAXIMIZATION OF THE LIKELIHOOD (using nlm)
 
-source("computeLikelihood.R")
-
 library(Rcpp)
 library(RcppArmadillo)
-sourceCpp("P:/HHMMFinance/RHHMMFinance/LogLike.cpp") # C++ script required for the likelihood evaluation 
+sourceCpp("loglike_cpp.cpp")
+source("loglike.R")
 
 source("transformations.R")
-source("initializeEstimation.R")
+source("initialize.R")
 
 maxLikelihood = function(observations,controls){
   
@@ -17,25 +16,25 @@ maxLikelihood = function(observations,controls){
   iterlim    = controls[["iterlim"]]
   outputFile = controls[["outputFile"]]
   
-  cat("Start with estimation. This will take some time.\n")
-  cat("0%...")
+  cat("Start with likelihood maximization\n")
+  cat("run (estimated time remaining in min)\n")
 
 	llks = rep(NA,runs) 
 	mods = list() 
-	t1 = Sys.time()
+	start_time = Sys.time()
 	for (k in 1:runs){ 
 		tryCatch({
 			start = initializeEstimation(controls) 
 			mods[[k]] = nlm(f=logL_hhmm,p=start,observations=observations,controls=controls,iterlim=iterlim,steptol = 1e-08,print.level=0)
 			llks[k] = mods[[k]]$minimum
 			},
-			error=function(e){cat("(Fehler:",conditionMessage(e), ")")}
+			error=function(e){cat(paste("(Error:",conditionMessage(e), ")"),"\n")}
 			)
-		if(k<runs){cat(paste0(round(k/runs*100,1),"%..."))}
-	  if(k==runs){cat("100%\n")}
+      mid_time = Sys.time()
+      if(k%%5==0) cat(paste0(k," (",round(difftime(mid_time,start_time,units="secs")/60*(runs-k)/k),")","\n"))
 	}
-	t2 = Sys.time()
-	cat(paste("Done with estimation.", difftime(t2,t1),"\n"))
+	end_time = Sys.time()
+	cat(paste("Done with estimation.", difftime(end_time,start_time),"\n"))
 	
 	mod       = mods[[which.min(llks)]]
 	thetaCon  = thetaUncon2thetaCon(mod$estimate,controls)
