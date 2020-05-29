@@ -1,5 +1,7 @@
 ### VITERBI ALGORITHM
 
+source("transformations.R")
+
 viterbi = function(N,thetaFull,x){
 		T = length(x)
 		Gamma = thetaFull[["Gamma"]]
@@ -53,15 +55,15 @@ applyViterbi = function(observations,estFull,controls){
   states     = matrix(0,ncol=T_star+1,nrow=T)
   states[,1] = viterbi(M,thetaFullcs,observations[,1])
 
-  for(i in 1:T){
-    s = states[i,1]
-    thetaFullcs = list(
-      "Gamma"  = estFull[["Gamma"]][[s]],
-      "mus"    = estFull[["mus"]][[s]],
-      "sigmas" = estFull[["sigmas"]][[s]],
-      "dfs"    = estFull[["dfs"]][[s]]
+  for(t in 1:T){
+    s = states[t,1]
+    thetaFullfs = list(
+      "Gamma"  = estFull[["Gammas_star"]][[s]],
+      "mus"    = estFull[["mus_star"]][[s]],
+      "sigmas" = estFull[["sigmas_star"]][[s]],
+      "dfs"    = estFull[["dfs_star"]][[s]]
     ) 
-	  states[i,-1] = viterbi(N,thetaFullcs,observations[i,-1])
+	  states[t,-1] = viterbi(N,thetaFullfs,observations[t,-1])
   }
 
   return(list(

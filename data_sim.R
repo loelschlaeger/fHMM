@@ -1,6 +1,6 @@
 source("transformations.R")
 
-simulateHHMM <- function(controls){
+simulateHHMM = function(controls){
   
   M      = controls[["M"]]
   N      = controls[["N"]]
@@ -70,10 +70,10 @@ simulateHHMM <- function(controls){
 	  }
 	}
 	
-	## Parameter vector thetaUncon
+	## parameter vector thetaUncon
 	thetaUncon = c(gammasUncon,unlist(gammasUncon_star),mus,unlist(mus_star),sigmaCon2sigmaUncon(sigmas),sigmaCon2sigmaUncon(unlist(sigmas_star)),dfsUncon,unlist(dfsUncon_star))
 	
-	## Parameter vector thetaFull
+	## parameter vector thetaFull
 	thetaFull = list(
 	  "Gamma"       = Gamma,
 	  "mus"         = mus,

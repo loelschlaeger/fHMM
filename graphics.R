@@ -1,22 +1,19 @@
-# load viterbi.R, load results
+cs_s = decStates$cs_states
+fs_s = decStates$fs_states
 
-cs_s <- cs_s
-fs_s <- fs_s
-
-obs <- observations
-cs_obs <- obs[,1]
-fs_obs <- data$log_returns
-close <- data$Close
-date <- data$Date
-logr <- data$log_returns
+obs = data$observations
+cs_obs = data$cs_obs
+fs_obs = data$fs_obs
+close = data$close
+date = data$date
 
 alpha <- 160
-c1.1 <- rgb(0,200,0,alpha,maxColorValue = 255) #hell grün
-c1.2 <- rgb(0,110,0,alpha,maxColorValue = 255) #dunkel grün
-c2.1 <- rgb(255,240,00,alpha,maxColorValue = 255) #hell gelb
-c2.2 <- rgb(255,180,00,alpha,maxColorValue = 255) #dunkel gelb
-c3.1 <- rgb(255,0,0,alpha,maxColorValue = 255)	#hell rot
-c3.2 <- rgb(140,0,0,alpha,maxColorValue = 255)	#dunkel rot
+c1.1 <- rgb(0,200,0,alpha,maxColorValue = 255) #bright green
+c1.2 <- rgb(0,110,0,alpha,maxColorValue = 255) #dark green
+c2.1 <- rgb(255,240,00,alpha,maxColorValue = 255) #bright yellow
+c2.2 <- rgb(255,180,00,alpha,maxColorValue = 255) #dark yellow
+c3.1 <- rgb(255,0,0,alpha,maxColorValue = 255)	#bright red
+c3.2 <- rgb(140,0,0,alpha,maxColorValue = 255)	#dark red
 
 ### State Dependent Distributions
 
