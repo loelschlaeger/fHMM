@@ -10,8 +10,8 @@ load(file="models/HHMM32")
 
 ### Set model parameters for new model
 controls = list(
-  modelName = "HHMM_DAX_32",
-  fileName  = "dax_new.csv", 
+  modelName = "HHMM_SandP500_32",
+  fileName  = "data/sandp500.csv", 
   M         = 3,
   N         = 2,
   est_df    = "all",                   
@@ -22,7 +22,7 @@ controls = list(
   T_star    = 30,
   t_min     = "2000-1-3", 
   t_max     = "2020-05-28",     
-  runs      = 50,
+  runs      = 200,
   iterlim   = 1000,
   cpp       = TRUE
 )
