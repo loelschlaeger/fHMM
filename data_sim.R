@@ -19,13 +19,9 @@ simulateHHMM = function(controls){
 	## observed crude scale process
 	mus     = seq(-1,1,length.out=M)*10^(-3)
 	sigmas  = rev(seq(0.1,1,length.out=M)*10^(-2))
-	if(est_df=="all") {
+	if(est_df=="yes") {
 	  dfsUncon = runif(M,0,1)
 	  dfs      = dfUncon2dfCon(dfsUncon)
-	}
-	if(est_df=="fscs"){
-	  dfsUncon = runif(1,0,1)
-	  dfs      = rep(dfUncon2dfCon(dfsUncon),M)
 	}
 	if(est_df=="no")  {
 	  dfsUncon = c()
@@ -43,30 +39,24 @@ simulateHHMM = function(controls){
 	}
 
 	## observed fine scale processes
-	mus_star     = list()
-	sigmas_star  = list()
+	mus_star = list()
+	sigmas_star = list()
 	for(i in 1:M){
-	  mus_star[[i]]      = (seq(-1,1,length.out=N)+i-round(M/2))*10^(-3)
-	  sigmas_star[[i]]   = (rev(seq(0.1,1,length.out=N)+M-i)*10^(-2))
+	  mus_star[[i]] = (seq(-1,1,length.out=N)+i-round(M/2))*10^(-3)
+	  sigmas_star[[i]] = (rev(seq(0.1,1,length.out=N)+M-i)*10^(-2))
 	}
-	dfs_star      = list() 
-	if(est_df=="all") {
+	dfs_star = list() 
+	if(est_df=="yes") {
 	  dfsUncon_star = list()
 	  for(i in 1:M) {
 	    dfsUncon_star[[i]] = runif(N,0,1)
-	    dfs_star[[i]]      = dfUncon2dfCon(dfsUncon_star[[i]])
-	  } 
-	}
-	if(est_df=="fscs"){
-	  dfsUncon_star = runif(1,0,1)
-	  for(i in 1:M) {
-	    dfs_star[[i]]      = rep(dfUncon2dfCon(dfsUncon_star),N)
+	    dfs_star[[i]] = dfUncon2dfCon(dfsUncon_star[[i]])
 	  } 
 	}
 	if(est_df=="no")  {
 	  dfsUncon_star = c()
 	  for(i in 1:M) {
-	    dfs_star[[i]]      = rep(controls[["set_df_fs"]],N)
+	    dfs_star[[i]] = rep(controls[["set_df_fs"]],N)
 	  }
 	}
 	

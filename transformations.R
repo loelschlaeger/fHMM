@@ -83,9 +83,8 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
 	sigmasUncon  = thetaUncon[1:(M+M*N)]; thetaUncon = thetaUncon[-(1:(M+M*N))]
 	sigmas       = sigmaUncon2sigmaCon(sigmasUncon)
 	
-	if(est_df=="all") {dfsUncon     = thetaUncon[1:(M+M*N)]; thetaUncon = thetaUncon[-(1:(M+M*N))]} 
-	if(est_df=="fscs"){dfsUncon     = thetaUncon[1:2];       thetaUncon = thetaUncon[-(1:2)]      }
-	if(est_df=="no")  {dfsUncon     = c() }
+	if(est_df=="yes") {dfsUncon = thetaUncon[1:(M+M*N)]; thetaUncon = thetaUncon[-(1:(M+M*N))]} 
+	if(est_df=="no")  {dfsUncon = c() }
 	
 	dfs = dfUncon2dfCon(dfsUncon)
 	
@@ -123,19 +122,12 @@ thetaCon2thetaFull = function(thetaCon,controls){
   }
   
   dfs_star = list()
-  if(est_df=="all") {
+  if(est_df=="yes") {
     dfs      = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
     for(i in 1:M){
       dfs_star[[i]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
     }
   } 
-  if(est_df=="fscs"){
-    dfs      = rep(thetaCon[1],M);
-    for(i in 1:M){
-      dfs_star[[i]] = rep(thetaCon[2],N)
-    }
-    thetaCon = thetaCon[-(1:2)]
-  }
   if(est_df=="no")  {
     dfs      = rep(set_df_cs,M);
     for(i in 1:M){

@@ -1,4 +1,4 @@
-### Read DAX data from csv file
+### Read data from csv file
 
 readData = function(controls){
   

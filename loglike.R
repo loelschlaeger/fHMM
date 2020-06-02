@@ -92,19 +92,15 @@ logL_hhmm = function(thetaUncon,observations,controls){
 				sigmasCon_star[[i]] = sigmaUncon2sigmaCon(thetaUncon[1:N]); thetaUncon = thetaUncon[-(1:N)]
 			}
 			
-			if(est_df=="all") { 
+			if(est_df=="yes") { 
 			  df = dfUncon2dfCon(thetaUncon[1:M]); thetaUncon = thetaUncon[-(1:M)] 
-			}
-			if(est_df=="fscs"){ 
-			  df = rep(dfUncon2dfCon(thetaUncon[1]),M);   thetaUncon = thetaUncon[-1] 
 			}
 			if(est_df=="no")  { 
 			  df = rep(controls[["set_df_cs"]],M)
 			}
 			dfsCon_star = list()
 			for(i in 1:M){
-			  if(est_df=="all")  {dfsCon_star[[i]] = dfUncon2dfCon(thetaUncon[1:N]);        thetaUncon = thetaUncon[-(1:N)]}
-			  if(est_df=="fscs") {dfsCon_star[[i]] = rep(dfUncon2dfCon(thetaUncon[1]),N);   thetaUncon = thetaUncon[-1]    }
+			  if(est_df=="yes")  {dfsCon_star[[i]] = dfUncon2dfCon(thetaUncon[1:N]); thetaUncon = thetaUncon[-(1:N)]}
 			  if(est_df=="no")   {dfsCon_star[[i]] = rep(controls[["set_df_fs"]],N)}
 			}
 			

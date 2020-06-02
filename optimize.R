@@ -23,7 +23,7 @@ maxLikelihood = function(observations,controls){
 	for (k in 1:runs){ 
 		tryCatch({
 			  start = initializeEstimation(controls) 
-			  mods[[k]] = nlm(f=logL_hhmm,p=start,observations=observations,controls=controls,iterlim=iterlim,steptol=1e-08,print.level=0)
+			  mods[[k]] = nlm(f=logL_hhmm,p=start,observations=observations,controls=controls,iterlim=iterlim,steptol=1e-08,print.level=2)
 			  llks[k] = mods[[k]]$minimum
 			},error=function(e){cat(paste("(Error:",conditionMessage(e), ")"),"\n")}
 		)
