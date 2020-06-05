@@ -1,2 +1,2 @@
 # RHHMMFinance
- R Code for detecting bearish and bullish markets in the DAX using hierarchical hidden Markov models
+R Code for detecting bearish and bullish markets in financial time series using hierarchical hidden Markov models
