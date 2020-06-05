@@ -11,12 +11,12 @@ simulateHHMM = function(controls){
 	states       = matrix(0,T,T_star+1) 
 	observations = matrix(0,T,T_star+1)
 
-	## hidden crude scale process
+	## hidden coarse scale process
 	gammasUncon = log(runif((M-1)*M,0,0.3))
 	Gamma       = gammasUncon2Gamma(gammasUncon,M)
 	delta       = Gamma2delta(Gamma,M)
 
-	## observed crude scale process
+	## observed coarse scale process
 	mus     = seq(-1,1,length.out=M)*10^(-3)
 	sigmas  = rev(seq(0.1,1,length.out=M)*10^(-2))
 	if(est_df=="yes") {

@@ -33,15 +33,13 @@ source("optimize.R")
 est_sim = maxLikelihood(sim[["observations"]],controls)
 save(sim,controls,est_sim,file=paste0("models/",controls[["modelName"]]))
 
-### Fit model to financial data
+### Fit model to financial data and process estimates
 source("data.R")
 data = readData(controls)
 source("optimize.R") 
 est = maxLikelihood(data[["observations"]],controls)
-save(controls,est,file=paste0("models/",controls[["modelName"]]))
-
-### Process estimates
 source("viterbi.R")
 decStates = applyViterbi(data[["observations"]],est[["thetaFull"]],controls)
+save(controls,est,decStates,file=paste0("models/",controls[["modelName"]]))
 
 
