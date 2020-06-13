@@ -1,11 +1,13 @@
+# parameter transformations
+
 # INPUT:  matrix
-# OUTPUT: non-diagonal matrix elements, column-wise
+# OUTPUT: non-diagonal matrix elements (column-wise)
 Gamma2gammas = function(Gamma){
 	diag(Gamma) = NA
 	return(Gamma[!is.na(Gamma)])
 }
 
-# INPUT:  unconstrained non-diagonal elements of tpm
+# INPUT:  unconstrained non-diagonal elements of transition probability matrix
 # OUTPUT: transition probability matrix
 gammasUncon2Gamma = function(gammas,N){
 	Gamma         = diag(N)
@@ -32,8 +34,8 @@ gammasUncon2gammasCon = function(gammasUncon,N){
   return(gammasCon)
 }
 
-# INPUT:  constrained non-diagonal elements of transition probability matrix
-# OUTPUT: transition probability matrix
+# INPUT:  transition probability matrix
+# OUTPUT: stationary distribution
 Gamma2delta = function(Gamma,N){
   delta = solve(t(diag(N)-Gamma+1),rep(1,N))
   return(delta)
@@ -53,22 +55,13 @@ sigmaCon2sigmaUncon = function(sigmaCon){
   return(sigmaUncon)
 }
 
-# INPUT:  unconstrained parameter df
-# OUTPUT: constrained parameter df
-dfUncon2dfCon = function(dfUncon){
-  dfCon = ceiling(dfUncon*30)
-  return(dfCon)
-}
-
-# INPUT:  unconstrained estimates (thetaUncon), list of control parameter (controls)
+# INPUT:  unconstrained estimates, list of control parameter 
 # OUTPUT: constrained estimates in vector form
 thetaUncon2thetaCon = function(thetaUncon,controls){
-	
 	M      = controls[["M"]]
 	N      = controls[["N"]]
 	est_df = controls[["est_df"]]
-	
-	gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
+	gammasUncon = thetaUncon[1:((M-1)*M)];	thetaUncon  = thetaUncon[-(1:((M-1)*M))]
 	Gamma       = gammasUncon2Gamma(gammasUncon,M)
 	gammas      = Gamma2gammas(Gamma)
 	for(i in 1:M){
@@ -77,17 +70,11 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
 	  gammas_star           = Gamma2gammas(Gamma_star)
 	  gammas = c(gammas,gammas_star)
 	}
-	
 	mus     = thetaUncon[1:(M+M*N)]; thetaUncon = thetaUncon[-(1:(M+M*N))]
-	
 	sigmasUncon  = thetaUncon[1:(M+M*N)]; thetaUncon = thetaUncon[-(1:(M+M*N))]
 	sigmas       = sigmaUncon2sigmaCon(sigmasUncon)
-	
-	if(est_df=="yes") {dfsUncon = thetaUncon[1:(M+M*N)]; thetaUncon = thetaUncon[-(1:(M+M*N))]} 
-	if(est_df=="no")  {dfsUncon = c() }
-	
-	dfs = dfUncon2dfCon(dfsUncon)
-	
+	if(est_df=="yes") {dfs = thetaUncon[1:(M+M*N)]; thetaUncon = thetaUncon[-(1:(M+M*N))]} 
+	if(est_df=="no")  {dfs = c() }
 	thetaCon = c(gammas,mus,sigmas,dfs)
 	return(thetaCon)
 }
@@ -100,7 +87,6 @@ thetaCon2thetaFull = function(thetaCon,controls){
   est_df = controls[["est_df"]]
   set_df_cs  = controls[["set_df_cs"]] 
   set_df_fs  = controls[["set_df_fs"]]
-  
   gammas      = thetaCon[1:((M-1)*M)]; thetaCon = thetaCon[-(1:((M-1)*M))]
   Gamma       = gammasCon2Gamma(gammas,M)
   Gammas_star = list()
@@ -108,19 +94,16 @@ thetaCon2thetaFull = function(thetaCon,controls){
     gammas_star      = thetaCon[1:((N-1)*N)]; thetaCon = thetaCon[-(1:((N-1)*N))]
     Gammas_star[[i]] = gammasCon2Gamma(gammas_star,N)
   }
-  
   mus      = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
   mus_star = list()
   for(i in 1:M){
     mus_star[[i]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
   }
-  
   sigmas      = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
   sigmas_star = list()
   for(i in 1:M){
     sigmas_star[[i]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
   }
-  
   dfs_star = list()
   if(est_df=="yes") {
     dfs      = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
@@ -134,7 +117,6 @@ thetaCon2thetaFull = function(thetaCon,controls){
       dfs_star[[i]] = rep(set_df_fs,N)
     }
   }
-  
   thetaFull = list(
     "Gamma"       = Gamma,
     "mus"         = mus,
