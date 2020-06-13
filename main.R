@@ -1,47 +1,43 @@
-### Clear memory, suppress warnings
+### 1. Clear memory
 rm(list = ls()); cat("\f")
-options(warn=-1)
 
-### Create path to save models
+### 2. Create path to save models
 if(!dir.exists("models")){dir.create("models")}
 
-### Load old model
-load(file="models/...")
+### 3. Load old model
+path = "models/test"
+if(file.exists(path)){load(file=path)}
 
-### Set model parameters for new model
+### 4. Set model parameters for new model
 controls = list(
   modelName = "test",
-  fileName  = "data/sandp500.csv", 
+  fileName  = "data/dax.csv", 
   M         = 3,
   N         = 2,
   est_df    = "yes",
   set_df_cs = 1, 
   set_df_fs = 1,       
-  T         = 200,                     
-  T_star    = 30,
+  T         = 100,                     
+  T_star    = 10,
   t_min     = "2000-1-3", 
   t_max     = "2020-05-28",     
-  runs      = 100,
-  iterlim   = 1000,
-  cpp       = TRUE
+  runs      = 2,
+  iterlim   = 500
 )
 
-### Fit model to simulated data
+### 5a. Fit model to simulated data
 source("data_sim.R")
 sim = simulateHHMM(controls)
-source("optimize.R") 
+source("optim.R") 
 est_sim = maxLikelihood(sim[["observations"]],controls)
 save(sim,controls,est_sim,file=paste0("models/",controls[["modelName"]]))
 
-### Fit model to financial data
+### 5b. Fit model to empirical data and process estimates
 source("data.R")
 data = readData(controls)
-source("optimize.R") 
+source("optim.R") 
 est = maxLikelihood(data[["observations"]],controls)
-save(controls,est,file=paste0("models/",controls[["modelName"]]))
-
-### Process estimates
 source("viterbi.R")
-decStates = applyViterbi(data[["observations"]],est[["thetaFull"]],controls)
-
+states = applyViterbi(data[["observations"]],est[["thetaFull"]],controls)
+save(data,controls,est,states,file=paste0("models/",controls[["modelName"]]))
 
