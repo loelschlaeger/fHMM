@@ -1,13 +1,13 @@
-source("transformations.R")
+# Simulate data from HHMM
+
+source("trans.R")
 
 simulateHHMM = function(controls){
-  
   M      = controls[["M"]]
   N      = controls[["N"]]
   T      = controls[["T"]]
   T_star = controls[["T_star"]]
   est_df = controls[["est_df"]]
-  
 	states       = matrix(0,T,T_star+1) 
 	observations = matrix(0,T,T_star+1)
 
@@ -20,11 +20,9 @@ simulateHHMM = function(controls){
 	mus     = seq(-1,1,length.out=M)*10^(-3)
 	sigmas  = rev(seq(0.1,1,length.out=M)*10^(-2))
 	if(est_df=="yes") {
-	  dfsUncon = runif(M,0,1)
-	  dfs      = dfUncon2dfCon(dfsUncon)
+	  dfs      = sample(1:30,M,replace=TRUE)
 	}
 	if(est_df=="no")  {
-	  dfsUncon = c()
 	  dfs      = rep(controls[["set_df_cs"]],M)
 	}
 
@@ -49,8 +47,7 @@ simulateHHMM = function(controls){
 	if(est_df=="yes") {
 	  dfsUncon_star = list()
 	  for(i in 1:M) {
-	    dfsUncon_star[[i]] = runif(N,0,1)
-	    dfs_star[[i]] = dfUncon2dfCon(dfsUncon_star[[i]])
+	    dfs_star[[i]] = sample(1:30,N,replace=TRUE)
 	  } 
 	}
 	if(est_df=="no")  {
@@ -61,7 +58,7 @@ simulateHHMM = function(controls){
 	}
 	
 	## parameter vector thetaUncon
-	thetaUncon = c(gammasUncon,unlist(gammasUncon_star),mus,unlist(mus_star),sigmaCon2sigmaUncon(sigmas),sigmaCon2sigmaUncon(unlist(sigmas_star)),dfsUncon,unlist(dfsUncon_star))
+	thetaUncon = c(gammasUncon,unlist(gammasUncon_star),mus,unlist(mus_star),sigmaCon2sigmaUncon(sigmas),sigmaCon2sigmaUncon(unlist(sigmas_star)),dfs,unlist(dfs_star))
 	
 	## parameter vector thetaFull
 	thetaFull = list(
@@ -86,7 +83,6 @@ simulateHHMM = function(controls){
 		}
 		return(seq)
 	}
-
 	simulateObservations = function(states,mus,sigmas,dfs,T,N){
 		obs = numeric(T)
 		for(t in 1:T){
@@ -94,11 +90,9 @@ simulateHHMM = function(controls){
 		}
 		return(obs)
 	}
-
 	## simulate HHMM
 	states[,1]        = simulateStates(Gamma2delta(thetaFull[["Gamma"]],M),thetaFull[["Gamma"]],T)
 	observations[,1]  = simulateObservations(states[,1],thetaFull[["mus"]],thetaFull[["sigmas"]],thetaFull[["dfs"]],T,M)
-
 	for(t in 1:T){
 		cs                 = states[t,1]
 		states[t,-1]       = simulateStates(Gamma2delta(thetaFull[["Gammas_star"]][[cs]],N),thetaFull[["Gammas_star"]][[cs]],T_star)
