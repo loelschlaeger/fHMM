@@ -5,12 +5,12 @@ rm(list = ls()); cat("\f")
 if(!dir.exists("models")){dir.create("models")}
 
 ### 3. Load old model
-path = "models/test"
+path = "models/HHMM_DAX_32"
 if(file.exists(path)){load(file=path)}
 
 ### 4. Set model parameters for new model
 controls = list(
-  modelName = "test",
+  modelName = "HHMM_DAX_32",
   fileName  = "data/dax.csv", 
   M         = 3,
   N         = 2,
@@ -21,8 +21,8 @@ controls = list(
   T_star    = 10,
   t_min     = "2000-1-3", 
   t_max     = "2020-05-28",     
-  runs      = 2,
-  iterlim   = 500
+  runs      = 200,
+  iterlim   = 1000
 )
 
 ### 5a. Fit model to simulated data
@@ -40,4 +40,8 @@ est = maxLikelihood(data[["observations"]],controls)
 source("viterbi.R")
 states = applyViterbi(data[["observations"]],est[["thetaFull"]],controls)
 save(data,controls,est,states,file=paste0("models/",controls[["modelName"]]))
+
+### 6. Plot graphics (M=3, N=2)
+source("plots.R")
+hhmm_visul(data,est,states)
 
