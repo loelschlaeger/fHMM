@@ -5,12 +5,12 @@ rm(list = ls()); cat("\f")
 if(!dir.exists("models")){dir.create("models")}
 
 ### 3. Load old model
-path = "models/test"
+path = "models/HHMM_SandP_32_longrun"
 if(file.exists(path)){load(file=path)}
 
 ### 4. Set model parameters for new model
 controls = list(
-  modelName = "test",
+  modelName = "HHMM_DAX_32_longrun",
   fileName  = "data/dax.csv", 
   M         = 3,
   N         = 2,
@@ -18,10 +18,10 @@ controls = list(
   set_df_cs = 1, 
   set_df_fs = 1,       
   T         = 100,                     
-  T_star    = 10,
+  T_star    = 30,
   t_min     = "2000-1-3", 
   t_max     = "2020-05-28",     
-  runs      = 2,
+  runs      = 1000,
   iterlim   = 500
 )
 
