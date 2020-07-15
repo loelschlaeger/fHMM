@@ -73,6 +73,8 @@ hhmm_visual = function(data,est,states,controls){
     points(date[cs_s==st&fs_s==which.max(pars$mus_star[[st]])],close[cs_s==st&fs_s==which.max(pars$mus_star[[st]])],col=colours[which(ordering==st),1],pch=20)
     points(date[cs_s==st&fs_s==which.min(pars$mus_star[[st]])],close[cs_s==st&fs_s==which.min(pars$mus_star[[st]])],col=colours[which(ordering==st),2],pch=20)
   }
+  text(as.Date("2008-9-15"),close[which(date==as.Date("2008-09-15"))]+2000,"bankruptcy of Lehmann Brothers \nSeptember 15, 2008",pos=4,cex=1.5)
+  abline(v=as.Date("2008-09-15"),lty=2,lwd=2)
   
   par(new=TRUE)
   par(mfrow=c(1,1),las=1)
@@ -106,7 +108,7 @@ hhmm_visual = function(data,est,states,controls){
   par(mfrow = c(2,4), mar=c(5, 5, 3, 3) + 0.1, las=1,cex.lab=1.5, cex.main=1.5)
   plot(pseudos_cs,ylim=c(-3,3),main="Index plot",ylab="PR CS")
   hist(pseudos_cs,freq=FALSE,breaks=15,col="lightgrey",ylim=c(0,0.5),xlim=c(-3,3),main="Histogram w/ N(0;1)-density",xlab="PR CS")
-  x <- seq(-4,4,0.01)
+  x = seq(-4,4,0.01)
   curve(dnorm(x),add=TRUE,lwd=2)
   qqnorm(pseudos_cs[is.finite(pseudos_cs)],ylim=c(-3,3),xlim=c(-3,3),main="Normal Q-Q plot")
   abline(a=0,b=1)
@@ -115,7 +117,7 @@ hhmm_visual = function(data,est,states,controls){
   
   plot(pseudos_fs,ylim=c(-4,4),main="",ylab="PR FS")
   hist(pseudos_fs,freq=FALSE,breaks=20,col="lightgrey",ylim=c(0,0.5),xlim=c(-4,4),main="",xlab="PR FS")
-  x <- seq(-4,4,0.01)
+  x = seq(-4,4,0.01)
   curve(dnorm(x),add=TRUE,lwd=2)
   qqnorm(pseudos_fs[is.finite(pseudos_fs)],ylim=c(-4,4),xlim=c(-4,4),main="")
   abline(a=0,b=1)
