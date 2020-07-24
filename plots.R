@@ -24,8 +24,8 @@ hhmm_visual = function(data,est,states,controls){
   ordering = order(pars$mus,decreasing=TRUE)
   
   # state dependent distributions
-  pdf(paste0("models/",controls$modelName,"_state_dep_distr.pdf"), width=10, height=6)
-  par(mfrow=c(1,3),las=1,mar=c(4,4,4,1))
+  pdf(paste0("models/",controls$modelName,"_state_dep_distr.pdf"), width=9, height=7)
+  par(mfrow=c(1,3),las=1,mar=c(4,4,4,1),cex.lab=1.5,cex.main=1.5,cex.axis=1.5)
   x = seq(-0.1,0.1,by=0.0001)
   xmin = -0.1
   xmax = 0.1
@@ -34,25 +34,25 @@ hhmm_visual = function(data,est,states,controls){
   lwd = 3
   for(st in ordering){
     sdd = function(n,x) {(1/pars$sigmas_star[[st]][n])*dt((x-pars$mus_star[[st]][n])/pars$sigmas_star[[st]][n],pars$dfs_star[[st]][n])}
-    hist(fs_obs[cs_s==st],prob=TRUE,breaks=40,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",cex.main=1.5,
+    hist(fs_obs[cs_s==st],prob=TRUE,breaks=40,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",
          main=paste("coarse-scale state",which(ordering==st)),xlab="",ylab="",xaxt="n",yaxt="n")
     axis(1,seq(xmin,xmax,by=0.1))
     axis(2,seq(0,80,by=20))
-    title(ylab="density",line=3,cex.lab=1.2)
-    title(xlab="log-return",line=2.5,cex.lab=1.2)
-    legend("topleft",legend=c("fine-scale state 1","fine-scale state 2"),col=colours[which(ordering==st),],lwd=lwd,cex=1.25, pt.cex = 1)
+    title(ylab="density",line=3)
+    title(xlab="log-return")
+    legend("topleft",legend=c("fine-scale state 1","fine-scale state 2"),col=colours[which(ordering==st),],lwd=lwd, pt.cex = 1, cex = 1.5)
     lines(x,sdd(which.max(pars$mus_star[[st]]),x),col=colours[which(ordering==st),1],lwd=lwd)
     lines(x,sdd(which.min(pars$mus_star[[st]]),x),col=colours[which(ordering==st),2],lwd=lwd)
   }
   dev.off()
   
   ## decoded time series
-  pdf(paste0("models/",controls$modelName,"_decoded_ts.pdf"), width=15, height=9)
+  pdf(paste0("models/",controls$modelName,"_decoded_ts.pdf"), width=19, height=9)
   par(mfrow=c(1,1),las=1,mar=c(4,6,0.5,6))
   xmin = as.Date(controls$t_min)
   xmax = as.Date(controls$t_max)
-  ymin = floor(min(close)/1000)*1000 - (ceiling(max(close)/1000)*1000-floor(min(close)/1000)*1000)
-  ymax = ceiling(max(close)/1000)*1000
+  ymin = floor(min(close)/1000)*1000 - (ceiling(max(close)/1000)*1000-floor(min(close)/1000)*1000)/1.5
+  ymax = max(close)#ceiling(max(close)/1000)*1000
   plot(date,close,type="l",xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="grey",xlab="",ylab="",xaxt="n",yaxt="n",cex.lab=2, cex.main=2)
   par(las=3)
   mtext("closing price", side=4, line=4, at=mean(close), cex=1.5)
@@ -73,7 +73,7 @@ hhmm_visual = function(data,est,states,controls){
     points(date[cs_s==st&fs_s==which.max(pars$mus_star[[st]])],close[cs_s==st&fs_s==which.max(pars$mus_star[[st]])],col=colours[which(ordering==st),1],pch=20)
     points(date[cs_s==st&fs_s==which.min(pars$mus_star[[st]])],close[cs_s==st&fs_s==which.min(pars$mus_star[[st]])],col=colours[which(ordering==st),2],pch=20)
   }
-  text(as.Date("2008-9-15"),close[which(date==as.Date("2008-09-15"))]+2000,"bankruptcy of Lehmann Brothers \nSeptember 15, 2008",pos=4,cex=1.5)
+  text(as.Date("2008-9-15"),close[which(date==as.Date("2008-09-15"))]+1000,"bankruptcy of Lehmann Brothers \nSeptember 15, 2008",pos=4,cex=1.5)
   abline(v=as.Date("2008-09-15"),lty=2,lwd=2)
   
   par(new=TRUE)
@@ -104,24 +104,24 @@ hhmm_visual = function(data,est,states,controls){
   for(i in 1:(T*T_star)){
     pseudos_fs[i] = qnorm(pt((fs_obs[i]-pars$mus_star[[cs_s[i]]][fs_s[i]])/pars$sigmas_star[[cs_s[i]]][fs_s[i]],pars$dfs_star[[cs_s[i]]][fs_s[i]]))
   }
-  pdf(paste0("models/",controls$modelName,"_pseudos.pdf"), width=15, height=6)
-  par(mfrow = c(2,4), mar=c(5, 5, 3, 3) + 0.1, las=1,cex.lab=1.5, cex.main=1.5)
-  plot(pseudos_cs,ylim=c(-3,3),main="Index plot",ylab="PR CS")
-  hist(pseudos_cs,freq=FALSE,breaks=15,col="lightgrey",ylim=c(0,0.5),xlim=c(-3,3),main="Histogram w/ N(0;1)-density",xlab="PR CS")
-  x = seq(-4,4,0.01)
-  curve(dnorm(x),add=TRUE,lwd=2)
-  qqnorm(pseudos_cs[is.finite(pseudos_cs)],ylim=c(-3,3),xlim=c(-3,3),main="Normal Q-Q plot")
+  pdf(paste0("models/",controls$modelName,"_pseudos.pdf"), width=9, height=7)
+  par(mfrow = c(2,2), mar=c(5, 5, 3, 3) + 0.1, las=1,cex.lab=1.5, cex.main=1.5,cex.axis=1.5)
+  #plot(pseudos_cs,ylim=c(-3,3),main="Index plot",ylab="PR CS")
+  #hist(pseudos_cs,freq=FALSE,breaks=15,col="lightgrey",ylim=c(0,0.5),xlim=c(-3,3),main="Histogram w/ N(0;1)-density",xlab="PR CS")
+  #x = seq(-4,4,0.01)
+  #curve(dnorm(x),add=TRUE,lwd=2)
+  qqnorm(pseudos_cs[is.finite(pseudos_cs)],ylim=c(-3,3),xlim=c(-3,3),main="normal Q-Q plot", ylab="PR CS quantiles", xlab="N(0;1) quantiles")
   abline(a=0,b=1)
-  acf(pseudos_cs,lag.max = 10,main="")
-  title("Autocorrelation plot")
+  acf(pseudos_cs,lag.max = 10,main="", ylab="ACF PR CS", xlab="lag")
+  title("autocorrelation plot")
   
-  plot(pseudos_fs,ylim=c(-4,4),main="",ylab="PR FS")
-  hist(pseudos_fs,freq=FALSE,breaks=20,col="lightgrey",ylim=c(0,0.5),xlim=c(-4,4),main="",xlab="PR FS")
-  x = seq(-4,4,0.01)
-  curve(dnorm(x),add=TRUE,lwd=2)
-  qqnorm(pseudos_fs[is.finite(pseudos_fs)],ylim=c(-4,4),xlim=c(-4,4),main="")
+  #plot(pseudos_fs,ylim=c(-4,4),main="",ylab="PR FS")
+  #hist(pseudos_fs,freq=FALSE,breaks=20,col="lightgrey",ylim=c(0,0.5),xlim=c(-4,4),main="",xlab="PR FS")
+  #x = seq(-4,4,0.01)
+  #curve(dnorm(x),add=TRUE,lwd=2)
+  qqnorm(pseudos_fs[is.finite(pseudos_fs)],ylim=c(-4,4),xlim=c(-4,4),main="", ylab="PR FS quantiles", xlab="N(0;1) quantiles")
   abline(a=0,b=1)
-  acf(pseudos_fs[is.finite(pseudos_fs)],lag.max = 30,main="")
+  acf(pseudos_fs[is.finite(pseudos_fs)],lag.max = 30,main="", ylab="ACF PR CS", xlab="lag")
   dev.off()
   
 }
