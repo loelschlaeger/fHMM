@@ -6,13 +6,14 @@ This repository provides R and C++ Code for fitting hierarchical hidden Markov m
 
 - `data.R` processes empirical data. The data has to be provided in a csv-file, containing columns "Date" and "Close" (closing prices).
 - `data_sim.R` simulates data from a HHMM.
-- `initialize.R` initializes the estimation routine.
+- `init.R` initializes the estimation routine (randomly).
 - `loglike.R` computes the models' log-likelihood.
 - `loglike_cpp.cpp` is the C++-version of computing the models' log-likelihood.
 - `main.R` is the master file.
-- `optimize.R` maximizes the log-likelihood function using the standard R function `nlm` for non-linear optimization.
-- `transformations.R` provides required parameter transformations.
-- `viterbi.R` applies the Viterbi algorithm in order to decode the hidden states.
+- `optim.R` maximizes the log-likelihood function using the standard R function `nlm` for non-linear optimization.
+- `plots.R` generates visualisations of the model results, only for M=3 and N=2.
+- `trans.R` provides helper functions for required parameter transformations.
+- `viterbi.R` is an implementation of the Viterbi algorithm.
 
 ## Source of empirical data
 The code is optimized for financial time series data provided by https://finance.yahoo.com/.
@@ -20,14 +21,14 @@ The code is optimized for financial time series data provided by https://finance
 ## Getting Started
 
 1. Go to `main.R`.
-2. Optionally run code chunk 1 to clear your memory and suppress warnings.
+2. Optionally run code chunk 1 to clear your memory.
 3. Run code chunk 2 to create subdirection `"\models"` to save estimated models.
 4. Optionally run code chunk 3 to load estimates from a previously saved model.
 5. Set model parameters in code chunk 4 and run afterwards.
     + `modelName` sets a model reference.
     + `fileName` is the source of the empirical data. Not required for fitting the HHMM to simulated data.
-    + `M` sets the number of coarse scale states.
-    + `N` sets the number of fine scale states.
+    + `M` sets the number of coarse-scale states.
+    + `N` sets the number of fine-scale states.
     + Set `est_df="yes"` to estimate degrees of freedom for the state-dependent distributions, set `est_df="no"` to fix the degrees of freedom.
     + Fix degrees of freedom for the coarse scale state-dependent distributions by assigning an integer to `set_df_cs`. Only required if `est_df="no"`.
     + Fix degrees of freedom for the fine scale state-dependent distributions by assigning an integer to `set_df_fs`. Only required if `est_df="no"`.
@@ -37,9 +38,9 @@ The code is optimized for financial time series data provided by https://finance
     + `t_max` defines the end of the empirical time series. Only required for fitting the HHMM to empirical data.
     + `runs` sets the number of runs for the numerical likelihood maximization routine.
     + `iterlim` bounds the number of iterations in the numerical maximization routine.
-    + Set `cpp=TRUE` to use C++-Code for the evaluation of the likelihoods (faster) or `cpp=FALSE` to only use R-Code.
 6. Optionally run code chunk 5a to fit the HHMM to simulated data and to save estimates afterwards at location determined by `modelName`.
 7. Optionally run code chunk 5b to fit the HHMM to empirical data determined by variable `fileName`, to perform state decoding and to save estimates and decoded states afterwards at location determined by `modelName`.
+8. Optionally run code chunk 6 to create graphics of the model results. This works only for M=3 and N=2.
 
 ## Running examples
 
@@ -62,8 +63,7 @@ controls = list(
   t_min     = "", 
   t_max     = "",     
   runs      = 100,
-  iterlim   = 1000,
-  cpp       = TRUE
+  iterlim   = 1000
 )
 
 ### 5a. Fit model to simulated data
@@ -93,16 +93,20 @@ controls = list(
   t_min     = "2000-1-3", 
   t_max     = "2020-05-28",     
   runs      = 100,
-  iterlim   = 1000,
-  cpp       = TRUE
+  iterlim   = 1000
 )
 
 ### 5b. Fit model to empirical data and process estimates
 source("data.R")
 data = readData(controls)
-source("optimize.R") 
-est = maxLikelihood(data[["observations"]],controls)
+source("optim.R") 
+est = maxLikelihood(data[["observations"]], controls)
+sink(file = paste0("models/",controls$modelName,"_estimates.txtf")); controls; est; sink()
 source("viterbi.R")
-decStates = applyViterbi(data[["observations"]],est[["thetaFull"]],controls)
-save(controls,est,decStates,file=paste0("models/",controls[["modelName"]]))
+states = applyViterbi(data[["observations"]], est[["thetaFull"]], controls)
+save(data, controls, est, states, file = paste0("models/", controls[["modelName"]]))
+
+### 6. Plot graphics (only M=3 and N=2)
+source("plots.R")
+hhmm_visual(data, est, states, controls)
 ```
