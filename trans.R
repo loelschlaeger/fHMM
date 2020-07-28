@@ -1,4 +1,4 @@
-# parameter transformations
+# helper functions for parameter transformations
 
 # INPUT:  matrix
 # OUTPUT: non-diagonal matrix elements (column-wise)

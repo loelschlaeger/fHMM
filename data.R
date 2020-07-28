@@ -1,4 +1,4 @@
-# Process financial data from csv file
+# process financial data from csv file
 
 readData = function(controls){
   fileName = controls[["fileName"]]
@@ -19,6 +19,7 @@ readData = function(controls){
 		log_returns[t] = log(data$Close[t]/data$Close[t-1])
 	}
 	data = cbind(data,log_returns)
+	
 	## Split into coarse scale and fine scale
 	cs   = floor(T/fs)
 	T    = fs*cs        
@@ -29,6 +30,7 @@ readData = function(controls){
 		cs_obs[i] = mean(fs_obs[i,])
 	}
 	observations = cbind(cs_obs,fs_obs,deparse.level=0)
+	
 	return(list(
 	  "observations" = observations,
 	  "cs_obs" = cs_obs,

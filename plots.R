@@ -1,3 +1,5 @@
+# creates graphics of HHMM model results, only for M=3 and N=2
+
 hhmm_visual = function(data,est,states,controls){
   
   # unzip data, estimates and states
@@ -73,7 +75,7 @@ hhmm_visual = function(data,est,states,controls){
     points(date[cs_s==st&fs_s==which.max(pars$mus_star[[st]])],close[cs_s==st&fs_s==which.max(pars$mus_star[[st]])],col=colours[which(ordering==st),1],pch=20)
     points(date[cs_s==st&fs_s==which.min(pars$mus_star[[st]])],close[cs_s==st&fs_s==which.min(pars$mus_star[[st]])],col=colours[which(ordering==st),2],pch=20)
   }
-  text(as.Date("2008-9-15"),close[which(date==as.Date("2008-09-15"))]+1000,"bankruptcy of Lehmann Brothers \nSeptember 15, 2008",pos=4,cex=1.5)
+  text(as.Date("2008-9-15"),max(close)*0.66,"bankruptcy of Lehman Brothers \nSeptember 15, 2008",pos=4,cex=1.5)
   abline(v=as.Date("2008-09-15"),lty=2,lwd=2)
   
   par(new=TRUE)

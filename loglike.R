@@ -1,4 +1,4 @@
-# compute log-likelihood
+# compute log-likelihood of HMM and HHMM
 
 # INPUT:  observations, constrained parameter vector, fs states 
 # OUTPUT: log-likelihood of HMM

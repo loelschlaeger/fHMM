@@ -5,7 +5,7 @@ rm(list = ls()); cat("\f")
 if(!dir.exists("models")){dir.create("models")}
 
 ### 3. Load old model
-path = "models/HHMM_DAX_32_longrun"
+path = "models/HHMM_sandp500_32_longrun"
 if(file.exists(path)){load(file=path)}
 
 ### 4. Set model parameters for new model
