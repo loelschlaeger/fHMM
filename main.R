@@ -22,7 +22,8 @@ controls = list(
   t_min     = "2000-01-03", 
   t_max     = "2020-01-30",     
   runs      = 700,
-  iterlim   = 500
+  iterlim   = 500,
+  hessian   = FALSE
 )
 
 ### 5a. Fit model to simulated data
