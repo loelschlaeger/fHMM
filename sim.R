@@ -1,4 +1,4 @@
-# simulate data from HHMM
+### simulate data from HHMM
 
 source("trans.R")
 
