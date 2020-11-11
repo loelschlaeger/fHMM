@@ -1,43 +1,59 @@
-# helper functions for parameter transformations
+### helper functions for parameter transformations
 
-# INPUT:  matrix
-# OUTPUT: non-diagonal matrix elements (column-wise)
-Gamma2gammas = function(Gamma){
+### INPUT:  transition probability matrix
+### OUTPUT: non-diagonal matrix elements (column-wise)
+Gamma2gammasCon = function(Gamma){
 	diag(Gamma) = NA
 	return(Gamma[!is.na(Gamma)])
 }
 
-# INPUT:  unconstrained non-diagonal elements of transition probability matrix
-# OUTPUT: transition probability matrix
-gammasUncon2Gamma = function(gammas,N){
-	Gamma         = diag(N)
-	Gamma[!Gamma] = exp(gammas) # filled column-wise
+### INPUT:  constrained non-diagonal elements of (dim x dim)-transition probability matrix
+### OUTPUT: transition probability matrix
+gammasCon2Gamma = function(gammasCon,dim){
+  Gamma         = diag(dim)
+  Gamma[!Gamma] = gammasCon #filled column-wise
+  for(i in 1:dim){
+    Gamma[i,i] = 1-(rowSums(Gamma)[i]-1)
+  }
+  return(Gamma)
+}
+
+### INPUT:  unconstrained non-diagonal elements of (dim x dim)-transition probability matrix
+### OUTPUT: transition probability matrix
+gammasUncon2Gamma = function(gammasUncon,dim){
+	Gamma         = diag(dim)
+	Gamma[!Gamma] = exp(gammasUncon) #filled column-wise
 	Gamma         = Gamma/rowSums(Gamma)
 	return(Gamma)
 }
 
-# INPUT:  constrained non-diagonal elements of transition probability matrix
-# OUTPUT: transition probability matrix
-gammasCon2Gamma = function(gammas,N){
-	Gamma         = diag(N)
-	Gamma[!Gamma] = gammas # filled column-wise
-	for(i in 1:N){
-		Gamma[i,i] = 1-(rowSums(Gamma)[i]-1)
-	}
-	return(Gamma)
+### INPUT:  transition probability matrix
+### OUTPUT: unconstrained non-diagonal elements of transition probability matrix
+Gamma2gammasUncon = function(Gamma){
+  diag(Gamma) = 0
+  Gamma       = log(Gamma/(1-rowSums(Gamma)))
+  diag(Gamma) = NA
+  return(Gamma[!is.na(Gamma)])
 }
 
-# INPUT:  unconstrained non-diagonal elements of transition probability matrix
+# INPUT:  unconstrained non-diagonal elements of (dim x dim)--transition probability matrix
 # OUTPUT: constrained non-diagonal elements of transition probability matrix
-gammasUncon2gammasCon = function(gammasUncon,N){
-  gammasCon = Gamma2gammas(gammasUncon2Gamma(gammasUncon,N))
+gammasUncon2gammasCon = function(gammasUncon,dim){
+  gammasCon = Gamma2gammasCon(gammasUncon2Gamma(gammasUncon,dim))
   return(gammasCon)
 }
 
-# INPUT:  transition probability matrix
+# INPUT:  constrained non-diagonal elements of (dim x dim)-transition probability matrix
+# OUTPUT: unconstrained non-diagonal elements of transition probability matrix
+gammasCon2gammasUncon = function(gammasCon,dim){
+  gammasUncon = Gamma2gammasUncon(gammasCon2Gamma(gammasCon,dim))
+  return(gammasUncon)
+}
+
+# INPUT:  (dim x dim)-transition probability matrix
 # OUTPUT: stationary distribution
-Gamma2delta = function(Gamma,N){
-  delta = solve(t(diag(N)-Gamma+1),rep(1,N))
+Gamma2delta = function(Gamma,dim){
+  delta = solve(t(diag(dim)-Gamma+1),rep(1,dim))
   return(delta)
 }
 
