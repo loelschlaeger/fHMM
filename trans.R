@@ -50,10 +50,16 @@ gammasCon2gammasUncon = function(gammasCon,dim){
   return(gammasUncon)
 }
 
-# INPUT:  (dim x dim)-transition probability matrix
+# INPUT:  transition probability matrix
 # OUTPUT: stationary distribution
-Gamma2delta = function(Gamma,dim){
-  delta = solve(t(diag(dim)-Gamma+1),rep(1,dim))
+Gamma2delta = function(Gamma){
+  dim   = dim(Gamma)[1]
+  if(class(try(solve(t(diag(dim)-Gamma+1),rep(1,dim)),silent=TRUE))=="try-error"){ 
+    delta = rep(1/dim,dim)
+    warning(call.=FALSE,"Computation of stationary distribution failed, I will continue with uniform distribution.")
+  } else { 
+    delta = solve(t(diag(dim)-Gamma+1),rep(1,dim))
+  }
   return(delta)
 }
 
