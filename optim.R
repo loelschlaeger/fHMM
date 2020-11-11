@@ -14,6 +14,7 @@ maxLikelihood = function(observations,controls){
   N          = controls[["N"]]
   runs       = controls[["runs"]]
   iterlim    = controls[["iterlim"]]
+  hessian    = FALSE # hessian = controls[["hessian"]]
   cat("Start likelihood maximization\n")
   cat("run (estimated time remaining in min)\n")
 	llks = rep(NA,runs) 
@@ -23,7 +24,7 @@ maxLikelihood = function(observations,controls){
 	for (k in 1:runs){
 	  start = init_est(controls) 
 		tryCatch({
-			  mods[[k]] = nlm(f=logL_hhmm,p=start,observations=observations,controls=controls,iterlim=iterlim,steptol=1e-08,print.level=0)
+			  mods[[k]] = nlm(f=logL_hhmm,p=start,observations=observations,controls=controls,iterlim=iterlim,steptol=1e-08,print.level=0,hessian=hessian)
 			  llks[k] = mods[[k]]$minimum
 			},error=function(e){cat(paste("(Error:",conditionMessage(e),")"),"\n")}
 		)
@@ -40,7 +41,8 @@ maxLikelihood = function(observations,controls){
 	  "likelihood"      = -mod$minimum,
 	  "all_likelihoods" = -llks,
 	  "thetaFull"       = thetaFull,
-	  "gradient"        = mod$gradient
+	  "gradient"        = mod$gradient,
+          "hessian"         = mod$hessian
 	  )  
 	)
 }

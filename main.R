@@ -11,7 +11,8 @@ controls = list(
   timeHorizon  = c(100,30),
   fix_df       = c(1,1),
   runs         = 700,
-  iterlim      = 500
+  iterlim      = 500,
+  hessian      = FALSE
 )
 
 ### 3. (Optionally) Load old model
