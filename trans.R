@@ -66,88 +66,99 @@ Gamma2delta = function(Gamma){
 # INPUT:  unconstrained parameter sigma
 # OUTPUT: constrained parameter sigma
 sigmaUncon2sigmaCon = function(sigmaUncon){
-  sigmaCon = exp(sigmaUncon)
-  return(sigmaCon)
+  return(exp(sigmaUncon))
 }
 
 # INPUT:  constrained parameter sigma
 # OUTPUT: unconstrained parameter sigma
 sigmaCon2sigmaUncon = function(sigmaCon){
-  sigmaUncon = log(sigmaCon)
-  return(sigmaUncon)
+  return(log(sigmaCon))
 }
 
-# INPUT:  unconstrained estimates, list of control parameter 
-# OUTPUT: constrained estimates in vector form
+# INPUT:  unconstrained model parameters and control parameters 
+# OUTPUT: constrained model parameters in vector form
 thetaUncon2thetaCon = function(thetaUncon,controls){
-	M      = controls[["M"]]
-	N      = controls[["N"]]
-	est_df = controls[["est_df"]]
-	gammasUncon = thetaUncon[1:((M-1)*M)];	thetaUncon  = thetaUncon[-(1:((M-1)*M))]
+  M  = controls[["states"]][1] #coarse-scale states
+  N  = controls[["states"]][2] #fine-scale states
+  df_cs = controls[["fix_df"]][1]
+  df_fs = controls[["fix_df"]][2]
+  
+	gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
 	Gamma       = gammasUncon2Gamma(gammasUncon,M)
-	gammas      = Gamma2gammas(Gamma)
-	for(i in 1:M){
-	  gammasUncon_star      = thetaUncon[1:((N-1)*N)]; thetaUncon = thetaUncon[-(1:((N-1)*N))]
-	  Gamma_star            = gammasUncon2Gamma(gammasUncon_star,N)
-	  gammas_star           = Gamma2gammas(Gamma_star)
-	  gammas = c(gammas,gammas_star)
+	gammasCon   = Gamma2gammasCon(Gamma)
+	for(m in seq_len(M)){
+	  gammasUncon_star = thetaUncon[1:((N-1)*N)]; thetaUncon = thetaUncon[-(1:((N-1)*N))]
+	  gammasCon_star   = gammasUncon2gammasCon(gammasUncon_star,N)
+	  gammasCon        = c(gammasCon,gammasCon_star)
 	}
-	mus     = thetaUncon[1:(M+M*N)]; thetaUncon = thetaUncon[-(1:(M+M*N))]
-	sigmasUncon  = thetaUncon[1:(M+M*N)]; thetaUncon = thetaUncon[-(1:(M+M*N))]
-	sigmas       = sigmaUncon2sigmaCon(sigmasUncon)
-	if(est_df=="yes") {dfs = thetaUncon[1:(M+M*N)]; thetaUncon = thetaUncon[-(1:(M+M*N))]} 
-	if(est_df=="no")  {dfs = c() }
-	thetaCon = c(gammas,mus,sigmas,dfs)
+	
+	mus = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
+	for(m in seq_len(M)){
+	  mus_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
+	  mus      = c(mus,mus_star)
+	}
+	
+	sigmasUncon  = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
+	sigmasCon    = sigmaUncon2sigmaCon(sigmasUncon)
+	for(m in seq_len(M)){
+	  sigmasUncon_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
+	  sigmasCon_star   = sigmaUncon2sigmaCon(sigmasUncon_star)
+	  sigmasCon        = c(sigmasCon,sigmasCon_star)
+	}
+	
+	dfs = if(is.na(df_cs)){thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]} else integer(0)
+	for(m in seq_len(M)){
+	  dfs_star = if(is.na(df_fs)) {thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]} else integer(0)
+	  dfs      = c(dfs,dfs_star)
+	}
+	
+	thetaCon = c(gammasCon,mus,sigmasCon,dfs)
 	return(thetaCon)
 }
 
-# INPUT:  constrained estimates (thetaCon), list of control parameter (controls)
-# OUTPUT: full constrained estimates in list form
-thetaCon2thetaFull = function(thetaCon,controls){
-  M      = controls[["M"]]
-  N      = controls[["N"]]
-  est_df = controls[["est_df"]]
-  set_df_cs  = controls[["set_df_cs"]] 
-  set_df_fs  = controls[["set_df_fs"]]
-  gammas      = thetaCon[1:((M-1)*M)]; thetaCon = thetaCon[-(1:((M-1)*M))]
-  Gamma       = gammasCon2Gamma(gammas,M)
+# INPUT:  constrained model parameters and control parameters
+# OUTPUT: constrained model parameters in list form
+thetaCon2thetaList = function(thetaCon,controls){
+  M  = controls[["states"]][1] #coarse-scale states
+  N  = controls[["states"]][2] #fine-scale states
+  df_cs = controls[["fix_df"]][1]
+  df_fs = controls[["fix_df"]][2]
+  
+  gammasCon   = thetaCon[1:((M-1)*M)]; thetaCon = thetaCon[-(1:((M-1)*M))]
+  Gamma       = gammasCon2Gamma(gammasCon,M)
   Gammas_star = list()
-  for(i in 1:M){
-    gammas_star      = thetaCon[1:((N-1)*N)]; thetaCon = thetaCon[-(1:((N-1)*N))]
-    Gammas_star[[i]] = gammasCon2Gamma(gammas_star,N)
+  for(m in seq_len(M)){
+    gammasCon_star   = thetaCon[1:((N-1)*N)]; thetaCon = thetaCon[-(1:((N-1)*N))]
+    Gammas_star[[m]] = gammasCon2Gamma(gammasCon_star,N)
   }
+  
   mus      = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
   mus_star = list()
-  for(i in 1:M){
-    mus_star[[i]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
+  for(m in seq_len(M)){
+    mus_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
   }
-  sigmas      = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
-  sigmas_star = list()
-  for(i in 1:M){
-    sigmas_star[[i]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
+  
+  sigmasCon      = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
+  sigmasCon_star = list()
+  for(m in seq_len(M)){
+    sigmasCon_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
   }
+  
+  dfs = if(is.na(df_cs)) {thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]} else rep(df_cs,M)
   dfs_star = list()
-  if(est_df=="yes") {
-    dfs      = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
-    for(i in 1:M){
-      dfs_star[[i]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
-    }
-  } 
-  if(est_df=="no")  {
-    dfs      = rep(set_df_cs,M);
-    for(i in 1:M){
-      dfs_star[[i]] = rep(set_df_fs,N)
-    }
+  for(m in seq_len(M)){
+    dfs_star[[m]] = if(is.na(df_fs)) {thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]} else rep(df_fs,N)
   }
-  thetaFull = list(
+  
+  thetaList = list(
     "Gamma"       = Gamma,
     "mus"         = mus,
-    "sigmas"      = sigmas,
+    "sigmas"      = sigmasCon,
     "dfs"         = dfs,
     "Gammas_star" = Gammas_star,
     "mus_star"    = mus_star,
-    "sigmas_star" = sigmas_star,
+    "sigmas_star" = sigmasCon_star,
     "dfs_star"    = dfs_star
   ) 
-  return(thetaFull)
+  return(thetaList)
 }
