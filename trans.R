@@ -86,29 +86,31 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
 	gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
 	Gamma       = gammasUncon2Gamma(gammasUncon,M)
 	gammasCon   = Gamma2gammasCon(Gamma)
-	for(m in seq_len(M)){
+	if(N!=0) for(m in seq_len(M)){
 	  gammasUncon_star = thetaUncon[1:((N-1)*N)]; thetaUncon = thetaUncon[-(1:((N-1)*N))]
 	  gammasCon_star   = gammasUncon2gammasCon(gammasUncon_star,N)
 	  gammasCon        = c(gammasCon,gammasCon_star)
 	}
 	
 	mus = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
-	for(m in seq_len(M)){
+	if(N!=0) for(m in seq_len(M)){
 	  mus_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
 	  mus      = c(mus,mus_star)
 	}
 	
 	sigmasUncon  = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
 	sigmasCon    = sigmaUncon2sigmaCon(sigmasUncon)
-	for(m in seq_len(M)){
+	if(N!=0) for(m in seq_len(M)){
 	  sigmasUncon_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
 	  sigmasCon_star   = sigmaUncon2sigmaCon(sigmasUncon_star)
 	  sigmasCon        = c(sigmasCon,sigmasCon_star)
 	}
 	
-	dfs = if(is.na(df_cs)){thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]} else integer(0)
-	for(m in seq_len(M)){
-	  dfs_star = if(is.na(df_fs)) {thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]} else integer(0)
+	dfs = if(is.na(df_cs)) thetaUncon[1:M] else integer(0)
+	      if(is.na(df_cs)) thetaUncon = thetaUncon[-(1:M)]
+	if(N!=0) for(m in seq_len(M)){
+	  dfs_star = if(is.na(df_fs)) thetaUncon[1:N] else integer(0)
+	             if(is.na(df_fs)) thetaUncon = thetaUncon[-(1:N)]
 	  dfs      = c(dfs,dfs_star)
 	}
 	
@@ -127,27 +129,29 @@ thetaCon2thetaList = function(thetaCon,controls){
   gammasCon   = thetaCon[1:((M-1)*M)]; thetaCon = thetaCon[-(1:((M-1)*M))]
   Gamma       = gammasCon2Gamma(gammasCon,M)
   Gammas_star = list()
-  for(m in seq_len(M)){
+  if(N!=0) for(m in seq_len(M)){
     gammasCon_star   = thetaCon[1:((N-1)*N)]; thetaCon = thetaCon[-(1:((N-1)*N))]
     Gammas_star[[m]] = gammasCon2Gamma(gammasCon_star,N)
   }
   
   mus      = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
   mus_star = list()
-  for(m in seq_len(M)){
+  if(N!=0) for(m in seq_len(M)){
     mus_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
   }
   
   sigmasCon      = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
   sigmasCon_star = list()
-  for(m in seq_len(M)){
+  if(N!=0) for(m in seq_len(M)){
     sigmasCon_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
   }
   
-  dfs = if(is.na(df_cs)) {thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]} else rep(df_cs,M)
+  dfs = if(is.na(df_cs)) thetaCon[1:M] else rep(df_cs,M)
+        if(is.na(df_cs)) thetaCon = thetaCon[-(1:M)]
   dfs_star = list()
-  for(m in seq_len(M)){
-    dfs_star[[m]] = if(is.na(df_fs)) {thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]} else rep(df_fs,N)
+  if(N!=0) for(m in seq_len(M)){
+    dfs_star[[m]] = if(is.na(df_fs)) thetaCon[1:N] else rep(df_fs,N)
+                    if(is.na(df_fs)) thetaCon = thetaCon[-(1:N)]
   }
   
   thetaList = list(

@@ -12,7 +12,7 @@ init_est = function(controls){
   mus         = sort(rnorm(M)*10^(-3),decreasing=TRUE)
   sigmasUncon = log(sort(runif(M,0.1,1)*10^(-2),decreasing=FALSE))
   dfs         = if(is.na(df_cs)) sample(1:30,M,replace=TRUE) else integer(0)
-  for(m in seq_len(M)){
+  if(N!=0) for(m in seq_len(M)){
     gammasUncon = c(gammasUncon,gammasCon2gammasUncon(runif((N-1)*N,0,1/N),N))
     mus         = c(mus,rnorm(N)*10^(-3))
     sigmasUncon = c(sigmasUncon,log(runif(N,0.1,1)*10^(-2)))
