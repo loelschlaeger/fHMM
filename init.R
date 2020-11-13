@@ -2,7 +2,6 @@
 source("trans.R")
 
 init_est = function(controls){
-  set.seed(controls[["seed"]])
   M  = controls[["states"]][1] #coarse-scale states
   N  = controls[["states"]][2] #fine-scale states
   df_cs = controls[["fix_df"]][1]
