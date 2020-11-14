@@ -31,6 +31,7 @@ check_controls = function(controls){
   return(controls)
 }
 
+# TODO: extend for HHMM
 check_model = function(controls){
   attach(controls)
   on.exit(detach(controls))
@@ -45,14 +46,17 @@ check_model = function(controls){
   }
 }
 
+# TODO: sim or emp data, truncation?, timeHorizon still valid?
 check_data = function(controls){
   return(TRUE)
 }
 
+# TODO: runs, iterlim, hessian, seed
 check_estimation = function(controls){
 
 }
 
+# TODO: does path already exists? overwriting?
 check_save_path = function(controls){
   
 }
