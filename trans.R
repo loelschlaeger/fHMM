@@ -75,21 +75,14 @@ sigmaCon2sigmaUncon = function(sigmaCon){
   return(log(sigmaCon))
 }
 
-### INPUT:  unconstrained parameter df
-### OUTPUT: constrained parameter df
-dfUncon2dfCon = function(dfUncon){
-  dfCon = ceiling(dfUncon*30)
-  return(dfCon)
-}
-
-### INPUT:  unconstrained model parameters and control parameters 
+### INPUT:  unconstrained model parameters and control parameters
 ### OUTPUT: constrained model parameters in vector form
 thetaUncon2thetaCon = function(thetaUncon,controls){
   M  = controls[["states"]][1] #coarse-scale states
   N  = controls[["states"]][2] #fine-scale states
   df_cs = controls[["fix_df"]][1]
   df_fs = controls[["fix_df"]][2]
-  model = controls$model
+  model = controls[["model"]]
   
 	gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
 	Gamma       = gammasUncon2Gamma(gammasUncon,M)
@@ -114,10 +107,10 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
 	  sigmasCon        = c(sigmasCon,sigmasCon_star)
 	}
 	
-	dfs = if(is.na(df_cs)) dfUncon2dfCon(thetaUncon[1:M]) else integer(0)
+	dfs = if(is.na(df_cs)) thetaUncon[1:M] else integer(0)
 	      if(is.na(df_cs)) thetaUncon = thetaUncon[-(1:M)]
 	if(model=="HHMM") for(m in seq_len(M)){
-	  dfs_star = if(is.na(df_fs)) dfUncon2dfCon(thetaUncon[1:N]) else integer(0)
+	  dfs_star = if(is.na(df_fs)) thetaUncon[1:N] else integer(0)
 	             if(is.na(df_fs)) thetaUncon = thetaUncon[-(1:N)]
 	  dfs      = c(dfs,dfs_star)
 	}
@@ -126,14 +119,14 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
 	return(thetaCon)
 }
 
-### INPUT:  constrained model parameters and control parameters
+### INPUT:  constrained model parameters and control parameters 
 ### OUTPUT: constrained model parameters in list form
 thetaCon2thetaList = function(thetaCon,controls){
   M = controls[["states"]][1] #coarse-scale states
   N = controls[["states"]][2] #fine-scale states
   df_cs = controls[["fix_df"]][1]
   df_fs = controls[["fix_df"]][2]
-  model = controls$model
+  model = controls[["model"]]
   
   gammasCon = thetaCon[1:((M-1)*M)]; thetaCon = thetaCon[-(1:((M-1)*M))]
   Gamma = gammasCon2Gamma(gammasCon,M)
@@ -198,6 +191,60 @@ thetaCon2thetaList = function(thetaCon,controls){
 ### OUTPUT: constrained model parameters in list form
 thetaUncon2thetaList = function(thetaUncon,controls){
   return(thetaCon2thetaList(thetaUncon2thetaCon(thetaUncon,controls),controls))
+}
+
+### INPUT:  unconstrained model parameters and control parameters 
+### OUTPUT: unconstrained model parameters of fine scale in list form
+thetaUncon2thetaUnconSplit = function(thetaUncon,controls){
+  if(controls[["model"]]!="HHMM") stop("Function only for HHMM parameters.")
+  M = controls[["states"]][1] #coarse-scale states
+  N = controls[["states"]][2] #fine-scale states
+  df_cs = controls[["fix_df"]][1]
+  df_fs = controls[["fix_df"]][2]
+  
+  thetaUnconSplit = list()
+  thetaUncon = thetaUncon[-(1:((M-1)*M))] 
+  for(m in seq_len(M)){
+    thetaUnconSplit[[m]] = thetaUncon[1:((N-1)*N)]
+    thetaUncon = thetaUncon[-(1:((N-1)*N))] 
+  }
+  thetaUncon = thetaUncon[-(1:M)]
+  for(m in seq_len(M)){
+    thetaUnconSplit[[m]] = c(thetaUnconSplit[[m]],thetaUncon[1:N])
+    thetaUncon = thetaUncon[-(1:N)] 
+  }
+  thetaUncon = thetaUncon[-(1:M)] 
+  for(m in seq_len(M)){
+    thetaUnconSplit[[m]] = c(thetaUnconSplit[[m]],thetaUncon[1:N])
+    thetaUncon = thetaUncon[-(1:N)] 
+  }
+  if(is.na(df_cs)) thetaUncon = thetaUncon[-(1:M)]
+  if(is.na(df_fs)) for(m in seq_len(M)){
+    thetaUnconSplit[[m]] = c(thetaUnconSplit[[m]],thetaUncon[1:N])
+    thetaUncon = thetaUncon[-(1:N)] 
+  }
+  
+  return(thetaUnconSplit)
+}
+
+### INPUT:  unconstrained model parameters for one fine-scale HMM
+### OUTPUT: constrained model parameters in list form for one fine-scale HMM
+thetaUnconSplit2thetaList = function(thetaUncon,controls){
+   nstates = controls[["states"]][2]
+   df_fs = controls[["fix_df"]][2]
+   gammasUncon = thetaUncon[1:((nstates-1)*nstates)]; thetaUncon = thetaUncon[-(1:((nstates-1)*nstates))]
+   Gamma = gammasUncon2Gamma(gammasUncon,nstates)
+   mus = thetaUncon[1:nstates]; thetaUncon = thetaUncon[-(1:nstates)]
+   sigmasCon = sigmaUncon2sigmaCon(thetaUncon[1:nstates]); thetaUncon = thetaUncon[-(1:nstates)]
+   dfs = if(is.na(df_fs)) thetaUncon[1:nstates] else rep(df_fs,nstates)
+         if(is.na(df_fs)) thetaUncon = thetaUncon[-(1:nstates)]
+   thetaList = list(
+     "Gamma"  = Gamma,
+     "mus"    = mus,
+     "sigmas" = sigmasCon,
+     "dfs"    = dfs
+   ) 
+   return(thetaList)
 }
 
 ### INPUT:  constrained (unordered) model parameters in list form, control parameters
