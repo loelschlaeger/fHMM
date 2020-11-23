@@ -51,4 +51,3 @@ double LogLikeHHMM_Rcpp(mat log_likelihoods, mat allprobs, mat Gamma, rowvec del
   
   return loglike;
 }
-
