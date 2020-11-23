@@ -1,54 +1,69 @@
 check_controls = function(controls){
-  attach(controls)
-  on.exit(detach(controls))
+  
+  all_controls = c("modelName","dataSource","trunc_data","states","timeHorizon","fix_df","runs","iterlim","hessian","seed","print.level","steptol","accept_codes","overwrite")
   required_controls = c("modelName","states","timeHorizon")
+  artificial_controls = c("sim","model")
+  missing_controls = setdiff(all_controls,names(controls))
+  redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
+  controls_with_length_2 = c("dataSource","trunc_data","states","timeHorizon")
+  numeric_controls = c("states","runs","iterlim","seed","print.level","steptol","accept_codes")
+  boolean_controls = c("hessian","overwrite")
+  
   for(required_control in required_controls){
     if(!(required_control %in% names(controls))) stop(paste0("Please specify '", required_control, "' in 'controls'."),call.=FALSE)
   }
-  all_controls = c("modelName","dataSource","trunc_data","states","timeHorizon","fix_df","runs","iterlim","hessian","seed")
-  missing_controls = setdiff(all_controls,names(controls))
-  for(missing_control in missing_controls){
-    warning(paste("The following element in 'control' is not specified and set to default:", missing_control),call.=FALSE)
-  }
+  
+  if(length(missing_controls)>=1) warning(paste("Some elements in 'controls' are not specified and set to default."),call.=FALSE)
+
+  if(length(redundant_controls)==1) warning(paste("The following element in 'controls' is not supported and will be ignored:", paste(redundant_controls,collapse=", ")),call.=FALSE)
+  if(length(redundant_controls)>1) warning(paste("The following elements in 'controls' are not supported and will be ignored:", paste(redundant_controls,collapse=", ")),call.=FALSE)
+  
   if("dataSource" %in% missing_controls) controls[["dataSource"]] = c(NA,NA)
   if("trunc_data" %in% missing_controls) controls[["trunc_data"]] = c(NA,NA)
   if("fix_df" %in% missing_controls) controls[["fix_df"]] = c(NA,NA)
-  if("runs" %in% missing_controls) controls[["runs"]] = 200
+  if("runs" %in% missing_controls) controls[["runs"]] = 100
   if("iterlim" %in% missing_controls) controls[["iterlim"]] = 500
   if("hessian" %in% missing_controls) controls[["hessian"]] = TRUE
   if("seed" %in% missing_controls) controls[["seed"]] = NULL
-  for(redundant_control in setdiff(names(controls),all_controls)){
-    warning(paste("The following element in 'control' is not supported and will be ignored:", redundant_control),call.=FALSE)
-  }
-  controls_with_length_2 = c("dataSource","trunc_data","states","timeHorizon")
+  if("print.level" %in% missing_controls) controls[["print.level"]] = 0
+  if("steptol" %in% missing_controls) controls[["steptol"]] = 1e-8
+  if("accept_codes" %in% missing_controls) controls[["accept_codes"]] = c(1,2)
+  if("overwrite" %in% missing_controls) controls[["overwrite"]] = FALSE; if(controls[["overwrite"]]) warning("Saved model results may be overwritten.",call.=FALSE)
+
   for(control_with_length_2 in controls_with_length_2){
     if(length(controls[[control_with_length_2]])!=2) stop(paste0("'", control_with_length_2, "' in 'controls' must be a vector of length 2."),call.=FALSE)
   }
-  numeric_controls = c("states","timeHorizon","runs","iterlim","seed")
+  
   for(numeric_control in numeric_controls){
-    if(!is.numeric(controls[[numeric_control]])) stop(paste0("'", numeric_control, "' in 'controls' must be numeric."),call.=FALSE)
+    if(length(controls[[numeric_control]])==1) if(!is.numeric(controls[[numeric_control]])) stop(paste0("The element '", numeric_control, "' in 'controls' must be numeric."),call.=FALSE)
+    if(length(controls[[numeric_control]])>1) if(!isTRUE(all(controls[[numeric_control]] == floor(controls[[numeric_control]])))) stop(paste0("The element '", numeric_control, "' in 'controls' must be a numeric vector."),call.=FALSE)
   }
-  if(is.na(controls[["dataSource"]][1])) controls[["sim"]] = TRUE
-  if(!is.na(controls[["dataSource"]][1])) controls[["sim"]] = FALSE
+  
+  for(boolean_control in boolean_controls){
+    if(!is.logical(controls[[boolean_control]])) stop(paste0("'", boolean_control, "' in 'controls' must be a boolean."),call.=FALSE)
+  }
+  
+  controls[["sim"]] = if(is.na(controls[["dataSource"]][1])) TRUE else FALSE;
+  controls[["model"]] = if(controls[["states"]][2]==0) "HMM" else "HHMM"
+  
   if(controls[["states"]][2]==0) {
-    controls[["model"]] = "HMM"
     writeLines("Model: HMM")
     writeLines(paste("States:",controls[["states"]][1]))
     writeLines("State-dependent distributions: t-distributions",sep=" ")
-    if(is.na(controls[["fix_df"]][1])) writeLines("")
-    if(!is.na(controls[["fix_df"]][1])) writeLines(paste0("(degrees of freedom fixed to ",controls[["fix_df"]][1],")"))
+    if(is.na(controls[["fix_df"]][1])) writeLines("") else writeLines(paste0("(degrees of freedom fixed to ",controls[["fix_df"]][1],")"))
   } else {
-    controls[["model"]] = "HHMM"
     writeLines("Model: HHMM")
-    writeLines(paste("States:",states[1],"/",states[2]))
+    writeLines(paste("States:",controls[["states"]][1],"/",controls[["states"]][2]))
     writeLines("State-dependent distributions: t-distributions",sep=" ")
-    if(is.na(controls[["fix_df"]][1])) writeLines("")
-    if(!is.na(controls[["fix_df"]][1])) writeLines(paste0("(degrees of freedom fixed to ",controls[["fix_df"]][1]," / ",controls[["fix_df"]][2],")"))
+    if(is.na(controls[["fix_df"]][1])) writeLines("") else writeLines(paste0("(degrees of freedom fixed to ",controls[["fix_df"]][1]," / ",controls[["fix_df"]][2],")"))
   }
+  
+  check_saving(controls,controls)
+  
   return(controls)
 }
 
-# TODO: truncation?, timeHorizon still valid?
+# TODO: truncation?, timeHorizon still valid?, seed
 check_data = function(controls,data){
   if(controls[["sim"]]){
     writeLines("Data: simulated")
@@ -56,14 +71,46 @@ check_data = function(controls,data){
   if(!controls[["sim"]]){
     writeLines("Data: empirical")
   }
+  check_saving(data,controls)
 }
 
-# TODO: runs?, iterlim to close at true iterations?, hessian computed?, seed
-check_estimation = function(controls){
+#TODO: check if iterlim was exceeded -> increase!
+check_estimation = function(time, mods,llks,data,controls){
+  if(all(is.na(llks))) stop("None of the estimation runs ended successfully. Consider increasing 'runs' in 'controls'.",call.=FALSE)
+  writeLines(paste0("Done with estimation, it took ",time," minute(s). Successful runs: ",sum(!is.na(llks))," out of ",length(llks),"."))
 
-}
-
-# TODO: does path already exists? overwriting?
-check_save_path = function(controls){
+  mod       = mods[[which.min(llks)]]
+  thetaCon  = thetaUncon2thetaCon(mod$estimate,controls)
+  thetaList = statesDecreasing(thetaCon2thetaList(thetaCon,controls),controls)
   
+  #TODO: print results
+  
+  est = list("LL"        = -mod$minimum,
+             "all_LL"    = -llks,
+             "thetaList" = thetaList,
+             "mod"       = mod
+            )
+  
+  check_saving(est,controls)
+  
+  return(est)
+}
+
+check_saving = function(object,controls){
+  overwrite = controls[["overwrite"]]
+  path = paste0("models/",controls[["modelName"]])
+  name = deparse(substitute(object))
+  filename = paste0(path,"/",name)
+  if(!dir.exists(path)){
+    dir.create(path)
+  }
+  if(file.exists(filename)){
+    if(overwrite){
+      saveRDS(object,file=filename)
+    } else { 
+      warning(paste0("Cannot save '",name,"' because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
+      }
+  } else {
+    saveRDS(object,file=filename)
+    }
 }
