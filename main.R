@@ -1,42 +1,37 @@
-### 1. Clear memory and create path to save models
-rm(list = ls()); cat("\f")
-if(!dir.exists("models")){dir.create("models")}
+### 1. Initialization
+rm(list = ls()); source("init.R"); init()
 
 ### 2. Set control parameters
 controls = list(
-  modelName    = "HHMM_DAX_32_longrun",        
-  dataSource   = "data/dax.csv",
-  trunc_data   = c("2000-01-03","2020-01-30"), 
-  states       = c(3,2),
-  timeHorizon  = c(100,30),
-  fix_df       = c(1,1),
-  runs         = 700,
-  iterlim      = 500,
-  hessian      = FALSE
+  modelName    = "test",        
+  #dataSource   = c("data/dax.csv",NA),
+  #trunc_data   = c("2000-01-03","2020-01-30"), 
+  states       = c(2,0), #c(3,2),
+  timeHorizon  = c(300,50),
+  fix_df       = c(NA,NA),
+  runs         = 50,
+  iterlim      = 200,
+  #seed         = 1
+  overwrite    = TRUE
 )
+source("checks.R")
+controls = check_controls(controls)
 
-### 3. (Optionally) Load old model
-path = "models/HHMM_sandp500_32_longrun"
-if(file.exists(path)){load(file=path)}
-
-### 4a. Fit model to simulated data
-source("sim.R")
-sim = simulateHHMM(controls)
-source("optim.R") 
-est_sim = maxLikelihood(sim[["observations"]], controls)
-save(sim, controls, est_sim, file=paste0("models/", controls[["modelName"]]))
-
-### 4b. Fit model to empirical data and process estimates
+### 3. Fit model and process estimates
 source("data.R")
-data = readData(controls)
+data = getData(controls)
 source("optim.R") 
-est = maxLikelihood(data[["observations"]], controls)
-sink(file = paste0("models/",controls$modelName,"_estimates.txtf")); controls; est; sink()
-source("viterbi.R")
-states = applyViterbi(data[["observations"]], est[["thetaFull"]], controls)
-save(data, controls, est, states, file = paste0("models/", controls[["modelName"]]))
+est = maxLikelihood(data,controls)
 
-### 5. Plot graphics (only M=3 and N=2)
+### 4. Decode hidden states
+source("viterbi.R")
+states = applyViterbi(data,est,controls)
+
+### 4. Visualize results (currently only "states=c(3,2)" possible)
 source("plots.R")
-hhmm_visual(data, est, states, controls)
+visual(data,est,states,controls)
+
+### 5. (Optionally) Load old model
+source("init.R")
+loadModel("test")
 
