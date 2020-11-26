@@ -2,11 +2,11 @@ check_controls = function(controls){
   
   all_controls = c("modelName","dataSource","trunc_data","states","timeHorizon","fix_df","runs","iterlim","hessian","seed","print.level","steptol","accept_codes","overwrite")
   required_controls = c("modelName","states","timeHorizon")
-  artificial_controls = c("sim","model")
+  artificial_controls = c("sim","model","est_df")
   missing_controls = setdiff(all_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
   controls_with_length_2 = c("dataSource","trunc_data","states","timeHorizon")
-  numeric_controls = c("states","runs","iterlim","seed","print.level","steptol","accept_codes")
+  numeric_controls = c("states","runs","iterlim","print.level","steptol","accept_codes","seed")
   boolean_controls = c("hessian","overwrite")
   
   for(required_control in required_controls){
@@ -24,7 +24,6 @@ check_controls = function(controls){
   if("runs" %in% missing_controls) controls[["runs"]] = 100
   if("iterlim" %in% missing_controls) controls[["iterlim"]] = 500
   if("hessian" %in% missing_controls) controls[["hessian"]] = TRUE
-  if("seed" %in% missing_controls) controls[["seed"]] = NULL
   if("print.level" %in% missing_controls) controls[["print.level"]] = 0
   if("steptol" %in% missing_controls) controls[["steptol"]] = 1e-8
   if("accept_codes" %in% missing_controls) controls[["accept_codes"]] = c(1,2)
@@ -45,17 +44,14 @@ check_controls = function(controls){
   
   controls[["sim"]] = if(is.na(controls[["dataSource"]][1])) TRUE else FALSE;
   controls[["model"]] = if(controls[["states"]][2]==0) "HMM" else "HHMM"
+  controls[["est_df"]] = if(any(is.na(controls[["fix_df"]]))) TRUE else FALSE;
   
-  if(controls[["states"]][2]==0) {
-    writeLines("Model: HMM")
-    writeLines(paste("States:",controls[["states"]][1]))
-    writeLines("State-dependent distributions: t-distributions",sep=" ")
-    if(is.na(controls[["fix_df"]][1])) writeLines("") else writeLines(paste0("(degrees of freedom fixed to ",controls[["fix_df"]][1],")"))
+  if(controls[["model"]]=="HMM") {
+    writeLines(paste0("Model: ",controls[["states"]][1],"-state HMM with state-dependent t-distributions"),sep=" ")
+    if(!controls[["est_df"]]) writeLines("") else writeLines(paste0("(degrees of freedom fixed to ",controls[["fix_df"]][1],")"))
   } else {
-    writeLines("Model: HHMM")
-    writeLines(paste("States:",controls[["states"]][1],"/",controls[["states"]][2]))
-    writeLines("State-dependent distributions: t-distributions",sep=" ")
-    if(is.na(controls[["fix_df"]][1])) writeLines("") else writeLines(paste0("(degrees of freedom fixed to ",controls[["fix_df"]][1]," / ",controls[["fix_df"]][2],")"))
+    writeLines(paste0("Model: ",controls[["states"]][1],"/",controls[["states"]][2],"-state HHMM with state-dependent t-distributions"),sep=" ")
+    if(!controls[["est_df"]]) writeLines("") else writeLines(paste0("(degrees of freedom fixed to ",controls[["fix_df"]][1],"/",controls[["fix_df"]][2],")"))
   }
   
   check_saving(controls,controls)
@@ -63,19 +59,20 @@ check_controls = function(controls){
   return(controls)
 }
 
-# TODO: truncation?, timeHorizon still valid?, seed
 check_data = function(controls,data){
   if(controls[["sim"]]){
-    writeLines("Data: simulated")
+    writeLines(paste0("Data: simulated, T=",controls[["timeHorizon"]][1]),sep="")
+    if(controls[["model"]]=="HMM") writeLines("") else writeLines(paste0(", T*=",controls[["timeHorizon"]][2]),sep="")
+    if(is.null(controls[["seed"]])) writeLines("") else writeLines(paste0(", seed=",controls[["seed"]]))
   }
   if(!controls[["sim"]]){
     writeLines("Data: empirical")
+    #TODO: time horizon, dates, data names
   }
   check_saving(data,controls)
 }
 
-#TODO: check if iterlim was exceeded -> increase!
-check_estimation = function(time, mods,llks,data,controls){
+check_estimation = function(time,mods,llks,data,controls){
   if(all(is.na(llks))) stop("None of the estimation runs ended successfully. Consider increasing 'runs' in 'controls'.",call.=FALSE)
   writeLines(paste0("Done with estimation, it took ",time," minute(s). Successful runs: ",sum(!is.na(llks))," out of ",length(llks),"."))
 
@@ -83,12 +80,19 @@ check_estimation = function(time, mods,llks,data,controls){
   thetaCon  = thetaUncon2thetaCon(mod$estimate,controls)
   thetaList = statesDecreasing(thetaCon2thetaList(thetaCon,controls),controls)
   
-  #TODO: print results
+  #TODO: check if iterlim was exceeded -> increase!
+  #TODO: sink results to txt file
+  
+  noPar = function(M,N,est_df) return(M*(M-1) + M*N*(N-1) + M + M*N + M + M*N + est_df*(M + M*N))
+  compAIC = function(M,N,LL,est_df) return(2*noPar(M,N,est_df) - 2*LL)
+  compBIC = function(T,M,N,LL,est_df) return(log(T)*noPar(M,N,est_df) - 2*LL)
   
   est = list("LL"        = -mod$minimum,
              "all_LL"    = -llks,
              "thetaList" = thetaList,
-             "mod"       = mod
+             "mod"       = mod,
+             "AIC"       = compAIC(controls$states[1],controls$states[2],-mod$minimum,controls[["est_df"]]),
+             "BIC"       = compBIC(prod(dim(t(data$observations))),controls$states[1],controls$states[2],-mod$minimum,controls[["est_df"]])
             )
   
   check_saving(est,controls)
