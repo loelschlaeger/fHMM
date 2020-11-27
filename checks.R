@@ -1,11 +1,11 @@
 check_controls = function(controls){
   
-  all_controls = c("modelName","dataSource","trunc_data","states","timeHorizon","fix_df","runs","iterlim","hessian","seed","print.level","steptol","accept_codes","overwrite")
-  required_controls = c("modelName","states","timeHorizon")
-  artificial_controls = c("sim","model","est_df")
+  all_controls = c("model_name","data_source","truncate_data","states","time_horizon","fix_dfs","runs","iterlim","hessian","seed","print.level","steptol","accept_codes","overwrite")
+  required_controls = c("model_name","states","time_horizon")
+  artificial_controls = c("sim","model","est_dfs")
   missing_controls = setdiff(all_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
-  controls_with_length_2 = c("dataSource","trunc_data","states","timeHorizon")
+  controls_with_length_2 = c("data_source","truncate_data","states","time_horizon")
   numeric_controls = c("states","runs","iterlim","print.level","steptol","accept_codes","seed")
   boolean_controls = c("hessian","overwrite")
   
@@ -18,9 +18,9 @@ check_controls = function(controls){
   if(length(redundant_controls)==1) warning(paste("The following element in 'controls' is not supported and will be ignored:", paste(redundant_controls,collapse=", ")),call.=FALSE)
   if(length(redundant_controls)>1) warning(paste("The following elements in 'controls' are not supported and will be ignored:", paste(redundant_controls,collapse=", ")),call.=FALSE)
   
-  if("dataSource" %in% missing_controls) controls[["dataSource"]] = c(NA,NA)
-  if("trunc_data" %in% missing_controls) controls[["trunc_data"]] = c(NA,NA)
-  if("fix_df" %in% missing_controls) controls[["fix_df"]] = c(NA,NA)
+  if("data_source" %in% missing_controls) controls[["dataSource"]] = c(NA,NA)
+  if("truncate_data" %in% missing_controls) controls[["trunc_data"]] = c(NA,NA)
+  if("fix_dfs" %in% missing_controls) controls[["fix_df"]] = c(NA,NA)
   if("runs" %in% missing_controls) controls[["runs"]] = 100
   if("iterlim" %in% missing_controls) controls[["iterlim"]] = 500
   if("hessian" %in% missing_controls) controls[["hessian"]] = TRUE
@@ -42,16 +42,17 @@ check_controls = function(controls){
     if(!is.logical(controls[[boolean_control]])) stop(paste0("'", boolean_control, "' in 'controls' must be a boolean."),call.=FALSE)
   }
   
-  controls[["sim"]] = if(is.na(controls[["dataSource"]][1])) TRUE else FALSE;
+  controls[["sim"]] = if(is.na(controls[["data_source"]][1])) TRUE else FALSE;
   controls[["model"]] = if(controls[["states"]][2]==0) "HMM" else "HHMM"
-  controls[["est_df"]] = if(any(is.na(controls[["fix_df"]]))) TRUE else FALSE;
+  controls[["est_dfs"]] = if(any(is.na(controls[["fix_dfs"]]))) TRUE else FALSE;
   
   if(controls[["model"]]=="HMM") {
     writeLines(paste0("Model: ",controls[["states"]][1],"-state HMM with state-dependent t-distributions"),sep=" ")
-    if(!controls[["est_df"]]) writeLines("") else writeLines(paste0("(degrees of freedom fixed to ",controls[["fix_df"]][1],")"))
-  } else {
+    if(controls[["est_dfs"]]) writeLines("") else writeLines(paste0("(dfs fixed to ",controls[["fix_dfs"]][1],")"))
+  } 
+  if(controls[["model"]]=="HHMM") {
     writeLines(paste0("Model: ",controls[["states"]][1],"/",controls[["states"]][2],"-state HHMM with state-dependent t-distributions"),sep=" ")
-    if(!controls[["est_df"]]) writeLines("") else writeLines(paste0("(degrees of freedom fixed to ",controls[["fix_df"]][1],"/",controls[["fix_df"]][2],")"))
+    if(controls[["est_dfs"]]) writeLines("") else writeLines(paste0("(dfs fixed to ",controls[["fix_dfs"]][1],"/",controls[["fix_df"]][2],")"))
   }
   
   check_saving(controls,controls)
@@ -61,9 +62,9 @@ check_controls = function(controls){
 
 check_data = function(controls,data){
   if(controls[["sim"]]){
-    writeLines(paste0("Data: simulated, T=",controls[["timeHorizon"]][1]),sep="")
-    if(controls[["model"]]=="HMM") writeLines("") else writeLines(paste0(", T*=",controls[["timeHorizon"]][2]),sep="")
-    if(is.null(controls[["seed"]])) writeLines("") else writeLines(paste0(", seed=",controls[["seed"]]))
+    writeLines(paste0("Data: simulated, T=",controls[["time_horizon"]][1]),sep="")
+    if(controls[["model"]]=="HMM") writeLines(paste0(", T*=",controls[["time_horizon"]][2]),sep="")
+    if(is.null(controls[["seed"]])) writeLines("") else writeLines(paste0(", seed set to ",controls[["seed"]]))
   }
   if(!controls[["sim"]]){
     writeLines("Data: empirical")
@@ -80,6 +81,9 @@ check_estimation = function(time,mods,llks,data,controls){
   thetaCon  = thetaUncon2thetaCon(mod$estimate,controls)
   thetaList = statesDecreasing(thetaCon2thetaList(thetaCon,controls),controls)
   
+  if(mod[["iterations"]] >= controls[["iterlim"]]) stop("Choosen estimation run exceeded the iteration limit. Increase 'iterlim' in 'controls'.",call.=FALSE)
+  exceeded_runs = unlist(lapply(mods,function (x) x[["iterations"]])) >= controls[["iterlim"]] 
+  if(any(exceeded_runs)) warning(paste0(sum(exceeded_runs)," out of ",length(llks)," estimation runs exceeded the iteration limit. Consider increasing 'iterlim' in 'controls'."),call.=FALSE)
   #TODO: check if iterlim was exceeded -> increase!
   #TODO: sink results to txt file
   
@@ -100,9 +104,14 @@ check_estimation = function(time,mods,llks,data,controls){
   return(est)
 }
 
+#TODO: comp. between true states and decoded states
+check_decoding = function(decoding,controls){
+  writeLines("Done with state decoding.")
+}
+
 check_saving = function(object,controls){
   overwrite = controls[["overwrite"]]
-  path = paste0("models/",controls[["modelName"]])
+  path = paste0("models/",controls[["model_name"]])
   name = deparse(substitute(object))
   filename = paste0(path,"/",name)
   if(!dir.exists(path)){
