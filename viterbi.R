@@ -1,65 +1,60 @@
-# Viterbi algorithm for state decoding
+### Viterbi algorithm for state decoding
 
-source("trans.R")
+source("checks.R")
 
-viterbi = function(N,thetaFull,x){
-		T = length(x)
-		Gamma = thetaFull[["Gamma"]]
-		delta = Gamma2delta(Gamma,N)
-		mu    = thetaFull[["mus"]]
-		sigma = thetaFull[["sigmas"]]
-		df    = thetaFull[["dfs"]]
-		allprobs = matrix(0,N,T)
-		for(i in 1:N){
-			allprobs[i,] = (1/sigma[i])*dt((x-mu[i])/sigma[i],df[i])
+viterbi = function(observations,nstates,Gamma,mus,sigmas,dfs){
+		T = length(observations)
+		delta = Gamma2delta(Gamma)
+		allprobs = matrix(0,nstates,T)
+		
+		for(n in seq_len(nstates)){
+			allprobs[n,] = (1/sigmas[n])*dt((observations-mus[n])/sigmas[n],dfs[n])
 		}
-		# allprobs stores the state-dependent densities, rows are the states, columns are the time points
-		xi = matrix(0,N,T)
-		# xi stores the recursive highest possible probability of sequences, rows are the states, columns are the time points
-		for(i in 1:N){
-			xi[i,1] = log(delta[i])+log(allprobs[i,1])
+		
+		xi = matrix(0,nstates,T)
+		for(n in seq_len(nstates)){
+			xi[n,1] = log(delta[n])+log(allprobs[n,1])
 		}
-		for (t in 2:T){
-			for(i in 1:N){
-				xi[i,t] = max(xi[,t-1]+log(Gamma[,i]))+log(allprobs[i,t])
+		for (t in seq_len(T)[-1]){
+			for(n in seq_len(nstates)){
+				xi[n,t] = max(xi[,t-1]+log(Gamma[,n]))+log(allprobs[n,t])
 			}
 		}
+		
 		iv = numeric(T)
-		# iv stores the most-likely state-sequence
 		iv[T] = which.max(xi[,T])
-		for (t in (T-1):1){
+		for (t in rev(seq_len(T-1))){
 			iv[t] = which.max(xi[,t]+log(Gamma[,iv[t+1]]))
 		}
+		
 		return(iv)
 }
 
-applyViterbi = function(observations,estFull,controls){
-  M      = controls[["M"]]
-  N      = controls[["N"]]
-  T      = dim(observations)[1]
-  T_star = dim(observations)[2]-1
-  thetaFullcs = list(
-    "Gamma"  = estFull[["Gamma"]],
-    "mus"    = estFull[["mus"]],
-    "sigmas" = estFull[["sigmas"]],
-    "dfs"    = estFull[["dfs"]]
-  )
-  states     = matrix(0,ncol=T_star+1,nrow=T)
-  states[,1] = viterbi(M,thetaFullcs,observations[,1])
-  for(t in 1:T){
-    s = states[t,1]
-    thetaFullfs = list(
-      "Gamma"  = estFull[["Gammas_star"]][[s]],
-      "mus"    = estFull[["mus_star"]][[s]],
-      "sigmas" = estFull[["sigmas_star"]][[s]],
-      "dfs"    = estFull[["dfs_star"]][[s]]
-    ) 
-	  states[t,-1] = viterbi(N,thetaFullfs,observations[t,-1])
+applyViterbi = function(data,est,controls){
+  
+  observations = data[["observations"]]
+  thetaList = est[["thetaList"]]
+  states = controls[["states"]]
+  T = controls[["timeHorizon"]][1]
+  T_star = controls[["timeHorizon"]][2]
+  model = controls[["model"]]
+  
+  if(model=="HMM"){
+    decodings = viterbi(observations,states[1],thetaList[["Gamma"]],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
   }
-  return(list(
-    "states" = states,
-    "cs_states" = states[,1],
-    "fs_states" = as.vector(t(states[,-1]))
-   )
-  )
+  
+  if(model=="HHMM"){
+    decodings = matrix(0,ncol=T_star+1,nrow=T)
+    decodings[,1] = viterbi(observations[,1],states[1],thetaList[["Gamma"]],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
+    for(t in seq_len(T)){
+      curr = decodings[t,1]
+      decodings[t,-1] = viterbi(observations[t,-1],states[2],thetaList[["Gammas_star"]][[curr]],thetaList[["mus_star"]][[curr]],thetaList[["sigmas_star"]][[curr]],thetaList[["dfs_star"]][[curr]])
+    }
+  }
+  
+  #if(controls[["est"]]) check_decodings(decodings,controls)
+  
+  #check_save_path(decodings,controls)
+  
+  return(decodings)
 }
