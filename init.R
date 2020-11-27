@@ -1,21 +1,28 @@
 ### initialize the code
 init = function(){
   cat("\f")
-  writeLines("Fitting (hierarchical) hidden Markov models to financial data.")
   if(!dir.exists("models")){
     dir.create("models")
   }
-  writeLines(paste0("Estimation results will be saved in '",getwd(),"/models'."))
+  writeLines(paste0("Fit (H)HMMs to financial data. Results will be saved in '",getwd(),"/models'."))
+  library(Rcpp)
+  library(RcppArmadillo)
+  library(progress)
+  source("checks.R")
+  source("data.R")
+  sourceCpp("loglike.cpp")
+  source("optim.R")
+  source("trans.R")
+  source("visual.R")
+  source("viterbi.R")
 }
 
 ### initialize the estimation routine randomly
-source("trans.R")
-
 init_est = function(controls){
   M  = controls[["states"]][1] #coarse-scale states
   N  = controls[["states"]][2] #fine-scale states
-  df_cs = controls[["fix_df"]][1]
-  df_fs = controls[["fix_df"]][2]
+  df_cs = controls[["fix_dfs"]][1]
+  df_fs = controls[["fix_dfs"]][2]
   
   gammasUncon = gammasCon2gammasUncon(runif((M-1)*M,0,1/M),M)
   mus         = sort(rnorm(M)*10^(-1),decreasing=TRUE)
@@ -32,10 +39,9 @@ init_est = function(controls){
   return(thetaUncon)
 }
 
-#TODO: check if something gets overwritten
 ### load parameters and results of the old model 'name'
-loadModel = function(name){
-  loadable = c("controls","data","est","states")
+reinit = function(name){
+  loadable = c("controls","data","est","decoding")
   path = paste0("models/",name)
   if(!dir.exists(path)){
     stop(paste0("Path '",path,"' does not exist."),call.=FALSE)

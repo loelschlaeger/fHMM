@@ -1,6 +1,6 @@
 # creates graphics of HHMM model results, only for M=3 and N=2
 
-hhmm_visual = function(data,est,states,controls){
+visual = function(data,est,states,controls){
   
   # unzip data, estimates and states
   T = controls$T
