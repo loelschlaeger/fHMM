@@ -84,24 +84,32 @@ check_estimation = function(time,mods,llks,data,controls){
   if(mod[["iterations"]] >= controls[["iterlim"]]) stop("Choosen estimation run exceeded the iteration limit. Increase 'iterlim' in 'controls'.",call.=FALSE)
   exceeded_runs = unlist(lapply(mods,function (x) x[["iterations"]])) >= controls[["iterlim"]] 
   if(any(exceeded_runs)) warning(paste0(sum(exceeded_runs)," out of ",length(llks)," estimation runs exceeded the iteration limit. Consider increasing 'iterlim' in 'controls'."),call.=FALSE)
-  #TODO: check if iterlim was exceeded -> increase!
-  #TODO: sink results to txt file
   
-  noPar = function(M,N,est_df) return(M*(M-1) + M*N*(N-1) + M + M*N + M + M*N + est_df*(M + M*N))
-  compAIC = function(M,N,LL,est_df) return(2*noPar(M,N,est_df) - 2*LL)
-  compBIC = function(T,M,N,LL,est_df) return(log(T)*noPar(M,N,est_df) - 2*LL)
+  noPar = function(M,N,est_dfs) return(M*(M-1) + M*N*(N-1) + M + M*N + M + M*N + est_dfs*(M + M*N))
+  compAIC = function(M,N,LL,est_dfs) return(2*noPar(M,N,est_dfs) - 2*LL)
+  compBIC = function(T,M,N,LL,est_dfs) return(log(T)*noPar(M,N,est_dfs) - 2*LL)
   
-  est = list("LL"        = -mod$minimum,
+  fit = list("LL"        = -mod$minimum,
              "all_LL"    = -llks,
              "thetaList" = thetaList,
              "mod"       = mod,
-             "AIC"       = compAIC(controls$states[1],controls$states[2],-mod$minimum,controls[["est_df"]]),
-             "BIC"       = compBIC(prod(dim(t(data$observations))),controls$states[1],controls$states[2],-mod$minimum,controls[["est_df"]])
+             "AIC"       = compAIC(controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]]),
+             "BIC"       = compBIC(prod(dim(t(data$observations))),controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]])
             )
   
-  check_saving(est,controls)
+  #TODO: design estimation result output in txt-file (names, elements, order)
+  file = paste0("models/",controls[["model_name"]],"/estimates.txt")
+  if(file.exists(file) & !controls[["overwrite"]]){ 
+    warning(paste0("Cannot save 'estimates.txt' because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
+  } else {
+    sink(file=file)
+    print(fit[["LL"]]); print(fit[["AIC"]]); print(fit[["BIc"]]); print(fit[["thetaList"]]); print(mod[["gradient"]]); print(mod[["hessian"]]); print(mod[["code"]]); print(mod[["iterations"]])
+    sink()
+  }
   
-  return(est)
+  check_saving(fit,controls)
+  
+  return(fit)
 }
 
 #TODO: comp. between true states and decoded states
