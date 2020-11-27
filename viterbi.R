@@ -35,26 +35,25 @@ applyViterbi = function(data,est,controls){
   observations = data[["observations"]]
   thetaList = est[["thetaList"]]
   states = controls[["states"]]
-  T = controls[["timeHorizon"]][1]
-  T_star = controls[["timeHorizon"]][2]
+  T = controls[["time_horizon"]][1]
+  T_star = controls[["time_horizon"]][2]
   model = controls[["model"]]
   
   if(model=="HMM"){
-    decodings = viterbi(observations,states[1],thetaList[["Gamma"]],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
+    decoding = viterbi(observations,states[1],thetaList[["Gamma"]],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
   }
   
   if(model=="HHMM"){
-    decodings = matrix(0,ncol=T_star+1,nrow=T)
-    decodings[,1] = viterbi(observations[,1],states[1],thetaList[["Gamma"]],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
+    decoding = matrix(0,ncol=T_star+1,nrow=T)
+    decoding[,1] = viterbi(observations[,1],states[1],thetaList[["Gamma"]],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
     for(t in seq_len(T)){
-      curr = decodings[t,1]
-      decodings[t,-1] = viterbi(observations[t,-1],states[2],thetaList[["Gammas_star"]][[curr]],thetaList[["mus_star"]][[curr]],thetaList[["sigmas_star"]][[curr]],thetaList[["dfs_star"]][[curr]])
+      curr = decoding[t,1]
+      decoding[t,-1] = viterbi(observations[t,-1],states[2],thetaList[["Gammas_star"]][[curr]],thetaList[["mus_star"]][[curr]],thetaList[["sigmas_star"]][[curr]],thetaList[["dfs_star"]][[curr]])
     }
   }
   
-  #if(controls[["est"]]) check_decodings(decodings,controls)
+  check_decoding(decoding,controls)
+  check_saving(decoding,controls)
   
-  #check_save_path(decodings,controls)
-  
-  return(decodings)
+  return(decoding)
 }
