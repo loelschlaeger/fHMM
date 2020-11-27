@@ -1,6 +1,6 @@
 # creates graphics of HHMM model results, only for M=3 and N=2
 
-visual = function(data,est,states,controls){
+visual = function(data,fit,states,controls){
   
   # unzip data, estimates and states
   T = controls$T
@@ -9,7 +9,7 @@ visual = function(data,est,states,controls){
   fs_obs = data$fs_obs
   close = data$close
   date = data$date
-  pars = est$thetaFull
+  pars = fit$thetaFull
   cs_s_s = states$cs_states
   cs_s = rep(states$cs_states,each=T_star)
   fs_s = states$fs_states

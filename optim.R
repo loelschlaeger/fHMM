@@ -8,7 +8,7 @@ maxLikelihood = function(data,controls){
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
   
   writeLines("Started estimation.")
-  pb = progress_bar$new(format = "[:bar] :percent eta: :eta", total = runs, clear = TRUE)
+  pb = progress_bar$new(format = "[:bar] :percent eta: :eta", total = runs, clear = FALSE, width = 60)
   start = Sys.time()
 	for (k in 1:runs){
 	  suppressWarnings({ tryCatch({ mods[[k]] = nlm(f = target,
@@ -27,9 +27,9 @@ maxLikelihood = function(data,controls){
 	}
   end = Sys.time()
   
-	est = check_estimation(round(difftime(end,start,units='mins')),mods,llks,data,controls)
+	fit = check_estimation(round(difftime(end,start,units='mins')),mods,llks,data,controls)
 	
-	return(est)
+	return(fit)
 }
 
 ### INPUT:  unconstrained parameter vector, observations, states 

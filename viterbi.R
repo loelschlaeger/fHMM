@@ -30,10 +30,10 @@ viterbi = function(observations,nstates,Gamma,mus,sigmas,dfs){
 		return(iv)
 }
 
-applyViterbi = function(data,est,controls){
+applyViterbi = function(data,fit,controls){
   
   observations = data[["observations"]]
-  thetaList = est[["thetaList"]]
+  thetaList = fit[["thetaList"]]
   states = controls[["states"]]
   T = controls[["time_horizon"]][1]
   T_star = controls[["time_horizon"]][2]
