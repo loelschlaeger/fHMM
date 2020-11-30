@@ -1,20 +1,25 @@
 ### initialize the code
 init = function(){
-  cat("\f")
+  message("Loading code...\r")
   if(!dir.exists("models")){
     dir.create("models")
   }
+  exe = alist(require("Rcpp"),
+              require("Rcpp"),
+              require("RcppArmadillo"),
+              require("progress"),
+              source("checks.R"),
+              source("data.R"),
+              sourceCpp("loglike.cpp"),
+              source("optim.R"),
+              source("trans.R"),
+              source("visual.R"),
+              source("viterbi.R"))
+  for(e in seq_len(length(exe))){ 
+    suppressPackageStartupMessages(eval(exe[[e]]))
+  }
+  cat("\f")
   writeLines(paste0("Fit (H)HMMs to financial data. Results will be saved in '",getwd(),"/models'."))
-  library(Rcpp)
-  library(RcppArmadillo)
-  library(progress)
-  source("checks.R")
-  source("data.R")
-  sourceCpp("loglike.cpp")
-  source("optim.R")
-  source("trans.R")
-  source("visual.R")
-  source("viterbi.R")
 }
 
 ### initialize the estimation routine randomly
