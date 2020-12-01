@@ -1,6 +1,6 @@
-# creates graphics of HHMM model results, only for M=3 and N=2
+### creates graphics of model results
 
-visual = function(data,fit,states,controls){
+visual = function(data,fit,decoding,labels=NULL,controls){
   
   # unzip data, estimates and states
   T = controls$T
@@ -15,6 +15,14 @@ visual = function(data,fit,states,controls){
   fs_s = states$fs_states
   
   # define colours
+  var.col = function(col,n){
+    colorRampPalette(c("white",col,"black"))(n+2)[2:(n+1)]
+  }
+  base.col = function(n){
+    colorRampPalette(c("darkgreen","green","yellow","orange","red","darkred"),space="rgb")(n)
+  }
+  colors = matrix(0,nrow=states[1],ncol=states[2]+1)
+  
   alpha = 160
   c1.1 = rgb(0,200,0,alpha,maxColorValue = 255) #hell grün
   c1.2 = rgb(0,110,0,alpha,maxColorValue = 255) #dunkel grün
