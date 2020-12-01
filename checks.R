@@ -97,13 +97,35 @@ check_estimation = function(time,mods,llks,data,controls){
              "BIC"       = compBIC(prod(dim(t(data$observations))),controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]])
             )
   
-  #TODO: design estimation result output in txt-file (names, elements, order)
   file = paste0("models/",controls[["model_name"]],"/estimates.txt")
   if(file.exists(file) & !controls[["overwrite"]]){ 
     warning(paste0("Cannot save 'estimates.txt' because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
   } else {
     sink(file=file)
-    print(fit[["LL"]]); print(fit[["AIC"]]); print(fit[["BIc"]]); print(fit[["thetaList"]]); print(mod[["gradient"]]); print(mod[["hessian"]]); print(mod[["code"]]); print(mod[["iterations"]])
+    fc = c("LL","AIC","BIC","exit code","iterations")
+    sc = c(fit[["LL"]],fit[["AIC"]],fit[["BIC"]],mod[["code"]],mod[["iterations"]])
+    df = data.frame(fc,sc)
+    names(df) = NULL
+    writeLines(paste0("Results of model '",controls[["model_name"]],"':"))
+    print(df,row.names=FALSE,right=FALSE)
+    writeLines("")
+    if(controls[["sim"]]){
+      writeLines("True parameter values:")
+      writeLines("")
+      print(data[["thetaList0"]])
+      writeLines("")
+    }
+    writeLines("Estimates:")
+    writeLines("")
+    print(fit[["thetaList"]])
+    writeLines("")
+    writeLines("Gradient:")
+    writeLines("")
+    print(mod[["gradient"]])
+    writeLines("")
+    writeLines("Hessian:")
+    writeLines("")
+    print(mod[["hessian"]])
     sink()
   }
   
