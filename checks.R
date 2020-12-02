@@ -1,26 +1,35 @@
 check_controls = function(controls){
   
+  ### check supplied control values
   all_controls = c("model_name","data_source","truncate_data","states","time_horizon","fix_dfs","runs","iterlim","hessian","seed","print.level","steptol","accept_codes","overwrite")
   required_controls = c("model_name","states","time_horizon")
-  artificial_controls = c("sim","model","est_dfs")
+  artificial_controls = c("sim","model","est_dfs","HHMM_av","controls_checked")
   missing_controls = setdiff(all_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
-  controls_with_length_2 = c("data_source","truncate_data","states","time_horizon")
+  controls_with_length_2 = c("data_source","truncate_data","states","time_horizon","fix_dfs")
   numeric_controls = c("states","runs","iterlim","print.level","steptol","accept_codes","seed")
   boolean_controls = c("hessian","overwrite")
-  
   for(required_control in required_controls){
     if(!(required_control %in% names(controls))) stop(paste0("Please specify '", required_control, "' in 'controls'."),call.=FALSE)
   }
-  
-  if(length(missing_controls)>=1) warning(paste("Some elements in 'controls' are not specified and set to default."),call.=FALSE)
-
+  if(length(missing_controls)>=1) warning(paste("Some controls are not specified and set to default."),call.=FALSE)
   if(length(redundant_controls)==1) warning(paste("The following element in 'controls' is not supported and will be ignored:", paste(redundant_controls,collapse=", ")),call.=FALSE)
   if(length(redundant_controls)>1) warning(paste("The following elements in 'controls' are not supported and will be ignored:", paste(redundant_controls,collapse=", ")),call.=FALSE)
+  for(control_with_length_2 in intersect(controls_with_length_2,names(controls))){
+    if(length(controls[[control_with_length_2]])!=2) stop(paste0("'", control_with_length_2, "' in 'controls' must be a vector of length 2."),call.=FALSE)
+  }
+  for(numeric_control in intersect(numeric_controls,names(controls))){
+    if(length(controls[[numeric_control]])==1) if(!is.numeric(controls[[numeric_control]])) stop(paste0("The element '", numeric_control, "' in 'controls' must be numeric."),call.=FALSE)
+    if(length(controls[[numeric_control]])>1) if(!isTRUE(all(controls[[numeric_control]] == floor(controls[[numeric_control]])))) stop(paste0("The element '", numeric_control, "' in 'controls' must be a numeric vector."),call.=FALSE)
+  }
+  for(boolean_control in intersect(boolean_controls,names(controls))){
+    if(!is.logical(controls[[boolean_control]])) stop(paste0("'", boolean_control, "' in 'controls' must be a boolean."),call.=FALSE)
+  }
   
+  ### set default values
   if("data_source" %in% missing_controls) controls[["dataSource"]] = c(NA,NA)
-  if("truncate_data" %in% missing_controls) controls[["trunc_data"]] = c(NA,NA)
-  if("fix_dfs" %in% missing_controls) controls[["fix_df"]] = c(NA,NA)
+  if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
+  if("fix_dfs" %in% missing_controls) controls[["fix_dfs"]] = c(NA,NA)
   if("runs" %in% missing_controls) controls[["runs"]] = 100
   if("iterlim" %in% missing_controls) controls[["iterlim"]] = 500
   if("hessian" %in% missing_controls) controls[["hessian"]] = TRUE
@@ -28,32 +37,63 @@ check_controls = function(controls){
   if("steptol" %in% missing_controls) controls[["steptol"]] = 1e-8
   if("accept_codes" %in% missing_controls) controls[["accept_codes"]] = c(1,2)
   if("overwrite" %in% missing_controls) controls[["overwrite"]] = FALSE; if(controls[["overwrite"]]) warning("Saved model results may be overwritten.",call.=FALSE)
-
-  for(control_with_length_2 in controls_with_length_2){
-    if(length(controls[[control_with_length_2]])!=2) stop(paste0("'", control_with_length_2, "' in 'controls' must be a vector of length 2."),call.=FALSE)
-  }
   
-  for(numeric_control in numeric_controls){
-    if(length(controls[[numeric_control]])==1) if(!is.numeric(controls[[numeric_control]])) stop(paste0("The element '", numeric_control, "' in 'controls' must be numeric."),call.=FALSE)
-    if(length(controls[[numeric_control]])>1) if(!isTRUE(all(controls[[numeric_control]] == floor(controls[[numeric_control]])))) stop(paste0("The element '", numeric_control, "' in 'controls' must be a numeric vector."),call.=FALSE)
-  }
-  
-  for(boolean_control in boolean_controls){
-    if(!is.logical(controls[[boolean_control]])) stop(paste0("'", boolean_control, "' in 'controls' must be a boolean."),call.=FALSE)
-  }
-  
-  controls[["sim"]] = if(is.na(controls[["data_source"]][1])) TRUE else FALSE;
+  ### create artificial controls
   controls[["model"]] = if(controls[["states"]][2]==0) "HMM" else "HHMM"
+  if(controls[["model"]]=="HMM"){
+    controls[["sim"]] = if(is.na(controls[["data_source"]][1])) TRUE else FALSE;
+  }
+  if(controls[["model"]]=="HHMM"){
+    controls[["sim"]] = if(is.na(controls[["data_source"]][2]) || (all(is.na(controls[["data_source"]][2])))) TRUE else FALSE;
+    if(is.na(controls[["data_source"]][1]) & !is.na(controls[["data_source"]][2])) controls[["HHMM_av"]] = TRUE
+    if(all(!is.na(controls[["data_source"]][1]))) controls[["HHMM_av"]] = FALSE
+  }
   controls[["est_dfs"]] = if(any(is.na(controls[["fix_dfs"]]))) TRUE else FALSE;
   
+  ### check correct parameter format for HMM and HHMM resp.
+  if(controls[["sim"]] & any(!is.na(controls[["truncate_data"]]))) {warning("Entries of 'truncate_data' will be ignored.",call.=FALSE); controls[["truncate_data"]] = c(NA,NA)}
   if(controls[["model"]]=="HMM") {
-    writeLines(paste0("Model: ",controls[["states"]][1],"-state HMM with state-dependent t-distributions"),sep=" ")
-    if(controls[["est_dfs"]]) writeLines("") else writeLines(paste0("(dfs fixed to ",controls[["fix_dfs"]][1],")"))
+    if(controls[["states"]][1]%%1!=0 || controls[["states"]][1]<2) stop("First entry of 'states' in 'controls' must be an integer greater or equal 2.",call.=FALSE)
+    if(!is.na(controls[["data_source"]][2])) {warning("Second entry of 'data_source' will be ignored.",call.=FALSE); controls[["data_source"]][2] = NA}
+    if(controls[["sim"]] & is.na(controls[["time_horizon"]][1])) stop("Either first entry of 'data_source' or 'time_horizon' has to be specified.",call.=FALSE)
+    if(!controls[["sim"]]){
+      warning("Entries of 'time_horizon' will be ignored.",call.=FALSE); controls[["time_horizon"]] = c(NA,NA)
+    } else if(!is.na(controls[["time_horizon"]][2])){
+      warning("Second entry of 'time_horizon' will be ignored.",call.=FALSE); controls[["time_horizon"]][2] = NA
+    }
+    if(!is.na(controls[["fix_dfs"]][2])) {warning("Second entry of 'fix_dfs' will be ignored.",call.=FALSE); controls[["fix_dfs"]][2] = NA}
+  }
+  if(controls[["model"]]=="HHMM") {
+    if(controls[["states"]][1]%%1!=0 || controls[["states"]][1]<2) stop("First entry of 'states' in 'controls' must be an integer greater or equal 2.",call.=FALSE)
+    if(controls[["states"]][2]%%1!=0 || controls[["states"]][2]<2) stop("Second entry of 'states' in 'controls' must be an integer greater or equal 2.",call.=FALSE)
+    if(!is.na(controls[["data_source"]][1]) & is.na(controls[["data_source"]][2])) {warning("First entry of 'data_source' will be ignored.",call.=FALSE); controls[["data_source"]][1] = NA}
+    if(controls[["sim"]] & any(is.na(controls[["time_horizon"]]))) stop("Either 'data_source' or 'time_horizon' has to be specified.",call.=FALSE)
+    if(!controls[["sim"]] & is.na(controls[["time_horizon"]][2])) stop("Second entry of 'time_horizon' has to be specified.",call.=FALSE)
+    if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])) {warning("First entry of 'time_horizon' will be ignored.",call.=FALSE); controls[["time_horizon"]][1] = NA}
+    if(is.na(controls[["fix_dfs"]][1]) & !is.na(controls[["fix_dfs"]][2])) {warning("Second entry of 'fix_dfs' will be ignored.",call.=FALSE); controls[["fix_dfs"]][2] = NA}
+    if(!is.na(controls[["fix_dfs"]][1]) & is.na(controls[["fix_dfs"]][2])) {warning("First entry of 'fix_dfs' will be ignored.",call.=FALSE); controls[["fix_dfs"]][1] = NA}
+  }
+  
+  ### check if data paths are correct
+  if(!is.na(controls[["data_source"]][1]) & !file.exists(paste0("data/",controls[["data_source"]][1]))) stop(paste0("File 'data/",controls[["data_source"]][1],"' does not exist."),call.=FALSE)
+  if(!is.na(controls[["data_source"]][2]) & !file.exists(paste0("data/",controls[["data_source"]][2]))) stop(paste0("File 'data/",controls[["data_source"]][2],"' does not exist."),call.=FALSE)
+  
+  ### print model specification
+  if(controls[["model"]]=="HMM") {
+    writeLines(paste0("Model: ",controls[["states"]][1],"-state HMM, state-dependent t-distributions"),sep="")
+    if(!controls[["est_dfs"]]) writeLines(paste0(" (dfs fixed to ",controls[["fix_dfs"]][1],")"),sep="")
+    if(!is.null(controls[["seed"]])) writeLines(paste0(", seed set to ",controls[["seed"]]),sep="")
+    writeLines("")
   } 
   if(controls[["model"]]=="HHMM") {
-    writeLines(paste0("Model: ",controls[["states"]][1],"/",controls[["states"]][2],"-state HHMM with state-dependent t-distributions"),sep=" ")
-    if(controls[["est_dfs"]]) writeLines("") else writeLines(paste0("(dfs fixed to ",controls[["fix_dfs"]][1],"/",controls[["fix_df"]][2],")"))
+    writeLines(paste0("Model: ",controls[["states"]][1],"/",controls[["states"]][2],"-state HHMM, state-dependent t-distributions"),sep="")
+    if(!controls[["est_dfs"]]) writeLines(paste0(" (dfs fixed to ",controls[["fix_dfs"]][1],"/",controls[["fix_dfs"]][2],")"),sep="")
+    if(!is.null(controls[["seed"]])) writeLines(paste0(", seed set to ",controls[["seed"]]),sep="")
+    writeLines("")
   }
+  
+  ### note that 'controls' is checked
+  controls[["controls_checked"]] = TRUE
   
   check_saving(controls,controls)
   
@@ -62,20 +102,25 @@ check_controls = function(controls){
 
 check_data = function(controls,data){
   if(controls[["sim"]]){
-    writeLines(paste0("Data: simulated, T=",controls[["time_horizon"]][1]),sep="")
-    if(controls[["model"]]=="HMM") writeLines(paste0(", T*=",controls[["time_horizon"]][2]),sep="")
-    if(is.null(controls[["seed"]])) writeLines("") else writeLines(paste0(", seed set to ",controls[["seed"]]))
+    writeLines("Data: simulated,",sep=" ")
+    if(controls[["model"]]=="HMM")  writeLines(paste0("time series has ",controls[["time_horizon"]][1]," data points"))
+    if(controls[["model"]]=="HHMM") writeLines(paste0("time series has ",controls[["time_horizon"]][1],"/",controls[["time_horizon"]][2]," data points"))
   }
   if(!controls[["sim"]]){
-    writeLines("Data: empirical")
-    #TODO: time horizon, dates, data names
+    writeLines("Data:",sep=" ")
+    if(controls[["model"]]=="HMM") writeLines(paste0("closing prices of '",controls[["data_source"]][1],"' from ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]))
+    if(controls[["model"]]=="HHMM"){
+      if(controls[["HHMM_av"]]) writeLines(paste0("average- and closing prices of '",controls[["data_source"]][1],"' from ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]),sep="")
+      if(!controls[["HHMM_av"]]) writeLines(paste0("average- and closing prices of '",controls[["data_source"]][1],"'/'",controls[["data_source"]][2],"' from ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]),sep="")
+      writeLines(paste0(", chunk length of ",controls[["time_horizon"]][2]))
+    }
   }
   check_saving(data,controls)
 }
 
 check_estimation = function(time,mods,llks,data,controls){
   if(all(is.na(llks))) stop("None of the estimation runs ended successfully. Consider increasing 'runs' in 'controls'.",call.=FALSE)
-  writeLines(paste0("Done with estimation, it took ",time," minute(s). Successful runs: ",sum(!is.na(llks))," out of ",length(llks),"."))
+  writeLines(paste0("Estimation finished, it took ",time," minute(s). Successful runs: ",sum(!is.na(llks))," out of ",length(llks),"."))
 
   mod       = mods[[which.min(llks)]]
   thetaCon  = thetaUncon2thetaCon(mod$estimate,controls)
@@ -123,9 +168,11 @@ check_estimation = function(time,mods,llks,data,controls){
     writeLines("")
     print(mod[["gradient"]])
     writeLines("")
-    writeLines("Hessian:")
-    writeLines("")
-    print(mod[["hessian"]])
+    if(controls[["hessian"]]){
+      writeLines("Hessian:")
+      writeLines("")
+      print(mod[["hessian"]])
+    }
     sink()
   }
   
