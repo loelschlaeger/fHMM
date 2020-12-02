@@ -4,6 +4,9 @@ init = function(){
   if(!dir.exists("models")){
     dir.create("models")
   }
+  if(!dir.exists("data")){
+    dir.create("data")
+  }
   exe = alist(require("Rcpp"),
               require("Rcpp"),
               require("RcppArmadillo"),
@@ -19,7 +22,8 @@ init = function(){
     suppressPackageStartupMessages(eval(exe[[e]]))
   }
   cat("\f")
-  writeLines(paste0("Fit (H)HMMs to financial data. Results will be saved in '",getwd(),"/models'."))
+  writeLines("Fit (H)HMMs to financial data.")
+  writeLines(paste0("Data will be loaded from ",getwd(),"/data', results will be saved in '",getwd(),"/models'."))
 }
 
 ### initialize the estimation routine randomly
