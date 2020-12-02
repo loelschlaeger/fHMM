@@ -1,4 +1,5 @@
 maxLikelihood = function(data,controls){
+  if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
   observations = data[["observations"]]
   runs = controls[["runs"]]
   llks = rep(NA,runs) 
@@ -7,10 +8,10 @@ maxLikelihood = function(data,controls){
   if(controls[["model"]]=="HHMM") target = nLL_hhmm
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
   
-  writeLines("Started estimation.")
-  pb = progress_bar$new(format = "[:bar] :percent eta: :eta", total = runs, clear = FALSE, width = 60)
+  pb = progress_bar$new(format = "Estimation: [:bar] :percent comp., :eta rem.", total = runs, clear = FALSE, width = 60, show_after=0)
   start = Sys.time()
 	for (k in 1:runs){
+	  pb$tick(0)
 	  suppressWarnings({ tryCatch({ mods[[k]] = nlm(f = target,
     			                                        p = init_est(controls),
                             			                observations = observations,
