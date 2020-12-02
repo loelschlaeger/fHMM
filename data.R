@@ -1,4 +1,5 @@
 getData = function(controls){
+  if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
   if(controls[["sim"]]) data = simulateData(controls)
   if(!controls[["sim"]]) data = readData(controls)
   check_data(controls,data)
@@ -91,8 +92,35 @@ readData = function(controls){
     }
   }
   
+  ### truncate 'data' based on 'controls[["trunc_data"]]'
+  truncateData = function(controls,data){
+    ### find exact or nearest position of 'date' in 'data' 
+    findDate = function(date,data){
+      incr = 0
+      while(TRUE){
+        candidate = which(data[["Date"]]==as.Date(date)+incr)
+        if(length(candidate)==1) return(candidate)
+        candidate = which(data[["Date"]]==as.Date(date)-incr)
+        if(length(candidate)==1) return(candidate)
+        incr = incr + 1
+      }
+    }
+    t_max = controls[["truncate_data"]][2]
+    if(!is.na(t_max)){
+      data = data[seq_len(findDate(t_max,data)),]
+    }
+    t_min = controls[["truncate_data"]][1]
+    if(!is.na(t_min)){
+      temp = seq_len(findDate(t_min,data)-1)
+      if(length(temp)>0) data = data[-temp,]
+    }
+    return(data)
+  }
+  
   ### HMM data
   if(controls[["model"]]=="HMM"){
+    data[[1]] = truncateData(controls,data[[1]])
+    
     out = list(
       "observations" = data[[1]][["LogReturns"]],
       "closes" = data[[1]][["Close"]],
@@ -102,34 +130,9 @@ readData = function(controls){
   
   ### HHMM data
   if(controls[["model"]]=="HHMM"){
-  
-    ### truncate 'data' based on 'controls[["trunc_data"]]'
-    truncateData = function(controls,data){
-      ### find exact or nearest position of 'date' in 'data' 
-      findDate = function(date,data){
-        incr = 0
-        while(TRUE){
-          candidate = which(data[["Date"]]==as.Date(date)+incr)
-          if(length(candidate)==1) return(candidate)
-          candidate = which(data[["Date"]]==as.Date(date)-incr)
-          if(length(candidate)==1) return(candidate)
-          incr = incr + 1
-        }
-      }
-      t_max = controls[["truncate_data"]][2]
-      if(!is.na(t_max)){
-        data = data[seq_len(findDate(t_max,data)),]
-      }
-      t_min = controls[["truncate_data"]][1]
-      if(!is.na(t_min)){
-        temp = seq_len(findDate(t_min,data)-1)
-        if(length(temp)>0) data = data[-temp,]
-      }
-      return(data)
-    }
     
     ### same data on fine and coarse scale
-    if(is.na(dataSource)[1] & !is.na(dataSource)[2]){
+    if(controls[["HHMM_av"]]){
       data[[2]] = truncateData(controls,data[[2]])
       
       T_star = controls[["time_horizon"]][2]
@@ -149,7 +152,7 @@ readData = function(controls){
     }
       
     ### different data on fine and coarse scale
-    if(!is.na(dataSource)[1] & !is.na(dataSource)[2]){
+    if(!controls[["HHMM_av"]]){
       ### remove data points that do not occur in both files
       data[[1]] = data[[1]][data[[1]][["Date"]] %in% intersect(data[[1]][["Date"]],data[[2]][["Date"]]),]
       data[[2]] = data[[2]][data[[2]][["Date"]] %in% intersect(data[[2]][["Date"]],data[[1]][["Date"]]),]
