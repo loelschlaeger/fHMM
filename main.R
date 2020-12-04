@@ -4,15 +4,15 @@ source("init.R"); init()
 
 ### 2. Set and check controls
 controls = list(
-  model_name    = "test",        
-  data_source   = c("sandp500.csv","dax.csv"),
-  #truncate_data = c("2001-01-03","2020-01-30"), 
+  model_name    = "HHMM_DAX_DB_32",        
+  data_source   = c("dax.csv","deutschebank.csv"),
+  truncate_data = c("2000-01-01","2021-01-01"), 
   states        = c(3,2),
-  time_horizon  = c(50,5),
+  time_horizon  = c(50,30),
   fix_dfs       = c(NA,NA),
-  runs          = 2,
+  runs          = 200,
   #seed          = 1,
-  overwrite     = TRUE
+  overwrite     = FALSE
 )
 controls = check_controls(controls)
 
@@ -25,8 +25,8 @@ decoding = applyViterbi(data,fit,controls)
 
 ### 5. Visualize results (currently only "states=c(3,2)" possible)
 labels = list(
-  dates = c("2008-9-15"),
-  names = c("bankruptcy of Lehman Brothers")
+  dates = c("2008-09-15","2020-01-27"),
+  names = c("bankruptcy of Lehman Brothers","first COVID-19 case in Germany")
 )
 visual(data,fit,decoding,controls,labels)
 
