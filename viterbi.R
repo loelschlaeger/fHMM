@@ -36,8 +36,6 @@ applyViterbi = function(data,fit,controls){
   observations = data[["observations"]]
   thetaList = fit[["thetaList"]]
   states = controls[["states"]]
-  T = controls[["time_horizon"]][1]
-  T_star = controls[["time_horizon"]][2]
   model = controls[["model"]]
   
   if(model=="HMM"){
@@ -45,6 +43,8 @@ applyViterbi = function(data,fit,controls){
   }
   
   if(model=="HHMM"){
+    T = dim(observations)[1]
+    T_star = dim(observations)[2]-1
     decoding = matrix(0,ncol=T_star+1,nrow=T)
     decoding[,1] = viterbi(observations[,1],states[1],thetaList[["Gamma"]],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
     for(t in seq_len(T)){
