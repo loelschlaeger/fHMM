@@ -138,6 +138,7 @@ check_estimation = function(time,mods,llks,data,controls){
              "all_LL"    = -llks,
              "thetaList" = thetaList,
              "mod"       = mod,
+             "all_mods"  = mods,
              "AIC"       = compAIC(controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]]),
              "BIC"       = compBIC(prod(dim(t(data$observations))),controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]])
             )
@@ -146,6 +147,7 @@ check_estimation = function(time,mods,llks,data,controls){
   if(file.exists(file) & !controls[["overwrite"]]){ 
     warning(paste0("Cannot save 'estimates.txt' because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
   } else {
+    options(max.print=1000000)
     sink(file=file)
     fc = c("LL","AIC","BIC","exit code","iterations")
     sc = c(fit[["LL"]],fit[["AIC"]],fit[["BIC"]],mod[["code"]],mod[["iterations"]])
@@ -174,6 +176,7 @@ check_estimation = function(time,mods,llks,data,controls){
       print(mod[["hessian"]])
     }
     sink()
+    options(max.print=1000)
   }
   
   check_saving(fit,controls)
