@@ -1,62 +1,70 @@
 ### creates graphics of model results
 
-visual = function(data,fit,decoding,labels=NULL,controls){
+visual = function(data,fit,decoding,controls,labels=NULL){
+  if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
+  if(controls[["sim"]] & !is.null(labels)) warning("Entries of 'labels' will be ignored since 'data' was simulated.",call.=FALSE)
   
-  # unzip data, estimates and states
-  T = controls$T
-  T_star = controls$T_star
-  cs_obs = data$cs_obs
-  fs_obs = data$fs_obs
-  close = data$close
-  date = data$date
-  pars = fit$thetaFull
-  cs_s_s = states$cs_states
-  cs_s = rep(states$cs_states,each=T_star)
-  fs_s = states$fs_states
+  states = controls[["states"]]
+  attach(fit[["thetaList"]])
+  on.exit(detach(fit[["thetaList"]]))
   
-  # define colours
-  var.col = function(col,n){
-    colorRampPalette(c("white",col,"black"))(n+2)[2:(n+1)]
-  }
-  base.col = function(n){
-    colorRampPalette(c("darkgreen","green","yellow","orange","red","darkred"),space="rgb")(n)
-  }
+  ### define colours
+  var.col = function(col,n) colorRampPalette(c("white",col,"black"))(n+2)[2:(n+1)]
+  base.col = function(n) colorRampPalette(c("darkgreen","green","yellow","orange","red","darkred"))(n)
+  col.alpha = function(col,alpha=0.5) adjustcolor(col,alpha)
   colors = matrix(0,nrow=states[1],ncol=states[2]+1)
+  colors[,1] = col.alpha(base.col(states[1]))
+  for(s in seq_len(states[1])) colors[s,-1] = col.alpha(var.col(colors[s,1],states[2]))
   
-  alpha = 160
-  c1.1 = rgb(0,200,0,alpha,maxColorValue = 255) #hell grün
-  c1.2 = rgb(0,110,0,alpha,maxColorValue = 255) #dunkel grün
-  c2.1 = rgb(255,240,00,alpha,maxColorValue = 255) #hell gelb
-  c2.2 = rgb(255,180,00,alpha,maxColorValue = 255) #dunkel gelb
-  c3.1 = rgb(255,0,0,alpha,maxColorValue = 255)	#hell rot
-  c3.2 = rgb(140,0,0,alpha,maxColorValue = 255)	#dunkel rot
-  colours = matrix(c(c1.1,c1.2,c2.1,c2.2,c3.1,c3.2),nrow=3,ncol=2,byrow=TRUE)
-  ordering = order(pars$mus,decreasing=TRUE)
-  
-  # state dependent distributions
-  pdf(paste0("models/",controls$modelName,"_state_dep_distr.pdf"), width=9, height=7)
-  par(mfrow=c(1,3),las=1,mar=c(4,4,4,1),cex.lab=1.5,cex.main=1.5,cex.axis=1.5)
-  x = seq(-0.1,0.1,by=0.0001)
-  xmin = -0.1
-  xmax = 0.1
-  ymin = 0
-  ymax = 100
-  lwd = 3
-  for(st in ordering){
-    sdd = function(n,x) {(1/pars$sigmas_star[[st]][n])*dt((x-pars$mus_star[[st]][n])/pars$sigmas_star[[st]][n],pars$dfs_star[[st]][n])}
-    hist(fs_obs[cs_s==st],prob=TRUE,breaks=40,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",
-         main=paste("coarse-scale state",which(ordering==st)),xlab="",ylab="",xaxt="n",yaxt="n")
-    axis(1,seq(xmin,xmax,by=0.1))
-    axis(2,seq(0,80,by=20))
-    title(ylab="density",line=3)
-    title(xlab="log-return")
-    legend("topleft",legend=c("fine-scale state 1","fine-scale state 2"),col=colours[which(ordering==st),],lwd=lwd, pt.cex = 1, cex = 1.5)
-    lines(x,sdd(which.max(pars$mus_star[[st]]),x),col=colours[which(ordering==st),1],lwd=lwd)
-    lines(x,sdd(which.min(pars$mus_star[[st]]),x),col=colours[which(ordering==st),2],lwd=lwd)
+  ### state dependent distributions
+  if(controls[["model"]]=="HMM"){
+    pdf(paste0("models/",controls[["model_name"]],"/state_dep_distr.pdf"), width=9, height=7)
+    sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
+    lwd = 3
+    xmin = -0.1; xmax = 0.1; x = seq(xmin,xmax,0.0001)
+    ymin = 0; ymax = ceiling(max(sdd(1,x)))
+    hist(data$observations,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
+    axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=20))
+    title(main="State-dependent distributions",xlab="log-return",ylab="density")
+    legend("topleft",legend=paste("state",seq_len(states[1])),col=colors[,1],lwd=lwd,pt.cex=1,cex=1.5)
+    for(s in seq_len(states[1])){
+      lines(x,sdd(s,x),col=colors[s,1],lwd=lwd)
+    }
+    dev.off()
   }
-  dev.off()
   
-  ## decoded time series
+  if(controls[["model"]]=="HHMM"){
+    pdf(paste0("models/",controls[["model_name"]],"/state_dep_distr.pdf"), width=9, height=7)
+    sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
+    lwd = 3
+    xmin = -0.1; xmax = 0.1; x = seq(xmin,xmax,0.0001)
+    ymin = 0; ymax = ceiling(max(sdd(1,x)))
+    hist(data$observations[,1],prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
+    axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=40))
+    title(main="State-dependent distributions",xlab="log-return",ylab="density")
+    legend("topleft",legend=paste("coarse-scale state",seq_len(states[1])),col=colors[,1],lwd=lwd,pt.cex=1,cex=1.5)
+    for(s in seq_len(states[1])){
+      lines(x,sdd(s,x),col=colors[s,1],lwd=lwd)
+    }
+    
+    sdd = function(cs,fs,x) {(1/sigmas_star[[cs]][fs])*dt((x-mus_star[[cs]][fs])/sigmas_star[[cs]][fs],dfs_star[[cs]][fs])}
+    lwd = 3
+    xmin = -0.1; xmax = 0.1; x = seq(xmin,xmax,0.0001)
+    ymin = 0; ymax = ceiling(max(sdd(1,1,x)))
+    for(cs in seq_len(states[1])){
+      hist(as.vector(data$observations[,-1]),prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
+      axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=20))
+      title(main=paste("State-dependent distributions conditional on coarse-scale state",cs),xlab="log-return",ylab="density")
+      legend("topleft",legend=paste("fine-scale state",seq_len(states[2])),col=colors[cs,-1],lwd=lwd,pt.cex=1,cex=1.5)
+      for(fs in seq_len(states[2])){
+        lines(x,sdd(cs,fs,x),col=colors[cs,fs+1],lwd=lwd)
+      }
+    }
+    dev.off()
+  }
+  
+  if(FALSE){
+  ### decoded time series
   pdf(paste0("models/",controls$modelName,"_decoded_ts.pdf"), width=19, height=9)
   par(mfrow=c(1,1),las=1,mar=c(4,6,0.5,6))
   xmin = as.Date(controls$t_min)
@@ -105,7 +113,7 @@ visual = function(data,fit,decoding,labels=NULL,controls){
   }
   dev.off()
   
-  ## pseudo-residuals
+  ### pseudo-residuals
   pseudos_cs = numeric(T)
   pseudos_fs = numeric(T*T_star)
   for(i in 1:T){
@@ -115,23 +123,24 @@ visual = function(data,fit,decoding,labels=NULL,controls){
     pseudos_fs[i] = qnorm(pt((fs_obs[i]-pars$mus_star[[cs_s[i]]][fs_s[i]])/pars$sigmas_star[[cs_s[i]]][fs_s[i]],pars$dfs_star[[cs_s[i]]][fs_s[i]]))
   }
   pdf(paste0("models/",controls$modelName,"_pseudos.pdf"), width=9, height=7)
-  par(mfrow = c(2,2), mar=c(5, 5, 3, 3) + 0.1, las=1,cex.lab=1.5, cex.main=1.5,cex.axis=1.5)
-  #plot(pseudos_cs,ylim=c(-3,3),main="Index plot",ylab="PR CS")
-  #hist(pseudos_cs,freq=FALSE,breaks=15,col="lightgrey",ylim=c(0,0.5),xlim=c(-3,3),main="Histogram w/ N(0;1)-density",xlab="PR CS")
-  #x = seq(-4,4,0.01)
-  #curve(dnorm(x),add=TRUE,lwd=2)
-  qqnorm(pseudos_cs[is.finite(pseudos_cs)],ylim=c(-3,3),xlim=c(-3,3),main="normal Q-Q plot", ylab="PR CS quantiles", xlab="N(0;1) quantiles")
-  abline(a=0,b=1)
-  acf(pseudos_cs,lag.max = 10,main="", ylab="ACF PR CS", xlab="lag")
-  title("autocorrelation plot")
-  
-  #plot(pseudos_fs,ylim=c(-4,4),main="",ylab="PR FS")
-  #hist(pseudos_fs,freq=FALSE,breaks=20,col="lightgrey",ylim=c(0,0.5),xlim=c(-4,4),main="",xlab="PR FS")
-  #x = seq(-4,4,0.01)
-  #curve(dnorm(x),add=TRUE,lwd=2)
-  qqnorm(pseudos_fs[is.finite(pseudos_fs)],ylim=c(-4,4),xlim=c(-4,4),main="", ylab="PR FS quantiles", xlab="N(0;1) quantiles")
-  abline(a=0,b=1)
-  acf(pseudos_fs[is.finite(pseudos_fs)],lag.max = 30,main="", ylab="ACF PR CS", xlab="lag")
+    par(mfrow = c(2,2), mar=c(5, 5, 3, 3) + 0.1, las=1,cex.lab=1.5, cex.main=1.5,cex.axis=1.5)
+    #plot(pseudos_cs,ylim=c(-3,3),main="Index plot",ylab="PR CS")
+    #hist(pseudos_cs,freq=FALSE,breaks=15,col="lightgrey",ylim=c(0,0.5),xlim=c(-3,3),main="Histogram w/ N(0;1)-density",xlab="PR CS")
+    #x = seq(-4,4,0.01)
+    #curve(dnorm(x),add=TRUE,lwd=2)
+    qqnorm(pseudos_cs[is.finite(pseudos_cs)],ylim=c(-3,3),xlim=c(-3,3),main="normal Q-Q plot", ylab="PR CS quantiles", xlab="N(0;1) quantiles")
+    abline(a=0,b=1)
+    acf(pseudos_cs,lag.max = 10,main="", ylab="ACF PR CS", xlab="lag")
+    title("autocorrelation plot")
+    
+    #plot(pseudos_fs,ylim=c(-4,4),main="",ylab="PR FS")
+    #hist(pseudos_fs,freq=FALSE,breaks=20,col="lightgrey",ylim=c(0,0.5),xlim=c(-4,4),main="",xlab="PR FS")
+    #x = seq(-4,4,0.01)
+    #curve(dnorm(x),add=TRUE,lwd=2)
+    qqnorm(pseudos_fs[is.finite(pseudos_fs)],ylim=c(-4,4),xlim=c(-4,4),main="", ylab="PR FS quantiles", xlab="N(0;1) quantiles")
+    abline(a=0,b=1)
+    acf(pseudos_fs[is.finite(pseudos_fs)],lag.max = 30,main="", ylab="ACF PR CS", xlab="lag")
   dev.off()
+  }
   
 }
