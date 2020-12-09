@@ -30,7 +30,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
     for(s in seq_len(states[1])){
       lines(x,sdd(s,x),col=colors[s,1],lwd=lwd)
     }
-    dev.off()
+    invisible(dev.off())
   }
   
   if(controls[["model"]]=="HHMM"){
@@ -60,7 +60,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
         lines(x,sdd(cs,fs,x),col=colors[cs,fs+1],lwd=lwd)
       }
     }
-    dev.off()
+    invisible(dev.off())
   }
   
   if(FALSE){
@@ -111,7 +111,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
     points(date[cs_s==st&fs_s==which.max(pars$mus_star[[st]])],fs_obs[cs_s==st&fs_s==which.max(pars$mus_star[[st]])],col=colours[which(ordering==st),1],pch=20)
     points(date[cs_s==st&fs_s==which.min(pars$mus_star[[st]])],fs_obs[cs_s==st&fs_s==which.min(pars$mus_star[[st]])],col=colours[which(ordering==st),2],pch=20)
   }
-  dev.off()
+  invisible(dev.off())
   }
   
   ### pseudo-residuals
@@ -123,10 +123,10 @@ visual = function(data,fit,decoding,controls,labels=NULL){
     }
     pdf(paste0("models/",controls[["model_name"]],"/pseudos.pdf"), width=9, height=7)
       plot(pseudos,ylim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="Index plot",ylab="PR")
-      hist(pseudos,freq=FALSE,breaks=15,col="lightgrey",xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="Histogram w/ N(0;1)-density",xlab="PR"); x=seq(floor(min(pseudos)),ceiling(max(pseudos)),0.01); curve(dnorm(x),add=TRUE,lwd=2)
+      hist(pseudos,freq=FALSE,breaks=15,col="lightgrey",xlim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="Histogram w/ N(0;1)-density",xlab="PR"); x=seq(floor(min(pseudos)),ceiling(max(pseudos)),0.01); curve(dnorm(x),add=TRUE,lwd=2)
       qqnorm(pseudos[is.finite(pseudos)],ylim=c(floor(min(pseudos)),ceiling(max(pseudos))),xlim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="normal Q-Q plot", ylab="PR quantiles", xlab="N(0;1) quantiles"); abline(a=0,b=1)
       acf(pseudos,lag.max = 10,main="", ylab="ACF PR", xlab="lag"); title("autocorrelation plot")
-    dev.off()
+    invisible(dev.off())
   }
   if(controls[["model"]]=="HHMM"){
     T = dim(data$observations)[1]
@@ -150,7 +150,8 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       qqnorm(pseudos_fs[is.finite(pseudos_fs)],ylim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="normal Q-Q plot", ylab="PR FS quantiles", xlab="N(0;1) quantiles"); abline(a=0,b=1)
       acf(pseudos_cs[is.finite(pseudos_cs)],lag.max = 10,main="", ylab="ACF PR CS", xlab="lag"); title("autocorrelation plot")
       acf(pseudos_fs[is.finite(pseudos_fs)],lag.max = 30,main="", ylab="ACF PR CS", xlab="lag"); title("autocorrelation plot")
-    dev.off()
+    invisible(dev.off())
   }
   
+  writeLines("Done with visualization.")
 }
