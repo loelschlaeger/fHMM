@@ -18,7 +18,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   
   ### state dependent distributions
   if(controls[["model"]]=="HMM"){
-    pdf(paste0("models/",controls[["model_name"]],"/state_dep_distr.pdf"), width=9, height=7)
+    pdf(paste0("models/",controls[["model_name"]],"/sdd.pdf"), width=9, height=7)
     sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
     lwd = 3
     xmin = -0.1; xmax = 0.1; x = seq(xmin,xmax,0.0001)
@@ -34,7 +34,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   }
   
   if(controls[["model"]]=="HHMM"){
-    pdf(paste0("models/",controls[["model_name"]],"/state_dep_distr.pdf"), width=9, height=7)
+    pdf(paste0("models/",controls[["model_name"]],"/sdd.pdf"), width=9, height=7)
     sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
     lwd = 3
     xmin = -0.1; xmax = 0.1; x = seq(xmin,xmax,0.0001)
@@ -112,35 +112,45 @@ visual = function(data,fit,decoding,controls,labels=NULL){
     points(date[cs_s==st&fs_s==which.min(pars$mus_star[[st]])],fs_obs[cs_s==st&fs_s==which.min(pars$mus_star[[st]])],col=colours[which(ordering==st),2],pch=20)
   }
   dev.off()
+  }
   
   ### pseudo-residuals
-  pseudos_cs = numeric(T)
-  pseudos_fs = numeric(T*T_star)
-  for(i in 1:T){
-    pseudos_cs[i] = qnorm(pt((cs_obs[i]-pars$mus[cs_s_s[i]])/pars$sigmas[cs_s_s[i]],pars$dfs[cs_s_s[i]]))
+  if(controls[["model"]]=="HMM"){
+    T = length(data$observations)
+    pseudos = numeric(T)
+    for(t in 1:T){
+      pseudos[t] = qnorm(pt((data$observations[t]-mus[decoding[t]])/sigmas[decoding[t]],dfs[decoding[t]]))
+    }
+    pdf(paste0("models/",controls[["model_name"]],"/pseudos.pdf"), width=9, height=7)
+      plot(pseudos,ylim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="Index plot",ylab="PR")
+      hist(pseudos,freq=FALSE,breaks=15,col="lightgrey",xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="Histogram w/ N(0;1)-density",xlab="PR"); x=seq(floor(min(pseudos)),ceiling(max(pseudos)),0.01); curve(dnorm(x),add=TRUE,lwd=2)
+      qqnorm(pseudos[is.finite(pseudos)],ylim=c(floor(min(pseudos)),ceiling(max(pseudos))),xlim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="normal Q-Q plot", ylab="PR quantiles", xlab="N(0;1) quantiles"); abline(a=0,b=1)
+      acf(pseudos,lag.max = 10,main="", ylab="ACF PR", xlab="lag"); title("autocorrelation plot")
+    dev.off()
   }
-  for(i in 1:(T*T_star)){
-    pseudos_fs[i] = qnorm(pt((fs_obs[i]-pars$mus_star[[cs_s[i]]][fs_s[i]])/pars$sigmas_star[[cs_s[i]]][fs_s[i]],pars$dfs_star[[cs_s[i]]][fs_s[i]]))
-  }
-  pdf(paste0("models/",controls$modelName,"_pseudos.pdf"), width=9, height=7)
-    par(mfrow = c(2,2), mar=c(5, 5, 3, 3) + 0.1, las=1,cex.lab=1.5, cex.main=1.5,cex.axis=1.5)
-    #plot(pseudos_cs,ylim=c(-3,3),main="Index plot",ylab="PR CS")
-    #hist(pseudos_cs,freq=FALSE,breaks=15,col="lightgrey",ylim=c(0,0.5),xlim=c(-3,3),main="Histogram w/ N(0;1)-density",xlab="PR CS")
-    #x = seq(-4,4,0.01)
-    #curve(dnorm(x),add=TRUE,lwd=2)
-    qqnorm(pseudos_cs[is.finite(pseudos_cs)],ylim=c(-3,3),xlim=c(-3,3),main="normal Q-Q plot", ylab="PR CS quantiles", xlab="N(0;1) quantiles")
-    abline(a=0,b=1)
-    acf(pseudos_cs,lag.max = 10,main="", ylab="ACF PR CS", xlab="lag")
-    title("autocorrelation plot")
-    
-    #plot(pseudos_fs,ylim=c(-4,4),main="",ylab="PR FS")
-    #hist(pseudos_fs,freq=FALSE,breaks=20,col="lightgrey",ylim=c(0,0.5),xlim=c(-4,4),main="",xlab="PR FS")
-    #x = seq(-4,4,0.01)
-    #curve(dnorm(x),add=TRUE,lwd=2)
-    qqnorm(pseudos_fs[is.finite(pseudos_fs)],ylim=c(-4,4),xlim=c(-4,4),main="", ylab="PR FS quantiles", xlab="N(0;1) quantiles")
-    abline(a=0,b=1)
-    acf(pseudos_fs[is.finite(pseudos_fs)],lag.max = 30,main="", ylab="ACF PR CS", xlab="lag")
-  dev.off()
+  if(controls[["model"]]=="HHMM"){
+    T = dim(data$observations)[1]
+    T_star = dim(data$observations)[2]-1
+    pseudos_cs = numeric(T)
+    pseudos_fs = numeric(T*T_star)
+    for(t in 1:T){
+      pseudos_cs[t] = qnorm(pt((data$observations[t,1]-mus[decoding[t,1]])/sigmas[decoding[t,1]],dfs[decoding[t,1]]))
+    }
+    decoding_cs = rep(decoding[,1],T_star)
+    decoding_fs = as.vector(t(decoding[,-1]))
+    for(t in 1:(T*T_star)){
+      pseudos_fs[t] = qnorm(pt((as.vector(t(data$observations[,-1]))[t]-mus_star[[decoding_cs[t]]][decoding_fs[t]])/sigmas_star[[decoding_cs[t]]][decoding_fs[t]],dfs_star[[decoding_cs[t]]][decoding_fs[t]]))
+    }
+    pdf(paste0("models/",controls[["model_name"]],"/pseudos.pdf"), width=9, height=7)
+      plot(pseudos_cs,ylim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="Index plot",ylab="PR CS")
+      plot(pseudos_fs,ylim=c(floor(min(pseudos_fs)),ceiling(max(pseudos_fs))),main="Index plot",ylab="PR FS")
+      hist(pseudos_cs,freq=FALSE,breaks=15,col="lightgrey",xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="Histogram w/ N(0;1)-density",xlab="PR CS"); x = seq(floor(min(pseudos_cs)),ceiling(max(pseudos_cs)),0.01); curve(dnorm(x),add=TRUE,lwd=2)
+      hist(pseudos_fs,freq=FALSE,breaks=20,col="lightgrey",xlim=c(floor(min(pseudos_fs)),ceiling(max(pseudos_fs))),main="Histogram w/ N(0;1)-density",xlab="PR FS"); x = seq(floor(min(pseudos_fs)),ceiling(max(pseudos_fs)),0.01); curve(dnorm(x),add=TRUE,lwd=2)
+      qqnorm(pseudos_cs[is.finite(pseudos_cs)],ylim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="normal Q-Q plot", ylab="PR CS quantiles", xlab="N(0;1) quantiles"); abline(a=0,b=1)
+      qqnorm(pseudos_fs[is.finite(pseudos_fs)],ylim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="normal Q-Q plot", ylab="PR FS quantiles", xlab="N(0;1) quantiles"); abline(a=0,b=1)
+      acf(pseudos_cs[is.finite(pseudos_cs)],lag.max = 10,main="", ylab="ACF PR CS", xlab="lag"); title("autocorrelation plot")
+      acf(pseudos_fs[is.finite(pseudos_fs)],lag.max = 30,main="", ylab="ACF PR CS", xlab="lag"); title("autocorrelation plot")
+    dev.off()
   }
   
 }
