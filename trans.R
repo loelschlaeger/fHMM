@@ -253,13 +253,21 @@ statesDecreasing = function(thetaList,controls){
   M = controls[["states"]][1] #coarse-scale states
   N = controls[["states"]][2] #fine-scale states
   
-  permut = diag(M)[order(thetaList[["mus"]],decreasing=TRUE),]
+  ### order HMM or cs HHMM parameters
+  mu_order = order(thetaList[["mus"]],decreasing=TRUE)
+  permut = diag(M)[mu_order,]
   thetaList[["Gamma"]] = permut %*% thetaList[["Gamma"]] %*% t(permut)
   thetaList[["mus"]] = as.vector(permut %*% thetaList[["mus"]])
   thetaList[["sigmas"]] = as.vector(permut %*% thetaList[["sigmas"]])
   thetaList[["dfs"]] = as.vector(permut %*% thetaList[["dfs"]])
   
   if(controls$model=="HHMM"){
+    
+    ### order fs HHMM parameters
+    thetaList[["Gammas_star"]] = thetaList[["Gammas_star"]][mu_order]
+    thetaList[["mus_star"]] = thetaList[["mus_star"]][mu_order]
+    thetaList[["sigmas_star"]] = thetaList[["sigmas_star"]][mu_order]
+    thetaList[["dfs_star"]] = thetaList[["dfs_star"]][mu_order]
     for(m in seq_len(M)){
       permut = diag(N)[order(thetaList[["mus_star"]][[m]],decreasing=TRUE),]
       thetaList[["Gammas_star"]][[m]] = permut %*% thetaList[["Gammas_star"]][[m]] %*% t(permut)
