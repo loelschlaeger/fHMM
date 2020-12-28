@@ -1,7 +1,13 @@
 getData = function(controls){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
-  if(controls[["sim"]]) data = simulateData(controls)
-  if(!controls[["sim"]]) data = readData(controls)
+  if(controls[["sim"]]){
+    data = simulateData(controls)
+    writeLines("Simulation successful.")
+  }
+  if(!controls[["sim"]]){
+    data = readData(controls)
+    writeLines("Processing successful.")
+  }
   check_data(controls,data)
   return(data)
 }
@@ -11,8 +17,10 @@ simulateData = function(controls){
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
   M = controls[["states"]][1] #coarse-scale states
   N = controls[["states"]][2] #fine-scale states
-  df_cs = controls[["fix_dfs"]][1]
-  df_fs = controls[["fix_dfs"]][2]
+  if(!controls[["est_dfs"]]){
+    df_cs = controls[["fix_dfs"]][1]
+    df_fs = controls[["fix_dfs"]][2]
+  }
   T = controls[["time_horizon"]][1]
   T_star = controls[["time_horizon"]][2]
   
@@ -47,7 +55,7 @@ simulateData = function(controls){
     states = matrix(0,T,T_star+1) 
     observations = matrix(0,T,T_star+1)
     states[,1] = simulateStates(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
-    observations[,1] = simulateObservations(states,thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]],T)
+    observations[,1] = simulateObservations(states[,1],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]],T)
     for(t in 1:T){
       S_t = states[t,1]
       states[t,-1] = simulateStates(Gamma2delta(thetaList[["Gammas_star"]][[S_t]]),thetaList[["Gammas_star"]][[S_t]],T_star)
