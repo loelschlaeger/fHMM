@@ -5,7 +5,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   ### pre-checks
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
   if(controls[["sim"]] & !is.null(labels)){
-    warning("Entries of 'labels' will be ignored since 'data' was simulated.",call.=FALSE)
+    warning("Object 'labels' is ignored because 'data' is simulated.",call.=FALSE)
   } else if(!controls[["sim"]] & !is.null(labels) & length(labels[["dates"]])!=length(labels[["names"]])){
     stop("'dates' and 'names' in 'labels' must be of the same length.")
   }
@@ -47,14 +47,14 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       pdf(filename, width=9, height=7)
       sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
       lwd = 3
-      xmin = -0.1; xmax = 0.1; x = seq(xmin,xmax,0.0001)
-      ymin = 0; ymax = ceiling(max(sdd(1,x)))
+      xmin = round(min(data$observations),1); xmax = round(max(data$observations),1); x = seq(xmin,xmax,0.001)
+      ymin = 0; ymax = ceiling(max(sapply(x,sdd,s=seq_len(states[1]))))
       hist(data$observations,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
-      axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=20))
-      title(main="State-dependent distributions",xlab="log-return",ylab="density")
+      axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=20),las=1)
+      title(main="State-dependent distributions",xlab="Log-return",ylab="Density")
       do.call(legend,c(list(legend=paste("state",seq_len(states[1])),col=colors[,1],lwd=3),legend_layout))
       for(s in seq_len(states[1])){
-        lines(x,sdd(s,x),col=colors[s,1],lwd=lwd)
+        lines(x[sdd(s,x)>0.001],sdd(s,x)[sdd(s,x)>0.001],col=colors[s,1],lwd=lwd)
       }
       invisible(dev.off())
     }
@@ -62,26 +62,33 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       pdf(filename, width=9, height=7)
       sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
       lwd = 3
-      xmin = -0.1; xmax = 0.1; x = seq(xmin,xmax,0.0001)
-      ymin = 0; ymax = ceiling(max(sdd(1,x)))
+      xmin = min(-0.1,round(min(cs_observations),1)); xmax = max(0.1,round(max(cs_observations),1)); x = seq(xmin,xmax,0.001)
+      ymin = 0; ymax = ceiling(max(sapply(x,sdd,s=seq_len(states[1]))))
       hist(cs_observations,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
-      axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=40))
-      title(main="State-dependent distributions",xlab="log-return",ylab="density")
+      axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=40),las=1)
+      title(main="State-dependent distributions",xlab="Log-return",ylab="Density")
       do.call(legend,c(list(legend=paste("coarse-scale state",seq_len(states[1])),col=colors[,1],lwd=3),legend_layout))
       for(s in seq_len(states[1])){
-        lines(x,sdd(s,x),col=colors[s,1],lwd=lwd)
+        lines(x[sdd(s,x)>0.001],sdd(s,x)[sdd(s,x)>0.001],col=colors[s,1],lwd=lwd)
       }
-      sdd = function(cs,fs,x) 1/sigmas_star[[cs]][fs]*dt((x-mus_star[[cs]][fs])/sigmas_star[[cs]][fs],dfs_star[[cs]][fs])
+      sdd = function(cs,fs,x) {1/sigmas_star[[cs]][fs]*dt((x-mus_star[[cs]][fs])/sigmas_star[[cs]][fs],dfs_star[[cs]][fs])}
       lwd = 3
-      xmin = -0.1; xmax = 0.1; x = seq(xmin,xmax,0.0001)
-      ymin = 0; ymax = ceiling(max(sdd(1,1,x)))
+      xmin = round(min(fs_observations),1); xmax = round(max(fs_observations),1); x = seq(xmin,xmax,0.001)
+      ymin = 0 
+      ymax = 0
+      for(cs in seq_len(states[1])){
+        for(fs in seq_len(states[2])){
+          temp = max(sdd(cs,fs,x))
+          if(temp>ymax) ymax = ceiling(temp)
+        }
+      }
       for(cs in seq_len(states[1])){
         hist(fs_observations,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
-        axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=20))
-        title(main=paste("State-dependent distributions conditional on coarse-scale state",cs),xlab="log-return",ylab="density")
+        axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=20),las=1)
+        title(main=paste("State-dependent distributions conditional on coarse-scale state",cs),xlab="Log-return",ylab="Density")
         do.call(legend,c(list(legend=paste("fine-scale state",seq_len(states[2])),col=colors[cs,-1],lwd=3),legend_layout))
         for(fs in seq_len(states[2])){
-          lines(x,sdd(cs,fs,x),col=colors[cs,fs+1],lwd=lwd)
+          lines(x[sdd(cs,fs,x)>0.001],sdd(cs,fs,x)[sdd(cs,fs,x)>0.001],col=colors[cs,fs+1],lwd=lwd)
         }
       }
       invisible(dev.off())
@@ -93,74 +100,73 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   if(controls[["overwrite"]]==FALSE & file.exists(filename)){
     warning(paste0("Cannot create a plot of the decoded time series because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
   } else {
-    pdf(filename, width=19, height=9)
-    par(mfrow=c(1,1),las=1,mar=c(4,6,0.5,6))
-    if(controls[["sim"]]){
-      xmin = 1
-      xmax = ifelse(controls[["model"]]=="HMM",length(data$observations),dim(data$observations)[1]*(dim(data$observations)[2]-1))
-    }
     if(!controls[["sim"]]){
+      pdf(filename, width=19, height=9)
+      par(mfrow=c(1,1),las=1,mar=c(4,6,0.5,6))
       xmin = as.Date(head(data$dates,n=1))
       xmax = as.Date(tail(data$dates,n=1)) 
-    }
-    ymax = max(data$closes); ymin = -ymax
-    plot(data$dates,data$closes,type="l",xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="grey",xlab="",ylab="",xaxt="n",yaxt="n",cex.lab=2, cex.main=2)
-    par(las=3)
-    mtext("closing price", side=4, line=4, at=median(data$closes), cex=1.5)
-    par(las=1)
-    mtext("year",side=1,line=3,cex=1.5)
-    markdates = seq(xmin,xmax,by="year"); markdates = markdates[1:length(markdates)%%2==1]
-    axis(1, markdates, format(markdates, "%Y"))
-    axis(4, round(seq(min(data$closes),max(data$closes),length.out=5),digits=-1))
-    if(controls[["model"]]=="HMM"){
-      for(s in seq_len(states[1])){
-        points(data$dates[decoding==s],data$closes[decoding==s],col=colors[s,1],pch=20)
+      ymax = max(data$closes)*1.2; ymin = -ymax
+      plot(data$dates,data$closes,type="l",xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="grey",xlab="",ylab="",xaxt="n",yaxt="n",cex.lab=2, cex.main=2)
+      par(las=3)
+      mtext("Closing price",side=4,line=4,at=median(data$closes),cex=1.25)
+      par(las=1)
+      mtext("Year",side=1,line=2,cex=1.25)
+      markdates = seq(xmin,xmax,by="year"); markdates = markdates[1:length(markdates)%%2==1]
+      axis(1, markdates, format(markdates, "%Y"))
+      axis(4, round(seq(min(data$closes),max(data$closes),length.out=5),digits=-1))
+      if(controls[["model"]]=="HMM"){
+        for(s in seq_len(states[1])){
+          points(data$dates[decoding==s],data$closes[decoding==s],col=colors[s,1],pch=20)
+        }
+        do.call(legend,c(list(legend=paste("state",seq_len(states[1])),col=colors[,1],pch=19),legend_layout))
       }
-      do.call(legend,c(list(legend=paste("state",seq_len(states[1])),col=colors[,1],pch=19),legend_layout))
-    }
-    if(controls[["model"]]=="HHMM"){
-      for(cs in seq_len(states[1])){
-        for(fs in seq_len(states[2])){
-          points(data$dates[decoding_cs==cs&decoding_fs==fs],data$closes[decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
+      if(controls[["model"]]=="HHMM"){
+        for(cs in seq_len(states[1])){
+          for(fs in seq_len(states[2])){
+            points(data$dates[decoding_cs==cs&decoding_fs==fs],data$closes[decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
+          }
+        }
+        eg = expand.grid(seq_len(states[2]),seq_len(states[1]))
+        do.call(legend,c(list(legend=paste0("coarse-scale state ",eg[,2],", fine-scale state ",eg[,1]),col=as.vector(t(colors[,-1])),pch=19),legend_layout))
+      }
+      par(new=TRUE)
+      par(mfrow=c(1,1),las=1)
+      if(controls[["model"]]=="HMM"){
+        ymin = min(data$observations); ymax = max(data$observations)
+        plot(data$dates,data$observations,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*3))
+      }
+      if(controls[["model"]]=="HHMM"){
+        ymin = min(fs_observations); ymax = max(fs_observations)
+        plot(data$dates,fs_observations,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*3))
+      }
+      par(las=3)
+      mtext("Log-return",side=2,line=4,at=0,cex=1.25)
+      par(las=1)
+      axis(2, round(seq(ymin,ymax,length.out=5),2))
+      if(controls[["model"]]=="HMM"){
+        for(s in seq_len(states[1])){
+          points(data$dates[decoding==s],data$observations[decoding==s],col=colors[s,1],pch=20)
         }
       }
-      eg = expand.grid(seq_len(states[2]),seq_len(states[1]))
-      do.call(legend,c(list(legend=paste0("coarse-scale state ",eg[,2],", fine-scale state ",eg[,1]),col=as.vector(t(colors[,-1])),pch=19),legend_layout))
-    }
-    par(new=TRUE)
-    par(mfrow=c(1,1),las=1)
-    if(controls[["model"]]=="HMM"){
-      ymin = min(data$observations); ymax = max(data$observations)
-      plot(data$dates,data$observations,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*3))
-    }
-    if(controls[["model"]]=="HHMM"){
-      ymin = min(fs_observations); ymax = max(fs_observations)
-      plot(data$dates,fs_observations,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*3))
-    }
-    par(las=3)
-    mtext("log-return", side=2, line=4, at=0, cex=1.5)
-    par(las=1)
-    axis(2, round(seq(ymin,ymax,length.out=5),2))
-    if(controls[["model"]]=="HMM"){
-      for(s in seq_len(states[1])){
-        points(data$dates[decoding==s],data$observations[decoding==s],col=colors[s,1],pch=20)
-      }
-    }
-    if(controls[["model"]]=="HHMM"){
-      for(cs in seq_len(states[1])){
-        for(fs in seq_len(states[2])){
-          points(data$dates[decoding_cs==cs&decoding_fs==fs],fs_observations[decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
+      if(controls[["model"]]=="HHMM"){
+        for(cs in seq_len(states[1])){
+          for(fs in seq_len(states[2])){
+            points(data$dates[decoding_cs==cs&decoding_fs==fs],fs_observations[decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
+          }
         }
       }
-    }
-    if(!controls[["sim"]] & !is.null(labels)){
-      no_labels = length(labels[["dates"]])
-      for(l in seq_len(no_labels)){
-        abline(v=as.Date(labels[["dates"]][l]),lty=2,lwd=2); text(x=as.Date(labels[["dates"]][l]),y=ymin,l,pos=4,cex=1.5)
+      if(!is.null(labels)){
+        for(l in seq_len(length(labels[["dates"]]))){
+          if(labels[["dates"]][l]<=xmax){
+            abline(v=as.Date(labels[["dates"]][l]),lty=2,lwd=2)
+            text(x=as.Date(labels[["dates"]][l]),y=ymin,labels=l,pos=4,cex=1.25)
+          }
+        }
+        names_trunc = labels[["names"]][labels[["dates"]]<=xmax]
+        do.call(legend,c(list(x="topright",legend=paste0(seq_len(length(names_trunc)),":  ",names_trunc)),legend_layout[names(legend_layout)!="x"]))
       }
-      do.call(legend,c(list(x="topright",legend=paste0(seq_len(no_labels),": ",labels[["names"]])),legend_layout[names(legend_layout)!="x"]))
+      invisible(dev.off())
     }
-    invisible(dev.off())
   }
   
   ### pseudo-residuals
@@ -174,10 +180,10 @@ visual = function(data,fit,decoding,controls,labels=NULL){
         pseudos[t] = qnorm(pt((data$observations[t]-mus[decoding[t]])/sigmas[decoding[t]],dfs[decoding[t]]))
       }
       pdf(filename, width=9, height=7)
-        plot(pseudos,ylim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="Index plot",ylab="PR")
-        hist(pseudos,freq=FALSE,breaks=15,col="lightgrey",xlim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="Histogram w/ N(0;1)-density",xlab="PR"); x=seq(floor(min(pseudos)),ceiling(max(pseudos)),0.01); curve(dnorm(x),add=TRUE,lwd=2)
-        qqnorm(pseudos[is.finite(pseudos)],ylim=c(floor(min(pseudos)),ceiling(max(pseudos))),xlim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="normal Q-Q plot", ylab="PR quantiles", xlab="N(0;1) quantiles"); abline(a=0,b=1)
-        acf(pseudos,lag.max = 10,main="", ylab="ACF PR", xlab="lag"); title("autocorrelation plot")
+        plot(pseudos,ylim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="Index plot",ylab="Pseudo-residuals",las=1)
+        hist(pseudos,freq=FALSE,breaks=15,col="lightgrey",xlim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="Histogram w/ N(0;1)-density",xlab="Pseudo-residuals",las=1); x=seq(floor(min(pseudos)),ceiling(max(pseudos)),0.01); curve(dnorm(x),add=TRUE,lwd=2)
+        qqnorm(pseudos[is.finite(pseudos)],ylim=c(floor(min(pseudos)),ceiling(max(pseudos))),xlim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="Normal Q-Q plot", ylab="Pseudo-residual quantiles", xlab="N(0;1) quantiles",las=1); abline(a=0,b=1)
+        acf(pseudos,lag.max = 10,main="", ylab="Autocorrelation pseudo-residuals", xlab="Lag",las=1); title("Autocorrelation plot")
       invisible(dev.off())
     }
     if(controls[["model"]]=="HHMM"){
@@ -190,17 +196,17 @@ visual = function(data,fit,decoding,controls,labels=NULL){
         pseudos_fs[t] = qnorm(pt((as.vector(t(data$observations[,-1]))[t]-mus_star[[decoding_cs[t]]][decoding_fs[t]])/sigmas_star[[decoding_cs[t]]][decoding_fs[t]],dfs_star[[decoding_cs[t]]][decoding_fs[t]]))
       }
       pdf(filename, width=9, height=7)
-        plot(pseudos_cs,ylim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="Index plot",ylab="PR CS")
-        plot(pseudos_fs,ylim=c(floor(min(pseudos_fs)),ceiling(max(pseudos_fs))),main="Index plot",ylab="PR FS")
-        hist(pseudos_cs,freq=FALSE,breaks=15,col="lightgrey",xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="Histogram w/ N(0;1)-density",xlab="PR CS"); x = seq(floor(min(pseudos_cs)),ceiling(max(pseudos_cs)),0.01); curve(dnorm(x),add=TRUE,lwd=2)
-        hist(pseudos_fs,freq=FALSE,breaks=20,col="lightgrey",xlim=c(floor(min(pseudos_fs)),ceiling(max(pseudos_fs))),main="Histogram w/ N(0;1)-density",xlab="PR FS"); x = seq(floor(min(pseudos_fs)),ceiling(max(pseudos_fs)),0.01); curve(dnorm(x),add=TRUE,lwd=2)
-        qqnorm(pseudos_cs[is.finite(pseudos_cs)],ylim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="normal Q-Q plot", ylab="PR CS quantiles", xlab="N(0;1) quantiles"); abline(a=0,b=1)
-        qqnorm(pseudos_fs[is.finite(pseudos_fs)],ylim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="normal Q-Q plot", ylab="PR FS quantiles", xlab="N(0;1) quantiles"); abline(a=0,b=1)
-        acf(pseudos_cs[is.finite(pseudos_cs)],lag.max = 10,main="", ylab="ACF PR CS", xlab="lag"); title("autocorrelation plot")
-        acf(pseudos_fs[is.finite(pseudos_fs)],lag.max = 30,main="", ylab="ACF PR CS", xlab="lag"); title("autocorrelation plot")
+        plot(pseudos_cs,ylim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="Index plot",ylab="Pseudo-residuals coarse scale",las=1)
+        plot(pseudos_fs,ylim=c(floor(min(pseudos_fs)),ceiling(max(pseudos_fs))),main="Index plot",ylab="Pseudo-residuals fine scale",las=1)
+        hist(pseudos_cs,freq=FALSE,breaks=15,col="lightgrey",xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="Histogram w/ N(0;1)-density",xlab="Pseudo-residuals coarse scale",las=1); x = seq(floor(min(pseudos_cs)),ceiling(max(pseudos_cs)),0.01); curve(dnorm(x),add=TRUE,lwd=2)
+        hist(pseudos_fs,freq=FALSE,breaks=20,col="lightgrey",xlim=c(floor(min(pseudos_fs)),ceiling(max(pseudos_fs))),main="Histogram w/ N(0;1)-density",xlab="Pseudo-residuals fine scale",las=1); x = seq(floor(min(pseudos_fs)),ceiling(max(pseudos_fs)),0.01); curve(dnorm(x),add=TRUE,lwd=2)
+        qqnorm(pseudos_cs[is.finite(pseudos_cs)],ylim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="Normal Q-Q plot", ylab="Pseudo-residual coarse scale quantiles", xlab="N(0;1) quantiles",las=1); abline(a=0,b=1)
+        qqnorm(pseudos_fs[is.finite(pseudos_fs)],ylim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),xlim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="Normal Q-Q plot", ylab="Pseudo-residual fine scale quantiles", xlab="N(0;1) quantiles",las=1); abline(a=0,b=1)
+        acf(pseudos_cs[is.finite(pseudos_cs)],lag.max = 10,main="", ylab="Autocorrelation pseudo-residuals coarse scale", xlab="Lag",las=1); title("Autocorrelation plot")
+        acf(pseudos_fs[is.finite(pseudos_fs)],lag.max = 30,main="", ylab="Autocorrelation pseudo-residuals fine scale", xlab="Lag",las=1); title("Autocorrelation plot")
       invisible(dev.off())
     }
   }
     
-  writeLines("Done with visualization.")
+  writeLines("Visualization successful.")
 }
