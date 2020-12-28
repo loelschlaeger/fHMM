@@ -8,7 +8,7 @@ maxLikelihood = function(data,controls){
   if(controls[["model"]]=="HHMM") target = nLL_hhmm
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
   
-  pb = progress_bar$new(format = "Estimation: [:bar] :percent comp., :eta rem.", total = runs, clear = FALSE, width = 60, show_after=0)
+  pb = progress_bar$new(format = "Model fitting: [:bar] :percent complete, :eta remain", total = runs, clear = FALSE, width = 60, show_after=0)
   start = Sys.time()
 	for (k in 1:runs){
 	  pb$tick(0)
@@ -21,7 +21,7 @@ maxLikelihood = function(data,controls){
                             			                print.level = controls[["print.level"]],
                             			                hessian = controls[["hessian"]]
     			                                        )
-    		                          if(mods[[k]]$code %in% controls[["accept_codes"]]) llks[k] = mods[[k]]$minimum
+    		                          if(mods[[k]]$code %in% controls[["accept_codes"]]) llks[k] = -mods[[k]]$minimum
   			                        },error = function(e){})
   		              })
 	  pb$tick()
