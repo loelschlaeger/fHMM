@@ -23,7 +23,8 @@ init = function(){
   }
   cat("\f")
   writeLines("Fit (H)HMMs to financial data.")
-  writeLines(paste0("Data will be loaded from ",getwd(),"/data', results will be saved in '",getwd(),"/models'."))
+  writeLines(paste0("Data source: ",getwd(),"/data"))
+  writeLines(paste0("Storage:     ",getwd(),"/models"))
 }
 
 ### initialize the estimation routine randomly
@@ -39,8 +40,8 @@ init_est = function(controls){
   dfs         = if(is.na(df_cs)) runif(M,0,30) else integer(0)
   if(controls[["model"]]=="HHMM") for(m in seq_len(M)){
     gammasUncon = c(gammasUncon,gammasCon2gammasUncon(runif((N-1)*N,0,1/N),N))
-    mus         = c(mus,rnorm(N)*10^(-1),decreasing=TRUE)
-    sigmasUncon = c(sigmasUncon,log(runif(N,0.1,1)*10^(-2)),decreasing=FALSE)
+    mus         = c(mus,sort(rnorm(N)*10^(-1),decreasing=TRUE))
+    sigmasUncon = c(sigmasUncon,log(sort(runif(N,0.1,1)*10^(-2),decreasing=FALSE)))
     dfs         = c(dfs,if(is.na(df_fs)) runif(N,0,30) else integer(0))
   }
   
@@ -53,7 +54,7 @@ reinit = function(name){
   loadable = c("controls","data","fit","decoding")
   path = paste0("models/",name)
   if(!dir.exists(path)){
-    stop(paste0("Path '",path,"' does not exist."),call.=FALSE)
+    stop(paste0("Reinitialization failed, path '",path,"' does not exist."),call.=FALSE)
   }
   loaded = list()
   for(object in loadable){
@@ -61,7 +62,11 @@ reinit = function(name){
       loaded[[object]] = readRDS(paste0(path,"/",object))
     }
   }
-  if(length(loaded)>=1) writeLines(paste0("Loaded ",paste0("'",names(loaded),"'",collapse=", ")," from model '",name,"'."))
-  if(length(loaded)==0) writeLines(paste0("Unable to load any object from path '",path,"'."))
+  if(length(loaded)>=1){
+    writeLines("Reinitialization successful.")
+    writeLines(paste0("Model name: ",name))
+    writeLines(paste0("Objects:    ",paste0(names(loaded),collapse=", ")))
+  }
+  if(length(loaded)==0) stop(paste0("Reinitialization failed, unable to load any object from path '",path,"'."),call.=FALSE)
   invisible(list2env(loaded, envir = .GlobalEnv))
 }
