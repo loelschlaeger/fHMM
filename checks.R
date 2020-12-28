@@ -35,7 +35,7 @@ check_controls = function(controls){
   if("hessian" %in% missing_controls) controls[["hessian"]] = TRUE
   if("print.level" %in% missing_controls) controls[["print.level"]] = 0
   if("steptol" %in% missing_controls) controls[["steptol"]] = 1e-8
-  if("accept_codes" %in% missing_controls) controls[["accept_codes"]] = c(1,2)
+  if("accept_codes" %in% missing_controls) controls[["accept_codes"]] = c(1)
   if("overwrite" %in% missing_controls) controls[["overwrite"]] = FALSE; if(controls[["overwrite"]]) warning("Saved model results may be overwritten.",call.=FALSE)
   
   ### create artificial controls
@@ -44,9 +44,9 @@ check_controls = function(controls){
     controls[["sim"]] = if(is.na(controls[["data_source"]][1])) TRUE else FALSE;
   }
   if(controls[["model"]]=="HHMM"){
-    controls[["sim"]] = if(is.na(controls[["data_source"]][2]) || (all(is.na(controls[["data_source"]][2])))) TRUE else FALSE;
+    controls[["sim"]] = if(is.na(controls[["data_source"]][2]) || (all(is.na(controls[["data_source"]])))) TRUE else FALSE;
     if(is.na(controls[["data_source"]][1]) & !is.na(controls[["data_source"]][2])) controls[["HHMM_av"]] = TRUE
-    if(all(!is.na(controls[["data_source"]][1]))) controls[["HHMM_av"]] = FALSE
+    if(all(!is.na(controls[["data_source"]]))) controls[["HHMM_av"]] = FALSE
   }
   controls[["est_dfs"]] = if(any(is.na(controls[["fix_dfs"]]))) TRUE else FALSE;
   
@@ -78,23 +78,34 @@ check_controls = function(controls){
   if(!is.na(controls[["data_source"]][1]) & !file.exists(paste0("data/",controls[["data_source"]][1]))) stop(paste0("File 'data/",controls[["data_source"]][1],"' does not exist."),call.=FALSE)
   if(!is.na(controls[["data_source"]][2]) & !file.exists(paste0("data/",controls[["data_source"]][2]))) stop(paste0("File 'data/",controls[["data_source"]][2],"' does not exist."),call.=FALSE)
   
-  ### print model specification
-  if(controls[["model"]]=="HMM") {
-    writeLines(paste0("Model: ",controls[["states"]][1],"-state HMM, state-dependent t-distributions"),sep="")
-    if(!controls[["est_dfs"]]) writeLines(paste0(" (dfs fixed to ",controls[["fix_dfs"]][1],")"),sep="")
-    if(!is.null(controls[["seed"]])) writeLines(paste0(", seed set to ",controls[["seed"]]),sep="")
-    writeLines("")
-  } 
-  if(controls[["model"]]=="HHMM") {
-    writeLines(paste0("Model: ",controls[["states"]][1],"/",controls[["states"]][2],"-state HHMM, state-dependent t-distributions"),sep="")
-    if(!controls[["est_dfs"]]) writeLines(paste0(" (dfs fixed to ",controls[["fix_dfs"]][1],"/",controls[["fix_dfs"]][2],")"),sep="")
-    if(!is.null(controls[["seed"]])) writeLines(paste0(", seed set to ",controls[["seed"]]),sep="")
-    writeLines("")
-  }
-  
   ### note that 'controls' is checked
+  writeLines("Checks successful.")
   controls[["controls_checked"]] = TRUE
   
+  ### print model specification
+  writeLines(paste0("Model name: ",controls[["model_name"]]))
+  writeLines(paste0("Model:      ",controls[["model"]]))
+  if(controls[["sim"]]) writeLines("Data:       simulated")
+  if(!controls[["sim"]]) writeLines("Data:       empirical")
+  if(controls[["model"]]=="HMM") {
+    writeLines(paste0("States:     ",controls[["states"]][1]))
+    if(!controls[["est_dfs"]]){
+      writeLines(paste0("SDDs:       t-distribution (dfs fixed to ",controls[["fix_dfs"]][1],")"))
+    } else {
+      writeLines("SDDs:       t-distribution")
+    }
+  } 
+  if(controls[["model"]]=="HHMM") {
+    writeLines(paste0("States:     ",controls[["states"]][1],"/",controls[["states"]][2]))
+    if(!controls[["est_dfs"]]){
+      writeLines(paste0("SDDs:       t-distribution (dfs fixed to ",controls[["fix_dfs"]][1],"/",controls[["fix_dfs"]][2],")"))
+    } else {
+      writeLines("SDDs:       t-distribution")
+    }
+  }
+  if(!is.null(controls[["seed"]])) writeLines(paste0("Seed:       ",controls[["seed"]]))
+  
+  ### save controls
   check_saving(controls,controls)
   
   return(controls)
@@ -102,19 +113,26 @@ check_controls = function(controls){
 
 check_data = function(controls,data){
   if(controls[["sim"]]){
-    writeLines("Data: simulated,",sep=" ")
-    if(controls[["model"]]=="HMM")  writeLines(paste0("time series has ",controls[["time_horizon"]][1]," data points"))
-    if(controls[["model"]]=="HHMM") writeLines(paste0("time series has ",controls[["time_horizon"]][1],"/",controls[["time_horizon"]][2]," data points"))
+    if(controls[["model"]]=="HMM")  writeLines(paste0("Data points: ",controls[["time_horizon"]][1]))
+    if(controls[["model"]]=="HHMM") writeLines(paste0("Data points: ",controls[["time_horizon"]][1],"/",controls[["time_horizon"]][2]))
   }
   if(!controls[["sim"]]){
-    writeLines("Data:",sep=" ")
-    if(controls[["model"]]=="HMM") writeLines(paste0("closing prices of '",controls[["data_source"]][1],"' from ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]))
+    writeLines("Source:     ",sep=" ")
+    if(controls[["model"]]=="HMM"){
+      writeLines(paste0("closing prices of '",controls[["data_source"]][1],"'"))
+      writeLines(paste0("Horizon:     ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]))
+      writeLines(paste0("Data points: ",length(data[["observations"]])))
+    }
     if(controls[["model"]]=="HHMM"){
-      if(controls[["HHMM_av"]]) writeLines(paste0("average- and closing prices of '",controls[["data_source"]][1],"' from ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]),sep="")
-      if(!controls[["HHMM_av"]]) writeLines(paste0("average- and closing prices of '",controls[["data_source"]][1],"'/'",controls[["data_source"]][2],"' from ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]),sep="")
-      writeLines(paste0(", chunk length of ",controls[["time_horizon"]][2]))
+      if(controls[["HHMM_av"]]) writeLines(paste0("average-/closing prices of '",controls[["data_source"]][2],"'"))
+      if(!controls[["HHMM_av"]]) writeLines(paste0("average-/closing prices of '",controls[["data_source"]][1],"'/'",controls[["data_source"]][2],"'"))
+      writeLines(paste0("Horizon:     ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]))
+      writeLines(paste0("FS dim:      ",controls[["time_horizon"]][2]))
+      writeLines(paste0("Data points: ",dim(data[["observations"]])[1],"/",dim(data[["observations"]])[2]))
     }
   }
+  
+  ### save data
   check_saving(data,controls)
 }
 
@@ -122,7 +140,7 @@ check_estimation = function(time,mods,llks,data,controls){
   if(all(is.na(llks))) stop("None of the estimation runs ended successfully. Consider increasing 'runs' in 'controls'.",call.=FALSE)
   writeLines(paste0("Estimation finished, it took ",time," minute(s). Successful runs: ",sum(!is.na(llks))," out of ",length(llks),"."))
 
-  mod       = mods[[which.min(llks)]]
+  mod       = mods[[which.max(llks)]]
   thetaCon  = thetaUncon2thetaCon(mod$estimate,controls)
   thetaList = statesDecreasing(thetaCon2thetaList(thetaCon,controls),controls)
   
@@ -186,7 +204,7 @@ check_estimation = function(time,mods,llks,data,controls){
 
 #TODO: comp. between true states and decoded states
 check_decoding = function(decoding,controls){
-  writeLines("Done with state decoding.")
+  writeLines("State decoding successful.")
 }
 
 check_saving = function(object,controls){
