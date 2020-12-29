@@ -8,10 +8,8 @@ controls = list(
   data_source   = c("dax.csv","deutschebank.csv"),
   truncate_data = c("2000-01-01","2021-01-01"), 
   states        = c(3,2),
-  time_horizon  = c(50,30),
-  fix_dfs       = c(NA,NA),
+  time_horizon  = c(NA,30),
   runs          = 200,
-  #seed          = 1,
   overwrite     = FALSE
 )
 controls = check_controls(controls)
@@ -23,10 +21,10 @@ fit = maxLikelihood(data,controls)
 ### 4. Decode hidden states
 decoding = applyViterbi(data,fit,controls)
 
-### 5. Visualize results (currently only "states=c(3,2)" possible)
+### 5. Visualize results
 labels = list(
   dates = c("2008-09-15","2020-01-27"),
-  names = c("bankruptcy of Lehman Brothers","first COVID-19 case in Germany")
+  names = c("Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
 )
 visual(data,fit,decoding,controls,labels)
 
