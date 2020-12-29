@@ -1,14 +1,11 @@
 # HHMM_Finance
-This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to [financial data](#data). 
-
-## Data
-The code is intended to be used on closing prices of financial time series provided by https://finance.yahoo.com/. The data must be in csv-format, containing columns named "Date" and "Close", and must be saved in the folder `"./data"`. Additionally, data can be simulated.
+This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data. The code is intended to be used on closing prices of financial time series provided by https://finance.yahoo.com/. The data must be in csv-format, containing columns named "Date" and "Close", and must be saved in the folder `"./data"`. Additionally, data can be simulated.
 
 ## Getting started
 The file `main.R` presents the workflow:
 1. Run code chunk 1 to initialize the code. The paths for the [data](#data) and the [results](#results) are printed.
 2. Run code chunk 2 to set and check the model's [controls](#controls).
-3. Run code chunk 3 to fit the model to the [data](#data).
+3. Run code chunk 3 to fit the model to the data.
 4. Run code chunk 4 to decode the hidden states.
 5. Run code chunk 5 to visualize the [results](#results). 
 6. Optionally run code chunk 6 to reinitialize an old model.
@@ -44,7 +41,7 @@ The following parameters of `controls` are optional and set to default values, i
 
 ## Files
 - `checks.R` contains several validation functions.
-- `data.R` processes or simulates [data](#data).
+- `data.R` processes or simulates data.
 - `init.R` initializes the code and the estimation routine.
 - `loglike.cpp` computes the model's log-likelihood.
 - `main.R` presents the code's workflow.
