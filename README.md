@@ -2,12 +2,12 @@
 This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to [financial data](#data). 
 
 ## Data
-The code is designed for closing prices of financial time series provided by https://finance.yahoo.com/. The data must be in csv-format, containing columns named "Date" and "Close", and must be saved in the folder `"./data/"`. Additionally, data can be simulated.
+The code is intended to be used on closing prices of financial time series provided by https://finance.yahoo.com/. The data must be in csv-format, containing columns named "Date" and "Close", and must be saved in the folder `"./data"`. Additionally, data can be simulated.
 
 ## Getting started
 The file `main.R` presents the workflow:
-1. Run code chunk 1 to initialize the code. Two paths are printed, first where you have to provide the [data](#data) and second where the [results](#results) are saved.
-2. Run code chunk 2 to set and check the model's [controls](#controls) `controls`. You can only proceed if `check_controls(controls)` is successfully called.
+1. Run code chunk 1 to initialize the code. The paths for the [data](#data) and the [results](#results) are printed.
+2. Run code chunk 2 to set and check the model's [controls](#controls).
 3. Run code chunk 3 to fit the model to the [data](#data).
 4. Run code chunk 4 to decode the hidden states.
 5. Run code chunk 5 to visualize the [results](#results). 
