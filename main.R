@@ -4,7 +4,7 @@ source("init.R"); init()
 
 ### 2. Set and check controls
 controls = list(
-  model_name    = "HHMM_DAX_DB_32",        
+  model_name    = "test",        
   data_source   = c("dax.csv","deutschebank.csv"),
   truncate_data = c("2000-01-01","2021-01-01"), 
   states        = c(3,2),
