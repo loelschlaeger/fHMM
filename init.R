@@ -23,8 +23,8 @@ init = function(){
   }
   cat("\f")
   writeLines("Fit (H)HMMs to financial data.")
-  writeLines(paste0("Data source: ",getwd(),"/data"))
-  writeLines(paste0("Storage:     ",getwd(),"/models"))
+  writeLines(paste0("Data source:   ",getwd(),"/data"))
+  writeLines(paste0("Model results: ",getwd(),"/models"))
 }
 
 ### initialize the estimation routine randomly
