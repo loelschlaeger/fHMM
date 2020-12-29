@@ -2,7 +2,7 @@
 This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to [financial data](#data). 
 
 ## Data
-The code is designed for closing prices of financial time series provided by https://finance.yahoo.com/. The data must be in csv-format, containing columns named "Date" and "Close", and must be saved in the folder `"./data"`. Additionally, data can be simulated.
+The code is designed for closing prices of financial time series provided by https://finance.yahoo.com/. The data must be in csv-format, containing columns named "Date" and "Close", and must be saved in the folder `"./data/"`. Additionally, data can be simulated.
 
 ## Getting started
 The file `main.R` presents the workflow:
@@ -40,7 +40,7 @@ The following parameters of `controls` are optional and set to default values, i
 - `runs`: integer, number of runs for the optimization
 - `seed`: integer, setting a seed for the simulation and initialization
 - `steptol`: integer, providing the minimum allowable relative step length during the optimization process, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `truncate_data`: 
+- `truncate_data`: vector of length 2 with dates or `NA`, specifying truncation points when working with empirical data
 
 ## Files
 - `checks.R` contains several validation functions.
@@ -54,5 +54,9 @@ The following parameters of `controls` are optional and set to default values, i
 - `viterbi.R` performes state decoding based on the Viterbi algorithm.
 
 ## Results
-
-## Example
+The following model results are saved in `./models/model_name/`:
+- `estimates.txt` containes estimates, gradient, Hessian, likelihood value, AIC and BIC values etc.
+- `controls`, `data`, `decoding` and `fit` are .RData-files and can be reinitialized
+- `pseudos.pdf` is a visualization of the pseudo-residuals
+- `sdd.pdf` is a visualization of the state-dependent distributions
+- `ts.pdf` is a visualization of the decoded time series (only for empirical data)
