@@ -30,25 +30,25 @@ The model is specified by defining the named list `controls`. The following para
 - `time_horizon`: a numeric vector of length 2, determining the length of the time horizion
 
 The following parameters of `controls` are optional and set to default values, if not specified:
-- `accept_codes`: numeric vector, containing exit codes of the optimization to accept, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `data_source`: numeric vector of length 2, containing the file names of the financial data:
+- `accept_codes`: a numeric vector, containing exit codes of the optimization to accept, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `data_source`: a numeric vector of length 2, containing the file names of the financial data:
    - if `data_source = c(NA,NA)`, data is simulated
    - if `data_source = c("x.csv",NA)`, use `"./data/x.csv"` for a HMM
    - if `data_source = c("x.csv","y.csv")`, use averages of data `"./data/x.csv"` (size determined by the second entry of `time_horizon`) for the coarse scale and data `"./data/y.csv"` for the fine scale, respectively, of a HHMM
    - if `data_source = c(NA,"y.csv")`, this is interpreted as `data_source = c("y.csv","y.csv")`
-- `fix_dfs`: numeric vector of length 2, fixing the degrees of freedom of the state-dependent t-distributions
+- `fix_dfs`: a numeric vector of length 2, fixing the degrees of freedom of the state-dependent t-distributions
    - if `fix_dfs = c(NA,NA)`, degrees of freedom are estimated
    - if `fix_dfs = c(x,NA)`, degrees of freedom of a HMM or the coarse scale of a HHMM are fixed to `x`
    - if `fix_dfs = c(NA,y)`, degrees of freedom of the fine scale of a HHMM are fixed to `y`
    - if `fix_dfs = c(x,y)`, degrees of freedom of the coarse scale and the fine scale of a HHMM are fixed to `x` and `y`, respectively 
-- `hessian`: boolean, determining wheter the Hessian should be computed
-- `iterlim`: integer, specifying the maximum number of optimization iterations to be performed before termination, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `overwrite`: boolean, determining wheter existing results can be overwritten
-- `print.level`: integer, determining the level of printing which is done during the optimization process, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `runs`: integer, number of runs for the optimization
-- `seed`: integer, setting a seed for the simulation and initialization
-- `steptol`: integer, providing the minimum allowable relative step length during the optimization process, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `truncate_data`: vector of length 2 with dates or `NA`, specifying truncation points when working with empirical data
+- `hessian`: a boolean, determining wheter the Hessian should be computed
+- `iterlim`: an integer, specifying the maximum number of optimization iterations to be performed before termination, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `overwrite`: a boolean, determining wheter existing results can be overwritten
+- `print.level`: an integer, determining the level of printing which is done during the optimization process, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `runs`: an integer, number of runs for the optimization
+- `seed`: an integer, setting a seed for the simulation and initialization
+- `steptol`: an integer, providing the minimum allowable relative step length during the optimization process, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `truncate_data`: a vector of length 2 with dates or `NA`, specifying truncation points when working with empirical data
 
 ## Outputs
 The following model results are saved in `./models/model_name/`:
