@@ -51,9 +51,9 @@ The following parameters of `controls` are optional and set to default values, i
 - `truncate_data`: a vector of length 2, containing dates or `NA` and specifying truncation points of empirical data
 
 ## Outputs
-The following model results are saved in `./models/model_name/`:
-- `estimates.txt` containes estimates, gradient, Hessian, likelihood value, AIC and BIC values etc.
+The following model results are saved in he folder `./models`:
+- `estimates.txt`, containing estimates, gradient, Hessian, likelihood value, AIC and BIC values etc.
 - `controls`, `data`, `decoding` and `fit` are .RData-files and can be reinitialized
-- `pseudos.pdf` is a visualization of the pseudo-residuals
-- `sdd.pdf` is a visualization of the state-dependent distributions
-- `ts.pdf` is a visualization of the decoded time series (only for empirical data)
+- `pseudos.pdf`, a visualization of the pseudo-residuals
+- `sdd.pdf`, a visualization of the state-dependent distributions
+- `ts.pdf`, a visualization of the decoded time series (only for empirical data)
