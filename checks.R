@@ -27,7 +27,7 @@ check_controls = function(controls){
   }
   
   ### set default values
-  if("data_source" %in% missing_controls) controls[["dataSource"]] = c(NA,NA)
+  if("data_source" %in% missing_controls) controls[["data_source"]] = c(NA,NA)
   if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
   if("fix_dfs" %in% missing_controls) controls[["fix_dfs"]] = c(NA,NA)
   if("runs" %in% missing_controls) controls[["runs"]] = 100
@@ -42,13 +42,14 @@ check_controls = function(controls){
   controls[["model"]] = if(controls[["states"]][2]==0) "HMM" else "HHMM"
   if(controls[["model"]]=="HMM"){
     controls[["sim"]] = if(is.na(controls[["data_source"]][1])) TRUE else FALSE;
+    controls[["est_dfs"]] = if(is.na(controls[["fix_dfs"]][1])) TRUE else FALSE;
   }
   if(controls[["model"]]=="HHMM"){
     controls[["sim"]] = if(is.na(controls[["data_source"]][2]) || (all(is.na(controls[["data_source"]])))) TRUE else FALSE;
     if(is.na(controls[["data_source"]][1]) & !is.na(controls[["data_source"]][2])) controls[["HHMM_av"]] = TRUE
     if(all(!is.na(controls[["data_source"]]))) controls[["HHMM_av"]] = FALSE
+    controls[["est_dfs"]] = if(any(is.na(controls[["fix_dfs"]]))) TRUE else FALSE;
   }
-  controls[["est_dfs"]] = if(any(is.na(controls[["fix_dfs"]]))) TRUE else FALSE;
   
   ### check correct parameter format for HMM and HHMM resp.
   if(controls[["sim"]] & any(!is.na(controls[["truncate_data"]]))) {warning("Entries of 'truncate_data' will be ignored.",call.=FALSE); controls[["truncate_data"]] = c(NA,NA)}
@@ -70,8 +71,6 @@ check_controls = function(controls){
     if(controls[["sim"]] & any(is.na(controls[["time_horizon"]]))) stop("Either 'data_source' or 'time_horizon' has to be specified.",call.=FALSE)
     if(!controls[["sim"]] & is.na(controls[["time_horizon"]][2])) stop("Second entry of 'time_horizon' has to be specified.",call.=FALSE)
     if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])) {warning("First entry of 'time_horizon' will be ignored.",call.=FALSE); controls[["time_horizon"]][1] = NA}
-    if(is.na(controls[["fix_dfs"]][1]) & !is.na(controls[["fix_dfs"]][2])) {warning("Second entry of 'fix_dfs' will be ignored.",call.=FALSE); controls[["fix_dfs"]][2] = NA}
-    if(!is.na(controls[["fix_dfs"]][1]) & is.na(controls[["fix_dfs"]][2])) {warning("First entry of 'fix_dfs' will be ignored.",call.=FALSE); controls[["fix_dfs"]][1] = NA}
   }
   
   ### check if data paths are correct
@@ -89,19 +88,11 @@ check_controls = function(controls){
   if(!controls[["sim"]]) writeLines("Data:       empirical")
   if(controls[["model"]]=="HMM") {
     writeLines(paste0("States:     ",controls[["states"]][1]))
-    if(!controls[["est_dfs"]]){
-      writeLines(paste0("SDDs:       t-distribution (dfs fixed to ",controls[["fix_dfs"]][1],")"))
-    } else {
-      writeLines("SDDs:       t-distribution")
-    }
+    writeLines("SDDs:       t-distribution")
   } 
   if(controls[["model"]]=="HHMM") {
     writeLines(paste0("States:     ",controls[["states"]][1],"/",controls[["states"]][2]))
-    if(!controls[["est_dfs"]]){
-      writeLines(paste0("SDDs:       t-distribution (dfs fixed to ",controls[["fix_dfs"]][1],"/",controls[["fix_dfs"]][2],")"))
-    } else {
-      writeLines("SDDs:       t-distribution")
-    }
+    writeLines("SDDs:       t-distribution")
   }
   if(!is.null(controls[["seed"]])) writeLines(paste0("Seed:       ",controls[["seed"]]))
   
