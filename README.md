@@ -37,17 +37,17 @@ The following parameters of `controls` are optional and set to default values, i
    - if `data_source = c("x.csv","y.csv")`, model averages of `"./data/x.csv"` (size determined by the second entry of `time_horizon`) on the coarse scale and data `"./data/y.csv"` on the fine scale, respectively, by a HHMM
    - if `data_source = c(NA,"y.csv")`, this is interpreted as `data_source = c("y.csv","y.csv")`
 - `fix_dfs`: a numeric vector of length 2, fixing the degrees of freedom of the state-dependent t-distributions
-   - if `fix_dfs = c(NA,NA)`, degrees of freedom are estimated
+   - if `fix_dfs = c(NA,NA)`, degrees of freedom are not fixed
    - if `fix_dfs = c(x,NA)`, degrees of freedom of a HMM or the coarse scale of a HHMM are fixed to `x`
    - if `fix_dfs = c(NA,y)`, degrees of freedom of the fine scale of a HHMM are fixed to `y`
    - if `fix_dfs = c(x,y)`, degrees of freedom of the coarse scale and the fine scale of a HHMM are fixed to `x` and `y`, respectively 
-- `hessian`: a boolean, determining wheter the Hessian should be computed
-- `iterlim`: an integer, specifying the maximum number of optimization iterations to be performed before termination, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `overwrite`: a boolean, determining wheter existing results can be overwritten
-- `print.level`: an integer, determining the level of printing which is done during the optimization process, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `hessian`: a boolean, determining whether the Hessian is computed
+- `iterlim`: an integer, specifying the maximum number of optimization iterations to be performed before termination, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `overwrite`: a boolean, determining whether existing results can be overwritten
+- `print.level`: an integer, determining the level of printing which is done during the optimization process, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `runs`: an integer, number of runs for the optimization
 - `seed`: an integer, setting a seed for the simulation and initialization
-- `steptol`: an integer, providing the minimum allowable relative step length during the optimization process, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `steptol`: an integer, providing the minimum allowable relative step length during the optimization process, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `truncate_data`: a vector of length 2 with dates or `NA`, specifying truncation points when working with empirical data
 
 ## Outputs
