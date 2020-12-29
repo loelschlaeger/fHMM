@@ -119,7 +119,7 @@ check_data = function(controls,data){
       if(!controls[["HHMM_av"]]) writeLines(paste0("average-/closing prices of '",controls[["data_source"]][1],"'/'",controls[["data_source"]][2],"'"))
       writeLines(paste0("Horizon:     ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]))
       writeLines(paste0("FS dim:      ",controls[["time_horizon"]][2]))
-      writeLines(paste0("Data points: ",dim(data[["observations"]])[1],"/",dim(data[["observations"]])[2]))
+      writeLines(paste0("Data points: ",dim(data[["observations"]])[1],"/",dim(data[["observations"]])[2]-1))
     }
   }
   
