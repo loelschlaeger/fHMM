@@ -43,7 +43,7 @@ The following parameters of `controls` are optional and set to default values, i
    - if `fix_dfs = c(x,y)`, degrees of freedom of the coarse scale and the fine scale of a HHMM are fixed to `x` and `y`, respectively 
 - `hessian`: a boolean, determining whether the Hessian is computed
 - `iterlim`: an integer, specifying the maximum number of optimization iterations to be performed before termination, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `overwrite`: a boolean, determining whether existing results can be overwritten
+- `overwrite`: a boolean, determining whether existing results (on the same `mode_name`) can be overwritten
 - `print.level`: an integer, determining the level of printing which is done during the optimization process, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `runs`: an integer, number of runs for the optimization
 - `seed`: an integer, setting a seed for the simulation and initialization
