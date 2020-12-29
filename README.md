@@ -22,12 +22,12 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 6. Run code chunk 6 to reinitialize an old model.
 
 ## Specifying controls
-The model is specified by defining a named list `controls`. The following parameters of `controls` are mandatory:
-- `model_name`: character, identifying the model
-- `states`: numeric vector of length 2, determining the model and the number of states:
+The model is specified by defining the named list `controls`. The following parameters of `controls` are mandatory:
+- `model_name`: a character, identifying the model
+- `states`: a numeric vector of length 2, determining the model type and the number of states:
    - if `states = c(x,0)`, a HMM with `x` states is estimated
    - if `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated
-- `time_horizon`: numeric vector of length 2, first and second entry determining the length of the coarse-scale and fine-scale time horizion, respectively
+- `time_horizon`: a numeric vector of length 2, determining the length of the time horizion
 
 The following parameters of `controls` are optional and set to default values, if not specified:
 - `accept_codes`: numeric vector, containing exit codes of the optimization to accept, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
