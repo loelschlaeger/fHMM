@@ -30,7 +30,7 @@ The model is specified by defining the named list `controls`. The following para
 - `time_horizon`: a numeric vector of length 2, determining the length of the time horizion
 
 The following parameters of `controls` are optional and set to default values, if not specified:
-- `accept_codes`: a numeric vector, containing exit codes of the optimization to accept, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `accept_codes`: a numeric vector, containing acceptable exit codes of the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `data_source`: a numeric vector of length 2, containing the file names of the financial data:
    - if `data_source = c(NA,NA)`, data is simulated
    - if `data_source = c("x.csv",NA)`, use `"./data/x.csv"` for a HMM
