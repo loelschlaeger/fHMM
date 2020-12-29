@@ -14,7 +14,7 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 
 ## Getting started
 0. Go to `main.R`.
-1. Run code chunk 1 to initialize the code. The paths for the [data](#data) and the [outputs](#outputs) are printed.
+1. Run code chunk 1 to initialize the code.
 2. Run code chunk 2 to set and check the model's [controls](#specifying-controls).
 3. Run code chunk 3 to fit the model to the data.
 4. Run code chunk 4 to decode the hidden states.
