@@ -48,7 +48,7 @@ The following parameters of `controls` are optional and set to default values, i
 - `runs`: an integer, setting the number of optimization runs
 - `seed`: an integer, setting a seed for the simulation and initialization
 - `steptol`: an integer, providing the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `truncate_data`: a vector of length 2 with dates or `NA`, specifying truncation points when working with empirical data
+- `truncate_data`: a vector of length 2, containing dates or `NA` and specifying truncation points of empirical data
 
 ## Outputs
 The following model results are saved in `./models/model_name/`:
