@@ -45,7 +45,7 @@ The following parameters of `controls` are optional and set to default values, i
 - `iterlim`: an integer, specifying the maximum number of optimization iterations to be performed before termination, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `overwrite`: a boolean, determining whether existing results (on the same `mode_name`) can be overwritten
 - `print.level`: an integer, determining the level of printing which is done during the optimization process, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `runs`: an integer, number of runs for the optimization
+- `runs`: an integer, setting the number of optimization runs
 - `seed`: an integer, setting a seed for the simulation and initialization
 - `steptol`: an integer, providing the minimum allowable relative step length during the optimization process, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `truncate_data`: a vector of length 2 with dates or `NA`, specifying truncation points when working with empirical data
