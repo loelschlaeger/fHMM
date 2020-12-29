@@ -1,9 +1,10 @@
 # HHMM_Finance
 
-This repository provides R and C++ Code for fitting hierarchical hidden Markov models (HHMMs) to financial data in order to detect bearish and bullish markets. 
+This repository provides R and C++ code for fitting hierarchical hidden Markov models (HHMMs) to financial data. 
 
-## Description of the files
+## Files
 
+- `checks.R` provides several validation functions for [objects](#objects).
 - `data.R` processes empirical data. The data has to be provided in a csv-file, containing columns "Date" and "Close" (closing prices).
 - `data_sim.R` simulates data from a HHMM.
 - `init.R` initializes the estimation routine (randomly).
@@ -15,8 +16,10 @@ This repository provides R and C++ Code for fitting hierarchical hidden Markov m
 - `trans.R` provides helper functions for required parameter transformations.
 - `viterbi.R` is an implementation of the Viterbi algorithm.
 
-## Source of empirical data
-The code is optimized for financial time series data provided by https://finance.yahoo.com/.
+## Data
+The code is designed for closing prices of financial time series provided by https://finance.yahoo.com/.
+
+## Objects
 
 ## Getting Started
 
