@@ -2,19 +2,19 @@
 This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data. The code is intended to be used on closing prices of financial time series provided by https://finance.yahoo.com/. The data must be in csv-format, containing columns named "Date" and "Close", and must be saved in the folder `"./data"`. Additionally, data can be simulated.
 
 ## Contained files
-- `checks.R` contains several validation functions.
+- `checks.R` contains validation functions.
 - `data.R` processes or simulates data.
 - `init.R` initializes the code and the estimation routine.
 - `loglike.cpp` computes the model's log-likelihood.
-- `main.R` presents the code's workflow.
-- `optim.R` maximizes the log-likelihood function using the [R function nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
+- `main.R` presents the code's [workflow](#getting-started).
+- `optim.R` maximizes the log-likelihood function using the R function [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
 - `trans.R` contains helper functions for parameter transformations.
-- `visual.R` generates visualisations of the [model results](#results).
-- `viterbi.R` performes state decoding based on the Viterbi algorithm.
+- `visual.R` generates visualisations of the [model results](#outputs).
+- `viterbi.R` performs state decoding based on the [Viterbi algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm).
 
 ## Getting started
-The file `main.R` presents the workflow:
-1. Run code chunk 1 to initialize the code. The paths for the [data](#data) and the [results](#results) are printed.
+0. Go to `main.R`.
+1. Run code chunk 1 to initialize the code. The paths for the [data](#data) and the [outputs](#outputs) are printed.
 2. Run code chunk 2 to set and check the model's [controls](#specifying-controls).
 3. Run code chunk 3 to fit the model to the data.
 4. Run code chunk 4 to decode the hidden states.
@@ -50,7 +50,7 @@ The following parameters of `controls` are optional and set to default values, i
 - `steptol`: integer, providing the minimum allowable relative step length during the optimization process, see [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `truncate_data`: vector of length 2 with dates or `NA`, specifying truncation points when working with empirical data
 
-## Results
+## Outputs
 The following model results are saved in `./models/model_name/`:
 - `estimates.txt` containes estimates, gradient, Hessian, likelihood value, AIC and BIC values etc.
 - `controls`, `data`, `decoding` and `fit` are .RData-files and can be reinitialized
