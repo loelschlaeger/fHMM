@@ -33,8 +33,8 @@ The following parameters of `controls` are optional and set to default values, i
 - `accept_codes`: a numeric vector, containing acceptable exit codes of the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `data_source`: a numeric vector of length 2, containing the file names of the financial data:
    - if `data_source = c(NA,NA)`, data is simulated
-   - if `data_source = c("x.csv",NA)`, use `"./data/x.csv"` for a HMM
-   - if `data_source = c("x.csv","y.csv")`, use averages of data `"./data/x.csv"` (size determined by the second entry of `time_horizon`) for the coarse scale and data `"./data/y.csv"` for the fine scale, respectively, of a HHMM
+   - if `data_source = c("x.csv",NA)`, model `"./data/x.csv"` by a HMM
+   - if `data_source = c("x.csv","y.csv")`, model averages of `"./data/x.csv"` (size determined by the second entry of `time_horizon`) on the coarse scale and data `"./data/y.csv"` on the fine scale, respectively, by a HHMM
    - if `data_source = c(NA,"y.csv")`, this is interpreted as `data_source = c("y.csv","y.csv")`
 - `fix_dfs`: a numeric vector of length 2, fixing the degrees of freedom of the state-dependent t-distributions
    - if `fix_dfs = c(NA,NA)`, degrees of freedom are estimated
