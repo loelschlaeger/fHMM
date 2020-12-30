@@ -43,17 +43,17 @@ The following parameters of `controls` are optional and set to default values if
    - if `fix_dfs = c(x,y)`, degrees of freedom of the coarse scale and the fine scale of a HHMM are fixed to `x` and `y`, respectively 
 - `hessian`: a boolean, determining whether the Hessian is computed
 - `iterlim`: an integer, specifying the maximum number of optimization iterations to be performed before termination, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `overwrite`: a boolean, determining whether existing results (on the same `mode_name`) can be overwritten
-- `print.level`: an integer, determining the level of printing which is done during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `overwrite`: a boolean, determining whether existing results (on the same `model_name`) can be overwritten
+- `print.level`: an integer, determining the level of printing during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `runs`: an integer, setting the number of optimization runs
-- `seed`: an integer, setting a seed for the simulation and initialization
-- `steptol`: an integer, providing the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `truncate_data`: a vector of length 2, containing dates or `NA` and specifying truncation points of empirical data
+- `seed`: an integer, setting a seed for the simulation and the initialization
+- `steptol`: an integer, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `truncate_data`: a vector of length 2, containing dates or `NA` and specifying a subset of the empirical data
 
 ## Outputs
 The following model results are saved in the folder `./models`:
 - `estimates.txt`, containing estimates, gradient, Hessian, likelihood value, AIC and BIC values etc.
-- `controls`, `data`, `decoding` and `fit` are .RData-files and can be reinitialized
+- `controls`, `data`, `decoding` and `fit`, .RData-files that can be reinitialized
 - `lls.pdf`, a visualization of the log-likelihood values in the different estimation runs
 - `pseudos.pdf`, a visualization of the pseudo-residuals
 - `sdd.pdf`, a visualization of the state-dependent distributions
