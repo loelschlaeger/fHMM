@@ -62,6 +62,7 @@ The following model results are saved in the folder `./models`:
 - `ts.pdf`, a visualization of the decoded time series (only for empirical data)
 
 ## Examples
+### Fitting a HMM to the 21st century DAX
 ```R
 ### 1. Initialization
 rm(list = ls())
