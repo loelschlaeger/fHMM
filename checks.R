@@ -183,7 +183,7 @@ check_estimation = function(time,mods,llks,data,controls){
   } else {
     options(max.print=1000000)
     sink(file=file)
-    fc = c("LL","AIC","BIC","exit code","iterations", "run time")
+    fc = c("LL","AIC","BIC","exit code","iterations", "run time (min)")
     sc = c(fit[["LL"]],fit[["AIC"]],fit[["BIC"]],mod[["code"]],mod[["iterations"]],time)
     df = data.frame(fc,sc)
     names(df) = NULL
