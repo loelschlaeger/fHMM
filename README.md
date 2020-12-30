@@ -65,7 +65,6 @@ The following model results are saved in the folder `./models`:
 ### Fitting a HMM to the 21st century DAX
 ```R
 ### 1. Initialization
-rm(list = ls())
 source("init.R"); init()
 
 ### 2. Set and check controls
@@ -92,7 +91,4 @@ labels = list(
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
 )
 visual(data,fit,decoding,controls,labels)
-
-### 6. Reinitialize model
-reinit("test")
 ```
