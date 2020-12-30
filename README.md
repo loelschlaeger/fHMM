@@ -21,6 +21,8 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 5. Run code chunk 5 to visualize the [results](#outputs). 
 6. Run code chunk 6 to reinitialize an old model.
 
+See below for some [examples](#examples).
+
 ## Specifying controls
 The model is specified by defining the named list `controls`. The following parameters of `controls` are mandatory:
 - `model_name`: a character, identifying the model
@@ -58,3 +60,5 @@ The following model results are saved in the folder `./models`:
 - `pseudos.pdf`, a visualization of the pseudo-residuals
 - `sdd.pdf`, a visualization of the state-dependent distributions
 - `ts.pdf`, a visualization of the decoded time series (only for empirical data)
+
+## Examples
