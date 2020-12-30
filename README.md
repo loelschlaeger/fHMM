@@ -7,7 +7,7 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 - `init.R` initializes the code and the estimation routine.
 - `loglike.cpp` computes the model's log-likelihood.
 - `main.R` presents the code's [workflow](#getting-started).
-- `optim.R` maximizes the log-likelihood function using the R function [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
+- `optim.R` maximizes the log-likelihood function using [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
 - `trans.R` contains helper functions for parameter transformations.
 - `visual.R` generates visualisations of the [model results](#outputs).
 - `viterbi.R` performs state decoding based on the [Viterbi algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm).
@@ -27,15 +27,15 @@ The model is specified by defining the named list `controls`. The following para
 - `states`: a numeric vector of length 2, determining the model type and the number of states:
    - if `states = c(x,0)`, a HMM with `x` states is estimated
    - if `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated
-- `time_horizon`: a numeric vector of length 2, determining the length of the time horizion
+- `time_horizon`: a numeric vector of length 2, determining the length of the time horizion(s)
 
-The following parameters of `controls` are optional and set to default values, if not specified:
+The following parameters of `controls` are optional and set to default values if not specified:
 - `accept_codes`: a numeric vector, containing acceptable exit codes of the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `data_source`: a numeric vector of length 2, containing the file names of the financial data:
    - if `data_source = c(NA,NA)`, data is simulated
    - if `data_source = c("x.csv",NA)`, model `"./data/x.csv"` by a HMM
-   - if `data_source = c("x.csv","y.csv")`, model averages of `"./data/x.csv"` (size determined by the second entry of `time_horizon`) on the coarse scale and data `"./data/y.csv"` on the fine scale, respectively, by a HHMM
-   - if `data_source = c(NA,"y.csv")`, this is interpreted as `data_source = c("y.csv","y.csv")`
+   - if `data_source = c("x.csv","y.csv")`, model averages of `"./data/x.csv"` (size determined by the second entry of `time_horizon`) on the coarse scale and pure data `"./data/y.csv"` on the fine scale, respectively
+   - `data_source = c(NA,"y.csv")` is interpreted as `data_source = c("y.csv","y.csv")`
 - `fix_dfs`: a numeric vector of length 2, fixing the degrees of freedom of the state-dependent t-distributions
    - if `fix_dfs = c(NA,NA)`, degrees of freedom are not fixed
    - if `fix_dfs = c(x,NA)`, degrees of freedom of a HMM or the coarse scale of a HHMM are fixed to `x`
@@ -43,17 +43,18 @@ The following parameters of `controls` are optional and set to default values, i
    - if `fix_dfs = c(x,y)`, degrees of freedom of the coarse scale and the fine scale of a HHMM are fixed to `x` and `y`, respectively 
 - `hessian`: a boolean, determining whether the Hessian is computed
 - `iterlim`: an integer, specifying the maximum number of optimization iterations to be performed before termination, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `overwrite`: a boolean, determining whether existing results (on the same `mode_name`) can be overwritten
-- `print.level`: an integer, determining the level of printing which is done during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `overwrite`: a boolean, determining whether existing results (on the same `model_name`) can be overwritten
+- `print.level`: an integer, determining the level of printing during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `runs`: an integer, setting the number of optimization runs
-- `seed`: an integer, setting a seed for the simulation and initialization
-- `steptol`: an integer, providing the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `truncate_data`: a vector of length 2, containing dates or `NA` and specifying truncation points of empirical data
+- `seed`: an integer, setting a seed for the simulation and the initialization
+- `steptol`: an integer, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `truncate_data`: a vector of length 2, containing dates or `NA` and specifying a subset of the empirical data
 
 ## Outputs
-The following model results are saved in he folder `./models`:
+The following model results are saved in the folder `./models`:
 - `estimates.txt`, containing estimates, gradient, Hessian, likelihood value, AIC and BIC values etc.
-- `controls`, `data`, `decoding` and `fit` are .RData-files and can be reinitialized
+- `controls`, `data`, `decoding` and `fit`, .RData-files that can be reinitialized
+- `lls.pdf`, a visualization of the log-likelihood values in the different estimation runs
 - `pseudos.pdf`, a visualization of the pseudo-residuals
 - `sdd.pdf`, a visualization of the state-dependent distributions
 - `ts.pdf`, a visualization of the decoded time series (only for empirical data)
