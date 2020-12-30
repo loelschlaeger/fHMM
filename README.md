@@ -62,3 +62,36 @@ The following model results are saved in the folder `./models`:
 - `ts.pdf`, a visualization of the decoded time series (only for empirical data)
 
 ## Examples
+```R
+### 1. Initialization
+rm(list = ls())
+source("init.R"); init()
+
+### 2. Set and check controls
+controls = list(
+  model_name    = "HMM_DAX_3",        
+  data_source   = c("dax.csv",NA),
+  truncate_data = c("2001-01-03",NA), 
+  states        = c(3,0),
+  time_horizon  = c(NA,NA),
+  runs          = 200
+)
+controls = check_controls(controls)
+
+### 3. Fit model to data
+data = getData(controls)
+fit = maxLikelihood(data,controls)
+
+### 4. Decode hidden states
+decoding = applyViterbi(data,fit,controls)
+
+### 5. Visualize results
+labels = list(
+  dates = c("2001-09-11","2008-09-15","2020-01-27"),
+  names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
+)
+visual(data,fit,decoding,controls,labels)
+
+### 6. Reinitialize model
+reinit("test")
+```
