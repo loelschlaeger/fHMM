@@ -27,15 +27,15 @@ The model is specified by defining the named list `controls`. The following para
 - `states`: a numeric vector of length 2, determining the model type and the number of states:
    - if `states = c(x,0)`, a HMM with `x` states is estimated
    - if `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated
-- `time_horizon`: a numeric vector of length 2, determining the length of the time horizion
+- `time_horizon`: a numeric vector of length 2, determining the length of the time horizion(s)
 
-The following parameters of `controls` are optional and set to default values, if not specified:
+The following parameters of `controls` are optional and set to default values if not specified:
 - `accept_codes`: a numeric vector, containing acceptable exit codes of the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `data_source`: a numeric vector of length 2, containing the file names of the financial data:
    - if `data_source = c(NA,NA)`, data is simulated
    - if `data_source = c("x.csv",NA)`, model `"./data/x.csv"` by a HMM
-   - if `data_source = c("x.csv","y.csv")`, model averages of `"./data/x.csv"` (size determined by the second entry of `time_horizon`) on the coarse scale and data `"./data/y.csv"` on the fine scale, respectively, by a HHMM
-   - if `data_source = c(NA,"y.csv")`, this is interpreted as `data_source = c("y.csv","y.csv")`
+   - if `data_source = c("x.csv","y.csv")`, model averages of `"./data/x.csv"` (size determined by the second entry of `time_horizon`) on the coarse scale and pure data `"./data/y.csv"` on the fine scale, respectively
+   - `data_source = c(NA,"y.csv")` is interpreted as `data_source = c("y.csv","y.csv")`
 - `fix_dfs`: a numeric vector of length 2, fixing the degrees of freedom of the state-dependent t-distributions
    - if `fix_dfs = c(NA,NA)`, degrees of freedom are not fixed
    - if `fix_dfs = c(x,NA)`, degrees of freedom of a HMM or the coarse scale of a HHMM are fixed to `x`
@@ -51,7 +51,7 @@ The following parameters of `controls` are optional and set to default values, i
 - `truncate_data`: a vector of length 2, containing dates or `NA` and specifying truncation points of empirical data
 
 ## Outputs
-The following model results are saved in he folder `./models`:
+The following model results are saved in the folder `./models`:
 - `estimates.txt`, containing estimates, gradient, Hessian, likelihood value, AIC and BIC values etc.
 - `controls`, `data`, `decoding` and `fit` are .RData-files and can be reinitialized
 - `lls.pdf`, a visualization of the log-likelihood values in the different estimation runs
