@@ -2,11 +2,11 @@ getData = function(controls){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
   if(controls[["sim"]]){
     data = simulateData(controls)
-    writeLines("Simulation successful.")
+    writeLines("Data simulation successful.")
   }
   if(!controls[["sim"]]){
     data = readData(controls)
-    writeLines("Processing successful.")
+    writeLines("Data processing successful.")
   }
   check_data(controls,data)
   return(data)
