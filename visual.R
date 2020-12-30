@@ -38,6 +38,10 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   legend_layout = list(cex=1.25,x="topleft",bg="white")
   plot_layout = list()
   
+  ### rounding functions
+  floor_dec = function(x,n) round(x-5*10^(-n-1),n)
+  ceiling_dec = function(x,n) round(x+5*10^(-n-1),n)
+  
   ### state dependent distributions
   filename = paste0("models/",controls[["model_name"]],"/sdd.pdf")
   if(controls[["overwrite"]]==FALSE & file.exists(filename)){
@@ -47,7 +51,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       pdf(filename, width=9, height=7)
       sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
       lwd = 3
-      xmin = round(min(data$observations),1); xmax = round(max(data$observations),1); x = seq(xmin,xmax,0.001)
+      xmin = floor_dec(min(data$observations),1); xmax = ceiling_dec(max(data$observations),1); x = seq(xmin,xmax,0.001)
       ymin = 0; ymax = ceiling(max(sapply(x,sdd,s=seq_len(states[1]))))
       hist(data$observations,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
       axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=20),las=1)
@@ -62,7 +66,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       pdf(filename, width=9, height=7)
       sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
       lwd = 3
-      xmin = min(-0.1,round(min(cs_observations),1)); xmax = max(0.1,round(max(cs_observations),1)); x = seq(xmin,xmax,0.001)
+      xmin = min(-0.1,floor_dec(min(cs_observations),1)); xmax = max(0.1,ceiling_dec(max(cs_observations),1)); x = seq(xmin,xmax,0.001)
       ymin = 0; ymax = ceiling(max(sapply(x,sdd,s=seq_len(states[1]))))
       hist(cs_observations,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
       axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=40),las=1)
@@ -73,7 +77,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       }
       sdd = function(cs,fs,x) {1/sigmas_star[[cs]][fs]*dt((x-mus_star[[cs]][fs])/sigmas_star[[cs]][fs],dfs_star[[cs]][fs])}
       lwd = 3
-      xmin = round(min(fs_observations),1); xmax = round(max(fs_observations),1); x = seq(xmin,xmax,0.001)
+      xmin = floor_dec(min(fs_observations),1); xmax = ceiling_dec(max(fs_observations),1); x = seq(xmin,xmax,0.001)
       ymin = 0 
       ymax = 0
       for(cs in seq_len(states[1])){
