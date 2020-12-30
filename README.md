@@ -92,4 +92,3 @@ labels = list(
 )
 visual(data,fit,decoding,controls,labels)
 ```
-[Results](#https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HMM_DAX_3)
