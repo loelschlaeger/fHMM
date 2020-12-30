@@ -183,8 +183,8 @@ check_estimation = function(time,mods,llks,data,controls){
   } else {
     options(max.print=1000000)
     sink(file=file)
-    fc = c("LL","AIC","BIC","exit code","iterations")
-    sc = c(fit[["LL"]],fit[["AIC"]],fit[["BIC"]],mod[["code"]],mod[["iterations"]])
+    fc = c("LL","AIC","BIC","exit code","iterations", "run time")
+    sc = c(fit[["LL"]],fit[["AIC"]],fit[["BIC"]],mod[["code"]],mod[["iterations"]],time)
     df = data.frame(fc,sc)
     names(df) = NULL
     writeLines(paste0("Results of model '",controls[["model_name"]],"':"))
@@ -219,7 +219,6 @@ check_estimation = function(time,mods,llks,data,controls){
   return(fit)
 }
 
-#TODO: comp. between true states and decoded states
 check_decoding = function(decoding,controls){
   writeLines("State decoding successful.")
 }
