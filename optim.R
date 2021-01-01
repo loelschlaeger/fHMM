@@ -1,28 +1,28 @@
 maxLikelihood = function(data,controls){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
-  observations = data[["observations"]]
+  
   runs = controls[["runs"]]
   llks = rep(NA,runs) 
   mods = list() 
+  
   if(controls[["model"]]=="HMM") target = nLL_hmm
   if(controls[["model"]]=="HHMM") target = nLL_hhmm
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
   
-  pb = progress_bar$new(format = "Model fitting: [:bar] :percent complete, :eta remain", total = runs, clear = FALSE, width = 60, show_after=0)
+  pb = progress_bar$new(format = "Model fitting: [:bar] :percent complete, :eta ETA", total = runs, clear = FALSE, width = 60, show_after = 0)
   start = Sys.time()
 	for (k in 1:runs){
 	  pb$tick(0)
 	  suppressWarnings({ tryCatch({ mods[[k]] = nlm(f = target,
     			                                        p = init_est(controls),
-                            			                observations = observations,
+                            			                observations = data[["observations"]],
                             			                controls = controls,
                             			                iterlim = controls[["iterlim"]],
                             			                steptol = controls[["steptol"]],
                             			                print.level = controls[["print.level"]],
-                            			                hessian = controls[["hessian"]]
-    			                                        )
+                            			                hessian = controls[["hessian"]])
     		                          if(mods[[k]]$code %in% controls[["accept_codes"]]) llks[k] = -mods[[k]]$minimum
-  			                        },error = function(e){})
+    		                          },error = function(e){})
   		              })
 	  pb$tick()
 	}
