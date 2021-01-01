@@ -71,7 +71,7 @@ source("init.R"); init()
 controls = list(
   model_name    = "HMM_DAX_3",        
   data_source   = c("dax.csv",NA),
-  truncate_data = c("2001-01-03",NA), 
+  truncate_data = c("2000-01-03",NA), 
   states        = c(3,0),
   time_horizon  = c(NA,NA),
   runs          = 200
