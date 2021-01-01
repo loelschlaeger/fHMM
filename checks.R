@@ -174,7 +174,7 @@ check_estimation = function(time,mods,llks,data,controls){
              "mod"       = mod,
              "thetaList" = thetaList,
              "AIC"       = compAIC(controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]]),
-             "BIC"       = compBIC(prod(dim(t(data$observations))),controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]])
+             "BIC"       = compBIC(prod(dim(t(data$observations))),controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]]),
              "all_LL"    = llks,
              "all_mods"  = mods
   )
