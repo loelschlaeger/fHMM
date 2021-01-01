@@ -56,7 +56,7 @@ Gamma2delta = function(Gamma){
   dim   = dim(Gamma)[1]
   if(class(try(solve(t(diag(dim)-Gamma+1),rep(1,dim)),silent=TRUE))=="try-error"){ 
     delta = rep(1/dim,dim)
-    warning(call.=FALSE,"Computation of stationary distribution failed, I will continue with uniform distribution.")
+    warning(call.=FALSE,"Computation of stationary distribution failed, return uniform distribution.")
   } else { 
     delta = solve(t(diag(dim)-Gamma+1),rep(1,dim))
   }
