@@ -34,9 +34,8 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   colors[,1] = col.alpha(base.col(states[1]))
   for(s in seq_len(states[1])) colors[s,-1] = col.alpha(var.col(colors[s,1],states[2]))
   
-  ### define layout
+  ### define legend layout
   legend_layout = list(cex=1.25,x="topleft",bg="white")
-  plot_layout = list()
   
   ### rounding functions
   floor_dec = function(x,n) round(x-5*10^(-n-1),n)
@@ -78,8 +77,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       sdd = function(cs,fs,x) {1/sigmas_star[[cs]][fs]*dt((x-mus_star[[cs]][fs])/sigmas_star[[cs]][fs],dfs_star[[cs]][fs])}
       lwd = 3
       xmin = floor_dec(min(fs_observations),1); xmax = ceiling_dec(max(fs_observations),1); x = seq(xmin,xmax,0.001)
-      ymin = 0 
-      ymax = 0
+      ymin = 0; ymax = 0
       for(cs in seq_len(states[1])){
         for(fs in seq_len(states[2])){
           temp = max(sdd(cs,fs,x))
@@ -107,8 +105,9 @@ visual = function(data,fit,decoding,controls,labels=NULL){
     if(!controls[["sim"]]){
       pdf(filename, width=19, height=9)
       par(mfrow=c(1,1),las=1,mar=c(6,5,0.5,5),bty="n")
-      xmin = as.Date(head(data$dates,n=1))
-      xmax = as.Date(tail(data$dates,n=1)) 
+      xmin = as.Date(format(as.Date(head(data$dates,n=1)),"%Y-01-01")); 
+      xmin=as.Date("2000-01-01")
+      xmax = as.Date(paste0(as.numeric(format(tail(data$dates,n=1),"%Y"))+1,"-01-01"))
       ymax = max(data$closes); ymin = -ymax
       plot(data$dates,data$closes,type="l",xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="grey",xlab="",ylab="",xaxt="n",yaxt="n",cex.lab=2, cex.main=2)
       par(las=3)
