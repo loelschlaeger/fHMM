@@ -133,6 +133,7 @@ check_estimation = function(time,mods,llks,data,controls){
 
   ### select model with highest LL
   mod       = mods[[which.max(llks)]]
+  mod_LL    = -mod$minimum
   thetaCon  = thetaUncon2thetaCon(mod$estimate,controls)
   thetaList = statesDecreasing(thetaCon2thetaList(thetaCon,controls),controls)
   
@@ -153,7 +154,7 @@ check_estimation = function(time,mods,llks,data,controls){
   } else {
     pdf(filename, width=9, height=7)
       plot(llks,yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
-      points(x=which.max(llks),y=max(llks,na.rm=TRUE),pch=16,cex=1.25,col="red")
+      points(x=which.max(llks),y=mod_LL,pch=16,cex=1.25,col="red")
       axis(2,las=1,at=unique(round(llks[!is.na(llks)])),labels=unique(round(llks[!is.na(llks)])))
     invisible(dev.off())
   }
@@ -169,13 +170,13 @@ check_estimation = function(time,mods,llks,data,controls){
   compBIC = function(T,M,N,LL,est_dfs) return(log(T)*noPar(M,N,est_dfs) - 2*LL)
   
   ### create estimation output
-  fit = list("LL"        = -mod$minimum,
-             "all_LL"    = llks,
-             "thetaList" = thetaList,
+  fit = list("LL"        = mod_LL,
              "mod"       = mod,
-             "all_mods"  = mods,
+             "thetaList" = thetaList,
              "AIC"       = compAIC(controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]]),
              "BIC"       = compBIC(prod(dim(t(data$observations))),controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]])
+             "all_LL"    = llks,
+             "all_mods"  = mods
   )
   file = paste0("models/",controls[["model_name"]],"/estimates.txt")
   if(file.exists(file) & !controls[["overwrite"]]){ 
