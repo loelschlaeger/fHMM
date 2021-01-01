@@ -1,14 +1,9 @@
 ### initialize the code
 init = function(){
   message("Loading code...\r")
-  if(!dir.exists("models")){
-    dir.create("models")
-  }
-  if(!dir.exists("data")){
-    dir.create("data")
-  }
+  if(!dir.exists("models")) dir.create("models")
+  if(!dir.exists("data")) dir.create("data")
   exe = alist(require("Rcpp"),
-              require("Rcpp"),
               require("RcppArmadillo"),
               require("progress"),
               source("checks.R"),
@@ -18,9 +13,7 @@ init = function(){
               source("trans.R"),
               source("visual.R"),
               source("viterbi.R"))
-  for(e in seq_len(length(exe))){ 
-    suppressPackageStartupMessages(eval(exe[[e]]))
-  }
+  for(e in seq_len(length(exe))) suppressPackageStartupMessages(eval(exe[[e]]))
   cat("\f")
   writeLines("Fit (H)HMMs to financial data.")
   writeLines(paste0("Data source:   ",getwd(),"/data"))
@@ -53,14 +46,10 @@ init_est = function(controls){
 reinit = function(name){
   loadable = c("controls","data","fit","decoding")
   path = paste0("models/",name)
-  if(!dir.exists(path)){
-    stop(paste0("Reinitialization failed, path '",path,"' does not exist."),call.=FALSE)
-  }
+  if(!dir.exists(path)) stop(paste0("Reinitialization failed, path '",path,"' does not exist."),call.=FALSE)
   loaded = list()
   for(object in loadable){
-    if(file.exists(paste0(path,"/",object))){
-      loaded[[object]] = readRDS(paste0(path,"/",object))
-    }
+    if(file.exists(paste0(path,"/",object))) loaded[[object]] = readRDS(paste0(path,"/",object))
   }
   if(length(loaded)>=1){
     writeLines("Reinitialization successful.")
