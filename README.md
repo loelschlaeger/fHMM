@@ -32,7 +32,7 @@ The model is specified by defining the named list `controls`. Three parameters o
    - if `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated
 - And either `data_source` (for empirical data) or `time_horizon` (for simulated data) has to be specified, see below.
 
-The following parameters of `controls` are optional and set to default values if not specified:
+The following parameters of `controls` are optional and set to [default values](#default-values-of-controls) if not specified:
 - `accept_codes`: a numeric vector, containing acceptable exit codes of the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `data_source`: a numeric vector of length 2, containing the file names of the financial data:
    - if `data_source = c(NA,NA)`, data is simulated
@@ -53,6 +53,8 @@ The following parameters of `controls` are optional and set to default values if
 - `steptol`: an integer, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `time_horizon`: a numeric vector of length 2, determining the length of the time horizion(s) (If the model is a HHMM, its second entry must always be specified to set the length of the fine-scale chunks.)
 - `truncate_data`: a vector of length 2, containing dates or `NA` and specifying a subset of the empirical data
+
+### Default values of controls
 
 ## Outputs
 The following model results are saved in the folder `./models`:
