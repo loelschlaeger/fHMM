@@ -102,9 +102,9 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   if(controls[["overwrite"]]==FALSE & file.exists(filename)){
     warning(paste0("Cannot create a plot of the decoded time series because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
   } else {
+    pdf(filename, width=19, height=9)
+    par(las=1,mar=c(6,5,0.5,5),bty="n")
     if(!controls[["sim"]]){
-      pdf(filename, width=19, height=9)
-      par(mfrow=c(1,1),las=1,mar=c(6,5,0.5,5),bty="n")
       xmin = as.Date(format(as.Date(head(data$dates,n=1)),"%Y-01-01")); 
       xmin=as.Date("2000-01-01")
       xmax = as.Date(paste0(as.numeric(format(tail(data$dates,n=1),"%Y"))+1,"-01-01"))
@@ -129,15 +129,24 @@ visual = function(data,fit,decoding,controls,labels=NULL){
           }
         }
       }
-      par(new=TRUE)
-      par(mfrow=c(1,1),las=1)
+      par(new=TRUE,las=1)
+      x_values = data$dates
+      ymax_factor = 3
+    }
+    if(controls[["sim"]]){
+      xmin = 1
+      if(controls[["model"]]=="HMM") xmax = length(data$observations)
+      if(controls[["model"]]=="HHMM") xmax = length(fs_observations)
+      x_values = seq_len(xmax)
+      ymax_factor = 1.5
+    }
       if(controls[["model"]]=="HMM"){
         ymin = min(data$observations); ymax = max(data$observations)
-        plot(data$dates,data$observations,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*3))
+        plot(x_values,data$observations,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
       }
       if(controls[["model"]]=="HHMM"){
         ymin = min(fs_observations); ymax = max(fs_observations)
-        plot(data$dates,fs_observations,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*3))
+        plot(x_values,fs_observations,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
       }
       par(las=3)
       mtext("Log-return",side=2,line=3.5,at=0,cex=1.25)
@@ -145,18 +154,18 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       axis(2, round(c(ymin,0,ymax),2))
       if(controls[["model"]]=="HMM"){
         for(s in seq_len(states[1])){
-          points(data$dates[decoding==s],data$observations[decoding==s],col=colors[s,1],pch=20)
+          points(x_values[decoding==s],data$observations[decoding==s],col=colors[s,1],pch=20)
         }
       }
       if(controls[["model"]]=="HHMM"){
         for(cs in seq_len(states[1])){
           for(fs in seq_len(states[2])){
-            points(data$dates[decoding_cs==cs&decoding_fs==fs],fs_observations[decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
+            points(x_values[decoding_cs==cs&decoding_fs==fs],fs_observations[decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
           }
         }
       }
       abline(h=0)
-      if(!is.null(labels)){
+      if(!controls[["sim"]] & !is.null(labels)){
         for(l in seq_len(length(labels[["dates"]]))){
           if(labels[["dates"]][l]<=xmax){
             abline(v=as.Date(labels[["dates"]][l]))
@@ -174,7 +183,6 @@ visual = function(data,fit,decoding,controls,labels=NULL){
         do.call(legend,c(list(legend=paste0("Coarse-scale state ",eg[,2],", fine-scale state ",eg[,1]),col=as.vector(t(colors[,-1])),pch=19),legend_layout))
       }
       invisible(dev.off())
-    }
   }
   
   ### pseudo-residuals
@@ -203,6 +211,8 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       for(t in 1:(T*T_star)){
         pseudos_fs[t] = qnorm(pt((as.vector(t(data$observations[,-1]))[t]-mus_star[[decoding_cs[t]]][decoding_fs[t]])/sigmas_star[[decoding_cs[t]]][decoding_fs[t]],dfs_star[[decoding_cs[t]]][decoding_fs[t]]))
       }
+      pseudos_cs = pseudos_cs[is.finite(pseudos_cs)]
+      pseudos_fs = pseudos_fs[is.finite(pseudos_fs)]
       pdf(filename, width=9, height=7)
         plot(pseudos_cs,ylim=c(floor(min(pseudos_cs)),ceiling(max(pseudos_cs))),main="Residual plot",ylab="Coarse-scale pseudo-residuals",las=1,pch=3)
         plot(pseudos_fs,ylim=c(floor(min(pseudos_fs)),ceiling(max(pseudos_fs))),main="Residual plot",ylab="Fine-scale pseudo-residuals",las=1,pch=3)
