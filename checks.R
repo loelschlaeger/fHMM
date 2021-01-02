@@ -2,7 +2,7 @@ check_controls = function(controls){
   
   ### check supplied control values
   all_controls = c("model_name","data_source","truncate_data","states","time_horizon","fix_dfs","runs","iterlim","hessian","seed","print.level","steptol","accept_codes","overwrite")
-  required_controls = c("model_name","states","time_horizon")
+  required_controls = c("model_name","states")
   artificial_controls = c("sim","model","est_dfs","HHMM_av","controls_checked")
   missing_controls = setdiff(all_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
@@ -29,8 +29,9 @@ check_controls = function(controls){
   ### set default values
   if("data_source" %in% missing_controls) controls[["data_source"]] = c(NA,NA)
   if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
+  if("time_horizon" %in% missing_controls) controls[["time_horizon"]] = c(NA,NA)
   if("fix_dfs" %in% missing_controls) controls[["fix_dfs"]] = c(NA,NA)
-  if("runs" %in% missing_controls) controls[["runs"]] = 100
+  if("runs" %in% missing_controls) controls[["runs"]] = 200
   if("iterlim" %in% missing_controls) controls[["iterlim"]] = 500
   if("hessian" %in% missing_controls) controls[["hessian"]] = TRUE
   if("print.level" %in% missing_controls) controls[["print.level"]] = 0
@@ -45,32 +46,62 @@ check_controls = function(controls){
     controls[["est_dfs"]] = if(is.na(controls[["fix_dfs"]][1])) TRUE else FALSE;
   }
   if(controls[["model"]]=="HHMM"){
-    controls[["sim"]] = if(is.na(controls[["data_source"]][2]) || (all(is.na(controls[["data_source"]])))) TRUE else FALSE;
-    if(is.na(controls[["data_source"]][1]) & !is.na(controls[["data_source"]][2])) controls[["HHMM_av"]] = TRUE
-    if(all(!is.na(controls[["data_source"]]))) controls[["HHMM_av"]] = FALSE
+    controls[["sim"]] = if(is.na(controls[["data_source"]][2])) TRUE else FALSE;
+    if(!controls[["sim"]] & is.na(controls[["data_source"]][1]) & !is.na(controls[["data_source"]][2])) controls[["HHMM_av"]] = TRUE
+    if(!controls[["sim"]] & all(!is.na(controls[["data_source"]]))) controls[["HHMM_av"]] = FALSE
     controls[["est_dfs"]] = if(any(is.na(controls[["fix_dfs"]]))) TRUE else FALSE;
   }
   
   ### check correct parameter format for HMM and HHMM resp.
-  if(controls[["sim"]] & any(!is.na(controls[["truncate_data"]]))) {warning("Entries of 'truncate_data' will be ignored.",call.=FALSE); controls[["truncate_data"]] = c(NA,NA)}
+  if(controls[["sim"]] & any(!is.na(controls[["truncate_data"]]))){
+    warning("Entries of 'truncate_data' will be ignored.",call.=FALSE)
+    controls[["truncate_data"]] = c(NA,NA)
+  }
   if(controls[["model"]]=="HMM") {
-    if(controls[["states"]][1]%%1!=0 || controls[["states"]][1]<2) stop("First entry of 'states' in 'controls' must be an integer greater or equal 2.",call.=FALSE)
-    if(!is.na(controls[["data_source"]][2])) {warning("Second entry of 'data_source' will be ignored.",call.=FALSE); controls[["data_source"]][2] = NA}
-    if(controls[["sim"]] & is.na(controls[["time_horizon"]][1])) stop("Either first entry of 'data_source' or 'time_horizon' has to be specified.",call.=FALSE)
-    if(!controls[["sim"]]){
-      warning("Entries of 'time_horizon' will be ignored.",call.=FALSE); controls[["time_horizon"]] = c(NA,NA)
-    } else if(!is.na(controls[["time_horizon"]][2])){
-      warning("Second entry of 'time_horizon' will be ignored.",call.=FALSE); controls[["time_horizon"]][2] = NA
+    if(controls[["states"]][1]%%1!=0 || controls[["states"]][1]<2){
+      stop("First entry of 'states' in 'controls' must be an integer greater or equal 2.",call.=FALSE)
     }
-    if(!is.na(controls[["fix_dfs"]][2])) {warning("Second entry of 'fix_dfs' will be ignored.",call.=FALSE); controls[["fix_dfs"]][2] = NA}
+    if(!is.na(controls[["data_source"]][2])){
+      warning("Second entry of 'data_source' will be ignored.",call.=FALSE)
+      controls[["data_source"]][2] = NA
+    }
+    if(controls[["sim"]] & is.na(controls[["time_horizon"]][1])){
+      stop("Either first entry of 'data_source' or 'time_horizon' has to be specified.",call.=FALSE)
+    }
+    if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
+      warning("First entry of 'time_horizon' will be ignored.",call.=FALSE)
+      controls[["time_horizon"]][1] = NA
+    }
+    if(!is.na(controls[["time_horizon"]][2])){
+      warning("Second entry of 'time_horizon' will be ignored.",call.=FALSE)
+      controls[["time_horizon"]][2] = NA
+    }
+    if(!is.na(controls[["fix_dfs"]][2])){
+      warning("Second entry of 'fix_dfs' will be ignored.",call.=FALSE)
+      controls[["fix_dfs"]][2] = NA
+      }
   }
   if(controls[["model"]]=="HHMM") {
-    if(controls[["states"]][1]%%1!=0 || controls[["states"]][1]<2) stop("First entry of 'states' in 'controls' must be an integer greater or equal 2.",call.=FALSE)
-    if(controls[["states"]][2]%%1!=0 || controls[["states"]][2]<2) stop("Second entry of 'states' in 'controls' must be an integer greater or equal 2.",call.=FALSE)
-    if(!is.na(controls[["data_source"]][1]) & is.na(controls[["data_source"]][2])) {warning("First entry of 'data_source' will be ignored.",call.=FALSE); controls[["data_source"]][1] = NA}
-    if(controls[["sim"]] & any(is.na(controls[["time_horizon"]]))) stop("Either 'data_source' or 'time_horizon' has to be specified.",call.=FALSE)
-    if(!controls[["sim"]] & is.na(controls[["time_horizon"]][2])) stop("Second entry of 'time_horizon' has to be specified.",call.=FALSE)
-    if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])) {warning("First entry of 'time_horizon' will be ignored.",call.=FALSE); controls[["time_horizon"]][1] = NA}
+    if(controls[["states"]][1]%%1!=0 || controls[["states"]][1]<2){
+      stop("First entry of 'states' in 'controls' must be an integer greater or equal 2.",call.=FALSE)
+    }
+    if(controls[["states"]][2]%%1!=0 || controls[["states"]][2]<2){
+      stop("Second entry of 'states' in 'controls' must be an integer greater or equal 2.",call.=FALSE)
+    }
+    if(controls[["sim"]] & any(!is.na(controls[["data_source"]]))){
+      warning("Entries of 'data_source' will be ignored.",call.=FALSE)
+      controls[["data_source"]] = c(NA,NA)
+    }
+    if(controls[["sim"]] & any(is.na(controls[["time_horizon"]]))){
+      stop("Either 'data_source' or 'time_horizon' has to be specified.",call.=FALSE)
+    }
+    if(!controls[["sim"]] & is.na(controls[["time_horizon"]][2])){
+      stop("Second entry of 'time_horizon' has to be specified.",call.=FALSE)
+    }
+    if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
+      warning("First entry of 'time_horizon' will be ignored.",call.=FALSE)
+      controls[["time_horizon"]][1] = NA
+    }
   }
   
   ### check if data paths are correct
@@ -236,7 +267,7 @@ check_saving = function(object,controls){
     if(overwrite){
       saveRDS(object,file=filename)
     } else { 
-      warning(paste0("Cannot save '",name,"' because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
+      warning(paste0("Cannot save '",name,"' because '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
       }
   } else {
     saveRDS(object,file=filename)
