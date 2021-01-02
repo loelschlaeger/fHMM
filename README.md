@@ -6,6 +6,7 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 - `data.R` processes or simulates data.
 - `init.R` initializes the code and the estimation routine.
 - `loglike.cpp` computes the model's log-likelihood.
+- `loop.R` loops over multiple [model specifications](#specifying-controls).
 - `main.R` presents the code's [workflow](#getting-started).
 - `optim.R` maximizes the log-likelihood function using [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
 - `trans.R` contains helper functions for parameter transformations.
