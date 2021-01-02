@@ -30,7 +30,7 @@ The model is specified by defining the named list `controls`. Three parameters o
 - `states`: a numeric vector of length 2, determining the model type and the number of states:
    - if `states = c(x,0)`, a HMM with `x` states is estimated
    - if `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated
-- And either `data_source` (for empirical data) or `time_horizon` (for simulation) has to be specified, see below.
+- And either `data_source` (for empirical data) or `time_horizon` (for simulated data) has to be specified, see below.
 
 The following parameters of `controls` are optional and set to default values if not specified:
 - `accept_codes`: a numeric vector, containing acceptable exit codes of the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
