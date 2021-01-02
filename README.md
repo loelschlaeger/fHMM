@@ -63,7 +63,7 @@ The following parameters of `controls` are optional and set to [default values](
 - `overwrite = FALSE`
 - `print.level = 0` (no printing occurs)
 - `runs = 200`
-- no `seed` is set
+- `seed` is not set
 - `steptol = 1e-8`
 - `time_horizon = c(NA,NA)`
 - `truncate_data = c(NA,NA)`
@@ -71,11 +71,12 @@ The following parameters of `controls` are optional and set to [default values](
 ## Outputs
 The following model results are saved in the folder `./models`:
 - `estimates.txt`, containing estimates, gradient, Hessian, likelihood value, AIC and BIC values etc.
+- `states.txt`, containing frequencies of the decoded states
 - `controls`, `data`, `decoding` and `fit`, .RData-files that can be reinitialized
 - `lls.pdf`, a visualization of the log-likelihood values in the different estimation runs
 - `pseudos.pdf`, a visualization of the pseudo-residuals
 - `sdd.pdf`, a visualization of the state-dependent distributions
-- `ts.pdf`, a visualization of the decoded time series (only for empirical data)
+- `ts.pdf`, a visualization of the decoded time series
 
 ## Examples
 ### Fitting a HMM to the 21st century DAX
