@@ -63,7 +63,7 @@ The following parameters of `controls` are optional and set to [default values](
 - `overwrite = FALSE`
 - `print.level = 0` (no printing occurs)
 - `runs = 200`
-- `seed`: no seed is set
+- no `seed` is set
 - `steptol = 1e-8`
 - `time_horizon = c(NA,NA)`
 - `truncate_data = c(NA,NA)`
