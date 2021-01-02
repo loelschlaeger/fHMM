@@ -25,12 +25,11 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 See below for some [examples](#examples).
 
 ## Specifying controls
-The model is specified by defining the named list `controls`. The following parameters of `controls` are mandatory:
+The model is specified by defining the named list `controls`. Two parameters of `controls` are mandatory:
 - `model_name`: a character, identifying the model
 - `states`: a numeric vector of length 2, determining the model type and the number of states:
    - if `states = c(x,0)`, a HMM with `x` states is estimated
    - if `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated
-- `time_horizon`: a numeric vector of length 2, determining the length of the time horizion(s)
 
 The following parameters of `controls` are optional and set to default values if not specified:
 - `accept_codes`: a numeric vector, containing acceptable exit codes of the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
@@ -51,6 +50,7 @@ The following parameters of `controls` are optional and set to default values if
 - `runs`: an integer, setting the number of optimization runs
 - `seed`: an integer, setting a seed for the simulation and the initialization
 - `steptol`: an integer, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `time_horizon`: a numeric vector of length 2, determining the length of the time horizion(s)
 - `truncate_data`: a vector of length 2, containing dates or `NA` and specifying a subset of the empirical data
 
 ## Outputs
