@@ -55,6 +55,18 @@ The following parameters of `controls` are optional and set to [default values](
 - `truncate_data`: a vector of length 2, containing dates or `NA` and specifying a subset of the empirical data
 
 ### Default values of controls
+- `accept_codes = 1` (relative gradient is close to zero, current iterate is probably solution)
+- `data_source = c(NA,NA)` (no empirical data)
+- `fix_dfs = c(NA,NA)` (degrees of freedom not fixed)
+- `hessian = TRUE` 
+- `iterlim = 500`
+- `overwrite = FALSE`
+- `print.level = 0` (no printing occurs)
+- `runs = 200`
+- `seed`: no seed is set
+- `steptol = 1e-8`
+- `time_horizon = c(NA,NA)`
+- `truncate_data = c(NA,NA)`
 
 ## Outputs
 The following model results are saved in the folder `./models`:
