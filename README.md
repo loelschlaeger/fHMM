@@ -26,7 +26,7 @@ See below for some [examples](#examples).
 
 ## Specifying controls
 The model is specified by defining the named list `controls`. Three parameters of `controls` are mandatory:
-- `model_name`: a character, identifying the model
+- `id`: a character, identifying the model
 - `states`: a numeric vector of length 2, determining the model type and the number of states:
    - if `states = c(x,0)`, a HMM with `x` states is estimated
    - if `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated
@@ -46,7 +46,7 @@ The following parameters of `controls` are optional and set to [default values](
    - if `fix_dfs = c(x,y)`, degrees of freedom of the coarse scale and the fine scale of a HHMM are fixed to `x` and `y`, respectively 
 - `hessian`: a boolean, determining whether the Hessian is computed
 - `iterlim`: an integer, specifying the maximum number of optimization iterations to be performed before termination, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `overwrite`: a boolean, determining whether existing results (on the same `model_name`) can be overwritten
+- `overwrite`: a boolean, determining whether existing results (on the same `id`) can be overwritten
 - `print.level`: an integer, determining the level of printing during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `runs`: an integer, setting the number of optimization runs
 - `seed`: an integer, setting a seed for the simulation and the initialization
@@ -79,19 +79,18 @@ The following model results are saved in the folder `./models`:
 - `ts.pdf`, a visualization of the decoded time series
 
 ## Examples
-### Fitting a HMM to the 21st century DAX
+### Fitting a HMM to the 21st century DAX closing prices
 ```R
 ### 1. Initialization
 source("init.R"); init()
 
 ### 2. Set and check controls
 controls = list(
-  model_name    = "HMM_DAX_3",        
+  id            = "HMM_DAX_3",        
   data_source   = c("dax.csv",NA),
+  data_col      = c("Close",NA)
   truncate_data = c("2000-01-03",NA), 
-  states        = c(3,0),
-  time_horizon  = c(NA,NA),
-  runs          = 200
+  states        = c(3,0)
 )
 controls = check_controls(controls)
 
