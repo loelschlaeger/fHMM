@@ -1,5 +1,5 @@
 # HHMM_Finance
-This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data. The code is intended to be used on closing prices of financial time series provided by https://finance.yahoo.com/. The data must be in csv-format, containing columns named "Date" and "Close", and must be saved in the folder `"./data"`. Additionally, data can be simulated.
+This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data. The code is intended to be used on financial time series provided by https://finance.yahoo.com/. The data must be in csv-format, containing a column named "Date" and must be saved in the folder `"./data"`. Additionally, data can be simulated.
 
 ## Contained files
 - `checks.R` contains validation functions.
