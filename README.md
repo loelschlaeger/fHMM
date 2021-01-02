@@ -56,8 +56,8 @@ The following parameters of `controls` are optional and set to [default values](
 
 ### Default values
 - `accept_codes = 1` (relative gradient is close to zero, current iterate is probably solution)
-- `data_source = c(NA,NA)` (no empirical data)
-- `fix_dfs = c(NA,NA)` (degrees of freedom not fixed)
+- `data_source = c(NA,NA)` 
+- `fix_dfs = c(NA,NA)` 
 - `hessian = TRUE` 
 - `iterlim = 500`
 - `overwrite = FALSE`
