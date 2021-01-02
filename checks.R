@@ -211,35 +211,21 @@ check_estimation = function(time,mods,llks,data,controls){
   )
   file = paste0("models/",controls[["model_name"]],"/estimates.txt")
   if(file.exists(file) & !controls[["overwrite"]]){ 
-    warning(paste0("Cannot save 'estimates.txt' because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
+    warning(paste0("Cannot save 'estimates.txt' because '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
   } else {
     options(max.print=1000000)
     sink(file=file)
-    fc = c("LL","AIC","BIC","exit code","iterations", "run time (min)")
-    sc = c(fit[["LL"]],fit[["AIC"]],fit[["BIC"]],mod[["code"]],mod[["iterations"]],time)
-    df = data.frame(fc,sc)
-    names(df) = NULL
-    writeLines(paste0("Results of model '",controls[["model_name"]],"':"))
-    print(df,row.names=FALSE,right=FALSE)
-    writeLines("")
+    first_col = c("LL","AIC","BIC","exit code","iterations", "run time (min)")
+    second_col = c(fit[["LL"]],fit[["AIC"]],fit[["BIC"]],mod[["code"]],mod[["iterations"]],time)
+    df = data.frame(first_col,second_col); names(df) = NULL
+    writeLines(paste0("Results of model '",controls[["model_name"]],"':")); print(df,row.names=FALSE,right=FALSE); writeLines("")
     if(controls[["sim"]]){
-      writeLines("True parameter values:")
-      writeLines("")
-      print(data[["thetaList0"]])
-      writeLines("")
+      writeLines("True parameter values:\n"); print(data[["thetaList0"]])
     }
-    writeLines("Estimates:")
-    writeLines("")
-    print(fit[["thetaList"]])
-    writeLines("")
-    writeLines("Gradient:")
-    writeLines("")
-    print(mod[["gradient"]])
-    writeLines("")
+    writeLines("Estimates:\n"); print(fit[["thetaList"]])
+    writeLines("Gradient:\n"); print(mod[["gradient"]]); writeLines("")
     if(controls[["hessian"]]){
-      writeLines("Hessian:")
-      writeLines("")
-      print(mod[["hessian"]])
+      writeLines("Hessian:\n"); print(mod[["hessian"]])
     }
     sink()
     options(max.print=1000)
@@ -252,6 +238,33 @@ check_estimation = function(time,mods,llks,data,controls){
 }
 
 check_decoding = function(decoding,controls){
+  
+  ### create states summary output
+  file = paste0("models/",controls[["model_name"]],"/states.txt")
+  if(file.exists(file) & !controls[["overwrite"]]){ 
+    warning(paste0("Cannot save 'states.txt' because '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
+  } else {
+    sink(file=file)
+    writeLines("Frequency of decoded states:\n")
+    if(controls[["model"]]=="HMM"){
+      out = table((decoding)); names(out) = paste("state",names(out))
+      print(out)
+    }
+    if(controls[["model"]]=="HHMM"){
+      out_cs = table((decoding[,1])); names(out_cs) = paste("CS state",names(out_cs))
+      print(out_cs); writeLines("")
+      for(state in seq_len(controls[["states"]][2])){
+        writeLines(paste0("Conditional on CS state ",state,":"))
+        out_fs = table((decoding[decoding[,1]==state,-1])); names(out_fs) = paste("FS state",names(out_fs))
+        print(out_fs); writeLines("")
+      }
+    }
+    sink()
+  }
+  
+  ### save decoding
+  check_saving(decoding,controls)
+  
   writeLines("State decoding successful.")
 }
 

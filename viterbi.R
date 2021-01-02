@@ -54,7 +54,6 @@ applyViterbi = function(data,fit,controls){
   }
   
   check_decoding(decoding,controls)
-  check_saving(decoding,controls)
   
   return(decoding)
 }
