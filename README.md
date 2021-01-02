@@ -34,7 +34,8 @@ The model is specified by defining the named list `controls`. Three parameters o
 
 The following parameters of `controls` are optional and set to [default values](#default-values) if not specified:
 - `accept_codes`: a numeric vector, containing acceptable exit codes of the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `data_source`: a numeric vector of length 2, containing the file names of the financial data:
+- `data_col`: a character vector of length 2, containing names of desired columns of `data_source`
+- `data_source`: a character vector of length 2, containing the file names of the financial data:
    - if `data_source = c(NA,NA)`, data is simulated
    - if `data_source = c("x.csv",NA)`, model `"./data/x.csv"` by a HMM
    - if `data_source = c("x.csv","y.csv")`, model averages of `"./data/x.csv"` (size determined by the second entry of `time_horizon`) on the coarse scale and pure data `"./data/y.csv"` on the fine scale, respectively
@@ -56,6 +57,7 @@ The following parameters of `controls` are optional and set to [default values](
 
 ### Default values
 - `accept_codes = 1` (relative gradient is close to zero, current iterate is probably solution)
+- `data_col = c(NA,NA)`
 - `data_source = c(NA,NA)` 
 - `fix_dfs = c(NA,NA)` 
 - `hessian = TRUE` 
