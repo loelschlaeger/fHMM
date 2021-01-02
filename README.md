@@ -50,7 +50,7 @@ The following parameters of `controls` are optional and set to default values if
 - `runs`: an integer, setting the number of optimization runs
 - `seed`: an integer, setting a seed for the simulation and the initialization
 - `steptol`: an integer, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `time_horizon`: a numeric vector of length 2, determining the length of the time horizion(s)
+- `time_horizon`: a numeric vector of length 2, determining the length of the time horizion(s) (If the model is a HHMM, the second entry of `time_horizon` has to be specified to set the length of the fine-scale chunks.)
 - `truncate_data`: a vector of length 2, containing dates or `NA` and specifying a subset of the empirical data
 
 ## Outputs
