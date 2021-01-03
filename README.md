@@ -34,6 +34,7 @@ A model is specified by setting parameters of the named list `controls`. The fol
 
 The following parameters are optional and set to [default values](#default-values) if not specified:
 - `accept_codes`: a numeric vector, containing acceptable exit codes of the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `at_true`: a boolean, determining whether the optimization is initialised at the true parameter values (only for simulated data, sets `runs=1`)
 - `data_col`: a character vector of length 2, containing names of the desired columns of `data_source`
 - `data_source`: a character vector of length 2, containing the file names of the empirical data:
    - if `data_source = c(NA,NA)`, data is simulated
@@ -57,6 +58,7 @@ The following parameters are optional and set to [default values](#default-value
 
 ### Default values
 - `accept_codes = 1` (relative gradient is close to zero, current iterate is probably solution)
+- `at_true = FALSE`
 - `data_col = c(NA,NA)`
 - `data_source = c(NA,NA)` 
 - `fix_dfs = c(NA,NA)` 
