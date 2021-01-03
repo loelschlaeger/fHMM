@@ -170,7 +170,7 @@ thetaCon2thetaList = function(thetaCon,controls){
       "mus"         = mus,
       "sigmas"      = sigmasCon,
       "dfs"         = dfs
-    ) 
+      ) 
   }
   if(model=="HHMM"){
     thetaList = list(
@@ -182,7 +182,7 @@ thetaCon2thetaList = function(thetaCon,controls){
       "mus_star"    = mus_star,
       "sigmas_star" = sigmasCon_star,
       "dfs_star"    = dfs_star
-    ) 
+      ) 
   }
   return(thetaList)
 }
@@ -243,7 +243,7 @@ thetaUnconSplit2thetaList = function(thetaUncon,controls){
      "mus"    = mus,
      "sigmas" = sigmasCon,
      "dfs"    = dfs
-   ) 
+     ) 
    return(thetaList)
 }
 
