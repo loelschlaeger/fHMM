@@ -53,7 +53,7 @@ The following parameters are optional and set to [default values](#default-value
 - `seed`: an integer, setting a seed for the simulation and the initialization
 - `steptol`: an integer, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `time_horizon`: a numeric vector of length 2, determining the length of the time horizion(s) (If the model is a HHMM, its second entry must always be specified to set the length of the fine-scale chunks.)
-- `truncate_data`: a vector of length 2, containing a lower and upper date limit (in format YYYY-MM-DD) to select a subset of the empirical data
+- `truncate_data`: a vector of length 2, containing a lower and upper date limit (in format YYYY-MM-DD) to select a subset of the empirical data (neither, one or both limits can be specified)
 
 ### Default values
 - `accept_codes = 1` (relative gradient is close to zero, current iterate is probably solution)
