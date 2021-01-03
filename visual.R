@@ -13,15 +13,15 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   ### extract parameters
   states = controls[["states"]]
   if(controls[["model"]]=="HMM"){
-    T = length(data$observations)
+    T = length(data[["logReturns"]])
   }
   if(controls[["model"]]=="HHMM"){
-    T = dim(data$observations)[1]
-    T_star = dim(data$observations)[2]-1
+    T = dim(data[["logReturns"]])[1]
+    T_star = dim(data[["logReturns"]])[2]-1
     decoding_cs = rep(decoding[,1],T_star)
     decoding_fs = as.vector(t(decoding[,-1]))
-    cs_observations = data[["observations"]][,1]
-    fs_observations = as.vector(t(data[["observations"]][,-1]))
+    cs_logReturns = data[["logReturns"]][,1]
+    fs_logReturns = as.vector(t(data[["logReturns"]][,-1]))
   }
   attach(fit[["thetaList"]])
   on.exit(detach(fit[["thetaList"]]))
@@ -42,7 +42,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   ceiling_dec = function(x,n) round(x+5*10^(-n-1),n)
   
   ### state dependent distributions
-  filename = paste0("models/",controls[["model_name"]],"/sdd.pdf")
+  filename = paste0("models/",controls[["id"]],"/sdd.pdf")
   if(controls[["overwrite"]]==FALSE & file.exists(filename)){
     warning(paste0("Cannot create a plot of the state-dependent distributions because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
   } else {
@@ -50,10 +50,10 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       pdf(filename, width=9, height=7)
       sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
       lwd = 3
-      xmin = floor_dec(min(data$observations),1); xmax = ceiling_dec(max(data$observations),1); x = seq(xmin,xmax,0.001)
+      xmin = floor_dec(min(data[["logReturns"]]),1); xmax = ceiling_dec(max(data[["logReturns"]]),1); x = seq(xmin,xmax,0.001)
       ymin = 0; ymax = ceiling(max(sapply(x,sdd,s=seq_len(states[1]))))
-      hist(data$observations,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
-      axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=20),las=1)
+      hist(data[["logReturns"]],prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
+      axis(1,trunc(seq(xmin,xmax,by=0.1)*10)/10); axis(2,seq(ymin,ymax,by=20),las=1)
       title(main="State-dependent distributions",xlab="Log-return",ylab="Density")
       do.call(legend,c(list(legend=paste("State",seq_len(states[1])),col=colors[,1],lwd=3),legend_layout))
       for(s in seq_len(states[1])){
@@ -65,9 +65,9 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       pdf(filename, width=9, height=7)
       sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
       lwd = 3
-      xmin = min(-0.1,floor_dec(min(cs_observations),1)); xmax = max(0.1,ceiling_dec(max(cs_observations),1)); x = seq(xmin,xmax,0.001)
+      xmin = min(-0.1,floor_dec(min(cs_logReturns),1)); xmax = max(0.1,ceiling_dec(max(cs_logReturns),1)); x = seq(xmin,xmax,0.001)
       ymin = 0; ymax = ceiling(max(sapply(x,sdd,s=seq_len(states[1]))))
-      hist(cs_observations,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
+      hist(cs_logReturns,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
       axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=40),las=1)
       title(main="State-dependent distributions",xlab="Log-return",ylab="Density")
       do.call(legend,c(list(legend=paste("Coarse-scale state",seq_len(states[1])),col=colors[,1],lwd=3),legend_layout))
@@ -76,7 +76,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       }
       sdd = function(cs,fs,x) {1/sigmas_star[[cs]][fs]*dt((x-mus_star[[cs]][fs])/sigmas_star[[cs]][fs],dfs_star[[cs]][fs])}
       lwd = 3
-      xmin = floor_dec(min(fs_observations),1); xmax = ceiling_dec(max(fs_observations),1); x = seq(xmin,xmax,0.001)
+      xmin = floor_dec(min(fs_logReturns),1); xmax = ceiling_dec(max(fs_logReturns),1); x = seq(xmin,xmax,0.001)
       ymin = 0; ymax = 0
       for(cs in seq_len(states[1])){
         for(fs in seq_len(states[2])){
@@ -85,7 +85,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
         }
       }
       for(cs in seq_len(states[1])){
-        hist(fs_observations,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
+        hist(fs_logReturns,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
         axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=20),las=1)
         title(main=paste("State-dependent distributions conditional on coarse-scale state",cs),xlab="Log-return",ylab="Density")
         do.call(legend,c(list(legend=paste("Fine-scale state",seq_len(states[2])),col=colors[cs,-1],lwd=3),legend_layout))
@@ -98,7 +98,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   }
   
   ### decoded time series
-  filename = paste0("models/",controls[["model_name"]],"/ts.pdf")
+  filename = paste0("models/",controls[["id"]],"/ts.pdf")
   if(controls[["overwrite"]]==FALSE & file.exists(filename)){
     warning(paste0("Cannot create a plot of the decoded time series because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
   } else {
@@ -108,24 +108,26 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       xmin = as.Date(format(as.Date(head(data$dates,n=1)),"%Y-01-01")); 
       xmin=as.Date("2000-01-01")
       xmax = as.Date(paste0(as.numeric(format(tail(data$dates,n=1),"%Y"))+1,"-01-01"))
-      ymax = max(data$closes); ymin = -ymax
-      plot(data$dates,data$closes,type="l",xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="grey",xlab="",ylab="",xaxt="n",yaxt="n",cex.lab=2, cex.main=2)
+      ymax = max(data[["dataRaw"]]); ymin = -ymax
+      plot(data$dates,data[["dataRaw"]],type="l",xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="grey",xlab="",ylab="",xaxt="n",yaxt="n",cex.lab=2, cex.main=2)
       par(las=3)
-      mtext("Closing price",side=4,line=3.5,at=median(data$closes),cex=1.25)
+      if(controls[["model"]]=="HMM") data_lab = controls[["data_col"]][1]
+      if(controls[["model"]]=="HHMM") data_lab = controls[["data_col"]][2]
+      mtext(data_lab,side=4,line=3.5,at=mean(data[["dataRaw"]]),cex=1.25)
       par(las=1)
       mtext("Year",side=1,line=2.5,cex=1.25)
       markdates = seq(xmin,xmax,by="year"); markdates = markdates[1:length(markdates)%%2==1]
       axis(1, markdates, format(markdates, "%Y"))
-      axis(4, round(seq(min(data$closes),max(data$closes),length.out=3),digits=-2))
+      axis(4, round(seq(min(data[["dataRaw"]]),max(data[["dataRaw"]]),length.out=3),digits=-2))
       if(controls[["model"]]=="HMM"){
         for(s in seq_len(states[1])){
-          points(data$dates[decoding==s],data$closes[decoding==s],col=colors[s,1],pch=20)
+          points(data$dates[decoding==s],data[["dataRaw"]][decoding==s],col=colors[s,1],pch=20)
         }
       }
       if(controls[["model"]]=="HHMM"){
         for(cs in seq_len(states[1])){
           for(fs in seq_len(states[2])){
-            points(data$dates[decoding_cs==cs&decoding_fs==fs],data$closes[decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
+            points(data$dates[decoding_cs==cs&decoding_fs==fs],data[["dataRaw"]][decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
           }
         }
       }
@@ -135,18 +137,18 @@ visual = function(data,fit,decoding,controls,labels=NULL){
     }
     if(controls[["sim"]]){
       xmin = 1
-      if(controls[["model"]]=="HMM") xmax = length(data$observations)
-      if(controls[["model"]]=="HHMM") xmax = length(fs_observations)
+      if(controls[["model"]]=="HMM") xmax = length(data[["logReturns"]])
+      if(controls[["model"]]=="HHMM") xmax = length(fs_logReturns)
       x_values = seq_len(xmax)
       ymax_factor = 1.5
     }
       if(controls[["model"]]=="HMM"){
-        ymin = min(data$observations); ymax = max(data$observations)
-        plot(x_values,data$observations,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
+        ymin = min(data[["logReturns"]]); ymax = max(data[["logReturns"]])
+        plot(x_values,data[["logReturns"]],type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
       }
       if(controls[["model"]]=="HHMM"){
-        ymin = min(fs_observations); ymax = max(fs_observations)
-        plot(x_values,fs_observations,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
+        ymin = min(fs_logReturns); ymax = max(fs_logReturns)
+        plot(x_values,fs_logReturns,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
       }
       par(las=3)
       mtext("Log-return",side=2,line=3.5,at=0,cex=1.25)
@@ -154,13 +156,13 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       axis(2, round(c(ymin,0,ymax),2))
       if(controls[["model"]]=="HMM"){
         for(s in seq_len(states[1])){
-          points(x_values[decoding==s],data$observations[decoding==s],col=colors[s,1],pch=20)
+          points(x_values[decoding==s],data[["logReturns"]][decoding==s],col=colors[s,1],pch=20)
         }
       }
       if(controls[["model"]]=="HHMM"){
         for(cs in seq_len(states[1])){
           for(fs in seq_len(states[2])){
-            points(x_values[decoding_cs==cs&decoding_fs==fs],fs_observations[decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
+            points(x_values[decoding_cs==cs&decoding_fs==fs],fs_logReturns[decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
           }
         }
       }
@@ -186,14 +188,14 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   }
   
   ### pseudo-residuals
-  filename = paste0("models/",controls[["model_name"]],"/pseudos.pdf")
+  filename = paste0("models/",controls[["id"]],"/pseudos.pdf")
   if(controls[["overwrite"]]==FALSE & file.exists(filename)){
     warning(paste0("Cannot create a plot of the pseudo-residuals because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
   } else {
     if(controls[["model"]]=="HMM"){
       pseudos = numeric(T)
       for(t in 1:T){
-        pseudos[t] = qnorm(pt((data$observations[t]-mus[decoding[t]])/sigmas[decoding[t]],dfs[decoding[t]]))
+        pseudos[t] = qnorm(pt((data[["logReturns"]][t]-mus[decoding[t]])/sigmas[decoding[t]],dfs[decoding[t]]))
       }
       pdf(filename, width=9, height=7)
         plot(pseudos,ylim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="Residual plot",ylab="Pseudo-residuals",las=1,pch=3)
@@ -206,10 +208,10 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       pseudos_cs = numeric(T)
       pseudos_fs = numeric(T*T_star)
       for(t in 1:T){
-        pseudos_cs[t] = qnorm(pt((data$observations[t,1]-mus[decoding[t,1]])/sigmas[decoding[t,1]],dfs[decoding[t,1]]))
+        pseudos_cs[t] = qnorm(pt((data[["logReturns"]][t,1]-mus[decoding[t,1]])/sigmas[decoding[t,1]],dfs[decoding[t,1]]))
       }
       for(t in 1:(T*T_star)){
-        pseudos_fs[t] = qnorm(pt((as.vector(t(data$observations[,-1]))[t]-mus_star[[decoding_cs[t]]][decoding_fs[t]])/sigmas_star[[decoding_cs[t]]][decoding_fs[t]],dfs_star[[decoding_cs[t]]][decoding_fs[t]]))
+        pseudos_fs[t] = qnorm(pt((as.vector(t(data[["logReturns"]][,-1]))[t]-mus_star[[decoding_cs[t]]][decoding_fs[t]])/sigmas_star[[decoding_cs[t]]][decoding_fs[t]],dfs_star[[decoding_cs[t]]][decoding_fs[t]]))
       }
       pseudos_cs = pseudos_cs[is.finite(pseudos_cs)]
       pseudos_fs = pseudos_fs[is.finite(pseudos_fs)]
@@ -227,4 +229,24 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   }
     
   writeLines("Visualization successful.")
+}
+
+### create visualization of LLs
+plot_ll = function(llks,controls){
+  filename = paste0("models/",controls[["id"]],"/lls.pdf")
+  if(controls[["overwrite"]]==FALSE & file.exists(filename)){
+    warning(paste0("Cannot create a plot of the log-likelihoods because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
+  } else {
+    pdf(filename, width=9, height=7)
+      if(length(llks)<=5){
+        plot(llks,xaxt="n",yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
+        axis(1,las=1,at=seq_len(length(llks)),labels=seq_len(length(llks)))      
+      } else {
+        plot(llks,yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
+        axis(2,las=1,at=unique(round(llks[!is.na(llks)])),labels=unique(round(llks[!is.na(llks)])))
+      }
+      points(x=which.max(llks),y=llks[which.max(llks)],pch=16,cex=1.25,col="red")
+      axis(2,las=1,at=unique(round(llks[!is.na(llks)])),labels=unique(round(llks[!is.na(llks)])))
+    invisible(dev.off())
+  }
 }
