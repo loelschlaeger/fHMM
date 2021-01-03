@@ -37,8 +37,8 @@ The following parameters are optional and set to [default values](#default-value
 - `data_col`: a character vector of length 2, containing names of the desired columns of `data_source`
 - `data_source`: a character vector of length 2, containing the file names of the empirical data:
    - if `data_source = c(NA,NA)`, data is simulated
-   - if `data_source = c("x.csv",NA)`, model `"./data/x.csv"` by a HMM
-   - if `data_source = c("x.csv","y.csv")`, model averages of `"./data/x.csv"` (size determined by the second entry of `time_horizon`) on the coarse scale and pure data `"./data/y.csv"` on the fine scale, respectively
+   - if `data_source = c("x.csv",NA)`, data `"./data/x.csv"` is modeled by a HMM
+   - if `data_source = c("x.csv","y.csv")`, averages of data `"./data/x.csv"` (average size determined by the second entry of `time_horizon`) on the coarse scale and data `"./data/y.csv"` on the fine scale is modeled by a HHMM
    - `data_source = c(NA,"y.csv")` is interpreted as `data_source = c("y.csv","y.csv")`
 - `fix_dfs`: a numeric vector of length 2, fixing the degrees of freedom of the state-dependent t-distributions
    - if `fix_dfs = c(NA,NA)`, degrees of freedom are not fixed
