@@ -95,8 +95,7 @@ controls = list(
   data_source   = c("dax.csv",NA),
   data_col      = c("Close",NA)
   truncate_data = c("2000-01-03",NA), 
-  states        = c(3,0),
-  accept_codes  = 1
+  states        = c(3,0)
   )
 controls = check_controls(controls)
 
