@@ -1,14 +1,14 @@
 check_controls = function(controls){
   
   ### check supplied control values
-  all_controls = c("model_name","data_source","truncate_data","states","time_horizon","fix_dfs","runs","iterlim","hessian","seed","print.level","steptol","accept_codes","overwrite")
-  required_controls = c("model_name","states")
-  artificial_controls = c("sim","model","est_dfs","HHMM_av","controls_checked")
+  all_controls = c("id","data_source","data_col","truncate_data","states","time_horizon","fix_dfs","runs","at_true","iterlim","hessian","seed","print.level","steptol","accept_codes","overwrite")
+  required_controls = c("id","states")
+  artificial_controls = c("sim","model","est_dfs","controls_checked")
   missing_controls = setdiff(all_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
-  controls_with_length_2 = c("data_source","truncate_data","states","time_horizon","fix_dfs")
+  controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","fix_dfs")
   numeric_controls = c("states","runs","iterlim","print.level","steptol","accept_codes","seed")
-  boolean_controls = c("hessian","overwrite")
+  boolean_controls = c("hessian","overwrite","at_true")
   for(required_control in required_controls){
     if(!(required_control %in% names(controls))) stop(paste0("Please specify '", required_control, "' in 'controls'."),call.=FALSE)
   }
@@ -28,49 +28,52 @@ check_controls = function(controls){
   
   ### set default values
   if("data_source" %in% missing_controls) controls[["data_source"]] = c(NA,NA)
+  if("data_col" %in% missing_controls) controls[["data_col"]] = c(NA,NA)
   if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
   if("time_horizon" %in% missing_controls) controls[["time_horizon"]] = c(NA,NA)
   if("fix_dfs" %in% missing_controls) controls[["fix_dfs"]] = c(NA,NA)
   if("runs" %in% missing_controls) controls[["runs"]] = 200
+  if("at_true" %in% missing_controls) controls[["at_true"]] = FALSE
   if("iterlim" %in% missing_controls) controls[["iterlim"]] = 500
   if("hessian" %in% missing_controls) controls[["hessian"]] = TRUE
   if("print.level" %in% missing_controls) controls[["print.level"]] = 0
-  if("steptol" %in% missing_controls) controls[["steptol"]] = 1e-8
+  if("steptol" %in% missing_controls) controls[["steptol"]] = 1e-6
   if("accept_codes" %in% missing_controls) controls[["accept_codes"]] = c(1)
-  if("overwrite" %in% missing_controls) controls[["overwrite"]] = FALSE; if(controls[["overwrite"]]) warning("Saved model results may be overwritten.",call.=FALSE)
+  if("overwrite" %in% missing_controls) controls[["overwrite"]] = FALSE
   
   ### create artificial controls
   controls[["model"]] = if(controls[["states"]][2]==0) "HMM" else "HHMM"
   if(controls[["model"]]=="HMM"){
-    controls[["sim"]] = if(is.na(controls[["data_source"]][1])) TRUE else FALSE;
-    controls[["est_dfs"]] = if(is.na(controls[["fix_dfs"]][1])) TRUE else FALSE;
+    controls[["sim"]] = if(is.na(controls[["data_source"]][1])) TRUE else FALSE
+    controls[["est_dfs"]] = if(is.na(controls[["fix_dfs"]][1])) TRUE else FALSE
   }
   if(controls[["model"]]=="HHMM"){
-    controls[["sim"]] = if(is.na(controls[["data_source"]][2])) TRUE else FALSE;
-    if(!controls[["sim"]] & is.na(controls[["data_source"]][1]) & !is.na(controls[["data_source"]][2])) controls[["HHMM_av"]] = TRUE
-    if(!controls[["sim"]] & all(!is.na(controls[["data_source"]]))) controls[["HHMM_av"]] = FALSE
-    controls[["est_dfs"]] = if(any(is.na(controls[["fix_dfs"]]))) TRUE else FALSE;
+    controls[["sim"]] = if(is.na(controls[["data_source"]][2])) TRUE else FALSE
+    if(!controls[["sim"]] & is.na(controls[["data_source"]][1])){
+      controls[["data_source"]][1] = controls[["data_source"]][2]
+      controls[["data_col"]][1] = controls[["data_col"]][2]
+    }
+    controls[["est_dfs"]] = if(any(is.na(controls[["fix_dfs"]]))) TRUE else FALSE
   }
   
-  ### check correct parameter format for HMM and HHMM resp.
-  if(controls[["sim"]] & any(!is.na(controls[["truncate_data"]]))){
-    warning("Entries of 'truncate_data' will be ignored.",call.=FALSE)
-    controls[["truncate_data"]] = c(NA,NA)
-  }
+  ### check if controls are correct
   if(controls[["model"]]=="HMM") {
     if(controls[["states"]][1]%%1!=0 || controls[["states"]][1]<2){
       stop("First entry of 'states' in 'controls' must be an integer greater or equal 2.",call.=FALSE)
+    }
+    if(controls[["sim"]] & is.na(controls[["time_horizon"]][1])){
+      stop("Either first entry of 'data_source' or 'time_horizon' has to be specified.",call.=FALSE)
+    }
+    if(!controls[["sim"]] & is.na(controls[["data_col"]][1])){
+      stop("First entry of 'data_col' has to be specified.",call.=FALSE)
     }
     if(!is.na(controls[["data_source"]][2])){
       warning("Second entry of 'data_source' will be ignored.",call.=FALSE)
       controls[["data_source"]][2] = NA
     }
-    if(controls[["sim"]] & is.na(controls[["time_horizon"]][1])){
-      stop("Either first entry of 'data_source' or 'time_horizon' has to be specified.",call.=FALSE)
-    }
-    if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
-      warning("First entry of 'time_horizon' will be ignored.",call.=FALSE)
-      controls[["time_horizon"]][1] = NA
+    if(!controls[["sim"]] & !is.na(controls[["data_col"]][2])){
+      warning("Second entry of 'data_col' will be ignored.",call.=FALSE)
+      controls[["data_col"]][2] = NA
     }
     if(!is.na(controls[["time_horizon"]][2])){
       warning("Second entry of 'time_horizon' will be ignored.",call.=FALSE)
@@ -79,7 +82,11 @@ check_controls = function(controls){
     if(!is.na(controls[["fix_dfs"]][2])){
       warning("Second entry of 'fix_dfs' will be ignored.",call.=FALSE)
       controls[["fix_dfs"]][2] = NA
-      }
+    }
+    if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
+      warning("First entry of 'time_horizon' will be ignored.",call.=FALSE)
+      controls[["time_horizon"]][1] = NA
+    }
   }
   if(controls[["model"]]=="HHMM") {
     if(controls[["states"]][1]%%1!=0 || controls[["states"]][1]<2){
@@ -88,44 +95,71 @@ check_controls = function(controls){
     if(controls[["states"]][2]%%1!=0 || controls[["states"]][2]<2){
       stop("Second entry of 'states' in 'controls' must be an integer greater or equal 2.",call.=FALSE)
     }
-    if(controls[["sim"]] & any(!is.na(controls[["data_source"]]))){
-      warning("Entries of 'data_source' will be ignored.",call.=FALSE)
-      controls[["data_source"]] = c(NA,NA)
-    }
     if(controls[["sim"]] & any(is.na(controls[["time_horizon"]]))){
       stop("Either 'data_source' or 'time_horizon' has to be specified.",call.=FALSE)
     }
     if(!controls[["sim"]] & is.na(controls[["time_horizon"]][2])){
       stop("Second entry of 'time_horizon' has to be specified.",call.=FALSE)
     }
+    if(!controls[["sim"]] & any(is.na(controls[["data_col"]]))){
+      stop("Entries of 'data_col' have to be specified.",call.=FALSE)
+    }
+    if(controls[["sim"]] & any(!is.na(controls[["data_source"]]))){
+      warning("Entries of 'data_source' will be ignored.",call.=FALSE)
+      controls[["data_source"]] = c(NA,NA)
+    }
     if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
       warning("First entry of 'time_horizon' will be ignored.",call.=FALSE)
       controls[["time_horizon"]][1] = NA
     }
   }
+  if(!controls[["sim"]] & controls[["at_true"]]){
+    controls[["at_true"]] = FALSE
+    warning("Value of 'at_true' is set to FALSE.",call.=FALSE)
+  }
+  if(controls[["sim"]] & controls[["at_true"]] & controls[["runs"]]!=1){
+    controls[["runs"]] = 1
+    warning("Value of 'runs' is set to 1.",call.=FALSE)
+  }
+  if(controls[["sim"]] & any(!is.na(controls[["truncate_data"]]))){
+    warning("Entries of 'truncate_data' will be ignored.",call.=FALSE)
+    controls[["truncate_data"]] = c(NA,NA)
+  }
+  if(controls[["sim"]] & any(!is.na(controls[["data_col"]]))){
+    warning("Entries of 'data_col' will be ignored.",call.=FALSE)
+    controls[["data_col"]] = c(NA,NA)
+  }
+  if(controls[["overwrite"]]){
+    warning("Saved model results may be overwritten.",call.=FALSE)
+  }
   
   ### check if data paths are correct
-  if(!is.na(controls[["data_source"]][1]) & !file.exists(paste0("data/",controls[["data_source"]][1]))) stop(paste0("File 'data/",controls[["data_source"]][1],"' does not exist."),call.=FALSE)
-  if(!is.na(controls[["data_source"]][2]) & !file.exists(paste0("data/",controls[["data_source"]][2]))) stop(paste0("File 'data/",controls[["data_source"]][2],"' does not exist."),call.=FALSE)
+  if(!is.na(controls[["data_source"]][1]) & !file.exists(paste0("data/",controls[["data_source"]][1]))){
+    stop(paste0("File 'data/",controls[["data_source"]][1],"' does not exist."),call.=FALSE)
+  }
+  if(!is.na(controls[["data_source"]][2]) & !file.exists(paste0("data/",controls[["data_source"]][2]))){
+    stop(paste0("File 'data/",controls[["data_source"]][2],"' does not exist."),call.=FALSE)
+  }
   
   ### note that 'controls' is checked
   writeLines("Checks successful.")
   controls[["controls_checked"]] = TRUE
   
   ### print model specification
-  writeLines(paste0("Model name: ",controls[["model_name"]]))
-  writeLines(paste0("Model:      ",controls[["model"]]))
-  if(controls[["sim"]]) writeLines("Data:       simulated")
-  if(!controls[["sim"]]) writeLines("Data:       empirical")
+  writeLines(paste0("ID:     ",controls[["id"]]))
+  writeLines(paste0("Model:  ",controls[["model"]]))
+  if(controls[["sim"]])  writeLines("Data:   simulated")
+  if(!controls[["sim"]]) writeLines("Data:   empirical")
   if(controls[["model"]]=="HMM") {
-    writeLines(paste0("States:     ",controls[["states"]][1]))
-    writeLines("SDDs:       t-distribution")
+    writeLines(paste0("States: ",controls[["states"]][1]))
   } 
   if(controls[["model"]]=="HHMM") {
-    writeLines(paste0("States:     ",controls[["states"]][1],"/",controls[["states"]][2]))
-    writeLines("SDDs:       t-distribution")
+    writeLines(paste0("States: ",controls[["states"]][1]," / ",controls[["states"]][2]))
   }
-  if(!is.null(controls[["seed"]])) writeLines(paste0("Seed:       ",controls[["seed"]]))
+  writeLines("SDDs:   t")
+  writeLines(paste0("Runs:   ",controls[["runs"]]))
+  if(!is.null(controls[["seed"]])) writeLines(paste0("Seed:   ",controls[["seed"]]))
+  if(controls[["at_true"]]) writeLines(paste0("Estimation initialisied at true values."))
   
   ### save controls
   check_saving(controls,controls)
@@ -136,21 +170,22 @@ check_controls = function(controls){
 check_data = function(controls,data){
   if(controls[["sim"]]){
     if(controls[["model"]]=="HMM")  writeLines(paste0("Data points: ",controls[["time_horizon"]][1]))
-    if(controls[["model"]]=="HHMM") writeLines(paste0("Data points: ",controls[["time_horizon"]][1],"/",controls[["time_horizon"]][2]))
+    if(controls[["model"]]=="HHMM") writeLines(paste0("Data points: ",controls[["time_horizon"]][1]," / ",controls[["time_horizon"]][2]))
   }
   if(!controls[["sim"]]){
-    writeLines("Source:     ",sep=" ")
     if(controls[["model"]]=="HMM"){
-      writeLines(paste0("closing prices of '",controls[["data_source"]][1],"'"))
-      writeLines(paste0("Horizon:     ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]))
-      writeLines(paste0("Data points: ",length(data[["observations"]])))
+      writeLines(paste0("Source:      ",controls[["data_source"]][1]))
+      writeLines(paste0("Column:      ",controls[["data_col"]][1]))
+      writeLines(paste0("Horizon:     ",data[["dates"]][1], " to ", rev(data[["dates"]])[1]))
+      writeLines(paste0("Data points: ",length(data[["logReturns"]])))
     }
     if(controls[["model"]]=="HHMM"){
-      if(controls[["HHMM_av"]]) writeLines(paste0("average-/closing prices of '",controls[["data_source"]][2],"'"))
-      if(!controls[["HHMM_av"]]) writeLines(paste0("average-/closing prices of '",controls[["data_source"]][1],"'/'",controls[["data_source"]][2],"'"))
+      writeLines("Coarse scale / fine scale:")
+      writeLines(paste0("Source:      ",controls[["data_source"]][1]," (averages) / ",controls[["data_source"]][2]))
+      writeLines(paste0("Column:      ",controls[["data_col"]][1]," / ",controls[["data_col"]][2]))
       writeLines(paste0("Horizon:     ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]))
       writeLines(paste0("FS dim:      ",controls[["time_horizon"]][2]))
-      writeLines(paste0("Data points: ",dim(data[["observations"]])[1],"/",dim(data[["observations"]])[2]-1))
+      writeLines(paste0("Data points: ",dim(data[["logReturns"]])[1]," / ",dim(data[["logReturns"]])[2]-1))
     }
   }
   
@@ -159,36 +194,29 @@ check_data = function(controls,data){
 }
 
 check_estimation = function(time,mods,llks,data,controls){
-  if(all(is.na(llks))) stop("None of the estimation runs ended successfully. Consider increasing 'runs' in 'controls'.",call.=FALSE)
+  if(all(is.na(llks))){
+    stop("None of the estimation runs ended successfully. Consider increasing 'runs' in 'controls'.",call.=FALSE)
+  }
   writeLines(paste0("Estimation finished, it took ",time," minute(s). Successful runs: ",sum(!is.na(llks))," out of ",length(llks),"."))
 
   ### select model with highest LL
   mod       = mods[[which.max(llks)]]
-  mod_LL    = -mod$minimum
-  thetaCon  = thetaUncon2thetaCon(mod$estimate,controls)
+  mod_LL    = -mod[["minimum"]]
+  thetaCon  = thetaUncon2thetaCon(mod[["estimate"]],controls)
   thetaList = statesDecreasing(thetaCon2thetaList(thetaCon,controls),controls)
   
   ### check for unidentified states
   warning_unidentified_states = FALSE
-  if(any(abs(Gamma2delta(thetaList$Gamma)-0)<1e-04)) warning_unidentified_states = TRUE
+  if(any(abs(Gamma2delta(thetaList[["Gamma"]])-0)<1e-04)) warning_unidentified_states = TRUE
   if(controls[["model"]]=="HHMM"){
     for(s in seq_len(controls[["states"]][2])){
-      if(any(abs(Gamma2delta(thetaList$Gammas_star[[s]])-0)<1e-04)) warning_unidentified_states = TRUE
+      if(any(abs(Gamma2delta(thetaList[["Gammas_star"]][[s]])-0)<1e-04)) warning_unidentified_states = TRUE
     }
   }
   if(warning_unidentified_states) warning("Some states seem to be unidentified.",call.=FALSE)
   
   ### create visualization of LLs
-  filename = paste0("models/",controls[["model_name"]],"/lls.pdf")
-  if(controls[["overwrite"]]==FALSE & file.exists(filename)){
-    warning(paste0("Cannot create a plot of the log-likelihoods because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
-  } else {
-    pdf(filename, width=9, height=7)
-      plot(llks,yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
-      points(x=which.max(llks),y=mod_LL,pch=16,cex=1.25,col="red")
-      axis(2,las=1,at=unique(round(llks[!is.na(llks)])),labels=unique(round(llks[!is.na(llks)])))
-    invisible(dev.off())
-  }
+  plot_ll(llks,controls)
   
   ### check if iteration limit was reached
   if(mod[["iterations"]] >= controls[["iterlim"]]) warning("Selected estimation run reached the iteration limit. Consider increasing 'iterlim'.",call.=FALSE)
@@ -204,12 +232,12 @@ check_estimation = function(time,mods,llks,data,controls){
   fit = list("LL"        = mod_LL,
              "mod"       = mod,
              "thetaList" = thetaList,
-             "AIC"       = compAIC(controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]]),
-             "BIC"       = compBIC(prod(dim(t(data$observations))),controls$states[1],controls$states[2],-mod$minimum,controls[["est_dfs"]]),
+             "AIC"       = compAIC(controls[["states"]][1],controls[["states"]][2],-mod[["minimum"]],controls[["est_dfs"]]),
+             "BIC"       = compBIC(prod(dim(t(data[["logReturns"]]))),controls[["states"]][1],controls[["states"]][2],-mod[["minimum"]],controls[["est_dfs"]]),
              "all_LL"    = llks,
              "all_mods"  = mods
-  )
-  file = paste0("models/",controls[["model_name"]],"/estimates.txt")
+             )
+  file = paste0("models/",controls[["id"]],"/estimates.txt")
   if(file.exists(file) & !controls[["overwrite"]]){ 
     warning(paste0("Cannot save 'estimates.txt' because '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
   } else {
@@ -218,7 +246,7 @@ check_estimation = function(time,mods,llks,data,controls){
     first_col = c("LL","AIC","BIC","exit code","iterations", "run time (min)")
     second_col = c(fit[["LL"]],fit[["AIC"]],fit[["BIC"]],mod[["code"]],mod[["iterations"]],time)
     df = data.frame(first_col,second_col); names(df) = NULL
-    writeLines(paste0("Results of model '",controls[["model_name"]],"':")); print(df,row.names=FALSE,right=FALSE); writeLines("")
+    writeLines(paste0("Results of model '",controls[["id"]],"':")); print(df,row.names=FALSE,right=FALSE); writeLines("")
     if(controls[["sim"]]){
       writeLines("True parameter values:\n"); print(data[["thetaList0"]])
     }
@@ -240,7 +268,7 @@ check_estimation = function(time,mods,llks,data,controls){
 check_decoding = function(decoding,controls){
   
   ### create states summary output
-  file = paste0("models/",controls[["model_name"]],"/states.txt")
+  file = paste0("models/",controls[["id"]],"/states.txt")
   if(file.exists(file) & !controls[["overwrite"]]){ 
     warning(paste0("Cannot save 'states.txt' because '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
   } else {
@@ -270,7 +298,7 @@ check_decoding = function(decoding,controls){
 
 check_saving = function(object,controls){
   overwrite = controls[["overwrite"]]
-  path = paste0("models/",controls[["model_name"]])
+  path = paste0("models/",controls[["id"]])
   name = deparse(substitute(object))
   filename = paste0(path,"/",name)
   if(!dir.exists(path)){
