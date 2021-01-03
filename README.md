@@ -81,7 +81,7 @@ The following model results are saved in the folder `./models`:
 - `ts.pdf`, a visualization of the decoded time series
 
 ## Examples
-### Fitting a HMM to the 21st century DAX closing prices
+### Fitting a 3-state HMM to the 21st century DAX closing prices
 ```R
 ### 1. Initialization
 source("init.R"); init()
