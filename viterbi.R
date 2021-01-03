@@ -33,7 +33,7 @@ viterbi = function(observations,nstates,Gamma,mus,sigmas,dfs){
 applyViterbi = function(data,fit,controls){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
   
-  observations = data[["observations"]]
+  observations = data[["logReturns"]]
   thetaList = fit[["thetaList"]]
   states = controls[["states"]]
   model = controls[["model"]]
