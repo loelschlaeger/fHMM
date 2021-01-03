@@ -68,7 +68,7 @@ The following parameters are optional and set to [default values](#default-value
 - `print.level = 0` (no printing occurs)
 - `runs = 200`
 - `seed` is not set
-- `steptol = 1e-8`
+- `steptol = 1e-6`
 - `time_horizon = c(NA,NA)`
 - `truncate_data = c(NA,NA)`
 
@@ -95,7 +95,8 @@ controls = list(
   data_source   = c("dax.csv",NA),
   data_col      = c("Close",NA)
   truncate_data = c("2000-01-03",NA), 
-  states        = c(3,0)
+  states        = c(3,0),
+  accept_codes  = 1
   )
 controls = check_controls(controls)
 
