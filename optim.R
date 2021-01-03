@@ -9,26 +9,39 @@ maxLikelihood = function(data,controls){
   if(controls[["model"]]=="HHMM") target = nLL_hhmm
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
   
-  pb = progress_bar$new(format = "Model fitting: [:bar] :percent complete, :eta ETA", total = runs, clear = FALSE, width = 60, show_after = 0)
+  pb = progress_bar$new(
+    format = "Model fitting: [:bar] :percent complete, :eta ETA", 
+    total = runs, 
+    clear = FALSE, 
+    width = 60, 
+    show_after = 0
+    )
+  
   start = Sys.time()
-	for (k in 1:runs){
+	for (run in 1:runs){
 	  pb$tick(0)
-	  suppressWarnings({ tryCatch({ mods[[k]] = nlm(f = target,
-    			                                        p = init_est(controls),
-                            			                observations = data[["observations"]],
-                            			                controls = controls,
-                            			                iterlim = controls[["iterlim"]],
-                            			                steptol = controls[["steptol"]],
-                            			                print.level = controls[["print.level"]],
-                            			                hessian = controls[["hessian"]])
-    		                          if(mods[[k]]$code %in% controls[["accept_codes"]]) llks[k] = -mods[[k]]$minimum
-    		                          },error = function(e){})
+	  if(controls[["at_true"]])  start_values = data[["thetaUncon0"]]
+	  if(!controls[["at_true"]]) start_values = init_est(controls)
+	  suppressWarnings({ tryCatch({ mods[[run]] = nlm(f = target,
+    			                                          p = start_values,
+                            			                  observations = data[["logReturns"]],
+                            			                  controls = controls,
+                            			                  iterlim = controls[["iterlim"]],
+                            			                  steptol = controls[["steptol"]],
+                            			                  print.level = controls[["print.level"]],
+                            			                  hessian = controls[["hessian"]]
+    			                                          )
+    		                          if(mods[[run]]$code %in% controls[["accept_codes"]] || controls[["at_true"]]){
+    		                            llks[run] = -mods[[run]]$minimum
+    		                          }
+    		                        },error = function(e){})
   		              })
 	  pb$tick()
 	}
   end = Sys.time()
+  estimation_time = round(difftime(end,start,units='mins'))
   
-	fit = check_estimation(round(difftime(end,start,units='mins')),mods,llks,data,controls)
+	fit = check_estimation(estimation_time,mods,llks,data,controls)
 	
 	return(fit)
 }
