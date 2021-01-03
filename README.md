@@ -25,7 +25,7 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 See below for some [examples](#examples).
 
 ## Specifying controls
-The model is specified by defining the named list `controls`. Three parameters of `controls` are mandatory:
+A model is specified by defining the named list `controls`. Three parameters of `controls` are mandatory:
 - `id`: a character, identifying the model
 - `states`: a numeric vector of length 2, determining the model type and the number of states:
    - if `states = c(x,0)`, a HMM with `x` states is estimated
