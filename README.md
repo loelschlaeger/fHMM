@@ -2,7 +2,7 @@
 This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial time series. The code is intended to be used on share prices provided by https://finance.yahoo.com/. The data must be in csv-format, must contain a column named "Date" and must be saved in the folder `"./data"`. Additionally, data can be simulated.
 
 ## Contained files
-- `checks.R` contains validation functions.
+- `checks.R` provides validation functions.
 - `data.R` processes or simulates data.
 - `init.R` initializes the code and the estimation routine.
 - `loglike.cpp` computes the model's log-likelihood.
