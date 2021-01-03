@@ -94,7 +94,7 @@ controls = list(
   data_col      = c("Close",NA)
   truncate_data = c("2000-01-03",NA), 
   states        = c(3,0)
-)
+  )
 controls = check_controls(controls)
 
 ### 3. Fit model to data
@@ -108,6 +108,6 @@ decoding = applyViterbi(data,fit,controls)
 labels = list(
   dates = c("2001-09-11","2008-09-15","2020-01-27"),
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
-)
+  )
 visual(data,fit,decoding,controls,labels)
 ```
