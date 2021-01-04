@@ -156,7 +156,7 @@ check_controls = function(controls){
   if(controls[["model"]]=="HHMM") {
     writeLines(paste0("States: ",controls[["states"]][1]," / ",controls[["states"]][2]))
   }
-  writeLines("SDDs:   t")
+  writeLines("SDDs:   scaled t")
   writeLines(paste0("Runs:   ",controls[["runs"]]))
   if(!is.null(controls[["seed"]])) writeLines(paste0("Seed:   ",controls[["seed"]]))
   if(controls[["at_true"]]) writeLines(paste0("Estimation initialisied at true values."))
@@ -205,15 +205,23 @@ check_estimation = function(time,mods,llks,data,controls){
   thetaCon  = thetaUncon2thetaCon(mod[["estimate"]],controls)
   thetaList = statesDecreasing(thetaCon2thetaList(thetaCon,controls),controls)
   
-  ### check for unidentified states
-  warning_unidentified_states = FALSE
-  if(any(abs(Gamma2delta(thetaList[["Gamma"]])-0)<1e-04)) warning_unidentified_states = TRUE
+  ### detect unidentified states
+  check_unid_states = function(Gamma){
+    unid_states = abs(Gamma2delta(Gamma)-c(0,1))<1e-04
+    for(s in which(unid_states)){
+      warning("Unidentified state detected.",call.=FALSE)
+    }
+    return(Gamma)
+  }
+  if(controls[["model"]]=="HMM"){
+    thetaList[["Gamma"]] = check_unid_states(thetaList[["Gamma"]])
+  }
   if(controls[["model"]]=="HHMM"){
-    for(s in seq_len(controls[["states"]][2])){
-      if(any(abs(Gamma2delta(thetaList[["Gammas_star"]][[s]])-0)<1e-04)) warning_unidentified_states = TRUE
+    thetaList[["Gamma"]] = check_unid_states(thetaList[["Gamma"]])
+    for(cs in controls[["states"]]){
+      thetaList[["Gammas_star"]][[cs]] = check_unid_states(thetaList[["Gammas_star"]][[cs]])
     }
   }
-  if(warning_unidentified_states) warning("Some states seem to be unidentified.",call.=FALSE)
   
   ### create visualization of LLs
   plot_ll(llks,controls)
@@ -279,12 +287,14 @@ check_decoding = function(decoding,controls){
       print(out)
     }
     if(controls[["model"]]=="HHMM"){
-      out_cs = table((decoding[,1])); names(out_cs) = paste("CS state",names(out_cs))
+      out_cs = table(factor(decoding[,1],levels = seq_len(controls[["states"]][1]))); names(out_cs) = paste("CS state",names(out_cs))
       print(out_cs); writeLines("")
-      for(state in seq_len(controls[["states"]][2])){
+      for(state in seq_len(controls[["states"]][1])){
         writeLines(paste0("Conditional on CS state ",state,":"))
-        out_fs = table((decoding[decoding[,1]==state,-1])); names(out_fs) = paste("FS state",names(out_fs))
-        print(out_fs); writeLines("")
+        out_fs = table(factor(decoding[decoding[,1]==state,-1],levels = seq_len(controls[["states"]][2])))
+        names(out_fs) = paste("FS state",names(out_fs))
+        print(out_fs)
+        writeLines("")
       }
     }
     sink()
