@@ -83,7 +83,7 @@ The following model results are saved in the folder `./models`:
 - `ts.pdf`, a visualization of the decoded time series
 
 ## Examples
-### Fitting a 3-state HMM to the 21st century DAX closing prices
+### Fitting a 3-state HMM to the DAX closing prices from 2000 to 2020
 Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HMM_3_DAX) for the results.
 ```R
 ### 1. Initialization
@@ -94,7 +94,7 @@ controls = list(
   id            = "HMM_DAX_3",        
   data_source   = c("dax.csv",NA),
   data_col      = c("Close",NA)
-  truncate_data = c("2000-01-03",NA), 
+  truncate_data = c("2000-01-03","2020-12-28"), 
   states        = c(3,0)
   )
 controls = check_controls(controls)
