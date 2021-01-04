@@ -207,19 +207,20 @@ check_estimation = function(time,mods,llks,data,controls){
   
   ### detect unidentified states
   check_unid_states = function(Gamma){
-    unid_states = abs(Gamma2delta(Gamma)-c(0,1))<1e-04
-    for(s in which(unid_states)){
-      warning("Unidentified state detected.",call.=FALSE)
+    for(x in c(0,1)){
+      unid_states = abs(Gamma2delta(Gamma)-x)<1e-04
+      for(s in which(unid_states)){
+        warning("Unidentified state detected.",call.=FALSE)
+      }
     }
-    return(Gamma)
   }
   if(controls[["model"]]=="HMM"){
-    thetaList[["Gamma"]] = check_unid_states(thetaList[["Gamma"]])
+    check_unid_states(thetaList[["Gamma"]])
   }
   if(controls[["model"]]=="HHMM"){
-    thetaList[["Gamma"]] = check_unid_states(thetaList[["Gamma"]])
+    check_unid_states(thetaList[["Gamma"]])
     for(cs in controls[["states"]]){
-      thetaList[["Gammas_star"]][[cs]] = check_unid_states(thetaList[["Gammas_star"]][[cs]])
+      check_unid_states(thetaList[["Gammas_star"]][[cs]])
     }
   }
   
