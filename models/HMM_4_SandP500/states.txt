@@ -1,4 +1,0 @@
-Frequency of decoded states:
-
-state 1 state 2 state 3 state 4 
-     36    2622    2179     447 
