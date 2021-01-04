@@ -6,8 +6,14 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
   if(controls[["sim"]] & !is.null(labels)){
     warning("Object 'labels' is ignored because 'data' is simulated.",call.=FALSE)
-  } else if(!controls[["sim"]] & !is.null(labels) & length(labels[["dates"]])!=length(labels[["names"]])){
+  } 
+  if(!controls[["sim"]] & !is.null(labels) & length(labels[["dates"]])!=length(labels[["names"]])){
     stop("'dates' and 'names' in 'labels' must be of the same length.")
+  }
+  
+  ### save labels
+  if(!controls[["sim"]] & !is.null(labels)){
+    check_saving(labels,controls)
   }
   
   ### extract parameters
@@ -37,62 +43,60 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   ### define legend layout
   legend_layout = list(cex=1.25,x="topleft",bg="white")
   
-  ### rounding functions
-  floor_dec = function(x,n) round(x-5*10^(-n-1),n)
-  ceiling_dec = function(x,n) round(x+5*10^(-n-1),n)
-  
   ### state dependent distributions
   filename = paste0("models/",controls[["id"]],"/sdd.pdf")
   if(controls[["overwrite"]]==FALSE & file.exists(filename)){
     warning(paste0("Cannot create a plot of the state-dependent distributions because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
   } else {
+    trunc_dist = 1e-3
     if(controls[["model"]]=="HMM"){
       pdf(filename, width=9, height=7)
-      sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
-      lwd = 3
-      xmin = floor_dec(min(data[["logReturns"]]),1); xmax = ceiling_dec(max(data[["logReturns"]]),1); x = seq(xmin,xmax,0.001)
-      ymin = 0; ymax = ceiling(max(sapply(x,sdd,s=seq_len(states[1]))))
-      hist(data[["logReturns"]],prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
-      axis(1,trunc(seq(xmin,xmax,by=0.1)*10)/10); axis(2,seq(ymin,ymax,by=20),las=1)
-      title(main="State-dependent distributions",xlab="Log-return",ylab="Density")
-      do.call(legend,c(list(legend=paste("State",seq_len(states[1])),col=colors[,1],lwd=3),legend_layout))
-      for(s in seq_len(states[1])){
-        lines(x[sdd(s,x)>0.001],sdd(s,x)[sdd(s,x)>0.001],col=colors[s,1],lwd=lwd)
-      }
+        sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
+        lwd = 3
+        xmin = min(-0.1,min(data[["logReturns"]])); xmax = max(0.1,max(data[["logReturns"]])); x = seq(xmin,xmax,0.001)
+        ymin = 0; ymax = ceiling(max(sapply(x,sdd,s=seq_len(states[1]))))
+        hist(data[["logReturns"]],prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
+        axis(1,trunc(seq(xmin,xmax,length.out = 3)*10)/10); axis(2,seq(ymin,ymax,by=20),las=1)
+        title(main="State-dependent distributions",xlab="Log-return",ylab="Density")
+        do.call(legend,c(list(legend=paste("State",seq_len(states[1])),col=colors[,1],lwd=3),legend_layout))
+        for(s in seq_len(states[1])){
+          lines(x[sdd(s,x)>trunc_dist],sdd(s,x)[sdd(s,x)>trunc_dist],col=colors[s,1],lwd=lwd)
+        }
       invisible(dev.off())
     }
     if(controls[["model"]]=="HHMM"){
       pdf(filename, width=9, height=7)
-      sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
-      lwd = 3
-      xmin = min(-0.1,floor_dec(min(cs_logReturns),1)); xmax = max(0.1,ceiling_dec(max(cs_logReturns),1)); x = seq(xmin,xmax,0.001)
-      ymin = 0; ymax = ceiling(max(sapply(x,sdd,s=seq_len(states[1]))))
-      hist(cs_logReturns,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
-      axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=40),las=1)
-      title(main="State-dependent distributions",xlab="Log-return",ylab="Density")
-      do.call(legend,c(list(legend=paste("Coarse-scale state",seq_len(states[1])),col=colors[,1],lwd=3),legend_layout))
-      for(s in seq_len(states[1])){
-        lines(x[sdd(s,x)>0.001],sdd(s,x)[sdd(s,x)>0.001],col=colors[s,1],lwd=lwd)
-      }
-      sdd = function(cs,fs,x) {1/sigmas_star[[cs]][fs]*dt((x-mus_star[[cs]][fs])/sigmas_star[[cs]][fs],dfs_star[[cs]][fs])}
-      lwd = 3
-      xmin = floor_dec(min(fs_logReturns),1); xmax = ceiling_dec(max(fs_logReturns),1); x = seq(xmin,xmax,0.001)
-      ymin = 0; ymax = 0
-      for(cs in seq_len(states[1])){
-        for(fs in seq_len(states[2])){
-          temp = max(sdd(cs,fs,x))
-          if(temp>ymax) ymax = ceiling(temp)
+        sdd = function(s,x) {(1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])}
+        lwd = 3
+        xmin = min(-0.1,min(cs_logReturns)); xmax = max(0.1,max(cs_logReturns)); x = seq(xmin,xmax,0.001)
+        ymin = 0; ymax = ceiling(max(sapply(x,sdd,s=seq_len(states[1]))))
+        hist(cs_logReturns,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
+        axis(1,trunc(seq(xmin,xmax,length.out = 3)*10)/10); axis(2,seq(ymin,ymax,by=40),las=1)
+        title(main="State-dependent distributions",xlab="Log-return",ylab="Density")
+        do.call(legend,c(list(legend=paste("Coarse-scale state",seq_len(states[1])),col=colors[,1],lwd=3),legend_layout))
+        for(s in seq_len(states[1])){
+          lines(x[sdd(s,x)>trunc_dist],sdd(s,x)[sdd(s,x)>trunc_dist],col=colors[s,1],lwd=lwd)
         }
-      }
-      for(cs in seq_len(states[1])){
-        hist(fs_logReturns,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
-        axis(1,seq(xmin,xmax,by=0.1)); axis(2,seq(ymin,ymax,by=20),las=1)
-        title(main=paste("State-dependent distributions conditional on coarse-scale state",cs),xlab="Log-return",ylab="Density")
-        do.call(legend,c(list(legend=paste("Fine-scale state",seq_len(states[2])),col=colors[cs,-1],lwd=3),legend_layout))
-        for(fs in seq_len(states[2])){
-          lines(x[sdd(cs,fs,x)>0.001],sdd(cs,fs,x)[sdd(cs,fs,x)>0.001],col=colors[cs,fs+1],lwd=lwd)
+        
+        sdd = function(cs,fs,x) {1/sigmas_star[[cs]][fs]*dt((x-mus_star[[cs]][fs])/sigmas_star[[cs]][fs],dfs_star[[cs]][fs])}
+        lwd = 3
+        xmin = min(fs_logReturns); xmax = max(fs_logReturns); x = seq(xmin,xmax,0.001)
+        ymin = 0; ymax = 0
+        for(cs in seq_len(states[1])){
+          for(fs in seq_len(states[2])){
+            temp = max(sdd(cs,fs,x))
+            if(temp>ymax) ymax = ceiling(temp)
+          }
         }
-      }
+        for(cs in seq_len(states[1])){
+          hist(fs_logReturns,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
+          axis(1,trunc(seq(xmin,xmax,length.out = 3)*10)/10); axis(2,seq(ymin,ymax,by=20),las=1)
+          title(main=paste("State-dependent distributions conditional on coarse-scale state",cs),xlab="Log-return",ylab="Density")
+          do.call(legend,c(list(legend=paste("Fine-scale state",seq_len(states[2])),col=colors[cs,-1],lwd=3),legend_layout))
+          for(fs in seq_len(states[2])){
+            lines(x[sdd(cs,fs,x)>trunc_dist],sdd(cs,fs,x)[sdd(cs,fs,x)>trunc_dist],col=colors[cs,fs+1],lwd=lwd)
+          }
+        }
       invisible(dev.off())
     }
   }
@@ -103,45 +107,43 @@ visual = function(data,fit,decoding,controls,labels=NULL){
     warning(paste0("Cannot create a plot of the decoded time series because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
   } else {
     pdf(filename, width=19, height=9)
-    par(las=1,mar=c(6,5,0.5,5),bty="n")
-    if(!controls[["sim"]]){
-      xmin = as.Date(format(as.Date(head(data$dates,n=1)),"%Y-01-01")); 
-      xmin=as.Date("2000-01-01")
-      xmax = as.Date(paste0(as.numeric(format(tail(data$dates,n=1),"%Y"))+1,"-01-01"))
-      ymax = max(data[["dataRaw"]]); ymin = -ymax
-      plot(data$dates,data[["dataRaw"]],type="l",xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="grey",xlab="",ylab="",xaxt="n",yaxt="n",cex.lab=2, cex.main=2)
-      par(las=3)
-      if(controls[["model"]]=="HMM") data_lab = controls[["data_col"]][1]
-      if(controls[["model"]]=="HHMM") data_lab = controls[["data_col"]][2]
-      mtext(data_lab,side=4,line=3.5,at=mean(data[["dataRaw"]]),cex=1.25)
-      par(las=1)
-      mtext("Year",side=1,line=2.5,cex=1.25)
-      markdates = seq(xmin,xmax,by="year"); markdates = markdates[1:length(markdates)%%2==1]
-      axis(1, markdates, format(markdates, "%Y"))
-      axis(4, round(seq(min(data[["dataRaw"]]),max(data[["dataRaw"]]),length.out=3),digits=-2))
-      if(controls[["model"]]=="HMM"){
-        for(s in seq_len(states[1])){
-          points(data$dates[decoding==s],data[["dataRaw"]][decoding==s],col=colors[s,1],pch=20)
-        }
-      }
-      if(controls[["model"]]=="HHMM"){
-        for(cs in seq_len(states[1])){
-          for(fs in seq_len(states[2])){
-            points(data$dates[decoding_cs==cs&decoding_fs==fs],data[["dataRaw"]][decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
+      par(las=1,mar=c(6,5,0.5,5),bty="n")
+      if(!controls[["sim"]]){
+        xmin = as.Date(format(as.Date(head(data$dates,n=1)),"%Y-01-01")); 
+        xmax = as.Date(paste0(as.numeric(format(tail(data$dates,n=1),"%Y"))+1,"-01-01"))
+        ymax = ceiling(max(data[["dataRaw"]])); ymin = -ymax
+        plot(data$dates,data[["dataRaw"]],type="l",xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="grey",xlab="",ylab="",xaxt="n",yaxt="n",cex.lab=2, cex.main=2)
+        if(controls[["model"]]=="HMM") data_lab = controls[["data_col"]][1]
+        if(controls[["model"]]=="HHMM") data_lab = controls[["data_col"]][2]
+        mtext("Year",side=1,line=2.5,cex=1.25)
+        markdates = seq(xmin,xmax,by="year"); markdates = markdates[1:length(markdates)%%2==1]
+        axis(1, markdates, format(markdates, "%Y"))
+        y_ticks = signif(seq(floor(min(data[["dataRaw"]])),ymax,length.out=3),digits=3)
+        axis(4, y_ticks)
+        mtext(data_lab,side=4,line=3.5,at=mean(y_ticks),cex=1.25,las=3)
+        if(controls[["model"]]=="HMM"){
+          for(s in seq_len(states[1])){
+            points(data$dates[decoding==s],data[["dataRaw"]][decoding==s],col=colors[s,1],pch=20)
           }
         }
+        if(controls[["model"]]=="HHMM"){
+          for(cs in seq_len(states[1])){
+            for(fs in seq_len(states[2])){
+              points(data$dates[decoding_cs==cs&decoding_fs==fs],data[["dataRaw"]][decoding_cs==cs&decoding_fs==fs],col=colors[cs,fs+1],pch=20)
+            }
+          }
+        }
+        par(new=TRUE,las=1)
+        x_values = data$dates
+        ymax_factor = 3
       }
-      par(new=TRUE,las=1)
-      x_values = data$dates
-      ymax_factor = 3
-    }
-    if(controls[["sim"]]){
-      xmin = 1
-      if(controls[["model"]]=="HMM") xmax = length(data[["logReturns"]])
-      if(controls[["model"]]=="HHMM") xmax = length(fs_logReturns)
-      x_values = seq_len(xmax)
-      ymax_factor = 1.5
-    }
+      if(controls[["sim"]]){
+        xmin = 1
+        if(controls[["model"]]=="HMM") xmax = length(data[["logReturns"]])
+        if(controls[["model"]]=="HHMM") xmax = length(fs_logReturns)
+        x_values = seq_len(xmax)
+        ymax_factor = 1.5
+      }
       if(controls[["model"]]=="HMM"){
         ymin = min(data[["logReturns"]]); ymax = max(data[["logReturns"]])
         plot(x_values,data[["logReturns"]],type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
@@ -150,9 +152,14 @@ visual = function(data,fit,decoding,controls,labels=NULL){
         ymin = min(fs_logReturns); ymax = max(fs_logReturns)
         plot(x_values,fs_logReturns,type="h",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
       }
-      par(las=3)
-      mtext("Log-return",side=2,line=3.5,at=0,cex=1.25)
-      par(las=1)
+      if(!controls[["sim"]]){
+        mtext("Log-return",side=2,line=3.5,at=0,cex=1.25,las=3)
+      }
+      if(controls[["sim"]]){
+        mtext("Index",side=1,line=2.5,cex=1.25)
+        mtext("Simulated log-return",side=2,line=3.5,at=0,cex=1.25,las=3)
+        axis(1, c(xmin,xmax))
+      }
       axis(2, round(c(ymin,0,ymax),2))
       if(controls[["model"]]=="HMM"){
         for(s in seq_len(states[1])){
@@ -184,7 +191,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
         eg = expand.grid(seq_len(states[2]),seq_len(states[1]))
         do.call(legend,c(list(legend=paste0("Coarse-scale state ",eg[,2],", fine-scale state ",eg[,1]),col=as.vector(t(colors[,-1])),pch=19),legend_layout))
       }
-      invisible(dev.off())
+    invisible(dev.off())
   }
   
   ### pseudo-residuals
