@@ -44,7 +44,7 @@ init_est = function(controls){
 
 ### load parameters and results of the old model 'id'
 reinit = function(id){
-  loadable = c("controls","data","fit","decoding")
+  loadable = c("controls","data","fit","decoding","labels")
   path = paste0("models/",id)
   if(!dir.exists(path)) stop(paste0("Reinitialization failed, path '",path,"' does not exist."),call.=FALSE)
   loaded = list()
