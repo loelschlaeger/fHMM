@@ -10,8 +10,6 @@ init = function(){
               require("RcppArmadillo"),
               if(!"progress" %in% installed_packages){ writeLines("\nInstalling package 'progress'.\n"); install.packages("progress",quite=TRUE)},
               require("progress"),
-              if(!"bit64" %in% installed_packages){ writeLines("\nInstalling package 'bit64'.\n"); install.packages("bit64",quite=TRUE)},
-              require("bit64"),
               source("checks.R"),
               source("data.R"),
               sourceCpp("loglike.cpp"),
