@@ -46,7 +46,6 @@ The following parameters are optional and set to [default values](#default-value
    - if `fix_dfs = c(x,NA)`, degrees of freedom of a HMM or the coarse scale of a HHMM are fixed to `x`
    - if `fix_dfs = c(NA,y)`, degrees of freedom of the fine scale of a HHMM are fixed to `y`
    - if `fix_dfs = c(x,y)`, degrees of freedom of the coarse scale and the fine scale of a HHMM are fixed to `x` and `y`, respectively 
-- `hessian`: a boolean, determining whether the Hessian at the optimum is returned
 - `iterlim`: an integer, specifying the maximum number of optimization iterations to be performed before termination, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `overwrite`: a boolean, determining whether existing results (on the same `id`) can be overwritten
 - `print.level`: an integer, determining the level of printing during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
@@ -61,8 +60,7 @@ The following parameters are optional and set to [default values](#default-value
 - `at_true = FALSE`
 - `data_col = c(NA,NA)`
 - `data_source = c(NA,NA)` 
-- `fix_dfs = c(NA,NA)` 
-- `hessian = TRUE` 
+- `fix_dfs = c(NA,NA)`
 - `iterlim = 500`
 - `overwrite = FALSE`
 - `print.level = 0` (no printing occurs)
@@ -74,8 +72,8 @@ The following parameters are optional and set to [default values](#default-value
 
 ## Outputs
 The following model results are saved in the folder `./models`:
-- `estimates.txt`, containing estimates, gradient, Hessian, likelihood value, AIC and BIC values etc.
-- `states.txt`, containing frequencies of the decoded states
+- `estimates.txt`, containing likelihood value, AIC and BIC values, exit code, number of iterations, computation time, true parameter values, estimates, gradient, Hessian
+- `states.txt`, containing frequencies of the decoded states and a comparison between the true states and the predicted states
 - `controls`, `data`, `decoding` and `fit`, .RData-files that can be reinitialized
 - `lls.pdf`, a visualization of the log-likelihood values in the different estimation runs
 - `pseudos.pdf`, a visualization of the pseudo-residuals
