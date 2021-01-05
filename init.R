@@ -3,9 +3,15 @@ init = function(){
   message("Loading code...\r")
   if(!dir.exists("models")) dir.create("models")
   if(!dir.exists("data")) dir.create("data")
-  exe = alist(require("Rcpp"),
+  installed_packages = installed.packages()[,"Package"]
+  exe = alist(if(!"Rcpp" %in% installed_packages){ writeLines("\nInstalling package 'Rcpp'.\n"); install.packages("Rcpp",quite=TRUE)},
+              require("Rcpp"),
+              if(!"RcppArmadillo" %in% installed_packages){ writeLines("\nInstalling package 'RcppArmadillo'.\n"); install.packages("RcppArmadillo",quitely=TRUE)},
               require("RcppArmadillo"),
+              if(!"progress" %in% installed_packages){ writeLines("\nInstalling package 'progress'.\n"); install.packages("progress",quite=TRUE)},
               require("progress"),
+              if(!"bit64" %in% installed_packages){ writeLines("\nInstalling package 'bit64'.\n"); install.packages("bit64",quite=TRUE)},
+              require("bit64"),
               source("checks.R"),
               source("data.R"),
               sourceCpp("loglike.cpp"),
