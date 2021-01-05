@@ -1,14 +1,14 @@
 check_controls = function(controls){
   
   ### check supplied control values
-  all_controls = c("id","data_source","data_col","truncate_data","states","time_horizon","fix_dfs","runs","at_true","iterlim","hessian","seed","print.level","steptol","accept_codes","overwrite")
+  all_controls = c("id","data_source","data_col","truncate_data","states","time_horizon","fix_dfs","runs","at_true","iterlim","seed","print.level","steptol","accept_codes","overwrite")
   required_controls = c("id","states")
   artificial_controls = c("sim","model","est_dfs","controls_checked")
   missing_controls = setdiff(all_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
   controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","fix_dfs")
   numeric_controls = c("states","runs","iterlim","print.level","steptol","accept_codes","seed")
-  boolean_controls = c("hessian","overwrite","at_true")
+  boolean_controls = c("overwrite","at_true")
   for(required_control in required_controls){
     if(!(required_control %in% names(controls))) stop(paste0("Please specify '", required_control, "' in 'controls'."),call.=FALSE)
   }
@@ -35,7 +35,6 @@ check_controls = function(controls){
   if("runs" %in% missing_controls) controls[["runs"]] = 200
   if("at_true" %in% missing_controls) controls[["at_true"]] = FALSE
   if("iterlim" %in% missing_controls) controls[["iterlim"]] = 500
-  if("hessian" %in% missing_controls) controls[["hessian"]] = TRUE
   if("print.level" %in% missing_controls) controls[["print.level"]] = 0
   if("steptol" %in% missing_controls) controls[["steptol"]] = 1e-6
   if("accept_codes" %in% missing_controls) controls[["accept_codes"]] = c(1)
@@ -134,13 +133,17 @@ check_controls = function(controls){
   }
   
   ### check if data paths are correct
-  if(!is.na(controls[["data_source"]][1]) & !file.exists(paste0("data/",controls[["data_source"]][1]))){
-    stop(paste0("File 'data/",controls[["data_source"]][1],"' does not exist."),call.=FALSE)
+  for(i in c(1,2)){
+    if(!is.na(controls[["data_source"]][i])){
+      if(!file.exists(paste0("data/",controls[["data_source"]][i]))){
+        stop(paste0("File 'data/",controls[["data_source"]][i],"' does not exist."),call.=FALSE)
+      }
+      if(!controls[["data_col"]][i] %in% colnames(read.csv(file=paste0("data/",controls[["data_source"]][i])))){
+        stop(paste0("Column '",controls[["data_col"]][i],"' does not exist in the file 'data/",controls[["data_source"]][i],"'."),call.=FALSE)
+      }
+    }
   }
-  if(!is.na(controls[["data_source"]][2]) & !file.exists(paste0("data/",controls[["data_source"]][2]))){
-    stop(paste0("File 'data/",controls[["data_source"]][2],"' does not exist."),call.=FALSE)
-  }
-  
+
   ### note that 'controls' is checked
   writeLines("Checks successful.")
   controls[["controls_checked"]] = TRUE
@@ -261,9 +264,7 @@ check_estimation = function(time,mods,llks,data,controls){
     }
     writeLines("Estimates:\n"); print(fit[["thetaList"]])
     writeLines("Gradient:\n"); print(mod[["gradient"]]); writeLines("")
-    if(controls[["hessian"]]){
-      writeLines("Hessian:\n"); print(mod[["hessian"]])
-    }
+    writeLines("Hessian:\n"); print(mod[["hessian"]])
     sink()
     options(max.print=1000)
   }
