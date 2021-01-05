@@ -29,7 +29,7 @@ maxLikelihood = function(data,controls){
                             			                  iterlim = controls[["iterlim"]],
                             			                  steptol = controls[["steptol"]],
                             			                  print.level = controls[["print.level"]],
-                            			                  hessian = controls[["hessian"]]
+                            			                  hessian = TRUE
     			                                          )
     		                          if(mods[[run]]$code %in% controls[["accept_codes"]] || controls[["at_true"]]){
     		                            llks[run] = -mods[[run]]$minimum
