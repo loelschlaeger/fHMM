@@ -299,6 +299,32 @@ check_decoding = function(decoding,controls){
         writeLines("")
       }
     }
+    if(controls[["sim"]]){
+      compare_true_predicted_states = function(no_states,decoded_states,true_states,label=NULL){
+        c_table = matrix(0,no_states,no_states)
+        rownames(c_table) = paste0("true ",label,"state ",seq_len(no_states))
+        colnames(c_table) = paste0("decoded ",label,"state ",seq_len(no_states))
+        for(i in seq_len(no_states)){
+          for(j in seq_len(no_states)){
+            c_table[i,j] = sum(decoded_states==i & true_states==j)
+          }
+        }
+        return(c_table)
+      }
+      writeLines("Comparison between true states and predicted states:\n")
+      if(controls[["model"]]=="HMM"){
+        print(compare_true_predicted_states(controls[["states"]][1],decoding,data[["states0"]]))
+      }
+      if(controls[["model"]]=="HHMM"){
+        print(compare_true_predicted_states(controls[["states"]][1],decoding[,1],data[["states0"]][,1],label="CS "))
+        writeLines("")
+        for(cs_state in seq_len(controls[["states"]][1])){
+          writeLines(paste0("Conditional on CS state ",cs_state,":"))
+          print(compare_true_predicted_states(controls[["states"]][2],decoding[decoding[,1]==cs_state,-1],data[["states0"]][data[["states0"]][,1]==cs_state,-1],label="FS "))
+          writeLines("")
+        }
+      }
+    }
     sink()
   }
   
