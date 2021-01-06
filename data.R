@@ -185,22 +185,79 @@ readData = function(controls){
 
 
 ### download data from www.finance.yahoo.com
-downloadData = function(name,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date()){
-  from = as.Date(from)
-  to = as.Date(to)
+downloadData = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Date()){
   
-  ### search stock via name
+  ### load and sort or create 'stock_symbols'
+  if(file.exists("data/stock_symbols")){
+    stock_symbols = readRDS("data/stock_symbols")
+    stock_symbols = stock_symbols[order(stock_symbols["name"]),]
+  } else {
+    stock_symbols = data.frame("name"=character(),"symbol"=character())
+    saveRDS(stock_symbols,file="data/stock_symbols")
+  }
   
-  ### if name is not in data.frame, symbol has to be supplied. then symbol is saved in .RData file (data.frame) in /data with stock name.
+  ### print 'stock_symbols'
+  if(is.na(name)){
+    if(dim(stock_symbols)[1]!=0){
+      writeLines("Saved stock symbols:\n")
+      print(stock_symbols,row.names = FALSE)
+    } else {
+      writeLines("No saved stock symbols.")
+    }
+  } else {
+    
+    ### convert 'from' and 'to' to dates
+    from = as.Date(from)
+    to = as.Date(to)
   
-  ### if name="all", print all elements of data.frame
+    ### define minimum date 'from'
+    min_date = as.Date("1902-01-01")
+    if(from < min_date) from = min_date
+    
+    ### function to create finance.yahoo.com-URL
+    createUrl = function(symbol,from,to){
+      t1 = as.integer(ISOdate(as.numeric(format(from,format="%Y")),as.numeric(format(from,format="%m")),as.numeric(format(from,format="%d")),hour=0))
+      t2 = as.integer(ISOdate(as.numeric(format(to,format="%Y")),as.numeric(format(to,format="%m")),as.numeric(format(to,format="%d")),hour=24))
+      url = paste("https://query1.finance.yahoo.com/v7/finance/download/",symbol,"?period1=",t1,"&period2=",t2,"&interval=1d&events=history",sep="")
+      return(url)
+    }
+    
+    ### covert 'name' to lowercase
+    name = tolower(name)
+    
+    ### search 'name' in 'stock_symbols' and get corresponding 'symbol'
+    if(is.na(symbol)){
+      if(name %in% stock_symbols[["name"]]){
+        symbol = stock_symbols[which(stock_symbols["name"]==name),"symbol"]
+      } else {
+        stop(paste0("Symbol for the stock '",name,"' is unknown."),call.=FALSE)
+      }
+    } else {
+      if(name %in% stock_symbols["name"]){
+        symbol = stock_symbols[which(stock_symbols["name"]==name),"symbol"]
+      } else {
+        read_try = suppressWarnings(try(read.csv(createUrl(symbol,from,to)),silent=TRUE))
+        if(inherits(read_try, "try-error")){
+          stop(paste0("Symbol '",symbol,"' is invalid."),call.=FALSE)
+        } else {
+          ### save new symbol
+          stock_symbols[nrow(stock_symbols)+1,] = c(name,symbol)
+          saveRDS(stock_symbols,file="data/stock_symbols")
+        }
+      }
+    }
+    
+    ### download and save data
+    filename = paste0("data/",name,".csv")
+    download.file(createUrl(symbol,from,to),destfile=filename,quiet=TRUE)
+    
+    ### print summary of new data
+    data = read.csv(file=filename,head=TRUE,sep=",",na.strings="null") 
+    writeLines("Download successful.")
+    writeLines(paste("Source:",paste0(name,".csv")))
+    writeLines(paste("From:  ",head(data$Date,n=1)))
+    writeLines(paste("To:    ",tail(data$Date,n=1)))
+  }
   
-  min_date = as.Date("1902-01-01")
-  if(from < min_date) stop(call.=FALSE)
-  t1 = as.integer(ISOdate(1902,1,1,hour=0))
-  t2 = as.integer(ISOdate(2025,6,19,hour=0))
-  url = paste("https://query1.finance.yahoo.com/v7/finance/download/",stock,"?period1=",t1,"&period2=",t2,"&interval=1d&events=history",sep="")
-  dataset = read.csv(url)
 }
-
 
