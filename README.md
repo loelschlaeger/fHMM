@@ -30,7 +30,7 @@ See below for some [examples](#examples).
 The code is intended to be used on daily share prices provided by https://finance.yahoo.com/. The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `downloadData(name,symbol,from,to)`, where
 - `name` is a personal identifier,
 - `symbol` is the stock's symbol,
-- `from` and `to` define the time interval.
+- `from` and `to` define the time interval (in format ´"YYYY-MM-DD"´).
 
 Additionally, data can be simulated.
 
@@ -63,7 +63,7 @@ The following parameters are optional and set to [default values](#default-value
 - `seed`: an integer, setting a seed for the simulation and the initialization
 - `steptol`: an integer, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `time_horizon`: a numeric vector of length 2, determining the length of the time horizion(s) (If the model is a HHMM, its second entry must always be specified to set the length of the fine-scale chunks.)
-- `truncate_data`: a vector of length 2, containing a lower and upper date limit (in format YYYY-MM-DD) to select a subset of the empirical data (neither, one or both limits can be specified)
+- `truncate_data`: a vector of length 2, containing a lower and upper date limit (in format ´"YYYY-MM-DD"´) to select a subset of the empirical data (neither, one or both limits can be specified)
 
 ### Default values
 - `accept_codes = 1` (relative gradient is close to zero, current iterate is probably solution)
