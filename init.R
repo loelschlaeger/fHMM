@@ -32,13 +32,13 @@ init_est = function(controls){
   df_fs = controls[["fix_dfs"]][2]
   
   gammasUncon = gammasCon2gammasUncon(runif((M-1)*M,0,1/M),M)
-  mus         = sort(rnorm(M)*10^(-2),decreasing=TRUE) 
-  sigmasUncon = log(sort(runif(M,0.1,1)*10^(-2)/2,decreasing=FALSE))
+  mus         = sort(rnorm(M)*10^(-1),decreasing=TRUE) 
+  sigmasUncon = log(sort(runif(M,0.1,1)*10^(-2),decreasing=FALSE))
   dfs         = if(is.na(df_cs)) runif(M,0,30) else integer(0)
   if(controls[["model"]]=="HHMM") for(m in seq_len(M)){
     gammasUncon = c(gammasUncon,gammasCon2gammasUncon(runif((N-1)*N,0,1/N),N))
-    mus         = c(mus,sort(rnorm(N)*10^(-2),decreasing=TRUE))
-    sigmasUncon = c(sigmasUncon,log(sort(runif(N,0.1,1)*10^(-2)/2,decreasing=FALSE)))
+    mus         = c(mus,sort(rnorm(N)*10^(-1),decreasing=TRUE))
+    sigmasUncon = c(sigmasUncon,log(sort(runif(N,0.1,1)*10^(-2),decreasing=FALSE)))
     dfs         = c(dfs,if(is.na(df_fs)) runif(N,0,30) else integer(0))
   }
   
