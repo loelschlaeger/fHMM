@@ -33,7 +33,7 @@ A model is specified by setting parameters of the named list `controls`. The fol
 - And either `data_source` along with `data_col` (for empirical data) or `time_horizon` (for simulated data) has to be specified, see below.
 
 The following parameters are optional and set to [default values](#default-values) if not specified:
-- `accept_codes`: a numeric vector, containing acceptable exit codes of the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `accept_codes`: either a numeric vector (containing acceptable exit codes of the optimization) or the character `all` (accepting all codes), see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `at_true`: a boolean, determining whether the optimization is initialised at the true parameter values (only for simulated data, sets `runs=1`, ignores `accept_codes`)
 - `data_col`: a character vector of length 2, containing names of the desired columns of `data_source`
 - `data_source`: a character vector of length 2, containing the file names of the empirical data:
