@@ -33,14 +33,14 @@ A model is specified by setting parameters of the named list `controls`. The fol
 - And either `data_source` along with `data_col` (for empirical data) or `time_horizon` (for simulated data) has to be specified, see below.
 
 The following parameters are optional and set to [default values](#default-values) if not specified:
-- `accept_codes`: a numeric vector, containing acceptable exit codes of the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `accept_codes`: either a numeric vector (containing acceptable exit codes of the optimization) or the character `all` (accepting all codes), see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `at_true`: a boolean, determining whether the optimization is initialised at the true parameter values (only for simulated data, sets `runs=1`, ignores `accept_codes`)
 - `data_col`: a character vector of length 2, containing names of the desired columns of `data_source`
 - `data_source`: a character vector of length 2, containing the file names of the empirical data:
    - if `data_source = c(NA,NA)`, data is simulated
-   - if `data_source = c("x.csv",NA)`, data `"./data/x.csv"` is modeled by a HMM
-   - if `data_source = c("x.csv","y.csv")`, averages of data `"./data/x.csv"` (average size determined by the second entry of `time_horizon`) on the coarse scale and data `"./data/y.csv"` on the fine scale is modeled by a HHMM
-   - `data_source = c(NA,"y.csv")` is interpreted as `data_source = c("y.csv","y.csv")`
+   - if `data_source = c("x",NA)`, data `"./data/x.csv"` is modeled by a HMM
+   - if `data_source = c("x","y")`, averages of data `"./data/x.csv"` (average size determined by the second entry of `time_horizon`) on the coarse scale and data `"./data/y.csv"` on the fine scale is modeled by a HHMM
+   - `data_source = c(NA,"y")` is interpreted as `data_source = c("y","y")`
 - `fix_dfs`: a numeric vector of length 2, fixing the degrees of freedom of the state-dependent t-distributions
    - if `fix_dfs = c(NA,NA)`, degrees of freedom are not fixed
    - if `fix_dfs = c(x,NA)`, degrees of freedom of a HMM or the coarse scale of a HHMM are fixed to `x`
@@ -90,7 +90,7 @@ source("init.R"); init()
 ### 2. Set and check controls
 controls = list(
   id            = "HMM_DAX_3",        
-  data_source   = c("dax.csv",NA),
+  data_source   = c("dax",NA),
   data_col      = c("Close",NA)
   truncate_data = c("2000-01-03","2020-12-28"), 
   states        = c(3,0)
