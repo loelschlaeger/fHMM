@@ -184,4 +184,23 @@ readData = function(controls){
 }
 
 
+### download data from www.finance.yahoo.com
+downloadData = function(name,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date()){
+  from = as.Date(from)
+  to = as.Date(to)
+  
+  ### search stock via name
+  
+  ### if name is not in data.frame, symbol has to be supplied. then symbol is saved in .RData file (data.frame) in /data with stock name.
+  
+  ### if name="all", print all elements of data.frame
+  
+  min_date = as.Date("1902-01-01")
+  if(from < min_date) stop(call.=FALSE)
+  t1 = as.integer(ISOdate(1902,1,1,hour=0))
+  t2 = as.integer(ISOdate(2025,6,19,hour=0))
+  url = paste("https://query1.finance.yahoo.com/v7/finance/download/",stock,"?period1=",t1,"&period2=",t2,"&interval=1d&events=history",sep="")
+  dataset = read.csv(url)
+}
+
 
