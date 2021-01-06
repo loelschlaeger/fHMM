@@ -97,7 +97,7 @@ Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HM
 ### 1. Initialization
 source("init.R"); init()
 
-### 2. Download financial data
+### 2. Download data
 downloadData("dax","^GDAXI")
 
 ### 3. Set and check controls
