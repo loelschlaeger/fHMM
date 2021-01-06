@@ -7,7 +7,7 @@ check_controls = function(controls){
   missing_controls = setdiff(all_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
   controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","fix_dfs")
-  numeric_controls = c("states","runs","iterlim","print.level","steptol","accept_codes","seed")
+  numeric_controls = c("states","runs","iterlim","print.level","steptol","seed")
   boolean_controls = c("overwrite","at_true")
   for(required_control in required_controls){
     if(!(required_control %in% names(controls))) stop(paste0("Please specify '", required_control, "' in 'controls'."),call.=FALSE)
@@ -131,10 +131,14 @@ check_controls = function(controls){
   if(controls[["overwrite"]]){
     warning("Saved model results may be overwritten.",call.=FALSE)
   }
+  if(controls[["accept_codes"]]=="all"){
+    controls[["accept_codes"]] = 1:5
+  }
   
   ### check if data paths are correct
   for(i in c(1,2)){
     if(!is.na(controls[["data_source"]][i])){
+      controls[["data_source"]][i] = paste0(controls[["data_source"]][i],".csv")
       if(!file.exists(paste0("data/",controls[["data_source"]][i]))){
         stop(paste0("File 'data/",controls[["data_source"]][i],"' does not exist."),call.=FALSE)
       }
