@@ -27,7 +27,7 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 See below for some [examples](#examples).
 
 ## Data
-The code is intended to be used on share prices provided by https://finance.yahoo.com/. The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `downloadData(name,symbol,from,to)`, where
+The code is intended to be used on daily share prices provided by https://finance.yahoo.com/. The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `downloadData(name,symbol,from,to)`, where
 - `name` is a personal identifier,
 - `symbol` is the stock's symbol,
 - `from` and `to` define the time interval.
