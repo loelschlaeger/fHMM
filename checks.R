@@ -258,13 +258,13 @@ check_estimation = function(time,mods,llks,data,controls){
     first_col = c("LL","AIC","BIC","exit code","iterations", "run time (min)")
     second_col = c(fit[["LL"]],fit[["AIC"]],fit[["BIC"]],mod[["code"]],mod[["iterations"]],time)
     df = data.frame(first_col,second_col); names(df) = NULL
-    writeLines(paste0("Results of model '",controls[["id"]],"':")); print(df,row.names=FALSE,right=FALSE); writeLines("")
+    writeLines(paste0("ESTIMATION RESULTS of model '",controls[["id"]],"':")); print(df,row.names=FALSE,right=FALSE); writeLines("")
     if(controls[["sim"]]){
-      writeLines("True parameter values:\n"); print(data[["thetaList0"]])
+      writeLines("TRUE parameter values:\n"); print(data[["thetaList0"]])
     }
-    writeLines("Estimates:\n"); print(fit[["thetaList"]])
-    writeLines("Gradient:\n"); print(mod[["gradient"]]); writeLines("")
-    writeLines("Hessian:\n"); print(mod[["hessian"]])
+    writeLines("ESTIMATES:\n"); print(fit[["thetaList"]])
+    writeLines("GRADIENT:\n"); print(mod[["gradient"]]); writeLines("")
+    writeLines("HESSIAN:\n"); print(mod[["hessian"]])
     sink()
     options(max.print=1000)
   }
@@ -283,7 +283,7 @@ check_decoding = function(decoding,controls){
     warning(paste0("Cannot save 'states.txt' because '",filename,"' already exists and you chose not to overwrite."),call.=FALSE) 
   } else {
     sink(file=file)
-    writeLines("Frequency of decoded states:\n")
+    writeLines("FREQUENCY of decoded states:\n")
     if(controls[["model"]]=="HMM"){
       out = table((decoding)); names(out) = paste("state",names(out))
       print(out)
@@ -311,7 +311,7 @@ check_decoding = function(decoding,controls){
         }
         return(c_table)
       }
-      writeLines("Comparison between true states and predicted states:\n")
+      writeLines("COMPARISON between true states and predicted states:\n")
       if(controls[["model"]]=="HMM"){
         print(compare_true_predicted_states(controls[["states"]][1],decoding,data[["states0"]]))
       }
@@ -319,8 +319,11 @@ check_decoding = function(decoding,controls){
         print(compare_true_predicted_states(controls[["states"]][1],decoding[,1],data[["states0"]][,1],label="CS "))
         writeLines("")
         for(cs_state in seq_len(controls[["states"]][1])){
-          writeLines(paste0("Conditional on CS state ",cs_state,":"))
-          print(compare_true_predicted_states(controls[["states"]][2],decoding[decoding[,1]==cs_state,-1],data[["states0"]][data[["states0"]][,1]==cs_state,-1],label="FS "))
+          writeLines(paste0("Conditional on decoded CS state ",cs_state,":"))
+          print(compare_true_predicted_states(controls[["states"]][2],decoding[decoding[,1]==cs_state,-1],data[["states0"]][decoding[,1]==cs_state,-1],label="FS "))
+          writeLines("")
+          writeLines(paste0("Conditional on true CS state ",cs_state,":"))
+          print(compare_true_predicted_states(controls[["states"]][2],decoding[data[["states0"]][,1]==cs_state,-1],data[["states0"]][data[["states0"]][,1]==cs_state,-1],label="FS "))
           writeLines("")
         }
       }
