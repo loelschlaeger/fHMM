@@ -1,29 +1,37 @@
 # HHMM_Finance
-This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial time series. The code is intended to be used on share prices provided by https://finance.yahoo.com/. The data must be in csv-format, must contain a column named "Date" and must be saved in the folder `"./data"`. Additionally, data can be simulated.
+This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial time series.
 
 ## Contained files
 - `checks.R` provides validation functions.
-- `data.R` processes or simulates data.
+- `data.R` processes, simulates and downloads [data](#data).
 - `init.R` initializes the code and the estimation routine.
 - `loglike.cpp` computes the model's log-likelihood.
 - `loop.R` loops over multiple [model specifications](#specifying-controls).
 - `main.R` presents the code's [workflow](#getting-started).
 - `optim.R` maximizes the log-likelihood function using [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
 - `trans.R` contains helper functions for parameter transformations.
-- `ttest.R` tests for significant differences between parameters.
+- `ttest.R` provides significant tests.
 - `visual.R` generates visualisations of the [model results](#outputs).
 - `viterbi.R` performs state decoding based on the [Viterbi algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm).
 
 ## Getting started
 0. Go to `main.R`.
 1. Run code chunk 1 to initialize the code.
-2. Run code chunk 2 to set and check the model's [controls](#specifying-controls).
-3. Run code chunk 3 to fit the model to the data.
-4. Run code chunk 4 to decode the hidden states.
-5. Run code chunk 5 to visualize the [results](#outputs). 
-6. Run code chunk 6 to reinitialize an old model.
+2. Run code chunk 2 to download [data](#data).
+3. Run code chunk 3 to set and check the model's [controls](#specifying-controls).
+4. Run code chunk 4 to fit the model.
+5. Run code chunk 5 to decode the hidden states.
+6. Run code chunk 6 to visualize the [results](#outputs). 
+7. Run code chunk 7 to reinitialize an old model.
 
 See below for some [examples](#examples).
+
+## Data
+The code is intended to be used on share prices provided by https://finance.yahoo.com/. The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `downloadData(name,symbol,from,to)`, where
+- `name` is an identifier for the stock,
+- `symbol` is the stock's symbol,
+- `from` and `to` define the time interval.
+Additionally, data can be simulated.
 
 ## Specifying controls
 A model is specified by setting parameters of the named list `controls`. The following parameters are mandatory:
@@ -88,7 +96,10 @@ Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HM
 ### 1. Initialization
 source("init.R"); init()
 
-### 2. Set and check controls
+### 2. Download financial data
+downloadData("dax","^GDAXI")
+
+### 3. Set and check controls
 controls = list(
   id            = "HMM_DAX_3",        
   data_source   = c("dax",NA),
@@ -98,14 +109,14 @@ controls = list(
   )
 controls = check_controls(controls)
 
-### 3. Fit model to data
+### 4. Fit model to data
 data = getData(controls)
 fit = maxLikelihood(data,controls)
 
-### 4. Decode hidden states
+### 5. Decode hidden states
 decoding = applyViterbi(data,fit,controls)
 
-### 5. Visualize results
+### 6. Visualize results
 labels = list(
   dates = c("2001-09-11","2008-09-15","2020-01-27"),
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
