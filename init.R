@@ -10,6 +10,8 @@ init = function(){
               require("RcppArmadillo"),
               if(!"progress" %in% installed_packages){ writeLines("\nInstalling package 'progress'.\n"); install.packages("progress",quite=TRUE)},
               require("progress"),
+              if(!"MASS" %in% installed_packages){ writeLines("\nInstalling package 'MASS'.\n"); install.packages("progress",quite=TRUE)},
+              require("MASS"),
               source("checks.R"),
               source("data.R"),
               sourceCpp("loglike.cpp"),
