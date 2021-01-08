@@ -1,5 +1,5 @@
-\name{plot_LL}
-\alias{plot_LL}
+\name{plot_ll}
+\alias{plot_ll}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 %%  ~~function to do ... ~~
@@ -8,7 +8,7 @@
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-plot_LL(x)
+plot_ll(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
