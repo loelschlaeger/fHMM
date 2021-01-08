@@ -9,7 +9,7 @@
 #' \item{upper_limit}{the upper limits of the intervals}
 #'
 #' @examples
-#' conf_int(fit = example$fit)
+#' conf_int(fit = fit)
 conf_int <- function (fit, alpha = 0.95) {
   # Input checks
   if (is.null(fit$hessian)) {
