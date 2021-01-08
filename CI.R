@@ -15,8 +15,8 @@ conf_int = function (fit, alpha = 0.95) {
   # Hessian checks (to do)
   inv_fisher = ginv(fisher)
   sds = sqrt(diag(inv_fisher))
-  lower_limit = fit$estimates + qnorm(p = (1 - alpha)) * sds
-  upper_limit = fit$estimates + qnorm(p = alpha) * sds
+  lower_limit = fit$estimates + qnorm(p = (1 - alpha) / 2) * sds
+  upper_limit = fit$estimates + qnorm(p = alpha / 2) * sds
   out = list(lower_limit = lower_limit, estimate = fit$estimate, upper_limit = upper_limit)
   return(out)
 }
