@@ -1,8 +1,15 @@
-## Compute confidence intervals for the estimates
-## Inputs:
-##  fit: a fitted model
-##  alpha: confidence level, default 0.95
-## Output: a list with elements lower_limit, estimate, and upper limit
+#' Compute confidence intervals for the estimates
+#'
+#' @param fit A fitted model
+#' @param alpha confidene level, default 0.95
+#'
+#' @return A list containing the following elements:
+#' \item{lower_limit}{the lower limits}
+#' \item{estimate}{the estimates}
+#' \item{upper_limit}{the upper limits}
+#'
+#' @examples
+#' conf_int(fit = example$fit)
 conf_int <- function (fit, alpha = 0.95) {
   # Input checks
   if (is.null(fit$hessian)) {
