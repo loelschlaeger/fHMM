@@ -104,7 +104,7 @@ downloadData("dax","^GDAXI")
 controls = list(
   id            = "HMM_DAX_3",        
   data_source   = c("dax",NA),
-  data_col      = c("Close",NA)
+  data_col      = c("Close",NA),
   truncate_data = c("2000-01-03","2020-12-28"), 
   states        = c(3,0)
   )
