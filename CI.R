@@ -1,12 +1,12 @@
 #' Compute confidence intervals for the estimates
 #'
-#' @param fit A fitted model
-#' @param alpha confidene level, default 0.95
+#' @param \code{fit} A fitted model
+#' @param \code{alpha} confidene level, default 0.95
 #'
 #' @return A list containing the following elements:
-#' \item{lower_limit}{the lower limits}
-#' \item{estimate}{the estimates}
-#' \item{upper_limit}{the upper limits}
+#' \item{\code{lower_limit}}{the lower limits}
+#' \item{\code{estimate}}{the estimates}
+#' \item{\code{upper_limit}}{the upper limits}
 #'
 #' @examples
 #' conf_int(fit = example$fit)
