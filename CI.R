@@ -4,9 +4,9 @@
 #' @param alpha confidene level, default 0.95
 #'
 #' @return A list containing the following elements:
-#' \item{\code{lower_limit}}{the lower limits}
-#' \item{\code{estimate}}{the estimates}
-#' \item{\code{upper_limit}}{the upper limits}
+#' \item{lower_limit}{the lower limits}
+#' \item{estimate}{the estimates}
+#' \item{upper_limit}{the upper limits}
 #'
 #' @examples
 #' conf_int(fit = example$fit)
