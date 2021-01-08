@@ -8,11 +8,11 @@
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-check_controls(x)
+check_controls(controls)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
+  \item{controls}{
 %%     ~~Describe \code{x} here~~
 }
 }
