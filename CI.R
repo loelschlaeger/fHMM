@@ -20,7 +20,7 @@ conf_int <- function (fit, alpha = 0.95) {
   }
   fisher = fit$hessian
   # Hessian checks (to do)
-  inv_fisher = ginv(fisher)
+  inv_fisher = MASS::ginv(fisher)
   sds = suppressWarnings(sqrt(diag(inv_fisher)))
   lower_limit = fit$estimate + qnorm(p = (1 - alpha) / 2) * sds
   upper_limit = fit$estimate + qnorm(p = 1 - (1 - alpha) / 2) * sds
