@@ -24,10 +24,10 @@ conf_int <- function (fit, alpha = 0.95) {
   sds = suppressWarnings(sqrt(diag(inv_fisher)))
   lower_limit = fit$estimate + qnorm(p = (1 - alpha) / 2) * sds
   upper_limit = fit$estimate + qnorm(p = 1 - (1 - alpha) / 2) * sds
-  df = data.frame(lower_limit = lower_limit, estimate = fit$estimate, upper_limit = upper_limit)
+  out = list(lower_limit = lower_limit, estimate = fit$estimate, upper_limit = upper_limit)
   # Output checks
-  if (any(is.na(df))) {
+  if (any(is.na(out))) {
     warning("Some CIs could not be computed. The corresponding estimates may lie close to the boundaries of their parameter space.")
   }
-  return(df)
+  return(out)
 }
