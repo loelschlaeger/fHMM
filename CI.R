@@ -14,9 +14,13 @@ conf_int <- function (fit, alpha = 0.95) {
   fisher = fit$hessian
   # Hessian checks (to do)
   inv_fisher = ginv(fisher)
-  sds = sqrt(diag(inv_fisher))
+  sds = suppressWarnings(sqrt(diag(inv_fisher)))
   lower_limit = fit$estimate + qnorm(p = (1 - alpha) / 2) * sds
   upper_limit = fit$estimate + qnorm(p = 1 - (1 - alpha) / 2) * sds
   df = data.frame(lower_limit = lower_limit, estimate = fit$estimate, upper_limit = upper_limit)
+  # Output checks
+  if (any(is.na(df))) {
+    warning("Warning: some CIs could not be computed. Some estimates may lie close to the boundaries of their parameter space.")
+  }
   return(df)
 }
