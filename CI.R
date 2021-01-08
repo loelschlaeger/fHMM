@@ -1,7 +1,7 @@
 #' Compute confidence intervals for the estimates
 #'
-#' @param \code{fit} A fitted model
-#' @param \code{alpha} confidene level, default 0.95
+#' @param fit A fitted model
+#' @param alpha confidene level, default 0.95
 #'
 #' @return A list containing the following elements:
 #' \item{\code{lower_limit}}{the lower limits}
