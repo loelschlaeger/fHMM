@@ -1,7 +1,7 @@
 #' Compute confidence intervals for the estimates
 #'
 #' @param fit A fitted model
-#' @param alpha confidence level, default 0.95
+#' @param alpha Confidence level, default 0.95
 #'
 #' @return A list containing the following elements:
 #' \item{lower_limit}{the lower limits of the intervals}
