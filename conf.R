@@ -13,10 +13,10 @@
 conf_int <- function (fit, alpha = 0.95) {
   # Input checks
   if (is.null(fit$hessian)) {
-    stop("No Hessian matrix supplied. Set hessian = TRUE in controls.")
+    stop("No Hessian matrix supplied. Set 'hessian = TRUE' in 'controls'.")
   }
   if (alpha < 0 | alpha > 1) {
-    stop("alpha needs to be between 0 and 1.")
+    stop("Value of 'alpha' needs to be between 0 and 1.")
   }
   fisher = fit$hessian
   # Hessian checks (to do)
@@ -27,7 +27,7 @@ conf_int <- function (fit, alpha = 0.95) {
   out = list(lower_limit = lower_limit, estimate = fit$estimate, upper_limit = upper_limit)
   # Output checks
   if (any(is.na(out))) {
-    warning("Some CIs could not be computed. The corresponding estimates may lie close to the boundaries of their parameter space.")
+    warning("Some confidence intervals could not be computed. The corresponding estimates may lie close to the boundaries of their parameter space.")
   }
   return(out)
 }
