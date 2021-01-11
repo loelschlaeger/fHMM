@@ -27,7 +27,7 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 See below for some [examples](#examples).
 
 ## Data
-The code is intended to be used on daily share prices provided by https://finance.yahoo.com/. The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `downloadData(name,symbol,from,to)`, where
+The code is intended to be used on daily share prices provided by https://finance.yahoo.com/. The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `download_data(name,symbol,from,to)`, where
 - `name` is a personal identifier,
 - `symbol` is the stock's symbol,
 - `from` and `to` define the time interval (in format `"YYYY-MM-DD"`).
@@ -58,7 +58,7 @@ The following parameters are optional and set to [default values](#default-value
    - if `fix_dfs = c(x,y)`, degrees of freedom of the coarse scale and the fine scale of a HHMM are fixed to `x` and `y`, respectively 
 - `iterlim`: an integer, specifying the maximum number of optimization iterations to be performed before termination, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `overwrite`: a boolean, determining whether existing results (on the same `id`) can be overwritten
-- `print.level`: an integer, determining the level of printing during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `print_level`: an integer, determining the level of printing during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `runs`: an integer, setting the number of optimization runs
 - `seed`: an integer, setting a seed for the simulation and the initialization
 - `steptol`: an integer, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
@@ -73,7 +73,7 @@ The following parameters are optional and set to [default values](#default-value
 - `fix_dfs = c(NA,NA)`
 - `iterlim = 500`
 - `overwrite = FALSE`
-- `print.level = 0` (no printing occurs)
+- `print_level = 0` (no printing occurs)
 - `runs = 200`
 - `seed` is not set
 - `steptol = 1e-6`
@@ -98,24 +98,24 @@ Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HM
 source("init.R"); init()
 
 ### 2. Download data
-downloadData("dax","^GDAXI")
+download_data("dax","^GDAXI")
 
 ### 3. Set and check controls
 controls = list(
   id            = "HMM_DAX_3",        
   data_source   = c("dax",NA),
   data_col      = c("Close",NA),
-  truncate_data = c("2000-01-03","2020-12-28"), 
+  truncate_data = c("2000-01-03","2020-12-30"), 
   states        = c(3,0)
   )
 controls = check_controls(controls)
 
 ### 4. Fit model to data
-data = getData(controls)
-fit = maxLikelihood(data,controls)
+data = get_data(controls)
+fit = max_likelihood(data,controls)
 
 ### 5. Decode hidden states
-decoding = applyViterbi(data,fit,controls)
+decoding = apply_viterbi(data,fit,controls)
 
 ### 6. Visualize results
 labels = list(
