@@ -1,4 +1,4 @@
-maxLikelihood = function(data,controls){
+max_likelihood = function(data,controls){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
   
   runs = controls[["runs"]]
@@ -28,8 +28,8 @@ maxLikelihood = function(data,controls){
                             			                  controls = controls,
                             			                  iterlim = controls[["iterlim"]],
                             			                  steptol = controls[["steptol"]],
-                            			                  print.level = controls[["print.level"]],
-                            			                  hessian = TRUE
+                            			                  print.level = controls[["print_level"]],
+                            			                  hessian = FALSE
     			                                          )
     		                          if(mods[[run]]$code %in% controls[["accept_codes"]] || controls[["at_true"]]){
     		                            llks[run] = -mods[[run]]$minimum
@@ -41,7 +41,9 @@ maxLikelihood = function(data,controls){
   end = Sys.time()
   estimation_time = round(difftime(end,start,units='mins'))
   
-	fit = check_estimation(estimation_time,mods,llks,data,controls)
+  hessian = nlm(f = target, p = mods[[which.max(llks)]][["estimate"]], observations = data[["logReturns"]], controls = controls, iterlim = 1, hessian = TRUE)[["hessian"]]
+  
+	fit = check_estimation(estimation_time,mods,llks,data,hessian,controls)
 	
 	return(fit)
 }
@@ -70,8 +72,8 @@ nLL_hmm = function(thetaUncon,observations,controls){
     allprobs[i,] = 1/sigmas[i]*dt((observations-mus[i])/sigmas[i],dfs[i])
   }
   
-  LL = LogLikeHMM_Rcpp(allprobs,Gamma,delta,nstates,T) 
-  return(-LL)
+  nLL = -LL_HMM_Rcpp(allprobs,Gamma,delta,nstates,T) 
+  return(nLL)
 }
 
 ### INPUT:  unconstrained parameter vector, observations, control parameters
@@ -103,7 +105,7 @@ nLL_hhmm = function(thetaUncon,observations,controls){
     }
   }
   
-  nloglike = -LogLikeHHMM_Rcpp(log_likelihoods=log_likelihoods,allprobs=allprobs,Gamma=Gamma,delta=delta,M=M,T=T) 
+  nLL = -LL_HHMM_Rcpp(log_likelihoods=log_likelihoods,allprobs=allprobs,Gamma=Gamma,delta=delta,M=M,T=T) 
   
-  return(nloglike)
+  return(nLL)
 }

@@ -36,7 +36,7 @@ Gamma2gammasUncon = function(Gamma){
   return(Gamma[!is.na(Gamma)])
 }
 
-### INPUT:  unconstrained non-diagonal elements of (dim x dim)--transition probability matrix
+### INPUT:  unconstrained non-diagonal elements of (dim x dim)-transition probability matrix
 ### OUTPUT: constrained non-diagonal elements of transition probability matrix
 gammasUncon2gammasCon = function(gammasUncon,dim){
   gammasCon = Gamma2gammasCon(gammasUncon2Gamma(gammasUncon,dim))
@@ -249,7 +249,7 @@ thetaUnconSplit2thetaList = function(thetaUncon,controls){
 
 ### INPUT:  constrained (unordered) model parameters in list form, control parameters
 ### OUTPUT: constrained ordered model parameters (states decreasing wrt value of mu) in list form
-statesDecreasing = function(thetaList,controls){
+states_decreasing = function(thetaList,controls){
   M = controls[["states"]][1] #coarse-scale states
   N = controls[["states"]][2] #fine-scale states
   

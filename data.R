@@ -1,7 +1,7 @@
-getData = function(controls){
+get_data = function(controls){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
-  if(controls[["sim"]]) data = simulateData(controls)
-  if(!controls[["sim"]]) data = readData(controls)
+  if(controls[["sim"]]) data = simulate_data(controls)
+  if(!controls[["sim"]]) data = read_data(controls)
   if(any(dim(t(data[["logReturns"]]))==0)) stop("Too few data points.",call.=FALSE)
   writeLines("Data processing successful.")
   check_data(controls,data)
@@ -9,7 +9,7 @@ getData = function(controls){
 }
 
 ### simulate data
-simulateData = function(controls){
+simulate_data = function(controls){
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
   M = controls[["states"]][1] #HMM states / HHMM coarse-scale states
   N = controls[["states"]][2] #HHMM fine-scale states
@@ -20,7 +20,7 @@ simulateData = function(controls){
   thetaCon = thetaUncon2thetaCon(thetaUncon,controls)
   thetaList = thetaCon2thetaList(thetaCon,controls)
   
-  simulateStates = function(delta,Gamma,T){
+  simulate_states = function(delta,Gamma,T){
     no_states = length(delta)
     states = numeric(T)
     states[1] = sample(1:no_states,1,prob=delta)
@@ -30,7 +30,7 @@ simulateData = function(controls){
     return(states)
   }
   
-  simulateLogReturns = function(states,mus,sigmas,dfs){
+  simulate_logReturns = function(states,mus,sigmas,dfs){
     T = length(states)
     logReturns = numeric(T)
     for(t in 1:T){
@@ -40,19 +40,19 @@ simulateData = function(controls){
   }
   
   if(controls[["model"]]=="HMM"){ 
-    states = simulateStates(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
-    logReturns = simulateLogReturns(states,thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
+    states = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
+    logReturns = simulate_logReturns(states,thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
   }
   
   if(controls[["model"]]=="HHMM"){ 
     states = matrix(0,T,T_star+1) 
     logReturns = matrix(0,T,T_star+1)
-    states[,1] = simulateStates(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
-    logReturns[,1] = simulateLogReturns(states[,1],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
+    states[,1] = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
+    logReturns[,1] = simulate_logReturns(states[,1],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
     for(t in 1:T){
       S_t = states[t,1]
-      states[t,-1] = simulateStates(Gamma2delta(thetaList[["Gammas_star"]][[S_t]]),thetaList[["Gammas_star"]][[S_t]],T_star)
-      logReturns[t,-1] = simulateLogReturns(states[t,-1],thetaList[["mus_star"]][[S_t]],thetaList[["sigmas_star"]][[S_t]],thetaList[["dfs_star"]][[S_t]])
+      states[t,-1] = simulate_states(Gamma2delta(thetaList[["Gammas_star"]][[S_t]]),thetaList[["Gammas_star"]][[S_t]],T_star)
+      logReturns[t,-1] = simulate_logReturns(states[t,-1],thetaList[["mus_star"]][[S_t]],thetaList[["sigmas_star"]][[S_t]],thetaList[["dfs_star"]][[S_t]])
     }
   }
   
@@ -68,7 +68,7 @@ simulateData = function(controls){
 }
 
 ### read financial data from csv file
-readData = function(controls){
+read_data = function(controls){
   data_source = controls[["data_source"]]
   data_col = controls[["data_col"]]
   
@@ -115,9 +115,9 @@ readData = function(controls){
   }
   
   ### truncate the data based on 'controls[["trunc_data"]]'
-  truncateData = function(controls,data){
+  truncate_data = function(controls,data){
     ### find exact or nearest position of 'date' in 'data' 
-    findDate = function(date,data){
+    find_date = function(date,data){
       incr = 0
       while(TRUE){
         candidate = which(data[["Date"]]==as.Date(date)+incr)
@@ -129,11 +129,11 @@ readData = function(controls){
     }
     t_max = controls[["truncate_data"]][2]
     if(!is.na(t_max)){
-      data = data[seq_len(findDate(t_max,data)),]
+      data = data[seq_len(find_date(t_max,data)),]
     }
     t_min = controls[["truncate_data"]][1]
     if(!is.na(t_min)){
-      temp = seq_len(findDate(t_min,data)-1)
+      temp = seq_len(find_date(t_min,data)-1)
       if(length(temp)>0) data = data[-temp,]
     }
     return(data)
@@ -141,7 +141,7 @@ readData = function(controls){
   
   ### HMM data
   if(controls[["model"]]=="HMM"){
-    data[[1]] = truncateData(controls,data[[1]])
+    data[[1]] = truncate_data(controls,data[[1]])
     
     out = list(
       "logReturns" = data[[1]][["LogReturns"]],
@@ -157,8 +157,8 @@ readData = function(controls){
     data[[1]] = data[[1]][ data[[1]][["Date"]] %in% intersect(data[[1]][["Date"]],data[[2]][["Date"]]), ]
     data[[2]] = data[[2]][ data[[2]][["Date"]] %in% intersect(data[[2]][["Date"]],data[[1]][["Date"]]), ]
     
-    data[[1]] = truncateData(controls,data[[1]])
-    data[[2]] = truncateData(controls,data[[2]])
+    data[[1]] = truncate_data(controls,data[[1]])
+    data[[2]] = truncate_data(controls,data[[2]])
     
     if(any(dim(data[[1]])!=dim(data[[2]]))) stop("Processing of the datasets failed.")
     data_length = length(data[[1]][["Date"]])
@@ -185,7 +185,7 @@ readData = function(controls){
 
 
 ### download data from www.finance.yahoo.com
-downloadData = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Date()){
+download_data = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Date()){
   
   ### load and sort or create 'stock_symbols'
   if(file.exists("data/stock_symbols")){
@@ -215,7 +215,7 @@ downloadData = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Date
     if(from < min_date) from = min_date
     
     ### function to create finance.yahoo.com-URL
-    createUrl = function(symbol,from,to){
+    create_url = function(symbol,from,to){
       t1 = as.integer(ISOdate(as.numeric(format(from,format="%Y")),as.numeric(format(from,format="%m")),as.numeric(format(from,format="%d")),hour=0))
       t2 = as.integer(ISOdate(as.numeric(format(to,format="%Y")),as.numeric(format(to,format="%m")),as.numeric(format(to,format="%d")),hour=24))
       url = paste("https://query1.finance.yahoo.com/v7/finance/download/",symbol,"?period1=",t1,"&period2=",t2,"&interval=1d&events=history",sep="")
@@ -236,7 +236,7 @@ downloadData = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Date
       if(name %in% stock_symbols["name"]){
         symbol = stock_symbols[which(stock_symbols["name"]==name),"symbol"]
       } else {
-        read_try = suppressWarnings(try(read.csv(createUrl(symbol,from,to)),silent=TRUE))
+        read_try = suppressWarnings(try(read.csv(create_url(symbol,from,to)),silent=TRUE))
         if(inherits(read_try, "try-error")){
           stop(paste0("Symbol '",symbol,"' is invalid."),call.=FALSE)
         } else {
@@ -249,7 +249,7 @@ downloadData = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Date
     
     ### download and save data
     filename = paste0("data/",name,".csv")
-    download.file(createUrl(symbol,from,to),destfile=filename,quiet=TRUE)
+    download.file(create_url(symbol,from,to),destfile=filename,quiet=TRUE)
     
     ### print summary of new data
     data = read.csv(file=filename,head=TRUE,sep=",",na.strings="null") 

@@ -7,7 +7,7 @@ using namespace Rcpp;
 #include<cmath>
 
 // [[Rcpp::export]]
-double LogLikeHMM_Rcpp(mat allprobs, mat Gamma, rowvec delta, int N, int T){
+double LL_HMM_Rcpp(mat allprobs, mat Gamma, rowvec delta, int N, int T){
   double loglike=0.0;
   int i=0;
 	int t=1;
@@ -30,7 +30,7 @@ double LogLikeHMM_Rcpp(mat allprobs, mat Gamma, rowvec delta, int N, int T){
 }
 
 // [[Rcpp::export]]
-double LogLikeHHMM_Rcpp(mat log_likelihoods, mat allprobs, mat Gamma, rowvec delta, int M, int T){
+double LL_HHMM_Rcpp(mat log_likelihoods, mat allprobs, mat Gamma, rowvec delta, int M, int T){
   double loglike=0.0;
   int i=0;
   int t=1;

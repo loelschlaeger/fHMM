@@ -30,7 +30,7 @@ viterbi = function(observations,nstates,Gamma,mus,sigmas,dfs){
 		return(iv)
 }
 
-applyViterbi = function(data,fit,controls){
+apply_viterbi = function(data,fit,controls){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
   
   observations = data[["logReturns"]]

@@ -8,18 +8,13 @@ options(warn=1)
 
 ### 3. Set controls for different models
 all_controls = list(
-  # list(
-  #   id            = "HHMM_3_2_sim",
-  #   time_horizon  = c(300,30),
-  #   states        = c(3,2)
-  #   ),
   list(
-    id            = "HHMM_2_2_DAX_DB",
-    data_source   = c("dax.csv","deutschebank.csv"),
-    data_col      = c("Close","Close"),
-    truncate_data = c("2000-01-03",NA),
-    states        = c(2,2),
-    time_horizon  = c(NA,30)
+    id            = "HHMM_3_2_DAX",
+    data_source   = c(NA,"dax.csv"),
+    data_col      = c(NA,"Close"),
+    states        = c(3,2),
+    time_horizon  = c(NA,30),
+    runs          = 100
     )
   # list(
   #   id            = "HHMM_2_2_SandP500",
@@ -41,9 +36,9 @@ for(control_no in seq_len(length(all_controls))){
 ### 5. Fit, decode and visualize models
 for(controls in all_controls){
   tryCatch({
-    data = getData(controls)
-    fit = maxLikelihood(data,controls)
-    decoding = applyViterbi(data,fit,controls)
+    data = get_data(controls)
+    fit = max_likelihood(data,controls)
+    decoding = apply_viterbi(data,fit,controls)
     labels = list(
       dates = c("2001-09-11","2008-09-15","2020-01-27"),
       names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")

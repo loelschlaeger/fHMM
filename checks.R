@@ -1,13 +1,13 @@
 check_controls = function(controls){
   
   ### check supplied control values
-  all_controls = c("id","data_source","data_col","truncate_data","states","time_horizon","fix_dfs","runs","at_true","iterlim","seed","print.level","steptol","accept_codes","overwrite")
+  all_controls = c("id","data_source","data_col","truncate_data","states","time_horizon","fix_dfs","runs","at_true","iterlim","seed","print_level","steptol","accept_codes","overwrite")
   required_controls = c("id","states")
   artificial_controls = c("sim","model","est_dfs","controls_checked")
   missing_controls = setdiff(all_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
   controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","fix_dfs")
-  numeric_controls = c("states","runs","iterlim","print.level","steptol","seed")
+  numeric_controls = c("states","runs","iterlim","print_level","steptol","seed")
   boolean_controls = c("overwrite","at_true")
   for(required_control in required_controls){
     if(!(required_control %in% names(controls))) stop(paste0("Please specify '", required_control, "' in 'controls'."),call.=FALSE)
@@ -35,7 +35,7 @@ check_controls = function(controls){
   if("runs" %in% missing_controls) controls[["runs"]] = 200
   if("at_true" %in% missing_controls) controls[["at_true"]] = FALSE
   if("iterlim" %in% missing_controls) controls[["iterlim"]] = 500
-  if("print.level" %in% missing_controls) controls[["print.level"]] = 0
+  if("print_level" %in% missing_controls) controls[["print_level"]] = 0
   if("steptol" %in% missing_controls) controls[["steptol"]] = 1e-6
   if("accept_codes" %in% missing_controls) controls[["accept_codes"]] = c(1)
   if("overwrite" %in% missing_controls) controls[["overwrite"]] = FALSE
@@ -200,7 +200,7 @@ check_data = function(controls,data){
   check_saving(data,controls)
 }
 
-check_estimation = function(time,mods,llks,data,controls){
+check_estimation = function(time,mods,llks,data,hessian,controls){
   if(all(is.na(llks))){
     stop("None of the estimation runs ended successfully. Consider increasing 'runs' in 'controls'.",call.=FALSE)
   }
@@ -210,7 +210,7 @@ check_estimation = function(time,mods,llks,data,controls){
   mod       = mods[[which.max(llks)]]
   mod_LL    = -mod[["minimum"]]
   thetaCon  = thetaUncon2thetaCon(mod[["estimate"]],controls)
-  thetaList = statesDecreasing(thetaCon2thetaList(thetaCon,controls),controls)
+  thetaList = states_decreasing(thetaCon2thetaList(thetaCon,controls),controls)
   
   ### detect unidentified states
   check_unid_states = function(Gamma){
@@ -251,7 +251,8 @@ check_estimation = function(time,mods,llks,data,controls){
              "AIC"       = compAIC(controls[["states"]][1],controls[["states"]][2],-mod[["minimum"]],controls[["est_dfs"]]),
              "BIC"       = compBIC(prod(dim(t(data[["logReturns"]]))),controls[["states"]][1],controls[["states"]][2],-mod[["minimum"]],controls[["est_dfs"]]),
              "all_LL"    = llks,
-             "all_mods"  = mods
+             "all_mods"  = mods,
+             "hessian"   = hessian
              )
   file = paste0("models/",controls[["id"]],"/estimates.txt")
   if(file.exists(file) & !controls[["overwrite"]]){ 
@@ -268,7 +269,7 @@ check_estimation = function(time,mods,llks,data,controls){
     }
     writeLines("ESTIMATES:\n"); print(fit[["thetaList"]])
     writeLines("GRADIENT:\n"); print(mod[["gradient"]]); writeLines("")
-    writeLines("HESSIAN:\n"); print(mod[["hessian"]])
+    writeLines("HESSIAN:\n"); print(hessian)
     sink()
     options(max.print=1000)
   }
