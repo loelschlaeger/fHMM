@@ -1,16 +1,16 @@
 check_controls = function(controls){
   
   ### check supplied control values
-  all_controls = c("id","data_source","data_col","truncate_data","states","time_horizon","fix_dfs","runs","at_true","iterlim","seed","print_level","steptol","accept_codes","overwrite","cs_data_type")
+  all_controls = c("id","data_source","data_col","truncate_data","states","time_horizon","fix_dfs","runs","at_true","iterlim","seed","print_level","steptol","accept_codes","overwrite","data_cs_type")
   required_controls = c("id","states")
   artificial_controls = c("sim","model","est_dfs","controls_checked")
   missing_controls = setdiff(all_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
-  controls_with_length_1 = c("id","runs","at_true","iterlim","seed","print_level","steptol","overwrite","cs_data_type")
+  controls_with_length_1 = c("id","runs","at_true","iterlim","seed","print_level","steptol","overwrite","data_cs_type")
   controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","fix_dfs")
   numeric_controls = c("states","runs","iterlim","print_level","steptol","seed")
   boolean_controls = c("overwrite","at_true")
-  character_or_na_controls = c("id","data_source","data_col","truncate_data","cs_data_type")
+  character_or_na_controls = c("id","data_source","data_col","truncate_data","data_cs_type")
   for(required_control in required_controls){
     if(!(required_control %in% names(controls))) stop(paste0("Please specify '", required_control, "' in 'controls'."),call.=FALSE)
   }
@@ -34,7 +34,7 @@ check_controls = function(controls){
   ### set default values
   if("data_source" %in% missing_controls) controls[["data_source"]] = c(NA,NA)
   if("data_col" %in% missing_controls) controls[["data_col"]] = c(NA,NA)
-  if("cs_data_type" %in% missing_controls) controls[["cs_data_type"]] = NA
+  if("data_cs_type" %in% missing_controls) controls[["data_cs_type"]] = NA
   if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
   if("time_horizon" %in% missing_controls) controls[["time_horizon"]] = c(NA,NA)
   if("fix_dfs" %in% missing_controls) controls[["fix_dfs"]] = c(NA,NA)
@@ -72,9 +72,9 @@ check_controls = function(controls){
     if(!controls[["sim"]] & is.na(controls[["data_col"]][1])){
       stop("First entry of 'data_col' has to be specified.",call.=FALSE)
     }
-    if(!is.na(controls[["cs_data_type"]])){
-      warning("Element 'cs_data_type' will be ignored.",call.=FALSE)
-      controls[["cs_data_type"]] = NA
+    if(!is.na(controls[["data_cs_type"]])){
+      warning("Element 'data_cs_type' will be ignored.",call.=FALSE)
+      controls[["data_cs_type"]] = NA
     }
     if(!is.na(controls[["data_source"]][2])){
       warning("Second entry of 'data_source' will be ignored.",call.=FALSE)
@@ -113,11 +113,12 @@ check_controls = function(controls){
     if(!controls[["sim"]] & any(is.na(controls[["data_col"]]))){
       stop("Entries of 'data_col' have to be specified.",call.=FALSE)
     }
-    if(!is.na(controls[["cs_data_type"]]) & !controls[["cs_data_type"]] %in% c("mean","mean_abs","sum_abs")){
-      stop("Element 'cs_data_type' must be one of 'mean', 'mean_abs' or 'sum_abs'.",call.=FALSE)
+    if(!is.na(controls[["data_cs_type"]])){
+      if(!controls[["data_cs_type"]] %in% c("mean","mean_abs","sum_abs")) stop("Element 'data_cs_type' must be one of 'mean', 'mean_abs' or 'sum_abs'.",call.=FALSE)
+      if(controls[["sim"]]) warning("Element 'data_cs_type' will be ignored.",call.=FALSE)
     }
-    if(is.na(controls[["cs_data_type"]])){
-      controls[["cs_data_type"]] = "mean_abs"
+    if(is.na(controls[["data_cs_type"]])){
+      controls[["data_cs_type"]] = "mean_abs"
     }
     if(controls[["sim"]] & any(!is.na(controls[["data_source"]]))){
       warning("Entries of 'data_source' will be ignored.",call.=FALSE)
@@ -205,7 +206,7 @@ check_data = function(controls,data){
     if(controls[["model"]]=="HHMM"){
       writeLines(paste0("Source:       ",controls[["data_source"]][1]," / ",controls[["data_source"]][2]))
       writeLines(paste0("Column:       ",controls[["data_col"]][1]," / ",controls[["data_col"]][2]))
-      writeLines(paste0("CS data type: ",controls[["cs_data_type"]]))
+      writeLines(paste0("CS data type: ",controls[["data_cs_type"]]))
       writeLines(paste0("Horizon:      ", data[["dates"]][1], " to ", rev(data[["dates"]])[1]))
       writeLines(paste0("FS dim:       ",controls[["time_horizon"]][2]))
       writeLines(paste0("Data points:  ",dim(data[["logReturns"]])[1]," / ",dim(data[["logReturns"]])[2]-1))
