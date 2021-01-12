@@ -45,11 +45,15 @@ A model is specified by setting parameters of the named list `controls`. The fol
 The following parameters are optional and set to [default values](#default-values) if not specified:
 - `accept_codes`: either a numeric vector (containing acceptable exit codes of the optimization) or the character `"all"` (accepting all codes), see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `at_true`: a boolean, determining whether the optimization is initialised at the true parameter values (only for simulated data, sets `runs=1`, ignores `accept_codes`)
+- `data_cs_type`: a character, determining the type of the coarse scale data:
+   - if `data_cs_type = mean`, coarse scale data is chosen as means of fine scale data
+   - if `data_cs_type = mean_abs`, coarse scale data is chosen as means of fine scale data in absolute value
+   - if `data_cs_type = sum_abs`, coarse scale data is chosen as sums of fine scale data in absolute value
 - `data_col`: a character vector of length 2, containing names of the desired columns of `data_source`
 - `data_source`: a character vector of length 2, containing the file names of the empirical data:
    - if `data_source = c(NA,NA)`, data is simulated
    - if `data_source = c("x",NA)`, data `"./data/x.csv"` is modeled by a HMM
-   - if `data_source = c("x","y")`, averages of data `"./data/x.csv"` (average size determined by the second entry of `time_horizon`) on the coarse scale and data `"./data/y.csv"` on the fine scale is modeled by a HHMM
+   - if `data_source = c("x","y")`, data `"./data/x.csv"` (type determined by `data_cs_type`) on the coarse scale and data `"./data/y.csv"` on the fine scale is modeled by a HHMM
    - `data_source = c(NA,"y")` is interpreted as `data_source = c("y","y")`
 - `fix_dfs`: a numeric vector of length 2, fixing the degrees of freedom of the state-dependent t-distributions
    - if `fix_dfs = c(NA,NA)`, degrees of freedom are not fixed
@@ -68,6 +72,7 @@ The following parameters are optional and set to [default values](#default-value
 ### Default values
 - `accept_codes = 1` (relative gradient is close to zero, current iterate is probably solution)
 - `at_true = FALSE`
+- `data_cs_type = mean_abs`
 - `data_col = c(NA,NA)`
 - `data_source = c(NA,NA)` 
 - `fix_dfs = c(NA,NA)`
@@ -92,7 +97,7 @@ The following model results are saved in the folder `./models`:
 
 ## Examples
 ### Fitting a 3-state HMM to the DAX closing prices from 2000 to 2020
-Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HMM_3_DAX) for the results.
+Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HMM_DAX_3) for the results.
 ```R
 ### 1. Initialization
 source("init.R"); init()
