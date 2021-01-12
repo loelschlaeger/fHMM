@@ -169,9 +169,9 @@ read_data = function(controls){
     data[[2]] = data[[2]][1:(T*T_star),]
     
     ### compute CS data
-    if(controls[["cs_data_type"]] == "mean") cs_logReturns = rowMeans(matrix(data[[1]][["LogReturns"]],ncol=T_star,nrow=T,byrow=TRUE))
-    if(controls[["cs_data_type"]] == "mean_abs") cs_logReturns = rowMeans(abs(matrix(data[[1]][["LogReturns"]],ncol=T_star,nrow=T,byrow=TRUE)))
-    if(controls[["cs_data_type"]] == "sum_abs") cs_logReturns = rowSums(abs(matrix(data[[1]][["LogReturns"]],ncol=T_star,nrow=T,byrow=TRUE)))
+    if(controls[["data_cs_type"]] == "mean") cs_logReturns = rowMeans(matrix(data[[1]][["LogReturns"]],ncol=T_star,nrow=T,byrow=TRUE))
+    if(controls[["data_cs_type"]] == "mean_abs") cs_logReturns = rowMeans(abs(matrix(data[[1]][["LogReturns"]],ncol=T_star,nrow=T,byrow=TRUE)))
+    if(controls[["data_cs_type"]] == "sum_abs") cs_logReturns = rowSums(abs(matrix(data[[1]][["LogReturns"]],ncol=T_star,nrow=T,byrow=TRUE)))
     
     fs_logReturns = matrix(data[[2]][["LogReturns"]],ncol=T_star,nrow=T,byrow=TRUE)
     logReturns = cbind(cs_logReturns,fs_logReturns,deparse.level=0)
