@@ -92,7 +92,7 @@ The following model results are saved in the folder `./models`:
 
 ## Examples
 ### Fitting a 3-state HMM to the DAX closing prices from 2000 to 2020
-Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HMM_3_DAX) for the results.
+Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HMM_DAX_3) for the results.
 ```R
 ### 1. Initialization
 source("init.R"); init()
