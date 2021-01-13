@@ -80,7 +80,7 @@ The following parameters are optional and set to [default values](#default-value
 - `print_level = 0` (no printing)
 - `runs = 200`
 - `seed` is not set
-- `steptol = 1e-6`
+- `steptol = 1e-5`
 - `time_horizon = c(NA,NA)`
 - `truncate_data = c(NA,NA)`
 
