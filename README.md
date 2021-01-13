@@ -90,8 +90,8 @@ The following model results are saved in the folder `./models`:
 - `states.txt`, containing frequencies of the decoded states and (in case of simulated data) a comparison between the true states and the predicted states
 - `controls`, `data`, `decoding` and `fit`, .RData-files that can be reinitialized
 - `lls.pdf`, a visualization of the log-likelihood values in the different estimation runs
-- `pseudos.pdf`, a visualization of the pseudo-residuals together with a test result on their normality
-- `sdd.pdf`, a visualization of the estimated state-dependent distributions
+- `prs.pdf`, a visualization of the pseudo-residuals together with a test result on their normality
+- `sdds.pdf`, a visualization of the estimated state-dependent distributions
 - `ts.pdf`, a visualization of the decoded time series
 
 ## Examples
