@@ -30,8 +30,8 @@ init = function(){
 init_est = function(controls){
   M  = controls[["states"]][1] #coarse-scale states
   N  = controls[["states"]][2] #fine-scale states
-  df_cs = controls[["fix_dfs"]][1]
-  df_fs = controls[["fix_dfs"]][2]
+  df_cs = controls[["fixed_dfs"]][1]
+  df_fs = controls[["fixed_dfs"]][2]
   
   gammasUncon = gammasCon2gammasUncon(runif((M-1)*M,0,1/M),M)
   mus         = sort(rnorm(M)*10^(-1),decreasing=TRUE) 
