@@ -5,7 +5,7 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 - `checks.R` provides validation functions.
 - `conf.R` computes confidence intervals for the estimates.
 - `data.R` processes, simulates and downloads [data](#data).
-- `init.R` initializes the code and the estimation routine.
+- `init.R` (re)initializes the code and the estimation routine.
 - `loglike.cpp` computes the model's log-likelihood.
 - `loop.R` loops over multiple [model specifications](#specifying-controls).
 - `main.R` presents the code's [workflow](#getting-started).
