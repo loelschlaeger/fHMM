@@ -41,7 +41,8 @@ max_likelihood = function(data,controls){
   end = Sys.time()
   estimation_time = round(difftime(end,start,units='mins'))
   
-  hessian = nlm(f = target, p = mods[[which.max(llks)]][["estimate"]], observations = data[["logReturns"]], controls = controls, iterlim = 1, hessian = TRUE)[["hessian"]]
+  ### compute Hessian
+  hessian = suppressWarnings(nlm(f=target,p=mods[[which.max(llks)]][["estimate"]],observations=data[["logReturns"]],controls=controls,iterlim=1,hessian=TRUE)[["hessian"]])
   
 	fit = check_estimation(estimation_time,mods,llks,data,hessian,controls)
 	
