@@ -13,7 +13,7 @@ check_controls = function(controls){
   for(required_control in required_controls){
     if(!(required_control %in% names(controls))) stop(paste0("Please specify '", required_control, "' in 'controls'."),call.=FALSE)
   }
-  if(length(missing_controls)>=1) warning(paste("Some controls are not specified and set to default."),call.=FALSE)
+  if(length(missing_controls)>=1) warning(paste("Some controls are not specified and set to default values."),call.=FALSE)
   if(length(redundant_controls)==1) warning(paste("The following element in 'controls' is not supported and will be ignored:", paste(redundant_controls,collapse=", ")),call.=FALSE)
   if(length(redundant_controls)>1) warning(paste("The following elements in 'controls' are not supported and will be ignored:", paste(redundant_controls,collapse=", ")),call.=FALSE)
   for(control_with_length_1 in intersect(controls_with_length_1,names(controls))){
@@ -56,19 +56,24 @@ check_controls = function(controls){
       controls[["data_source"]][1] = controls[["data_source"]][2]
       controls[["data_col"]][1] = controls[["data_col"]][2]
     }
-    if(is.na(controls[["sdds"]][1]) & !is.na(controls[["sdds"]][2])){
-      controls[["sdds"]][1] = controls[["sdds"]][2]
-    }
   }
 
-  ### determine sdds
-  possible_sdds = c("t","normal")
+  ### check sdds
+  possible_sdds = c("t","normal","gamma")
   check_t_sdds = function(x) grepl("^[t][\\(]([0-9]+||[I][n][f])[\\)]$",x)
   controls[["sdds"]][which(controls[["sdds"]]=="normal")] = "t(Inf)"
   controls[["fixed_dfs"]] = c(NA,NA)
   if(check_t_sdds(controls[["sdds"]][1])) controls[["fixed_dfs"]][1] = sub("\\).*", "", sub(".*\\(", "", controls[["sdds"]][1])) 
   if(check_t_sdds(controls[["sdds"]][2])) controls[["fixed_dfs"]][2] = sub("\\).*", "", sub(".*\\(", "", controls[["sdds"]][2]))
   controls[["fixed_dfs"]] = as.numeric(controls[["fixed_dfs"]])
+  if(controls[["model"]]=="HHMM"){
+    if(controls[["data_cs_type"]] %in% c("mean_abs","sum_abs") & controls[["sdds"]][2] != "gamma"){
+      warning(paste0("For CS data type '",controls[["data_cs_type"]],"' the gamma distribution is recommended."),call.=FALSE)
+    }
+    if(controls[["data_cs_type"]] %in% c("mean") & controls[["sdds"]][2] == "gamma"){
+      warning(paste0("For CS data type '",controls[["data_cs_type"]],"' the gamma distribution is not recommended."),call.=FALSE)
+    }
+  }
   
   ### check if controls are correct
   if(controls[["model"]]=="HMM") {
@@ -141,7 +146,11 @@ check_controls = function(controls){
     if(!is.na(controls[["data_cs_type"]]) & !controls[["data_cs_type"]] %in% c("mean","mean_abs","sum_abs")){
       stop(paste0("Element 'data_cs_type' must be one of '",paste(c("mean","mean_abs","sum_abs"),collapse="', '"),"'."),call.=FALSE)
     }
-    if(is.na(controls[["data_cs_type"]])){
+    if(!is.na(controls[["data_cs_type"]]) & controls[["sim"]]){
+      warning("Element 'data_cs_type' will be ignored.",call.=FALSE)
+      controls[["data_cs_type"]] = NA
+    }
+    if(!controls[["sim"]] & is.na(controls[["data_cs_type"]])){
       controls[["data_cs_type"]] = "mean_abs"
     }
     if(controls[["sim"]] & any(!is.na(controls[["data_source"]]))){
@@ -170,7 +179,7 @@ check_controls = function(controls){
     controls[["data_col"]] = c(NA,NA)
   }
   if(controls[["overwrite"]]){
-    warning("Saved model results may be overwritten.",call.=FALSE)
+    warning("Overwriting is allowed.",call.=FALSE)
   }
   if(controls[["accept_codes"]]=="all"){
     controls[["accept_codes"]] = 1:5
@@ -206,9 +215,8 @@ check_controls = function(controls){
     writeLines(paste0("States: ",controls[["states"]][1]," / ",controls[["states"]][2]))
     writeLines(paste0("SDDs:   ",ifelse(controls[["sdds"]][1]=="t(Inf)","normal",controls[["sdds"]][1])," / ",ifelse(controls[["sdds"]][2]=="t(Inf)","normal",controls[["sdds"]][2])))
   }
-  writeLines(paste0("Runs:   ",controls[["runs"]]))
+  writeLines(paste0("Runs:   ",controls[["runs"]],ifelse(controls[["at_true"]]," (initialised at true values)","")))
   if(!is.null(controls[["seed"]])) writeLines(paste0("Seed:   ",controls[["seed"]]))
-  if(controls[["at_true"]]) writeLines(paste0("Estimation initialisied at true values."))
   
   ### save controls
   check_saving(controls,controls)
@@ -218,8 +226,12 @@ check_controls = function(controls){
 
 check_data = function(controls,data){
   if(controls[["sim"]]){
-    if(controls[["model"]]=="HMM")  writeLines(paste0("Data points: ",controls[["time_horizon"]][1]))
-    if(controls[["model"]]=="HHMM") writeLines(paste0("Data points: ",controls[["time_horizon"]][1]," / ",controls[["time_horizon"]][2]))
+    if(controls[["model"]]=="HMM"){
+      writeLines(paste0("Data points: ",controls[["time_horizon"]][1]))
+    }
+    if(controls[["model"]]=="HHMM"){
+      writeLines(paste0("Data points:  ",controls[["time_horizon"]][1]," / ",controls[["time_horizon"]][2]))
+    }
   }
   if(!controls[["sim"]]){
     if(controls[["model"]]=="HMM"){
@@ -243,10 +255,7 @@ check_data = function(controls,data){
 }
 
 check_estimation = function(time,mods,llks,data,hessian,controls){
-  if(all(is.na(llks))){
-    stop("None of the estimation runs ended successfully. Consider increasing 'runs' in 'controls'.",call.=FALSE)
-  }
-  writeLines(paste0("Estimation finished, it took ",time," minute(s). Successful runs: ",sum(!is.na(llks))," out of ",length(llks),"."))
+  writeLines(paste0("Estimation finished, it took ",time," minute(s).",ifelse(controls[["at_true"]],"",paste0("Successful runs: ",sum(!is.na(llks))," out of ",length(llks),"."))))
 
   ### select model with highest LL
   mod       = mods[[which.max(llks)]]
@@ -255,11 +264,11 @@ check_estimation = function(time,mods,llks,data,hessian,controls){
   thetaList = states_decreasing(thetaCon2thetaList(thetaCon,controls),controls)
   
   ### detect unidentified states
-  check_unid_states = function(Gamma){
+  check_unid_states = function(Gamma,name=NULL){
     for(x in c(0,1)){
       unid_states = abs(Gamma2delta(Gamma)-x)<1e-04
       for(s in which(unid_states)){
-        warning("Unidentified state detected.",call.=FALSE)
+        warning(paste(ifelse(is.null(name),"State",paste(name,"state")),s,"might be unidentified."),call.=FALSE)
       }
     }
   }
@@ -267,14 +276,14 @@ check_estimation = function(time,mods,llks,data,hessian,controls){
     check_unid_states(thetaList[["Gamma"]])
   }
   if(controls[["model"]]=="HHMM"){
-    check_unid_states(thetaList[["Gamma"]])
+    check_unid_states(thetaList[["Gamma"]],"Coarse scale")
     for(cs in controls[["states"]]){
-      check_unid_states(thetaList[["Gammas_star"]][[cs]])
+      check_unid_states(thetaList[["Gammas_star"]][[cs]],paste("On coarse-scale state",cs,"fine scale"))
     }
   }
   
   ### create visualization of LLs
-  plot_ll(llks,controls)
+  if(!controls[["at_true"]]) plot_ll(llks,controls)
   
   ### check if iteration limit was reached
   if(mod[["iterations"]] >= controls[["iterlim"]]) warning("Selected estimation run reached the iteration limit. Consider increasing 'iterlim'.",call.=FALSE)
