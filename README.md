@@ -43,8 +43,8 @@ A model is specified by setting parameters of the named list `controls`. The fol
 - `sdds`: a character vector of length 2, specifying the state-dependent distributions:
    - `"t"`, the t-distribution
    - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom
-   - `norm`, the normal distribution (which internally is treated as `t(Inf)`)
-   - `gamma`, the gamma distribution (not supported yet)
+   - `"norm"`, the normal distribution (which internally is treated as `"t(Inf)"`)
+   - `"gamma"`, the gamma distribution (not supported yet)
 - either `data_source` along with `data_col` (for empirical data) or `time_horizon` (for simulated data), see below
 
 The following parameters are optional and set to [default values](#default-values) if not specified:
