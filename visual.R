@@ -244,6 +244,7 @@ plot_ll = function(llks,controls){
   if(controls[["overwrite"]]==FALSE & file.exists(filename)){
     warning(paste0("Cannot create a plot of the log-likelihoods because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
   } else {
+    llks[which(llks< -1e100)] = NA
     pdf(filename, width=9, height=7)
       if(length(llks)<=5){
         plot(llks,xaxt="n",yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
