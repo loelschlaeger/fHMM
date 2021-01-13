@@ -52,9 +52,9 @@ The following parameters are optional and set to [default values](#default-value
 - `at_true`: a boolean, determining whether the optimization is initialised at the true parameter values (only for simulated data, sets `runs = 1` and `accept_codes = "all"`)
 - `data_col`: a character vector of length 2, containing names of the desired columns of `data_source`
 - `data_cs_type`: a character, determining the type of the coarse scale data:
-   - if `data_cs_type = mean`, means of the fine scale data are chosen
-   - if `data_cs_type = mean_abs`, means of the fine scale data in absolute value are chosen
-   - if `data_cs_type = sum_abs`, sums of fine scale data in absolute value are chosen
+   - if `data_cs_type = "mean"`, means of the fine scale data are chosen
+   - if `data_cs_type = "mean_abs"`, means of the fine scale data in absolute value are chosen
+   - if `data_cs_type = "sum_abs"`, sums of fine scale data in absolute value are chosen
 - `data_source`: a character vector of length 2, containing the file names of the empirical data:
    - if `data_source = c(NA,NA)`, data is simulated
    - if `data_source = c("x",NA)`, data `"./data/x.csv"` is modeled by a HMM
@@ -72,7 +72,7 @@ The following parameters are optional and set to [default values](#default-value
 ### Default values
 - `accept_codes = 1` (relative gradient is close to zero)
 - `at_true = FALSE`
-- `data_cs_type = mean_abs`
+- `data_cs_type = "mean_abs"`
 - `data_col = c(NA,NA)`
 - `data_source = c(NA,NA)` 
 - `iterlim = 500`
