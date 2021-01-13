@@ -1,6 +1,6 @@
 ### initialize the code
 init = function(){
-  message("Loading code...\r")
+  message("Loading code...")
   if(!dir.exists("models")) dir.create("models")
   if(!dir.exists("data")) dir.create("data")
   installed_packages = installed.packages()[,"Package"]
@@ -12,6 +12,8 @@ init = function(){
               require("progress"),
               if(!"MASS" %in% installed_packages){ writeLines("\nInstalling package 'MASS'.\n"); install.packages("MASS",quite=TRUE)},
               require("MASS"),
+              if(!"tseries" %in% installed_packages){ writeLines("\nInstalling package 'tseries'.\n"); install.packages("tseries",quite=TRUE)},
+              require("tseries"),
               source("checks.R"),
               source("data.R"),
               sourceCpp("loglike.cpp"),
@@ -19,7 +21,7 @@ init = function(){
               source("trans.R"),
               source("visual.R"),
               source("viterbi.R"))
-  for(e in seq_len(length(exe))) suppressPackageStartupMessages(eval(exe[[e]]))
+  for(e in exe) suppressPackageStartupMessages(eval(e))
   cat("\f")
   writeLines("Fit (H)HMMs to financial data.")
   writeLines(paste0("Data source:   ",getwd(),"/data"))
