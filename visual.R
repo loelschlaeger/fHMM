@@ -44,7 +44,7 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   legend_layout = list(cex=1.25,x="topleft",bg="white")
   
   ### state dependent distributions
-  filename = paste0("models/",controls[["id"]],"/sdd.pdf")
+  filename = paste0("models/",controls[["id"]],"/sdds.pdf")
   if(controls[["overwrite"]]==FALSE & file.exists(filename)){
     warning(paste0("Cannot create a plot of the state-dependent distributions because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
   } else {
@@ -195,14 +195,15 @@ visual = function(data,fit,decoding,controls,labels=NULL){
   }
   
   ### pseudo-residuals
-  filename = paste0("models/",controls[["id"]],"/pseudos.pdf")
+  filename = paste0("models/",controls[["id"]],"/prs.pdf")
   if(controls[["overwrite"]]==FALSE & file.exists(filename)){
     warning(paste0("Cannot create a plot of the pseudo-residuals because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
   } else {
     if(controls[["model"]]=="HMM"){
       pseudos = numeric(T)
       for(t in 1:T){
-        pseudos[t] = qnorm(pt((data[["logReturns"]][t]-mus[decoding[t]])/sigmas[decoding[t]],dfs[decoding[t]]))
+        Fxt = pt((data[["logReturns"]][t]-mus[decoding[t]])/sigmas[decoding[t]],dfs[decoding[t]])
+        pseudos[t] = qnorm(Fxt)
       }
       pdf(filename, width=9, height=7)
         plot(pseudos,ylim=c(floor(min(pseudos)),ceiling(max(pseudos))),main="Residual plot",ylab="Pseudo-residuals",las=1,pch=3)
@@ -215,10 +216,12 @@ visual = function(data,fit,decoding,controls,labels=NULL){
       pseudos_cs = numeric(T)
       pseudos_fs = numeric(T*T_star)
       for(t in 1:T){
-        pseudos_cs[t] = qnorm(pt((data[["logReturns"]][t,1]-mus[decoding[t,1]])/sigmas[decoding[t,1]],dfs[decoding[t,1]]))
+        Fxt = pt((data[["logReturns"]][t,1]-mus[decoding[t,1]])/sigmas[decoding[t,1]],dfs[decoding[t,1]])
+        pseudos_cs[t] = qnorm(Fxt)
       }
       for(t in 1:(T*T_star)){
-        pseudos_fs[t] = qnorm(pt((as.vector(t(data[["logReturns"]][,-1]))[t]-mus_star[[decoding_cs[t]]][decoding_fs[t]])/sigmas_star[[decoding_cs[t]]][decoding_fs[t]],dfs_star[[decoding_cs[t]]][decoding_fs[t]]))
+        Fxt = pt((as.vector(t(data[["logReturns"]][,-1]))[t]-mus_star[[decoding_cs[t]]][decoding_fs[t]])/sigmas_star[[decoding_cs[t]]][decoding_fs[t]],dfs_star[[decoding_cs[t]]][decoding_fs[t]])
+        pseudos_fs[t] = qnorm(Fxt)
       }
       pseudos_cs = pseudos_cs[is.finite(pseudos_cs)]
       pseudos_fs = pseudos_fs[is.finite(pseudos_fs)]
@@ -245,16 +248,20 @@ plot_ll = function(llks,controls){
     warning(paste0("Cannot create a plot of the log-likelihoods because the path '",filename,"' already exists and you chose not to overwrite."),call.=FALSE)
   } else {
     llks[which(llks< -1e100)] = NA
-    pdf(filename, width=9, height=7)
-      if(length(llks)<=5){
-        plot(llks,xaxt="n",yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
-        axis(1,las=1,at=seq_len(length(llks)),labels=seq_len(length(llks)))      
-      } else {
-        plot(llks,yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
+    if(length(llks[!is.na(llks)])==0){
+      warning("Failed to create 'lls.pdf'.",call.=FALSE)
+    } else {
+      pdf(filename, width=9, height=7)
+        if(length(llks)<=5){
+          plot(llks,xaxt="n",yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
+          axis(1,las=1,at=seq_len(length(llks)),labels=seq_len(length(llks)))      
+        } else {
+          plot(llks,yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
+          axis(2,las=1,at=unique(round(llks[!is.na(llks)])),labels=unique(round(llks[!is.na(llks)])))
+        }
+        points(x=which.max(llks),y=llks[which.max(llks)],pch=16,cex=1.25,col="red")
         axis(2,las=1,at=unique(round(llks[!is.na(llks)])),labels=unique(round(llks[!is.na(llks)])))
-      }
-      points(x=which.max(llks),y=llks[which.max(llks)],pch=16,cex=1.25,col="red")
-      axis(2,las=1,at=unique(round(llks[!is.na(llks)])),labels=unique(round(llks[!is.na(llks)])))
-    invisible(dev.off())
+      invisible(dev.off())
+    }
   }
 }
