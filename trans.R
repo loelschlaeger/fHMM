@@ -80,8 +80,8 @@ sigmaCon2sigmaUncon = function(sigmaCon){
 thetaUncon2thetaCon = function(thetaUncon,controls){
   M  = controls[["states"]][1] #coarse-scale states
   N  = controls[["states"]][2] #fine-scale states
-  df_cs = controls[["fix_dfs"]][1]
-  df_fs = controls[["fix_dfs"]][2]
+  df_cs = controls[["fixed_dfs"]][1]
+  df_fs = controls[["fixed_dfs"]][2]
   model = controls[["model"]]
   
 	gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
@@ -124,8 +124,8 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
 thetaCon2thetaList = function(thetaCon,controls){
   M = controls[["states"]][1] #coarse-scale states
   N = controls[["states"]][2] #fine-scale states
-  df_cs = controls[["fix_dfs"]][1]
-  df_fs = controls[["fix_dfs"]][2]
+  df_cs = controls[["fixed_dfs"]][1]
+  df_fs = controls[["fixed_dfs"]][2]
   model = controls[["model"]]
   
   gammasCon = thetaCon[1:((M-1)*M)]; thetaCon = thetaCon[-(1:((M-1)*M))]
@@ -199,8 +199,8 @@ thetaUncon2thetaUnconSplit = function(thetaUncon,controls){
   if(controls[["model"]]!="HHMM") stop("Function only for HHMM parameters.")
   M = controls[["states"]][1] #coarse-scale states
   N = controls[["states"]][2] #fine-scale states
-  df_cs = controls[["fix_dfs"]][1]
-  df_fs = controls[["fix_dfs"]][2]
+  df_cs = controls[["fixed_dfs"]][1]
+  df_fs = controls[["fixed_dfs"]][2]
   
   thetaUnconSplit = list()
   thetaUncon = thetaUncon[-(1:((M-1)*M))] 
@@ -231,7 +231,7 @@ thetaUncon2thetaUnconSplit = function(thetaUncon,controls){
 ### OUTPUT: constrained model parameters in list form for one fine-scale HMM
 thetaUnconSplit2thetaList = function(thetaUncon,controls){
    nstates = controls[["states"]][2]
-   df_fs = controls[["fix_dfs"]][2]
+   df_fs = controls[["fixed_dfs"]][2]
    gammasUncon = thetaUncon[1:((nstates-1)*nstates)]; thetaUncon = thetaUncon[-(1:((nstates-1)*nstates))]
    Gamma = gammasUncon2Gamma(gammasUncon,nstates)
    mus = thetaUncon[1:nstates]; thetaUncon = thetaUncon[-(1:nstates)]
@@ -259,7 +259,7 @@ states_decreasing = function(thetaList,controls){
   thetaList[["Gamma"]] = permut %*% thetaList[["Gamma"]] %*% t(permut)
   thetaList[["mus"]] = as.vector(permut %*% thetaList[["mus"]])
   thetaList[["sigmas"]] = as.vector(permut %*% thetaList[["sigmas"]])
-  thetaList[["dfs"]] = as.vector(permut %*% thetaList[["dfs"]])
+  thetaList[["dfs"]] = as.vector(permut %*% thetaList[["dfs"]]); thetaList[["dfs"]][which(is.nan(thetaList[["dfs"]]))] = Inf
   
   if(controls$model=="HHMM"){
     
@@ -273,7 +273,7 @@ states_decreasing = function(thetaList,controls){
       thetaList[["Gammas_star"]][[m]] = permut %*% thetaList[["Gammas_star"]][[m]] %*% t(permut)
       thetaList[["mus_star"]][[m]] = as.vector(permut %*% thetaList[["mus_star"]][[m]])
       thetaList[["sigmas_star"]][[m]] = as.vector(permut %*% thetaList[["sigmas_star"]][[m]])
-      thetaList[["dfs_star"]][[m]] = as.vector(permut %*% thetaList[["dfs_star"]][[m]])
+      thetaList[["dfs_star"]][[m]] = as.vector(permut %*% thetaList[["dfs_star"]][[m]]); thetaList[["dfs_star"]][[m]][which(is.nan(thetaList[["dfs_star"]][[m]]))] = Inf
     }
   }
   return(thetaList)

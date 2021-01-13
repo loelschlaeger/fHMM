@@ -1,16 +1,15 @@
 check_controls = function(controls){
   
   ### check supplied control values
-  all_controls = c("id","data_source","data_col","truncate_data","states","time_horizon","fix_dfs","runs","at_true","iterlim","seed","print_level","steptol","accept_codes","overwrite","data_cs_type")
-  required_controls = c("id","states")
-  artificial_controls = c("sim","model","est_dfs","controls_checked")
+  all_controls = c("id","data_source","data_col","truncate_data","states","time_horizon","sdds","runs","at_true","iterlim","seed","print_level","steptol","accept_codes","overwrite","data_cs_type")
+  required_controls = c("id","states","sdds")
+  artificial_controls = c("sim","model","fixed_dfs","controls_checked")
   missing_controls = setdiff(all_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
   controls_with_length_1 = c("id","runs","at_true","iterlim","seed","print_level","steptol","overwrite","data_cs_type")
-  controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","fix_dfs")
+  controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","sdds")
   numeric_controls = c("states","runs","iterlim","print_level","steptol","seed")
   boolean_controls = c("overwrite","at_true")
-  character_or_na_controls = c("id","data_source","data_col","truncate_data","data_cs_type")
   for(required_control in required_controls){
     if(!(required_control %in% names(controls))) stop(paste0("Please specify '", required_control, "' in 'controls'."),call.=FALSE)
   }
@@ -37,7 +36,6 @@ check_controls = function(controls){
   if("data_cs_type" %in% missing_controls) controls[["data_cs_type"]] = NA
   if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
   if("time_horizon" %in% missing_controls) controls[["time_horizon"]] = c(NA,NA)
-  if("fix_dfs" %in% missing_controls) controls[["fix_dfs"]] = c(NA,NA)
   if("runs" %in% missing_controls) controls[["runs"]] = 200
   if("at_true" %in% missing_controls) controls[["at_true"]] = FALSE
   if("iterlim" %in% missing_controls) controls[["iterlim"]] = 500
@@ -45,12 +43,12 @@ check_controls = function(controls){
   if("steptol" %in% missing_controls) controls[["steptol"]] = 1e-6
   if("accept_codes" %in% missing_controls) controls[["accept_codes"]] = c(1)
   if("overwrite" %in% missing_controls) controls[["overwrite"]] = FALSE
+  if("sdds" %in% missing_controls) controls[["sdds"]] = c(NA,NA)
   
   ### create artificial controls
   controls[["model"]] = if(controls[["states"]][2]==0) "HMM" else "HHMM"
   if(controls[["model"]]=="HMM"){
     controls[["sim"]] = if(is.na(controls[["data_source"]][1])) TRUE else FALSE
-    controls[["est_dfs"]] = if(is.na(controls[["fix_dfs"]][1])) TRUE else FALSE
   }
   if(controls[["model"]]=="HHMM"){
     controls[["sim"]] = if(is.na(controls[["data_source"]][2])) TRUE else FALSE
@@ -58,8 +56,19 @@ check_controls = function(controls){
       controls[["data_source"]][1] = controls[["data_source"]][2]
       controls[["data_col"]][1] = controls[["data_col"]][2]
     }
-    controls[["est_dfs"]] = if(any(is.na(controls[["fix_dfs"]]))) TRUE else FALSE
+    if(is.na(controls[["sdds"]][1]) & !is.na(controls[["sdds"]][2])){
+      controls[["sdds"]][1] = controls[["sdds"]][2]
+    }
   }
+
+  ### determine sdds
+  possible_sdds = c("t","normal")
+  check_t_sdds = function(x) grepl("^[t][\\(]([0-9]+||[I][n][f])[\\)]$",x)
+  controls[["sdds"]][which(controls[["sdds"]]=="normal")] = "t(Inf)"
+  controls[["fixed_dfs"]] = c(NA,NA)
+  if(check_t_sdds(controls[["sdds"]][1])) controls[["fixed_dfs"]][1] = sub("\\).*", "", sub(".*\\(", "", controls[["sdds"]][1])) 
+  if(check_t_sdds(controls[["sdds"]][2])) controls[["fixed_dfs"]][2] = sub("\\).*", "", sub(".*\\(", "", controls[["sdds"]][2]))
+  controls[["fixed_dfs"]] = as.numeric(controls[["fixed_dfs"]])
   
   ### check if controls are correct
   if(controls[["model"]]=="HMM") {
@@ -71,6 +80,15 @@ check_controls = function(controls){
     }
     if(!controls[["sim"]] & is.na(controls[["data_col"]][1])){
       stop("First entry of 'data_col' has to be specified.",call.=FALSE)
+    }
+    if(is.na(controls[["sdds"]][1])){
+      stop("First entry of 'sdds' has to be specified.",call.=FALSE)
+    }
+    if(!is.na(controls[["sdds"]][1]) & !controls[["sdds"]][1] %in% possible_sdds & !check_t_sdds(controls[["sdds"]][1])){
+      stop(paste0("First entry of 'sdds' must be one of '",paste(possible_sdds,collapse="', '"),"'."),call.=FALSE)
+    }
+    if(!is.na(controls[["sdds"]][2])){
+      warning("Second entry of 'sdds' will be ignored.",call.=FALSE)
     }
     if(!is.na(controls[["data_cs_type"]])){
       warning("Element 'data_cs_type' will be ignored.",call.=FALSE)
@@ -87,10 +105,6 @@ check_controls = function(controls){
     if(!is.na(controls[["time_horizon"]][2])){
       warning("Second entry of 'time_horizon' will be ignored.",call.=FALSE)
       controls[["time_horizon"]][2] = NA
-    }
-    if(!is.na(controls[["fix_dfs"]][2])){
-      warning("Second entry of 'fix_dfs' will be ignored.",call.=FALSE)
-      controls[["fix_dfs"]][2] = NA
     }
     if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
       warning("First entry of 'time_horizon' will be ignored.",call.=FALSE)
@@ -113,9 +127,19 @@ check_controls = function(controls){
     if(!controls[["sim"]] & any(is.na(controls[["data_col"]]))){
       stop("Entries of 'data_col' have to be specified.",call.=FALSE)
     }
-    if(!is.na(controls[["data_cs_type"]])){
-      if(!controls[["data_cs_type"]] %in% c("mean","mean_abs","sum_abs")) stop("Element 'data_cs_type' must be one of 'mean', 'mean_abs' or 'sum_abs'.",call.=FALSE)
-      if(controls[["sim"]]) warning("Element 'data_cs_type' will be ignored.",call.=FALSE)
+    if(is.na(controls[["sdds"]][2])){
+      stop("Second entry of 'sdds' has to be specified.",call.=FALSE)
+    }
+    if(!is.na(controls[["sdds"]][2])){
+      if(!controls[["sdds"]][1] %in% possible_sdds & !check_t_sdds(controls[["sdds"]][1])){
+        stop(paste0("First entry of 'sdds' must be one of '",paste(possible_sdds,collapse="', '"),"'."),call.=FALSE)
+      }
+      if(!controls[["sdds"]][2] %in% possible_sdds & !check_t_sdds(controls[["sdds"]][2])){
+        stop(paste0("Second entry 'sdds' must be one of '",paste(possible_sdds,collapse="', '"),"'."),call.=FALSE)
+      }
+    }
+    if(!is.na(controls[["data_cs_type"]]) & !controls[["data_cs_type"]] %in% c("mean","mean_abs","sum_abs")){
+      stop(paste0("Element 'data_cs_type' must be one of '",paste(c("mean","mean_abs","sum_abs"),collapse="', '"),"'."),call.=FALSE)
     }
     if(is.na(controls[["data_cs_type"]])){
       controls[["data_cs_type"]] = "mean_abs"
@@ -176,11 +200,12 @@ check_controls = function(controls){
   if(!controls[["sim"]]) writeLines("Data:   empirical")
   if(controls[["model"]]=="HMM") {
     writeLines(paste0("States: ",controls[["states"]][1]))
+    writeLines(paste0("SDDs:   ",ifelse(controls[["sdds"]][1]=="t(Inf)","normal",controls[["sdds"]][1])))
   } 
   if(controls[["model"]]=="HHMM") {
     writeLines(paste0("States: ",controls[["states"]][1]," / ",controls[["states"]][2]))
+    writeLines(paste0("SDDs:   ",ifelse(controls[["sdds"]][1]=="t(Inf)","normal",controls[["sdds"]][1])," / ",ifelse(controls[["sdds"]][2]=="t(Inf)","normal",controls[["sdds"]][2])))
   }
-  writeLines("SDDs:   scaled t")
   writeLines(paste0("Runs:   ",controls[["runs"]]))
   if(!is.null(controls[["seed"]])) writeLines(paste0("Seed:   ",controls[["seed"]]))
   if(controls[["at_true"]]) writeLines(paste0("Estimation initialisied at true values."))
@@ -257,16 +282,16 @@ check_estimation = function(time,mods,llks,data,hessian,controls){
   if(any(exceeded_runs)) warning(paste0(sum(exceeded_runs)," of ",length(llks)," runs reached the iteration limit. Consider increasing 'iterlim'."),call.=FALSE)
   
   ### compute model selection criteria
-  noPar = function(M,N,est_dfs) return(M*(M-1) + M*N*(N-1) + M + M*N + M + M*N + est_dfs*(M + M*N))
-  compAIC = function(M,N,LL,est_dfs) return(2*noPar(M,N,est_dfs) - 2*LL)
-  compBIC = function(T,M,N,LL,est_dfs) return(log(T)*noPar(M,N,est_dfs) - 2*LL)
+  no_par   = length(mod[["estimate"]])
+  comp_AIC = function(LL) return(2*no_par-2*LL)
+  comp_BIC = function(T,LL) return(log(T)*no_par-2*LL)
   
   ### create estimation output
   fit = list("LL"        = mod_LL,
              "mod"       = mod,
              "thetaList" = thetaList,
-             "AIC"       = compAIC(controls[["states"]][1],controls[["states"]][2],-mod[["minimum"]],controls[["est_dfs"]]),
-             "BIC"       = compBIC(prod(dim(t(data[["logReturns"]]))),controls[["states"]][1],controls[["states"]][2],-mod[["minimum"]],controls[["est_dfs"]]),
+             "AIC"       = comp_AIC(-mod[["minimum"]]),
+             "BIC"       = comp_BIC(prod(dim(t(data[["logReturns"]]))),-mod[["minimum"]]),
              "all_LL"    = llks,
              "all_mods"  = mods,
              "hessian"   = hessian
@@ -309,6 +334,7 @@ check_decoding = function(decoding,controls){
     if(controls[["model"]]=="HMM"){
       out = table((decoding)); names(out) = paste("state",names(out))
       print(out)
+      writeLines("")
     }
     if(controls[["model"]]=="HHMM"){
       out_cs = table(factor(decoding[,1],levels = seq_len(controls[["states"]][1]))); names(out_cs) = paste("CS state",names(out_cs))

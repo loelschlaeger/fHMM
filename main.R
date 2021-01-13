@@ -4,16 +4,20 @@ rm(list = ls())
 source("init.R"); init()
 
 ### 2. Download data
-download_data("dax","^GDAXI")
+download_data()
 
 ### 3. Set and check controls
 controls = list(
-  id            = "HMM_DAX_3_test",        
-  data_source   = c("dax",NA),
-  data_col      = c("Close",NA),
-  truncate_data = c("2000-01-03","2010-12-30"), 
+  id            = "test",        
+  #data_source   = c("dax","dax"),
+  #data_col      = c("Close","Close"),
+  #truncate_data = c("2000-01-03","2020-12-30"), 
   states        = c(3,0),
-  runs = 20
+  time_horizon  = c(1000,NA),
+  overwrite     = TRUE,
+  #data_cs_type  = "mean",
+  sdds          = c("t(1)",NA),
+  runs = 50
 )
 controls = check_controls(controls)
 
