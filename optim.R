@@ -41,10 +41,21 @@ max_likelihood = function(data,controls){
   end = Sys.time()
   estimation_time = round(difftime(end,start,units='mins'))
   
-  ### compute Hessian
-  hessian = suppressWarnings(nlm(f=target,p=mods[[which.max(llks)]][["estimate"]],observations=data[["logReturns"]],controls=controls,iterlim=1,hessian=TRUE)[["hessian"]])
+  if(controls[["at_true"]] & llks[1]< -1e100){
+    stop("Estimation failed, log-likelihood is 'NaN' at the true parameters.",call.=FALSE)
+  }
+  if(all(is.na(llks))){
+    stop("None of the estimation runs ended successfully. Consider increasing 'runs' in 'controls'.",call.=FALSE)
+  } else {
+    ### compute Hessian
+    pb2 = progress_bar$new(format = "Computing the Hessian...", total = 1, clear = TRUE, show_after = 0)
+    pb2$tick(0)
+    hessian = suppressWarnings(nlm(f=target,p=mods[[which.max(llks)]][["estimate"]],observations=data[["logReturns"]],controls=controls,iterlim=1,hessian=TRUE)[["hessian"]])
+    pb2$tick(1)
+    invisible()
   
-	fit = check_estimation(estimation_time,mods,llks,data,hessian,controls)
+	  fit = check_estimation(estimation_time,mods,llks,data,hessian,controls)
+  }
 	
 	return(fit)
 }
