@@ -1,6 +1,5 @@
 ### initialize the code
-init = function(){
-  message("Loading code...")
+load_code = function(){
   if(!dir.exists("models")) dir.create("models")
   if(!dir.exists("data")) dir.create("data")
   installed_packages = installed.packages()[,"Package"]
@@ -14,15 +13,18 @@ init = function(){
               require("MASS"),
               if(!"tseries" %in% installed_packages){ writeLines("\nInstalling package 'tseries'.\n"); install.packages("tseries",quite=TRUE)},
               require("tseries"),
+              sourceCpp("loglike.cpp"),
               source("checks.R"),
               source("data.R"),
-              sourceCpp("loglike.cpp"),
               source("optim.R"),
               source("trans.R"),
               source("visual.R"),
               source("viterbi.R"))
-  for(e in exe) suppressPackageStartupMessages(eval(e))
-  cat("\f")
+  for(e in seq_len(length(exe))){
+    suppressPackageStartupMessages(eval(exe[[e]]))
+    cat(sprintf("Loading HHMM_Finance code: %.0f%%",(e/length(exe)*100)),"\r")
+  }
+  cat("\n")
   writeLines("Fit (H)HMMs to financial data.")
   writeLines(paste0("Data source:   ",getwd(),"/data"))
   writeLines(paste0("Model results: ",getwd(),"/models"))
