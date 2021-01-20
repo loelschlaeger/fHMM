@@ -25,15 +25,14 @@ load_code = function(){
     cat(sprintf("Loading HHMM_Finance code: %.0f%%",(e/length(exe)*100)),"\r")
   }
   cat("\n")
-  writeLines("Fit (H)HMMs to financial data.")
   writeLines(paste0("Data source:   ",getwd(),"/data"))
   writeLines(paste0("Model results: ",getwd(),"/models"))
 }
 
 ### initialize the estimation routine randomly
 init_est = function(controls){
-  M  = controls[["states"]][1] #coarse-scale states
-  N  = controls[["states"]][2] #fine-scale states
+  M  = controls[["states"]][1] 
+  N  = controls[["states"]][2] 
   df_cs = controls[["fixed_dfs"]][1]
   df_fs = controls[["fixed_dfs"]][2]
   
@@ -52,20 +51,18 @@ init_est = function(controls){
   return(thetaUncon)
 }
 
-### load parameters and results of the old model 'id'
-reinit = function(id){
-  loadable = c("controls","data","fit","decoding","labels")
+### load .rds-files of the old model 'id'
+load_model = function(id){
   path = paste0("models/",id)
-  if(!dir.exists(path)) stop(paste0("Reinitialization failed, path '",path,"' does not exist."),call.=FALSE)
+  if(!dir.exists(path)) stop(paste0("Path '",path,"' does not exist."),call.=FALSE)
+  loadable = list.files(path=path,pattern="*.rds")
   loaded = list()
-  for(object in loadable){
-    if(file.exists(paste0(path,"/",object))) loaded[[object]] = readRDS(paste0(path,"/",object))
-  }
+  for(object in loadable) loaded[[object]] = readRDS(paste0(path,"/",object))
   if(length(loaded)>=1){
     writeLines("Reinitialization successful.")
     writeLines(paste0("ID:      ",id))
     writeLines(paste0("Objects: ",paste0(names(loaded),collapse=", ")))
   }
-  if(length(loaded)==0) stop(paste0("Reinitialization failed, unable to load any object from path '",path,"'."),call.=FALSE)
+  if(length(loaded)==0) stop(paste0("Unable to load any object from path '",path,"'."),call.=FALSE)
   invisible(list2env(loaded, envir = .GlobalEnv))
 }
