@@ -1,8 +1,8 @@
+### process simulated or empirical data
 get_data = function(controls){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
-  if(controls[["sim"]]) data = simulate_data(controls)
+  if(controls[["sim"]])  data = simulate_data(controls)
   if(!controls[["sim"]]) data = read_data(controls)
-  if(any(dim(t(data[["logReturns"]]))==0)) stop("Too few data points.",call.=FALSE)
   writeLines("Data processing successful.")
   check_data(controls,data)
   return(data)
@@ -11,6 +11,7 @@ get_data = function(controls){
 ### simulate data
 simulate_data = function(controls){
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
+  
   M = controls[["states"]][1] #HMM states / HHMM coarse-scale states
   N = controls[["states"]][2] #HHMM fine-scale states
   T = controls[["time_horizon"]][1]
@@ -114,7 +115,7 @@ read_data = function(controls){
     }
   }
   
-  ### truncate the data based on 'controls[["trunc_data"]]'
+  ### truncate the data
   truncate_data = function(controls,data){
     ### find exact or nearest position of 'date' in 'data' 
     find_date = function(date,data){
@@ -187,29 +188,27 @@ read_data = function(controls){
 	return(out)
 }
 
-
 ### download data from www.finance.yahoo.com
-download_data = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Date()){
+download_data = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE){
   
   ### load and sort or create 'stock_symbols'
-  if(file.exists("data/stock_symbols")){
-    stock_symbols = readRDS("data/stock_symbols")
+  if(file.exists("data/stock_symbols.rds")){
+    stock_symbols = readRDS("data/stock_symbols.rds")
     stock_symbols = stock_symbols[order(stock_symbols["name"]),]
   } else {
     stock_symbols = data.frame("name"=character(),"symbol"=character())
-    saveRDS(stock_symbols,file="data/stock_symbols")
+    saveRDS(stock_symbols,file="data/stock_symbols.rds")
   }
   
   ### print 'stock_symbols'
-  if(is.na(name)){
+  if(show_symbols){
     if(dim(stock_symbols)[1]!=0){
-      writeLines("Saved stock symbols:\n")
       print(stock_symbols,row.names = FALSE)
     } else {
       writeLines("No saved stock symbols.")
     }
-  } else {
-    
+  } 
+  if(!is.na(name)){  
     ### convert 'from' and 'to' to dates
     from = as.Date(from)
     to = as.Date(to)
@@ -246,7 +245,7 @@ download_data = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Dat
         } else {
           ### save new symbol
           stock_symbols[nrow(stock_symbols)+1,] = c(name,symbol)
-          saveRDS(stock_symbols,file="data/stock_symbols")
+          saveRDS(stock_symbols,file="data/stock_symbols.rds")
         }
       }
     }
@@ -264,4 +263,3 @@ download_data = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Dat
   }
   
 }
-
