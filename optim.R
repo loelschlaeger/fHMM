@@ -1,63 +1,78 @@
+### maximize log-likelihood function
 max_likelihood = function(data,controls){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
+  if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
   
   runs = controls[["runs"]]
   llks = rep(NA,runs) 
   mods = list() 
   
+  ### define optimizer
   if(controls[["model"]]=="HMM") target = nLL_hmm
   if(controls[["model"]]=="HHMM") target = nLL_hhmm
-  if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
+  optimized = function(start_values){
+    nlm_out = nlm(f = target,
+                  p = start_values,
+                  observations = data[["logReturns"]],
+                  controls = controls,
+                  iterlim = controls[["iterlim"]],
+                  steptol = controls[["steptol"]],
+                  print.level = controls[["print_level"]],
+                  hessian = FALSE)
+    return(nlm_out)
+  }
   
+  ### generate start values
+  start_values = list()
+  if(controls[["at_true"]]){
+    start_values[[1]] = data[["thetaUncon0"]]
+  }
+  if(!controls[["at_true"]]){
+    for(run in seq_len(runs)){
+      start_values[[run]] = init_est(controls)
+    }
+  }
+  
+  ### check if log-likelihood at true values can be computed
+  if(controls[["at_true"]]){
+    if(is.nan(target(start_values[[1]], data[["logReturns"]], controls))){
+      stop("Log-likelihood is 'NaN' at the true parameters.",call.=FALSE)
+    }
+  }
+  
+  ### define progress-bar
   pb = progress_bar$new(
     format = "Model fitting: [:bar] :percent complete, :eta ETA", 
     total = runs, 
-    clear = FALSE, 
+    clear = TRUE, 
     width = 60, 
     show_after = 0
     )
   
+  ### start maximization
   start = Sys.time()
-	for (run in 1:runs){
+	for (run in seq_len(runs)){
 	  pb$tick(0)
-	  if(controls[["at_true"]])  start_values = data[["thetaUncon0"]]
-	  if(!controls[["at_true"]]) start_values = init_est(controls)
-	  suppressWarnings({ tryCatch({ mods[[run]] = nlm(f = target,
-    			                                          p = start_values,
-                            			                  observations = data[["logReturns"]],
-                            			                  controls = controls,
-                            			                  iterlim = controls[["iterlim"]],
-                            			                  steptol = controls[["steptol"]],
-                            			                  print.level = controls[["print_level"]],
-                            			                  hessian = FALSE
-    			                                          )
+	  suppressWarnings({ tryCatch({ mods[[run]] = optimized(start_values[[run]])
     		                          if(mods[[run]]$code %in% controls[["accept_codes"]] || controls[["at_true"]]){
     		                            llks[run] = -mods[[run]]$minimum
     		                          }
-    		                        },error = function(e){})
-  		              })
+    		                         },error = function(e){})
+  		                })
 	  pb$tick()
 	}
   end = Sys.time()
-  estimation_time = round(difftime(end,start,units='mins'))
+  estimation_time = ceiling(difftime(end,start,units='mins'))
   
-  if(controls[["at_true"]] & llks[1]< -1e100){
-    stop("Estimation failed, log-likelihood is 'NaN' at the true parameters.",call.=FALSE)
-  }
   if(all(is.na(llks))){
     stop("None of the estimation runs ended successfully. Consider increasing 'runs' in 'controls'.",call.=FALSE)
   } else {
     ### compute Hessian
-    pb2 = progress_bar$new(format = "Computing the Hessian...", total = 1, clear = TRUE, show_after = 0)
-    pb2$tick(0)
+    cat("Computing the Hessian...\r")
     hessian = suppressWarnings(nlm(f=target,p=mods[[which.max(llks)]][["estimate"]],observations=data[["logReturns"]],controls=controls,iterlim=1,hessian=TRUE)[["hessian"]])
-    pb2$tick(1)
-    invisible()
-  
 	  fit = check_estimation(estimation_time,mods,llks,data,hessian,controls)
+	  return(fit)
   }
-	
-	return(fit)
 }
 
 ### INPUT:  unconstrained parameter vector, observations, states 
