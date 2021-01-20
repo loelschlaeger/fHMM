@@ -1,7 +1,4 @@
 ### Viterbi algorithm for state decoding
-
-source("checks.R")
-
 viterbi = function(observations,nstates,Gamma,mus,sigmas,dfs){
 		T = length(observations)
 		delta = Gamma2delta(Gamma)
