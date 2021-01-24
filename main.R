@@ -1,39 +1,32 @@
-rm(list = ls())
+rm(list = ls()); cat("\f")
 
-### 1. Initialization
-source("init.R"); init()
+### 1. Initialize code
+source("init.R"); load_code()
 
-### 2. Download data
+### 2. Download data (optional)
 download_data()
 
-### 3. Set and check controls
+### 3. Set controls
 controls = list(
-  id            = "test",        
   #data_source   = c("dax","dax"),
   #data_col      = c("Close","Close"),
-  #truncate_data = c("2000-01-03","2020-12-30"), 
-  states        = c(3,0),
-  time_horizon  = c(1000,NA),
-  overwrite     = TRUE,
-  #data_cs_type  = "mean",
-  sdds          = c("t(1)",NA),
-  runs = 50
+  #truncate_data = c("2000-01-03","2010-12-30"),
+  states        = c(2,2),
+  time_horizon  = c(100,30),
+  sdds          = c("t","t"),
+  runs          = 10,
+  data_cs_type  = "mean",
+  at_true = TRUE
 )
-controls = check_controls(controls)
 
-### 4. Fit model to data
-data = get_data(controls)
-fit = max_likelihood(data,controls)
-
-### 5. Decode hidden states
-decoding = apply_viterbi(data,fit,controls)
-
-### 6. Visualize results
-labels = list(
+### 4. Define events (optional)
+events = list(
   dates = c("2001-09-11","2008-09-15","2020-01-27"),
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
 )
-visual(data,fit,decoding,controls,labels)
 
-### 7. Reinitialize model
-reinit("test")
+### 5. Fit (H)HMM
+hhmmf(id       = "test",
+      controls = controls,
+      events   = events,
+      warn     = 1)
