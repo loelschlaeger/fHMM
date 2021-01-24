@@ -50,7 +50,7 @@ apply_viterbi = function(data,fit,controls){
     }
   }
   
-  check_decoding(decoding,controls)
+  check_decoding(decoding,data,controls)
   
   return(decoding)
 }
