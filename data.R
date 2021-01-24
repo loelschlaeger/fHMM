@@ -1,15 +1,15 @@
 ### process simulated or empirical data
-get_data = function(controls){
+get_data = function(controls,simpar){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
-  if(controls[["sim"]])  data = simulate_data(controls)
+  if(controls[["sim"]])  data = simulate_data(controls,simpar)
   if(!controls[["sim"]]) data = read_data(controls)
-  writeLines("Data processing successful.")
+  message("Data processed.")
   check_data(controls,data)
   return(data)
 }
 
 ### simulate data
-simulate_data = function(controls){
+simulate_data = function(controls,simpar){
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
   
   M = controls[["states"]][1] #HMM states / HHMM coarse-scale states
@@ -17,9 +17,13 @@ simulate_data = function(controls){
   T = controls[["time_horizon"]][1]
   T_star = controls[["time_horizon"]][2]
   
-  thetaUncon = init_est(controls)
-  thetaCon = thetaUncon2thetaCon(thetaUncon,controls)
-  thetaList = thetaCon2thetaList(thetaCon,controls)
+  if(!is.null(simpar)){
+    thetaList = simpar
+  } else {
+    thetaUncon = init_est(controls)
+    thetaCon = thetaUncon2thetaCon(thetaUncon,controls)
+    thetaList = thetaCon2thetaList(thetaCon,controls)
+  }
   
   simulate_states = function(delta,Gamma,T){
     no_states = length(delta)
@@ -205,7 +209,7 @@ download_data = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Dat
     if(dim(stock_symbols)[1]!=0){
       print(stock_symbols,row.names = FALSE)
     } else {
-      writeLines("No saved stock symbols.")
+      message("No saved stock symbols.")
     }
   } 
   if(!is.na(name)){  
@@ -256,10 +260,11 @@ download_data = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Dat
     
     ### print summary of new data
     data = read.csv(file=filename,head=TRUE,sep=",",na.strings="null") 
-    writeLines("Download successful.")
-    writeLines(paste("Source:",paste0(name,".csv")))
-    writeLines(paste("From:  ",head(data$Date,n=1)))
-    writeLines(paste("To:    ",tail(data$Date,n=1)))
+    message("Data download successful.")
+    message(paste("Source:",paste0(name,".csv")))
+    message(paste("Symbol:",symbol))
+    message(paste("From:",head(data$Date,n=1)))
+    message(paste("To:",tail(data$Date,n=1)))
   }
   
 }
