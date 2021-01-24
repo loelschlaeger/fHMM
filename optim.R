@@ -68,11 +68,43 @@ max_likelihood = function(data,controls){
     stop("None of the estimation runs ended successfully. Consider increasing 'runs' in 'controls'.",call.=FALSE)
   } else {
     ### compute Hessian
-    cat("Computing the Hessian...\r")
+    message("Computing the Hessian...",appendLF = FALSE)
     hessian = suppressWarnings(nlm(f=target,p=mods[[which.max(llks)]][["estimate"]],observations=data[["logReturns"]],controls=controls,iterlim=1,hessian=TRUE)[["hessian"]])
-	  fit = check_estimation(estimation_time,mods,llks,data,hessian,controls)
+	  message("\r",sprintf("Hessian computed. %10s"," "))
+    fit = check_estimation(estimation_time,mods,llks,data,hessian,controls)
 	  return(fit)
   }
+}
+
+### initialize the estimation routine randomly
+init_est = function(controls){
+  M  = controls[["states"]][1] 
+  N  = controls[["states"]][2] 
+  df_cs = controls[["fixed_dfs"]][1]
+  df_fs = controls[["fixed_dfs"]][2]
+  
+  gammasUncon = gammasCon2gammasUncon(runif((M-1)*M,0,M/10),M)
+  mus         = (seq(1,-1,length.out=M)+runif(1))*10^(-2)
+  sigmasUncon = log((seq(0,1,length.out=M)+runif(1))*10^(-2.5))
+  dfs         = if(is.na(df_cs)) runif(M,1,30) else integer(0)
+  if(controls[["model"]]=="HHMM"){
+    gammasUncon_star = c()
+    mus_star         = c()
+    sigmasUncon_star = c()
+    dfs_star    = c()
+    for(m in seq_len(M)){
+      gammasUncon_star = c(gammasUncon_star,gammasCon2gammasUncon(runif((N-1)*N,0,N/10),N))
+      mus_star         = c(mus_star,sort(mus[m]*runif(N,0,10),decreasing=TRUE))
+      sigmasUncon_star = c(sigmasUncon_star,sort(sigmasUncon[m]+log(runif(N,0,10)),decreasing=FALSE))
+      dfs_star         = c(dfs_star,if(is.na(df_fs)) runif(N,1,30) else integer(0))
+    }
+    gammasUncon      = c(gammasUncon,gammasUncon_star)
+    mus              = c(mus,mus_star)
+    sigmasUncon      = c(sigmasUncon,sigmasUncon_star)
+    dfs              = c(dfs,dfs_star)
+  }
+  thetaUncon = c(gammasUncon,mus,sigmasUncon,dfs)
+  return(thetaUncon)
 }
 
 ### INPUT:  unconstrained parameter vector, observations, states 
@@ -106,8 +138,8 @@ nLL_hmm = function(thetaUncon,observations,controls){
 ### INPUT:  unconstrained parameter vector, observations, control parameters
 ### OUTPUT: negative log-likelihood of HHMM
 nLL_hhmm = function(thetaUncon,observations,controls){
-  M  = controls[["states"]][1] #coarse-scale states
-  N  = controls[["states"]][2] #fine-scale states
+  M  = controls[["states"]][1] 
+  N  = controls[["states"]][2]
   
   observations_fs = observations[,-1]
   observations_cs = observations[,1]
