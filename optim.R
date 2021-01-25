@@ -141,8 +141,8 @@ nLL_hhmm = function(thetaUncon,observations,controls){
   M  = controls[["states"]][1] 
   N  = controls[["states"]][2]
   
-  observations_fs = observations[,-1]
   observations_cs = observations[,1]
+  observations_fs = observations[,-1]
   T = length(observations_cs)
   
   thetaList = thetaUncon2thetaList(thetaUncon,controls)
@@ -160,7 +160,7 @@ nLL_hhmm = function(thetaUncon,observations,controls){
   for (m in seq_len(M)){
     allprobs[m,] = 1/sigmas[m]*dt((observations_cs-mus[m])/sigmas[m],dfs[m])
     for(t in seq_len(T)){
-      log_likelihoods[m,t] = -nLL_hmm(thetaUnconSplit[[m]],observations[t,-1],controls)
+      log_likelihoods[m,t] = -nLL_hmm(thetaUnconSplit[[m]],observations[t,-1][!is.na(observations[t,-1])],controls)
     }
   }
   

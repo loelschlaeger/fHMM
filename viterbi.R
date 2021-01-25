@@ -1,4 +1,4 @@
-### Viterbi algorithm for state decoding
+### definition of Viterbi algorithm for state decoding
 viterbi = function(observations,nstates,Gamma,mus,sigmas,dfs){
 		T = length(observations)
 		delta = Gamma2delta(Gamma)
@@ -27,26 +27,26 @@ viterbi = function(observations,nstates,Gamma,mus,sigmas,dfs){
 		return(iv)
 }
 
+### execution of Viterbi algorithm
 apply_viterbi = function(data,fit,controls){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
   
   observations = data[["logReturns"]]
   thetaList = fit[["thetaList"]]
   states = controls[["states"]]
-  model = controls[["model"]]
   
-  if(model=="HMM"){
+  if(controls[["model"]]=="HMM"){
     decoding = viterbi(observations,states[1],thetaList[["Gamma"]],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
   }
   
-  if(model=="HHMM"){
+  if(controls[["model"]]=="HHMM"){
     T = dim(observations)[1]
-    T_star = dim(observations)[2]-1
-    decoding = matrix(0,ncol=T_star+1,nrow=T)
+    T_star = data[["T_star"]]
+    decoding = matrix(NA,ncol=max(T_star)+1,nrow=T)
     decoding[,1] = viterbi(observations[,1],states[1],thetaList[["Gamma"]],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
     for(t in seq_len(T)){
       curr = decoding[t,1]
-      decoding[t,-1] = viterbi(observations[t,-1],states[2],thetaList[["Gammas_star"]][[curr]],thetaList[["mus_star"]][[curr]],thetaList[["sigmas_star"]][[curr]],thetaList[["dfs_star"]][[curr]])
+      decoding[t,-1] = c(viterbi(observations[t,-1][!is.na(observations[t,-1])],states[2],thetaList[["Gammas_star"]][[curr]],thetaList[["mus_star"]][[curr]],thetaList[["sigmas_star"]][[curr]],thetaList[["dfs_star"]][[curr]]),rep(NA,max(T_star)-T_star[t]))
     }
   }
   

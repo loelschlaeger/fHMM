@@ -25,7 +25,7 @@ create_visuals = function(data,fit,decoding,controls,events=NULL){
   base_col = function(n){
     colorRampPalette(c("darkgreen","green","yellow","orange","red","darkred"))(n)
   }
-  col_alpha = function(col,alpha=0.5){
+  col_alpha = function(col,alpha=0.6){
     adjustcolor(col,alpha)
   }
   colors = list()
@@ -39,21 +39,18 @@ create_visuals = function(data,fit,decoding,controls,events=NULL){
     }
   }
   
-  ### define legend layout
-  legend_layout = list(cex=1.25,x="topleft")
-  
   ### create visualization of state dependent distributions
-  plot_sdds(controls,data,fit,decodings,colors,legend_layout)
+  plot_sdds(controls,data,fit,decoding,colors)
   
   ### create visualization of decoded time series
-  plot_ts(controls,data,decoding,colors,legend_layout,events)
+  plot_ts(controls,data,decoding,colors,events)
   
   ### compute, save, visualize and test pseudo-residuals
   plot_prs(controls,data,fit,decoding)
 }
 
 ### create visualization of state dependent distributions
-plot_sdds = function(controls,data,fit,decodings,colors,legend_layout){
+plot_sdds = function(controls,data,fit,decoding,colors){
   
   states = controls[["states"]]
   if(check_saving(name     = "sdds",
@@ -62,19 +59,25 @@ plot_sdds = function(controls,data,fit,decodings,colors,legend_layout){
     
     filename = paste0("models/",controls[["id"]],"/sdds.pdf")
     
-    create_sdds_plot = function(states,mus,sigmas,dfs,c_xlim=FALSE,xlim=NULL,colors=NULL,llabel=NULL,ltitle=NULL){
+    create_sdds_plot = function(states,mus,sigmas,dfs,c_xlim=FALSE,xlim=NULL,colors=NULL,llabel=NULL,ltitle=NULL,sdd_true_parm=NULL){
       lwd = 3
       x = seq(-1,1,0.001)
       trunc_distr = 0.1
+      
+      sdd_density_values = list()
+      sdd_true_density_values = list()
       sdd_density = function(mus,sigmas,dfs,state,x){
         (1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s])
       }
-      sdd_density_values = list()
       for(s in seq_len(states)){
         sdd_density_values[[s]] = sdd_density(mus,sigmas,dfs,s,x)
+        if(!is.null(sdd_true_parm)){
+          sdd_true_density_values[[s]] = sdd_density(sdd_true_parm[["mus"]],sdd_true_parm[["sigmas"]],sdd_true_parm[["dfs"]],s,x)
+        }
       }
+      
       ymin = 0
-      ymax = max(unlist(sdd_density_values))
+      ymax = max(c(unlist(sdd_density_values),unlist(sdd_true_density_values)))
       if(c_xlim){
         xmin = min(rep(x,states)[unlist(sdd_density_values)>trunc_distr])
         xmax = max(rep(x,states)[unlist(sdd_density_values)>trunc_distr])
@@ -87,6 +90,7 @@ plot_sdds = function(controls,data,fit,decodings,colors,legend_layout){
         xmin = min(rep(x,states)[unlist(sdd_density_values)>trunc_distr])
         xmax = max(rep(x,states)[unlist(sdd_density_values)>trunc_distr])
       }
+      
       hist(0,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
       if(xmin<0 & 0<xmax){
         axis(1,c(xmin,0,xmax),labels=sprintf("%.1g",c(xmin,0,xmax)))
@@ -94,38 +98,58 @@ plot_sdds = function(controls,data,fit,decodings,colors,legend_layout){
       if(0<=xmin || 0>=xmax){
         axis(1,c(xmin,xmax),labels=sprintf("%.1g",c(xmin,xmax)))
       }
-      axis(2,c(ymin,sapply(sdd_density_values,max)),labels=sprintf("%.2g",c(ymin,sapply(sdd_density_values,max))),las=1)
+      axis(2,c(ymin,sapply(c(sdd_density_values,sdd_true_density_values),max)),labels=sprintf("%.2g",c(ymin,sapply(c(sdd_density_values,sdd_true_density_values),max))),las=1)
       title(main = "State-dependent distributions",
             xlab = "Log-return",
             ylab = "Density")
-      do.call(legend,c(list(legend=paste(llabel,seq_len(states)),col=colors,lwd=lwd,title=ltitle),legend_layout))
       for(s in seq_len(states)){
         lines(x[sdd_density_values[[s]]>trunc_distr],sdd_density_values[[s]][sdd_density_values[[s]]>trunc_distr],col=colors[s],lwd=lwd)
-        if(controls[["sim"]]){
-          lines(x[sdd_density_values[[s]]>trunc_distr],sdd_density_values[[s]][sdd_density_values[[s]]>trunc_distr],col=colors[s],lwd=lwd)
+        if(!is.null(sdd_true_parm)){
+          lines(x[sdd_true_density_values[[s]]>trunc_distr],sdd_true_density_values[[s]][sdd_true_density_values[[s]]>trunc_distr],col=colors[s],lwd=lwd,lty=2)
         }
+      }
+      
+      legend(legend=paste(llabel,seq_len(states)),col=colors,lwd=lwd,title=ltitle,cex=1.25,x="topleft")
+      if(!is.null(sdd_true_parm)){
+        legend(legend=c("estimated","true"),col="grey",lwd=lwd,lty=c(1,2),cex=1.25,x="topright")
       }
     }
     
     if(controls[["model"]]=="HMM"){
       pdf(file = filename, width=8, height=8)
-        create_sdds_plot(states = states[1],
-                         mus    = fit[["thetaList"]][["mus"]],
-                         sigmas = fit[["thetaList"]][["sigmas"]],
-                         dfs    = fit[["thetaList"]][["dfs"]],
-                         colors = colors[["HMM"]],
-                         llabel = "State")
+        if(controls[["sim"]]){
+          sdd_true_parm = list("mus"    = data[["thetaList0"]][["mus"]],
+                               "sigmas" = data[["thetaList0"]][["sigmas"]],
+                               "dfs"    = data[["thetaList0"]][["dfs"]])
+        } else {
+          sdd_true_parm = NULL
+        }
+        create_sdds_plot(states        = states[1],
+                         mus           = fit[["thetaList"]][["mus"]],
+                         sigmas        = fit[["thetaList"]][["sigmas"]],
+                         dfs           = fit[["thetaList"]][["dfs"]],
+                         colors        = colors[["HMM"]],
+                         llabel        = "State",
+                         sdd_true_parm = sdd_true_parm)
       invisible(dev.off())
     }
     
     if(controls[["model"]]=="HHMM"){
       pdf(file = filename, width=8, height=8)
-        create_sdds_plot(states = states[1],
-                         mus    = fit[["thetaList"]][["mus"]],
-                         sigmas = fit[["thetaList"]][["sigmas"]],
-                         dfs    = fit[["thetaList"]][["dfs"]],
-                         colors = colors[["HHMM_cs"]],
-                         llabel = "Coarse-scale state")
+        if(controls[["sim"]]){
+          sdd_true_parm = list("mus"    = data[["thetaList0"]][["mus"]],
+                               "sigmas" = data[["thetaList0"]][["sigmas"]],
+                               "dfs"    = data[["thetaList0"]][["dfs"]])
+        } else {
+          sdd_true_parm = NULL
+        } 
+        create_sdds_plot(states        = states[1],
+                         mus           = fit[["thetaList"]][["mus"]],
+                         sigmas        = fit[["thetaList"]][["sigmas"]],
+                         dfs           = fit[["thetaList"]][["dfs"]],
+                         colors        = colors[["HHMM_cs"]],
+                         llabel        = "Coarse-scale state",
+                         sdd_true_parm = sdd_true_parm)
         xlims = matrix(0,nrow=2,ncol=states[1])
         for(cs in seq_len(states[1])){
           xlims[,cs] = create_sdds_plot(states = states[2],
@@ -135,15 +159,23 @@ plot_sdds = function(controls,data,fit,decodings,colors,legend_layout){
                                         c_xlim = TRUE) 
         }
         for(cs in seq_len(states[1])){
-          create_sdds_plot(states = states[2],
-                           mus    = fit[["thetaList"]][["mus_star"]][[cs]],
-                           sigmas = fit[["thetaList"]][["sigmas_star"]][[cs]],
-                           dfs    = fit[["thetaList"]][["dfs_star"]][[cs]],
-                           c_xlim = FALSE,
-                           xlim   = c(min(xlims[1,]),max(xlims[2,])),
-                           colors = colors[["HHMM_fs"]][[cs]],
-                           llabel = "Fine-scale state",
-                           ltitle = paste("Coarse-scale state",cs))
+          if(controls[["sim"]]){
+            sdd_true_parm = list("mus"    = data[["thetaList0"]][["mus_star"]][[cs]],
+                                 "sigmas" = data[["thetaList0"]][["sigmas_star"]][[cs]],
+                                 "dfs"    = data[["thetaList0"]][["dfs_star"]][[cs]])
+          } else {
+            sdd_true_parm = NULL
+          } 
+          create_sdds_plot(states        = states[2],
+                           mus           = fit[["thetaList"]][["mus_star"]][[cs]],
+                           sigmas        = fit[["thetaList"]][["sigmas_star"]][[cs]],
+                           dfs           = fit[["thetaList"]][["dfs_star"]][[cs]],
+                           c_xlim        = FALSE,
+                           xlim          = c(min(xlims[1,]),max(xlims[2,])),
+                           colors        = colors[["HHMM_fs"]][[cs]],
+                           llabel        = "Fine-scale state",
+                           ltitle        = paste("Coarse-scale state",cs),
+                           sdd_true_parm = sdd_true_parm)
         }
       invisible(dev.off())
     }
@@ -152,7 +184,7 @@ plot_sdds = function(controls,data,fit,decodings,colors,legend_layout){
 }
 
 ### create visualization of decoded time series
-plot_ts = function(controls,data,decoding,colors,legend_layout,events){
+plot_ts = function(controls,data,decoding,colors,events){
   
   ### extract parameters
   states = controls[["states"]]
@@ -161,11 +193,10 @@ plot_ts = function(controls,data,decoding,colors,legend_layout,events){
   }
   if(controls[["model"]]=="HHMM"){
     T = dim(data[["logReturns"]])[1]
-    T_star = dim(data[["logReturns"]])[2]-1
-    decoding_cs = rep(decoding[,1],each = T_star)
-    decoding_fs = as.vector(t(decoding[,-1]))
+    decoding_cs = rep(decoding[,1],times = data[["T_star"]])
+    decoding_fs = as.vector(t(decoding[,-1]))[!is.na(as.vector(t(decoding[,-1])))]
     cs_logReturns = data[["logReturns"]][,1]
-    fs_logReturns = as.vector(t(data[["logReturns"]][,-1]))
+    fs_logReturns = as.vector(t(data[["logReturns"]][,-1]))[!is.na(as.vector(t(data[["logReturns"]][,-1])))]
   }
   
   if(check_saving(name     = "ts",
@@ -178,10 +209,10 @@ plot_ts = function(controls,data,decoding,colors,legend_layout,events){
         xmax = as.Date(paste0(as.numeric(format(tail(data[["dates"]],n=1),"%Y"))+1,"-01-01"))
         ymax = ceiling(max(data[["dataRaw"]]))
         ymin = -ymax
-        plot(data$dates,data[["dataRaw"]],
+        plot(data[["dates"]],data[["dataRaw"]],
              type="l",
-             xlim=c(xmin,xmax),ylim=c(ymin,ymax),
-             col="grey",xlab="",ylab="",
+             xlim=c(xmin,xmax),ylim=c(1.2*ymin,1.2*ymax),
+             col="lightgrey",xlab="",ylab="",
              xaxt="n",yaxt="n",
              cex.lab=2, cex.main=2)
         if(controls[["model"]]=="HMM"){
@@ -210,46 +241,48 @@ plot_ts = function(controls,data,decoding,colors,legend_layout,events){
           }
         }
         par(new=TRUE,las=1)
-        x_values = data$dates
+        x_values = data[["dates"]]
         ymax_factor = 3
       }
       if(controls[["sim"]]){
         xmin = 1
-        if(controls[["model"]]=="HMM") xmax = length(data[["logReturns"]])
-        if(controls[["model"]]=="HHMM") xmax = length(fs_logReturns)
+        if(controls[["model"]]=="HMM"){
+          xmax = length(data[["logReturns"]])
+        }
+        if(controls[["model"]]=="HHMM"){
+          xmax = length(fs_logReturns)
+        }
         x_values = seq_len(xmax)
         ymax_factor = 1.5
       }
       if(controls[["model"]]=="HMM"){
-        ymin = min(data[["logReturns"]]); ymax = max(data[["logReturns"]])
-        plot(x_values,data[["logReturns"]],type="l",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
+        ymin = min(data[["logReturns"]])
+        ymax = max(data[["logReturns"]])
+        plot(x_values,data[["logReturns"]],type="h",col="lightgrey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
       }
       if(controls[["model"]]=="HHMM"){
-        ymin = min(fs_logReturns); ymax = max(fs_logReturns)
-        plot(x_values,fs_logReturns,type="l",col="grey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
+        ymin = min(fs_logReturns)
+        ymax = max(fs_logReturns)
+        plot(x_values,fs_logReturns,type="h",col="lightgrey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
       }
       if(!controls[["sim"]]){
         mtext("Log-return",side=2,line=3.5,at=0,cex=1.25,las=3)
       }
       if(controls[["sim"]]){
         mtext("Index",side=1,line=2.5,cex=1.25)
-        mtext("Simulated log-return",side=2,line=3.5,at=0,cex=1.25,las=3)
-        axis(1, c(xmin,xmax))
-      }
-      axis(2, round(c(ymin,0,ymax),2))
-      if(controls[["sim"]]){
         if(controls[["model"]]=="HMM"){
-          for(s in seq_len(states[1])){
-            points(x_values[decoding==s],data[["logReturns"]][decoding==s],col=colors[["HMM"]][s],pch=20)
-          }
+          mtext("Simulated observation",side=2,line=3.5,at=0,cex=1.25,las=3)
         }
         if(controls[["model"]]=="HHMM"){
-          for(cs in seq_len(states[1])){
-            for(fs in seq_len(states[2])){
-              points(x_values[decoding_cs==cs&decoding_fs==fs],fs_logReturns[decoding_cs==cs&decoding_fs==fs],col=colors[["HHMM_fs"]][[cs]][fs],pch=20)
-            }
-          }
+          mtext("Simulated fine-scale observation",side=2,line=3.5,at=0,cex=1.25,las=3)
         }
+        axis(1, c(xmin,xmax))
+      }
+      if(ymin<0 & 0<ymax){
+        axis(2,c(ymin,0,ymax),labels=sprintf("%.1g",c(ymin,0,ymax)))
+      }
+      if(0<=xmin || 0>=xmax){
+        axis(2,c(ymin,ymax),labels=sprintf("%.1g",c(ymin,ymax)))
       }
       if(controls[["model"]]=="HMM"){
         for(s in seq_len(states[1])){
@@ -263,7 +296,6 @@ plot_ts = function(controls,data,decoding,colors,legend_layout,events){
           }
         }
       }
-      abline(h=0)
       if(!controls[["sim"]] & !is.null(events)){
         for(l in seq_len(length(events[["dates"]]))){
           if(events[["dates"]][l]<=xmax){
@@ -275,12 +307,35 @@ plot_ts = function(controls,data,decoding,colors,legend_layout,events){
         mtext(paste0(seq_len(length(names_trunc)),": ",names_trunc,collapse = "   "),side=1,line=4,cex=1.25)
       }
       if(controls[["model"]]=="HMM"){
-        do.call(legend,c(list(legend=paste("State",seq_len(states[1])),col=colors[["HMM"]],pch=19),legend_layout))
+        legend(legend=paste("State",seq_len(states[1])),col=colors[["HMM"]],pch=20,cex=1.25,x="topleft",bg="white")
       }
       if(controls[["model"]]=="HHMM"){
         eg = expand.grid(seq_len(states[2]),seq_len(states[1]))
-        do.call(legend,c(list(legend=paste0("Coarse-scale state ",eg[,2],", fine-scale state ",eg[,1]),col=as.vector(unlist(colors[["HHMM_fs"]])),pch=19),legend_layout))
+        legend(legend=c(paste("Coarse-scale state",seq_len(states[1])),paste0("Fine-scale state ",eg[,1]," in coarse-scale state ",eg[,2])),
+               col=c(colors[["HHMM_cs"]],as.vector(unlist(colors[["HHMM_fs"]]))),pt.lwd=c(rep(3,states[1]),rep(1,dim(eg)[1])),pch=c(rep(1,states[1]),rep(20,dim(eg)[1])),pt.cex=c(rep(3,states[1]),rep(2,dim(eg)[1])),cex=1.25,x="topleft",bg="white")
       }
+      if(controls[["model"]]=="HHMM"){
+        par(new=TRUE)
+        ymin = min(cs_logReturns)
+        ymax = max(cs_logReturns)
+        x_values_cs = x_values[round(seq(1,length(x_values),length.out=T))]
+        plot(x_values_cs,cs_logReturns,type="c",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor*1.5))
+        for(cs in seq_len(states[1])){
+          points(x_values_cs[decoding[,1]==cs],cs_logReturns[decoding[,1]==cs],col=colors[["HHMM_cs"]][[cs]],pch=1,cex=3,lwd=2)
+        }
+        if(ymin<0 & 0<ymax){
+          axis(4,c(ymin,0,ymax),labels=sprintf("%.1g",c(ymin,0,ymax)))
+        }
+        if(0<=xmin || 0>=xmax){
+          axis(4,c(ymin,ymax),labels=sprintf("%.1g",c(ymin,ymax)))
+        }
+        if(controls[["sim"]]){
+          mtext("Simulated coarse-scale observation",side=4,line=3.5,at=mean(c(ymin,ymax)),cex=1.25,las=3)
+        }
+        if(!controls[["sim"]]){
+          mtext("Coarse-scale observation",side=4,line=3.5,at=mean(c(ymin,ymax)),cex=1.25,las=3)
+        }
+      } 
     invisible(dev.off())
     message("Time series visualized.")
   }
@@ -296,9 +351,10 @@ plot_prs = function(controls,data,fit,decoding){
   }
   if(controls[["model"]]=="HHMM"){
     T = dim(data[["logReturns"]])[1]
-    T_star = dim(data[["logReturns"]])[2]-1
-    decoding_cs = rep(decoding[,1],each = T_star)
-    decoding_fs = as.vector(t(decoding[,-1]))
+    decoding_cs = rep(decoding[,1],times = data[["T_star"]])
+    decoding_fs = as.vector(t(decoding[,-1]))[!is.na(as.vector(t(decoding[,-1])))]
+    cs_logReturns = data[["logReturns"]][,1]
+    fs_logReturns = as.vector(t(data[["logReturns"]][,-1]))[!is.na(as.vector(t(data[["logReturns"]][,-1])))]
   }
   
   compute_prs = function(no_prs,data,decoding,mus,sigmas,dfs){
@@ -371,10 +427,10 @@ plot_prs = function(controls,data,fit,decoding){
                                mus      = fit[["thetaList"]][["mus"]],
                                sigmas   = fit[["thetaList"]][["sigmas"]],
                                dfs      = fit[["thetaList"]][["dfs"]])
-      pseudos_fs = numeric(T*T_star)
-      for(t in seq_len(T*T_star)){
+      pseudos_fs = numeric(sum(data[["T_star"]]))
+      for(t in seq_len(sum(data[["T_star"]]))){
         pseudos_fs[t] = compute_prs(no_prs   = 1,
-                                    data     = as.vector(t(data[["logReturns"]][,-1]))[t],
+                                    data     = fs_logReturns[t],
                                     decoding = decoding_fs[t],
                                     mus      = fit[["thetaList"]][["mus_star"]][[decoding_cs[t]]],
                                     sigmas   = fit[["thetaList"]][["sigmas_star"]][[decoding_cs[t]]],

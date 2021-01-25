@@ -8,14 +8,63 @@ get_data = function(controls,simpar){
   return(data)
 }
 
+### compute (flexible) fine-scale chunk lengths
+compute_fs_lengths = function(fs_time_horizon,T=NULL,fs_dates=NULL){
+  if(is.null(fs_dates)){
+    if(is.numeric(fs_time_horizon)){
+      T_star = rep(fs_time_horizon,T)
+    }
+    if(fs_time_horizon %in% c("w","m","q","y")){
+      if(fs_time_horizon == "w") size = 5
+      if(fs_time_horizon == "m") size = 25
+      if(fs_time_horizon == "q") size = 70
+      if(fs_time_horizon == "y") size = 260
+      T_star = sample(1:size,T,replace=TRUE,prob=dbinom(1:size,size,0.9)/sum(dbinom(1:size,size,0.9)))
+    }
+  }
+  if(!is.null(fs_dates)){
+    dates_overview = data.frame("w" = as.numeric(strftime(fs_dates,format ="%W")),
+                                "m" = as.numeric(strftime(fs_dates,format ="%m")),
+                                "q" = as.numeric(substr(quarters(fs_dates),2,2)),
+                                "y" = as.numeric(strftime(fs_dates,format ="%Y")))
+    if(fs_time_horizon == "w"){
+      T_star = vector()
+      for(y in unique(dates_overview[["y"]])){
+        dates_overview_subset = dates_overview[dates_overview[["y"]]==y,]
+        T_star = c(T_star,as.vector(table(dates_overview_subset[["w"]])))
+      }
+    }
+    if(fs_time_horizon == "m"){
+      T_star = vector()
+      for(y in unique(dates_overview[["y"]])){
+        dates_overview_subset = dates_overview[dates_overview[["y"]]==y,]
+        T_star = c(T_star,as.vector(table(dates_overview_subset[["m"]])))
+      }
+    }
+    if(fs_time_horizon == "q"){
+      T_star = vector()
+      for(y in unique(dates_overview[["y"]])){
+        dates_overview_subset = dates_overview[dates_overview[["y"]]==y,]
+        T_star = c(T_star,as.vector(table(dates_overview_subset[["q"]])))
+      }
+    }
+    if(fs_time_horizon == "y"){
+      T_star = as.vector(table(dates_overview[["y"]]))
+    }
+    if(is.numeric(fs_time_horizon)){
+      T_star = rep(fs_time_horizon,floor(length(fs_dates)/fs_time_horizon))
+    }
+  }
+  return(T_star)
+}
+
 ### simulate data
 simulate_data = function(controls,simpar){
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
   
-  M = controls[["states"]][1] #HMM states / HHMM coarse-scale states
-  N = controls[["states"]][2] #HHMM fine-scale states
-  T = controls[["time_horizon"]][1]
-  T_star = controls[["time_horizon"]][2]
+  M = controls[["states"]][1] 
+  N = controls[["states"]][2] 
+  T = as.numeric(controls[["time_horizon"]][1])
   
   if(!is.null(simpar)){
     thetaList = simpar
@@ -44,20 +93,22 @@ simulate_data = function(controls,simpar){
     return(logReturns)
   }
   
-  if(controls[["model"]]=="HMM"){ 
+  if(controls[["model"]]=="HMM"){
+    T_star = NA
     states = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
     logReturns = simulate_logReturns(states,thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
   }
   
   if(controls[["model"]]=="HHMM"){ 
-    states = matrix(0,T,T_star+1) 
-    logReturns = matrix(0,T,T_star+1)
+    T_star = compute_fs_lengths(fs_time_horizon = controls[["time_horizon"]][2], T = T)
+    states = matrix(NA,T,max(T_star)+1) 
+    logReturns = matrix(NA,T,max(T_star)+1)
     states[,1] = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
     logReturns[,1] = simulate_logReturns(states[,1],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
     for(t in 1:T){
       S_t = states[t,1]
-      states[t,-1] = simulate_states(Gamma2delta(thetaList[["Gammas_star"]][[S_t]]),thetaList[["Gammas_star"]][[S_t]],T_star)
-      logReturns[t,-1] = simulate_logReturns(states[t,-1],thetaList[["mus_star"]][[S_t]],thetaList[["sigmas_star"]][[S_t]],thetaList[["dfs_star"]][[S_t]])
+      states[t,-1] = c(simulate_states(Gamma2delta(thetaList[["Gammas_star"]][[S_t]]),thetaList[["Gammas_star"]][[S_t]],T_star[t]),rep(NA,max(T_star)-T_star[t]))
+      logReturns[t,-1] = c(simulate_logReturns(states[t,-1][!is.na(states[t,-1])],thetaList[["mus_star"]][[S_t]],thetaList[["sigmas_star"]][[S_t]],thetaList[["dfs_star"]][[S_t]]),rep(NA,max(T_star)-T_star[t]))
     }
   }
   
@@ -66,7 +117,8 @@ simulate_data = function(controls,simpar){
     "states0"      = states,
     "thetaUncon0"  = thetaUncon,
     "thetaCon0"    = thetaCon,
-    "thetaList0"   = thetaList
+    "thetaList0"   = thetaList,
+    "T_star"       = T_star
     )
   
   return(out)
@@ -119,7 +171,7 @@ read_data = function(controls){
     }
   }
   
-  ### truncate the data
+  ### function that truncates the data
   truncate_data = function(controls,data){
     ### find exact or nearest position of 'date' in 'data' 
     find_date = function(date,data){
@@ -150,8 +202,9 @@ read_data = function(controls){
     
     out = list(
       "logReturns" = data[[1]][["LogReturns"]],
-      "dataRaw" = data[[1]][[data_col[1]]],
-      "dates" = data[[1]][["Date"]]
+      "dataRaw"    = data[[1]][[data_col[1]]],
+      "dates"      = data[[1]][["Date"]],
+      "T_star"     = NA
       )
   }
   
@@ -165,27 +218,39 @@ read_data = function(controls){
     data[[1]] = truncate_data(controls,data[[1]])
     data[[2]] = truncate_data(controls,data[[2]])
     
-    if(any(dim(data[[1]])!=dim(data[[2]]))) stop("Processing of the datasets failed.")
-    data_length = length(data[[1]][["Date"]])
+    if(any(dim(data[[1]])!=dim(data[[2]]))) stop("Processing of the datasets failed.",call.=FALSE)
     
-    T_star = controls[["time_horizon"]][2]
-    T = floor(data_length/T_star)
-    data[[1]] = data[[1]][1:(T*T_star),]
-    data[[2]] = data[[2]][1:(T*T_star),]
+    T_star = compute_fs_lengths(fs_time_horizon = controls[["time_horizon"]][2], fs_dates = data[[2]][["Date"]])
+    T = length(T_star)
+
+    data[[1]] = data[[1]][seq_len(sum(T_star)),]
+    data[[2]] = data[[2]][seq_len(sum(T_star)),]
     
-    ### compute CS data
-    if(controls[["data_cs_type"]] == "mean") cs_logReturns = rowMeans(matrix(data[[1]][["LogReturns"]],ncol=T_star,nrow=T,byrow=TRUE))
-    if(controls[["data_cs_type"]] == "mean_abs") cs_logReturns = rowMeans(abs(matrix(data[[1]][["LogReturns"]],ncol=T_star,nrow=T,byrow=TRUE)))
-    if(controls[["data_cs_type"]] == "sum_abs") cs_logReturns = rowSums(abs(matrix(data[[1]][["LogReturns"]],ncol=T_star,nrow=T,byrow=TRUE)))
+    ### format CS and FS data
+    cs_data_tbt = matrix(NA,nrow=T,ncol=max(T_star))
+    fs_data     = matrix(NA,nrow=T,ncol=max(T_star))
+    for(t in seq_len(T)){
+      cs_data_tbt[t,] = c(data[[1]][["LogReturns"]][(sum(T_star[seq_len(t-1)])+1):sum(T_star[seq_len(t)])],rep(NA,max(T_star)-T_star[t]))
+      fs_data[t,]     = c(data[[2]][["LogReturns"]][(sum(T_star[seq_len(t-1)])+1):sum(T_star[seq_len(t)])],rep(NA,max(T_star)-T_star[t]))
+    }
     
-    fs_logReturns = matrix(data[[2]][["LogReturns"]],ncol=T_star,nrow=T,byrow=TRUE)
-    logReturns = cbind(cs_logReturns,fs_logReturns,deparse.level=0)
+    ### transform CS data
+    if(controls[["data_cs_type"]] == "mean"){
+      cs_data = rowMeans(cs_data_tbt,na.rm = TRUE)
+    }
+    if(controls[["data_cs_type"]] == "mean_abs"){
+      cs_data = rowMeans(abs(cs_data_tbt),na.rm = TRUE)
+    }
+    if(controls[["data_cs_type"]] == "sum_abs"){
+      cs_data = rowSums(abs(cs_data_tbt),na.rm = TRUE)
+    }
     
     out = list(
-      "logReturns" = logReturns,
+      "logReturns" = cbind(cs_data,fs_data,deparse.level=0),
       "dataRaw"    = data[[2]][[data_col[2]]],
       "dataRaw_cs" = data[[1]][[data_col[1]]],
-      "dates"      = data[[2]][["Date"]]
+      "dates"      = data[[2]][["Date"]],
+      "T_star"     = T_star
       )
   }
 	

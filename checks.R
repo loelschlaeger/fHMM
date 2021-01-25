@@ -45,7 +45,7 @@ check_controls = function(controls){
   if("data_cs_type" %in% missing_controls)  controls[["data_cs_type"]] = NA
   if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
   if("time_horizon" %in% missing_controls)  controls[["time_horizon"]] = c(NA,NA)
-  if("runs" %in% missing_controls)          controls[["runs"]] = 200
+  if("runs" %in% missing_controls)          controls[["runs"]] = 100
   if("at_true" %in% missing_controls)       controls[["at_true"]] = FALSE
   if("iterlim" %in% missing_controls)       controls[["iterlim"]] = 500
   if("print_level" %in% missing_controls)   controls[["print_level"]] = 0
@@ -65,13 +65,14 @@ check_controls = function(controls){
   controls[["fixed_dfs"]] = c(NA,NA)
 
   ### check sdds
-  all_sdds = c("gamma", "t")
+  all_sdds = c("gamma","t")
   extract_dfs = function(x){
     return(grepl("^[t][\\(]([1-9][0-9]*|Inf)[\\)]$",x))
   }
   for(i in 1:2){
     if(extract_dfs(controls[["sdds"]][i])){
       controls[["fixed_dfs"]][i] = as.numeric(sub("\\).*", "", sub(".*\\(", "", controls[["sdds"]][i])))
+      controls[["sdds"]][i] = "t"
     }
   }
   if(controls[["model"]]=="HMM") controls[["fixed_dfs"]][2] = NA
@@ -90,8 +91,8 @@ check_controls = function(controls){
     if(is.na(controls[["sdds"]][1])){
       stop("In 'controls': First entry of 'sdds' has to be specified.",call.=FALSE)
     }
-    if(!controls[["sdds"]][1] %in% all_sdds & !extract_dfs(controls[["sdds"]][1])){
-      stop(paste0("In 'controls': First entry of 'sdds' must be one of '",paste(all_sdds,collapse="', '"),"' or 't(x)' with x>0."),call.=FALSE)
+    if(!controls[["sdds"]][1] %in% all_sdds){
+      stop(paste0("In 'controls': First entry of 'sdds' must be 't' or 'gamma'."),call.=FALSE)
     }
     if(!is.na(controls[["sdds"]][2])){
       warning("In 'controls': Second entry of 'sdds' is ignored.",call.=FALSE)
@@ -109,9 +110,12 @@ check_controls = function(controls){
       warning("In 'controls': Second entry of 'data_col' is ignored.",call.=FALSE)
       controls[["data_col"]][2] = NA
     }
-    if(!controls[["sim"]] & any(!is.na(controls[["time_horizon"]]))){
-      warning("In 'controls': 'time_horizon' is ignored.",call.=FALSE)
-      controls[["time_horizon"]] = c(NA,NA)
+    if(!is.na(controls[["time_horizon"]][2])){
+      warning("In 'controls': Second entry of 'time_horizon' is ignored.",call.=FALSE)
+      controls[["time_horizon"]][2] = NA    }
+    if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
+      warning("In 'controls': First entry pf 'time_horizon' is ignored.",call.=FALSE)
+      controls[["time_horizon"]][1] = NA
     }
   }
   if(controls[["model"]]=="HHMM") {
@@ -121,8 +125,11 @@ check_controls = function(controls){
     if(controls[["sim"]] & any(is.na(controls[["time_horizon"]]))){
       stop("In 'controls': Either 'data_source' or 'time_horizon' has to be fully specified.",call.=FALSE)
     }
-    if(!controls[["sim"]] & is.na(controls[["time_horizon"]][2])){
+    if(is.na(controls[["time_horizon"]][2])){
       stop("In 'controls': Second entry of 'time_horizon' has to be specified.",call.=FALSE)
+    }
+    if(!is.numeric(controls[["time_horizon"]][2]) & !controls[["time_horizon"]][2] %in% c("w","m","q","y")){
+      stop("In 'controls': Second entry of 'time_horizon' has to be an integer or one of 'w', 'm', 'q', 'y'.",call.=FALSE)
     }
     if(!controls[["sim"]] & any(is.na(controls[["data_col"]]))){
       stop("In 'controls': Entries of 'data_col' have to be specified.",call.=FALSE)
@@ -130,11 +137,11 @@ check_controls = function(controls){
     if(is.na(controls[["sdds"]][2])){
       stop("In 'controls': Second entry of 'sdds' has to be specified.",call.=FALSE)
     } else {
-      if(!controls[["sdds"]][1] %in% all_sdds & !extract_dfs(controls[["sdds"]][1])){
-        stop(paste0("In 'controls': First entry of 'sdds' must be one of '",paste(all_sdds,collapse="', '"),"' or 't(x)' with x>0."),call.=FALSE)
+      if(!controls[["sdds"]][1] %in% all_sdds){
+        stop(paste0("In 'controls': First entry of 'sdds' must be 't' or 'gamma'."),call.=FALSE)
       }
-      if(!controls[["sdds"]][2] %in% all_sdds & !extract_dfs(controls[["sdds"]][2])){
-        stop(paste0("In 'controls': Second entry of 'sdds' must be one of '",paste(all_sdds,collapse="', '"),"' or 't(x)' with x>0."),call.=FALSE)
+      if(!controls[["sdds"]][2] %in% all_sdds){
+        stop(paste0("In 'controls': Second entry of 'sdds' must be 't' or 'gamma'."),call.=FALSE)
       }
     }
     if(!is.na(controls[["data_cs_type"]]) & !controls[["data_cs_type"]] %in% c("mean","mean_abs","sum_abs")){
@@ -154,6 +161,10 @@ check_controls = function(controls){
     if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
       warning("In 'controls': First entry of 'time_horizon' is ignored.",call.=FALSE)
       controls[["time_horizon"]][1] = NA
+    }
+    if(controls[["data_cs_type"]] %in% c("mean","mean_abs") & controls[["time_horizon"]][2] %in% c("w","m","q","y")){
+      warning("In 'controls': Means on coarse scale not recommanded for flexible fine-scale time horizons. 'data_cs_type' is set to 'sum_abs'.",call.=FALSE)
+      controls[["data_cs_type"]] = "sum_abs"
     }
   }
   if(!controls[["sim"]] & controls[["at_true"]]){
@@ -212,11 +223,11 @@ check_controls = function(controls){
   if(!controls[["sim"]]) writeLines(sprintf("%8-s%s","Data:","empirical"))
   if(controls[["model"]]=="HMM") {
     writeLines(sprintf("%8-s%s","States:",controls[["states"]][1]))
-    writeLines(sprintf("%8-s%s","SDDs:",controls[["sdds"]][1]))
+    writeLines(sprintf("%8-s%s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),""))))
   }
   if(controls[["model"]]=="HHMM") {
     writeLines(sprintf("%8-s%s / %s","States:",controls[["states"]][1],controls[["states"]][2]))
-    writeLines(sprintf("%8-s%s / %s","SDDs:",controls[["sdds"]][1],controls[["sdds"]][2]))
+    writeLines(sprintf("%8-s%s / %s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),"")),paste0(controls[["sdds"]][2],ifelse(!is.na(controls[["fixed_dfs"]][2]),paste0("(",controls[["fixed_dfs"]][2],")"),""))))
   }
   writeLines(sprintf("%8-s%s %s","Runs:",controls[["runs"]],ifelse(controls[["at_true"]],"(initialised at true values)","")))
   if(!is.null(controls[["seed"]])) writeLines(sprintf("%8-s%s","Seed:",controls[["seed"]]))
@@ -233,10 +244,10 @@ check_controls = function(controls){
 check_data = function(controls,data){
   if(controls[["sim"]]){
     if(controls[["model"]]=="HMM"){
-      writeLines(paste("Data points:",controls[["time_horizon"]][1]))
+      writeLines(paste("Data points:",length(data[["logReturns"]])))
     }
     if(controls[["model"]]=="HHMM"){
-      writeLines(paste("Data points:",controls[["time_horizon"]][1],"/",controls[["time_horizon"]][2]))
+      writeLines(paste("Data points:",dim(data[["logReturns"]])[1],"/",length(data[["logReturns"]][,-1][!is.na(data[["logReturns"]][,-1])])))
     }
   } 
   if(!controls[["sim"]]){
@@ -250,9 +261,13 @@ check_data = function(controls,data){
       writeLines(sprintf("%14-s%s / %s","Source:",controls[["data_source"]][1],controls[["data_source"]][2]))
       writeLines(sprintf("%14-s%s / %s","Column:",controls[["data_col"]][1],controls[["data_col"]][2]))
       writeLines(sprintf("%14-s%s to %s","Horizon:",data[["dates"]][1],rev(data[["dates"]])[1]))
-      writeLines(sprintf("%14-s%s / %s","Data points:",dim(data[["logReturns"]])[1],dim(data[["logReturns"]])[2]-1))
+      writeLines(sprintf("%14-s%s / %s","Data points:",dim(data[["logReturns"]])[1],length(data[["logReturns"]][,-1][!is.na(data[["logReturns"]][,-1])])))
       writeLines(sprintf("%14-s%s","CS data type:",controls[["data_cs_type"]]))
-      writeLines(sprintf("%14-s%s","FS dim:",controls[["time_horizon"]][2]))
+      if(is.numeric(controls[["time_horizon"]][2])) writeLines(sprintf("%14-s%s","FS dim:",controls[["time_horizon"]][2]))
+      if(controls[["time_horizon"]][2]=="w") writeLines(sprintf("%14-s%s","FS dim:","weekly"))
+      if(controls[["time_horizon"]][2]=="m") writeLines(sprintf("%14-s%s","FS dim:","monthly"))
+      if(controls[["time_horizon"]][2]=="q") writeLines(sprintf("%14-s%s","FS dim:","quarterly"))
+      if(controls[["time_horizon"]][2]=="y") writeLines(sprintf("%14-s%s","FS dim:","yearly"))
     }
   }
   check_saving(object   = data,
