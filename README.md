@@ -26,7 +26,7 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
    - `warn` is an integer value to set the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html) (default is `warn = 0`),
    - `simpar` is a list specifying model parameters for simulation (optional).
 
-[See below for examples](#examples).
+See below for [examples](#examples).
 
 ## Data
 The code is intended to be used on daily share prices provided by https://finance.yahoo.com/. The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `download_data(name,symbol,from,to,show_symbols)`, where
