@@ -23,8 +23,8 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
    - `id` is a character identifying the model (default is `id = "test"`),
    - `controls` is the list of controls defined in step 3,
    - `events` is the list of events defined in step 4,
-   - `warn` is an integer value to set the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html),
-   - `simpar` is a list specifying the model parameters for simulation (if not specified, parameters are randomly drawn).
+   - `warn` is an integer value to set the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html) (default is `warn = 0`),
+   - `simpar` is a list specifying model parameters for simulation (optional).
 
 See below for some [examples](#examples).
 
