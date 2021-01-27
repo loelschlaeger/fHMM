@@ -1,7 +1,7 @@
 ### process simulated or empirical data
-get_data = function(controls,simpar){
+get_data = function(controls,sim_par){
   if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
-  if(controls[["sim"]])  data = simulate_data(controls,simpar)
+  if(controls[["sim"]])  data = simulate_data(controls,sim_par)
   if(!controls[["sim"]]) data = read_data(controls)
   message("Data processed.")
   check_data(controls,data)
@@ -59,20 +59,20 @@ compute_fs_lengths = function(fs_time_horizon,T=NULL,fs_dates=NULL){
 }
 
 ### simulate data
-simulate_data = function(controls,simpar){
+simulate_data = function(controls,sim_par){
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
   
   M = controls[["states"]][1] 
   N = controls[["states"]][2] 
   T = as.numeric(controls[["time_horizon"]][1])
   
-  if(!is.null(simpar)){
-    thetaList = simpar
+  if(!is.null(sim_par)){
+    thetaUncon = sim_par
   } else {
     thetaUncon = init_est(controls)
-    thetaCon = thetaUncon2thetaCon(thetaUncon,controls)
-    thetaList = thetaCon2thetaList(thetaCon,controls)
   }
+  thetaCon   = thetaUncon2thetaCon(thetaUncon,controls)
+  thetaList  = thetaCon2thetaList(thetaCon,controls)
   
   simulate_states = function(delta,Gamma,T){
     no_states = length(delta)
@@ -84,11 +84,16 @@ simulate_data = function(controls,simpar){
     return(states)
   }
   
-  simulate_logReturns = function(states,mus,sigmas,dfs){
+  simulate_logReturns = function(states,mus,sigmas,dfs,sdd){
     T = length(states)
     logReturns = numeric(T)
     for(t in 1:T){
-      logReturns[t] = rt(1,dfs[states[t]])*sigmas[states[t]]+mus[states[t]]
+      if(sdd == "t"){
+        logReturns[t] = rt(1,dfs[states[t]])*sigmas[states[t]]+mus[states[t]]
+      }
+      if(sdd == "gamma"){
+        logReturns[t] = rgamma(1,shape=mus[states[t]]^2/sigmas[states[t]]^2,scale=sigmas[states[t]]^2/mus[states[t]])
+      }
     }
     return(logReturns)
   }
@@ -96,7 +101,7 @@ simulate_data = function(controls,simpar){
   if(controls[["model"]]=="HMM"){
     T_star = NA
     states = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
-    logReturns = simulate_logReturns(states,thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
+    logReturns = simulate_logReturns(states,thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]],controls[["sdds"]][1])
   }
   
   if(controls[["model"]]=="HHMM"){ 
@@ -104,11 +109,11 @@ simulate_data = function(controls,simpar){
     states = matrix(NA,T,max(T_star)+1) 
     logReturns = matrix(NA,T,max(T_star)+1)
     states[,1] = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
-    logReturns[,1] = simulate_logReturns(states[,1],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]])
+    logReturns[,1] = simulate_logReturns(states[,1],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]],controls[["sdds"]][1])
     for(t in 1:T){
       S_t = states[t,1]
       states[t,-1] = c(simulate_states(Gamma2delta(thetaList[["Gammas_star"]][[S_t]]),thetaList[["Gammas_star"]][[S_t]],T_star[t]),rep(NA,max(T_star)-T_star[t]))
-      logReturns[t,-1] = c(simulate_logReturns(states[t,-1][!is.na(states[t,-1])],thetaList[["mus_star"]][[S_t]],thetaList[["sigmas_star"]][[S_t]],thetaList[["dfs_star"]][[S_t]]),rep(NA,max(T_star)-T_star[t]))
+      logReturns[t,-1] = c(simulate_logReturns(states[t,-1][!is.na(states[t,-1])],thetaList[["mus_star"]][[S_t]],thetaList[["sigmas_star"]][[S_t]],thetaList[["dfs_star"]][[S_t]],controls[["sdds"]][2]),rep(NA,max(T_star)-T_star[t]))
     }
   }
   
