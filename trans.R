@@ -11,7 +11,7 @@ Gamma2gammasCon = function(Gamma){
 ### OUTPUT: transition probability matrix
 gammasCon2Gamma = function(gammasCon,dim){
   Gamma         = diag(dim)
-  Gamma[!Gamma] = gammasCon #filled column-wise
+  Gamma[!Gamma] = gammasCon ###filled column-wise
   for(i in 1:dim){
     Gamma[i,i] = 1-(rowSums(Gamma)[i]-1)
   }
@@ -22,7 +22,7 @@ gammasCon2Gamma = function(gammasCon,dim){
 ### OUTPUT: transition probability matrix
 gammasUncon2Gamma = function(gammasUncon,dim){
 	Gamma         = diag(dim)
-	Gamma[!Gamma] = exp(gammasUncon) #filled column-wise
+	Gamma[!Gamma] = exp(gammasUncon) ###filled column-wise
 	Gamma         = Gamma/rowSums(Gamma)
 	return(Gamma)
 }
@@ -63,6 +63,22 @@ Gamma2delta = function(Gamma){
   return(delta)
 }
 
+### INPUT:  unconstrained parameter mu, boolean for link
+### OUTPUT: constrained parameter mu
+muUncon2muCon = function(muUncon,link){
+  if(link) muCon = exp(muUncon)
+  if(!link) muCon = muUncon
+  return(muCon)
+}
+
+### INPUT:  constrained parameter mu, boolean for link
+### OUTPUT: unconstrained parameter mu
+muCon2muUncon = function(muCon,link){
+  if(link) muUncon = log(muCon)
+  if(!link) muUncon = muCon
+  return(muUncon)
+}
+
 ### INPUT:  unconstrained parameter sigma
 ### OUTPUT: constrained parameter sigma
 sigmaUncon2sigmaCon = function(sigmaUncon){
@@ -78,59 +94,102 @@ sigmaCon2sigmaUncon = function(sigmaCon){
 ### INPUT:  unconstrained model parameters and control parameters
 ### OUTPUT: constrained model parameters in vector form
 thetaUncon2thetaCon = function(thetaUncon,controls){
-  M  = controls[["states"]][1] #coarse-scale states
-  N  = controls[["states"]][2] #fine-scale states
-  df_cs = controls[["fixed_dfs"]][1]
-  df_fs = controls[["fixed_dfs"]][2]
-  model = controls[["model"]]
+  M  = controls[["states"]][1] 
+  N  = controls[["states"]][2]
   
-	gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
-	Gamma       = gammasUncon2Gamma(gammasUncon,M)
-	gammasCon   = Gamma2gammasCon(Gamma)
-	if(model=="HHMM") for(m in seq_len(M)){
-	  gammasUncon_star = thetaUncon[1:((N-1)*N)]; thetaUncon = thetaUncon[-(1:((N-1)*N))]
-	  gammasCon_star   = gammasUncon2gammasCon(gammasUncon_star,N)
-	  gammasCon        = c(gammasCon,gammasCon_star)
-	}
-	
-	mus = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
-	if(model=="HHMM") for(m in seq_len(M)){
-	  mus_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
-	  mus      = c(mus,mus_star)
-	}
-	
-	sigmasUncon  = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
-	sigmasCon    = sigmaUncon2sigmaCon(sigmasUncon)
-	if(model=="HHMM") for(m in seq_len(M)){
-	  sigmasUncon_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
-	  sigmasCon_star   = sigmaUncon2sigmaCon(sigmasUncon_star)
-	  sigmasCon        = c(sigmasCon,sigmasCon_star)
-	}
-	
-	dfs = if(is.na(df_cs)) thetaUncon[1:M] else integer(0)
-	      if(is.na(df_cs)) thetaUncon = thetaUncon[-(1:M)]
-	if(model=="HHMM") for(m in seq_len(M)){
-	  dfs_star = if(is.na(df_fs)) thetaUncon[1:N] else integer(0)
-	             if(is.na(df_fs)) thetaUncon = thetaUncon[-(1:N)]
-	  dfs      = c(dfs,dfs_star)
-	}
-	
-	thetaCon = c(gammasCon,mus,sigmasCon,dfs)
+  if(controls[["model"]]=="HMM"){
+    gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
+    gammasCon   = gammasUncon2gammasCon(gammasUncon,M)
+    musUncon    = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
+    musCon      = muUncon2muCon(musUncon,link=(controls[["sdds"]][1] == "gamma"))
+    sigmasUncon = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
+    sigmasCon   = sigmaUncon2sigmaCon(sigmasUncon)
+    if(controls[["sdds"]][1] == "t"){
+      if(is.na(controls[["fixed_dfs"]][1])){
+        dfs = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
+      } else {
+        dfs = integer(0)
+      }
+      thetaCon = c(gammasCon,musCon,sigmasCon,dfs)
+    }
+    if(controls[["sdds"]][1] == "gamma"){
+      thetaCon = c(gammasCon,musCon,sigmasCon)
+    }
+  }
+  
+  if(controls[["model"]]=="HHMM"){
+    gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
+    gammasCon   = gammasUncon2gammasCon(gammasUncon,M)
+    for(m in seq_len(M)){
+      gammasUncon_star = thetaUncon[1:((N-1)*N)]; thetaUncon = thetaUncon[-(1:((N-1)*N))]
+      gammasCon_star   = gammasUncon2gammasCon(gammasUncon_star,N)
+      gammasCon        = c(gammasCon,gammasCon_star)
+    }
+    
+    musUncon = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
+    musCon   = muUncon2muCon(musUncon,link=(controls[["sdds"]][1] == "gamma"))
+    for(m in seq_len(M)){
+      musUncon_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
+      musCon_star   = muUncon2muCon(musUncon_star,link=(controls[["sdds"]][2] == "gamma"))
+      musCon        = c(musCon,musCon_star)
+    }
+    
+    sigmasUncon = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
+    sigmasCon   = sigmaUncon2sigmaCon(sigmasUncon)
+    for(m in seq_len(M)){
+      sigmasUncon_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
+      sigmasCon_star   = sigmaUncon2sigmaCon(sigmasUncon_star)
+      sigmasCon        = c(sigmasCon,sigmasCon_star)
+    }
+    
+    if(controls[["sdds"]][1] == "t"){
+      if(is.na(controls[["fixed_dfs"]][1])){
+        dfs = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
+      } else {
+        dfs = integer(0)
+      }
+      if(controls[["sdds"]][2] == "t"){
+        if(is.na(controls[["fixed_dfs"]][2])){
+          for(m in seq_len(M)){
+            dfs_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
+            dfs      = c(dfs,dfs_star)
+          }
+        }
+        thetaCon = c(gammasCon,musCon,sigmasCon,dfs)
+      }
+      if(controls[["sdds"]][2] == "gamma"){
+        thetaCon = c(gammasCon,musCon,sigmasCon,dfs) 
+      }
+    }
+    if(controls[["sdds"]][1] == "gamma"){
+      dfs = integer(0)
+      if(controls[["sdds"]][2] == "t"){
+        if(is.na(controls[["fixed_dfs"]][2])){
+          for(m in seq_len(M)){
+            dfs_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
+            dfs      = c(dfs,dfs_star)
+          }
+        }
+        thetaCon = c(gammasCon,musCon,sigmasCon,dfs)
+      }
+      if(controls[["sdds"]][2] == "gamma"){
+        thetaCon = c(gammasCon,musCon,sigmasCon) 
+      }
+    }
+  }
+
 	return(thetaCon)
 }
 
 ### INPUT:  constrained model parameters and control parameters 
 ### OUTPUT: constrained model parameters in list form
 thetaCon2thetaList = function(thetaCon,controls){
-  M = controls[["states"]][1] #coarse-scale states
-  N = controls[["states"]][2] #fine-scale states
-  df_cs = controls[["fixed_dfs"]][1]
-  df_fs = controls[["fixed_dfs"]][2]
-  model = controls[["model"]]
+  M = controls[["states"]][1] 
+  N = controls[["states"]][2]
   
   gammasCon = thetaCon[1:((M-1)*M)]; thetaCon = thetaCon[-(1:((M-1)*M))]
   Gamma = gammasCon2Gamma(gammasCon,M)
-  if(model=="HHMM"){
+  if(controls[["model"]]=="HHMM"){
     Gammas_star = list()
     for(m in seq_len(M)){
       gammasCon_star   = thetaCon[1:((N-1)*N)]; thetaCon = thetaCon[-(1:((N-1)*N))]
@@ -138,48 +197,67 @@ thetaCon2thetaList = function(thetaCon,controls){
     }
   }
   
-  mus = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
-  if(model=="HHMM"){ 
-    mus_star = list()
+  musCon = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
+  if(controls[["model"]]=="HHMM"){ 
+    musCon_star = list()
     for(m in seq_len(M)){
-      mus_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
+      musCon_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
     }
   }
   
   sigmasCon = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
-  if(model=="HHMM"){
+  if(controls[["model"]]=="HHMM"){
     sigmasCon_star = list()
     for(m in seq_len(M)){
       sigmasCon_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
     }
   }
   
-  dfs = if(is.na(df_cs)) thetaCon[1:M] else rep(df_cs,M)
-        if(is.na(df_cs)) thetaCon = thetaCon[-(1:M)]
-  if(model=="HHMM"){ 
-    dfs_star = list()
-    for(m in seq_len(M)){
-      dfs_star[[m]] = if(is.na(df_fs)) thetaCon[1:N] else rep(df_fs,N)
-                      if(is.na(df_fs)) thetaCon = thetaCon[-(1:N)]
+  if(controls[["sdds"]][1] == "t"){
+    if(is.na(controls[["fixed_dfs"]][1])){
+      dfs = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
+    } else {
+      dfs = rep(controls[["fixed_dfs"]][1],M)
+    }
+  }
+  if(controls[["sdds"]][1] == "gamma"){
+    dfs = NULL
+  }
+    
+  if(controls[["model"]]=="HHMM"){ 
+    if(controls[["sdds"]][2] == "t"){
+      dfs_star = list()
+      if(is.na(controls[["fixed_dfs"]][2])){
+        for(m in seq_len(M)){
+          dfs_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
+        }
+      } else {
+        for(m in seq_len(M)){
+          dfs_star[[m]] =  rep(df_fs,N)
+        }
+      }
+    }
+    if(controls[["sdds"]][2] == "gamma"){
+      dfs_star = NULL
     }
   }
   
-  if(model=="HMM"){
+  if(controls[["model"]]=="HMM"){
     thetaList = list(
       "Gamma"       = Gamma,
-      "mus"         = mus,
+      "mus"         = musCon,
       "sigmas"      = sigmasCon,
       "dfs"         = dfs
       ) 
   }
-  if(model=="HHMM"){
+  if(controls[["model"]]=="HHMM"){
     thetaList = list(
       "Gamma"       = Gamma,
-      "mus"         = mus,
+      "mus"         = musCon,
       "sigmas"      = sigmasCon,
       "dfs"         = dfs,
       "Gammas_star" = Gammas_star,
-      "mus_star"    = mus_star,
+      "mus_star"    = musCon_star,
       "sigmas_star" = sigmasCon_star,
       "dfs_star"    = dfs_star
       ) 
@@ -196,11 +274,11 @@ thetaUncon2thetaList = function(thetaUncon,controls){
 ### INPUT:  unconstrained model parameters and control parameters 
 ### OUTPUT: unconstrained model parameters of fine scale in list form
 thetaUncon2thetaUnconSplit = function(thetaUncon,controls){
-  if(controls[["model"]]!="HHMM") stop("Function only for HHMM parameters.")
-  M = controls[["states"]][1] #coarse-scale states
-  N = controls[["states"]][2] #fine-scale states
-  df_cs = controls[["fixed_dfs"]][1]
-  df_fs = controls[["fixed_dfs"]][2]
+  if(controls[["model"]]!="HHMM"){
+    stop("Function 'thetaUncon2thetaUnconSplit' only for HHMM models.",call.=FALSE)
+  }
+  M = controls[["states"]][1] 
+  N = controls[["states"]][2] 
   
   thetaUnconSplit = list()
   thetaUncon = thetaUncon[-(1:((M-1)*M))] 
@@ -218,10 +296,18 @@ thetaUncon2thetaUnconSplit = function(thetaUncon,controls){
     thetaUnconSplit[[m]] = c(thetaUnconSplit[[m]],thetaUncon[1:N])
     thetaUncon = thetaUncon[-(1:N)] 
   }
-  if(is.na(df_cs)) thetaUncon = thetaUncon[-(1:M)]
-  if(is.na(df_fs)) for(m in seq_len(M)){
-    thetaUnconSplit[[m]] = c(thetaUnconSplit[[m]],thetaUncon[1:N])
-    thetaUncon = thetaUncon[-(1:N)] 
+  if(controls[["sdds"]][1]=="t"){
+    if(is.na(controls[["fixed_dfs"]][1])){
+      thetaUncon = thetaUncon[-(1:M)]
+    }
+  }
+  if(controls[["sdds"]][2]=="t"){
+    if(is.na(controls[["fixed_dfs"]][2])){
+      for(m in seq_len(M)){
+        thetaUnconSplit[[m]] = c(thetaUnconSplit[[m]],thetaUncon[1:N])
+        thetaUncon = thetaUncon[-(1:N)] 
+      }
+    }
   }
   
   return(thetaUnconSplit)
@@ -230,17 +316,24 @@ thetaUncon2thetaUnconSplit = function(thetaUncon,controls){
 ### INPUT:  unconstrained model parameters for one fine-scale HMM
 ### OUTPUT: constrained model parameters in list form for one fine-scale HMM
 thetaUnconSplit2thetaList = function(thetaUncon,controls){
-   nstates = controls[["states"]][2]
-   df_fs = controls[["fixed_dfs"]][2]
-   gammasUncon = thetaUncon[1:((nstates-1)*nstates)]; thetaUncon = thetaUncon[-(1:((nstates-1)*nstates))]
-   Gamma = gammasUncon2Gamma(gammasUncon,nstates)
-   mus = thetaUncon[1:nstates]; thetaUncon = thetaUncon[-(1:nstates)]
-   sigmasCon = sigmaUncon2sigmaCon(thetaUncon[1:nstates]); thetaUncon = thetaUncon[-(1:nstates)]
-   dfs = if(is.na(df_fs)) thetaUncon[1:nstates] else rep(df_fs,nstates)
-         if(is.na(df_fs)) thetaUncon = thetaUncon[-(1:nstates)]
+   N = controls[["states"]][2]
+   gammasUncon = thetaUncon[1:((N-1)*N)]; thetaUncon = thetaUncon[-(1:((N-1)*N))]
+   Gamma       = gammasUncon2Gamma(gammasUncon,N)
+   musCon      = muUncon2muCon(thetaUncon[1:N],link=(controls[["sdds"]][2]=="gamma")); thetaUncon = thetaUncon[-(1:N)]
+   sigmasCon   = sigmaUncon2sigmaCon(thetaUncon[1:N]); thetaUncon = thetaUncon[-(1:N)]
+   if(controls[["sdds"]][2]=="t"){
+     if(is.na(controls[["fixed_dfs"]][2])){
+       dfs = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
+     } else {
+       dfs = rep(controls[["fixed_dfs"]][2],N)
+     }
+   }
+   if(controls[["sdds"]][2]=="gamma"){
+     dfs = NULL
+   }
    thetaList = list(
      "Gamma"  = Gamma,
-     "mus"    = mus,
+     "mus"    = musCon,
      "sigmas" = sigmasCon,
      "dfs"    = dfs
      ) 
@@ -250,30 +343,33 @@ thetaUnconSplit2thetaList = function(thetaUncon,controls){
 ### INPUT:  constrained (unordered) model parameters in list form, control parameters
 ### OUTPUT: constrained ordered model parameters (states decreasing wrt value of mu) in list form
 states_decreasing = function(thetaList,controls){
-  M = controls[["states"]][1] #coarse-scale states
-  N = controls[["states"]][2] #fine-scale states
-  
-  ### order HMM or cs HHMM parameters
-  mu_order = order(thetaList[["mus"]],decreasing=TRUE)
+  M = controls[["states"]][1] 
+  N = controls[["states"]][2] 
+
+  mu_order = order(thetaList[["mus"]],decreasing=(controls[["sdds"]][1]=="t"))
   permut = diag(M)[mu_order,]
   thetaList[["Gamma"]] = permut %*% thetaList[["Gamma"]] %*% t(permut)
   thetaList[["mus"]] = as.vector(permut %*% thetaList[["mus"]])
   thetaList[["sigmas"]] = as.vector(permut %*% thetaList[["sigmas"]])
-  thetaList[["dfs"]] = as.vector(permut %*% thetaList[["dfs"]]); thetaList[["dfs"]][which(is.nan(thetaList[["dfs"]]))] = Inf
-  
-  if(controls$model=="HHMM"){
+  if(controls[["sdds"]][1]=="t"){
+    thetaList[["dfs"]] = as.vector(permut %*% thetaList[["dfs"]]); thetaList[["dfs"]][which(is.nan(thetaList[["dfs"]]))] = Inf
+  }
     
-    ### order fs HHMM parameters
+  if(controls$model=="HHMM"){
     thetaList[["Gammas_star"]] = thetaList[["Gammas_star"]][mu_order]
     thetaList[["mus_star"]] = thetaList[["mus_star"]][mu_order]
     thetaList[["sigmas_star"]] = thetaList[["sigmas_star"]][mu_order]
-    thetaList[["dfs_star"]] = thetaList[["dfs_star"]][mu_order]
+    if(controls[["sdds"]][2]=="t"){
+      thetaList[["dfs_star"]] = thetaList[["dfs_star"]][mu_order]
+    }
     for(m in seq_len(M)){
       permut = diag(N)[order(thetaList[["mus_star"]][[m]],decreasing=TRUE),]
       thetaList[["Gammas_star"]][[m]] = permut %*% thetaList[["Gammas_star"]][[m]] %*% t(permut)
       thetaList[["mus_star"]][[m]] = as.vector(permut %*% thetaList[["mus_star"]][[m]])
       thetaList[["sigmas_star"]][[m]] = as.vector(permut %*% thetaList[["sigmas_star"]][[m]])
-      thetaList[["dfs_star"]][[m]] = as.vector(permut %*% thetaList[["dfs_star"]][[m]]); thetaList[["dfs_star"]][[m]][which(is.nan(thetaList[["dfs_star"]][[m]]))] = Inf
+      if(controls[["sdds"]][2]=="t"){
+        thetaList[["dfs_star"]][[m]] = as.vector(permut %*% thetaList[["dfs_star"]][[m]]); thetaList[["dfs_star"]][[m]][which(is.nan(thetaList[["dfs_star"]][[m]]))] = Inf
+      }
     }
   }
   return(thetaList)
