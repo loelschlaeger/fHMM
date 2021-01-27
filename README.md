@@ -98,7 +98,13 @@ The following parameters are optional and set to [default values](#default-value
 Internally, model parameters are processed using three structures:
 - `thetaFull`, a named list of all model parameters
 - `thetaUncon`: a vector of all unconstrained model parameters to be estimated 
-- `thetaCon`: a vector of all constrained model parameters to be estimated 
+- `thetaCon`: constrained elements of `thetaUncon`
+
+The order of `thetaUncon` and `thetaCon` is:
+1. non-diagonal elements of tpm's (column-wise) 
+2. expected values
+3. standard deviations
+4. degrees of freedom
 
 ## Outputs
 The following model results are saved in the folder `./models/id`:
