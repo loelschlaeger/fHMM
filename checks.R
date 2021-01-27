@@ -2,14 +2,15 @@
 check_controls = function(controls){
   
   ### define controls
-  all_controls = c("id","data_source","data_col","truncate_data","states","time_horizon","sdds","runs","at_true","iterlim","seed","print_level","steptol","accept_codes","overwrite","data_cs_type")
-  required_controls = c("states","sdds")
+  all_controls = c("id","scale_par","data_source","data_col","truncate_data","states","time_horizon","sdds","runs","at_true","iterlim","seed","print_level","steptol","gradtol","accept_codes","overwrite","data_cs_type")
+  required_controls = c("id","states","sdds")
   artificial_controls = c("sim","model","fixed_dfs","controls_checked")
   missing_controls = setdiff(all_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
-  controls_with_length_1 = c("id","runs","at_true","iterlim","seed","print_level","steptol","overwrite","data_cs_type")
+  controls_with_length_1 = c("id","runs","at_true","iterlim","seed","print_level","steptol","gradtol","overwrite","data_cs_type")
   controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","sdds")
-  numeric_controls = c("states","runs","iterlim","print_level","steptol","seed")
+  positive_numeric_controls = c("scale_par","states","runs","iterlim","steptol","gradtol")
+  integer_controls = c("states","runs","iterlim","print_level","steptol","seed")
   boolean_controls = c("overwrite","at_true")
   
   ### check subsets of controls
@@ -28,9 +29,14 @@ check_controls = function(controls){
       stop(paste0("In 'controls': '", control_with_length_2, "' must be a vector of length 2."),call.=FALSE)
     }
   }
-  for(numeric_control in intersect(numeric_controls,names(controls))){
-    if(!is.numeric(controls[[numeric_control]]) || !isTRUE(all(controls[[numeric_control]] == floor(controls[[numeric_control]])))){
-      stop(paste0("In 'controls': '", numeric_control,"' must be numeric."),call.=FALSE)
+  for(positive_numeric_control in intersect(positive_numeric_controls,names(controls))){
+    if(!is.numeric(controls[[positive_numeric_control]]) || !all(controls[[positive_numeric_control]]>0)){
+      stop(paste0("In 'controls': '", positive_numeric_control,"' must be a positive numeric value."),call.=FALSE)
+    }
+  }
+  for(integer_control in intersect(integer_controls,names(controls))){
+    if(!is.numeric(controls[[integer_control]]) || !isTRUE(all(controls[[integer_control]] == floor(controls[[integer_control]])))){
+      stop(paste0("In 'controls': '", integer_control,"' must be an integer."),call.=FALSE)
     }
   }
   for(boolean_control in intersect(boolean_controls,names(controls))){
@@ -50,9 +56,11 @@ check_controls = function(controls){
   if("iterlim" %in% missing_controls)       controls[["iterlim"]] = 500
   if("print_level" %in% missing_controls)   controls[["print_level"]] = 0
   if("steptol" %in% missing_controls)       controls[["steptol"]] = 1e-6
+  if("gradtol" %in% missing_controls)       controls[["gradtol"]] = 1e-6
   if("accept_codes" %in% missing_controls)  controls[["accept_codes"]] = 1
   if("overwrite" %in% missing_controls)     controls[["overwrite"]] = FALSE
   if("sdds" %in% missing_controls)          controls[["sdds"]] = c(NA,NA)
+  if("scale_par" %in% missing_controls)     controls[["scale_par"]] = c(1,1)
   
   ### create artificial controls
   controls[["model"]] = if(controls[["states"]][2]==0) "HMM" else "HHMM"
