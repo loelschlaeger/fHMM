@@ -23,8 +23,8 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
    - `id` is a character identifying the model (default is `id = "test"`),
    - `controls` is the list of controls defined in step 3,
    - `events` is the list of events defined in step 4,
-   - `warn` is an integer value to set the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html) (default is `warn = 0`),
-   - `scale_par` is a float scaling the model parameters (default and recommended for log-returns is `scale_par = 0.01`),
+   - `warn` sets the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html) (default is `warn = 0`),
+   - `scale_par` is a float scaling the model parameters (default is `scale_par = 0.1`),
    - `sim_par` is a list specifying model parameters for simulation (optional).
 
 See below for [examples](#examples).
