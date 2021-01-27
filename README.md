@@ -19,12 +19,13 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 2. Run code chunk 2 to download [data](#data). (optional)
 3. Run code chunk 3 to set the model's [controls](#specifying-controls).
 4. Run code chunk 4 to define events. (optional)
-5. Execute `hhmmf(id,controls,events,warn,simpar)`, where
+5. Execute `hhmmf(id,controls,events,warn,scale_par,sim_par)`, where
    - `id` is a character identifying the model (default is `id = "test"`),
    - `controls` is the list of controls defined in step 3,
    - `events` is the list of events defined in step 4,
    - `warn` is an integer value to set the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html) (default is `warn = 0`),
-   - `simpar` is a list specifying model parameters for simulation (optional).
+   - `scale_par` is a float scaling the model parameters (default and recommended for log-returns is `scale_par = 0.01`),
+   - `sim_par` is a list specifying model parameters for simulation (optional).
 
 See below for [examples](#examples).
 
