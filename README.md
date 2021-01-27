@@ -84,13 +84,13 @@ The following parameters are optional and set to [default values](#default-value
 - `at_true = FALSE`
 - `data_col = c(NA,NA)`
 - `data_source = c(NA,NA)` 
-- `gradtol = 1e-5`
+- `gradtol = 1e-6`
 - `iterlim = 500`
 - `overwrite = FALSE`
 - `print_level = 0` (no printing)
 - `runs = 100`
 - `seed` is not set
-- `steptol = 1e-5`
+- `steptol = 1e-6`
 - `time_horizon = c(NA,NA)`
 - `truncate_data = c(NA,NA)`
 
