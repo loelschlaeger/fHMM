@@ -13,7 +13,7 @@ load_code = function(){
               require("MASS"),
               if(!"tseries" %in% installed_packages){ writeLines("\nInstalling package 'tseries'.\n"); install.packages("tseries",quite=TRUE)},
               require("tseries"),
-              sourceCpp("loglike.cpp"),
+              Rcpp::sourceCpp("loglike.cpp"),
               source("checks.R"),
               source("data.R"),
               source("optim.R"),
@@ -29,7 +29,7 @@ load_code = function(){
 }
 
 ### define main function
-hhmmf = function(id="test",controls,events=NULL,warn=0,simpar=NULL){
+hhmmf = function(id="test",controls,events=NULL,warn=0,sim_par=NULL){
   ### save 'id' in 'controls'
   controls[["id"]] = id
   
@@ -50,7 +50,7 @@ hhmmf = function(id="test",controls,events=NULL,warn=0,simpar=NULL){
   tryCatch(
     {sink(file = paste0("models/",id,"/protocol.txt"),split = TRUE)
        controls = check_controls(controls); writeLines(seperator)
-       data     = get_data(controls,simpar); writeLines(seperator)
+       data     = get_data(controls,sim_par); writeLines(seperator)
        fit      = max_likelihood(data,controls)
        decoding = apply_viterbi(data,fit,controls)
      sink()
