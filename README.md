@@ -9,7 +9,7 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 - `loglike.cpp` computes the model's log-likelihood.
 - `main.R` presents the code's [workflow](#getting-started).
 - `optim.R` maximizes the log-likelihood function using [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
-- `trans.R` contains helper functions for parameter transformations between different [parameter strutures](#parameter-structures).
+- `trans.R` contains helper functions for parameter transformations between different [parameter structures](#parameter-structures).
 - `visual.R` generates visualisations of the [model results](#outputs).
 - `viterbi.R` performs state decoding based on the [Viterbi algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm).
 
