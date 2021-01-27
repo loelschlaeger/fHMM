@@ -47,7 +47,7 @@ A model is specified by setting parameters of the named list `controls`. The fol
    - `"t"`, the t-distribution
    - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom (normal distribution is obtained by setting `x = Inf`)
    - `"gamma"`, the gamma distribution
-- `data_cs_type` (only for a HHMM): a character, determining the type of the coarse scale data:
+- `data_cs_type` (only for a HHMM and empirical data): a character, determining the type of the coarse scale data:
    - if `data_cs_type = "mean"`, means of the fine scale data are chosen
    - if `data_cs_type = "mean_abs"`, means of the fine scale data in absolute value are chosen
    - if `data_cs_type = "sum_abs"`, sums of fine scale data in absolute value are chosen
