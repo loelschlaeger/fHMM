@@ -2,13 +2,15 @@
 create_visuals = function(data,fit,decoding,controls,events=NULL){
   
   ### pre-checks
-  if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
+  if(is.null(controls[["controls_checked"]])){
+    stop("'controls' is invalid (Code C.1)",call.=FALSE)
+  }
   if(controls[["sim"]] & !is.null(events)){
     events = NULL
-    warning("'events' is ignored because 'data' is simulated.",call.=FALSE)
+    warning("'events' is ignored (Code V.1)",call.=FALSE)
   } 
-  if(!controls[["sim"]] & !is.null(events) & length(events[["dates"]])!=length(events[["names"]])){
-    stop("'dates' and 'names' in 'events' must be of the same length.")
+  if(!is.null(events) & length(events[["dates"]])!=length(events[["names"]])){
+    stop("'events' is invalid (Code V.2)",call.=FALSE)
   }
   
   ### save events
@@ -488,22 +490,17 @@ plot_ll = function(llks,controls){
   if(check_saving(name     = "lls",
                   filetype = "pdf",
                   controls = controls)){
-    llks[which(llks< -1e100)] = NA
-    if(length(llks[!is.na(llks)])==0){
-      stop("Failed to create 'lls.pdf'.",call.=FALSE)
-    } else {
-      pdf(file = paste0("models/",controls[["id"]],"/lls.pdf"), width=8, height=8)
-        if(length(llks)<=5){
-          plot(llks,xaxt="n",yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
-          axis(1,las=1,at=seq_len(length(llks)),labels=seq_len(length(llks)))      
-        } else {
-          plot(llks,yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
-          axis(2,las=1,at=unique(round(llks[!is.na(llks)])),labels=unique(round(llks[!is.na(llks)])))
-        }
-        points(x=which.max(llks),y=llks[which.max(llks)],pch=16,cex=1.25,col="red")
+    pdf(file = paste0("models/",controls[["id"]],"/lls.pdf"), width=8, height=8)
+      if(length(llks)<=5){
+        plot(llks,xaxt="n",yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
+        axis(1,las=1,at=seq_len(length(llks)),labels=seq_len(length(llks)))      
+      } else {
+        plot(llks,yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
         axis(2,las=1,at=unique(round(llks[!is.na(llks)])),labels=unique(round(llks[!is.na(llks)])))
-      invisible(dev.off())
-    }
+      }
+      points(x=which.max(llks),y=llks[which.max(llks)],pch=16,cex=1.25,col="red")
+      axis(2,las=1,at=unique(round(llks[!is.na(llks)])),labels=unique(round(llks[!is.na(llks)])))
+    invisible(dev.off())
   }
 }
 
