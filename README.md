@@ -96,7 +96,7 @@ The following parameters are optional and set to [default values](#default-value
 - `truncate_data = c(NA,NA)`
 
 ### Parameter scaling
-For simulation and initialization of the estimation routine, the model parameters are randomly drawn. Expectation values and standard deviations by default are drawn on a scale from -1 to 2 and 0 to 2, respectively. Setting `scale_par(x,y)` in `controls` scales the expectation values and standard deviations by `x` and `y` on the coarse scale and on the fine scale, respectively.
+For simulation and initialization of the estimation routine, the model parameters are randomly drawn. Expected values and standard deviations are drawn from a fixed range: -1 to 2 for expected values of a t-distribution, 0 to 2 for expected values of a gamma-distribution, 0 to 2 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
 
 Recommended scales for common applications:
 - t-distribution for log-returns: 0.01
