@@ -9,8 +9,8 @@ check_controls = function(controls){
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
   controls_with_length_1 = c("id","runs","at_true","iterlim","seed","print_level","steptol","gradtol","overwrite","data_cs_type")
   controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","sdds")
-  positive_numeric_controls = c("scale_par","states","runs","iterlim","steptol","gradtol")
-  integer_controls = c("states","runs","iterlim","print_level","steptol","seed")
+  positive_numeric_controls = c("scale_par","runs","iterlim","steptol","gradtol")
+  integer_controls = c("states","runs","iterlim","print_level","seed")
   boolean_controls = c("overwrite","at_true")
   
   ### check subsets of controls
@@ -30,7 +30,7 @@ check_controls = function(controls){
     }
   }
   for(positive_numeric_control in intersect(positive_numeric_controls,names(controls))){
-    if(!is.numeric(controls[[positive_numeric_control]]) || !all(controls[[positive_numeric_control]]>0)){
+    if(!is.numeric(controls[[positive_numeric_control]]) || !all(controls[[positive_numeric_control]]>0,na.rm=TRUE)){
       stop(paste0("In 'controls': '", positive_numeric_control,"' must be a positive numeric value."),call.=FALSE)
     }
   }
@@ -46,22 +46,24 @@ check_controls = function(controls){
   }
   
   ### set default values
-  if("data_source" %in% missing_controls)   controls[["data_source"]] = c(NA,NA)
+  if("accept_codes" %in% missing_controls)  controls[["accept_codes"]] = c(1,2)
+  if("at_true" %in% missing_controls)       controls[["at_true"]] = FALSE
   if("data_col" %in% missing_controls)      controls[["data_col"]] = c(NA,NA)
   if("data_cs_type" %in% missing_controls)  controls[["data_cs_type"]] = NA
+  if("data_source" %in% missing_controls)   controls[["data_source"]] = c(NA,NA)
+  if("gradtol" %in% missing_controls)       controls[["gradtol"]] = 1e-4
+  if("iterlim" %in% missing_controls)       controls[["iterlim"]] = 500
   if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
   if("time_horizon" %in% missing_controls)  controls[["time_horizon"]] = c(NA,NA)
-  if("runs" %in% missing_controls)          controls[["runs"]] = 100
-  if("at_true" %in% missing_controls)       controls[["at_true"]] = FALSE
-  if("iterlim" %in% missing_controls)       controls[["iterlim"]] = 500
-  if("print_level" %in% missing_controls)   controls[["print_level"]] = 0
-  if("steptol" %in% missing_controls)       controls[["steptol"]] = 1e-6
-  if("gradtol" %in% missing_controls)       controls[["gradtol"]] = 1e-6
-  if("accept_codes" %in% missing_controls)  controls[["accept_codes"]] = 1
   if("overwrite" %in% missing_controls)     controls[["overwrite"]] = FALSE
-  if("sdds" %in% missing_controls)          controls[["sdds"]] = c(NA,NA)
+  if("print_level" %in% missing_controls)   controls[["print_level"]] = 0
+  if("runs" %in% missing_controls)          controls[["runs"]] = 100
+  if("steptol" %in% missing_controls)       controls[["steptol"]] = 1e-2
+  if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
+  if("time_horizon" %in% missing_controls)  controls[["time_horizon"]] = c(NA,NA)
   if("scale_par" %in% missing_controls)     controls[["scale_par"]] = c(1,1)
-  
+  if("sdds" %in% missing_controls)          controls[["sdds"]] = c(NA,NA)
+
   ### create artificial controls
   controls[["model"]] = if(controls[["states"]][2]==0) "HMM" else "HHMM"
   if(controls[["model"]]=="HMM"){
@@ -152,15 +154,15 @@ check_controls = function(controls){
         stop(paste0("In 'controls': Second entry of 'sdds' must be 't' or 'gamma'."),call.=FALSE)
       }
     }
-    if(!is.na(controls[["data_cs_type"]]) & !controls[["data_cs_type"]] %in% c("mean","mean_abs","sum_abs")){
-      stop(paste0("In 'controls': 'data_cs_type' must be one of '",paste(c("mean","mean_abs","sum_abs"),collapse="', '"),"'."),call.=FALSE)
+    if(!is.na(controls[["data_cs_type"]]) & !controls[["data_cs_type"]] %in% c("mean","sum_abs")){
+      stop(paste0("In 'controls': 'data_cs_type' must be one of '",paste(c("mean","sum_abs"),collapse="', '"),"'."),call.=FALSE)
     }
     if(!is.na(controls[["data_cs_type"]]) & controls[["sim"]]){
       warning("In 'controls': 'data_cs_type' is ignored.",call.=FALSE)
       controls[["data_cs_type"]] = NA
     }
     if(!controls[["sim"]] & is.na(controls[["data_cs_type"]])){
-      controls[["data_cs_type"]] = "mean_abs"
+      controls[["data_cs_type"]] = "sum_abs"
     }
     if(controls[["sim"]] & any(!is.na(controls[["data_source"]]))){
       warning("In 'controls': Entries of 'data_source' are ignored.",call.=FALSE)
@@ -169,10 +171,6 @@ check_controls = function(controls){
     if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
       warning("In 'controls': First entry of 'time_horizon' is ignored.",call.=FALSE)
       controls[["time_horizon"]][1] = NA
-    }
-    if(controls[["data_cs_type"]] %in% c("mean","mean_abs") & controls[["time_horizon"]][2] %in% c("w","m","q","y")){
-      warning("In 'controls': Means on coarse scale not recommanded for flexible fine-scale time horizons. 'data_cs_type' is set to 'sum_abs'.",call.=FALSE)
-      controls[["data_cs_type"]] = "sum_abs"
     }
   }
   if(!controls[["sim"]] & controls[["at_true"]]){
@@ -191,7 +189,7 @@ check_controls = function(controls){
     warning("In 'controls': Entries of 'data_col' are ignored.",call.=FALSE)
     controls[["data_col"]] = c(NA,NA)
   }
-  if(controls[["accept_codes"]]=="all"){
+  if(any(controls[["accept_codes"]]=="all")){
     controls[["accept_codes"]] = 1:5
   }
   
@@ -298,22 +296,21 @@ check_estimation = function(time,mods,llks,data,hessian,controls){
   thetaList = states_decreasing(thetaCon2thetaList(thetaCon,controls),controls)
   
   ### detect unidentified states
-  check_unid_states = function(Gamma,name=NULL){
-    for(x in c(0,1)){
-      unid_states = abs(Gamma2delta(Gamma)-x)<1e-04
-      for(s in which(unid_states)){
-        warning(paste(ifelse(is.null(name),"State",paste(name,"state")),s,"might be unidentified."),call.=FALSE)
+  check_unid_states = function(matrix_list){
+    flag = FALSE
+    for(matrix in matrix_list){
+      for(x in c(0,1)){
+        unid_states = abs(suppressWarnings(Gamma2delta(matrix))-x)<1e-04
+        if(any(unid_states)==TRUE) flag = TRUE
       }
     }
+    if(flag) warning("Possibly unidentified states.",call.=FALSE)
   }
   if(controls[["model"]]=="HMM"){
-    check_unid_states(thetaList[["Gamma"]])
+    check_unid_states(list(thetaList[["Gamma"]]))
   }
   if(controls[["model"]]=="HHMM"){
-    check_unid_states(thetaList[["Gamma"]],"Coarse scale")
-    for(cs in controls[["states"]]){
-      check_unid_states(thetaList[["Gammas_star"]][[cs]],paste("On coarse-scale state",cs,"fine scale"))
-    }
+    check_unid_states(list(thetaList[["Gamma"]],thetaList[["Gammas_star"]][seq_len(controls[["states"]][1])]))
   }
   
   ### create visualization of LLs
