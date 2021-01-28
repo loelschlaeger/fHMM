@@ -29,28 +29,24 @@ load_code = function(){
 }
 
 ### define main function
-hhmmf = function(id="test",controls,events=NULL,warn=0,sim_par=NULL){
-  ### save 'id' in 'controls'
-  controls[["id"]] = id
-  
+hhmmf = function(controls,events=NULL,warn=1,sim_par=NULL){
   ### set handling of warnings
   options(warn=warn); on.exit(options(warn=0))
   
   ### create output folder
-  if(dir.exists(paste0("models/",id)) & id!="test"){
-    stop(paste0("Model '",id,"' already exists."),call.=FALSE)
+  if(dir.exists(paste0("models/",controls[["id"]])) & controls[["id"]]!="test"){
+    stop(paste0("Model '",controls[["id"]],"' already exists."),call.=FALSE)
   } else {
-    if(!dir.exists(paste0("models/",id))){
-      dir.create(paste0("models/",id))
+    if(!dir.exists(paste0("models/",controls[["id"]]))){
+      dir.create(paste0("models/",controls[["id"]]))
     }
   }
   
   ### execute model fitting 
-  seperator = paste0(rep("-",45),collapse="")
   tryCatch(
-    {sink(file = paste0("models/",id,"/protocol.txt"),split = TRUE)
-       controls = check_controls(controls); writeLines(seperator)
-       data     = get_data(controls,sim_par); writeLines(seperator)
+    {sink(file = paste0("models/",controls[["id"]],"/protocol.txt"),split = TRUE)
+       controls = check_controls(controls); writeLines(paste0(rep("-",45),collapse=""))
+       data     = get_data(controls,sim_par); writeLines(paste0(rep("-",45),collapse=""))
        fit      = max_likelihood(data,controls)
        decoding = apply_viterbi(data,fit,controls)
      sink()
