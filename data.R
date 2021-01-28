@@ -243,9 +243,6 @@ read_data = function(controls){
     if(controls[["data_cs_type"]] == "mean"){
       cs_data = rowMeans(cs_data_tbt,na.rm = TRUE)
     }
-    if(controls[["data_cs_type"]] == "mean_abs"){
-      cs_data = rowMeans(abs(cs_data_tbt),na.rm = TRUE)
-    }
     if(controls[["data_cs_type"]] == "sum_abs"){
       cs_data = rowSums(abs(cs_data_tbt),na.rm = TRUE)
     }
@@ -263,7 +260,7 @@ read_data = function(controls){
 }
 
 ### download data from www.finance.yahoo.com
-download_data = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE){
+download_data = function(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE){
   
   ### load and sort or create 'stock_symbols'
   if(file.exists("data/stock_symbols.rds")){
@@ -282,7 +279,7 @@ download_data = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Dat
       message("No saved stock symbols.")
     }
   } 
-  if(!is.na(name)){  
+  if(!is.null(name)){  
     ### convert 'from' and 'to' to dates
     from = as.Date(from)
     to = as.Date(to)
@@ -303,7 +300,7 @@ download_data = function(name=NA,symbol=NA,from=as.Date("1902-01-01"),to=Sys.Dat
     name = tolower(name)
     
     ### search 'name' in 'stock_symbols' and get corresponding 'symbol'
-    if(is.na(symbol)){
+    if(is.null(symbol)){
       if(name %in% stock_symbols[["name"]]){
         symbol = stock_symbols[which(stock_symbols["name"]==name),"symbol"]
       } else {
