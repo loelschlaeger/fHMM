@@ -32,7 +32,7 @@ The following errors or warnings can occur:
 | Code | Response              | Problem                                                            |
 |------|-----------------------|--------------------------------------------------------------------|
 | S.1  |                       |                                                                    |
-| C.1  | 'controls' is invalid | controls' has not successfully passed 'check_controls'             |
+| C.1  | 'controls' is invalid | 'controls' did not successfully pass 'check_controls'              |
 | D.1  |                       |                                                                    |
 | F.1  |                       |                                                                    |
 | V.1  | 'events' is ignored   |                                                                    |
