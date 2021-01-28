@@ -35,16 +35,23 @@ max_likelihood = function(data,controls){
     }
   }
   
-  ### check if log-likelihood at true values can be computed
-  if(controls[["at_true"]]){
-    if(is.nan(target(start_values[[1]], data[["logReturns"]], controls))){
-      stop("Log-likelihood is 'NaN' at the true parameters.",call.=FALSE)
+  ### check if log-likelihoods at start values can be computed
+  no_failes = function(llks){
+    total = length(llks)
+    failes = length(llks[is.nan(llks)||is.na(llks)||abs(llks)>1e100])
+    return(failes/total)
+  }
+  ll_at_start_values = numeric(runs)
+  for(run in seq_len(runs)){
+    ll_at_start_values[run] = suppressWarnings(target(start_values[[run]],data[["logReturns"]],controls))
+    if(no_failes(ll_at_start_values)>0.5){
+      stop("Bad parameter scaling. (Code 10)",call.=FALSE)
     }
   }
   
   ### define progress-bar
   pb = progress::progress_bar$new(
-    format = "Model fitting: [:bar] :percent complete, :eta ETA", 
+    format = "MLE: [:bar] :percent complete, :eta ETA", 
     total = runs, 
     clear = TRUE, 
     width = 60, 
@@ -101,21 +108,21 @@ init_est = function(controls){
   
   if(controls[["model"]]=="HMM"){
     gammasUncon = build_gammasUncon(M)
-    sigmasUncon = sigmaCon2sigmaUncon((seq(0.1,1,length.out=M)+runif(1))*0.1*scale_par[1])
+    sigmasUncon = sigmaCon2sigmaUncon((seq(0,1,length.out=M)+runif(1))*scale_par[1])
     if(controls[["sdds"]][1] == "t"){
       musUncon    = muCon2muUncon((seq(1,-1,length.out=M)+runif(1))*scale_par[1],link=FALSE)
       dfs         = if(is.na(controls[["fixed_dfs"]][1])) runif(M,1,30) else integer(0)
       thetaUncon  = c(gammasUncon,musUncon,sigmasUncon,dfs)
     }
     if(controls[["sdds"]][1] == "gamma"){
-      musUncon    = muCon2muUncon((seq(0.1,1,length.out=M)+runif(1))*scale_par[1],link=TRUE)
+      musUncon    = muCon2muUncon((seq(0,1,length.out=M)+runif(1))*scale_par[1],link=TRUE)
       thetaUncon  = c(gammasUncon,musUncon,sigmasUncon)
     }
   }
   
   if(controls[["model"]]=="HHMM"){
     gammasUncon = build_gammasUncon(M)
-    sigmasUncon = sigmaCon2sigmaUncon((seq(0.1,1,length.out=M)+runif(1))*scale_par[1])
+    sigmasUncon = sigmaCon2sigmaUncon((seq(0,1,length.out=M)+runif(1))*scale_par[1])
     if(controls[["sdds"]][1] == "t"){
       musUncon = muCon2muUncon((seq(1,-1,length.out=M)+runif(1))*scale_par[1],link=FALSE)
       dfs      = if(is.na(controls[["fixed_dfs"]][1])) runif(M,1,30) else integer(0)
@@ -152,7 +159,7 @@ init_est = function(controls){
       }
     }
     if(controls[["sdds"]][1] == "gamma"){
-      musUncon = muCon2muUncon((seq(0.1,1,length.out=M)+runif(1))*scale_par[1],link=FALSE)
+      musUncon = muCon2muUncon((seq(0,1,length.out=M)+runif(1))*scale_par[1],link=FALSE)
       if(controls[["sdds"]][2] == "t"){
         gammasUncon_star = c()
         musUncon_star    = c()
