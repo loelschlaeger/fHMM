@@ -169,3 +169,29 @@ events = list(
 ### 5. Fit (H)HMM
 hhmmf(controls,events)
 ```
+### Fitting a 2-state HMM to simulated data using gamma-distributions
+Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HMM_2_sim_gamma) for the results.
+```R
+### 1. Initialize code
+source("init.R"); load_code()
+
+### 2. Download data (optional)
+download_data()
+
+### 3. Set and check controls
+controls = list(
+  id            = "HMM_2_sim_gamma",
+  sdds          = c("gamma",NA),
+  states        = c(2,0),
+  time_horizon  = c(5000,NA)
+)
+
+### 4. Define events (optional)
+events = list(
+  dates = c("2001-09-11","2008-09-15","2020-01-27"),
+  names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
+)
+
+### 5. Fit (H)HMM
+hhmmf(controls,events)
+```
