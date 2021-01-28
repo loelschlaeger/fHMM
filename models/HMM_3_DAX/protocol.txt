@@ -10,5 +10,5 @@ Column:      Close
 Horizon:     2000-01-03 to 2020-12-30
 Data points: 5370
 ---------------------------------------------
-Computation time: 83 minute(s).
-Accepted runs: 17 out of 100.
+Computation time: 11 minute(s).
+Accepted runs: 100 out of 100.
