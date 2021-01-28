@@ -29,6 +29,14 @@ See below for [examples](#examples).
 
 ## Error codes
 The following errors or warnings can occur:
+| Code | Response              | Problem                                                            |
+|------|-----------------------|--------------------------------------------------------------------|
+| S.1  |                       |                                                                    |
+| C.1  | 'controls' is invalid | controls' has not successfully passed 'check_controls'             |
+| D.1  |                       |                                                                    |
+| F.1  |                       |                                                                    |
+| V.1  | 'events' is ignored   |                                                                    |
+| V.2  | 'events' is invalid   | vectors 'dates' and 'names' in 'events' must be of the same length |
 
 ## Data
 The code is intended to be used on daily share prices provided by https://finance.yahoo.com/. The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE)`, where
