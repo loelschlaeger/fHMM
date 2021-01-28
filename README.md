@@ -67,7 +67,7 @@ The following parameters are optional and set to [default values](#default-value
 - `overwrite`: a boolean, determining whether overwriting of existing results (on the same `id`) is allowed, set to `TRUE` if `id = "test"`
 - `print_level`: an integer, determining the level of printing during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `runs`: an integer, setting the number of optimization runs
-- `scale_par`: a positive numeric vector, scaling the model parameters,
+- `scale_par`: a positive numeric vector of length two, [scaling the model parameters](#parameter-scaling) on the coarse and fine scale, respectively
 - `seed`: an integer, setting a seed for the simulation and the optimization
 - `steptol`: an integer, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `time_horizon`: a vector of length 2 (first entry is mandatory if data is simulated, second entry is mandatory if the model is a HHMM), determining the length of the time horizion(s) and can be one of
@@ -94,6 +94,14 @@ The following parameters are optional and set to [default values](#default-value
 - `steptol = 1e-2`
 - `time_horizon = c(NA,NA)`
 - `truncate_data = c(NA,NA)`
+
+### Parameter scaling
+For simulation and initialization of the estimation routine, the model parameters are randomly drawn. Expectation values and standard deviations by default are drawn on a scale from -1 to 2 and 0 to 2, respectively. Setting `scale_par(x,y)` in `controls` scales the expectation values and standard deviations by `x` and `y` on the coarse scale and on the fine scale, respectively.
+
+Recommended scales for common applications:
+- t-distribution for log-returns: 0.01
+- t-distribution for means of log-returns: 0.001
+- gamma-distribution for sums of absolute log-returns: 0.3
 
 ## Parameter structures
 Internally, model parameters are processed using three structures:
