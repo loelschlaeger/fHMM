@@ -79,11 +79,11 @@ The following parameters are optional and set to [default values](#default-value
 - `truncate_data`: a vector of length 2, containing lower and upper date limits (each in format `"YYYY-MM-DD"`) to select a subset of the empirical data (neither, one or both limits can be specified)
 
 ### Default values
-- `accept_codes = 1` 
+- `accept_codes = c(1,2)` 
 - `at_true = FALSE`
 - `data_col = c(NA,NA)`
 - `data_source = c(NA,NA)` 
-- `gradtol = 1e-6`
+- `gradtol = 1e-4`
 - `id = "test"
 - `iterlim = 500`
 - `overwrite = FALSE`
@@ -91,7 +91,7 @@ The following parameters are optional and set to [default values](#default-value
 - `runs = 100`
 - `scale_par = c(1,1)`
 - `seed` is not set
-- `steptol = 1e-6`
+- `steptol = 1e-2`
 - `time_horizon = c(NA,NA)`
 - `truncate_data = c(NA,NA)`
 
