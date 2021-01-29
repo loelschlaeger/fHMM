@@ -26,15 +26,12 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 - `yahoo.R`: download [data](#data) from https://finance.yahoo.com/
 
 ## Getting started
-0. Go to `start.R`.
-1. Run code chunk 1 to initialize the code.
-2. Run code chunk 2 to download [data](#data). (optional)
-3. Run code chunk 3 to set the model's [controls](#specifying-controls).
-4. Run code chunk 4 to define [events](#events). (optional)
-5. Execute `hhmmf(controls,events=NULL,warn=1,sim_par=NULL)`, where
-   - `controls` is the list of controls defined in step 3,
-   - `events` is the list of events defined in step 4,
-   - `warn` sets the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html),
+1. Execute `source("init.R"); load_code()` to initialize the code.
+2. Set the model's [controls](#specifying-controls).
+3. Execute `hhmmf(controls,events=NULL,warn=1,sim_par=NULL)`, where
+   - `controls` is the list of controls defined in step 2,
+   - `events` is a list of [events](#events) (optional),
+   - `warn` sets the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html) (optional),
    - `sim_par` is a [thetaUncon](#parameter-structures)-object specifying model parameters for a simulation (optional).
 
 ## Data
