@@ -10,12 +10,14 @@
 #' exception("S.1")
 exception = function(code){
   exceptions = data.frame(rbind(
-    S.1 = c("",""),
-    C.1 = c("object 'controls' is invalid","object 'controls' has not successfully passed function 'check_controls'")
+    S.1 = c("","",""),
+    C.1 = c("'controls' invalid","'controls' has not successfully passed function 'check_controls'","pass 'controls' to 'check_controls'"),
+    V.1 = c("'events' ignored","'events' is not used by the code","'events' is only used for empirical data"),
+    V.2 = c("'events' invalid","lengths of 'dates' and 'names' in 'events' differ","make sure that 'dates' and 'names' are of the same length")
     ))
-  colnames(exceptions) = c("response","definition")
+  colnames(exceptions) = c("response","definition","suggestion")
   if(code %in% rownames(exceptions)){
-    return(list("response" = exceptions[code,"response"], "definition" = exceptions[code,"definition"]))
+    return(list("code" = code, "response" = exceptions[code,"response"], "definition" = exceptions[code,"definition"], "suggestion" = exceptions[code,"suggestion"]))
   } else {
     stop("Error code unknown.",call.=FALSE)
   }
