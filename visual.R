@@ -3,14 +3,14 @@ create_visuals = function(data,fit,decoding,controls,events=NULL){
   
   ### pre-checks
   if(is.null(controls[["controls_checked"]])){
-    stop("'controls' is invalid (Code C.1)",call.=FALSE)
+    stop(sprintf("%s (%s)",exception("C.1")[["response"]],exception("C.1")[["code"]]),call.=FALSE)
   }
   if(controls[["sim"]] & !is.null(events)){
     events = NULL
-    warning("'events' is ignored (Code V.1)",call.=FALSE)
+    warning(sprintf("%s (Code %s)",exception("V.1")[["response"]],exception("V.1")[["code"]]),call.=FALSE)
   } 
-  if(!is.null(events) & length(events[["dates"]])!=length(events[["names"]])){
-    stop("'events' is invalid (Code V.2)",call.=FALSE)
+  if(length(events[["dates"]])!=length(events[["names"]])){
+    stop(sprintf("%s (%s)",exception("V.2")[["response"]],exception("V.2")[["code"]]),call.=FALSE)
   }
   
   ### save events
@@ -183,7 +183,7 @@ plot_sdds = function(controls,data,fit,decoding,colors){
                                         sigmas   = fit[["thetaList"]][["sigmas_star"]][[cs]],
                                         dfs      = fit[["thetaList"]][["dfs_star"]][[cs]],
                                         sdd      = controls[["sdds"]][2],
-                                        x_range  = c(min(data[["logReturns"]][,-1]),max(data[["logReturns"]][,-1])),
+                                        x_range  = c(min(data[["logReturns"]][,-1],na.rm=TRUE),max(data[["logReturns"]][,-1],na.rm=TRUE)),
                                         c_xlim   = TRUE) 
         }
         for(cs in seq_len(controls[["states"]][1])){
@@ -199,7 +199,7 @@ plot_sdds = function(controls,data,fit,decoding,colors){
                            sigmas        = fit[["thetaList"]][["sigmas_star"]][[cs]],
                            dfs           = fit[["thetaList"]][["dfs_star"]][[cs]],
                            sdd           = controls[["sdds"]][2],
-                           x_range       = c(min(data[["logReturns"]][,-1]),max(data[["logReturns"]][,-1])),
+                           x_range       = c(min(data[["logReturns"]][,-1],na.rm=TRUE),max(data[["logReturns"]][,-1],na.rm=TRUE)),
                            c_xlim        = FALSE,
                            xlim          = c(min(xlims[1,]),max(xlims[2,])),
                            colors        = colors[["HHMM_fs"]][[cs]],
