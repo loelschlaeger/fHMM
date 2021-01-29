@@ -16,10 +16,13 @@ load_code = function(){
               Rcpp::sourceCpp("loglike.cpp"),
               source("checks.R"),
               source("data.R"),
+              source("exception.R"),
+              source("hhmmf.R"),
               source("optim.R"),
               source("trans.R"),
               source("visual.R"),
-              source("viterbi.R"))
+              source("viterbi.R"),
+              source("yahoo.R"))
   for(e in seq_len(length(exe))){
     suppressPackageStartupMessages(eval(exe[[e]]))
     message(sprintf("Loading HHMM_Finance code: %.0f%%",(e/length(exe)*100)),"\r",appendLF=FALSE)
