@@ -20,23 +20,21 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 - `init.R`: initialization of the code
 - `loglike.cpp`: computation of the model's log-likelihood
 - `optim.R`: numerical maximization of the log-likelihood function using [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `start.R`: presentation of the code's [workflow](#getting-started)
 - `trans.R`: providing parameter transformation functions to switch between different [parameter structures](#parameter-structures)
 - `visual.R`: generating visualisations of the [model results](#outputs)
 - `viterbi.R`: performing state decoding based on the [Viterbi algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm)
 - `yahoo.R`: download [data](#data) from https://finance.yahoo.com/
 
 ## Getting started
-0. Go to `start.R`.
-1. Run code chunk 1 to initialize the code.
-2. Run code chunk 2 to download [data](#data). (optional)
-3. Run code chunk 3 to set the model's [controls](#specifying-controls).
-4. Run code chunk 4 to define [events](#events). (optional)
-5. Execute `hhmmf(controls,events=NULL,warn=1,sim_par=NULL)`, where
-   - `controls` is the list of controls defined in step 3,
-   - `events` is the list of events defined in step 4,
-   - `warn` sets the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html),
+1. Execute `source("init.R"); load_code()` to initialize the code.
+2. Set the model's [controls](#specifying-controls).
+3. Execute `hhmmf(controls,events=NULL,warn=1,sim_par=NULL)`, where
+   - `controls` is the list of controls defined in step 2,
+   - `events` is a list of [events](#events) (optional),
+   - `warn` sets the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html) (optional),
    - `sim_par` is a [thetaUncon](#parameter-structures)-object specifying model parameters for a simulation (optional).
+   
+See below for [examples](#examples).
 
 ## Data
 The code is intended to be used on daily share prices provided by https://finance.yahoo.com/ or simulated data. 
