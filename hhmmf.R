@@ -1,15 +1,10 @@
-#' Compute confidence intervals for the estimates
+#' Perform estimation of HHMMs on financial data
 #'
-#' @param fit A fitted model
-#' @param alpha Confidence level, default 0.95
-#'
-#' @return A list containing the following elements:
-#' \item{lower_limit}{the lower limits of the intervals}
-#' \item{estimate}{the estimates}
-#' \item{upper_limit}{the upper limits of the intervals}
-#'
-#' @examples
-#' conf_int(fit = fit)
+#' @param controls A list of controls
+#' @param events A list of historical events, default NULL
+#' @param warn An integer setting the handling of warning messages, default 1
+#' @param sim_par A vector of model parameters for simulation, default NULL
+
 hhmmf = function(controls,events=NULL,warn=1,sim_par=NULL){
   ### set handling of warnings
   options(warn=warn); on.exit(options(warn=0))
