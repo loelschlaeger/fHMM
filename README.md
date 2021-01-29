@@ -1,5 +1,14 @@
-# HHMM_Finance
+# ReadMe of HHMM_Finance
 This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data.
+
+## Table of contents
+1. [Contained files](#contained-files)
+2. [Getting started](#getting-started)
+3. [Data](#data)
+4. [Specifying controls](#specifying-controls)
+5. [Parameter structures](#parameter-structures)
+6. [Outputs](#outputs)
+7. [Examples](#examples)
 
 ## Contained files
 - `checks.R` provides validation functions.
@@ -27,17 +36,6 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 
 See below for [examples](#examples).
 
-## Error codes
-The following errors or warnings can occur:
-| Code | Response              | Problem                                                            |
-|------|-----------------------|--------------------------------------------------------------------|
-| S.1  |                       |                                                                    |
-| C.1  | 'controls' is invalid | 'controls' did not successfully pass 'check_controls'              |
-| D.1  |                       |                                                                    |
-| F.1  |                       |                                                                    |
-| V.1  | 'events' is ignored   |                                                                    |
-| V.2  | 'events' is invalid   | vectors 'dates' and 'names' in 'events' must be of the same length |
-
 ## Data
 The code is intended to be used on daily share prices provided by https://finance.yahoo.com/. The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE)`, where
 - `name` is a personal identifier,
@@ -46,6 +44,9 @@ The code is intended to be used on daily share prices provided by https://financ
 - `show_symbols = TRUE` prints all saved symbols.
 
 Additionally, data can be simulated.
+
+### Simulation parameters
+For simulated data, the model parameters are randomly drawn. Expected values and standard deviations are drawn from a fixed range: -1 to 1 for expected values of a t-distribution, 0 to 1 for expected values of a gamma-distribution and 0 to 1 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
 
 ### Events
 Events can be highlighted in the visualization of a decoded, empirical time series by passing a named list with elements `dates` (a vector of dates) and `names` (a vector of names for the events) to `hhmmf`.
@@ -95,7 +96,7 @@ The following parameters are optional and set to [default values](#default-value
 - `data_col = c(NA,NA)`
 - `data_source = c(NA,NA)` 
 - `gradtol = 1e-4`
-- `id = "test"
+- `id = "test"`
 - `iterlim = 500`
 - `overwrite = FALSE`
 - `print_level = 0`
@@ -105,14 +106,6 @@ The following parameters are optional and set to [default values](#default-value
 - `steptol = 1e-2`
 - `time_horizon = c(NA,NA)`
 - `truncate_data = c(NA,NA)`
-
-### Parameter scaling
-For simulation and initialization of the estimation routine, the model parameters are randomly drawn. Expected values and standard deviations are drawn from a fixed range: -1 to 2 for expected values of a t-distribution, 0 to 2 for expected values of a gamma-distribution, 0 to 2 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
-
-Recommended scales for common applications:
-- t-distribution for log-returns: 0.01
-- t-distribution for means of log-returns: 0.001
-- gamma-distribution for sums of absolute log-returns: 0.3
 
 ## Parameter structures
 Internally, model parameters are processed using three structures:
