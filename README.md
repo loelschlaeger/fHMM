@@ -33,6 +33,8 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
    - `events` is a list of [events](#events) (optional),
    - `warn` sets the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html) (optional),
    - `sim_par` is a [thetaUncon](#parameter-structures)-object specifying model parameters for a simulation (optional).
+   
+See below for [examples](#examples).
 
 ## Data
 The code is intended to be used on daily share prices provided by https://finance.yahoo.com/ or simulated data. 
