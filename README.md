@@ -8,19 +8,23 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 4. [Specifying controls](#specifying-controls)
 5. [Parameter structures](#parameter-structures)
 6. [Outputs](#outputs)
-7. [Examples](#examples)
+7. [Debugging](#debugging)
+8. [Examples](#examples)
 
 ## Contained files
-- `checks.R` provides validation functions.
-- `conf.R` computes confidence intervals for the estimates.
-- `data.R` processes, simulates and downloads [data](#data).
-- `init.R` initializes the code and the main function `hhmmf`.
-- `loglike.cpp` computes the model's log-likelihood.
-- `start.R` presents the code's [workflow](#getting-started).
-- `optim.R` maximizes the log-likelihood function using [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
-- `trans.R` contains helper functions for parameter transformations between different [parameter structures](#parameter-structures).
-- `visual.R` generates visualisations of the [model results](#outputs).
-- `viterbi.R` performs state decoding based on the [Viterbi algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm).
+- `checks.R`: validation functions
+- `conf.R`: computation of confidence intervals for the estimates
+- `data.R`: processing and simulating [data](#data)
+- `exception.R`: defining [exception messages](#debugging)
+- `hhmmf.R`: initialization of the main function `hhmmf`
+- `init.R`: initialization of the code
+- `loglike.cpp`: computation of the model's log-likelihood
+- `optim.R`: numerical maximization of the log-likelihood function using [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `start.R`: presentation of the code's [workflow](#getting-started)
+- `trans.R`: providing parameter transformation functions to switch between different [parameter structures](#parameter-structures)
+- `visual.R`: generating visualisations of the [model results](#outputs)
+- `viterbi.R`: performing state decoding based on the [Viterbi algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm)
+- `yahoo.R`: download [data](#data) from https://finance.yahoo.com/
 
 ## Getting started
 0. Go to `start.R`.
@@ -34,19 +38,18 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
    - `warn` sets the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html),
    - `sim_par` is a [thetaUncon](#parameter-structures)-object specifying model parameters for a simulation (optional).
 
-See below for [examples](#examples).
-
 ## Data
-The code is intended to be used on daily share prices provided by https://finance.yahoo.com/. The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE)`, where
+The code is intended to be used on daily share prices provided by https://finance.yahoo.com/ or simulated data. 
+
+### Empirical data
+The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE)`, where
 - `name` is a personal identifier,
 - `symbol` is the stock's symbol,
 - `from` and `to` define the time interval (in format `"YYYY-MM-DD"`),
 - `show_symbols = TRUE` prints all saved symbols.
 
-Additionally, data can be simulated.
-
-### Simulation parameters
-For simulated data, the model parameters are randomly drawn. Expected values and standard deviations are drawn from a fixed range: -1 to 1 for expected values of a t-distribution, 0 to 1 for expected values of a gamma-distribution and 0 to 1 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
+### Simulated data
+For simulated data, the model parameters can be either specified by passing `sim_par` to `hhmmf` or be randomly drawn. In the latter case, model paramters are drawn from the ranges -1 to 1 for expected values of a t-distribution, 0 to 1 for expected values of a gamma-distribution and 0 to 1 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
 
 ### Events
 Events can be highlighted in the visualization of a decoded, empirical time series by passing a named list with elements `dates` (a vector of dates) and `names` (a vector of names for the events) to `hhmmf`.
@@ -62,6 +65,7 @@ A model is specified by setting parameters of the named list `controls` and pass
    - `"gamma"`, the gamma distribution
 - `data_cs_type` (only for a HHMM and empirical data): a character, determining the type of coarse-scale data:
    - `data_cs_type = "mean"`: means of the fine scale data
+   - `data_cs_type = "mean_abs"`: means of the fine scale data in absolute value
    - `data_cs_type = "sum_abs"`: sums of fine scale data in absolute value
 - either `data_source` along with `data_col` (for empirical data) or `time_horizon` (for simulated data), see below
 
@@ -79,7 +83,7 @@ The following parameters are optional and set to [default values](#default-value
 - `overwrite`: a boolean, determining whether overwriting of existing results (on the same `id`) is allowed, set to `TRUE` if `id = "test"`
 - `print_level`: an integer, determining the level of printing during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `runs`: an integer, setting the number of optimization runs
-- `scale_par`: a positive numeric vector of length two, [scaling the model parameters](#parameter-scaling) on the coarse and fine scale, respectively
+- `scale_par`: a positive numeric vector of length two, [scaling the model parameters](#simulated-data) in a simulation on the coarse and fine scale, respectively
 - `seed`: an integer, setting a seed for the simulation and the optimization
 - `steptol`: an integer, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `time_horizon`: a vector of length 2 (first entry is mandatory if data is simulated, second entry is mandatory if the model is a HHMM), determining the length of the time horizion(s) and can be one of
@@ -131,6 +135,9 @@ The following model results are saved in the folder `./models/id`:
    - `ts.pdf`, a visualization of the decoded time series with (in case of empirical data) markings for the entries in `events`
 - rds-files:
    - `controls.rds`, `data.rds`, `decoding.rds`, `events.rds`, `fit.rds` and `pseudos.rds` (to analyse and further process the model results)
+   
+## Debugging
+Most error or warning messages provide a code. Calling `exception(code)` yields suggestions for debugging.
 
 ## Examples
 ### Fitting a 3-state HMM to the DAX closing prices from 2000 to 2020 using t-distributions
