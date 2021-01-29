@@ -9,7 +9,7 @@ check_controls = function(controls){
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
   controls_with_length_1 = c("id","runs","at_true","iterlim","seed","print_level","steptol","gradtol","overwrite","data_cs_type")
   controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","sdds")
-  positive_numeric_controls = c("scale_par","runs","iterlim","steptol","gradtol")
+  positive_numeric_controls = c("runs","iterlim","steptol","gradtol")
   integer_controls = c("states","runs","iterlim","print_level","seed")
   boolean_controls = c("overwrite","at_true")
   
@@ -61,7 +61,6 @@ check_controls = function(controls){
   if("steptol" %in% missing_controls)       controls[["steptol"]] = 1e-2
   if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
   if("time_horizon" %in% missing_controls)  controls[["time_horizon"]] = c(NA,NA)
-  if("scale_par" %in% missing_controls)     controls[["scale_par"]] = c(1,1)
   if("sdds" %in% missing_controls)          controls[["sdds"]] = c(NA,NA)
 
   ### create artificial controls
@@ -73,6 +72,7 @@ check_controls = function(controls){
     controls[["sim"]] = if(is.na(controls[["data_source"]][2])) TRUE else FALSE
   }
   controls[["fixed_dfs"]] = c(NA,NA)
+  controls[["scale_par"]] = c(1,1)
 
   ### check sdds
   all_sdds = c("gamma","t")
@@ -154,15 +154,15 @@ check_controls = function(controls){
         stop(paste0("In 'controls': Second entry of 'sdds' must be 't' or 'gamma'."),call.=FALSE)
       }
     }
-    if(!is.na(controls[["data_cs_type"]]) & !controls[["data_cs_type"]] %in% c("mean","sum_abs")){
-      stop(paste0("In 'controls': 'data_cs_type' must be one of '",paste(c("mean","sum_abs"),collapse="', '"),"'."),call.=FALSE)
+    if(!is.na(controls[["data_cs_type"]]) & !controls[["data_cs_type"]] %in% c("mean","mean_abs","sum_abs")){
+      stop(paste0("In 'controls': 'data_cs_type' must be one of '",paste(c("mean","mean_abs","sum_abs"),collapse="', '"),"'."),call.=FALSE)
     }
     if(!is.na(controls[["data_cs_type"]]) & controls[["sim"]]){
       warning("In 'controls': 'data_cs_type' is ignored.",call.=FALSE)
       controls[["data_cs_type"]] = NA
     }
     if(!controls[["sim"]] & is.na(controls[["data_cs_type"]])){
-      controls[["data_cs_type"]] = "sum_abs"
+      controls[["data_cs_type"]] = "mean_abs"
     }
     if(controls[["sim"]] & any(!is.na(controls[["data_source"]]))){
       warning("In 'controls': Entries of 'data_source' are ignored.",call.=FALSE)
@@ -248,6 +248,19 @@ check_controls = function(controls){
 
 ### print data characteristics
 check_data = function(controls,data){
+  if(controls[["model"]]=="HMM"){
+    if(controls[["sdds"]][1]=="gamma" & any(data[["logReturns"]]<0)){
+      stop("Gamma distribution not allowed.",call.=FALSE)
+    }
+  }
+  if(controls[["model"]]=="HHMM"){
+    if(controls[["sdds"]][1]=="gamma" & any(data[["logReturns"]][,1]<0)){
+      stop("...",call.=FALSE)
+    }
+    if(controls[["sdds"]][2]=="gamma" & any(data[["logReturns"]][,-1]<0)){
+      stop("...",call.=FALSE)
+    }
+  }
   if(controls[["sim"]]){
     if(controls[["model"]]=="HMM"){
       writeLines(paste("Data points:",length(data[["logReturns"]])))
