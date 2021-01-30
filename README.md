@@ -156,8 +156,7 @@ controls = list(
   states        = c(3,0),
   data_source   = c("dax",NA),
   data_col      = c("Close",NA),
-  truncate_data = c("2000-01-03","2020-12-30"),
-  scale_par     = c(0.01,NA)
+  truncate_data = c("2000-01-03","2020-12-30")
 )
 
 ### Define events
@@ -184,5 +183,5 @@ controls = list(
 )
 
 ### Fit (H)HMM
-hhmmf(controls,events)
+hhmmf(controls)
 ```
