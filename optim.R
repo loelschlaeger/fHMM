@@ -1,7 +1,11 @@
 ### maximize log-likelihood function
 max_likelihood = function(data,controls){
-  if(is.null(controls[["controls_checked"]])) stop("'controls' is invalid (Code C.1)",call.=FALSE)
-  if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
+  if(is.null(controls[["controls_checked"]])){
+    stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
+  }
+  if(!is.null(controls[["seed"]])){
+    set.seed(controls[["seed"]])
+  }
   
   runs = controls[["runs"]]
   llks = rep(NA,runs) 
@@ -58,17 +62,23 @@ max_likelihood = function(data,controls){
     return(scale_par)
   }
   
+  ### select start values
   message("Selecting start values...",appendLF = FALSE)
-  controls[["scale_par"]] = adjust_scale_par(controls,data[["logReturns"]])
-  start_values = generate_start_values(controls,runs)
-  ll_at_start_values = rep(NA,runs)
-  for(run in seq_len(runs)){
-    ll_at_start_values[run] = suppressWarnings(target(start_values[[run]],data[["logReturns"]],controls))
-  }
+    controls[["scale_par"]] = adjust_scale_par(controls,data[["logReturns"]])
+    start_values = generate_start_values(controls,runs)
+    ll_at_start_values = rep(NA,runs)
+    for(run in seq_len(runs)){
+      ll_at_start_values[run] = suppressWarnings(target(start_values[[run]],data[["logReturns"]],controls))
+    }
   message("\r",sprintf("Start values selected. %10s"," "))
+  
+  ### check fails
   fails = failed_start_values(ll_at_start_values)
+  if(length(fails)==runs){
+    stop(sprintf("%s (%s)",exception("F.2")[2],exception("F.2")[1]),call.=FALSE)
+  }
   if(length(fails)/runs>0.5){
-    stop("... (Code F.*)",call.=FALSE)
+    warning(sprintf("%s (%s)",exception("F.3")[2],exception("F.3")[1]),call.=FALSE)
   }
   if(length(fails)>0){
     runs_seq = seq_len(runs)[-fails]
@@ -101,7 +111,7 @@ max_likelihood = function(data,controls){
   estimation_time = ceiling(difftime(end,start,units='mins'))
   
   if(all(is.na(llks))){
-    stop("None of the estimation runs ended successfully.",call.=FALSE)
+    stop(sprintf("%s (%s)",exception("F.4")[2],exception("F.4")[1]),call.=FALSE)
   } else {
     ### compute Hessian
     message("Computing the Hessian...",appendLF = FALSE)

@@ -34,7 +34,9 @@ viterbi = function(observations,nstates,Gamma,mus,sigmas,dfs,sdd){
 
 ### execution of Viterbi algorithm
 apply_viterbi = function(data,fit,controls){
-  if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
+  if(is.null(controls[["controls_checked"]])){
+    stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
+  }
   
   observations = data[["logReturns"]]
   thetaList = fit[["thetaList"]]

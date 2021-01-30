@@ -10,7 +10,7 @@ hhmmf = function(controls,events=NULL,warn=1,sim_par=NULL){
   options(warn=warn); on.exit(options(warn=0))
   ### create output folder
   if(dir.exists(paste0("models/",controls[["id"]])) & controls[["id"]]!="test"){
-    stop(paste0("Model '",controls[["id"]],"' already exists."),call.=FALSE)
+    stop(sprintf("%s (%s)",exception("S.1")[2],exception("S.1")[1]),call.=FALSE)
   } else {
     if(!dir.exists(paste0("models/",controls[["id"]]))){
       dir.create(paste0("models/",controls[["id"]]))

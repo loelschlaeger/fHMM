@@ -1,7 +1,11 @@
 ### initialize the code
 load_code = function(){
-  if(!dir.exists("models")) dir.create("models")
-  if(!dir.exists("data")) dir.create("data")
+  if(!dir.exists("models")){
+    dir.create("models")
+  }
+  if(!dir.exists("data")){
+    dir.create("data")
+  }
   installed_packages = installed.packages()[,"Package"]
   exe = alist(if(!"Rcpp" %in% installed_packages){ writeLines("\nInstalling package 'Rcpp'.\n"); install.packages("Rcpp",quite=TRUE)},
               require("Rcpp"),

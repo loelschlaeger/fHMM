@@ -56,7 +56,7 @@ Gamma2delta = function(Gamma){
   dim   = dim(Gamma)[1]
   if(class(try(solve(t(diag(dim)-Gamma+1),rep(1,dim)),silent=TRUE))=="try-error"){ 
     delta = rep(1/dim,dim)
-    warning(call.=FALSE,"Computation of stationary distribution failed, return uniform distribution.")
+    warning(sprintf("%s (%s)",exception("F.1")[2],exception("F.1")[1]),call.=FALSE)
   } else { 
     delta = solve(t(diag(dim)-Gamma+1),rep(1,dim))
   }
@@ -271,12 +271,9 @@ thetaUncon2thetaList = function(thetaUncon,controls){
   return(thetaCon2thetaList(thetaUncon2thetaCon(thetaUncon,controls),controls))
 }
 
-### INPUT:  unconstrained model parameters and control parameters 
+### INPUT:  unconstrained model parameters of a HHMM and control parameters 
 ### OUTPUT: unconstrained model parameters of fine scale in list form
 thetaUncon2thetaUnconSplit = function(thetaUncon,controls){
-  if(controls[["model"]]!="HHMM"){
-    stop("Function 'thetaUncon2thetaUnconSplit' only for HHMM models.",call.=FALSE)
-  }
   M = controls[["states"]][1] 
   N = controls[["states"]][2] 
   

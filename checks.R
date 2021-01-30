@@ -6,6 +6,7 @@ check_controls = function(controls){
   required_controls = c("id","states","sdds")
   artificial_controls = c("sim","model","fixed_dfs","controls_checked")
   missing_controls = setdiff(all_controls,names(controls))
+  missing_required_controls = setdiff(required_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
   controls_with_length_1 = c("id","runs","at_true","iterlim","seed","print_level","steptol","gradtol","overwrite","data_cs_type")
   controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","sdds")
@@ -14,35 +15,26 @@ check_controls = function(controls){
   boolean_controls = c("overwrite","at_true")
   
   ### check subsets of controls
-  for(required_control in required_controls){
-    if(!(required_control %in% names(controls))){
-      stop(paste0("In 'controls': '", required_control,"' must be specified."),call.=FALSE)
-    }
+  if(length(missing_required_controls)>0){
+    stop(sprintf("%s (%s)",exception("C.2")[2],exception("C.2")[1]),call.=FALSE) 
   }
-  for(control_with_length_1 in intersect(controls_with_length_1,names(controls))){
-    if(length(controls[[control_with_length_1]])!=1){
-      stop(paste0("In 'controls': '", control_with_length_1, "' must be atomic."),call.=FALSE)
-    }
+  if(any(sapply(controls[intersect(controls_with_length_1,names(controls))],length)!=1)){
+    stop(sprintf("%s (%s)",exception("C.3")[2],exception("C.3")[1]),call.=FALSE) 
   }
-  for(control_with_length_2 in intersect(controls_with_length_2,names(controls))){
-    if(length(controls[[control_with_length_2]])!=2){
-      stop(paste0("In 'controls': '", control_with_length_2, "' must be a vector of length 2."),call.=FALSE)
-    }
+  if(any(sapply(controls[intersect(controls_with_length_2,names(controls))],length)!=2)){
+    stop(sprintf("%s (%s)",exception("C.3")[2],exception("C.3")[1]),call.=FALSE) 
   }
-  for(positive_numeric_control in intersect(positive_numeric_controls,names(controls))){
-    if(!is.numeric(controls[[positive_numeric_control]]) || !all(controls[[positive_numeric_control]]>0,na.rm=TRUE)){
-      stop(paste0("In 'controls': '", positive_numeric_control,"' must be a positive numeric value."),call.=FALSE)
-    }
+  if(any(sapply(controls[intersect(positive_numeric_controls,names(controls))],function(x) !is.numeric(x) || x<=0))){
+    stop(sprintf("%s (%s)",exception("C.3")[2],exception("C.3")[1]),call.=FALSE) 
   }
-  for(integer_control in intersect(integer_controls,names(controls))){
-    if(!is.numeric(controls[[integer_control]]) || !isTRUE(all(controls[[integer_control]] == floor(controls[[integer_control]])))){
-      stop(paste0("In 'controls': '", integer_control,"' must be an integer."),call.=FALSE)
-    }
+  if(any(sapply(controls[intersect(boolean_controls,names(controls))],function(x) !is.logical(x)))){
+    stop(sprintf("%s (%s)",exception("C.3")[2],exception("C.3")[1]),call.=FALSE) 
   }
-  for(boolean_control in intersect(boolean_controls,names(controls))){
-    if(!is.logical(controls[[boolean_control]])){
-      stop(paste0("In 'controls': '", boolean_control, "' must be boolean."),call.=FALSE)
-    }
+  if(length(missing_controls)>=1){
+    warning(sprintf("%s (%s)",exception("C.4")[2],exception("C.4")[1]),call.=FALSE)
+  }
+  if(length(redundant_controls)>=1){
+    warning(sprintf("%s (%s)",exception("C.5")[2],exception("C.5")[1]),call.=FALSE)
   }
   
   ### set default values
@@ -207,12 +199,6 @@ check_controls = function(controls){
   }
 
   ### general checks
-  if(length(missing_controls)>=1){
-    warning("Some controls are not specified and set to default values.",call.=FALSE)
-  }
-  if(length(redundant_controls)>=1){
-    warning(paste("In 'controls': The following elements are not supported:",paste(redundant_controls,collapse=", ")),call.=FALSE)
-  }
   if(controls[["id"]]=="test"){
     controls[["overwrite"]] = TRUE
   }

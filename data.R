@@ -1,8 +1,14 @@
 ### process simulated or empirical data
 get_data = function(controls,sim_par){
-  if(is.null(controls[["controls_checked"]])) stop("'controls' invalid",call.=FALSE)
-  if(controls[["sim"]])  data = simulate_data(controls,sim_par)
-  if(!controls[["sim"]]) data = read_data(controls)
+  if(is.null(controls[["controls_checked"]])){
+    stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
+  }
+  if(controls[["sim"]]){
+    data = simulate_data(controls,sim_par)
+  }
+  if(!controls[["sim"]]){
+    data = read_data(controls)
+  }
   message("Data processed.")
   check_data(controls,data)
   return(data)
@@ -60,7 +66,9 @@ compute_fs_lengths = function(fs_time_horizon,T=NULL,fs_dates=NULL){
 
 ### simulate data
 simulate_data = function(controls,sim_par){
-  if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
+  if(!is.null(controls[["seed"]])){
+    set.seed(controls[["seed"]])
+  }
   
   M = controls[["states"]][1] 
   N = controls[["states"]][2] 
@@ -139,13 +147,12 @@ read_data = function(controls){
     if(is.na(data_source)[i]){
       data[[i]] = NA
     }
-    
     if(!is.na(data_source)[i]){
-      
       ### extract data
       data[[i]] = read.csv(file=paste0("data/",data_source[i]),head=TRUE,sep=",",na.strings="null")
-      if(!"Date" %in% colnames(data[[i]])) stop(paste0("Data file '",data_source[i],"' must have a column named 'Date'."))
-      if(!data_col[i] %in% colnames(data[[i]])) stop(paste0("Data file '",data_source[i],"' does not have a column named '",data_col[i],"'."))
+      if(!"Date" %in% colnames(data[[i]]) || !data_col[i] %in% colnames(data[[i]])){
+        stop(sprintf("%s (%s)",exception("D.4")[2],exception("D.4")[1]),call.=FALSE)
+      }
       data[[i]] = data[[i]][,colnames(data[[i]]) %in% c("Date",data_col[i]), drop = FALSE]
       data[[i]][["Date"]] = as.Date(data[[i]][["Date"]], format="%Y-%m-%d")
       data[[i]][[data_col[i]]] = as.numeric(data[[i]][[data_col[i]]])
@@ -237,8 +244,6 @@ read_data = function(controls){
     
     data[[1]] = truncate_data(controls,data[[1]])
     data[[2]] = truncate_data(controls,data[[2]])
-    
-    if(any(dim(data[[1]])!=dim(data[[2]]))) stop("Processing of the datasets failed.",call.=FALSE)
     
     T_star = compute_fs_lengths(fs_time_horizon = controls[["time_horizon"]][2], fs_dates = data[[2]][["Date"]])
     T = length(T_star)

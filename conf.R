@@ -1,6 +1,7 @@
 #' Compute confidence intervals for the estimates
 #'
 #' @param fit A fitted model
+#' @param controls A list of control parameters
 #' @param alpha Confidence level, default 0.95
 #'
 #' @return A list containing the following elements:
@@ -10,21 +11,29 @@
 #'
 #' @examples
 #' conf_int(fit = fit)
-conf_int = function (fit, alpha = 0.95) {
-  # Input checks
-  if (alpha < 0 | alpha > 1) {
-    stop("Value of 'alpha' needs to be between 0 and 1.",call.=FALSE)
+conf_int = function (fit, controls, alpha = 0.95) {
+  ### input checks
+  if(alpha < 0 | alpha > 1){
+    stop(sprintf("%s (%s)",exception("F.5")[2],exception("F.5")[1]),call.=FALSE)
   }
-  fisher = fit$hessian
-  # Hessian checks (to do)
+  if(is.null(controls[["controls_checked"]])){
+    stop(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
+  }
+  
+  ### extract estimates
+  fisher = fit[["hessian"]]
+  estimates = thetaUncon2thetaCon(fit[["mod"]][["estimate"]],controls)
+  
+  ### Hessian checks (to do)
   inv_fisher = MASS::ginv(fisher)
   sds = suppressWarnings(sqrt(diag(inv_fisher)))
-  lower_limit = fit$estimate + qnorm(p = (1 - alpha) / 2) * sds
-  upper_limit = fit$estimate + qnorm(p = 1 - (1 - alpha) / 2) * sds
+  lower_limit = estimates + qnorm(p = (1 - alpha) / 2) * sds
+  upper_limit = estimates + qnorm(p = 1 - (1 - alpha) / 2) * sds
   out = list(lower_limit = lower_limit, estimate = fit$estimate, upper_limit = upper_limit)
-  # Output checks
+  
+  ### output checks
   if(any(is.na(out))) {
-    warning("Some confidence intervals could not be computed. The corresponding estimates may lie close to the boundaries of their parameter space.")
+    warning(sprintf("%s (%s)",exception("C.3")[2],exception("C.3")[1]),call.=FALSE)
   }
   return(out)
 }

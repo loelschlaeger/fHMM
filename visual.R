@@ -3,14 +3,14 @@ create_visuals = function(data,fit,decoding,controls,events=NULL){
   
   ### pre-checks
   if(is.null(controls[["controls_checked"]])){
-    stop(sprintf("%s (%s)",exception("C.1")[["response"]],exception("C.1")[["code"]]),call.=FALSE)
+    stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
   }
   if(controls[["sim"]] & !is.null(events)){
     events = NULL
-    warning(sprintf("%s (Code %s)",exception("V.1")[["response"]],exception("V.1")[["code"]]),call.=FALSE)
+    warning(sprintf("%s (%s)",exception("V.1")[2],exception("V.2")[1]),call.=FALSE)
   } 
   if(length(events[["dates"]])!=length(events[["names"]])){
-    stop(sprintf("%s (%s)",exception("V.2")[["response"]],exception("V.2")[["code"]]),call.=FALSE)
+    stop(sprintf("%s (%s)",exception("V.2")[2],exception("V.2")[1]),call.=FALSE)
   }
   
   ### save events
