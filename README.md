@@ -15,12 +15,12 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 - `checks.R`: validation functions
 - `conf.R`: computation of confidence intervals for the estimates
 - `data.R`: processing and simulating [data](#data)
-- `exception.R`: defining [exception messages](#debugging)
-- `hhmmf.R`: initialization of the main function `hhmmf`
+- `exception.R`: defining [exceptions](#debugging)
+- `hhmmf.R`: main function `hhmmf`
 - `init.R`: initialization of the code
 - `loglike.cpp`: computation of the model's log-likelihood
 - `optim.R`: numerical maximization of the log-likelihood function using [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `trans.R`: providing parameter transformation functions to switch between different [parameter structures](#parameter-structures)
+- `trans.R`: parameter transformation functions to switch between different [parameter structures](#parameter-structures)
 - `visual.R`: generating visualisations of the [model results](#outputs)
 - `viterbi.R`: performing state decoding based on the [Viterbi algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm)
 - `yahoo.R`: download [data](#data) from https://finance.yahoo.com/
@@ -40,37 +40,39 @@ See below for [examples](#examples).
 The code is intended to be used on daily share prices provided by https://finance.yahoo.com/ or simulated data. 
 
 ### Empirical data
-The data must be in csv-format and must contain a column named "Date". Data can be saved in the folder `"./data"` or downloaded automatically via the function `download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE)`, where
-- `name` is a personal identifier,
-- `symbol` is the stock's symbol,
-- `from` and `to` define the time interval (in format `"YYYY-MM-DD"`),
-- `show_symbols = TRUE` prints all saved symbols.
+Empirical data must be in csv-format and must contain a column named "Date" and a named column of daily share prices. Such data files can be saved in the folder `"./data"` or downloaded automatically via the function `download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE)`, where
+- `name` is a personal identifier (optional),
+- `symbol` is the stock's symbol (optional),
+- `from` and `to` define the time interval (in format `"YYYY-MM-DD"`, optional),
+- `show_symbols = TRUE` prints all saved symbols (optional).
 
 ### Simulated data
-For simulated data, the model parameters can be either specified by passing `sim_par` to `hhmmf` or be randomly drawn. In the latter case, model paramters are drawn from the ranges -1 to 1 for expected values of a t-distribution, 0 to 1 for expected values of a gamma-distribution and 0 to 1 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
+Data can be simulated, e.g. for bootstrapping. The model parameters can be either
+1. specified by passing `sim_par` to `hhmmf` or 
+2. randomly drawn. In this case, model paramters are drawn from the ranges -1 to 1 for expected values of a t-distribution, 0 to 1 for expected values of a gamma-distribution and 0 to 1 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
 
 ### Events
-Events can be highlighted in the visualization of a decoded, empirical time series by passing a named list with elements `dates` (a vector of dates) and `names` (a vector of names for the events) to `hhmmf`.
+Historical events can be highlighted in the visualization of the decoded, empirical time series by passing a named list with elements `dates` (a vector of dates) and `names` (a vector of names for the events) to `hhmmf`.
 
 ## Specifying controls
 A model is specified by setting parameters of the named list `controls` and passing it to `hhmmf`. The following parameters are mandatory:
 - `states`: a numeric vector of length 2, determining the model type and the number of states:
    - if `states = c(x,0)`, a HMM with `x` states is estimated
    - if `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated
-- `sdds`: a character vector of length 2, specifying the state-dependent distributions:
+- `sdds`: a character vector of length 2, specifying the state-dependent distributions for both scales:
    - `"t"`, the t-distribution
    - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom (normal distribution is obtained by setting `x = Inf`)
    - `"gamma"`, the gamma distribution
 - `data_cs_type` (only for a HHMM and empirical data): a character, determining the type of coarse-scale data:
-   - `data_cs_type = "mean"`: means of the fine scale data
-   - `data_cs_type = "mean_abs"`: means of the fine scale data in absolute value
-   - `data_cs_type = "sum_abs"`: sums of fine scale data in absolute value
+   - `data_cs_type = "mean"`: means of the fine-scale data
+   - `data_cs_type = "mean_abs"`: means of the fine-scale data in absolute value
+   - `data_cs_type = "sum_abs"`: sums of fine-scale data in absolute value
 - either `data_source` along with `data_col` (for empirical data) or `time_horizon` (for simulated data), see below
 
 The following parameters are optional and set to [default values](#default-values) if not specified:
 - `accept_codes`: either a numeric vector (containing acceptable exit codes of the optimization) or the character `"all"` (accepting all codes), see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `at_true`: a boolean, determining whether the optimization is initialised at the true parameter values (only for simulated data, sets `runs = 1` and `accept_codes = "all"`)
-- `data_col`: a character vector of length 2, containing names of the desired columns of `data_source`
+- `data_col`: a character vector of length 2, containing the name of the desired column of `data_source` for both scales
 - `data_source`: a character vector of length 2, containing the file names of the empirical data:
    - if `data_source = c(NA,NA)`, data is simulated
    - if `data_source = c("x",NA)`, data `"./data/x.csv"` is modeled by a HMM
@@ -111,7 +113,7 @@ The following parameters are optional and set to [default values](#default-value
 
 ## Parameter structures
 Internally, model parameters are processed using three structures:
-- `thetaFull`: a named list of all model parameters
+- `thetaFull`: a named list of all model parameters with the names `"Gamma"`, `"mus"`, `"sigmas"`, `"dfs"` and `"*_star"` for the fine-scale
 - `thetaUncon`: a vector of all unconstrained model parameters to be estimated in the order 
    1. non-diagonal elements of transition probability matrices (column-wise)
    2. expected values
@@ -122,61 +124,57 @@ Internally, model parameters are processed using three structures:
 ## Outputs
 The following model results are saved in the folder `./models/id`:
 - txt-files:
-   - `comparison.txt`, comparing true and estimated parameters (only for simulated data)
-   - `estimates.txt`, containing the model's likelihood value, AIC and BIC values, exit code, number of iterations, total computation time, true parameter values (only for simulated data), estimates, gradient, Hessian
-   - `protocol.txt`, containing a protocol of the estimation
-   - `states.txt`, containing frequencies of the decoded states and (in case of simulated data) a comparison between the true states and the predicted states
+   - `comparison.txt`: comparing true and estimated parameters (only for simulated data)
+   - `estimates.txt`: containing the model's likelihood value, AIC and BIC values, exit code, number of iterations, total computation time, true parameter values (only for simulated data), estimates, gradient, Hessian
+   - `protocol.txt`: containing a protocol of the estimation
+   - `states.txt`: containing frequencies of the decoded states and (in case of simulated data) a comparison between the true states and the predicted states
 - pdf-files:
-   - `lls.pdf`, a visualization of the log-likelihood values in the different estimation runs
-   - `prs.pdf`, a visualization of the pseudo-residuals together with a [Jarque–Bera test](https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test) result on their normality
-   - `sdds.pdf`, a visualization of the estimated state-dependent distributions and (in case of simulated data) the true state-dependent distributions
-   - `ts.pdf`, a visualization of the decoded time series with (in case of empirical data) markings for the entries in `events`
+   - `lls.pdf`: a visualization of the log-likelihood values in the different estimation runs
+   - `prs.pdf`: a visualization of the pseudo-residuals together with a [Jarque–Bera test](https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test) result on their normality
+   - `sdds.pdf`: a visualization of the estimated state-dependent distributions and (in case of simulated data) the true state-dependent distributions
+   - `ts.pdf`: a visualization of the decoded time series with (in case of empirical data) markings for the entries in `events`
 - rds-files:
    - `controls.rds`, `data.rds`, `decoding.rds`, `events.rds`, `fit.rds` and `pseudos.rds` (to analyse and further process the model results)
    
 ## Debugging
-Most error or warning messages provide a code. Calling `exception(code)` yields suggestions for debugging.
+Most error or warning messages provide an exception code. Calling `exception(code)` yields suggestions for debugging.
 
 ## Examples
 ### Fitting a 3-state HMM to the DAX closing prices from 2000 to 2020 using t-distributions
 Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HMM_3_DAX) for the results.
 ```R
-### 1. Initialize code
+### Initialize code
 source("init.R"); load_code()
 
-### 2. Download data (optional)
+### Download data
 download_data("dax","^GDAXI")
 
-### 3. Set and check controls
+### Set and check controls
 controls = list(
   id            = "HMM_3_DAX",
   sdds          = c("t",NA),
   states        = c(3,0),
   data_source   = c("dax",NA),
   data_col      = c("Close",NA),
-  truncate_data = c("2000-01-03","2020-12-30"),
-  scale_par     = c(0.01,NA)
+  truncate_data = c("2000-01-03","2020-12-30")
 )
 
-### 4. Define events (optional)
+### Define events
 events = list(
   dates = c("2001-09-11","2008-09-15","2020-01-27"),
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
 )
 
-### 5. Fit (H)HMM
+### Fit (H)HMM
 hhmmf(controls,events)
 ```
 ### Fitting a 2-state HMM to simulated data using gamma-distributions
 Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HMM_2_sim_gamma) for the results.
 ```R
-### 1. Initialize code
+### Initialize code
 source("init.R"); load_code()
 
-### 2. Download data (optional)
-download_data()
-
-### 3. Set and check controls
+### Set and check controls
 controls = list(
   id            = "HMM_2_sim_gamma",
   sdds          = c("gamma",NA),
@@ -184,12 +182,6 @@ controls = list(
   time_horizon  = c(5000,NA)
 )
 
-### 4. Define events (optional)
-events = list(
-  dates = c("2001-09-11","2008-09-15","2020-01-27"),
-  names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
-)
-
-### 5. Fit (H)HMM
-hhmmf(controls,events)
+### Fit (H)HMM
+hhmmf(controls)
 ```
