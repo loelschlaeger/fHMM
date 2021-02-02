@@ -198,13 +198,8 @@ check_controls = function(controls){
     }
   }
 
-  ### general checks
-  if(controls[["id"]]=="test"){
-    controls[["overwrite"]] = TRUE
-  }
-  if(controls[["overwrite"]]){
-    warning("Overwriting is allowed.",call.=FALSE)
-  }
+  ### end of checks
+  if(controls[["id"]]=="test") controls[["overwrite"]] = TRUE
   message("Controls checked.")
   controls[["controls_checked"]] = TRUE
   
@@ -236,15 +231,15 @@ check_controls = function(controls){
 check_data = function(controls,data){
   if(controls[["model"]]=="HMM"){
     if(controls[["sdds"]][1]=="gamma" & any(data[["logReturns"]]<0)){
-      stop("Gamma distribution not allowed.",call.=FALSE)
+      stop(sprintf("%s (%s)",exception("C.8")[2],exception("C.8")[1]),call.=FALSE)
     }
   }
   if(controls[["model"]]=="HHMM"){
     if(controls[["sdds"]][1]=="gamma" & any(data[["logReturns"]][,1]<0)){
-      stop("...",call.=FALSE)
+      stop(sprintf("%s (%s)",exception("C.8")[2],exception("C.8")[1]),call.=FALSE)
     }
     if(controls[["sdds"]][2]=="gamma" & any(data[["logReturns"]][,-1]<0)){
-      stop("...",call.=FALSE)
+      stop(sprintf("%s (%s)",exception("C.8")[2],exception("C.8")[1]),call.=FALSE)
     }
   }
   if(controls[["sim"]]){
@@ -303,7 +298,9 @@ check_estimation = function(time,mods,llks,data,hessian,controls){
         if(any(unid_states)==TRUE) flag = TRUE
       }
     }
-    if(flag) warning("Possibly unidentified states.",call.=FALSE)
+    if(flag){
+      warning(sprintf("%s (%s)",exception("C.7")[2],exception("C.7")[1]),call.=FALSE)
+    }
   }
   if(controls[["model"]]=="HMM"){
     check_unid_states(list(thetaList[["Gamma"]]))
@@ -316,9 +313,9 @@ check_estimation = function(time,mods,llks,data,hessian,controls){
   plot_ll(llks,controls)
   
   ### check if iteration limit was reached
-  if(mod[["iterations"]] >= controls[["iterlim"]]) warning("Selected estimation run reached the iteration limit. Consider increasing 'iterlim'.",call.=FALSE)
-  exceeded_runs = unlist(lapply(mods,function (x) x[["iterations"]])) >= controls[["iterlim"]] 
-  if(any(exceeded_runs) & controls[["runs"]]>1) warning(paste0(sum(exceeded_runs)," of ",length(llks)," runs reached the iteration limit. Consider increasing 'iterlim'."),call.=FALSE)
+  if(mod[["iterations"]] >= controls[["iterlim"]]){
+    warning(sprintf("%s (%s)",exception("C.6")[2],exception("C.6")[1]),call.=FALSE)
+  }
   
   ### compute model selection criteria
   no_par   = length(mod[["estimate"]])
@@ -465,7 +462,7 @@ check_saving = function(object=NULL,name=NULL,filetype,controls){
       return(TRUE)
     }
   } else {
-    warning(paste0("'",filename,"' already exists and overwriting is forbidden."),call.=FALSE) 
+    warning(sprintf("%s (%s)",exception("S.2")[2],exception("S.2")[1]),call.=FALSE)
     return(FALSE)
   }
 }
