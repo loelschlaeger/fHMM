@@ -43,3 +43,5 @@ u_color="darkblue",
 u_size=1.6,
 filename="sticker/sticker.pdf")
 
+### restart R session (necessary for some unknown reason)
+.rs.restartR()
