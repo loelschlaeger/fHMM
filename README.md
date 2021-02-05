@@ -70,7 +70,7 @@ The following parameters are optional and set to [default values](#default-value
 - `runs`: an integer, setting the number of optimization runs
 - `scale_par`: a positive numeric vector of length two, [scaling the model parameters](#simulated-data) in a simulation on the coarse and fine scale, respectively
 - `seed`: an integer, setting a seed for the simulation and the optimization
-- `steptol`: an integer, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
+- `steptol`: a positive scalar, setting the minimum allowable relative step length during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `time_horizon`: a vector of length 2 (first entry is mandatory if data is simulated, second entry is mandatory if the model is a HHMM), determining the length of the time horizion(s) and can be one of
    - `x`, where `x` is an integer
    - `"w"` for weekly coarse-scale observations
