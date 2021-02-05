@@ -29,9 +29,9 @@ compute_ci = function(fit,controls,alpha=0.95){
   upper_limit = estimates + qnorm(p = 1 - (1 - alpha) / 2) * sds
   
   ### Hessian checks
-  eigen_values = eigen(inv_fisher)
-  lower_limit[which(eigen_values < 0)] = NA
-  upper_limit[which(eigen_values < 0)] = NA
+  eigen_values = eigen(inv_fisher, only.values = TRUE)$values
+  lower_limit[eigen_values < 0] = NA
+  upper_limit[eigen_values < 0] = NA
   if(any(eigen_values < 0)) {
     warning("Inverse Hessian not positive definite. The confidence intervals for some parameters may be unreliable and are therefore replaced by NA.")
   }
