@@ -1,29 +1,14 @@
-# Readme of HHMM_Finance
+# Readme of hmmf
 This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data.
 
 ## Table of contents
-1. [Contained files](#contained-files)
-2. [Getting started](#getting-started)
-3. [Data](#data)
-4. [Specifying controls](#specifying-controls)
-5. [Parameter structures](#parameter-structures)
-6. [Outputs](#outputs)
-7. [Debugging](#debugging)
-8. [Examples](#examples)
-
-## Contained files
-- `checks.R`: validation functions
-- `conf.R`: computation of confidence intervals for the estimates
-- `data.R`: processing and simulating [data](#data)
-- `exception.R`: defining [exceptions](#debugging)
-- `hhmmf.R`: main function `hhmmf`
-- `init.R`: initialization of the code
-- `loglike.cpp`: computation of the model's log-likelihood
-- `optim.R`: numerical maximization of the log-likelihood function using [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `trans.R`: parameter transformation functions to switch between different [parameter structures](#parameter-structures)
-- `visual.R`: generating visualisations of the [model results](#outputs)
-- `viterbi.R`: performing state decoding based on the [Viterbi algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm)
-- `yahoo.R`: download [data](#data) from https://finance.yahoo.com/
+1. [Getting started](#getting-started)
+2. [Data](#data)
+3. [Specifying controls](#specifying-controls)
+4. [Parameter structures](#parameter-structures)
+5. [Outputs](#outputs)
+6. [Debugging](#debugging)
+7. [Examples](#examples)
 
 ## Getting started
 1. Execute `source("init.R"); load_code()` to initialize the code.
