@@ -35,7 +35,7 @@ compute_ci = function(fit,controls,alpha=0.95){
   if(any(eigen_values < 0)) {
     warning("Inverse Hessian not positive definite. The confidence intervals for some parameters may be unreliable and are therefore replaced by NA.")
   }
-  out = list(lower_limit = lower_limit, estimate = fit$estimate, upper_limit = upper_limit)
+  out = list(lower_limit = lower_limit, estimate = estimates, upper_limit = upper_limit)
   
   ### output checks
   if(any(is.na(out))) {
