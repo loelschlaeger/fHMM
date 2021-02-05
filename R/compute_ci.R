@@ -22,11 +22,19 @@ compute_ci = function(fit,controls,alpha=0.95){
   fisher = fit[["hessian"]]
   estimates = thetaUncon2thetaCon(fit[["mod"]][["estimate"]],controls)
   
-  ### Hessian checks (to do)
+  ### compute confidence intervals using the inverse Hessian approach
   inv_fisher = MASS::ginv(fisher)
   sds = suppressWarnings(sqrt(diag(inv_fisher)))
   lower_limit = estimates + qnorm(p = (1 - alpha) / 2) * sds
   upper_limit = estimates + qnorm(p = 1 - (1 - alpha) / 2) * sds
+  
+  ### Hessian checks
+  eigen_values = eigen(fisher)
+  lower_limit[which(eigen_values < 0)] = NA
+  upper_limit[which(eigen_values < 0)] = NA
+  if(any(eigen_values < 0)) {
+    warning("Hessian matrix not positive definite. The confidence intervals for some parameters may be unreliable and are therefore replaced by NA.")
+  }
   out = list(lower_limit = lower_limit, estimate = fit$estimate, upper_limit = upper_limit)
   
   ### output checks
