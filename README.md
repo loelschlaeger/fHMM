@@ -1,4 +1,4 @@
-# Readme of hmmf
+# Readme of fhmm
 This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data.
 
 ## Table of contents
