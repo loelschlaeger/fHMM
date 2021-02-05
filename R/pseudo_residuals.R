@@ -115,6 +115,6 @@ pseudo_residuals = function(controls,data,fit,decoding){
       create_prs_plots(pseudos_fs,label_add="fine-scale")
       invisible(dev.off())
     }
-    message("Pseudo-residuals visualized.")
+    message("pseudo-residuals computed and visualized")
   }
 }

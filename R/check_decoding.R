@@ -65,5 +65,5 @@ check_decoding = function(decoding,data,controls){
                filetype = "rds",
                controls = controls)
   
-  message("Hidden states decoded.")
+  message("hidden states decoded")
 }

@@ -65,14 +65,14 @@ max_likelihood = function(data,controls){
   }
   
   ### select start values
-  message("Selecting start values...",appendLF = FALSE)
+  message("selecting start values...",appendLF = FALSE)
   controls[["scale_par"]] = adjust_scale_par(controls,data[["logReturns"]])
   start_values = generate_start_values(controls,runs)
   ll_at_start_values = rep(NA,runs)
   for(run in seq_len(runs)){
     ll_at_start_values[run] = suppressWarnings(target(start_values[[run]],data[["logReturns"]],controls))
   }
-  message("\r",sprintf("Start values selected. %10s"," "))
+  message("\r",sprintf("start values selected %10s"," "))
   
   ### check fails
   fails = failed_start_values(ll_at_start_values)
@@ -90,7 +90,7 @@ max_likelihood = function(data,controls){
   
   ### define progress-bar
   pb = progress::progress_bar$new(
-    format = "Estimation: [:bar] :percent, :eta ETA", 
+    format = "estimation: [:bar] :percent, :eta ETA", 
     total = length(runs_seq), 
     clear = TRUE, 
     width = 45, 
@@ -115,7 +115,7 @@ max_likelihood = function(data,controls){
     stop(sprintf("%s (%s)",exception("F.4")[2],exception("F.4")[1]),call.=FALSE)
   } else {
     ### compute Hessian
-    message("Computing the Hessian...",appendLF = FALSE)
+    message("computing the Hessian...",appendLF = FALSE)
     hessian = suppressWarnings(nlm(f = target,
                                    p = mods[[which.max(llks)]][["estimate"]],
                                    observations = data[["logReturns"]],
@@ -123,10 +123,10 @@ max_likelihood = function(data,controls){
                                    iterlim = 1,
                                    hessian = TRUE,
                                    typsize = mods[[which.max(llks)]][["estimate"]])[["hessian"]])
-    message("\r",sprintf("Hessian computed. %10s"," "))
-    message("Estimation finished.")
-    writeLines(paste("Computation time:",ceiling(difftime(end,start,units='mins')),"minute(s)."))
-    if(!controls[["at_true"]]) writeLines(paste0("Accepted runs: ",sum(!is.na(llks))," out of ",length(llks),"."))
+    message("\r",sprintf("Hessian computed %10s"," "))
+    message("estimation finished")
+    writeLines(paste("computation time:",ceiling(difftime(end,start,units='mins')),"minute(s)"))
+    if(!controls[["at_true"]]) writeLines(paste0("accepted runs: ",sum(!is.na(llks))," out of ",length(llks)))
     fit = check_estimation(mods,llks,data,hessian,controls)
     return(fit)
   }

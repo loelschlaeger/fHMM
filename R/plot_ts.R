@@ -158,6 +158,6 @@ plot_ts = function(controls,data,decoding,colors,events){
       }
     } 
     invisible(dev.off())
-    message("Time series visualized.")
+    message("time series visualized")
   }
 }

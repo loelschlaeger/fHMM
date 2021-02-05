@@ -34,8 +34,8 @@ fhmm = function(controls,events=NULL,warn=1,sim_par=NULL){
   tryCatch(
     {
     sink(file = paste0("models/",controls[["id"]],"/protocol.txt"),split = TRUE)
-      controls = check_controls(controls); cat("\n")
-      data     = process_data(controls,sim_par); cat("\n")
+      controls = check_controls(controls)
+      data     = process_data(controls,sim_par)
       fit      = max_likelihood(data,controls)
       decoding = apply_viterbi(data,fit,controls)
     sink()

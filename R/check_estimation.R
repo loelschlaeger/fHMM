@@ -17,13 +17,13 @@ check_estimation = function(mods,llks,data,hessian,controls){
   thetaList = states_decreasing(thetaCon2thetaList(thetaCon,controls),controls)
   
   ### check if iteration limit was reached
-  if(mod[["iterations"]] >= controls[["iterlim"]]) warning(sprintf("%s (%s)",exception("C.6")[2],exception("C.6")[1]),call.=FALSE)
+  if(mod[["iterations"]] >= controls[["iterlim"]]) warning(sprintf("%s (%s)",exception("C.5")[2],exception("C.5")[1]),call.=FALSE)
   
   ### detect unidentified states
   check_unid_states = function(matrix_list){
     flag = FALSE
     for(matrix in matrix_list) for(x in c(0,1)) if(any(abs(suppressWarnings(Gamma2delta(matrix))-x)<1e-04)==TRUE) flag = TRUE
-    if(flag) warning(sprintf("%s (%s)",exception("C.7")[2],exception("C.7")[1]),call.=FALSE)
+    if(flag) warning(sprintf("%s (%s)",exception("C.6")[2],exception("C.6")[1]),call.=FALSE)
   }
   if(controls[["model"]]=="HMM") check_unid_states(list(thetaList[["Gamma"]]))
   if(controls[["model"]]=="HHMM") check_unid_states(list(thetaList[["Gamma"]],thetaList[["Gammas_star"]][seq_len(controls[["states"]][1])]))
