@@ -21,7 +21,13 @@ fhmm = function(controls,events=NULL,warn=1,sim_par=NULL){
   ### set handling of warnings
   options(warn=warn); on.exit(options(warn=0))
   
-  ### create output folder
+  ### create folder
+  if(!dir.exists("models")){
+    dir.create("models")
+  }
+  if(!dir.exists("data")){
+    dir.create("data")
+  }
   if(dir.exists(paste0("models/",controls[["id"]])) & controls[["id"]]!="test"){
     stop(sprintf("%s (%s)",exception("S.1")[2],exception("S.1")[1]))
   } else {

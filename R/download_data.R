@@ -16,6 +16,9 @@
 download_data = function(name=NULL,symbol=NULL,from="1902-01-01",to=Sys.Date(),show_symbols=FALSE){
   
   ### load and sort or create 'stock_symbols'
+  if(!dir.exists("data")){
+    dir.create("data")
+  }
   if(file.exists("data/stock_symbols.rds")){
     stock_symbols = readRDS("data/stock_symbols.rds")
     stock_symbols = stock_symbols[order(stock_symbols["name"]),]

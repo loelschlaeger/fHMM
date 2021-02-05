@@ -43,7 +43,7 @@ check_decoding = function(decoding,data,controls){
           }
           print(c_table,quote=FALSE,right=TRUE)
         }
-        writeLines("Comparison between true states and predicted states:\n")
+        writeLines("Comparison between true and decoded states\n")
         if(controls[["model"]]=="HMM"){
           compare_true_predicted_states(controls[["states"]][1],decoding,data[["states0"]])
         }

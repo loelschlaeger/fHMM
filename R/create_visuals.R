@@ -56,4 +56,6 @@ create_visuals = function(data,fit,decoding,controls,events=NULL){
   
   ### compute, save, visualize and test pseudo-residuals
   pseudo_residuals(controls,data,fit,decoding)
+  
+  message("model results visualized")
 }

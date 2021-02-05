@@ -37,10 +37,10 @@ process_data = function(controls,data,sim_par=NULL){
   ### print data characteristics
   if(controls[["sim"]]){
     if(controls[["model"]]=="HMM"){
-      writeLines(paste("data points:",length(data[["logReturns"]])))
+      writeLines(paste("sample size:",length(data[["logReturns"]])))
     }
     if(controls[["model"]]=="HHMM"){
-      writeLines(paste("data points:",dim(data[["logReturns"]])[1],"/",length(data[["logReturns"]][,-1][!is.na(data[["logReturns"]][,-1])])))
+      writeLines(paste("sample size:",dim(data[["logReturns"]])[1],"/",length(data[["logReturns"]][,-1][!is.na(data[["logReturns"]][,-1])])))
     }
   } 
   if(!controls[["sim"]]){

@@ -163,6 +163,5 @@ plot_sdd = function(controls,data,fit,decoding,colors){
       }
       invisible(dev.off())
     }
-    message("SDDs visualized")
   }
 }

@@ -218,20 +218,20 @@ check_controls = function(controls){
   controls[["controls_checked"]] = TRUE
   
   ### print model specification
-  writeLines(sprintf("%8-s%s","id:",controls[["id"]]))
-  writeLines(sprintf("%8-s%s","model:",controls[["model"]]))
-  if(controls[["sim"]])  writeLines(sprintf("%8-s%s","data:","simulated"))
-  if(!controls[["sim"]]) writeLines(sprintf("%8-s%s","data:","empirical"))
+  writeLines(sprintf("%13-s%s","model id:",controls[["id"]]))
+  writeLines(sprintf("%13-s%s","model type:",controls[["model"]]))
+  if(controls[["sim"]])  writeLines(sprintf("%13-s%s","data type:","simulated"))
+  if(!controls[["sim"]]) writeLines(sprintf("%13-s%s","data type:","empirical"))
   if(controls[["model"]]=="HMM") {
-    writeLines(sprintf("%8-s%s","states:",controls[["states"]][1]))
-    writeLines(sprintf("%8-s%s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),""))))
+    writeLines(sprintf("%13-s%s","states:",controls[["states"]][1]))
+    writeLines(sprintf("%13-s%s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),""))))
   }
   if(controls[["model"]]=="HHMM") {
-    writeLines(sprintf("%8-s%s / %s","states:",controls[["states"]][1],controls[["states"]][2]))
-    writeLines(sprintf("%8-s%s / %s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),"")),paste0(controls[["sdds"]][2],ifelse(!is.na(controls[["fixed_dfs"]][2]),paste0("(",controls[["fixed_dfs"]][2],")"),""))))
+    writeLines(sprintf("%13-s%s / %s","states:",controls[["states"]][1],controls[["states"]][2]))
+    writeLines(sprintf("%13-s%s / %s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),"")),paste0(controls[["sdds"]][2],ifelse(!is.na(controls[["fixed_dfs"]][2]),paste0("(",controls[["fixed_dfs"]][2],")"),""))))
   }
-  writeLines(sprintf("%8-s%s %s","runs:",controls[["runs"]],ifelse(controls[["at_true"]],"(initialised at true values)","")))
-  if(!is.null(controls[["seed"]])) writeLines(sprintf("%8-s%s","seed:",controls[["seed"]]))
+  writeLines(sprintf("%13-s%s %s","runs:",controls[["runs"]],ifelse(controls[["at_true"]],"(initialised at true values)","")))
+  if(!is.null(controls[["seed"]])) writeLines(sprintf("%13-s%s","seed:",controls[["seed"]]))
   
   ### save controls
   check_saving(object   = controls, 

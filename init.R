@@ -63,8 +63,4 @@ load_code = function(){
     message(sprintf("loading fhmm code: %.0f%%",(e/length(exe)*100)),"\r",appendLF=FALSE)
   }
   message(sprintf("fhmm code loaded %10s"," "))
-  
-  ### create and print path of folders
-  if(!dir.exists("models")) dir.create("models")
-  if(!dir.exists("data")) dir.create("data")
 }
