@@ -1,0 +1,12 @@
+Package: fhmm
+Title: Fitting hidden Markov models to financial data
+Version: 0.0.0.9000
+Authors@R: Lennart Oelschläger, Timo Adam 
+Description: Fitting hierachical hidden Markov models 
+    to daily share prices provided by https://finance.yahoo.com/.
+License: `use_mit_license()`, `use_gpl3_license()` or friends to
+    pick a license
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
