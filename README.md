@@ -132,7 +132,7 @@ Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HM
 ### Initialize code
 source("init.R"); load_code()
 
-### Download data
+### Download data 
 download_data("dax","^GDAXI")
 
 ### Set and check controls
@@ -145,14 +145,14 @@ controls = list(
   truncate_data = c("2000-01-03","2020-12-30")
 )
 
-### Define events
+### Define events 
 events = list(
   dates = c("2001-09-11","2008-09-15","2020-01-27"),
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
 )
 
 ### Fit (H)HMM
-hhmmf(controls,events)
+fhmm(controls,events)
 ```
 ### Fitting a 2-state HMM to simulated data using gamma-distributions
 Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HMM_2_sim_gamma) for the results.
