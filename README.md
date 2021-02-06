@@ -1,4 +1,4 @@
-# Readme of fhmm
+# fhmm: Readme
 This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data.
 
 ## Table of contents
@@ -13,10 +13,9 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 ## Getting started
 1. Execute `source("init.R"); load_code()` to initialize the code.
 2. Set the model's [controls](#specifying-controls).
-3. Execute `hhmmf(controls,events=NULL,warn=1,sim_par=NULL)`, where
+3. Execute `hhmmf(controls,events=NULL,sim_par=NULL)`, where
    - `controls` is the list of controls defined in step 2,
    - `events` is a list of [events](#events) (optional),
-   - `warn` sets the handling of warning messages, see the [R options manual](https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html) (optional),
    - `sim_par` is a [thetaUncon](#parameter-structures)-object specifying model parameters for a simulation (optional).
    
 See below for [examples](#examples).
@@ -57,6 +56,7 @@ A model is specified by setting parameters of the named list `controls` and pass
 The following parameters are optional and set to [default values](#default-values) if not specified:
 - `accept_codes`: either a numeric vector (containing acceptable exit codes of the optimization) or the character `"all"` (accepting all codes), see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `at_true`: a boolean, determining whether the optimization is initialised at the true parameter values (only for simulated data, sets `runs = 1` and `accept_codes = "all"`)
+- `ci_level`: a scalar between 0 and 1, setting the confidence interval level
 - `data_col`: a character vector of length 2, containing the name of the desired column of `data_source` for both scales
 - `data_source`: a character vector of length 2, containing the file names of the empirical data:
    - if `data_source = c(NA,NA)`, data is simulated
@@ -82,6 +82,7 @@ The following parameters are optional and set to [default values](#default-value
 ### Default values
 - `accept_codes = c(1,2)` 
 - `at_true = FALSE`
+- `ci_level = 0.95`
 - `data_col = c(NA,NA)`
 - `data_source = c(NA,NA)` 
 - `gradtol = 1e-4`
@@ -122,7 +123,7 @@ The following model results are saved in the folder `./models/id`:
    - `controls.rds`, `data.rds`, `decoding.rds`, `events.rds`, `fit.rds` and `pseudos.rds` (to analyse and further process the model results)
    
 ## Debugging
-Most error or warning messages provide an exception code. Calling `exception(code)` yields suggestions for debugging.
+Some error or warning messages provide exception codes. Calling `exception(code)` yields suggestions for debugging.
 
 ## Examples
 ### Fitting a 3-state HMM to the DAX closing prices from 2000 to 2020 using t-distributions
@@ -131,7 +132,7 @@ Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HM
 ### Initialize code
 source("init.R"); load_code()
 
-### Download data
+### Download data 
 download_data("dax","^GDAXI")
 
 ### Set and check controls
@@ -144,14 +145,14 @@ controls = list(
   truncate_data = c("2000-01-03","2020-12-30")
 )
 
-### Define events
+### Define events 
 events = list(
   dates = c("2001-09-11","2008-09-15","2020-01-27"),
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
 )
 
 ### Fit (H)HMM
-hhmmf(controls,events)
+fhmm(controls,events)
 ```
 ### Fitting a 2-state HMM to simulated data using gamma-distributions
 Click [here](https://github.com/loelschlaeger/HHMM_Finance/tree/master/models/HMM_2_sim_gamma) for the results.
