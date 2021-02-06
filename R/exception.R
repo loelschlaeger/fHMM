@@ -30,7 +30,7 @@ exception = function(code){
     F.3 = c("bad start values","the likelihood function could not be computed at more than half of the selected start values, increase runs or adjust scale_par in controls"),
     F.4 = c("estimation failed","none of the estimation runs ended successfully, adapt accept_codes or increase runs"),
     F.5 = c("alpha invalid","value of alpha must be between 0 and 1"),
-    F.6 = c("some confidence intervals could not be computed","the corresponding estimates may lie close to the boundaries of their parameter space"),
+    F.6 = c("some confidence intervals could not be computed","the corresponding estimates may lie close to the boundaries of their parameter space, the confidence intervals may be unreliable and are therefore replaced by NA."),
     V.1 = c("events ignored","events is only used for empirical data"),
     V.2 = c("events invalid","make sure that dates and names in events are of the same length")
     ))
