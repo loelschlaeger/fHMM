@@ -11,13 +11,16 @@
 check_estimation = function(mods,llks,data,hessian,controls){
   
   ### select run with highest log-likelihood
-  mod       = mods[[which.max(llks)]]
-  mod_LL    = -mod[["minimum"]]
-  thetaCon  = thetaUncon2thetaCon(mod[["estimate"]],controls)
-  thetaList = states_decreasing(thetaCon2thetaList(thetaCon,controls),controls)
+  mod        = mods[[which.max(llks)]]
+  mod_LL     = -mod[["minimum"]]
+  thetaUncon = mod[["estimate"]]
+  thetaCon   = thetaUncon2thetaCon(thetaUncon,controls)
+  thetaList  = thetaCon2thetaList(thetaCon,controls)
   
   ### check if iteration limit was reached
-  if(mod[["iterations"]] >= controls[["iterlim"]]) warning(sprintf("%s (%s)",exception("C.5")[2],exception("C.5")[1]),call.=FALSE)
+  if(mod[["iterations"]] >= controls[["iterlim"]]){
+    warning(sprintf("%s (%s)",exception("C.5")[2],exception("C.5")[1]),call.=FALSE)
+  }
   
   ### detect unidentified states
   check_unid_states = function(matrix_list){
@@ -37,44 +40,62 @@ check_estimation = function(mods,llks,data,hessian,controls){
   comp_BIC = function(T,LL) return(log(T)*no_par-2*LL)
   
   ### create object 'fit'
-  fit = list("LL"        = mod_LL,
-             "mod"       = mod,
-             "thetaList" = thetaList,
-             "AIC"       = comp_AIC(-mod[["minimum"]]),
-             "BIC"       = comp_BIC(prod(dim(t(data[["logReturns"]]))),-mod[["minimum"]]),
-             "LLs"       = llks,
-             "mods"      = mods,
-             "hessian"   = hessian
+  fit = list("logLikelihood"      = mod_LL,
+             "model"              = mod,
+             "thetaUncon"         = thetaUncon,
+             "thetaCon"           = thetaCon,
+             "thetaList"          = thetaList,
+             "AIC"                = comp_AIC(-mod[["minimum"]]),
+             "BIC"                = comp_BIC(prod(dim(t(data[["logReturns"]]))),-mod[["minimum"]]),
+             "hessian"            = hessian,
+             "all_models"          = mods,
+             "all_logLikelihoods" = llks
              )
+  
+  ### order estimates
+  thetaListOrdered = thetaList2thetaListOrdered(thetaList,controls)
+  thetaConOrdered = thetaList2thetaCon(thetaListOrdered,controls)
+  shift = match(thetaConOrdered,thetaCon)
+  
+  ### compute confidence intervals
+  ci = compute_ci(fit,controls)
+  lb = ci[[1]][shift]
+  est = ci[["estimate"]][shift]
+  ub = ci[[3]][shift]
+  
+  ### true estimates and relative bias
+  if(controls[["sim"]]){
+    true = data[["thetaCon0"]]
+    true = true[shift]
+    rbias = (est-true)/true
+  }
   
   ### create estimation information file
   if(check_saving(name = "estimates", filetype = "txt", controls = controls)){  
-    options(max.print=1000000)
       sink(file = paste0("models/",controls[["id"]],"/estimates.txt"))
-        first_col = c("log-likelihood","AIC","BIC","exit code","iterations")
-        second_col = c(fit[["LL"]],fit[["AIC"]],fit[["BIC"]],mod[["code"]],mod[["iterations"]])
-        df = data.frame(first_col,second_col); names(df) = NULL
-        writeLines(paste0("Estimation results of model '",controls[["id"]],"':")); print(df,row.names=FALSE,right=FALSE); writeLines("")
-        est = unlist(fit$thetaList,use.names=FALSE)
+        writeLines(paste0("Estimation results of model '",controls[["id"]],"':\n"))
+        writeLines(sprintf("%-15s %.2f","log-likelihood:",fit[["logLikelihood"]]))
+        writeLines(sprintf("%-15s %.2f","AIC:",fit[["AIC"]]))
+        writeLines(sprintf("%-15s %.2f","BIC:",fit[["BIC"]]))
+        writeLines(sprintf("%-15s %.0f","exit code:",mod[["code"]]))
+        writeLines(sprintf("%-15s %.0f","iterations:",mod[["iterations"]])); cat("\n")
+        
         if(controls[["sim"]]){
-          true = unlist(data$thetaList0,use.names=FALSE)
-          rbias = (est-true)/true 
           table = cbind(as.numeric(sprintf("%.4f",true)),
                         as.numeric(sprintf("%.4f",est)),
-                        as.numeric(sprintf("%.2f",rbias)),
-                        NA,
-                        NA)
-          colnames(table) = c("true","est","rel. bias","lb 95% CI","ub 95% CI")
+                        as.numeric(sprintf("%.4f",rbias)),
+                        suppressWarnings(as.numeric(sprintf("%.4f",lb))),
+                        suppressWarnings(as.numeric(sprintf("%.4f",ub))))
+          colnames(table) = c("true","est","rel. bias",names(ci)[1],names(ci)[3])
         } else {
           table = cbind(as.numeric(sprintf("%.4f",est)),
-                        NA,
-                        NA)
-          colnames(table) = c("est","lb 95% CI","ub 95% CI")
+                        suppressWarnings(as.numeric(sprintf("%.4f",lb))),
+                        suppressWarnings(as.numeric(sprintf("%.4f",ub))))
+          colnames(table) = c("est",names(ci)[1],names(ci)[3])
         }
-        rownames(table) = names(unlist(data$thetaList))
+        rownames(table) = parameter_names(controls,all=FALSE)
         print(table)
       sink()
-    options(max.print=1000)
   }
   
   ### save results
