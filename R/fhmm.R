@@ -2,7 +2,6 @@
 #'
 #' @param controls A list of controls
 #' @param events A list of historical events, default \code{NULL}
-#' @param warn An integer setting the handling of warning messages, default \code{1}
 #' @param sim_par A vector of model parameters for simulation, default \code{NULL}
 #' 
 #' @details 
@@ -40,10 +39,7 @@
 #' )
 #' fhmm(controls)
 
-fhmm = function(controls,events=NULL,warn=1,sim_par=NULL){
-  
-  ### set handling of warnings
-  options(warn=warn); on.exit(options(warn=0))
+fhmm = function(controls,events=NULL,sim_par=NULL){
   
   ### create folder
   if(!dir.exists("models")){
@@ -71,7 +67,7 @@ fhmm = function(controls,events=NULL,warn=1,sim_par=NULL){
     sink()
     create_visuals(data,fit,decoding,controls,events) 
     },
-    error = function(cond) message(cond),
+    error = function(cond) message(paste(cond),appendLF=FALSE),
     finally = { for(i in seq_len(sink.number())) sink() }
   )
 }
