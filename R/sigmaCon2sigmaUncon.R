@@ -1,4 +1,4 @@
-#' Constrain standard deviations
+#' Unconstrain standard deviations
 #'
 #' @param sigmaCon Constrained standard deviations
 #' 

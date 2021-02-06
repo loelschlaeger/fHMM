@@ -37,30 +37,30 @@ thetaCon2thetaList = function(thetaCon,controls){
   
   if(controls[["sdds"]][1] == "t"){
     if(is.na(controls[["fixed_dfs"]][1])){
-      dfs = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
+      dfsCon = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
     } else {
-      dfs = rep(controls[["fixed_dfs"]][1],M)
+      dfsCon = rep(controls[["fixed_dfs"]][1],M)
     }
   }
   if(controls[["sdds"]][1] == "gamma"){
-    dfs = NULL
+    dfsCon = NULL
   }
   
   if(controls[["model"]]=="HHMM"){ 
     if(controls[["sdds"]][2] == "t"){
-      dfs_star = list()
+      dfsCon_star = list()
       if(is.na(controls[["fixed_dfs"]][2])){
         for(m in seq_len(M)){
-          dfs_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
+          dfsCon_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
         }
       } else {
         for(m in seq_len(M)){
-          dfs_star[[m]] = rep(controls[["fixed_dfs"]][2],N)
+          dfsCon_star[[m]] = rep(controls[["fixed_dfs"]][2],N)
         }
       }
     }
     if(controls[["sdds"]][2] == "gamma"){
-      dfs_star = NULL
+      dfsCon_star = NULL
     }
   }
   
@@ -69,7 +69,7 @@ thetaCon2thetaList = function(thetaCon,controls){
       "Gamma"       = Gamma,
       "mus"         = musCon,
       "sigmas"      = sigmasCon,
-      "dfs"         = dfs
+      "dfs"         = dfsCon
     ) 
   }
   if(controls[["model"]]=="HHMM"){
@@ -77,11 +77,11 @@ thetaCon2thetaList = function(thetaCon,controls){
       "Gamma"       = Gamma,
       "mus"         = musCon,
       "sigmas"      = sigmasCon,
-      "dfs"         = dfs,
+      "dfs"         = dfsCon,
       "Gammas_star" = Gammas_star,
       "mus_star"    = musCon_star,
       "sigmas_star" = sigmasCon_star,
-      "dfs_star"    = dfs_star
+      "dfs_star"    = dfsCon_star
     ) 
   }
   return(thetaList)

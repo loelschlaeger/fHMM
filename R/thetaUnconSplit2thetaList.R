@@ -13,19 +13,19 @@ thetaUnconSplit2thetaList = function(thetaUncon,controls){
   sigmasCon   = sigmaUncon2sigmaCon(thetaUncon[1:N]); thetaUncon = thetaUncon[-(1:N)]
   if(controls[["sdds"]][2]=="t"){
     if(is.na(controls[["fixed_dfs"]][2])){
-      dfs = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
+      dfsCon = dfUncon2dfCon(thetaUncon[1:N]); thetaUncon = thetaUncon[-(1:N)]
     } else {
-      dfs = rep(controls[["fixed_dfs"]][2],N)
+      dfsCon = rep(controls[["fixed_dfs"]][2],N)
     }
   }
   if(controls[["sdds"]][2]=="gamma"){
-    dfs = NULL
+    dfsCon = NULL
   }
   thetaList = list(
     "Gamma"  = Gamma,
     "mus"    = musCon,
     "sigmas" = sigmasCon,
-    "dfs"    = dfs
+    "dfs"    = dfsCon
   ) 
   return(thetaList)
 }
