@@ -17,15 +17,15 @@
 check_controls = function(controls){
   
   ### define types of controls
-  all_controls = c("id","scale_par","data_source","data_col","truncate_data","states","time_horizon","sdds","runs","at_true","iterlim","seed","print_level","steptol","gradtol","accept_codes","overwrite","data_cs_type")
+  all_controls = c("id","scale_par","data_source","data_col","truncate_data","states","time_horizon","sdds","runs","at_true","iterlim","seed","print_level","steptol","gradtol","accept_codes","overwrite","data_cs_type","ci_level")
   required_controls = c("id","states","sdds")
   artificial_controls = c("sim","model","fixed_dfs","controls_checked")
   missing_controls = setdiff(all_controls,names(controls))
   missing_required_controls = setdiff(required_controls,names(controls))
   redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
-  controls_with_length_1 = c("id","runs","at_true","iterlim","seed","print_level","steptol","gradtol","overwrite","data_cs_type")
+  controls_with_length_1 = c("id","runs","at_true","iterlim","seed","print_level","steptol","gradtol","overwrite","data_cs_type","ci_level")
   controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","sdds")
-  positive_numeric_controls = c("runs","iterlim","steptol","gradtol")
+  positive_numeric_controls = c("runs","iterlim","steptol","gradtol","ci_level")
   integer_controls = c("states","runs","iterlim","print_level","seed")
   boolean_controls = c("overwrite","at_true")
   
@@ -46,12 +46,13 @@ check_controls = function(controls){
     stop(sprintf("%s (%s)",exception("C.3")[2],exception("C.3")[1])) 
   }
   if(length(redundant_controls)>=1){
-    warning(sprintf("%s (%s)",exception("C.4")[2],exception("C.4")[1]))
+    warning(sprintf("%s (%s)",exception("C.4")[2],exception("C.4")[1]),)
   }
   
   ### set default control values
   if("accept_codes" %in% missing_controls)  controls[["accept_codes"]] = c(1,2)
   if("at_true" %in% missing_controls)       controls[["at_true"]] = FALSE
+  if("ci_level" %in% missing_controls)      controls[["ci_level"]] = 0.95
   if("data_col" %in% missing_controls)      controls[["data_col"]] = c(NA,NA)
   if("data_cs_type" %in% missing_controls)  controls[["data_cs_type"]] = NA
   if("data_source" %in% missing_controls)   controls[["data_source"]] = c(NA,NA)
