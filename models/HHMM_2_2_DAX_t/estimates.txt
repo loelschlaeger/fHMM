@@ -1,0 +1,39 @@
+Estimation results of model 'HHMM_2_2_DAX_t':
+                         
+ log-likelihood  17113.22
+ AIC            -34178.43
+ BIC            -34017.36
+ exit code           2.00
+ iterations         55.00
+
+          est lb 95% CI ub 95% CI
+ [1,]  0.9454        NA        NA
+ [2,]  0.2707        NA        NA
+ [3,]  0.0546        NA        NA
+ [4,]  0.7293        NA        NA
+ [5,]  0.0083        NA        NA
+ [6,]  0.0001        NA        NA
+ [7,]  0.0026        NA        NA
+ [8,]  0.0210        NA        NA
+ [9,] 35.5699        NA        NA
+[10,] 15.5162        NA        NA
+[11,]  0.9218        NA        NA
+[12,]  0.0537        NA        NA
+[13,]  0.0782        NA        NA
+[14,]  0.9463        NA        NA
+[15,]  1.0000        NA        NA
+[16,]  0.1839        NA        NA
+[17,]  0.0000        NA        NA
+[18,]  0.8161        NA        NA
+[19,]  0.0018        NA        NA
+[20,] -0.0006        NA        NA
+[21,]  0.0002        NA        NA
+[22,] -0.0013        NA        NA
+[23,]  0.0055        NA        NA
+[24,]  0.0126        NA        NA
+[25,]  0.0244        NA        NA
+[26,]  0.0371        NA        NA
+[27,]  6.9542        NA        NA
+[28,] 21.0368        NA        NA
+[29,] 13.2271        NA        NA
+[30,] 10.9083        NA        NA
