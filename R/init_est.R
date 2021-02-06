@@ -24,8 +24,8 @@ init_est = function(controls){
     sigmasUncon = sigmaCon2sigmaUncon((seq(0.1,1,length.out=M)*runif(1))*scale_par[1])
     if(controls[["sdds"]][1] == "t"){
       musUncon    = muCon2muUncon((seq(1.1,-0.9,length.out=M)*runif(1))*scale_par[1],link=FALSE)
-      dfs         = if(is.na(controls[["fixed_dfs"]][1])) sample.int(30,M) else integer(0)
-      thetaUncon  = c(gammasUncon,musUncon,sigmasUncon,dfs)
+      dfsUncon    = if(is.na(controls[["fixed_dfs"]][1])) log(sample.int(30,M)) else integer(0)
+      thetaUncon  = c(gammasUncon,musUncon,sigmasUncon,dfsUncon)
     }
     if(controls[["sdds"]][1] == "gamma"){
       musUncon    = muCon2muUncon((seq(0.1,1,length.out=M)*runif(1))*scale_par[1],link=TRUE)
@@ -38,23 +38,23 @@ init_est = function(controls){
     sigmasUncon = sigmaCon2sigmaUncon((seq(0.1,1,length.out=M)*runif(1))*scale_par[1])
     if(controls[["sdds"]][1] == "t"){
       musUncon = muCon2muUncon((seq(1.1,-0.9,length.out=M)*runif(1))*scale_par[1],link=FALSE)
-      dfs      = if(is.na(controls[["fixed_dfs"]][1])) sample.int(30,M) else integer(0)
+      dfsUncon = if(is.na(controls[["fixed_dfs"]][1])) log(sample.int(30,M)) else integer(0)
       if(controls[["sdds"]][2] == "t"){
         gammasUncon_star = c()
         musUncon_star    = c()
         sigmasUncon_star = c()
-        dfs_star         = c()
+        dfsUncon_star    = c()
         for(m in seq_len(M)){
           gammasUncon_star = c(gammasUncon_star,Gamma2gammasUncon(build_Gamma(N)))
           musUncon_star    = c(musUncon_star,sort(muCon2muUncon(muUncon2muCon(musUncon[m],link=FALSE)/scale_par[1]*scale_par[2]*runif(N,0.5,1.5),link=FALSE),decreasing=TRUE))
           sigmasUncon_star = c(sigmasUncon_star,sort(sigmaCon2sigmaUncon(sigmaUncon2sigmaCon(sigmasUncon[m])/scale_par[1]*scale_par[2]*runif(N,0.5,1.5)),decreasing=FALSE))
-          dfs_star         = c(dfs_star,if(is.na(controls[["fixed_dfs"]][2])) sample.int(30,N) else integer(0))
+          dfsUncon_star    = c(dfsUncon_star,if(is.na(controls[["fixed_dfs"]][2])) log(sample.int(30,N)) else integer(0))
         }
         gammasUncon = c(gammasUncon,gammasUncon_star)
         musUncon    = c(musUncon,musUncon_star)
         sigmasUncon = c(sigmasUncon,sigmasUncon_star)
-        dfs         = c(dfs,dfs_star)
-        thetaUncon  = c(gammasUncon,musUncon,sigmasUncon,dfs)
+        dfsUncon    = c(dfsUncon,dfsUncon_star)
+        thetaUncon  = c(gammasUncon,musUncon,sigmasUncon,dfsUncon)
       }
       if(controls[["sdds"]][2] == "gamma"){
         gammasUncon_star = c()
@@ -68,7 +68,7 @@ init_est = function(controls){
         gammasUncon = c(gammasUncon,gammasUncon_star)
         musUncon    = c(musUncon,musUncon_star)
         sigmasUncon = c(sigmasUncon,sigmasUncon_star)
-        thetaUncon  = c(gammasUncon,musUncon,sigmasUncon,dfs)
+        thetaUncon  = c(gammasUncon,musUncon,sigmasUncon,dfsUncon)
       }
     }
     if(controls[["sdds"]][1] == "gamma"){
@@ -77,18 +77,18 @@ init_est = function(controls){
         gammasUncon_star = c()
         musUncon_star    = c()
         sigmasUncon_star = c()
-        dfs_star         = c()
+        dfsUncon_star   = c()
         for(m in seq_len(M)){
           gammasUncon_star = c(gammasUncon_star,Gamma2gammasUncon(build_Gamma(N)))
           musUncon_star    = c(musUncon_star,sort(muCon2muUncon(muUncon2muCon(musUncon[m]-mean(musUncon),link=FALSE)/scale_par[1]*scale_par[2]*runif(N,0.5,1.5),link=FALSE),decreasing=TRUE))
           sigmasUncon_star = c(sigmasUncon_star,sort(sigmaCon2sigmaUncon(sigmaUncon2sigmaCon(sigmasUncon[m])/scale_par[1]*scale_par[2]*runif(N,0.5,1.5)),decreasing=FALSE))
-          dfs_star         = c(dfs_star,if(is.na(controls[["fixed_dfs"]][2])) sample.int(30,N) else integer(0))
+          dfsUncon_star    = c(dfsUncon_star,if(is.na(controls[["fixed_dfs"]][2])) log(sample.int(30,N)) else integer(0))
         }
         gammasUncon = c(gammasUncon,gammasUncon_star)
         musUncon    = c(musUncon,musUncon_star)
         sigmasUncon = c(sigmasUncon,sigmasUncon_star)
-        dfs         = dfs_star
-        thetaUncon  = c(gammasUncon,musUncon,sigmasUncon,dfs)
+        dfsUncon    = dfsUncon_star
+        thetaUncon  = c(gammasUncon,musUncon,sigmasUncon,dfsUncon)
       }
       if(controls[["sdds"]][2] == "gamma"){
         gammasUncon_star = c()
