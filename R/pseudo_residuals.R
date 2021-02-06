@@ -69,10 +69,8 @@ pseudo_residuals = function(controls,data,fit,decoding){
         las=1) 
   }
   
-  if(check_saving(name     = "prs",
-                  filetype = "pdf",
-                  controls = controls)){
-    filename = paste0("models/",controls[["id"]],"/prs.pdf")
+  if(check_saving(name = "pseudo_residuals", filetype = "pdf", controls = controls)){
+    filename = paste0("models/",controls[["id"]],"/pseudo_residuals.pdf")
     if(controls[["model"]]=="HMM"){
       pseudos = compute_prs(no_prs   = T,
                             data     = data[["logReturns"]],
@@ -85,7 +83,7 @@ pseudo_residuals = function(controls,data,fit,decoding){
                    filetype = "rds",
                    controls = controls)
       pdf(filename, width=8, height=8)
-      create_prs_plots(pseudos)
+        create_prs_plots(pseudos)
       invisible(dev.off())
     }
     if(controls[["model"]]=="HHMM"){
@@ -111,8 +109,8 @@ pseudo_residuals = function(controls,data,fit,decoding){
                    filetype = "rds",
                    controls = controls)
       pdf(filename, width=8, height=8)
-      create_prs_plots(pseudos_cs,label_add="coarse-scale")
-      create_prs_plots(pseudos_fs,label_add="fine-scale")
+        create_prs_plots(pseudos_cs,label_add="coarse-scale")
+        create_prs_plots(pseudos_fs,label_add="fine-scale")
       invisible(dev.off())
     }
   }
