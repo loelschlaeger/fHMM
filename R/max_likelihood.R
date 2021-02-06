@@ -125,8 +125,10 @@ max_likelihood = function(data,controls){
                                    hessian = TRUE,
                                    typsize = mods[[which.max(llks)]][["estimate"]])[["hessian"]])
     message("\r",sprintf("Hessian computed %10s"," "))
-    writeLines(paste("run-time:",ceiling(difftime(end,start,units='mins')),"minute(s)"))
-    if(!controls[["at_true"]]) writeLines(paste0("accepted: ",sum(!is.na(llks))," out of ",length(llks)," runs"))
+    writeLines(sprintf("%13-s %s minute(s)","run-time:",ceiling(difftime(end,start,units='mins'))))
+    if(!controls[["at_true"]]){
+      writeLines(sprintf("%13-s %s out of %s runs","accepted:",sum(!is.na(llks)),length(llks)))
+    }
     fit = check_estimation(mods,llks,data,hessian,controls)
     return(fit)
   }

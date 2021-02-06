@@ -46,7 +46,7 @@ check_controls = function(controls){
     stop(sprintf("%s (%s)",exception("C.3")[2],exception("C.3")[1])) 
   }
   if(length(redundant_controls)>=1){
-    warning(sprintf("%s (%s)",exception("C.4")[2],exception("C.4")[1]),)
+    warning(sprintf("%s (%s)",exception("C.4")[2],exception("C.4")[1]),call.=FALSE,immediate.=TRUE)
   }
   
   ### set default control values
@@ -110,26 +110,26 @@ check_controls = function(controls){
       stop(paste0("first entry of sdds must be 't' or 'gamma'"))
     }
     if(!is.na(controls[["sdds"]][2])){
-      warning("second entry of sdds is ignored")
+      warning("second entry of sdds is ignored",call.=FALSE,immediate.=TRUE)
       controls[["sdds"]][2] = NA
     }
     if(!is.na(controls[["data_cs_type"]])){
-      warning("data_cs_type is ignored")
+      warning("data_cs_type is ignored",call.=FALSE,immediate.=TRUE)
       controls[["data_cs_type"]] = NA
     }
     if(!is.na(controls[["data_source"]][2])){
-      warning("second entry of data_source is ignored")
+      warning("second entry of data_source is ignored",call.=FALSE,immediate.=TRUE)
       controls[["data_source"]][2] = NA
     }
     if(!controls[["sim"]] & !is.na(controls[["data_col"]][2])){
-      warning("second entry of data_col is ignored")
+      warning("second entry of data_col is ignored",call.=FALSE,immediate.=TRUE)
       controls[["data_col"]][2] = NA
     }
     if(!is.na(controls[["time_horizon"]][2])){
-      warning("second entry of time_horizon is ignored")
+      warning("second entry of time_horizon is ignored",call.=FALSE,immediate.=TRUE)
       controls[["time_horizon"]][2] = NA    }
     if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
-      warning("first entry of time_horizon is ignored")
+      warning("first entry of time_horizon is ignored",call.=FALSE,immediate.=TRUE)
       controls[["time_horizon"]][1] = NA
     }
   }
@@ -163,35 +163,35 @@ check_controls = function(controls){
       stop(paste0("data_cs_type must be one of '",paste(c("mean","mean_abs","sum_abs"),collapse="', '"),"'"))
     }
     if(!is.na(controls[["data_cs_type"]]) & controls[["sim"]]){
-      warning("data_cs_type is ignored")
+      warning("data_cs_type is ignored",call.=FALSE,immediate.=TRUE)
       controls[["data_cs_type"]] = NA
     }
     if(!controls[["sim"]] & is.na(controls[["data_cs_type"]])){
       controls[["data_cs_type"]] = "mean_abs"
     }
     if(controls[["sim"]] & any(!is.na(controls[["data_source"]]))){
-      warning("entries of data_source are ignored")
+      warning("entries of data_source are ignored",call.=FALSE,immediate.=TRUE)
       controls[["data_source"]] = c(NA,NA)
     }
     if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
-      warning("first entry of time_horizon is ignored")
+      warning("first entry of time_horizon is ignored",call.=FALSE,immediate.=TRUE)
       controls[["time_horizon"]][1] = NA
     }
   }
   if(!controls[["sim"]] & controls[["at_true"]]){
-    warning("at_true is set to FALSE")
+    warning("at_true is set to FALSE",call.=FALSE,immediate.=TRUE)
     controls[["at_true"]] = FALSE
   }
   if(controls[["sim"]] & controls[["at_true"]] & controls[["runs"]]!=1){
     controls[["runs"]] = 1
-    warning("runs is set to 1")
+    warning("runs is set to 1",call.=FALSE,immediate.=TRUE)
   }
   if(controls[["sim"]] & any(!is.na(controls[["truncate_data"]]))){
-    warning("entries of truncate_data are ignored")
+    warning("entries of truncate_data are ignored",call.=FALSE,immediate.=TRUE)
     controls[["truncate_data"]] = c(NA,NA)
   }
   if(controls[["sim"]] & any(!is.na(controls[["data_col"]]))){
-    warning("entries of data_col are ignored")
+    warning("entries of data_col are ignored",call.=FALSE,immediate.=TRUE)
     controls[["data_col"]] = c(NA,NA)
   }
   if(any(controls[["accept_codes"]]=="all")){
@@ -219,20 +219,20 @@ check_controls = function(controls){
   controls[["controls_checked"]] = TRUE
   
   ### print model specification
-  writeLines(sprintf("%13-s%s","model id:",controls[["id"]]))
-  writeLines(sprintf("%13-s%s","model type:",controls[["model"]]))
-  if(controls[["sim"]])  writeLines(sprintf("%13-s%s","data type:","simulated"))
-  if(!controls[["sim"]]) writeLines(sprintf("%13-s%s","data type:","empirical"))
+  writeLines(sprintf("%13-s %s","model id:",controls[["id"]]))
+  writeLines(sprintf("%13-s %s","model type:",controls[["model"]]))
+  if(controls[["sim"]])  writeLines(sprintf("%13-s %s","data type:","simulated"))
+  if(!controls[["sim"]]) writeLines(sprintf("%13-s %s","data type:","empirical"))
   if(controls[["model"]]=="HMM") {
-    writeLines(sprintf("%13-s%s","states:",controls[["states"]][1]))
-    writeLines(sprintf("%13-s%s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),""))))
+    writeLines(sprintf("%13-s %s","states:",controls[["states"]][1]))
+    writeLines(sprintf("%13-s %s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),""))))
   }
   if(controls[["model"]]=="HHMM") {
-    writeLines(sprintf("%13-s%s / %s","states:",controls[["states"]][1],controls[["states"]][2]))
-    writeLines(sprintf("%13-s%s / %s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),"")),paste0(controls[["sdds"]][2],ifelse(!is.na(controls[["fixed_dfs"]][2]),paste0("(",controls[["fixed_dfs"]][2],")"),""))))
+    writeLines(sprintf("%13-s %s / %s","states:",controls[["states"]][1],controls[["states"]][2]))
+    writeLines(sprintf("%13-s %s / %s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),"")),paste0(controls[["sdds"]][2],ifelse(!is.na(controls[["fixed_dfs"]][2]),paste0("(",controls[["fixed_dfs"]][2],")"),""))))
   }
-  writeLines(sprintf("%13-s%s %s","runs:",controls[["runs"]],ifelse(controls[["at_true"]],"(initialised at true values)","")))
-  if(!is.null(controls[["seed"]])) writeLines(sprintf("%13-s%s","seed:",controls[["seed"]]))
+  writeLines(sprintf("%13-s %s %s","runs:",controls[["runs"]],ifelse(controls[["at_true"]],"(initialised at true values)","")))
+  if(!is.null(controls[["seed"]])) writeLines(sprintf("%13-s %s","seed:",controls[["seed"]]))
   
   ### save controls
   check_saving(object   = controls, 
