@@ -109,18 +109,14 @@ Internally, model parameters are processed using three structures:
 
 ## Outputs
 The following model results are saved in the folder `./models/id`:
-- txt-files:
-   - `comparison.txt`: comparing true and estimated parameters (only for simulated data)
-   - `estimates.txt`: containing the model's likelihood value, AIC and BIC values, exit code, number of iterations, total computation time, true parameter values (only for simulated data), estimates, gradient, Hessian
-   - `protocol.txt`: containing a protocol of the estimation
-   - `states.txt`: containing frequencies of the decoded states and (in case of simulated data) a comparison between the true states and the predicted states
-- pdf-files:
-   - `lls.pdf`: a visualization of the log-likelihood values in the different estimation runs
-   - `prs.pdf`: a visualization of the pseudo-residuals together with a [Jarque–Bera test](https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test) result on their normality
-   - `sdds.pdf`: a visualization of the estimated state-dependent distributions and (in case of simulated data) the true state-dependent distributions
-   - `ts.pdf`: a visualization of the decoded time series with (in case of empirical data) markings for the entries in `events`
-- rds-files:
-   - `controls.rds`, `data.rds`, `decoding.rds`, `events.rds`, `fit.rds` and `pseudos.rds` (to analyse and further process the model results)
+- `estimates.txt`: containing the model's likelihood value, AIC and BIC values, exit code, number of iterations, estimated and true parameters (only for simulated data), relaltive bias (only for simulated data) and confidence intervals
+- `protocol.txt`: containing a protocol of the estimation
+- `states.txt`: containing frequencies of the decoded states and (only for simulated data) a comparison between the true states and the predicted states
+- `log_likelihoods.pdf`: a visualization of the log-likelihood values in the different estimation runs
+- `pseudo_residuals.pdf`: a visualization of the pseudo-residuals along with a [Jarque–Bera test](https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test) result on their normality
+- `state_dependent_distributions.pdf`: a visualization of the estimated state-dependent distributions and (in case of simulated data) the true state-dependent distributions
+- `decoded_time_series.pdf`: a visualization of the decoded time series with (in case of empirical data) markings for the entries in `events`
+- `controls.rds`, `data.rds`, `decoding.rds`, `events.rds`, `fit.rds` and `pseudos.rds` (to analyse and further process the model results)
    
 ## Debugging
 Some error or warning messages provide exception codes. Calling `exception(code)` yields suggestions for debugging.
