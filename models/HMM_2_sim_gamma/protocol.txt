@@ -1,0 +1,9 @@
+model id:     HMM_2_sim_gamma
+model type:   HMM
+data type:    simulated
+states:       2
+SDDs:         gamma
+runs:         100 
+sample size:  1000
+run-time:     1 minute(s)
+accepted:     91 out of 100 runs

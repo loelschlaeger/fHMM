@@ -1,0 +1,10 @@
+Frequency of decoded states
+
+state 1 state 2 
+    655     345 
+
+Comparison between true and decoded states
+
+             decoded state 1 decoded state 2
+true state 1             90%             10%
+true state 2              8%             92%
