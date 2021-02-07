@@ -67,7 +67,7 @@ fhmm = function(controls,events=NULL,sim_par=NULL){
     sink()
     create_visuals(data,fit,decoding,controls,events) 
     },
-    error = function(cond) message(paste(cond),appendLF=FALSE),
+    error = function(cond) message(paste0(cond),appendLF=FALSE),
     finally = { for(i in seq_len(sink.number())) sink() }
   )
 }

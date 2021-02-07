@@ -11,13 +11,11 @@ thetaList2thetaCon = function(thetaList,controls){
     gammasCon = Gamma2gammasCon(thetaList[["Gamma"]])
     musCon    = thetaList[["mus"]]
     sigmasCon = thetaList[["sigmas"]]
-    if(controls[["sdds"]][1]=="t"){
-      if(is.na(controls[["fixed_dfs"]][1])){
-        dfsCon = thetaList[["dfs"]]
-        thetaCon = c(gammasCon,musCon,sigmasCon,dfsCon)
-      } else {
-        thetaCon = c(gammasCon,musCon,sigmasCon)
-      }
+    if(controls[["sdds"]][1]=="t" && is.na(controls[["fixed_dfs"]][1])){
+      dfsCon = thetaList[["dfs"]]
+      thetaCon = c(gammasCon,musCon,sigmasCon,dfsCon)
+    } else {
+      thetaCon = c(gammasCon,musCon,sigmasCon)
     }
   }
   if(controls[["model"]]=="HHMM"){

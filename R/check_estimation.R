@@ -66,7 +66,6 @@ check_estimation = function(mods,llks,data,hessian,controls){
   ### true estimates and relative bias
   if(controls[["sim"]]){
     true = data[["thetaCon0"]]
-    true = true[shift]
     rbias = (est-true)/true
   }
   
@@ -81,16 +80,16 @@ check_estimation = function(mods,llks,data,hessian,controls){
         writeLines(sprintf("%-15s %.0f","iterations:",mod[["iterations"]])); cat("\n")
         
         if(controls[["sim"]]){
-          table = cbind(sprintf("%.2g",true),
-                        sprintf("%.2g",est),
-                        sprintf("%.2g",rbias),
-                        suppressWarnings(sprintf("%.2g",lb)),
-                        suppressWarnings(sprintf("%.2g",ub)))
+          table = cbind(sprintf("%.2f",true),
+                        sprintf("%.2f",est),
+                        sprintf("%.2f",rbias),
+                        suppressWarnings(sprintf("%.2f",lb)),
+                        suppressWarnings(sprintf("%.2f",ub)))
           colnames(table) = c("true","est","rel. bias",names(ci)[1],names(ci)[3])
         } else {
-          table = cbind(sprintf("%.2g",est),
-                        suppressWarnings(sprintf("%.2g",lb)),
-                        suppressWarnings(sprintf("%.2g",ub)))
+          table = cbind(sprintf("%.2f",est),
+                        suppressWarnings(sprintf("%.2f",lb)),
+                        suppressWarnings(sprintf("%.2f",ub)))
           colnames(table) = c("est",names(ci)[1],names(ci)[3])
         }
         rownames(table) = parameter_names(controls,all=FALSE)

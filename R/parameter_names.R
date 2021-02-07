@@ -18,9 +18,11 @@ parameter_names = function(controls,all){
     Gamma_names = paste0("Gamma_",matrix_indices(controls[["states"]][1],all))
     mu_names = paste0("mu_",seq_len(controls[["states"]][1]))
     sigma_names = paste0("sigma_",seq_len(controls[["states"]][1]))
-    if(controls[["sdds"]][1]=="t") if(all || is.na(controls[["fixed_dfs"]][1])){
-      df_names = paste0("df_",seq_len(controls[["states"]][1]))
-      names = c(Gamma_names,mu_names,sigma_names,df_names)
+    if(controls[["sdds"]][1]=="t"){
+      if(all || is.na(controls[["fixed_dfs"]][1])) {
+        df_names = paste0("df_",seq_len(controls[["states"]][1]))
+        names = c(Gamma_names,mu_names,sigma_names,df_names)
+      }
     } else {
       names = c(Gamma_names,mu_names,sigma_names)
     }
@@ -41,24 +43,30 @@ parameter_names = function(controls,all){
     for(s in seq_len(controls[["states"]][1])){
       sigma_star_names = c(sigma_star_names,paste0("sigma_star",s,"_",seq_len(controls[["states"]][2])))    
     }
-    if(controls[["sdds"]][1]=="t") if(all || is.na(controls[["fixed_dfs"]][1])){
-      df_names = paste0("df_",seq_len(controls[["states"]][1]))
-      if(controls[["sdds"]][2]=="t") if(all || is.na(controls[["fixed_dfs"]][2])){
-        df_star_names = vector()
-        for(s in seq_len(controls[["states"]][1])){
-          df_star_names = c(df_star_names,paste0("df_star",s,"_",seq_len(controls[["states"]][2])))
+    if(controls[["sdds"]][1]=="t"){
+      if(all || is.na(controls[["fixed_dfs"]][1])){
+        df_names = paste0("df_",seq_len(controls[["states"]][1]))
+        if(controls[["sdds"]][2]=="t"){
+          if(all || is.na(controls[["fixed_dfs"]][2])){
+            df_star_names = vector()
+            for(s in seq_len(controls[["states"]][1])){
+              df_star_names = c(df_star_names,paste0("df_star",s,"_",seq_len(controls[["states"]][2])))
+            }
+            names = c(Gamma_names,Gamma_star_names,mu_names,mu_star_names,sigma_names,sigma_star_names,df_names,df_star_names)
+          }
         }
-        names = c(Gamma_names,Gamma_star_names,mu_names,mu_star_names,sigma_names,sigma_star_names,df_names,df_star_names)
       } else {
         names = c(Gamma_names,Gamma_star_names,mu_names,mu_star_names,sigma_names,sigma_star_names,df_names)
       }
     } else {
-      if(controls[["sdds"]][2]=="t") if(all || is.na(controls[["fixed_dfs"]][2])){
-        df_star_names = vector()
-        for(s in seq_len(controls[["states"]][1])){
-          df_star_names = c(df_star_names,paste0("df_star",s,"_",seq_len(controls[["states"]][2])))
+      if(controls[["sdds"]][2]=="t"){
+        if(all || is.na(controls[["fixed_dfs"]][2])){
+          df_star_names = vector()
+          for(s in seq_len(controls[["states"]][1])){
+            df_star_names = c(df_star_names,paste0("df_star",s,"_",seq_len(controls[["states"]][2])))
+          }
+          names = c(Gamma_names,Gamma_star_names,mu_names,mu_star_names,sigma_names,sigma_star_names,df_star_names)
         }
-        names = c(Gamma_names,Gamma_star_names,mu_names,mu_star_names,sigma_names,sigma_star_names,df_star_names)
       } else {
         names = c(Gamma_names,Gamma_star_names,mu_names,mu_star_names,sigma_names,sigma_star_names)
       }
