@@ -40,7 +40,7 @@ process_data = function(controls,data,sim_par=NULL){
       writeLines(sprintf("%13-s %s","sample size:",length(data[["logReturns"]])))
     }
     if(controls[["model"]]=="HHMM"){
-      writeLines(sprintf("%13-s %s / %s","sample size:",dim(data[["logReturns"]])[1],"/",length(data[["logReturns"]][,-1][!is.na(data[["logReturns"]][,-1])])))
+      writeLines(sprintf("%13-s %s / %s","sample size:",dim(data[["logReturns"]])[1],length(data[["logReturns"]][,-1][!is.na(data[["logReturns"]][,-1])])))
     }
   } 
   if(!controls[["sim"]]){

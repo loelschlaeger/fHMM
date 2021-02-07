@@ -27,7 +27,7 @@ nLL_hmm = function(thetaUncon,observations,controls){
   
   allprobs = matrix(NA,nstates,T)
   for (i in 1:nstates){
-    if(sdd=="t") allprobs[i,] = 1/sigmas[i]*dt((observations-mus[i])/sigmas[i],dfs[i])
+    if(sdd=="t")     allprobs[i,] = 1/sigmas[i]*dt(x = (observations-mus[i])/sigmas[i], df = dfs[i])
     if(sdd=="gamma") allprobs[i,] = dgamma(observations,shape=mus[i]^2/sigmas[i]^2,scale=sigmas[i]^2/mus[i])
   }
   
