@@ -1,7 +1,7 @@
 Package: fhmm
 Type: Package
 Title: Fitting hidden Markov models to financial data
-Version: 0.0.0.9000
+Version: 0.0.1
 Date: 2021-02-10
 Authors@R: c(
     person("Lennart", "Oelschläger", email = "lennart.oelschlaeger@uni-bielefeld.de", role = c("aut", "cre")),
