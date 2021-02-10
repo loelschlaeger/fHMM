@@ -30,7 +30,7 @@ load_code = function(){
     source('R/dfUncon2dfCon.R'),
     source('R/download_data.R'),
     source('R/exception.R'),
-    source('R/fhmm.R'),
+    source('R/fit_hmm.R'),
     source('R/Gamma2delta.R'),
     source('R/Gamma2gammasCon.R'),
     source('R/Gamma2gammasUncon.R'),
