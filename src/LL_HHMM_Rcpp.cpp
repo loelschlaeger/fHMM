@@ -7,13 +7,13 @@ using namespace Rcpp;
 #include<cmath>
 
 // [[Rcpp::export]]
-double LL_HHMM_Rcpp(mat log_likelihoods, mat allprobs, mat Gamma, rowvec delta, int M, int T){
+double LL_HHMM_Rcpp(arma::mat log_likelihoods, arma::mat allprobs, arma::mat Gamma, arma::vec delta, int M, int T){
   double loglike=0.0;
   int i=0;
   int t=1;
   double c=0.0;
   
-  mat phi = mat(M,T);
+  arma::mat phi = mat(M,T);
   for(i=0;i<M;i++){
     phi(i,0) = log(delta(i))+log_likelihoods(i,0)+log(allprobs(i,0));
   }
