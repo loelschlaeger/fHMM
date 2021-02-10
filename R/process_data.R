@@ -1,7 +1,8 @@
 #' Process data
 #'
 #' @param controls A list of controls
-#' @param simpar A vector of model parameters for simulation, default \code{NULL}
+#' @param data A list of processed data information
+#' @param sim_par A vector of model parameters for simulation, default \code{NULL}
 #' 
 #' @return A list of processed data information
 
