@@ -28,13 +28,12 @@ compute_ci = function(fit,controls){
   lower_limit = estimatesUncon + qnorm(p = (1 - alpha) / 2) * sds
   upper_limit = estimatesUncon + qnorm(p = 1 - (1 - alpha) / 2) * sds
   
-  ### Hessian checks
-  eigen_values = eigen(inv_fisher,only.values=TRUE,symmetric=TRUE)[["values"]]
-  lower_limit[eigen_values < 0] = NA
-  upper_limit[eigen_values < 0] = NA
+  ### if negative variance, replace by NA
+  lower_limit[diag(inv_fisher) < 0] = NA
+  upper_limit[diag(inv_fisher) < 0] = NA
   out = lapply(list(lower_limit, estimatesUncon, upper_limit),thetaUncon2thetaCon,controls)
   names(out) = c(paste0("lb_",alpha),"estimate",paste0("ub_",alpha))
-  if(any(eigen_values < 0) || any(is.na(out))) {
+  if(any(is.na(out))) {
     warning(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
   }
   
