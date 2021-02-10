@@ -1,13 +1,14 @@
 Package: fHMM
 Type: Package
-Title: Fitting hidden Markov models to financial data
+Title: Fitting Hidden Markov Models to Financial Data
 Version: 0.1.0
 Date: 2021-02-10
 Authors@R: c(
-    person("Lennart", "Oelschläger", email = "lennart.oelschlaeger@uni-bielefeld.de", role = c("aut", "cre")),
+    person("Lennart", "Oelschl\U00E4ger", email = "lennart.oelschlaeger@uni-bielefeld.de", role = c("aut", "cre")),
     person("Timo", "Adam", email = "ta59@st-andrews.ac.uk", role = "aut"))
-Description: Fitting hierachical hidden Markov models 
-    to daily share prices provided by https://finance.yahoo.com/.
+Description: Fitting (hierarchical) hidden Markov models 
+    to daily share prices provided by <https://finance.yahoo.com/>.
+    See <https://github.com/loelschlaeger/fHMM#readme> for documentation and examples.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -15,10 +16,10 @@ Imports:
     MASS,
     progress,
     Rcpp,
-    RcppArmadillo,
     tseries
 LinkingTo:
     Rcpp,
     RcppArmadillo
+Depends: R (>= 3.5.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
