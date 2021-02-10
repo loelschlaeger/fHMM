@@ -3,16 +3,6 @@
 #' @param controls A list of controls
 #' 
 #' @return Checked \code{controls} 
-#' 
-#' @examples 
-#' controls = list(
-#'  id           = "HMM_3_t",
-#'  sdds         = c("t",NA),
-#'  states       = c(3,0),
-#'  time_horizon = c(500,NA),
-#'  seed         = 1
-#' )
-#' check_controls(controls)
 
 check_controls = function(controls){
   

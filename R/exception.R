@@ -6,9 +6,6 @@
 #' \item{code}{the exception code}
 #' \item{response}{the message}
 #' \item{debugging}{suggestions for debugging}
-#'
-#' @examples
-#' exception("S.1")
 
 exception = function(code){
   exceptions = data.frame(rbind(

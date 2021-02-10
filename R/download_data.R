@@ -5,13 +5,6 @@
 #' @param from A date setting the lower data bound, default is \code{"1902-01-01"}
 #' @param to A date setting the upper data bound, default is the current date \code{Sys.date()}
 #' @param show_symbols A boolean determining whether all saved symbols should be printed, default \code{FALSE}
-#'
-#' @examples
-#' ### download 21st century DAX data
-#' download_data(name="dax",symbol="^GDAXI",from=as.Date("2000-01-03"))
-#' 
-#' ### print saved symbols
-#' download_data(show_symbols=TRUE)
 
 download_data = function(name=NULL,symbol=NULL,from="1902-01-01",to=Sys.Date(),show_symbols=FALSE){
   
@@ -85,7 +78,7 @@ download_data = function(name=NULL,symbol=NULL,from="1902-01-01",to=Sys.Date(),s
     download.file(create_url(symbol,from,to),destfile=filename,quiet=TRUE)
     
     ### print summary of new data
-    data = read.csv(file=filename,head=TRUE,sep=",",na.strings="null") 
+    data = read.csv(file=filename,header=TRUE,sep=",",na.strings="null") 
     message("data download successful")
     message(paste("source:",paste0(name,".csv")))
     message(paste("symbol:",symbol))
