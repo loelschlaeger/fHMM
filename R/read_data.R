@@ -21,7 +21,7 @@ read_data = function(controls){
     }
     if(!is.na(data_source)[i]){
       ### extract data
-      data[[i]] = read.csv(file=paste0("data/",data_source[i]),head=TRUE,sep=",",na.strings="null")
+      data[[i]] = read.csv(file=paste0("data/",data_source[i]),header=TRUE,sep=",",na.strings="null")
       if(!"Date" %in% colnames(data[[i]]) || !data_col[i] %in% colnames(data[[i]])){
         stop(sprintf("%s (%s)",exception("D.4")[2],exception("D.4")[1]),call.=FALSE)
       }
