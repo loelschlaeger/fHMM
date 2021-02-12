@@ -16,8 +16,8 @@ load_code = function(){
     require("tseries"),
     
     ### loading code
-    Rcpp::sourceCpp("scr/LL_HMM_Rcpp.cpp"),
-    Rcpp::sourceCpp("scr/LL_HHMM_Rcpp.cpp"),
+    Rcpp::sourceCpp("src/LL_HMM_Rcpp.cpp"),
+    Rcpp::sourceCpp("src/LL_HHMM_Rcpp.cpp"),
     source('R/apply_viterbi.R'),
     source('R/check_controls.R'),
     source('R/check_decoding.R'),
@@ -64,7 +64,7 @@ load_code = function(){
   )
   for(e in seq_len(length(exe))){
     suppressPackageStartupMessages(eval(exe[[e]]))
-    message(sprintf("loading fhmm code: %.0f%%",(e/length(exe)*100)),"\r",appendLF=FALSE)
+    message(sprintf("loading fHMM code: %.0f%%",(e/length(exe)*100)),"\r",appendLF=FALSE)
   }
-  message(sprintf("fhmm code loaded %10s"," "))
+  message(sprintf("fHMM code loaded %10s"," "))
 }
