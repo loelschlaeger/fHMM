@@ -2,4 +2,7 @@
 ^\.Rproj\.user$
 sticker/
 models/
+data/
 init.R
+sandbox.R
+loop.R
