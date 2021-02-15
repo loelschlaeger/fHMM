@@ -40,6 +40,8 @@ Historical events can be highlighted in the visualization of the decoded, empiri
 
 ## Specifying controls
 A model is specified by setting parameters of the named list `controls` and passing it to `hhmmf`. The following parameters are mandatory:
+- `id`: a character, identifying the model
+- `path`: a character, setting the path of the data and the model results
 - `states`: a numeric vector of length 2, determining the model type and the number of states:
    - if `states = c(x,0)`, a HMM with `x` states is estimated
    - if `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated
@@ -63,7 +65,6 @@ The following parameters are optional and set to [default values](#default-value
    - if `data_source = c("x",NA)`, data `"./data/x.csv"` is modeled by a HMM
    - if `data_source = c("x","y")`, data `"./data/x.csv"` (type determined by `data_cs_type`) on the coarse scale and data `"./data/y.csv"` on the fine scale is modeled by a HHMM
 - `gradtol`: a positive scalar, giving the tolerance at which the scaled gradient is considered close enough to zero , see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
-- `id`: a character, identifying the model
 - `iterlim`: an integer, specifying the maximum number of optimization iterations to be performed before termination, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
 - `overwrite`: a boolean, determining whether overwriting of existing results (on the same `id`) is allowed, set to `TRUE` if `id = "test"`
 - `print_level`: an integer, determining the level of printing during the optimization, see the [nlm manual](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)
@@ -86,7 +87,6 @@ The following parameters are optional and set to [default values](#default-value
 - `data_col = c(NA,NA)`
 - `data_source = c(NA,NA)` 
 - `gradtol = 1e-4`
-- `id = "test"`
 - `iterlim = 500`
 - `overwrite = FALSE`
 - `print_level = 0`
