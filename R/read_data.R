@@ -1,14 +1,11 @@
 #' Read financial data from .csv-file
-#'
 #' @param controls A list of controls
-#'
 #' @return A list containing the following elements:
 #' \item{logReturns}{Log-returns, the data that is modeled}
 #' \item{dataRaw}{Raw data}
 #' \item{dataRaw_cs}{Raw data on coarse-scale}
 #' \item{dates}{Vector of dates}
 #' \item{T_star}{Vector of fine-scale chunk sizes}
-
 read_data = function(controls){
   if(is.null(controls[["controls_checked"]])) stop(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
   data_source = controls[["data_source"]]

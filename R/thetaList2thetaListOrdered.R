@@ -1,14 +1,12 @@
-#' Order contrained model parameters based on expected values
-#'
+#' Order states in thetaList based on expected values
 #' @param thetaList Constrained model parameters in list form
 #' @param controls A list of controls
-#' 
-#' @return Constrained ordered model parameters in list form
-
+#' @return Constrained and ordered model parameters in list form
+#' @details 
+#' If t SDD, order states decreasing with respect to expected values. If Gamma SDD, vice versa.
 thetaList2thetaListOrdered = function(thetaList,controls){
   M = controls[["states"]][1] 
   N = controls[["states"]][2] 
-
   mu_order = order(thetaList[["mus"]],decreasing=(controls[["sdds"]][1]=="t"))
   permut = diag(M)[mu_order,]
   thetaList[["Gamma"]] = permut %*% thetaList[["Gamma"]] %*% t(permut)
@@ -17,7 +15,6 @@ thetaList2thetaListOrdered = function(thetaList,controls){
   if(controls[["sdds"]][1]=="t"){
     thetaList[["dfs"]] = as.vector(permut %*% thetaList[["dfs"]]); thetaList[["dfs"]][which(is.nan(thetaList[["dfs"]]))] = Inf
   }
-    
   if(controls$model=="HHMM"){
     thetaList[["Gammas_star"]] = thetaList[["Gammas_star"]][mu_order]
     thetaList[["mus_star"]] = thetaList[["mus_star"]][mu_order]
@@ -37,4 +34,3 @@ thetaList2thetaListOrdered = function(thetaList,controls){
   }
   return(thetaList)
 }
-

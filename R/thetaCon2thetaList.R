@@ -1,8 +1,6 @@
-#' Bring contrained model parameters in list form
-#'
+#' Bring contrained model parameters from vector form to list form
 #' @param thetaCon Constrained model parameters in vector form
 #' @param controls A list of controls
-#' 
 #' @return Constrained model parameters in list form
 
 thetaCon2thetaList = function(thetaCon,controls){
