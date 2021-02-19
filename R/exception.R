@@ -1,12 +1,10 @@
 #' Exception messages
-#'
 #' @param code An exception code
-#'
 #' @return A list containing the following elements:
 #' \item{code}{the exception code}
 #' \item{response}{the message}
 #' \item{debugging}{suggestions for debugging}
-
+#' @export
 exception = function(code){
   exceptions = data.frame(rbind(
     S.1 = c("id invalid","id already exists, set a unique identifier"),
@@ -36,6 +34,6 @@ exception = function(code){
   if(code %in% rownames(exceptions)){
     return(list("code" = code, "response" = exceptions[code,"response"], "debugging" = exceptions[code,"debugging"]))
   } else {
-    message("Error code unknown.")
+    message("Error code unknown")
   }
 }

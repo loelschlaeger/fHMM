@@ -1,11 +1,8 @@
 #' Compute (flexible) fine-scale chunk lengths
-#'
 #' @param fs_time_horizon Setting the fine-scale dimension, either a numeric or one of "w","m","q","y"
 #' @param T The dimension of the coarse-scale process, default \code{NULL}
 #' @param fs_dates A vector of dates of empirical fine-scale observations, default \code{NULL}
-#'
 #' @return Vector of fine-scale chunk sizes
-
 compute_fs = function(fs_time_horizon,T=NULL,fs_dates=NULL){
   if(is.null(fs_dates)){
     if(is.numeric(fs_time_horizon)){

@@ -1,14 +1,10 @@
-#' Draw initial parameter values for the estimation routine
-#'
+#' Sample initial parameter values for the estimation routine
 #' @param controls A list of controls
-#'
 #' @return Parameters values in format \code{thetaUncon}
-
 init_est = function(controls){
   M  = controls[["states"]][1] 
   N  = controls[["states"]][2]
   scale_par = controls[["scale_par"]]
-  
   build_Gamma = function(dim){
     Gamma = diag(dim)
     diag(Gamma) = runif(dim,0.7,1)
@@ -18,7 +14,6 @@ init_est = function(controls){
     }
     return(Gamma)
   }
-  
   if(controls[["model"]]=="HMM"){
     gammasUncon = Gamma2gammasUncon(build_Gamma(M))
     sigmasUncon = sigmaCon2sigmaUncon((seq(0.1,1,length.out=M)*runif(1))*scale_par[1])
@@ -32,7 +27,6 @@ init_est = function(controls){
       thetaUncon  = c(gammasUncon,musUncon,sigmasUncon)
     }
   }
-  
   if(controls[["model"]]=="HHMM"){
     gammasUncon = Gamma2gammasUncon(build_Gamma(M))
     sigmasUncon = sigmaCon2sigmaUncon((seq(0.1,1,length.out=M)*runif(1))*scale_par[1])
@@ -106,6 +100,5 @@ init_est = function(controls){
       }
     }
   }
-  
   return(thetaUncon)
 }

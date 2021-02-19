@@ -1,12 +1,10 @@
 #' Compute and visualize pseudo-residuals
-#'
 #' @param controls A list of controls
 #' @param data A list of processed data information
 #' @param fit A fitted model
 #' @param decoding A matrix of decoded states
-
+#' @return No return value, creates graphic in \code{controls[["path"]]}/models/\code{controls[["id"]]}
 pseudo_residuals = function(controls,data,fit,decoding){
-  
   ### extract parameters
   if(controls[["model"]]=="HMM"){
     T = length(data[["logReturns"]])
@@ -18,7 +16,6 @@ pseudo_residuals = function(controls,data,fit,decoding){
     cs_logReturns = data[["logReturns"]][,1]
     fs_logReturns = as.vector(t(data[["logReturns"]][,-1]))[!is.na(as.vector(t(data[["logReturns"]][,-1])))]
   }
-  
   compute_prs = function(no_prs,data,decoding,mus,sigmas,dfs,sdd){
     pseudos = numeric(no_prs)
     for(t in seq_len(no_prs)){
@@ -32,7 +29,6 @@ pseudo_residuals = function(controls,data,fit,decoding){
     }
     return(pseudos)
   }
-  
   create_prs_plots = function(pseudos,label_add=""){
     pseudos = pseudos[!is.na(pseudos) & is.finite(pseudos)]
     jbtest = tseries::jarque.bera.test(pseudos)[["p.value"]]
@@ -68,9 +64,8 @@ pseudo_residuals = function(controls,data,fit,decoding){
         xlab="Lag",
         las=1) 
   }
-  
   if(check_saving(name = "pseudo_residuals", filetype = "pdf", controls = controls)){
-    filename = paste0("models/",controls[["id"]],"/pseudo_residuals.pdf")
+    filename = paste0(controls[["path"]],"/models/",controls[["id"]],"/pseudo_residuals.pdf")
     if(controls[["model"]]=="HMM"){
       pseudos = compute_prs(no_prs   = T,
                             data     = data[["logReturns"]],

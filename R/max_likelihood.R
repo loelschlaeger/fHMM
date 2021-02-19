@@ -1,18 +1,13 @@
 #' Maximize the model's log-likelihood function
-#'
 #' @param data A list of processed data information
 #' @param controls A list of controls
-#' 
 #' @return A fitted model
-
 max_likelihood = function(data,controls){
   if(is.null(controls[["controls_checked"]])) stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
-  
   runs = controls[["runs"]]
   llks = rep(NA,runs) 
   mods = list() 
-  
   ### define optimizer
   if(controls[["model"]]=="HMM") target = nLL_hmm
   if(controls[["model"]]=="HHMM") target = nLL_hhmm
@@ -29,7 +24,6 @@ max_likelihood = function(data,controls){
                   hessian = FALSE)
     return(nlm_out)
   }
-  
   ### generate start values
   generate_start_values = function(controls,runs){
     start_values = list()
@@ -43,14 +37,12 @@ max_likelihood = function(data,controls){
     }
     return(start_values)
   }
-  
   ### check if log-likelihoods at start values can be computed 
   failed_start_values = function(values){
     failed = union(which(is.nan(values)),which(is.na(values)))
     failed = c(failed,which(abs(values[-failed])>1e100))
     return(failed)
   }
-  
   ### adjust 'scale_par' based on method of moments estimates
   adjust_scale_par = function(controls,data){
     scale_par = c(NA,NA)
@@ -63,17 +55,15 @@ max_likelihood = function(data,controls){
     }
     return(scale_par)
   }
-  
   ### select start values
-  message("selecting start values...",appendLF = FALSE)
+  message("Selecting start values...",appendLF = FALSE)
   controls[["scale_par"]] = adjust_scale_par(controls,data[["logReturns"]])
   start_values = generate_start_values(controls,runs)
   ll_at_start_values = rep(NA,runs)
   for(run in seq_len(runs)){
     ll_at_start_values[run] = suppressWarnings(target(start_values[[run]],data[["logReturns"]],controls))
   }
-  message("\r",sprintf("start values selected %10s"," "))
-  
+  message("\r",sprintf("Start values selected %10s"," "))
   ### check fails
   fails = failed_start_values(ll_at_start_values)
   if(length(fails)==runs){
@@ -87,16 +77,14 @@ max_likelihood = function(data,controls){
   } else {
     runs_seq = seq_len(runs)
   }
-  
   ### define progress-bar
   pb = progress::progress_bar$new(
-    format = "estimation: [:bar] :percent, :eta ETA", 
+    format = "Estimation: [:bar] :percent, :eta ETA", 
     total = length(runs_seq), 
     clear = TRUE, 
     width = 45, 
     show_after = 0
   )
-  
   ### start maximization
   start = Sys.time()
   for (run in runs_seq){
@@ -110,13 +98,12 @@ max_likelihood = function(data,controls){
     pb$tick()
   }
   end = Sys.time()
-  message("estimation finished")
-  
+  message("Estimation finished")
   if(all(is.na(llks))){
     stop(sprintf("%s (%s)",exception("F.4")[2],exception("F.4")[1]),call.=FALSE)
   } else {
     ### compute Hessian
-    message("computing the Hessian...",appendLF = FALSE)
+    message("Computing the Hessian...",appendLF = FALSE)
     hessian = suppressWarnings(nlm(f = target,
                                    p = mods[[which.max(llks)]][["estimate"]],
                                    observations = data[["logReturns"]],

@@ -20,7 +20,6 @@ simulate_data = function(controls,sim_par=NULL){
   }
   thetaCon   = thetaUncon2thetaCon(thetaUncon,controls)
   thetaList  = thetaCon2thetaList(thetaCon,controls)
-  
   ### simulate hidden states
   simulate_states = function(delta,Gamma,T){
     no_states = length(delta)
@@ -31,7 +30,6 @@ simulate_data = function(controls,sim_par=NULL){
     }
     return(states)
   }
-  
   ### simulate observations
   simulate_observations = function(states,mus,sigmas,dfs,sdd){
     T = length(states)
@@ -46,7 +44,6 @@ simulate_data = function(controls,sim_par=NULL){
     }
     return(logReturns)
   }
-  
   if(controls[["model"]]=="HMM"){
     T_star = NA
     states = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
@@ -64,7 +61,6 @@ simulate_data = function(controls,sim_par=NULL){
       logReturns[t,-1] = c(simulate_observations(states[t,-1][!is.na(states[t,-1])],thetaList[["mus_star"]][[S_t]],thetaList[["sigmas_star"]][[S_t]],thetaList[["dfs_star"]][[S_t]],controls[["sdds"]][2]),rep(NA,max(T_star)-T_star[t]))
     }
   }
-  
   out = list(
     "logReturns"   = logReturns,
     "states0"      = states,

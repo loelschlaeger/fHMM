@@ -57,10 +57,8 @@ process_data = function(controls,sim_par=NULL){
       if(controls[["time_horizon"]][2]=="y") writeLines(sprintf("%13-s %s","FS dim:","yearly"))
     }
   }
-  
   ### save data object
   check_saving(object = data, filetype = "rds", controls = controls)
-  
   ### return data object
   return(data)
 }

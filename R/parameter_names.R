@@ -1,10 +1,7 @@
 #' Create model parameter names
-#' 
 #' @param controls A list of controls
 #' @param all A boolean, determining whether all (\code{all=TRUE}) or only estimated (\code{all=FALSe}) names should be produced
-#' 
 #' @return Vector of model parameter names
-
 parameter_names = function(controls,all){
   matrix_indices = function(dim,all){
     indices = vector()
