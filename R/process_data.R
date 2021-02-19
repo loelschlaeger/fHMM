@@ -1,16 +1,19 @@
 #' Process data
-#'
 #' @param controls A list of controls
-#' @param data A list of processed data information
 #' @param sim_par A vector of model parameters for simulation, default \code{NULL}
-#' 
 #' @return A list of processed data information
-
-process_data = function(controls,data,sim_par=NULL){
+process_data = function(controls,sim_par=NULL){
   if(is.null(controls[["controls_checked"]])){
     stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
   }
-  
+  ### process data
+  if(controls[["sim"]]){
+    data = simulate_data(controls,sim_par)
+  }
+  if(!controls[["sim"]]){
+    data = read_data(controls)
+  }
+  message("Data processed")
   ### check for improper use of state-dependent gamma distribution
   if(controls[["model"]]=="HMM"){
     if(controls[["sdds"]][1]=="gamma" & any(data[["logReturns"]]<0)){
@@ -25,16 +28,6 @@ process_data = function(controls,data,sim_par=NULL){
       stop(sprintf("%s (%s)",exception("C.7")[2],exception("C.7")[1]),call.=FALSE)
     }
   }
-  
-  ### process data
-  if(controls[["sim"]]){
-    data = simulate_data(controls,sim_par)
-  }
-  if(!controls[["sim"]]){
-    data = read_data(controls)
-  }
-  message("data processed")
-  
   ### print data characteristics
   if(controls[["sim"]]){
     if(controls[["model"]]=="HMM"){
