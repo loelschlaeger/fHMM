@@ -99,14 +99,20 @@ The following parameters are optional and set to [default values](#default-value
 - `truncate_data = c(NA,NA)`
 
 ## Parameter structures
-Internally, model parameters are processed using three structures:
-- `thetaFull`: a named list of all model parameters with the names `"Gamma"`, `"mus"`, `"sigmas"`, `"dfs"` and `"*_star"` for the fine-scale
-- `thetaUncon`: a vector of all unconstrained model parameters to be estimated in the order 
-   1. non-diagonal elements of transition probability matrices (column-wise)
-   2. expected values
-   3. standard deviations
-   4. degrees of freedom
-- `thetaCon`: constrained elements of `thetaUncon`
+The code estimates four types of model parameters:
+1. non-diagonal elements (column-wise) `gammas` of transition probability matrices `Gamma`,
+2. expected values `mus`,
+3. standard deviations `sigmas`,
+4. degrees of freedom `dfs`.
+
+All of these parameters have to fulfill constraints. Constrained parameters get the suffix `Con`, unconstrained parameters the suffix `Uncon`. Fine-scale parameters additionally get the suffix `_star`. Internally, collections of model parameters are processed using the following structures:
+- `thetaFull`: a named list of all model parameters,
+- `thetaUncon`: a vector of all unconstrained model parameters to be estimated in the above order,
+- `thetaCon`: constrained elements of `thetaUncon`,
+- `thetaUnconSplit`: splitted `thetaUncon` by fine-scale models,
+- `thetaListOrdered`: `thetaList` in ordered form with respect to estimated expected values.
+
+The code provides functions to transform structures. Their names follow the logic `x2y`, where `x` and `y` are two structures.  
 
 ## Outputs
 The following model results are saved in the folder `path/models/id` (`path` and `id` specified in `controls`):
