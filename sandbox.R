@@ -9,10 +9,12 @@ download_data(path=".")
 ### Set and check controls
 controls = list(
   path = ".",
-  id = "test2",
-  sdds = c("t",NA),
-  states = c(2,0),
-  time_horizon = c(1000,NA)
+  id = "test",
+  sdds = c("t","gamma"),
+  states = c(2,3),
+  runs = 10,
+  accept_codes = "all",
+  time_horizon = c(100,30)
 )
 
 ### Define events (optional)
