@@ -11,6 +11,7 @@ exception = function(code){
   exceptions = data.frame(rbind(
     S.1 = c("id invalid","id already exists, set a unique identifier"),
     S.2 = c("saving failed","filename already exists and overwriting is forbidden, choose another id or allow overwriting"),
+    S.3 = c("path not found","path saved in controls not found, check spelling"),
     C.1 = c("controls invalid","controls is not checked, supply controls to check_controls"),
     C.2 = c("controls incomplete","some controls have to be specified, see Readme-file"),
     C.3 = c("controls misspecified","some controls do not fulfill restrictions, see Readme-file"),
