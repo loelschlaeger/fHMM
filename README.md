@@ -133,13 +133,14 @@ Some error or warning messages provide exception codes. Calling `exception(code)
 Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HMM_3_DAX) for the results.
 ```R
 ### Initialize code
-source("init.R"); load_code()
+source("load_code.R")
 
 ### Download data 
-download_data("dax","^GDAXI")
+download_data("dax","^GDAXI",path=".")
 
 ### Set and check controls
 controls = list(
+  path          = ".",
   id            = "HMM_3_DAX",
   sdds          = c("t",NA),
   states        = c(3,0),
@@ -155,16 +156,17 @@ events = list(
 )
 
 ### Fit (H)HMM
-fhmm(controls,events)
+fit_hmm(controls,events)
 ```
 ### Fitting a 2-state HMM to simulated data using gamma-distributions
 Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HMM_2_sim_gamma) for the results.
 ```R
 ### Initialize code
-source("init.R"); load_code()
+source("load_code.R")
 
 ### Set and check controls
 controls = list(
+  path          = ".",
   id            = "HMM_2_sim_gamma",
   sdds          = c("gamma",NA),
   states        = c(2,0),
@@ -172,5 +174,5 @@ controls = list(
 )
 
 ### Fit (H)HMM
-hhmmf(controls)
+fit_hmm(controls)
 ```
