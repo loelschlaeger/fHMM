@@ -1,14 +1,10 @@
 #' Check specification of controls
-#'
 #' @param controls A list of controls
-#' 
 #' @return Checked \code{controls} 
-
 check_controls = function(controls){
-  
   ### define types of controls
-  all_controls = c("id","scale_par","data_source","data_col","truncate_data","states","time_horizon","sdds","runs","at_true","iterlim","seed","print_level","steptol","gradtol","accept_codes","overwrite","data_cs_type","ci_level")
-  required_controls = c("id","states","sdds")
+  all_controls = c("id","path","scale_par","data_source","data_col","truncate_data","states","time_horizon","sdds","runs","at_true","iterlim","seed","print_level","steptol","gradtol","accept_codes","overwrite","data_cs_type","ci_level")
+  required_controls = c("id","path","states","sdds")
   artificial_controls = c("sim","model","fixed_dfs","controls_checked")
   missing_controls = setdiff(all_controls,names(controls))
   missing_required_controls = setdiff(required_controls,names(controls))
@@ -18,7 +14,6 @@ check_controls = function(controls){
   positive_numeric_controls = c("runs","iterlim","steptol","gradtol","ci_level")
   integer_controls = c("states","runs","iterlim","print_level","seed")
   boolean_controls = c("overwrite","at_true")
-  
   ### check types of controls
   if(length(missing_required_controls)>0){
     stop(sprintf("%s (%s)",exception("C.2")[2],exception("C.2")[1])) 
@@ -38,7 +33,6 @@ check_controls = function(controls){
   if(length(redundant_controls)>=1){
     warning(sprintf("%s (%s)",exception("C.4")[2],exception("C.4")[1]),call.=FALSE,immediate.=TRUE)
   }
-  
   ### set default control values
   if("accept_codes" %in% missing_controls)  controls[["accept_codes"]] = c(1,2)
   if("at_true" %in% missing_controls)       controls[["at_true"]] = FALSE
@@ -57,7 +51,6 @@ check_controls = function(controls){
   if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
   if("time_horizon" %in% missing_controls)  controls[["time_horizon"]] = c(NA,NA)
   if("sdds" %in% missing_controls)          controls[["sdds"]] = c(NA,NA)
-  
   ### create artificial controls
   controls[["model"]] = if(controls[["states"]][2]==0) "HMM" else "HHMM"
   if(controls[["model"]]=="HMM"){
@@ -68,8 +61,7 @@ check_controls = function(controls){
   }
   controls[["fixed_dfs"]] = c(NA,NA)
   controls[["scale_par"]] = c(1,1)
-  
-  ### check sdds
+  ### check state-dependent distributions
   all_sdds = c("gamma","t")
   extract_dfs = function(x){
     return(grepl("^[t][\\(]([1-9][0-9]*|Inf)[\\)]$",x))
@@ -81,7 +73,6 @@ check_controls = function(controls){
     }
   }
   if(controls[["model"]]=="HMM") controls[["fixed_dfs"]][2] = NA
-  
   ### check if controls are correct
   if(controls[["model"]]=="HMM") {
     if(controls[["states"]][1]%%1!=0 || controls[["states"]][1]<2){
@@ -190,24 +181,21 @@ check_controls = function(controls){
   if(controls[["id"]]=="test"){
     controls[["overwrite"]] = TRUE
   }
-  
   ### check if data paths are correct
   for(i in c(1,2)){
     if(!is.na(controls[["data_source"]][i])){
       if(!grepl(".csv$",controls[["data_source"]][i])) controls[["data_source"]][i] = paste0(controls[["data_source"]][i],".csv")
-      if(!file.exists(paste0("data/",controls[["data_source"]][i]))){
-        stop(paste0("file 'data/",controls[["data_source"]][i],"' not found"))
+      if(!file.exists(paste0(controls[["path"]],"/data/",controls[["data_source"]][i]))){
+        stop(paste0("file '",controls[["path"]],"/data/",controls[["data_source"]][i],"' not found"))
       }
       if(!controls[["data_col"]][i] %in% colnames(read.csv(file=paste0("data/",controls[["data_source"]][i])))){
-        stop(paste0("column '",controls[["data_col"]][i],"' not found in the file 'data/",controls[["data_source"]][i],"'"))
+        stop(paste0("column '",controls[["data_col"]][i],"' not found in the file '",controls[["path"]],"data/",controls[["data_source"]][i],"'"))
       }
     }
   }
-  
   ### end of checks
-  message("controls checked")
+  message("Controls checked")
   controls[["controls_checked"]] = TRUE
-  
   ### print model specification
   writeLines(sprintf("%13-s %s","model id:",controls[["id"]]))
   writeLines(sprintf("%13-s %s","model type:",controls[["model"]]))
@@ -223,11 +211,7 @@ check_controls = function(controls){
   }
   writeLines(sprintf("%13-s %s %s","runs:",controls[["runs"]],ifelse(controls[["at_true"]],"(initialised at true values)","")))
   if(!is.null(controls[["seed"]])) writeLines(sprintf("%13-s %s","seed:",controls[["seed"]]))
-  
   ### save controls
-  check_saving(object   = controls, 
-               filetype = "rds",
-               controls = controls)
-  
+  check_saving(object = controls, filetype = "rds", controls = controls)
   return(controls)
 }
