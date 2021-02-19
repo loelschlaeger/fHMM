@@ -106,8 +106,8 @@ The code estimates four types of model parameters:
 4. degrees of freedom `dfs`.
 
 All of these parameters have to fulfill constraints. Constrained parameters get the suffix `Con`, unconstrained parameters the suffix `Uncon`. Fine-scale parameters additionally get the suffix `_star`. Internally, collections of model parameters are processed using the following structures:
-- `thetaFull`: a named list of all model parameters,
-- `thetaUncon`: a vector of all unconstrained model parameters to be estimated in the above order,
+- `thetaFull`: a named list of all unconstrained model parameters,
+- `thetaUncon`: a vector of all unconstrained model parameters to be estimated (in the above order),
 - `thetaCon`: constrained elements of `thetaUncon`,
 - `thetaUnconSplit`: splitted `thetaUncon` by fine-scale models,
 - `thetaListOrdered`: `thetaList` in ordered form with respect to estimated expected values.
