@@ -48,7 +48,19 @@
 #' \item{\code{time_horizon = c(NA,NA)}}
 #' \item{\code{truncate_data = c(NA,NA)}}
 #' }
-#' @return No return value. Estimation results are saved in "\code{path}/model/\code{controls[["id"]]}.
+#' @return No return value. Estimation results are saved in "\code{controls[["path"]]}/model/\code{controls[["id"]]}.
+#' @examples 
+#' ### Fitting a 3-state HMM with state-dependent t-distributions to simulated data
+#' controls = list(
+#'  path         = ".",
+#'  id           = "HMM_3_t",
+#'  sdds         = c("t",NA),
+#'  states       = c(3,0),
+#'  time_horizon = c(500,NA),
+#'  runs         = 10,
+#'  seed         = 1
+#' )
+#' fit_hmm(controls)
 #' @export
 fit_hmm = function(controls,events=NULL,sim_par=NULL){
   ### check controls[["path"]]
