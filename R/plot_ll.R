@@ -1,13 +1,10 @@
 #' Plot log-likelihood values of estimation runs
-#'
 #' @param llks A vector of log-likelihood values
 #' @param controls A list of controls
-#' 
-#' @return No return value, called for side effects
-
+#' @return No return value, creates graphic in \code{controls[["path"]]}/models/\code{controls[["id"]]}
 plot_ll = function(llks,controls){
   if(check_saving(name = "log_likelihoods", filetype = "pdf", controls = controls)){
-    pdf(file = paste0("models/",controls[["id"]],"/log_likelihoods.pdf"), width=8, height=8)
+    pdf(file = paste0(controls[["path"]],"/models/",controls[["id"]],"/log_likelihoods.pdf"), width=8, height=8)
       if(length(llks)<=5){
         plot(llks,xaxt="n",yaxt="n",xlab="Estimation run",ylab="",main="Log-likelihoods",pch=16,ylim=c(floor(min(llks,na.rm=TRUE)),ceiling(max(llks,na.rm=TRUE))))
         axis(1,las=1,at=seq_len(length(llks)),labels=seq_len(length(llks)))      

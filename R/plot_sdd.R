@@ -1,35 +1,17 @@
 #' Visualize estimated state-dependent distributions
-#'
 #' @param controls A list of controls
 #' @param data A list of processed data information
 #' @param fit A fitted model
 #' @param decoding A matrix of decoded states
 #' @param colors A matrix of colors for different states
-#' 
-#' @return No return value, called for side effects
-
+#' @return No return value, creates graphic in \code{controls[["path"]]}/models/\code{controls[["id"]]}
 plot_sdd = function(controls,data,fit,decoding,colors){
-  
   if(check_saving(name = "state_dependent_distributions", filetype = "pdf", controls = controls)){
-    
-    filename = paste0("models/",controls[["id"]],"/state_dependent_distributions.pdf")
-    
-    create_sdds_plot = function(nostates,
-                                mus,
-                                sigmas,
-                                dfs,
-                                sdd,
-                                x_range,
-                                c_xlim = FALSE,
-                                xlim = NULL,
-                                colors = NULL,
-                                llabel = NULL,
-                                ltitle = NULL,
-                                sdd_true_parm = NULL){
+    filename = paste0(controls[["path"]],"/models/",controls[["id"]],"/state_dependent_distributions.pdf")
+    create_sdds_plot = function(nostates,mus,sigmas,dfs,sdd,x_range,c_xlim = FALSE,xlim = NULL,colors = NULL,llabel = NULL,ltitle = NULL,sdd_true_parm = NULL){
       lwd = 3
       x = seq(x_range[1]*ifelse(x_range[1]<0,1.5,0.5),x_range[2]*ifelse(x_range[2]>0,1.5,0.5),length.out=10000)
       if(sdd=="gamma") x = x[x>0.001]
-      
       sdd_density_values = list()
       sdd_true_density_values = list()
       sdd_density = function(mus,sigmas,dfs,state,sdd,x){
@@ -47,7 +29,6 @@ plot_sdd = function(controls,data,fit,decoding,colors){
         }
       }
       trunc_distr = 0.01 * min(sapply(c(sdd_density_values,sdd_true_density_values),max))
-      
       ymin = 0
       ymax = max(c(unlist(sdd_density_values),unlist(sdd_true_density_values)))
       if(c_xlim){
@@ -66,7 +47,6 @@ plot_sdd = function(controls,data,fit,decoding,colors){
         xmax = min(100,max(rep(x,nostates)[unlist(sdd_density_values)>trunc_distr]))
         xmax = round(xmax,digits=5)
       }
-      
       hist(0,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
       if(xmin<0 & 0<xmax){
         axis(1,c(xmin,0,xmax),labels=sprintf("%.1g",c(xmin,0,xmax)))
@@ -84,13 +64,11 @@ plot_sdd = function(controls,data,fit,decoding,colors){
           lines(x[sdd_true_density_values[[s]]>trunc_distr],sdd_true_density_values[[s]][sdd_true_density_values[[s]]>trunc_distr],col=colors[s],lwd=lwd,lty=2)
         }
       }
-      
       legend(legend=paste(llabel,seq_len(nostates)),col=colors,lwd=lwd,title=ltitle,cex=1.25,x="topleft",bg=rgb(1,1,1,0.5))
       if(!is.null(sdd_true_parm)){
         legend(legend=c("estimated","true"),col="grey",lwd=lwd,lty=c(1,2),cex=1.25,x="topright",bg=rgb(1,1,1,0.5))
       }
     }
-    
     if(controls[["model"]]=="HMM"){
       pdf(file = filename, width=8, height=8)
         if(controls[["sim"]]){
@@ -111,7 +89,6 @@ plot_sdd = function(controls,data,fit,decoding,colors){
                          sdd_true_parm = sdd_true_parm)
       invisible(dev.off())
     }
-    
     if(controls[["model"]]=="HHMM"){
       pdf(file = filename, width=8, height=8)
         if(controls[["sim"]]){

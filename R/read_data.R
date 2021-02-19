@@ -10,7 +10,6 @@ read_data = function(controls){
   if(is.null(controls[["controls_checked"]])) stop(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
   data_source = controls[["data_source"]]
   data_col = controls[["data_col"]]
-  
   data = list()
   for(i in 1:2){
     if(is.na(data_source)[i]){
@@ -18,17 +17,15 @@ read_data = function(controls){
     }
     if(!is.na(data_source)[i]){
       ### extract data
-      data[[i]] = read.csv(file=paste0("data/",data_source[i]),header=TRUE,sep=",",na.strings="null")
+      data[[i]] = read.csv(file=paste0(controls[["path"]],"/data/",data_source[i]),header=TRUE,sep=",",na.strings="null")
       if(!"Date" %in% colnames(data[[i]]) || !data_col[i] %in% colnames(data[[i]])){
         stop(sprintf("%s (%s)",exception("D.4")[2],exception("D.4")[1]),call.=FALSE)
       }
       data[[i]] = data[[i]][,colnames(data[[i]]) %in% c("Date",data_col[i]), drop = FALSE]
       data[[i]][["Date"]] = as.Date(data[[i]][["Date"]], format="%Y-%m-%d")
       data[[i]][[data_col[i]]] = as.numeric(data[[i]][[data_col[i]]])
-      
       ### remove NA dates
       data[[i]] = data[[i]][!is.na(data[[i]][["Date"]]),]
-      
       ### replace NA values by neighbour means
       for(na_value in which(is.na(data[[i]][[data_col[i]]]))){
         incr = 1
@@ -42,14 +39,12 @@ read_data = function(controls){
           incr = incr + 1
         }
       }
-      
       ### compute log-returns
       data_length = length(data[[i]][[data_col[i]]])
       data[[i]][["LogReturns"]] = numeric(data_length)
       for(t in seq_len(data_length)[-1]){
         data[[i]][["LogReturns"]][t] = log(data[[i]][[data_col[i]]][t]/data[[i]][[data_col[i]]][t-1])
       }
-      
       ### remove 0 log-returns in case of gamma sdd to avoid numerical conflicts
       if(controls[["sdds"]][i]=="gamma"){
         for(t in seq_len(data_length)){
@@ -66,7 +61,6 @@ read_data = function(controls){
       }
     }
   }
-  
   ### function that truncates the data
   truncate_data = function(controls,data){
     ### find exact or nearest position of 'date' in 'data' 
@@ -91,7 +85,6 @@ read_data = function(controls){
     }
     return(data)
   }
-  
   ### HMM data
   if(controls[["model"]]=="HMM"){
     data[[1]] = truncate_data(controls,data[[1]])
@@ -103,23 +96,17 @@ read_data = function(controls){
       "T_star"     = NA
     )
   }
-  
   ### HHMM data
   if(controls[["model"]]=="HHMM"){
-    
     ### remove data points that do not occur in both files
     data[[1]] = data[[1]][ data[[1]][["Date"]] %in% intersect(data[[1]][["Date"]],data[[2]][["Date"]]), ]
     data[[2]] = data[[2]][ data[[2]][["Date"]] %in% intersect(data[[2]][["Date"]],data[[1]][["Date"]]), ]
-    
     data[[1]] = truncate_data(controls,data[[1]])
     data[[2]] = truncate_data(controls,data[[2]])
-    
     T_star = compute_fs(fs_time_horizon = controls[["time_horizon"]][2], fs_dates = data[[2]][["Date"]])
     T = length(T_star)
-    
     data[[1]] = data[[1]][seq_len(sum(T_star)),]
     data[[2]] = data[[2]][seq_len(sum(T_star)),]
-    
     ### format CS and FS data
     cs_data_tbt = matrix(NA,nrow=T,ncol=max(T_star))
     fs_data     = matrix(NA,nrow=T,ncol=max(T_star))
@@ -127,7 +114,6 @@ read_data = function(controls){
       cs_data_tbt[t,] = c(data[[1]][["LogReturns"]][(sum(T_star[seq_len(t-1)])+1):sum(T_star[seq_len(t)])],rep(NA,max(T_star)-T_star[t]))
       fs_data[t,]     = c(data[[2]][["LogReturns"]][(sum(T_star[seq_len(t-1)])+1):sum(T_star[seq_len(t)])],rep(NA,max(T_star)-T_star[t]))
     }
-    
     ### transform CS data
     if(controls[["data_cs_type"]] == "mean"){
       cs_data = rowMeans(cs_data_tbt,na.rm=TRUE)
@@ -138,7 +124,6 @@ read_data = function(controls){
     if(controls[["data_cs_type"]] == "sum_abs"){
       cs_data = rowSums(abs(cs_data_tbt),na.rm=TRUE)
     }
-    
     out = list(
       "logReturns" = cbind(cs_data,fs_data,deparse.level=0),
       "dataRaw"    = data[[2]][[data_col[2]]],
@@ -147,6 +132,5 @@ read_data = function(controls){
       "T_star"     = T_star
     )
   }
-  
   return(out)
 }

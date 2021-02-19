@@ -1,15 +1,11 @@
 #' Visualize decoded time-series
-#'
 #' @param controls A list of controls
 #' @param data A list of processed data information
 #' @param decoding A matrix of decoded states
 #' @param colors A matrix of colors for different states
 #' @param events A list of events
-#' 
-#' @return No return value, called for side effects
-
+#' @return No return value, creates graphic in \code{controls[["path"]]}/models/\code{controls[["id"]]}
 plot_ts = function(controls,data,decoding,colors,events){
-  
   ### extract parameters
   if(controls[["model"]]=="HMM"){
     T = length(data[["logReturns"]])
@@ -21,9 +17,8 @@ plot_ts = function(controls,data,decoding,colors,events){
     cs_logReturns = data[["logReturns"]][,1]
     fs_logReturns = as.vector(t(data[["logReturns"]][,-1]))[!is.na(as.vector(t(data[["logReturns"]][,-1])))]
   }
-  
   if(check_saving(name = "decoded_time_series", filetype = "pdf", controls = controls)){
-    pdf(file = paste0("models/",controls[["id"]],"/decoded_time_series.pdf"), width=20, height=10)
+    pdf(file = paste0(controls[["path"]],"/models/",controls[["id"]],"/decoded_time_series.pdf"), width=20, height=10)
       par(las=1,mar=c(6,5,0.5,5),bty="n")
       if(!controls[["sim"]]){
         xmin = as.Date(format(as.Date(head(data[["dates"]],n=1)),"%Y-01-01")); 
