@@ -1,3 +1,5 @@
+useDynLib("fHMM")
+export(download_data)
 importFrom("grDevices", "adjustcolor", "colorRampPalette", "dev.off",
              "pdf", "rgb")
 importFrom("graphics", "abline", "axis", "curve", "hist", "legend",
