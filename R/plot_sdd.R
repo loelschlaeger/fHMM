@@ -5,6 +5,8 @@
 #' @param fit A fitted model
 #' @param decoding A matrix of decoded states
 #' @param colors A matrix of colors for different states
+#' 
+#' @return No return value, called for side effects
 
 plot_sdd = function(controls,data,fit,decoding,colors){
   

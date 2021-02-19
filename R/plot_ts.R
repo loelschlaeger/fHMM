@@ -5,6 +5,8 @@
 #' @param decoding A matrix of decoded states
 #' @param colors A matrix of colors for different states
 #' @param events A list of events
+#' 
+#' @return No return value, called for side effects
 
 plot_ts = function(controls,data,decoding,colors,events){
   

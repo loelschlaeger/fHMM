@@ -2,6 +2,8 @@
 #'
 #' @param llks A vector of log-likelihood values
 #' @param controls A list of controls
+#' 
+#' @return No return value, called for side effects
 
 plot_ll = function(llks,controls){
   if(check_saving(name = "log_likelihoods", filetype = "pdf", controls = controls)){
