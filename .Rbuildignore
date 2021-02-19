@@ -3,6 +3,7 @@
 sticker/
 models/
 data/
+inst/
 init.R
 sandbox.R
 loop.R
