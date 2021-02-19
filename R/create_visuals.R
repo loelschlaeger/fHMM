@@ -5,6 +5,8 @@
 #' @param decoding A matrix of decoded states
 #' @param controls A list of controls
 #' @param events A list of events, default \code{NULL}
+#' 
+#' @return No return value, called for side effects
 
 create_visuals = function(data,fit,decoding,controls,events=NULL){
   
