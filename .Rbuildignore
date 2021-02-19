@@ -1,9 +1,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-/sticker/
-/models/
-/data/
-/inst/
+sticker/
+models/
+data/
+inst/
 load_code.R
 sandbox.R
 loop.R
