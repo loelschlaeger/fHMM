@@ -11,12 +11,12 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 7. [Examples](#examples)
 
 ## Getting started
-1. Execute `source("init.R"); load_code()` to initialize the code.
+1. Execute `source("load_code.R")` to initialize the code.
 2. Set the model's [controls](#specifying-controls).
-3. Execute `hhmmf(controls,events=NULL,sim_par=NULL)`, where
+3. Execute `fit_hmm(controls,events=NULL,sim_par=NULL)`, where
    - `controls` is the list of controls defined in step 2,
    - `events` is a list of [events](#events) (optional),
-   - `sim_par` is a [thetaUncon](#parameter-structures)-object specifying model parameters for a simulation (optional).
+   - `sim_par` is a [thetaList](#parameter-structures)-object specifying model parameters for a simulation (optional).
    
 See below for [examples](#examples).
 
@@ -24,22 +24,23 @@ See below for [examples](#examples).
 The code is intended to be used on daily share prices provided by https://finance.yahoo.com/ or simulated data. 
 
 ### Empirical data
-Empirical data must be in csv-format and must contain a column named "Date" and a named column of daily share prices. Such data files can be saved in the folder `"./data"` or downloaded automatically via the function `download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE)`, where
+Empirical data must be in csv-format and must contain a column named "Date" and a named column of daily share prices. Such data files can be saved in the folder `"path/data"` (where `path` is specified in `controls`) or downloaded automatically via the function `download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE,path)`, where
 - `name` is a personal identifier (optional),
 - `symbol` is the stock's symbol (optional),
 - `from` and `to` define the time interval (in format `"YYYY-MM-DD"`, optional),
-- `show_symbols = TRUE` prints all saved symbols (optional).
+- `show_symbols = TRUE` prints all saved symbols (optional),
+- `path` is the data saving path.
 
 ### Simulated data
 Data can be simulated, e.g. for bootstrapping. The model parameters can be either
-1. specified by passing `sim_par` to `hhmmf` or 
+1. specified by passing `sim_par` to `fit_hmm` or 
 2. randomly drawn. In this case, model paramters are drawn from the ranges -1 to 1 for expected values of a t-distribution, 0 to 1 for expected values of a gamma-distribution and 0 to 1 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
 
 ### Events
-Historical events can be highlighted in the visualization of the decoded, empirical time series by passing a named list with elements `dates` (a vector of dates) and `names` (a vector of names for the events) to `hhmmf`.
+Historical events can be highlighted in the visualization of the decoded, empirical time series by passing a named list with elements `dates` (a vector of dates) and `names` (a vector of names for the events) to `fit_hmm`.
 
 ## Specifying controls
-A model is specified by setting parameters of the named list `controls` and passing it to `hhmmf`. The following parameters are mandatory:
+A model is specified by setting parameters of the named list `controls` and passing it to `fit_hmm`. The following parameters are mandatory:
 - `id`: a character, identifying the model
 - `path`: a character, setting the path of the data and the model results
 - `states`: a numeric vector of length 2, determining the model type and the number of states:
@@ -98,17 +99,23 @@ The following parameters are optional and set to [default values](#default-value
 - `truncate_data = c(NA,NA)`
 
 ## Parameter structures
-Internally, model parameters are processed using three structures:
-- `thetaFull`: a named list of all model parameters with the names `"Gamma"`, `"mus"`, `"sigmas"`, `"dfs"` and `"*_star"` for the fine-scale
-- `thetaUncon`: a vector of all unconstrained model parameters to be estimated in the order 
-   1. non-diagonal elements of transition probability matrices (column-wise)
-   2. expected values
-   3. standard deviations
-   4. degrees of freedom
-- `thetaCon`: constrained elements of `thetaUncon`
+The code estimates four types of model parameters:
+1. non-diagonal elements (column-wise) `gammas` of transition probability matrices `Gamma`,
+2. expected values `mus`,
+3. standard deviations `sigmas`,
+4. degrees of freedom `dfs`.
+
+All of these parameters have to fulfill constraints. Constrained parameters get the suffix `Con`, unconstrained parameters the suffix `Uncon`. Fine-scale parameters additionally get the suffix `_star`. Internally, collections of model parameters are processed using the following structures:
+- `thetaFull`: a named list of all unconstrained model parameters,
+- `thetaUncon`: a vector of all unconstrained model parameters to be estimated (in the above order),
+- `thetaCon`: constrained elements of `thetaUncon`,
+- `thetaUnconSplit`: splitted `thetaUncon` by fine-scale models,
+- `thetaListOrdered`: `thetaList` in ordered form with respect to estimated expected values.
+
+The code provides functions to transform structures. Their names follow the logic `x2y`, where `x` and `y` are two structures.  
 
 ## Outputs
-The following model results are saved in the folder `./models/id`:
+The following model results are saved in the folder `path/models/id` (`path` and `id` specified in `controls`):
 - `estimates.txt`: containing the model's likelihood value, AIC and BIC values, exit code, number of iterations, estimated and true parameters (only for simulated data), relaltive bias (only for simulated data) and confidence intervals
 - `protocol.txt`: containing a protocol of the estimation
 - `states.txt`: containing frequencies of the decoded states and (only for simulated data) a comparison between the true states and the predicted states
