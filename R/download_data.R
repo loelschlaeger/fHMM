@@ -9,8 +9,6 @@
 #' @examples
 #' ### download 21st century DAX data
 #' download_data(name="dax",symbol="^GDAXI",from=as.Date("2000-01-03"),path=".")
-#' ### print saved symbols
-#' download_data(show_symbols=TRUE,path=".")
 #' @export
 download_data = function(name=NULL,symbol=NULL,from="1902-01-01",to=Sys.Date(),show_symbols=FALSE,path){
   ### load and sort or create 'stock_symbols'
