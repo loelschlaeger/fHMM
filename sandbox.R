@@ -4,12 +4,12 @@ rm(list = ls()); cat("\f")
 source("load_code.R")
 
 ### Download data (optional)
-download_data()
+download_data(path=".")
 
 ### Set and check controls
 controls = list(
-  path = "C:/Users/Lennart/Desktop",
-  id = "test",
+  path = ".",
+  id = "test2",
   sdds = c("t",NA),
   states = c(2,0),
   time_horizon = c(1000,NA)
