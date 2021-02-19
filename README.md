@@ -170,7 +170,8 @@ controls = list(
   id            = "HMM_2_sim_gamma",
   sdds          = c("gamma",NA),
   states        = c(2,0),
-  time_horizon  = c(5000,NA)
+  time_horizon  = c(5000,NA),
+  seed          = 1
 )
 
 ### Fit (H)HMM
