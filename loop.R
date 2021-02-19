@@ -13,18 +13,23 @@ options(warn=1)
 base_control =  list(
     path          = ".",
     data_col      = c("Close","Close"),
-    states        = c(3,2),
-    sdds          = c("gamma","t"),
     time_horizon  = c(NA,"m"),
-    truncate_data = c("2000-01-03",NA)
+    truncate_data = c("2000-01-03",NA),
+    runs          = 200
   )
-ids = paste0("HHMM_3_2_",c("DAX_DBK","DAX_SAP","DAX_telekom","DAX_VW","SandP500_amazon","SandP500_americanairlines","SandP500_apple","SandP500_google","SandP500_waltdisney"))
-data_sources = list(c("dax","dbk"),c("dax","sap"),c("dax","telekom"),c("dax","vw"),c("sandp500","amazon"),c("sandp500","americanairlines"),c("sandp500","apple"),c("sandp500","google"),c("sandp500","waltdisney"))
+data_sources = list(c("dax","dbk"),c("dax","sap"),c("dax","vw"),c("sandp500","americanairlines"),c("sandp500","waltdisney"))
 all_controls = list()
-for(n in 1:length(ids)) {
-  all_controls[[n]] = base_control
-  all_controls[[n]]["id"] = ids[n]
-  all_controls[[n]]["data_source"] = data_sources[n]
+for(n in 1:length(data_sources)){
+  for(s in 1:2){
+    for(d in 1:2){
+      i = 4*(n-1)+2*(s-1)+d
+      all_controls[[i]] = base_control
+      all_controls[[i]][["states"]] = if(s==1) c(2,2) else c(3,2)
+      all_controls[[i]][["sdds"]] = if(d==1) c("gamma","t") else c("gamma","t")
+      all_controls[[i]][["data_source"]] = unlist(data_sources[n])
+      all_controls[[i]][["id"]] = paste0("HHMM_",paste0(all_controls[[i]][["states"]],collapse="_"),"_",paste0(unlist(all_controls[[i]][["data_source"]]),collapse="_"))
+    }
+  }
 }
 
 ### Define events (optional)
@@ -36,7 +41,7 @@ events = list(
 ### Fit
 for(controls in all_controls){
   tryCatch(fit_hmm(controls,events), 
-           error=function(e)message("Estimation failed:",conditionMessage(e),"\n"))
+           error=function(e)message("Estimation failed: ",conditionMessage(e),"\n"))
 }
 
 ### Reset default warning setting
