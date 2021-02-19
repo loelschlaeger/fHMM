@@ -1,17 +1,18 @@
 rm(list = ls()); cat("\f")
 
 ### Initialize code
-source("init.R"); load_code()
+source("load_code.R")
 
 ### Download data (optional)
 download_data()
 
 ### Set and check controls
 controls = list(
+  path = "C:/Users/Lennart/Desktop",
   id = "test",
   sdds = c("t",NA),
   states = c(2,0),
-  time_horizon = c(1000,NA),
+  time_horizon = c(1000,NA)
 )
 
 ### Define events (optional)

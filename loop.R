@@ -1,7 +1,7 @@
 rm(list = ls()); cat("\f")
 
 ### Initialize code
-source("init.R"); load_code()
+source("load_code.R")
 
 ### Download data
 download_data()
