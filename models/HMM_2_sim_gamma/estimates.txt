@@ -1,15 +1,15 @@
 Estimation results of model 'HMM_2_sim_gamma':
 
-log-likelihood: 267.98
-AIC:            -523.96
-BIC:            -494.52
+log-likelihood: 3828.93
+AIC:            -7645.85
+BIC:            -7606.75
 exit code:      2
-iterations:     23
+iterations:     31
 
          true est  rel. bias lb_0.95 ub_0.95
-Gamma_21 0.27 0.23 -0.15     0.17    0.30   
-Gamma_12 0.13 0.13 0.06      0.11    0.17   
-mu_1     0.09 0.10 0.10      0.09    0.11   
-mu_2     0.88 0.83 -0.05     0.75    0.93   
-sigma_1  0.08 0.09 0.10      0.08    0.10   
-sigma_2  0.78 0.69 -0.11     0.62    0.78   
+Gamma_21 0.19 0.20 0.06      0.19    0.22   
+Gamma_12 0.22 0.23 0.03      0.21    0.24   
+mu_1     0.09 0.09 0.00      0.09    0.09   
+mu_2     0.90 0.90 0.00      0.89    0.91   
+sigma_1  0.02 0.02 -0.01     0.02    0.02   
+sigma_2  0.20 0.20 0.00      0.20    0.21   

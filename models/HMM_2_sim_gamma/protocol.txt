@@ -4,6 +4,7 @@ data type:    simulated
 states:       2
 SDDs:         gamma
 runs:         100 
-sample size:  1000
-run-time:     1 minute(s)
-accepted:     91 out of 100 runs
+seed:         1
+sample size:  5000
+run-time:     2 minute(s)
+accepted:     97 out of 100 runs
