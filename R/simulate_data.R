@@ -1,8 +1,6 @@
 #' Simulate data from a (hierarchical) hidden Markov model
-#'
 #' @param controls A list of controls
-#' @param sim_par A vector of model parameters for simulation, default \code{NULL}
-#'
+#' @param sim_par A list of model parameters for simulation in \code{thetaList} format, default \code{NULL}
 #' @return A list containing the following elements:
 #' \item{logReturns}{Simulated log-returns}
 #' \item{states0}{Simulated hidden states}
@@ -10,16 +8,13 @@
 #' \item{thetaCon0}{True parameters in format \code{thetaCon}}
 #' \item{thetaList0}{True parameters in format \code{thetaList}}
 #' \item{T_star}{Vector of fine-scale chunk sizes}
-
 simulate_data = function(controls,sim_par=NULL){
   if(is.null(controls[["controls_checked"]])) stop(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
   if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
-
   T = as.numeric(controls[["time_horizon"]][1])
-  
   ### define simulation parameters
   if(!is.null(sim_par)){
-    thetaUncon = sim_par
+    thetaUncon = thetaList2thetaUncon(sim_par,controls)
   } else {
     thetaUncon = init_est(controls)
   }
