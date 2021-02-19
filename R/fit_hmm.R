@@ -52,7 +52,7 @@
 #' @examples 
 #' ### Fitting a 3-state HMM with state-dependent t-distributions to simulated data
 #' controls = list(
-#'  path         = ".",
+#'  path         = tempdir(),
 #'  id           = "HMM_3_t",
 #'  sdds         = c("t",NA),
 #'  states       = c(3,0),
