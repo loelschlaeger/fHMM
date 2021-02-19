@@ -4,6 +4,6 @@ sticker/
 models/
 data/
 inst/
-init.R
+load_code.R
 sandbox.R
 loop.R
