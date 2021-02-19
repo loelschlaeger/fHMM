@@ -5,14 +5,12 @@ using namespace arma;
 using namespace Rcpp;
 #include<iostream>
 #include<cmath>
-
 // [[Rcpp::export]]
 double LL_HHMM_Rcpp(arma::mat log_likelihoods, arma::mat allprobs, arma::mat Gamma, arma::vec delta, int M, int T){
   double loglike=0.0;
   int i=0;
   int t=1;
   double c=0.0;
-  
   arma::mat phi = mat(M,T);
   for(i=0;i<M;i++){
     phi(i,0) = log(delta(i))+log_likelihoods(i,0)+log(allprobs(i,0));
@@ -25,6 +23,5 @@ double LL_HHMM_Rcpp(arma::mat log_likelihoods, arma::mat allprobs, arma::mat Gam
   }
   c = max(phi.col(T-1));
   loglike = log(sum(exp(phi.col(T-1)-c)))+c;
-  
   return loglike;
 }

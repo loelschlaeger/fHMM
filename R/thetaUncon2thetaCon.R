@@ -1,14 +1,10 @@
 #' Constrain model parameters
-#'
 #' @param thetaUncon Unconstrained model parameters in vector form
 #' @param controls A list of controls
-#' 
 #' @return Constrained model parameters in vector form
-
 thetaUncon2thetaCon = function(thetaUncon,controls){
   M  = controls[["states"]][1] 
   N  = controls[["states"]][2]
-  
   if(controls[["model"]]=="HMM"){
     gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
     gammasCon   = gammasUncon2gammasCon(gammasUncon,M)
@@ -29,7 +25,6 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
       thetaCon = c(gammasCon,musCon,sigmasCon)
     }
   }
-  
   if(controls[["model"]]=="HHMM"){
     gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
     gammasCon   = gammasUncon2gammasCon(gammasUncon,M)
@@ -38,7 +33,6 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
       gammasCon_star   = gammasUncon2gammasCon(gammasUncon_star,N)
       gammasCon        = c(gammasCon,gammasCon_star)
     }
-    
     musUncon = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
     musCon   = muUncon2muCon(musUncon,link=(controls[["sdds"]][1] == "gamma"))
     for(m in seq_len(M)){
@@ -46,7 +40,6 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
       musCon_star   = muUncon2muCon(musUncon_star,link=(controls[["sdds"]][2] == "gamma"))
       musCon        = c(musCon,musCon_star)
     }
-    
     sigmasUncon = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
     sigmasCon   = sigmaUncon2sigmaCon(sigmasUncon)
     for(m in seq_len(M)){
@@ -54,7 +47,6 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
       sigmasCon_star   = sigmaUncon2sigmaCon(sigmasUncon_star)
       sigmasCon        = c(sigmasCon,sigmasCon_star)
     }
-    
     if(controls[["sdds"]][1] == "t"){
       if(is.na(controls[["fixed_dfs"]][1])){
         dfsUncon = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
@@ -93,6 +85,5 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
       }
     }
   }
-  
   return(thetaCon)
 }

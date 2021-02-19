@@ -1,14 +1,11 @@
-#' Bring uncontrained model parameters in list form for each fine-scale model
-#'
+#' Split uncontrained model parameters by fine-scale HMMs
 #' @param thetaUncon Unconstrained model parameters in vector form
 #' @param controls A list of controls
-#' 
-#' @return Unconstrained fine-scale model parameters in list form
-
+#' @return Unconstrained fine-scale model parameters for each fine-scale HMM in list form
 thetaUncon2thetaUnconSplit = function(thetaUncon,controls){
+  if(controls[["model"]]!="HHMM") stop("Function only for HHMMs")
   M = controls[["states"]][1] 
   N = controls[["states"]][2] 
-  
   thetaUnconSplit = list()
   thetaUncon = thetaUncon[-(1:((M-1)*M))] 
   for(m in seq_len(M)){
@@ -38,6 +35,5 @@ thetaUncon2thetaUnconSplit = function(thetaUncon,controls){
       }
     }
   }
-  
   return(thetaUnconSplit)
 }
