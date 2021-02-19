@@ -4,13 +4,14 @@ rm(list = ls()); cat("\f")
 source("load_code.R")
 
 ### Download data
-download_data()
+download_data(path=".")
 
 ### Display warnings when they occur
 options(warn=1)
 
 ### Set controls for different models
 base_control =  list(
+    path          = ".",
     data_col      = c("Close","Close"),
     states        = c(3,2),
     sdds          = c("gamma","t"),
