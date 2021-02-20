@@ -50,10 +50,6 @@ A model is specified by setting parameters of the named list `controls` and pass
    - `"t"`, the t-distribution
    - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom (normal distribution is obtained by setting `x = Inf`)
    - `"gamma"`, the gamma distribution
-- `data_cs_type` (only for a HHMM and empirical data): a character, determining the type of coarse-scale data:
-   - `data_cs_type = "mean"`: means of the fine-scale data
-   - `data_cs_type = "mean_abs"`: means of the fine-scale data in absolute value
-   - `data_cs_type = "sum_abs"`: sums of fine-scale data in absolute value
 - either `data_source` along with `data_col` (for empirical data) or `time_horizon` (for simulated data), see below
 
 The following parameters are optional and set to [default values](#default-values) if not specified:
@@ -61,6 +57,10 @@ The following parameters are optional and set to [default values](#default-value
 - `at_true`: a boolean, determining whether the optimization is initialised at the true parameter values (only for simulated data, sets `runs = 1` and `accept_codes = "all"`)
 - `ci_level`: a scalar between 0 and 1, setting the confidence interval level
 - `data_col`: a character vector of length 2, containing the name of the desired column of `data_source` for both scales
+- `data_cs_type` (only for a HHMM and empirical data): a character, determining the type of coarse-scale data:
+   - `data_cs_type = "mean"`: means of the fine-scale data
+   - `data_cs_type = "mean_abs"`: means of the fine-scale data in absolute value
+   - `data_cs_type = "sum_abs"`: sums of fine-scale data in absolute value
 - `data_source`: a character vector of length 2, containing the file names of the empirical data:
    - if `data_source = c(NA,NA)`, data is simulated
    - if `data_source = c("x",NA)`, data `"./data/x.csv"` is modeled by a HMM
@@ -86,6 +86,7 @@ The following parameters are optional and set to [default values](#default-value
 - `at_true = FALSE`
 - `ci_level = 0.95`
 - `data_col = c(NA,NA)`
+- `data_cs_type = mean_abs` 
 - `data_source = c(NA,NA)` 
 - `gradtol = 1e-4`
 - `iterlim = 500`
