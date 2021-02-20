@@ -15,7 +15,7 @@ compute_ci = function(fit,controls){
   }
   ### extract estimates
   fisher = fit[["hessian"]]
-  estimatesUncon = fit[["model"]][["estimate"]]
+  estimatesUncon = fit[["thetaUncon"]]
   ### compute confidence intervals using the inverse Hessian approach
   inv_fisher = MASS::ginv(fisher)
   sds = suppressWarnings(sqrt(diag(inv_fisher)))
