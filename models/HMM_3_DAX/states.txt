@@ -1,5 +1,5 @@
 Frequency of decoded states
 
 state 1 state 2 state 3 
-   2223    2553     594 
+   2021    2729     620 
 

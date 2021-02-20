@@ -8,5 +8,5 @@ source:       dax.csv
 column:       Close
 horizon:      2000-01-03 to 2020-12-30
 data points:  5370
-run-time:     10 minute(s)
-accepted:     96 out of 100 runs
+run-time:     11 minute(s)
+accepted:     95 out of 100 runs
