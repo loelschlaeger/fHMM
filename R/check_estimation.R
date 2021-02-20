@@ -12,6 +12,12 @@ check_estimation = function(mods,llks,data,hessian,controls){
   thetaUncon = mod[["estimate"]]
   thetaCon   = thetaUncon2thetaCon(thetaUncon,controls)
   thetaList  = thetaCon2thetaList(thetaCon,controls)
+  ### sort model parameters
+  thetaListOrdered = thetaList2thetaListOrdered(thetaList,controls)
+  thetaConOrdered = thetaList2thetaCon(thetaListOrdered,controls)
+  thetaUnconOrdered = thetaCon2thetaUncon(thetaConOrdered,controls)
+  permut = diag(length(thetaUncon))[match(thetaCon,thetaConOrdered),]
+  hessianOrdered = permut %*% hessian %*% t(permut)
   ### check if iteration limit was reached
   if(mod[["iterations"]] >= controls[["iterlim"]]){
     warning(sprintf("%s (%s)",exception("C.5")[2],exception("C.5")[1]),call.=FALSE)
@@ -33,24 +39,20 @@ check_estimation = function(mods,llks,data,hessian,controls){
   ### create object 'fit'
   fit = list("logLikelihood"      = mod_LL,
              "model"              = mod,
-             "thetaUncon"         = thetaUncon,
-             "thetaCon"           = thetaCon,
-             "thetaList"          = thetaList,
+             "thetaUncon"         = thetaUnconOrdered,
+             "thetaCon"           = thetaConOrdered,
+             "thetaList"          = thetaListOrdered,
              "AIC"                = comp_AIC(-mod[["minimum"]]),
              "BIC"                = comp_BIC(prod(dim(t(data[["logReturns"]]))),-mod[["minimum"]]),
-             "hessian"            = hessian,
-             "all_models"          = mods,
+             "hessian"            = hessianOrdered,
+             "all_models"         = mods,
              "all_logLikelihoods" = llks
              )
-  ### order estimates
-  thetaListOrdered = thetaList2thetaListOrdered(thetaList,controls)
-  thetaConOrdered = thetaList2thetaCon(thetaListOrdered,controls)
-  shift = match(thetaConOrdered,thetaCon)
   ### compute confidence intervals
   ci = compute_ci(fit,controls)
-  lb = ci[[1]][shift]
-  est = ci[["estimate"]][shift]
-  ub = ci[[3]][shift]
+  lb = ci[[1]]
+  est = ci[["estimate"]]
+  ub = ci[[3]]
   ### true estimates and relative bias
   if(controls[["sim"]]){
     true = data[["thetaCon0"]]
