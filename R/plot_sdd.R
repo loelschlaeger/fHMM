@@ -69,7 +69,6 @@ plot_sdd = function(controls,data,fit,decoding,colors){
         legend(legend=c("estimated","true"),col="grey",lwd=lwd,lty=c(1,2),cex=1.25,x="topright",bg=rgb(1,1,1,0.5))
       }
     }
-    thetaListOrdered = thetaList2thetaListOrdered(thetaList,controls)
     if(controls[["model"]]=="HMM"){
       pdf(file = filename, width=8, height=8)
         if(controls[["sim"]]){
@@ -80,9 +79,9 @@ plot_sdd = function(controls,data,fit,decoding,colors){
           sdd_true_parm = NULL
         }
         create_sdds_plot(nostates      = controls[["states"]][1],
-                         mus           = thetaListOrdered[["mus"]],
-                         sigmas        = thetaListOrdered[["sigmas"]],
-                         dfs           = thetaListOrdered[["dfs"]],
+                         mus           = fit[["thetaList"]][["mus"]],
+                         sigmas        = fit[["thetaList"]][["sigmas"]],
+                         dfs           = fit[["thetaList"]][["dfs"]],
                          sdd           = controls[["sdds"]][1],
                          x_range       = c(min(data[["logReturns"]]),max(data[["logReturns"]])),
                          colors        = colors[["HMM"]],
@@ -100,9 +99,9 @@ plot_sdd = function(controls,data,fit,decoding,colors){
           sdd_true_parm = NULL
         }
         create_sdds_plot(nostates      = controls[["states"]][1],
-                         mus           = thetaListOrdered[["mus"]],
-                         sigmas        = thetaListOrdered[["sigmas"]],
-                         dfs           = thetaListOrdered[["dfs"]],
+                         mus           = fit[["thetaList"]][["mus"]],
+                         sigmas        = fit[["thetaList"]][["sigmas"]],
+                         dfs           = fit[["thetaList"]][["dfs"]],
                          sdd           = controls[["sdds"]][1],
                          x_range       = c(min(data[["logReturns"]][,1]),max(data[["logReturns"]][,1])),
                          colors        = colors[["HHMM_cs"]],
@@ -111,9 +110,9 @@ plot_sdd = function(controls,data,fit,decoding,colors){
         xlims = matrix(0,nrow=2,ncol=controls[["states"]][1])
         for(cs in seq_len(controls[["states"]][1])){
           xlims[,cs] = create_sdds_plot(nostates = controls[["states"]][2],
-                                        mus      = thetaListOrdered[["mus_star"]][[cs]],
-                                        sigmas   = thetaListOrdered[["sigmas_star"]][[cs]],
-                                        dfs      = thetaListOrdered[["dfs_star"]][[cs]],
+                                        mus      = fit[["thetaList"]][["mus_star"]][[cs]],
+                                        sigmas   = fit[["thetaList"]][["sigmas_star"]][[cs]],
+                                        dfs      = fit[["thetaList"]][["dfs_star"]][[cs]],
                                         sdd      = controls[["sdds"]][2],
                                         x_range  = c(min(data[["logReturns"]][,-1],na.rm=TRUE),max(data[["logReturns"]][,-1],na.rm=TRUE)),
                                         c_xlim   = TRUE) 
@@ -127,9 +126,9 @@ plot_sdd = function(controls,data,fit,decoding,colors){
             sdd_true_parm = NULL
           } 
           create_sdds_plot(nostates      = controls[["states"]][2],
-                           mus           = thetaListOrdered[["mus_star"]][[cs]],
-                           sigmas        = thetaListOrdered[["sigmas_star"]][[cs]],
-                           dfs           = thetaListOrdered[["dfs_star"]][[cs]],
+                           mus           = fit[["thetaList"]][["mus_star"]][[cs]],
+                           sigmas        = fit[["thetaList"]][["sigmas_star"]][[cs]],
+                           dfs           = fit[["thetaList"]][["dfs_star"]][[cs]],
                            sdd           = controls[["sdds"]][2],
                            x_range       = c(min(data[["logReturns"]][,-1],na.rm=TRUE),max(data[["logReturns"]][,-1],na.rm=TRUE)),
                            c_xlim        = FALSE,
