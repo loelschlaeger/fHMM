@@ -14,8 +14,7 @@ base_control =  list(
     path          = ".",
     data_col      = c("Close","Close"),
     time_horizon  = c(NA,"m"),
-    truncate_data = c("2000-01-03",NA),
-    runs          = 200
+    truncate_data = c("2000-01-03",NA)
   )
 data_sources = list(c("dax","dbk"),c("dax","sap"),c("dax","vw"),c("sandp500","americanairlines"),c("sandp500","waltdisney"))
 all_controls = list()
@@ -25,9 +24,10 @@ for(n in 1:length(data_sources)){
       i = 4*(n-1)+2*(s-1)+d
       all_controls[[i]] = base_control
       all_controls[[i]][["states"]] = if(s==1) c(2,2) else c(3,2)
-      all_controls[[i]][["sdds"]] = if(d==1) c("gamma","t") else c("gamma","t")
+      all_controls[[i]][["sdds"]] = if(d==1) c("gamma","t") else c("t","t")
+      all_controls[[i]][["data_cs_type"]] = if(d==1) "mean_abs" else "mean"
       all_controls[[i]][["data_source"]] = unlist(data_sources[n])
-      all_controls[[i]][["id"]] = paste0("HHMM_",paste0(all_controls[[i]][["states"]],collapse="_"),"_",paste0(unlist(all_controls[[i]][["data_source"]]),collapse="_"))
+      all_controls[[i]][["id"]] = paste0("HHMM_",paste0(all_controls[[i]][["states"]],collapse="_"),"_",paste0(toupper(unlist(all_controls[[i]][["data_source"]])),collapse="_"),"_",paste0(unlist(all_controls[[i]][["sdds"]]),collapse="_"))
     }
   }
 }
