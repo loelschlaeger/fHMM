@@ -10,7 +10,6 @@
 #' \item{\code{path}: a character, setting the path of the data and the model results}
 #' \item{\code{states}: a numeric vector of length 2, determining the model type and the number of states: If \code{states = c(x,0)}, a HMM with \code{x} states is estimated. If \code{states = c(x,y)}, a HHMM with \code{x} coarse-scale and \code{y} fine-scale states is estimated.}
 #' \item{\code{sdds}: a character vector of length 2, specifying the state-dependent distributions for both scales: \code{"t"}, \code{"t(x)"}, \code{"gamma"}.}
-#' \item{\code{data_cs_type}: a character, determining the type of coarse-scale data (only for a HHMM and empirical data): \code{"mean"}, \code{"mean_abs"}, \code{"sum_abs"}.}
 #' \item{either \code{data_source} along with \code{data_col} (for empirical data) or \code{time_horizon} (for simulated data), see below}
 #' }
 #' The following parameters are optional and set to default values (see below) if not specified:
@@ -18,6 +17,7 @@
 #' \item{\code{accept_codes}: either a numeric vector or \code{"all"} (accepting all codes)}
 #' \item{\code{at_true}: a boolean, determining whether the optimization is initialised at the true parameter values} 
 #' \item{\code{data_col}: a character vector of length 2, containing the name of the desired column of \code{data_source} for both scales}
+#' \item{\code{data_cs_type}: a character, determining the type of coarse-scale data (only for a HHMM and empirical data): \code{"mean"}, \code{"mean_abs"}, \code{"sum_abs"}.}
 #' \item{\code{data_source}: a character vector of length 2, containing the file names of the empirical data (data is simulated if \code{data_source = c(NA,NA)})}
 #' \item{\code{gradtol}: setting the tolerance at which the scaled gradient is considered close enough to zero}
 #' \item{\code{iterlim}: an integer, specifying the maximum number of optimization iterations to be performed before termination}
@@ -36,6 +36,7 @@
 #' \item{\code{at_true = FALSE}}
 #' \item{\code{ci_level = 0.95}}
 #' \item{\code{data_col = c(NA,NA)}}
+#' \item{\code{data_cs_type = "mean_abs"}}
 #' \item{\code{data_source = c(NA,NA)}}
 #' \item{\code{gradtol = 1e-4}}
 #' \item{\code{iterlim = 500}}
