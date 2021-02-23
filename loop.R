@@ -9,25 +9,30 @@ download_data(path=".")
 ### Display warnings when they occur
 options(warn=1)
 
-### Set controls for different models
+### Set base for controls
 base_control =  list(
     path          = ".",
     data_col      = c("Close","Close"),
     time_horizon  = c(NA,"m"),
-    truncate_data = c("2000-01-03",NA)
+    truncate_data = c("2000-01-03",NA),
+    steptol      = 1e-3,
+    gradtol      = 1e-3,
+    runs          = 200
   )
-data_sources = list(c("dax","dbk"),c("dax","sap"),c("dax","vw"),c("sandp500","americanairlines"),c("sandp500","waltdisney"))
+
+### Specify controls
 all_controls = list()
-for(n in 1:length(data_sources)){
-  for(s in 1:2){
-    for(d in 1:2){
-      i = 4*(n-1)+2*(s-1)+d
-      all_controls[[i]] = base_control
-      all_controls[[i]][["states"]] = if(s==1) c(2,2) else c(3,2)
-      all_controls[[i]][["sdds"]] = if(d==1) c("gamma","t") else c("t","t")
-      all_controls[[i]][["data_cs_type"]] = if(d==1) "mean_abs" else "mean"
-      all_controls[[i]][["data_source"]] = unlist(data_sources[n])
-      all_controls[[i]][["id"]] = paste0("HHMM_",paste0(all_controls[[i]][["states"]],collapse="_"),"_",paste0(toupper(unlist(all_controls[[i]][["data_source"]])),collapse="_"),"_",paste0(unlist(all_controls[[i]][["sdds"]]),collapse="_"))
+for(data_source in list(c("dax","dax"),c("sandp500","sandp500"),c("dax","dbk"),c("dax","sap"),c("dax","vw"),c("sandp500","americanairlines"),c("sandp500","waltdisney"))){
+  for(states in list(c(2,2),c(3,2))){
+    for(sdds in list(c("gamma","t"),c("t","t"))){
+      add_control = list(
+        id           = paste0("HHMM_",paste0(states,collapse="_"),"_",paste0(toupper(data_source),collapse="_"),"_",paste0(sdds,collapse="_")),
+        data_source  = data_source,
+        states       = states,
+        sdds         = sdds,
+        data_cs_type = ifelse(sdds[1]=="gamma","mean_abs","mean")
+      )
+      all_controls[[length(all_controls)+1]] = c(base_control,add_control)
     }
   }
 }
@@ -40,8 +45,7 @@ events = list(
 
 ### Fit
 for(controls in all_controls){
-  tryCatch(fit_hmm(controls,events), 
-           error=function(e)message("Estimation failed: ",conditionMessage(e),"\n"))
+  tryCatch(fit_hmm(controls,events),error=function(e)message("Estimation failed: ",conditionMessage(e),"\n"))
 }
 
 ### Reset default warning setting
