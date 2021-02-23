@@ -148,7 +148,7 @@ check_controls = function(controls){
       controls[["data_cs_type"]] = NA
     }
     if(!controls[["sim"]] & is.na(controls[["data_cs_type"]])){
-      controls[["data_cs_type"]] = "mean_abs"
+      controls[["data_cs_type"]] = "sum_abs"
     }
     if(controls[["sim"]] & any(!is.na(controls[["data_source"]]))){
       warning("entries of data_source are ignored",call.=FALSE,immediate.=TRUE)
