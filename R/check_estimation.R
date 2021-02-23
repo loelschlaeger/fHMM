@@ -48,6 +48,8 @@ check_estimation = function(mods,llks,data,hessian,controls){
              "all_models"         = mods,
              "all_logLikelihoods" = llks
              )
+  ### save fit-object
+  check_saving(object = fit, filetype = "rds", controls = controls)
   ### compute confidence intervals
   ci = compute_ci(fit,controls)
   lb = ci[[1]]
@@ -84,7 +86,6 @@ check_estimation = function(mods,llks,data,hessian,controls){
         print(table,quote=FALSE)
       sink()
   }
-  ### save results
-  check_saving(object = fit, filetype = "rds", controls = controls)
+  ### return fit-object
   return(fit)
 }
