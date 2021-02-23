@@ -53,7 +53,7 @@ Default values for unspecified controls:
 \item{\code{at_true = FALSE}}
 \item{\code{ci_level = 0.95}}
 \item{\code{data_col = c(NA,NA)}}
-\item{\code{data_cs_type = "sum_abs"}}
+\item{\code{data_cs_type = "mean_abs"}}
 \item{\code{data_source = c(NA,NA)}}
 \item{\code{gradtol = 1e-4}}
 \item{\code{iterlim = 500}}
