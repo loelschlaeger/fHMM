@@ -14,16 +14,14 @@ Providing R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs
 7. [Examples](#examples)
 
 ## Getting started
-1. Execute `source("load_code.R")` to initialize the code.
-2. Set the model's [controls](#specifying-controls).
-3. Execute 
-   ```r 
-   fit_hmm(controls,events=NULL,sim_par=NULL)
-   ``` 
-   where
-   - `controls` is the list of controls defined in step 2,
-   - `events` is a list of [events](#events) (optional),
-   - `sim_par` is a [thetaList](#parameter-structures)-object specifying model parameters for a simulation (optional).
+Set the model's [controls](#specifying-controls) and execute
+```r 
+fit_hmm(controls,events=NULL,sim_par=NULL)
+``` 
+where
+- `controls` is the list of controls defined in step 2,
+- `events` is a list of [events](#events) (optional),
+- `sim_par` is a [thetaList](#parameter-structures)-object specifying model parameters for a simulation (optional).
    
 See below for [examples](#examples).
 
