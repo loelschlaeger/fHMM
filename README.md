@@ -29,7 +29,11 @@ See below for [examples](#examples).
 The code is intended to be used on daily share prices provided by https://finance.yahoo.com/ or simulated data. 
 
 ### Empirical data
-Empirical data must be in csv-format and must contain a column named "Date" and a named column of daily share prices. Such data files can be saved in the folder `"path/data"` (where `path` is specified in `controls`) or downloaded automatically via the function `download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE,path)`, where
+Empirical data must be in csv-format and must contain a column named "Date" and a named column of daily share prices. Such data files can be saved in the folder `"path/data"` (where `path` is specified in `controls`) or downloaded automatically via the function 
+```r 
+download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE,path)
+```
+where
 - `name` is a personal identifier (optional),
 - `symbol` is the stock's symbol (optional),
 - `from` and `to` define the time interval (in format `"YYYY-MM-DD"`, optional),
