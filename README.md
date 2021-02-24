@@ -2,7 +2,7 @@
 ![CRAN status](https://www.r-pkg.org/badges/version-last-release/fHMM)
 ![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
 
-This repository provides R code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data.
+This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data.
 
 ## Table of contents
 1. [Getting started](#getting-started)
