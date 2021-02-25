@@ -70,16 +70,16 @@ check_estimation = function(mods,llks,data,hessian,controls){
         writeLines(sprintf("%-15s %.0f","exit code:",mod[["code"]]))
         writeLines(sprintf("%-15s %.0f","iterations:",mod[["iterations"]])); cat("\n")
         if(controls[["sim"]]){
-          table = cbind(sprintf("%.4f",true),
-                        sprintf("%.4f",est),
-                        sprintf("%.4f",rbias),
-                        suppressWarnings(sprintf("%.4f",lb)),
-                        suppressWarnings(sprintf("%.4f",ub)))
+          table = cbind(sprintf("%.4g",true),
+                        sprintf("%.4g",est),
+                        sprintf("%.4g",rbias),
+                        suppressWarnings(sprintf("%.4g",lb)),
+                        suppressWarnings(sprintf("%.4g",ub)))
           colnames(table) = c("true","est","rel. bias",names(ci)[1],names(ci)[3])
         } else {
-          table = cbind(sprintf("%.4f",est),
-                        suppressWarnings(sprintf("%.4f",lb)),
-                        suppressWarnings(sprintf("%.4f",ub)))
+          table = cbind(sprintf("%.4g",est),
+                        suppressWarnings(sprintf("%.4g",lb)),
+                        suppressWarnings(sprintf("%.4g",ub)))
           colnames(table) = c("est",names(ci)[1],names(ci)[3])
         }
         rownames(table) = parameter_names(controls,all=FALSE)
