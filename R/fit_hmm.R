@@ -38,14 +38,14 @@
 #' \item{\code{data_col = c(NA,NA)}}
 #' \item{\code{data_cs_type = "mean_abs"}}
 #' \item{\code{data_source = c(NA,NA)}}
-#' \item{\code{gradtol = 1e-4}}
+#' \item{\code{gradtol = 1e-3}}
 #' \item{\code{iterlim = 500}}
 #' \item{\code{overwrite = FALSE}}
 #' \item{\code{print_level = 0}}
 #' \item{\code{runs = 100}}
 #' \item{\code{scale_par = c(1,1)}}
 #' \item{\code{seed} is not set}
-#' \item{\code{steptol = 1e-2}}
+#' \item{\code{steptol = 1e-3}}
 #' \item{\code{time_horizon = c(NA,NA)}}
 #' \item{\code{truncate_data = c(NA,NA)}}
 #' }
