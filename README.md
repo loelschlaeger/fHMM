@@ -1,5 +1,8 @@
-# fHMM: Readme
-This repository provides R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data.
+# fHMM <img src='sticker/StickerShadesOfBlue.png' align="right" height="136" />
+[![CRAN status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
+
+Providing R and C++ code for fitting (hierarchical) hidden Markov models (H)HMMs to financial data.
 
 ## Table of contents
 1. [Getting started](#getting-started)
@@ -11,12 +14,14 @@ This repository provides R and C++ code for fitting (hierarchical) hidden Markov
 7. [Examples](#examples)
 
 ## Getting started
-1. Execute `source("load_code.R")` to initialize the code.
-2. Set the model's [controls](#specifying-controls).
-3. Execute `fit_hmm(controls,events=NULL,sim_par=NULL)`, where
-   - `controls` is the list of controls defined in step 2,
-   - `events` is a list of [events](#events) (optional),
-   - `sim_par` is a [thetaList](#parameter-structures)-object specifying model parameters for a simulation (optional).
+Set the model's [controls](#specifying-controls) and execute
+```r 
+fit_hmm(controls,events=NULL,sim_par=NULL)
+``` 
+where
+- `controls` is the list of controls defined in step 2,
+- `events` is a list of [events](#events) (optional),
+- `sim_par` is a [thetaList](#parameter-structures)-object specifying model parameters for a simulation (optional).
    
 See below for [examples](#examples).
 
@@ -24,7 +29,11 @@ See below for [examples](#examples).
 The code is intended to be used on daily share prices provided by https://finance.yahoo.com/ or simulated data. 
 
 ### Empirical data
-Empirical data must be in csv-format and must contain a column named "Date" and a named column of daily share prices. Such data files can be saved in the folder `"path/data"` (where `path` is specified in `controls`) or downloaded automatically via the function `download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE,path)`, where
+Empirical data must be in csv-format and must contain a column named "Date" and a named column of daily share prices. Such data files can be saved in the folder `"path/data"` (where `path` is specified in `controls`) or downloaded automatically via the function 
+```r 
+download_data(name=NULL,symbol=NULL,from=as.Date("1902-01-01"),to=Sys.Date(),show_symbols=FALSE,path)
+```
+where
 - `name` is a personal identifier (optional),
 - `symbol` is the stock's symbol (optional),
 - `from` and `to` define the time interval (in format `"YYYY-MM-DD"`, optional),
