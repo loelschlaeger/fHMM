@@ -9,30 +9,24 @@ download_data(path=".")
 ### Display warnings when they occur
 options(warn=1)
 
-### Set base for controls
-base_control =  list(
-    path          = ".",
-    data_col      = c("Close","Close"),
-    time_horizon  = c(NA,"m"),
-    truncate_data = c("2000-01-03",NA),
-    steptol      = 1e-3,
-    gradtol      = 1e-3,
-    runs          = 200
-  )
-
 ### Specify controls
 all_controls = list()
 for(data_source in list(c("dax","dax"),c("sandp500","sandp500"),c("dax","dbk"),c("dax","sap"),c("dax","vw"),c("sandp500","americanairlines"),c("sandp500","waltdisney"))){
   for(states in list(c(2,2),c(3,2))){
     for(sdds in list(c("gamma","t"),c("t","t"))){
-      add_control = list(
-        id           = paste0("HHMM_",paste0(states,collapse="_"),"_",paste0(toupper(data_source),collapse="_"),"_",paste0(sdds,collapse="_")),
-        data_source  = data_source,
-        states       = states,
-        sdds         = sdds,
-        data_cs_type = ifelse(sdds[1]=="gamma","mean_abs","mean")
+      all_controls[[length(all_controls)+1]] = list(
+        path          = ".",
+        id            = paste0("HHMM_",paste0(states,collapse="_"),"_",paste0(toupper(data_source),collapse="_"),"_",paste0(sdds,collapse="_")),
+        data_source   = data_source,
+        data_col      = c("Close","Close"),
+        data_cs_type  = ifelse(sdds[1]=="gamma","mean_abs","mean"),
+        truncate_data = c("2000-01-03",NA),
+        states        = states,
+        sdds          = sdds,
+        time_horizon  = c(NA,"m"),
+        runs          = 200,
+        seed          = 1
       )
-      all_controls[[length(all_controls)+1]] = c(base_control,add_control)
     }
   }
 }
