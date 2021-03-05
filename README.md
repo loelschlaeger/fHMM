@@ -2,7 +2,7 @@
 [![CRAN status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
 
-Fitting (hierarchical) hidden Markov models (H)HMMs to financial data.
+Fitting (hierarchical) hidden Markov models (H)HMMs to financial data
 
 ## Table of contents
 1. [Getting started](#getting-started)
