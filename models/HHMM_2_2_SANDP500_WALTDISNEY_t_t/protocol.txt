@@ -1,0 +1,15 @@
+%13-s HHMM_2_2_SANDP500_WALTDISNEY_t_t
+%13-s HHMM
+%13-s empirical
+%13-s 2 / 2
+%13-s t / t
+%13-s 200 
+%13-s 1
+%13-s sandp500.csv / waltdisney.csv
+%13-s Close / Close
+%13-s 2000-01-03 to 2021-02-12
+%13-s 254 / 5313
+%13-s mean
+%13-s monthly
+%13-s 247 minute(s)
+%13-s 200 out of 200 runs

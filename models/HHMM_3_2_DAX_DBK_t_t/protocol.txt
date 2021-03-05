@@ -1,0 +1,15 @@
+%13-s HHMM_3_2_DAX_DBK_t_t
+%13-s HHMM
+%13-s empirical
+%13-s 3 / 2
+%13-s t / t
+%13-s 200 
+%13-s 1
+%13-s dax.csv / dbk.csv
+%13-s Close / Close
+%13-s 2000-01-03 to 2021-02-12
+%13-s 254 / 5400
+%13-s mean
+%13-s monthly
+%13-s 517 minute(s)
+%13-s 198 out of 200 runs

@@ -1,0 +1,15 @@
+%13-s HHMM_3_2_SANDP500_WALTDISNEY_gamma_t
+%13-s HHMM
+%13-s empirical
+%13-s 3 / 2
+%13-s gamma / t
+%13-s 200 
+%13-s 1
+%13-s sandp500.csv / waltdisney.csv
+%13-s Close / Close
+%13-s 2000-01-03 to 2021-02-12
+%13-s 254 / 5313
+%13-s mean_abs
+%13-s monthly
+%13-s 483 minute(s)
+%13-s 181 out of 200 runs

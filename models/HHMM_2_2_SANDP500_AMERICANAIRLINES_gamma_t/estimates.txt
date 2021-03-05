@@ -1,0 +1,31 @@
+Estimation results of model 'HHMM_2_2_SANDP500_AMERICANAIRLINES_gamma_t':
+
+log-likelihood: 8110.74
+AIC:            -16177.48
+BIC:            -16036.60
+exit code:      1
+iterations:     55
+
+               est        lb_0.95    ub_0.95   
+Gamma_21       1.428e-35  1.428e-35  1.428e-35 
+Gamma_12       1          1          1         
+Gamma_star1_21 0.2898     0.2898     0.2898    
+Gamma_star1_12 0.2441     0.2441     0.2441    
+Gamma_star2_21 1          1          1         
+Gamma_star2_12 6.199e-124 6.199e-124 6.199e-124
+mu_1           0.0006364  0.0006364  0.0006364 
+mu_2           0.007857   0.007213   0.008559  
+mu_star1_1     2.847      2.847      2.847     
+mu_star1_2     -0.7217    -0.7217    -0.7217   
+mu_star2_1     2.008e-05  -0.001045  0.001085  
+mu_star2_2     -2.493     -2.493     -2.493    
+sigma_1        4196       4196       4196      
+sigma_2        0.004683   0.004116   0.005327  
+sigma_star1_1  0.001682   0.001682   0.001682  
+sigma_star1_2  1.438e+22  1.438e+22  1.438e+22 
+sigma_star2_1  0.02336    0.02235    0.02441   
+sigma_star2_2  0.0003662  0.0003662  0.0003662 
+df_star1_1     12         12         12        
+df_star1_2     2.455e-11  2.455e-11  2.455e-11 
+df_star2_1     2.445      2.225      2.687     
+df_star2_2     20         20         20        
