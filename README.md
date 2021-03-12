@@ -31,7 +31,7 @@ where
 
 Historical events can be highlighted in the visualization of the decoded, empirical time series by passing a named list `events` with elements `dates` (a vector of dates) and `names` (a vector of names for the events) to `fit_hmm`.
 
-If you do not specify the `source` parameter in the model's `controls`, data is simulated. You can specify the model coefficients by passing the list `sim_par` in [thetaList](#parameter-structures) format to `fit_hmm`. Otherwise, the parameters are randomly drawn from the ranges -1 to 1 for expected values of a t-distribution, 0 to 1 for expected values of a gamma-distribution and 0 to 1 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
+If you do not specify the `source` parameter in the model's `controls`, data gets simulated for you. Specify the model coefficients by passing the list `sim_par` in [thetaList](#parameter-structures) format to `fit_hmm`. Otherwise, the parameters are randomly drawn from the ranges -1 to 1 for expected values of a t-distribution, 0 to 1 for expected values of a gamma-distribution and 0 to 1 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
 
 ## Specifying controls
 Specify your model by setting the following parameters of the named list `controls` and passing it to `fit_hmm`:
