@@ -1,11 +1,14 @@
-#' Check and save decoded states
-#' @param decoding A vector (in case of HMM) or a matrix (in case of HHMM) of decoded states
-#' @param data A list of processed data information
-#' @param controls A list of controls
-#' @return No return value, called for side effects
+#' @title Decoding check
+#' @description Summarizes and saves decoded states.
+#' @param decoding A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.
+#' @param data A list of processed data information.
+#' @param controls A list of controls.
+#' @return No return value. Creates output file "states.txt".
+
 check_decoding = function(decoding,data,controls){
   if(check_saving(name = "states",filetype = "txt",controls = controls)){
     sink(file=paste0(controls[["path"]],"/models/",controls[["id"]],"/states.txt"))
+      
       ### frequency of decoded states
       writeLines("Frequency of decoded states\n")
       if(controls[["model"]]=="HMM"){ 
@@ -27,6 +30,7 @@ check_decoding = function(decoding,data,controls){
           cat("\n")
         }
       }
+      
       ### comparison between true states and predicted states
       if(controls[["sim"]]){
         compare_true_predicted_states = function(no_states,decoded_states,true_states,label=NULL){
@@ -55,6 +59,7 @@ check_decoding = function(decoding,data,controls){
       }
     sink()
   }
+  
   ### save decoding
   check_saving(object = decoding, filetype = "rds", controls = controls)
   message("Hidden states decoded")

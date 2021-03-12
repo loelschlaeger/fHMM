@@ -1,10 +1,16 @@
-#' Apply the Viterbi algorithm for state decoding
-#' @param data A list of processed data information
-#' @param fit A fitted model
-#' @param controls A list of controls
-#' @return A vector (in case of HMM) or a matrix (in case of HHMM) of decoded states
+#' @title Viterbi algorithm
+#' @description Applies the Viterbi algorithm (<https://en.wikipedia.org/wiki/Viterbi_algorithm>) for state decoding.
+#' @param data A list of processed data information.
+#' @param fit A list of fitted model information.
+#' @param controls A list of controls.
+#' @return A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.
+
 apply_viterbi = function(data,fit,controls){
-  if(is.null(controls[["controls_checked"]])) stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
+  
+  if(is.null(controls[["controls_checked"]])){
+    stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
+  }
+  
   ### definition of the Viterbi algorithm for state decoding
   viterbi = function(observations,nstates,Gamma,mus,sigmas,dfs,sdd){
     T = length(observations)
@@ -22,6 +28,8 @@ apply_viterbi = function(data,fit,controls){
     for (t in rev(seq_len(T-1))) iv[t] = which.max(xi[,t]+log(Gamma[,iv[t+1]]))
     return(iv)
   }
+  
+  ### apply Viterbi algorithm
   observations = data[["logReturns"]]
   thetaList = fit[["thetaList"]]
   states = controls[["states"]]
@@ -38,6 +46,8 @@ apply_viterbi = function(data,fit,controls){
       decoding[t,-1] = c(viterbi(observations[t,-1][!is.na(observations[t,-1])],states[2],thetaList[["Gammas_star"]][[curr]],thetaList[["mus_star"]][[curr]],thetaList[["sigmas_star"]][[curr]],thetaList[["dfs_star"]][[curr]],controls[["sdds"]][2]),rep(NA,max(T_star)-T_star[t]))
     }
   }
+  
+  ### check and return decoding object
   check_decoding(decoding,data,controls)
   return(decoding)
 }
