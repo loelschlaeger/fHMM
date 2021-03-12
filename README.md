@@ -44,7 +44,7 @@ Specify your model by setting the following parameters of the named list `contro
    - `"t"`, the t-distribution
    - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom (`x = Inf` is allowed)
    - `"gamma"`, the gamma distribution
-- `horizon`: A vector of length 2, determining the length of the time horizion(s). The first entry is numeric and mandatory if data is simulated, the second entry is mandatory if the model is a HHMM and can be either numeric or one of
+- `horizon`: A vector of length 2, determining the length of the time horizion(s). The first entry is numeric and mandatory if data is simulated. The second entry is mandatory if the model is a HHMM and can be either numeric or one of
    - `"w"` for weekly fine-scale chunks,
    - `"m"` for monthly fine-scale chunks,
    - `"q"` for quarterly fine-scale chunks,
