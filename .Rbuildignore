@@ -6,4 +6,3 @@ data/
 inst/
 load_code.R
 sandbox.R
-loop.R
