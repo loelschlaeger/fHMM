@@ -24,7 +24,7 @@ Download daily prices of your preferred stock from https://finance.yahoo.com/ vi
 download_data(name,symbol,from,to,path)
 ```
 where
-- `name` is your personal identifier,
+- `name` is your personal identifier for the stock,
 - `symbol` is the stock's symbol,
 - `from` and `to` define the time interval (in format `"YYYY-MM-DD"`),
 - `path` is the path where the data gets saved.
