@@ -19,7 +19,7 @@
 Set the model's [controls](#specifying-controls) and execute `fit_hmm(controls)`. See below for [examples](#examples).
 
 ## Data
-You can model share prices data provided by https://finance.yahoo.com/. Download your preferred stock via
+Download share prices data of your preferred stock from https://finance.yahoo.com/ via
 ```r 
 download_data(name,symbol,from,to,path)
 ```
