@@ -1,92 +1,87 @@
-#' Check specification of controls
-#' @param controls A list of controls
-#' @return Checked \code{controls} 
+#' @title Controls check
+#' @description Checks specification of \code{controls}. 
+#' @param controls A list of controls.
+#' @return Checked version of \code{controls}. 
+
 check_controls = function(controls){
-  ### define types of controls
-  all_controls = c("id","path","scale_par","data_source","data_col","truncate_data","states","time_horizon","sdds","runs","at_true","iterlim","seed","print_level","steptol","gradtol","accept_codes","overwrite","data_cs_type","ci_level")
-  required_controls = c("id","path","states","sdds")
-  artificial_controls = c("sim","model","fixed_dfs","controls_checked")
-  missing_controls = setdiff(all_controls,names(controls))
+  
+  all_controls = c("path",    ### a character, setting the path of the data and the model results
+                   "id",      ### a character, identifying the model
+                   "states",  ### a numeric vector of length 2, determining the model type and the number of states
+                   "sdds",    ### a character vector of length 2, specifying the state-dependent distributions
+                   "horizon", ### a vector of length 2, determining the time dimensions
+                   "data",    ### a list, containing "source" (source of data), 
+                              ###                    "col" (column of data), 
+                              ###                    "truncate" (truncation of data), 
+                              ###                    "cs_type" (coarse-scale type of data)
+                   "fit",     ### a list, containing "runs" (number of optimizations), 
+                              ###                    "at_true" (optimization at true values), 
+                              ###                    "seed" (seed for the simulation and the optimization), 
+                              ###                    "accept" (acceptable exit codes of the optimization)
+                              ###                    "print.level" (passed on to nlm), 
+                              ###                    "gradtol" (passed on to nlm),
+                              ###                    "stepmax" (passed on to nlm),
+                              ###                    "steptol" (passed on to nlm),
+                              ###                    "iterlim" (passed on to nlm),
+                              ###                    "scale_par" (scale of parameters), 
+                   "results"  ### a list, containing "overwrite" (overwriting of existing model results)
+                              ###                    "ci_level" (confidence interval level)
+                  )
+  
+  ### check required controls
+  required_controls = c("path","id","states","sdds")
   missing_required_controls = setdiff(required_controls,names(controls))
-  redundant_controls = setdiff(names(controls),c(all_controls,artificial_controls))
-  controls_with_length_1 = c("id","runs","at_true","iterlim","seed","print_level","steptol","gradtol","overwrite","data_cs_type","ci_level")
-  controls_with_length_2 = c("data_source","data_col","truncate_data","states","time_horizon","sdds")
-  positive_numeric_controls = c("runs","iterlim","steptol","gradtol","ci_level")
-  integer_controls = c("states","runs","iterlim","print_level","seed")
-  boolean_controls = c("overwrite","at_true")
-  ### check types of controls
   if(length(missing_required_controls)>0){
     stop(sprintf("%s (%s)",exception("C.2")[2],exception("C.2")[1])) 
   }
-  if(any(sapply(controls[intersect(controls_with_length_1,names(controls))],length)!=1)){
-    stop(sprintf("%s (%s)",exception("C.3")[2],exception("C.3")[1])) 
-  }
-  if(any(sapply(controls[intersect(controls_with_length_2,names(controls))],length)!=2)){
-    stop(sprintf("%s (%s)",exception("C.3")[2],exception("C.3")[1])) 
-  }
-  if(any(sapply(controls[intersect(positive_numeric_controls,names(controls))],function(x) !is.numeric(x) || x<=0))){
-    stop(sprintf("%s (%s)",exception("C.3")[2],exception("C.3")[1])) 
-  }
-  if(any(sapply(controls[intersect(boolean_controls,names(controls))],function(x) !is.logical(x)))){
-    stop(sprintf("%s (%s)",exception("C.3")[2],exception("C.3")[1])) 
-  }
+  
+  ### check redundant controls
+  redundant_controls = setdiff(names(controls),all_controls)
   if(length(redundant_controls)>=1){
     warning(sprintf("%s (%s)",exception("C.4")[2],exception("C.4")[1]),call.=FALSE,immediate.=TRUE)
   }
+  
   ### set default control values
-  if("accept_codes" %in% missing_controls)  controls[["accept_codes"]] = c(1,2)
-  if("at_true" %in% missing_controls)       controls[["at_true"]] = FALSE
-  if("ci_level" %in% missing_controls)      controls[["ci_level"]] = 0.95
-  if("data_col" %in% missing_controls)      controls[["data_col"]] = c(NA,NA)
-  if("data_cs_type" %in% missing_controls)  controls[["data_cs_type"]] = NA
-  if("data_source" %in% missing_controls)   controls[["data_source"]] = c(NA,NA)
-  if("gradtol" %in% missing_controls)       controls[["gradtol"]] = 1e-3
-  if("iterlim" %in% missing_controls)       controls[["iterlim"]] = 500
-  if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
-  if("time_horizon" %in% missing_controls)  controls[["time_horizon"]] = c(NA,NA)
-  if("overwrite" %in% missing_controls)     controls[["overwrite"]] = FALSE
-  if("print_level" %in% missing_controls)   controls[["print_level"]] = 0
-  if("runs" %in% missing_controls)          controls[["runs"]] = 100
-  if("steptol" %in% missing_controls)       controls[["steptol"]] = 1e-3
-  if("truncate_data" %in% missing_controls) controls[["truncate_data"]] = c(NA,NA)
-  if("time_horizon" %in% missing_controls)  controls[["time_horizon"]] = c(NA,NA)
-  if("sdds" %in% missing_controls)          controls[["sdds"]] = c(NA,NA)
-  ### create artificial controls
-  controls[["model"]] = if(controls[["states"]][2]==0) "HMM" else "HHMM"
-  if(controls[["model"]]=="HMM"){
-    controls[["sim"]] = if(is.na(controls[["data_source"]][1])) TRUE else FALSE
-  }
-  if(controls[["model"]]=="HHMM"){
-    controls[["sim"]] = if(is.na(controls[["data_source"]][2])) TRUE else FALSE
-  }
-  controls[["fixed_dfs"]] = c(NA,NA)
-  controls[["scale_par"]] = c(1,1)
+  if(!"horizon" %in% names(controls))               controls[["horizon"]] = c(NA,NA)
+  if(!"source" %in% names(controls[["data"]]))      controls[["data"]][["source"]] = c(NA,NA)
+  if(!"col" %in% names(controls[["data"]]))         controls[["data"]][["col"]] = c(NA,NA)
+  if(!"truncate" %in% names(controls[["data"]]))    controls[["data"]][["truncate"]] = c(NA,NA)
+  if(!"cs_type" %in% names(controls[["data"]]))     controls[["data"]][["cs_type"]] = NA
+  if(!"runs" %in% names(controls[["fit"]]))         controls[["fit"]][["runs"]] = 100
+  if(!"at_true" %in% names(controls[["fit"]]))      controls[["fit"]][["at_true"]] = FALSE
+  if(!"accept" %in% names(controls[["fit"]]))       controls[["fit"]][["accept"]] = c(1,2)
+  if(!"print.level" %in% names(controls[["fit"]]))  controls[["fit"]][["print.level"]] = 0
+  if(!"gradtol" %in% names(controls[["fit"]]))      controls[["fit"]][["gradtol"]] = 1e-3
+  if(!"stepmax" %in% names(controls[["fit"]]))      controls[["fit"]][["stepmax"]] = 1
+  if(!"steptol" %in% names(controls[["fit"]]))      controls[["fit"]][["steptol"]] = 1e-3
+  if(!"iterlim" %in% names(controls[["fit"]]))      controls[["fit"]][["iterlim"]] = 200
+  if(!"scale_par" %in% names(controls[["fit"]]))    controls[["fit"]][["scale_par"]] = c(1,1)
+  if(!"overwrite" %in% names(controls[["data"]]))   controls[["results"]][["overwrite"]] = FALSE
+  if(!"ci_level" %in% names(controls[["results"]])) controls[["results"]][["ci_level"]] = 0.95
+  
+  ### check model type
+  controls[["model"]] = if(controls[["states"]][2] %in% c(0,NA)) "HMM" else "HHMM"
+  controls[["sim"]]   = if(is.na(controls[["data"]][["source"]][ifelse(controls[["model"]] == "HMM",1,2)])) TRUE else FALSE
+  
   ### check state-dependent distributions
   all_sdds = c("gamma","t")
-  extract_dfs = function(x){
-    return(grepl("^[t][\\(]([1-9][0-9]*|Inf)[\\)]$",x))
-  }
-  for(i in 1:2){
-    if(extract_dfs(controls[["sdds"]][i])){
-      controls[["fixed_dfs"]][i] = as.numeric(sub("\\).*", "", sub(".*\\(", "", controls[["sdds"]][i])))
-      controls[["sdds"]][i] = "t"
-    }
-  }
-  if(controls[["model"]]=="HMM") controls[["fixed_dfs"]][2] = NA
-  ### check if controls are correct
-  if(controls[["model"]]=="HMM") {
+  extract_dfs = function(x) grepl("^[t][\\(]([1-9][0-9]*|Inf)[\\)]$",x)
+  controls[["fixed_dfs"]] = c(NA,NA)
+  controls[["fixed_dfs"]][extract_dfs(controls[["sdds"]])] = as.numeric(sub("\\).*", "", sub(".*\\(", "", controls[["sdds"]][extract_dfs(controls[["sdds"]])])))
+  controls[["sdds"]][extract_dfs(controls[["sdds"]])] = "t"
+  
+  ### check single controls
+  if(controls[["model"]]=="HMM"){
     if(controls[["states"]][1]%%1!=0 || controls[["states"]][1]<2){
       stop("first entry of states must be an integer greater or equal 2")
     }
-    if(controls[["sim"]] & is.na(controls[["time_horizon"]][1])){
-      stop("either first entry of data_source or time_horizon has to be specified")
+  }
+  if(controls[["model"]]=="HHMM"){
+    if(any(controls[["states"]]%%1!=0) || any(controls[["states"]]<2)){
+      stop("both entries of states must be an integer greater or equal 2")
     }
-    if(!controls[["sim"]] & is.na(controls[["data_col"]][1])){
-      stop("first entry of data_col has to be specified")
-    }
-    if(is.na(controls[["sdds"]][1])){
-      stop("first entry of sdds has to be specified")
-    }
+  }
+  if(controls[["model"]]=="HMM"){
     if(!controls[["sdds"]][1] %in% all_sdds){
       stop(paste0("first entry of sdds must be 't' or 'gamma'"))
     }
@@ -94,113 +89,134 @@ check_controls = function(controls){
       warning("second entry of sdds is ignored",call.=FALSE,immediate.=TRUE)
       controls[["sdds"]][2] = NA
     }
-    if(!is.na(controls[["data_cs_type"]])){
-      warning("data_cs_type is ignored",call.=FALSE,immediate.=TRUE)
-      controls[["data_cs_type"]] = NA
-    }
-    if(!is.na(controls[["data_source"]][2])){
-      warning("second entry of data_source is ignored",call.=FALSE,immediate.=TRUE)
-      controls[["data_source"]][2] = NA
-    }
-    if(!controls[["sim"]] & !is.na(controls[["data_col"]][2])){
-      warning("second entry of data_col is ignored",call.=FALSE,immediate.=TRUE)
-      controls[["data_col"]][2] = NA
-    }
-    if(!is.na(controls[["time_horizon"]][2])){
-      warning("second entry of time_horizon is ignored",call.=FALSE,immediate.=TRUE)
-      controls[["time_horizon"]][2] = NA    }
-    if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
-      warning("first entry of time_horizon is ignored",call.=FALSE,immediate.=TRUE)
-      controls[["time_horizon"]][1] = NA
+  }
+  if(controls[["model"]]=="HHMM"){
+    if(any(!controls[["sdds"]] %in% all_sdds)){
+      stop(paste0("both entries of sdds must be 't' or 'gamma'"))
     }
   }
-  if(controls[["model"]]=="HHMM") {
-    if(any(controls[["states"]]%%1!=0) || any(controls[["states"]]<2)){
-      stop("both entries of states must be integer greater or equal 2")
+  if(controls[["model"]]=="HMM"){
+    if(controls[["sim"]] & is.na(controls[["horizon"]][1])){
+      stop("either first entry of source in data or horizon has to be specified")
     }
-    if(controls[["sim"]] & any(is.na(controls[["time_horizon"]]))){
-      stop("either data_source or time_horizon has to be fully specified")
-    }
-    if(is.na(controls[["time_horizon"]][2])){
-      stop("second entry of time_horizon has to be specified")
-    }
-    if(!is.numeric(controls[["time_horizon"]][2]) & !controls[["time_horizon"]][2] %in% c("w","m","q","y")){
-      stop("second entry of time_horizon has to be an integer or one of 'w', 'm', 'q', 'y'")
-    }
-    if(!controls[["sim"]] & any(is.na(controls[["data_col"]]))){
-      stop("entries of data_col have to be specified")
-    }
-    if(is.na(controls[["sdds"]][2])){
-      stop("second entry of sdds has to be specified")
-    } else {
-      if(!controls[["sdds"]][1] %in% all_sdds){
-        stop(paste0("first entry of sdds must be 't' or 'gamma'"))
-      }
-      if(!controls[["sdds"]][2] %in% all_sdds){
-        stop(paste0("second entry of sdds must be 't' or 'gamma'"))
-      }
-    }
-    if(!is.na(controls[["data_cs_type"]]) & !controls[["data_cs_type"]] %in% c("mean","mean_abs","sum_abs")){
-      stop(paste0("data_cs_type must be one of '",paste(c("mean","mean_abs","sum_abs"),collapse="', '"),"'"))
-    }
-    if(!is.na(controls[["data_cs_type"]]) & controls[["sim"]]){
-      warning("data_cs_type is ignored",call.=FALSE,immediate.=TRUE)
-      controls[["data_cs_type"]] = NA
-    }
-    if(!controls[["sim"]] & is.na(controls[["data_cs_type"]])){
-      controls[["data_cs_type"]] = "mean_abs"
-    }
-    if(controls[["sim"]] & any(!is.na(controls[["data_source"]]))){
-      warning("entries of data_source are ignored",call.=FALSE,immediate.=TRUE)
-      controls[["data_source"]] = c(NA,NA)
-    }
-    if(!controls[["sim"]] & !is.na(controls[["time_horizon"]][1])){
-      warning("first entry of time_horizon is ignored",call.=FALSE,immediate.=TRUE)
+    if(!controls[["sim"]] & !is.na(controls[["horizon"]][1])){
+      warning("first entry of horizon is ignored",call.=FALSE,immediate.=TRUE)
       controls[["time_horizon"]][1] = NA
     }
+    if(!is.na(controls[["horizon"]][2])){
+      warning("second entry of horizon is ignored",call.=FALSE,immediate.=TRUE)
+      controls[["horizon"]][2] = NA    
+    }
   }
-  if(!controls[["sim"]] & controls[["at_true"]]){
-    warning("at_true is set to FALSE",call.=FALSE,immediate.=TRUE)
+  if(controls[["model"]]=="HHMM"){
+    if(controls[["sim"]] & any(is.na(controls[["horizon"]]))){
+      stop("either source in data or horizon has to be fully specified")
+    }
+    if(!controls[["sim"]] & !is.na(controls[["horizon"]][1])){
+      warning("first entry of horizon is ignored",call.=FALSE,immediate.=TRUE)
+      controls[["horizon"]][1] = NA
+    }
+    if(!is.numeric(controls[["horizon"]][2]) & !controls[["horizon"]][2] %in% c("w","m","q","y")){
+      stop("second entry of horizon has to be an integer or one of 'w', 'm', 'q', 'y'")
+    }
+  }
+  
+  ### check data controls
+  if(controls[["model"]]=="HMM"){
+    if(!is.na(controls[["data"]][["source"]][2])){
+      warning("second entry of source in data is ignored",call.=FALSE,immediate.=TRUE)
+      controls[["data"]][["source"]][2] = NA
+    }
+  }
+  if(controls[["model"]]=="HHMM"){
+    if(controls[["sim"]] & any(!is.na(controls[["data"]][["source"]]))){
+      warning("entries of source in data are ignored",call.=FALSE,immediate.=TRUE)
+      controls[["data"]][["source"]] = c(NA,NA)
+    }
+  }
+  if(controls[["model"]]=="HMM"){
+    if(!controls[["sim"]] & is.na(controls[["data"]][["col"]][1])){
+      stop("first entry of col in data has to be specified")
+    }
+  }
+  if(controls[["model"]]=="HHMM"){
+    if(!controls[["sim"]] & any(is.na(controls[["data"]][["col"]]))){
+      stop("entries of col in data have to be specified")
+    }
+  }
+  if(controls[["sim"]] & any(!is.na(controls[["data"]][["col"]]))){
+    warning("entries of col in data are ignored",call.=FALSE,immediate.=TRUE)
+    controls[["data"]][["col"]] = c(NA,NA)
+  }
+  if(controls[["sim"]] & any(!is.na(controls[["data"]][["truncate"]]))){
+    warning("entries of truncate in data are ignored",call.=FALSE,immediate.=TRUE)
+    controls[["data"]][["truncate"]] = c(NA,NA)
+  }
+  if(controls[["model"]]=="HMM"){
+    if(!is.na(controls[["data"]][["cs_type"]])){
+      warning("cs_type in data is ignored",call.=FALSE,immediate.=TRUE)
+      controls[["data"]][["_cs_type"]] = NA
+    }
+  }
+  if(controls[["model"]]=="HHMM"){
+    if(!is.na(controls[["data"]][["cs_type"]]) & !controls[["data"]][["cs_type"]] %in% c("mean","mean_abs","sum_abs")){
+      stop(paste0("cs_type in data must be one of '",paste(c("mean","mean_abs","sum_abs"),collapse="', '"),"'"))
+    }
+    if(!controls[["sim"]] & is.na(controls[["data"]][["cs_type"]])){
+      stop("cs_type in data has to be specified")
+    }
+    if(!is.na(controls[["data"]][["cs_type"]]) & controls[["sim"]]){
+      warning("cs_type in data is ignored",call.=FALSE,immediate.=TRUE)
+      controls[["data"]][["cs_type"]] = NA
+    }
+  }
+
+  ### check fit controls
+  if(!controls[["sim"]] & controls[["fit"]][["at_true"]]){
+    warning("at_true is ignored",call.=FALSE,immediate.=TRUE)
     controls[["at_true"]] = FALSE
   }
-  if(controls[["sim"]] & controls[["at_true"]] & controls[["runs"]]!=1){
-    controls[["runs"]] = 1
-    warning("runs is set to 1",call.=FALSE,immediate.=TRUE)
+  if(controls[["sim"]] & controls[["fit"]][["at_true"]] & controls[["fit"]][["runs"]]!=1){
+    controls[["fit"]][["runs"]] = 1
   }
-  if(controls[["sim"]] & any(!is.na(controls[["truncate_data"]]))){
-    warning("entries of truncate_data are ignored",call.=FALSE,immediate.=TRUE)
-    controls[["truncate_data"]] = c(NA,NA)
+  if(any(controls[["fit"]][["accept"]]=="all")){
+    controls[["fit"]][["accept"]] = 1:5
   }
-  if(controls[["sim"]] & any(!is.na(controls[["data_col"]]))){
-    warning("entries of data_col are ignored",call.=FALSE,immediate.=TRUE)
-    controls[["data_col"]] = c(NA,NA)
+  
+  ### check results controls
+  if(controls[["id"]]=="test" & !controls[["results"]][["overwrite"]]){
+    warning("allow overwriting because id equals 'test'",call.=FALSE,immediate.=TRUE)
+    controls[["results"]][["overwrite"]] = TRUE
   }
-  if(any(controls[["accept_codes"]]=="all")){
-    controls[["accept_codes"]] = 1:5
-  }
-  if(controls[["id"]]=="test"){
-    controls[["overwrite"]] = TRUE
-  }
+  
   ### check if data paths are correct
   for(i in c(1,2)){
-    if(!is.na(controls[["data_source"]][i])){
-      if(!grepl(".csv$",controls[["data_source"]][i])) controls[["data_source"]][i] = paste0(controls[["data_source"]][i],".csv")
-      if(!file.exists(paste0(controls[["path"]],"/data/",controls[["data_source"]][i]))){
-        stop(paste0("file '",controls[["path"]],"/data/",controls[["data_source"]][i],"' not found"))
+    if(!is.na(controls[["data"]][["source"]][i])){
+      if(!grepl(".csv$",controls[["data"]][["source"]][i])){
+        controls[["data"]][["source"]][i] = paste0(controls[["data"]][["source"]][i],".csv")
       }
-      if(!controls[["data_col"]][i] %in% colnames(read.csv(file=paste0("data/",controls[["data_source"]][i])))){
-        stop(paste0("column '",controls[["data_col"]][i],"' not found in the file '",controls[["path"]],"data/",controls[["data_source"]][i],"'"))
+      if(!file.exists(paste0(controls[["path"]],"/data/",controls[["data"]][["source"]][i]))){
+        stop(paste0("file '",controls[["path"]],"/data/",controls[["data"]][["source"]][i],"' not found"))
+      }
+      if(!controls[["data"]][["col"]][i] %in% colnames(read.csv(file=paste0("data/",controls[["data"]][["source"]][i])))){
+        stop(paste0("column '",controls[["data"]][["col"]][i],"' not found in the file '",controls[["path"]],"data/",controls[["data"]][["source"]][i],"'"))
       }
     }
   }
+  
   ### end of checks
   message("Controls checked")
   controls[["controls_checked"]] = TRUE
+  
   ### print model specification
   writeLines(sprintf("%13-s %s","model id:",controls[["id"]]))
   writeLines(sprintf("%13-s %s","model type:",controls[["model"]]))
-  if(controls[["sim"]])  writeLines(sprintf("%13-s %s","data type:","simulated"))
-  if(!controls[["sim"]]) writeLines(sprintf("%13-s %s","data type:","empirical"))
+  if(controls[["sim"]]){
+    writeLines(sprintf("%13-s %s","data type:","simulated"))
+  }
+  if(!controls[["sim"]]){
+    writeLines(sprintf("%13-s %s","data type:","empirical"))
+  }
   if(controls[["model"]]=="HMM") {
     writeLines(sprintf("%13-s %s","states:",controls[["states"]][1]))
     writeLines(sprintf("%13-s %s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),""))))
@@ -209,9 +225,12 @@ check_controls = function(controls){
     writeLines(sprintf("%13-s %s / %s","states:",controls[["states"]][1],controls[["states"]][2]))
     writeLines(sprintf("%13-s %s / %s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),"")),paste0(controls[["sdds"]][2],ifelse(!is.na(controls[["fixed_dfs"]][2]),paste0("(",controls[["fixed_dfs"]][2],")"),""))))
   }
-  writeLines(sprintf("%13-s %s %s","runs:",controls[["runs"]],ifelse(controls[["at_true"]],"(initialised at true values)","")))
-  if(!is.null(controls[["seed"]])) writeLines(sprintf("%13-s %s","seed:",controls[["seed"]]))
+  writeLines(sprintf("%13-s %s %s","runs:",controls[["fit"]][["runs"]],ifelse(controls[["fit"]][["at_true"]],"(initialised at true values)","")))
+  if(!is.null(controls[["fit"]][["seed"]])) writeLines(sprintf("%13-s %s","seed:",controls[["fit"]][["seed"]]))
+  
   ### save controls
   check_saving(object = controls, filetype = "rds", controls = controls)
+  
+  ### return controls
   return(controls)
 }
