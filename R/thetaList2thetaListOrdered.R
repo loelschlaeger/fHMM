@@ -1,9 +1,10 @@
-#' Order states in thetaList based on expected values
-#' @param thetaList Constrained model parameters in list form
-#' @param controls A list of controls
-#' @return Constrained and ordered model parameters in list form
+#' Orders states in \code{thetaList} based on expected values.
+#' @param thetaList Constrained model parameters in list form.
+#' @param controls A list of controls.
+#' @return Constrained and ordered model parameters in list form.
 #' @details 
-#' If t SDD, order states decreasing with respect to expected values. If Gamma SDD, vice versa.
+#' If state-dependent distribution is *t*, states are ordered decreasing with respect to expected values. If distribution is *Gamma*, vice versa.
+
 thetaList2thetaListOrdered = function(thetaList,controls){
   M = controls[["states"]][1] 
   N = controls[["states"]][2] 

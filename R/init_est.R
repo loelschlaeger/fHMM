@@ -1,10 +1,12 @@
-#' Sample initial parameter values for the estimation routine
-#' @param controls A list of controls
-#' @return Parameters values in format \code{thetaUncon}
+#' @title Initialisation
+#' @description Samples initial parameter values for the estimation routine.
+#' @param controls A list of controls.
+#' @return A vector of parameters values in format \code{thetaUncon}.
+
 init_est = function(controls){
   M  = controls[["states"]][1] 
   N  = controls[["states"]][2]
-  scale_par = controls[["scale_par"]]
+  scale_par = controls[["fit"]][["scale_par"]]
   build_Gamma = function(dim){
     Gamma = diag(dim)
     diag(Gamma) = runif(dim,0.7,1)

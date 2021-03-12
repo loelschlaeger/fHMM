@@ -1,10 +1,12 @@
-#' Compute (flexible) fine-scale chunk lengths
-#' @param fs_time_horizon Setting the fine-scale dimension, either a numeric or one of "w","m","q","y"
-#' @param T The dimension of the coarse-scale process, default \code{NULL}
-#' @param fs_dates A vector of dates of empirical fine-scale observations, default \code{NULL}
-#' @return Vector of fine-scale chunk sizes
-compute_fs = function(fs_time_horizon,T=NULL,fs_dates=NULL){
-  if(is.null(fs_dates)){
+#' @title Fine-scale chunk lengths
+#' @description  Computes (flexible) fine-scale chunk lengths.
+#' @param fs_time_horizon Either a numeric or one of \code{"w"}, \code{"m"}, \code{"q"}, \code{"y"}, setting the fine-scale dimension.
+#' @param T A numeric, the dimension of the coarse-scale process, default \code{NA}.
+#' @param fs_dates A vector of dates of empirical fine-scale observations, default \code{NA}.
+#' @return A vector of fine-scale chunk sizes.
+
+compute_fs = function(fs_time_horizon,T=NA,fs_dates=NA){
+  if(is.na(fs_dates)){
     if(is.numeric(fs_time_horizon)){
       T_star = rep(fs_time_horizon,T)
     }
@@ -16,7 +18,7 @@ compute_fs = function(fs_time_horizon,T=NULL,fs_dates=NULL){
       T_star = sample(1:size,T,replace=TRUE,prob=dbinom(1:size,size,0.9)/sum(dbinom(1:size,size,0.9)))
     }
   }
-  if(!is.null(fs_dates)){
+  if(!is.na(fs_dates)){
     dates_overview = data.frame("w" = as.numeric(strftime(fs_dates,format ="%W")),
                                 "m" = as.numeric(strftime(fs_dates,format ="%m")),
                                 "q" = as.numeric(substr(quarters(fs_dates),2,2)),

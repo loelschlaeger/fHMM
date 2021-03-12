@@ -32,10 +32,10 @@ plot_ts = function(controls,data,decoding,colors,events){
              xaxt="n",yaxt="n",
              cex.lab=2, cex.main=2)
         if(controls[["model"]]=="HMM"){
-          data_lab = controls[["data_col"]][1]
+          data_lab = controls[["data"]][["col"]][1]
         }
         if(controls[["model"]]=="HHMM"){
-          data_lab = controls[["data_col"]][2]
+          data_lab = controls[["data"]][["col"]][2]
         }
         mtext("Year",side=1,line=2.5,cex=1.25)
         markdates = seq(xmin,xmax,by="year")

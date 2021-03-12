@@ -1,21 +1,23 @@
-#' Exception messages
-#' @param code An exception code
+#' @title Debugging
+#' @description Provides suggestions for debugging for a given exception code.
+#' @param code A character, the exception code.
 #' @return A list containing the following elements:
-#' \item{code}{the exception code}
-#' \item{response}{the message}
+#' \item{code}{exception code}
+#' \item{response}{message}
 #' \item{debugging}{suggestions for debugging}
 #' @examples
 #' exception("S.1")
 #' @export
+
 exception = function(code){
+  
   exceptions = data.frame(rbind(
-    S.1 = c("id invalid","id already exists, set a unique identifier"),
-    S.2 = c("saving failed","filename already exists and overwriting is forbidden, choose another id or allow overwriting"),
-    S.3 = c("path not found","path saved in controls not found, check spelling"),
+    S.1 = c("id invalid","id already exists in your path, set a unique identifier"),
+    S.2 = c("saving failed","filename already exists in your path and overwriting is forbidden, choose another id or allow overwriting"),
+    S.3 = c("path not found","path set in controls not found, check spelling"),
     C.1 = c("controls invalid","controls is not checked, supply controls to check_controls"),
     C.2 = c("controls incomplete","some controls have to be specified, see Readme-file"),
-    C.3 = c("controls misspecified","some controls do not fulfill restrictions, see Readme-file"),
-    C.4 = c("controls contains unsupported elements","some controls are not supported and ignored, check spelling"),
+    C.4 = c("controls misspecified","some controls are not supported and ignored, check spelling"),
     C.5 = c("iterlim reached","selected estimation run reached the iteration limit, consider increasing iterlim"),
     C.6 = c("possibly unidentified states","some states might be unidentified, consider reducing number of states"),
     C.7 = c("gamma SDD not allowed","gamma SDD only allowed for non-negative data, select t SDD instead"),
@@ -32,6 +34,7 @@ exception = function(code){
     V.1 = c("events ignored","events is only used for empirical data"),
     V.2 = c("events invalid","make sure that dates and names in events are of the same length")
     ))
+  
   colnames(exceptions) = c("response","debugging")
   if(code %in% rownames(exceptions)){
     return(list("code" = code, "response" = exceptions[code,"response"], "debugging" = exceptions[code,"debugging"]))

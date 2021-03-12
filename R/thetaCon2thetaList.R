@@ -1,7 +1,7 @@
-#' Bring contrained model parameters from vector form to list form
-#' @param thetaCon Constrained model parameters in vector form
-#' @param controls A list of controls
-#' @return Constrained model parameters in list form
+#' Brings contrained model parameters from vector form \code{thetaCon} to list form \code{ThetaList}.
+#' @param thetaCon Constrained model parameters in vector form.
+#' @param controls A list of controls.
+#' @return Constrained model parameters in list form.
 
 thetaCon2thetaList = function(thetaCon,controls){
   M = controls[["states"]][1] 

@@ -1,6 +1,7 @@
-#' Constrain degrees of freedom
-#' @param dfUncon Unconstrained degrees of freedom
-#' @return Constrained degrees of freedom
+#' Constrains degrees of freedom.
+#' @param dfUncon Numeric, unconstrained degrees of freedom.
+#' @return Numeric, constrained degrees of freedom.
+
 dfUncon2dfCon = function(dfUncon){
   return(exp(dfUncon))
 }

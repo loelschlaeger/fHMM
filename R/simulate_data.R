@@ -1,25 +1,33 @@
-#' Simulate data from a (hierarchical) hidden Markov model
-#' @param controls A list of controls
-#' @param sim_par A list of model parameters for simulation in \code{thetaList} format, default \code{NULL}
+#' @title Data simulation
+#' @description Simulates data from a (hierarchical) hidden Markov model.
+#' @param controls A list of controls.
+#' @param sim_par A list of model parameters for simulation in \code{thetaList} format, default \code{NA}.
 #' @return A list containing the following elements:
-#' \item{logReturns}{Simulated log-returns}
-#' \item{states0}{Simulated hidden states}
-#' \item{thetaUncon0}{True parameters in format \code{thetaUncon}}
-#' \item{thetaCon0}{True parameters in format \code{thetaCon}}
-#' \item{thetaList0}{True parameters in format \code{thetaList}}
-#' \item{T_star}{Vector of fine-scale chunk sizes}
-simulate_data = function(controls,sim_par=NULL){
-  if(is.null(controls[["controls_checked"]])) stop(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
-  if(!is.null(controls[["seed"]])) set.seed(controls[["seed"]])
-  T = as.numeric(controls[["time_horizon"]][1])
+#' \item{logReturns}{simulated log-returns}
+#' \item{states0}{simulated hidden states}
+#' \item{thetaUncon0}{true parameters in format \code{thetaUncon}}
+#' \item{thetaCon0}{true parameters in format \code{thetaCon}}
+#' \item{thetaList0}{true parameters in format \code{thetaList}}
+#' \item{T_star}{vector of fine-scale chunk sizes}
+
+simulate_data = function(controls,sim_par=NA){
+  if(is.na(controls[["controls_checked"]])){
+    stop(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
+  }
+  if(!is.null(controls[["fit"]][["seed"]])){
+    set.seed(controls[["fit"]][["seed"]])
+  }
+  T = as.numeric(controls[["horizon"]][1])
+  
   ### define simulation parameters
-  if(!is.null(sim_par)){
+  if(!is.na(sim_par)){
     thetaUncon = thetaList2thetaUncon(sim_par,controls)
   } else {
     thetaUncon = init_est(controls)
   }
   thetaCon   = thetaUncon2thetaCon(thetaUncon,controls)
   thetaList  = thetaCon2thetaList(thetaCon,controls)
+ 
   ### simulate hidden states
   simulate_states = function(delta,Gamma,T){
     no_states = length(delta)
@@ -30,6 +38,7 @@ simulate_data = function(controls,sim_par=NULL){
     }
     return(states)
   }
+  
   ### simulate observations
   simulate_observations = function(states,mus,sigmas,dfs,sdd){
     T = length(states)
@@ -44,13 +53,14 @@ simulate_data = function(controls,sim_par=NULL){
     }
     return(logReturns)
   }
+  
   if(controls[["model"]]=="HMM"){
     T_star = NA
     states = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
     logReturns = simulate_observations(states,thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]],controls[["sdds"]][1])
   }
   if(controls[["model"]]=="HHMM"){ 
-    T_star = compute_fs(fs_time_horizon = controls[["time_horizon"]][2], T = T)
+    T_star = compute_fs(fs_time_horizon = controls[["horizon"]][2], T = T)
     states = matrix(NA,T,max(T_star)+1) 
     logReturns = matrix(NA,T,max(T_star)+1)
     states[,1] = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
@@ -61,6 +71,7 @@ simulate_data = function(controls,sim_par=NULL){
       logReturns[t,-1] = c(simulate_observations(states[t,-1][!is.na(states[t,-1])],thetaList[["mus_star"]][[S_t]],thetaList[["sigmas_star"]][[S_t]],thetaList[["dfs_star"]][[S_t]],controls[["sdds"]][2]),rep(NA,max(T_star)-T_star[t]))
     }
   }
+  
   out = list(
     "logReturns"   = logReturns,
     "states0"      = states,

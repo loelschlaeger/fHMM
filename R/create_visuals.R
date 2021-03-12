@@ -1,26 +1,32 @@
-#' Visualize model results
-#' @param data A list of processed data information
-#' @param fit A fitted model
-#' @param decoding A vector (in case of HMM) or a matrix (in case of HHMM) of decoded states
-#' @param controls A list of controls
-#' @param events A list of events, default \code{NULL}
-#' @return No return value, called for side effects.
-create_visuals = function(data,fit,decoding,controls,events=NULL){
+#' @title Visualization
+#' @description Calls functions for visualization of model results.
+#' @param data A list of processed data information.
+#' @param fit A list of fitted model information.
+#' @param decoding A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.
+#' @param controls A list of controls.
+#' @param events A list of (historical, financial) events.
+#' @return No return value. Calls visualization functions \code{plot_sdd}, \code{plot_ts} and \code{pseudo_residuals}.
+
+create_visuals = function(data,fit,decoding,controls,events){
+  
   ### pre-checks
-  if(is.null(controls[["controls_checked"]])){
+  if(is.na(controls[["controls_checked"]])){
     stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
   }
-  if(controls[["sim"]] & !is.null(events)){
-    events = NULL
+  if(controls[["sim"]] || all(is.na(events))){
+    events = NA
     warning(sprintf("%s (%s)",exception("V.1")[2],exception("V.2")[1]),call.=FALSE)
-  } 
-  if(length(events[["dates"]])!=length(events[["names"]])){
-    stop(sprintf("%s (%s)",exception("V.2")[2],exception("V.2")[1]),call.=FALSE)
+  } else {
+    if(length(events[["dates"]])!=length(events[["names"]])){
+      stop(sprintf("%s (%s)",exception("V.2")[2],exception("V.2")[1]),call.=FALSE)
+    }
   }
+  
   ### save events
-  if(!controls[["sim"]] & !is.null(events)){
+  if(!controls[["sim"]] & !is.na(events)){
     check_saving(object = events, filetype = "rds", controls = controls)
   }
+  
   ### define colours
   var_col = function(col,n){
     colorRampPalette(c("white",col,"black"))(n+2)[2:(n+1)]
@@ -41,11 +47,15 @@ create_visuals = function(data,fit,decoding,controls,events=NULL){
       colors[["HHMM_fs"]][[s]] = col_alpha(var_col(colors[["HHMM_cs"]][s],controls[["states"]][2]))
     }
   }
+  
   ### create visualization of state dependent distributions
   plot_sdd(controls,data,fit,decoding,colors)
+  
   ### create visualization of decoded time series
   plot_ts(controls,data,decoding,colors,events)
+  
   ### compute, save, visualize and test pseudo-residuals
   pseudo_residuals(controls,data,fit,decoding)
+  
   message("Model results visualized")
 }

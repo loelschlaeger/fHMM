@@ -1,10 +1,12 @@
-#' Visualize estimated state-dependent distributions
-#' @param controls A list of controls
-#' @param data A list of processed data information
-#' @param fit A fitted model
-#' @param decoding A matrix of decoded states
-#' @param colors A matrix of colors for different states
-#' @return No return value, creates graphic in \code{controls[["path"]]}/models/\code{controls[["id"]]}
+#' @title Visualization of estimated state-dependent distributions
+#' @description Plots the estimated state-dependent distributions.
+#' @param controls A list of controls.
+#' @param data A list of processed data information.
+#' @param fit A list of fitted model information.
+#' @param decoding A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.
+#' @param colors A matrix of colors for different states.
+#' @return No return value. Creates file "state_dependent_distributions.pdf" in "\code{controls[["path"]]}/models/\code{controls[["id"]]}".
+
 plot_sdd = function(controls,data,fit,decoding,colors){
   if(check_saving(name = "state_dependent_distributions", filetype = "pdf", controls = controls)){
     filename = paste0(controls[["path"]],"/models/",controls[["id"]],"/state_dependent_distributions.pdf")

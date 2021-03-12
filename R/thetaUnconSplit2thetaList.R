@@ -1,7 +1,8 @@
-#' Bring uncontrained fine-scale model parameters in constrained list form
-#' @param thetaUncon Unconstrained fine-scale model parameters in vector form
-#' @param controls A list of controls
-#' @return Constrained fine-scale model parameters in list form
+#' Brings uncontrained fine-scale model parameters in constrained list form.
+#' @param thetaUncon Unconstrained fine-scale model parameters in vector form.
+#' @param controls A list of controls.
+#' @return Constrained fine-scale model parameters in list form.
+
 thetaUnconSplit2thetaList = function(thetaUncon,controls){
   if(controls[["model"]]!="HHMM") stop("Function only for HHMMs")
   N = controls[["states"]][2]

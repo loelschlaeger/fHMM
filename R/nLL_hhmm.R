@@ -1,8 +1,10 @@
-#' Compute the negative log-likelihood of a hierarchical hidden Markov model
-#' @param thetaUncon Model parameters in format \code{thetaUncon}
-#' @param observations A vector of observations
-#' @param controls A list of controls
-#' @return Negative log-likelihood
+#' @title Negative log-likelihood of a HHMM
+#' @description Computes the negative log-likelihood of a hierarchical hidden Markov model.
+#' @param thetaUncon Vector of model parameters in format \code{thetaUncon}.
+#' @param observations A matrix of observations, coarse-scale observations in the first column and fine-scale observations in the corresponding row.
+#' @param controls A list of controls.
+#' @return Numeric, negative log-likelihood value.
+
 nLL_hhmm = function(thetaUncon,observations,controls){
   M  = controls[["states"]][1] 
   N  = controls[["states"]][2]

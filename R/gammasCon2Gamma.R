@@ -1,7 +1,8 @@
-#' Build transition probability matrix from constrained non-diagonal elements
-#' @param gammasCon Constrained non-diagonal elements of transition probability matrix
-#' @param dim Dimension of transition probability matrix
-#' @return Transition probability matrix
+#' Builds transition probability matrix from constrained non-diagonal elements.
+#' @param gammasCon Vector of constrained non-diagonal elements of transition probability matrix.
+#' @param dim Numeric, dimension of transition probability matrix.
+#' @return Transition probability matrix.
+
 gammasCon2Gamma = function(gammasCon,dim){
   Gamma         = diag(dim)
   Gamma[!Gamma] = gammasCon 

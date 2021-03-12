@@ -1,7 +1,8 @@
-#' Constrain model parameters
-#' @param thetaUncon Unconstrained model parameters in vector form
-#' @param controls A list of controls
-#' @return Constrained model parameters in vector form
+#' Constrains model parameters.
+#' @param thetaUncon Unconstrained model parameters in vector form.
+#' @param controls A list of controls.
+#' @return Constrained model parameters in vector form.
+
 thetaUncon2thetaCon = function(thetaUncon,controls){
   M  = controls[["states"]][1] 
   N  = controls[["states"]][2]

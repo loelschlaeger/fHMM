@@ -1,9 +1,11 @@
-#' Compute and visualize pseudo-residuals
-#' @param controls A list of controls
-#' @param data A list of processed data information
-#' @param fit A fitted model
-#' @param decoding A matrix of decoded states
-#' @return No return value, creates graphic in \code{controls[["path"]]}/models/\code{controls[["id"]]}
+#' @title Pseudo-residuals
+#' @description Computes and visualizes pseudo-residuals.
+#' @param controls A list of controls.
+#' @param data A list of processed data information.
+#' @param fit A list of fitted model information.
+#' @param decoding A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.
+#' @return No return value. Creates files "pseudo_residuals.pdf" and "pseudos.rds" in "\code{controls[["path"]]}/models/\code{controls[["id"]]}".
+
 pseudo_residuals = function(controls,data,fit,decoding){
   ### extract parameters
   if(controls[["model"]]=="HMM"){
