@@ -37,13 +37,13 @@ If you do not specify the `source` parameter in the model's `controls`, data is 
 Specify your model by setting the following parameters of the named list `controls` and passing it to `fit_hmm`:
 - `path`: A character, setting the path of the data and the model results.
 - `id`: A character, identifying the model.
-- `states`: A numeric vector of length 2, determining the model type and the number of states:
+- `states`: A numeric vector of length two, determining the model type and the number of states:
    - If `states = c(x,0)`, a HMM with `x` states is estimated.
    - If `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated.
-- `sdds`: A character vector of length 2, specifying the state-dependent distributions for both scales:
-   - `"t"`, the t-distribution
-   - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom (`x = Inf` is allowed)
-   - `"gamma"`, the gamma distribution
+- `sdds`: A character vector of length two, specifying the state-dependent distributions for both scales:
+   - `"t"`, the t-distribution,
+   - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom (`x = Inf` is allowed),
+   - `"gamma"`, the gamma distribution.
 - `horizon`: A vector of length 2, determining the length of the time horizion(s). The first entry is numeric and mandatory if data is simulated. The second entry is mandatory if the model is a HHMM and can be either numeric or one of
    - `"w"` for weekly fine-scale chunks,
    - `"m"` for monthly fine-scale chunks,
@@ -63,9 +63,9 @@ The following parameters are optional and set to [default values](#default-value
       - `"mean_abs"`: means of the fine-scale data in absolute value,
       - `"sum_abs"`: sums of fine-scale data in absolute value.
 - `fit`: A list, containing
-   - `runs`: A numeric, setting the number of optimization runs.
+   - `runs`: A numeric value, setting the number of optimization runs.
    - `at_true`: A boolean, determining whether the optimization is initialised at the true parameter values. Only for simulated data, sets `runs = 1` and `accept = "all"`.
-   - `seed`: A numeric, setting a seed for the simulation and the optimization.
+   - `seed`: A numeric value, setting a seed for the simulation and the optimization.
    - `accept`: Either a numeric vector (containing acceptable exit codes of the [nlm optimization](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)) or the character `"all"` (accepting all codes).
    - `print.level`: Passed on to [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
    - `gradtol`: Passed on to [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
