@@ -2,18 +2,21 @@
 % Please edit documentation in R/max_likelihood.R
 \name{max_likelihood}
 \alias{max_likelihood}
-\title{Maximize the model's log-likelihood function}
+\title{Optimization}
 \usage{
 max_likelihood(data, controls)
 }
 \arguments{
-\item{data}{A list of processed data information}
+\item{data}{A list of processed data information.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-A fitted model
+A list of fitted model information.
 }
 \description{
-Maximize the model's log-likelihood function
+Maximizes the model's log-likelihood function.
+}
+\details{
+Uses \code{nlm} for numerical optimization.
 }

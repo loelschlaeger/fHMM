@@ -2,21 +2,21 @@
 % Please edit documentation in R/read_data.R
 \name{read_data}
 \alias{read_data}
-\title{Read financial data from .csv-file}
+\title{Read .csv-file}
 \usage{
 read_data(controls)
 }
 \arguments{
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
 A list containing the following elements:
-\item{logReturns}{Log-returns, the data that is modeled}
-\item{dataRaw}{Raw data}
-\item{dataRaw_cs}{Raw data on coarse-scale}
-\item{dates}{Vector of dates}
-\item{T_star}{Vector of fine-scale chunk sizes}
+\item{logReturns}{log-returns (the data that is modeled)}
+\item{dataRaw}{raw data}
+\item{dataRaw_cs}{raw coarse-scale data}
+\item{dates}{vector of dates}
+\item{T_star}{vector of fine-scale chunk sizes}
 }
 \description{
-Read financial data from .csv-file
+Reads financial data from .csv-file.
 }

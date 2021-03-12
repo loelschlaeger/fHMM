@@ -2,18 +2,18 @@
 % Please edit documentation in R/thetaUncon2thetaList.R
 \name{thetaUncon2thetaList}
 \alias{thetaUncon2thetaList}
-\title{Bring uncontrained model parameters in list form}
+\title{Brings uncontrained model parameters \code{thetaUncon} in list form \code{thetaList}.}
 \usage{
 thetaUncon2thetaList(thetaUncon, controls)
 }
 \arguments{
-\item{thetaUncon}{Unconstrained model parameters in vector form}
+\item{thetaUncon}{Unconstrained model parameters in vector form.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-Constrained model parameters in list form
+Constrained model parameters in list form.
 }
 \description{
-Bring uncontrained model parameters in list form
+Brings uncontrained model parameters \code{thetaUncon} in list form \code{thetaList}.
 }

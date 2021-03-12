@@ -2,21 +2,22 @@
 % Please edit documentation in R/compute_ci.R
 \name{compute_ci}
 \alias{compute_ci}
-\title{Compute confidence intervals for the estimates}
+\title{Confidence intervals}
 \usage{
 compute_ci(fit, controls)
 }
 \arguments{
-\item{fit}{A fitted model}
+\item{fit}{A list of fitted model information.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
 A list containing the following elements:
-\item{lb_alpha}{the lower bound of the intervals}
-\item{estimate}{the estimates}
-\item{ub_limit}{the upper bound of the intervals}
+\item{lb_ci_level}{lower bound of the intervals}
+\item{estimate}{estimates}
+\item{ub_ci_level}{upper bound of the intervals}
+where \code{ci_level} is set in \code{controls}.
 }
 \description{
-Compute confidence intervals for the estimates
+Computes confidence intervals for the estimates.
 }

@@ -2,20 +2,20 @@
 % Please edit documentation in R/compute_fs.R
 \name{compute_fs}
 \alias{compute_fs}
-\title{Compute (flexible) fine-scale chunk lengths}
+\title{Fine-scale chunk lengths}
 \usage{
-compute_fs(fs_time_horizon, T = NULL, fs_dates = NULL)
+compute_fs(fs_time_horizon, T = NA, fs_dates = NA)
 }
 \arguments{
-\item{fs_time_horizon}{Setting the fine-scale dimension, either a numeric or one of "w","m","q","y"}
+\item{fs_time_horizon}{Either a numeric or one of \code{"w"}, \code{"m"}, \code{"q"}, \code{"y"}, setting the fine-scale dimension.}
 
-\item{T}{The dimension of the coarse-scale process, default \code{NULL}}
+\item{T}{A numeric, the dimension of the coarse-scale process, default \code{NA}.}
 
-\item{fs_dates}{A vector of dates of empirical fine-scale observations, default \code{NULL}}
+\item{fs_dates}{A vector of dates of empirical fine-scale observations, default \code{NA}.}
 }
 \value{
-Vector of fine-scale chunk sizes
+A vector of fine-scale chunk sizes.
 }
 \description{
-Compute (flexible) fine-scale chunk lengths
+Computes (flexible) fine-scale chunk lengths.
 }

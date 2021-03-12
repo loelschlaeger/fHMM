@@ -2,16 +2,16 @@
 % Please edit documentation in R/sigmaCon2sigmaUncon.R
 \name{sigmaCon2sigmaUncon}
 \alias{sigmaCon2sigmaUncon}
-\title{Unconstrain standard deviations}
+\title{Unconstrains standard deviations.}
 \usage{
 sigmaCon2sigmaUncon(sigmaCon)
 }
 \arguments{
-\item{sigmaCon}{Constrained standard deviations}
+\item{sigmaCon}{Vector of constrained standard deviations.}
 }
 \value{
-Unconstrained standard deviations
+Vector of unconstrained standard deviations.
 }
 \description{
-Unconstrain standard deviations
+Unconstrains standard deviations.
 }

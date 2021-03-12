@@ -2,24 +2,24 @@
 % Please edit documentation in R/create_visuals.R
 \name{create_visuals}
 \alias{create_visuals}
-\title{Visualize model results}
+\title{Visualization}
 \usage{
-create_visuals(data, fit, decoding, controls, events = NULL)
+create_visuals(data, fit, decoding, controls, events = NA)
 }
 \arguments{
-\item{data}{A list of processed data information}
+\item{data}{A list of processed data information.}
 
-\item{fit}{A fitted model}
+\item{fit}{A list of fitted model information.}
 
-\item{decoding}{A vector (in case of HMM) or a matrix (in case of HHMM) of decoded states}
+\item{decoding}{A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 
-\item{events}{A list of events, default \code{NULL}}
+\item{events}{A list of (historical, financial) events, default \code{NA}.}
 }
 \value{
-No return value, called for side effects.
+No return value. Calls visualization functions \code{plot_sdd}, \code{plot_ts} and \code{pseudo_residuals}.
 }
 \description{
-Visualize model results
+Calls functions for visualization of model results.
 }

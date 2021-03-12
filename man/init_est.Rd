@@ -2,16 +2,16 @@
 % Please edit documentation in R/init_est.R
 \name{init_est}
 \alias{init_est}
-\title{Sample initial parameter values for the estimation routine}
+\title{Initialisation}
 \usage{
 init_est(controls)
 }
 \arguments{
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-Parameters values in format \code{thetaUncon}
+A vector of parameters values in format \code{thetaUncon}.
 }
 \description{
-Sample initial parameter values for the estimation routine
+Samples initial parameter values for the estimation routine.
 }

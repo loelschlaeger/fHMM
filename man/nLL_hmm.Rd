@@ -2,20 +2,20 @@
 % Please edit documentation in R/nLL_hmm.R
 \name{nLL_hmm}
 \alias{nLL_hmm}
-\title{Compute the negative log-likelihood of a hidden Markov model}
+\title{Negative log-likelihood of a HMM}
 \usage{
 nLL_hmm(thetaUncon, observations, controls)
 }
 \arguments{
-\item{thetaUncon}{Model parameters in format \code{thetaUncon}}
+\item{thetaUncon}{Vector of model parameters in format \code{thetaUncon}.}
 
-\item{observations}{A vector of observations}
+\item{observations}{A vector of observations.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-Negative log-likelihood
+Numeric, negative log-likelihood value.
 }
 \description{
-Compute the negative log-likelihood of a hidden Markov model
+Computes the negative log-likelihood of a hidden Markov model.
 }

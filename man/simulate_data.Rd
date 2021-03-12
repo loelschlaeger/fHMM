@@ -2,24 +2,24 @@
 % Please edit documentation in R/simulate_data.R
 \name{simulate_data}
 \alias{simulate_data}
-\title{Simulate data from a (hierarchical) hidden Markov model}
+\title{Data simulation}
 \usage{
-simulate_data(controls, sim_par = NULL)
+simulate_data(controls, sim_par = NA)
 }
 \arguments{
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 
-\item{sim_par}{A list of model parameters for simulation in \code{thetaList} format, default \code{NULL}}
+\item{sim_par}{A list of model parameters for simulation in \code{thetaList} format, default \code{NA}.}
 }
 \value{
 A list containing the following elements:
-\item{logReturns}{Simulated log-returns}
-\item{states0}{Simulated hidden states}
-\item{thetaUncon0}{True parameters in format \code{thetaUncon}}
-\item{thetaCon0}{True parameters in format \code{thetaCon}}
-\item{thetaList0}{True parameters in format \code{thetaList}}
-\item{T_star}{Vector of fine-scale chunk sizes}
+\item{logReturns}{simulated log-returns}
+\item{states0}{simulated hidden states}
+\item{thetaUncon0}{true parameters in format \code{thetaUncon}}
+\item{thetaCon0}{true parameters in format \code{thetaCon}}
+\item{thetaList0}{true parameters in format \code{thetaList}}
+\item{T_star}{vector of fine-scale chunk sizes}
 }
 \description{
-Simulate data from a (hierarchical) hidden Markov model
+Simulates data from a (hierarchical) hidden Markov model.
 }

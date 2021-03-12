@@ -2,22 +2,22 @@
 % Please edit documentation in R/pseudo_residuals.R
 \name{pseudo_residuals}
 \alias{pseudo_residuals}
-\title{Compute and visualize pseudo-residuals}
+\title{Pseudo-residuals}
 \usage{
 pseudo_residuals(controls, data, fit, decoding)
 }
 \arguments{
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 
-\item{data}{A list of processed data information}
+\item{data}{A list of processed data information.}
 
-\item{fit}{A fitted model}
+\item{fit}{A list of fitted model information.}
 
-\item{decoding}{A matrix of decoded states}
+\item{decoding}{A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.}
 }
 \value{
-No return value, creates graphic in \code{controls[["path"]]}/models/\code{controls[["id"]]}
+No return value. Creates files "pseudo_residuals.pdf" and "pseudos.rds" in "\code{controls[["path"]]}/models/\code{controls[["id"]]}".
 }
 \description{
-Compute and visualize pseudo-residuals
+Computes and visualizes pseudo-residuals.
 }

@@ -2,24 +2,24 @@
 % Please edit documentation in R/check_estimation.R
 \name{check_estimation}
 \alias{check_estimation}
-\title{Check and save estimates}
+\title{Estimation check}
 \usage{
-check_estimation(mods, llks, data, hessian, controls)
+check_estimation(mods, lls, data, hessian, controls)
 }
 \arguments{
-\item{mods}{A list of fitted models in the different estimation runs}
+\item{mods}{A list of fitted models in the different estimation runs.}
 
-\item{llks}{A vector of log-likelihood values of accepted \code{mods}}
+\item{lls}{A vector of log-likelihood values of accepted \code{mods}.}
 
-\item{data}{A list of processed data information}
+\item{data}{A list of processed data information.}
 
-\item{hessian}{The Hessian matrix}
+\item{hessian}{Hessian matrix of the estimated model.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-A fitted model
+A list of fitted model information.
 }
 \description{
-Check and save estimates
+Summarizes and saves estimates.
 }

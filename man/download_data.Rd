@@ -2,11 +2,11 @@
 % Please edit documentation in R/download_data.R
 \name{download_data}
 \alias{download_data}
-\title{Download data from www.finance.yahoo.com}
+\title{Data download}
 \usage{
 download_data(
-  name = NULL,
-  symbol = NULL,
+  name = NA,
+  symbol = NA,
   from = "1902-01-01",
   to = Sys.Date(),
   show_symbols = FALSE,
@@ -14,23 +14,28 @@ download_data(
 )
 }
 \arguments{
-\item{name}{A personal identifier for a stock, default \code{NULL}}
+\item{name}{A character, personal identifier for a stock, default \code{NA}.}
 
-\item{symbol}{The stock's symbol, default \code{NULL}}
+\item{symbol}{A character, the stock's symbol, default \code{NA}.}
 
-\item{from}{A date setting the lower data bound, default is \code{"1902-01-01"}}
+\item{from}{A date, setting the lower data bound, default is \code{"1902-01-01"}.}
 
-\item{to}{A date setting the upper data bound, default is the current date \code{Sys.date()}}
+\item{to}{A date, setting the upper data bound, default is the current date \code{Sys.date()}.}
 
-\item{show_symbols}{A boolean determining whether all saved symbols should be printed, default \code{FALSE}}
+\item{show_symbols}{A boolean, determining whether all saved symbols should be printed, default \code{FALSE}.}
 
-\item{path}{A character, setting the data saving path}
+\item{path}{A character, setting the data saving path.}
 }
 \value{
-No return value. Data is saved in "\code{path}/data".
+No return value. Downloaded data is saved as "\code{name}.csv" in the folder "\code{path}/data".
 }
 \description{
-Download data from www.finance.yahoo.com
+Download financial data from \url{https://finance.yahoo.com}.
+}
+\details{
+\code{symbol} has to match the official symbol on \url{https://finance.yahoo.com}.
+Once used stock symbols are saved in "stock_symbols.rds" in the folder "\code{path}/data".
+Values for \code{from} earlier than its default value are set to the default value.
 }
 \examples{
 ### download 21st century DAX data

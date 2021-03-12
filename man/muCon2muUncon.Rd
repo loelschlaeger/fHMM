@@ -2,18 +2,18 @@
 % Please edit documentation in R/muCon2muUncon.R
 \name{muCon2muUncon}
 \alias{muCon2muUncon}
-\title{Unconstrain expected values}
+\title{Unconstrains expected values.}
 \usage{
 muCon2muUncon(muCon, link)
 }
 \arguments{
-\item{muCon}{Constrained expected values}
+\item{muCon}{Vector of constrained expected values.}
 
-\item{link}{Boolean determining whether to apply the link function}
+\item{link}{Boolean, determining whether to apply the link function.}
 }
 \value{
-Unconstrained expected values
+Vector of unconstrained expected values.
 }
 \description{
-Unconstrain expected values
+Unconstrains expected values.
 }

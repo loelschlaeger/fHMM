@@ -2,18 +2,18 @@
 % Please edit documentation in R/parameter_names.R
 \name{parameter_names}
 \alias{parameter_names}
-\title{Create model parameter names}
+\title{Parameter names}
 \usage{
 parameter_names(controls, all)
 }
 \arguments{
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 
-\item{all}{A boolean, determining whether all (\code{all=TRUE}) or only estimated (\code{all=FALSe}) names should be produced}
+\item{all}{A boolean, determining whether all (\code{all=TRUE}) or only estimated (\code{all=FALSe}) names should be produced.}
 }
 \value{
-Vector of model parameter names
+Vector of model parameter names.
 }
 \description{
-Create model parameter names
+Creates model parameter names.
 }

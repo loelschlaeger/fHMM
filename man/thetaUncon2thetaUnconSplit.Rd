@@ -2,18 +2,18 @@
 % Please edit documentation in R/thetaUncon2thetaUnconSplit.R
 \name{thetaUncon2thetaUnconSplit}
 \alias{thetaUncon2thetaUnconSplit}
-\title{Split uncontrained model parameters by fine-scale HMMs}
+\title{Splits uncontrained model parameters \code{thetaUncon} by fine-scale HMMs.}
 \usage{
 thetaUncon2thetaUnconSplit(thetaUncon, controls)
 }
 \arguments{
-\item{thetaUncon}{Unconstrained model parameters in vector form}
+\item{thetaUncon}{Unconstrained model parameters in vector form.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-Unconstrained fine-scale model parameters for each fine-scale HMM in list form
+List of unconstrained fine-scale model parameters for each fine-scale HMM.
 }
 \description{
-Split uncontrained model parameters by fine-scale HMMs
+Splits uncontrained model parameters \code{thetaUncon} by fine-scale HMMs.
 }

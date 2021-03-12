@@ -2,18 +2,18 @@
 % Please edit documentation in R/thetaUncon2thetaCon.R
 \name{thetaUncon2thetaCon}
 \alias{thetaUncon2thetaCon}
-\title{Constrain model parameters}
+\title{Constrains model parameters.}
 \usage{
 thetaUncon2thetaCon(thetaUncon, controls)
 }
 \arguments{
-\item{thetaUncon}{Unconstrained model parameters in vector form}
+\item{thetaUncon}{Unconstrained model parameters in vector form.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-Constrained model parameters in vector form
+Constrained model parameters in vector form.
 }
 \description{
-Constrain model parameters
+Constrains model parameters.
 }

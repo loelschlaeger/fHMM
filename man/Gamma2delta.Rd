@@ -2,16 +2,16 @@
 % Please edit documentation in R/Gamma2delta.R
 \name{Gamma2delta}
 \alias{Gamma2delta}
-\title{Compute stationary distribution of transition probability matrix}
+\title{Computes stationary distribution of transition probability matrix.}
 \usage{
 Gamma2delta(Gamma)
 }
 \arguments{
-\item{Gamma}{Transition probability matrix}
+\item{Gamma}{Transition probability matrix.}
 }
 \value{
-Stationary distribution
+Stationary distribution vector.
 }
 \description{
-Compute stationary distribution of transition probability matrix
+Computes stationary distribution of transition probability matrix.
 }

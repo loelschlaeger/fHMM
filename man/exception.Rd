@@ -2,21 +2,21 @@
 % Please edit documentation in R/exception.R
 \name{exception}
 \alias{exception}
-\title{Exception messages}
+\title{Debugging}
 \usage{
 exception(code)
 }
 \arguments{
-\item{code}{An exception code}
+\item{code}{A character, the exception code.}
 }
 \value{
 A list containing the following elements:
-\item{code}{the exception code}
-\item{response}{the message}
+\item{code}{exception code}
+\item{response}{message}
 \item{debugging}{suggestions for debugging}
 }
 \description{
-Exception messages
+Provides suggestions for debugging for a given exception code.
 }
 \examples{
 exception("S.1")

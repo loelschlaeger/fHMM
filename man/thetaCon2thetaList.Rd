@@ -2,18 +2,18 @@
 % Please edit documentation in R/thetaCon2thetaList.R
 \name{thetaCon2thetaList}
 \alias{thetaCon2thetaList}
-\title{Bring contrained model parameters from vector form to list form}
+\title{Brings contrained model parameters from vector form \code{thetaCon} to list form \code{ThetaList}.}
 \usage{
 thetaCon2thetaList(thetaCon, controls)
 }
 \arguments{
-\item{thetaCon}{Constrained model parameters in vector form}
+\item{thetaCon}{Constrained model parameters in vector form.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-Constrained model parameters in list form
+Constrained model parameters in list form.
 }
 \description{
-Bring contrained model parameters from vector form to list form
+Brings contrained model parameters from vector form \code{thetaCon} to list form \code{ThetaList}.
 }

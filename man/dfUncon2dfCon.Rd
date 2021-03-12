@@ -2,16 +2,16 @@
 % Please edit documentation in R/dfUncon2dfCon.R
 \name{dfUncon2dfCon}
 \alias{dfUncon2dfCon}
-\title{Constrain degrees of freedom}
+\title{Constrains degrees of freedom.}
 \usage{
 dfUncon2dfCon(dfUncon)
 }
 \arguments{
-\item{dfUncon}{Unconstrained degrees of freedom}
+\item{dfUncon}{Numeric, unconstrained degrees of freedom.}
 }
 \value{
-Constrained degrees of freedom
+Numeric, constrained degrees of freedom.
 }
 \description{
-Constrain degrees of freedom
+Constrains degrees of freedom.
 }

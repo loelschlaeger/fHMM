@@ -2,22 +2,22 @@
 % Please edit documentation in R/check_saving.R
 \name{check_saving}
 \alias{check_saving}
-\title{Check for overwriting and save model results}
+\title{Saving check}
 \usage{
-check_saving(object = NULL, name = NULL, filetype, controls)
+check_saving(object = NA, name = NA, filetype, controls)
 }
 \arguments{
-\item{object}{An object to be saved, default \code{NULL}}
+\item{object}{An .rds-object to be saved, default \code{NA}.}
 
-\item{name}{The name of the object to be saved, default \code{NULL}}
+\item{name}{A character, the name of the object to be saved, default \code{NA}.}
 
-\item{filetype}{The filetype of the object to be saved}
+\item{filetype}{A character, the filetype of the object to be saved.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-A boolean, determining whether saving is possible or not
+A boolean, determining whether saving is possible or not. If \code{filetype="rds"}, \code{object} is saved.
 }
 \description{
-Check for overwriting and save model results
+Checks for overwriting and saves model results.
 }

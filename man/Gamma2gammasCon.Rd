@@ -2,16 +2,19 @@
 % Please edit documentation in R/Gamma2gammasCon.R
 \name{Gamma2gammasCon}
 \alias{Gamma2gammasCon}
-\title{Get constrained non-diagonal matrix elements of transition probability matrix}
+\title{Constrains non-diagonal matrix elements of transition probability matrix.}
 \usage{
 Gamma2gammasCon(Gamma)
 }
 \arguments{
-\item{Gamma}{Transition probability matrix}
+\item{Gamma}{Transition probability matrix.}
 }
 \value{
-Constrained non-diagonal matrix elements (column-wise)
+Vector of constrained non-diagonal matrix elements (column-wise).
 }
 \description{
-Get constrained non-diagonal matrix elements of transition probability matrix
+Constrains non-diagonal matrix elements of transition probability matrix.
+}
+\details{
+Function shifts 0 and 1 non-diagonal elements by \code{1e-3}.
 }

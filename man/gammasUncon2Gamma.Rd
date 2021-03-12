@@ -2,18 +2,18 @@
 % Please edit documentation in R/gammasUncon2Gamma.R
 \name{gammasUncon2Gamma}
 \alias{gammasUncon2Gamma}
-\title{Build transition probability matrix from unconstrained non-diagonal elements}
+\title{Builds transition probability matrix from unconstrained non-diagonal elements.}
 \usage{
 gammasUncon2Gamma(gammasUncon, dim)
 }
 \arguments{
-\item{gammasUncon}{Unconstrained non-diagonal elements of transition probability matrix}
+\item{gammasUncon}{Vector of unconstrained non-diagonal elements of transition probability matrix.}
 
-\item{dim}{Dimension of transition probability matrix}
+\item{dim}{Numeric, dimension of transition probability matrix.}
 }
 \value{
-Transition probability matrix
+Transition probability matrix.
 }
 \description{
-Build transition probability matrix from unconstrained non-diagonal elements
+Builds transition probability matrix from unconstrained non-diagonal elements.
 }

@@ -2,24 +2,24 @@
 % Please edit documentation in R/plot_sdd.R
 \name{plot_sdd}
 \alias{plot_sdd}
-\title{Visualize estimated state-dependent distributions}
+\title{Visualization of estimated state-dependent distributions}
 \usage{
 plot_sdd(controls, data, fit, decoding, colors)
 }
 \arguments{
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 
-\item{data}{A list of processed data information}
+\item{data}{A list of processed data information.}
 
-\item{fit}{A fitted model}
+\item{fit}{A list of fitted model information.}
 
-\item{decoding}{A matrix of decoded states}
+\item{decoding}{A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.}
 
-\item{colors}{A matrix of colors for different states}
+\item{colors}{A matrix of colors for different states.}
 }
 \value{
-No return value, creates graphic in \code{controls[["path"]]}/models/\code{controls[["id"]]}
+No return value. Creates file "state_dependent_distributions.pdf" in "\code{controls[["path"]]}/models/\code{controls[["id"]]}".
 }
 \description{
-Visualize estimated state-dependent distributions
+Plots the estimated state-dependent distributions.
 }

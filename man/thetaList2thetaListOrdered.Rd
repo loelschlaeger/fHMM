@@ -2,21 +2,21 @@
 % Please edit documentation in R/thetaList2thetaListOrdered.R
 \name{thetaList2thetaListOrdered}
 \alias{thetaList2thetaListOrdered}
-\title{Order states in thetaList based on expected values}
+\title{Orders states in \code{thetaList} based on expected values.}
 \usage{
 thetaList2thetaListOrdered(thetaList, controls)
 }
 \arguments{
-\item{thetaList}{Constrained model parameters in list form}
+\item{thetaList}{Constrained model parameters in list form.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-Constrained and ordered model parameters in list form
+Constrained and ordered model parameters in list form.
 }
 \description{
-Order states in thetaList based on expected values
+Orders states in \code{thetaList} based on expected values.
 }
 \details{
-If t SDD, order states decreasing with respect to expected values. If Gamma SDD, vice versa.
+If state-dependent distribution is \emph{t}, states are ordered decreasing with respect to expected values. If distribution is \emph{Gamma}, vice versa.
 }

@@ -2,20 +2,20 @@
 % Please edit documentation in R/nLL_hhmm.R
 \name{nLL_hhmm}
 \alias{nLL_hhmm}
-\title{Compute the negative log-likelihood of a hierarchical hidden Markov model}
+\title{Negative log-likelihood of a HHMM}
 \usage{
 nLL_hhmm(thetaUncon, observations, controls)
 }
 \arguments{
-\item{thetaUncon}{Model parameters in format \code{thetaUncon}}
+\item{thetaUncon}{Vector of model parameters in format \code{thetaUncon}.}
 
-\item{observations}{A vector of observations}
+\item{observations}{A matrix of observations, coarse-scale observations in the first column and fine-scale observations in the corresponding row.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-Negative log-likelihood
+Numeric, negative log-likelihood value.
 }
 \description{
-Compute the negative log-likelihood of a hierarchical hidden Markov model
+Computes the negative log-likelihood of a hierarchical hidden Markov model.
 }

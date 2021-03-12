@@ -2,18 +2,18 @@
 % Please edit documentation in R/process_data.R
 \name{process_data}
 \alias{process_data}
-\title{Process data}
+\title{Data processing}
 \usage{
-process_data(controls, sim_par = NULL)
+process_data(controls, sim_par = NA)
 }
 \arguments{
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 
-\item{sim_par}{A vector of model parameters for simulation, default \code{NULL}}
+\item{sim_par}{A vector of model parameters for simulation, default \code{NA}.}
 }
 \value{
-A list of processed data information
+A list of processed data information and on-screen information.
 }
 \description{
-Process data
+Calls functions for processing or simulating data.
 }

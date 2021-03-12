@@ -2,16 +2,16 @@
 % Please edit documentation in R/Gamma2gammasUncon.R
 \name{Gamma2gammasUncon}
 \alias{Gamma2gammasUncon}
-\title{Get unconstrained non-diagonal matrix elements of transition probability matrix}
+\title{Unconstraines non-diagonal matrix elements of transition probability matrix.}
 \usage{
 Gamma2gammasUncon(Gamma)
 }
 \arguments{
-\item{Gamma}{Transition probability matrix}
+\item{Gamma}{Transition probability matrix.}
 }
 \value{
-Unconstrained non-diagonal matrix elements (column-wise)
+Vector of unconstrained non-diagonal matrix elements (column-wise).
 }
 \description{
-Get unconstrained non-diagonal matrix elements of transition probability matrix
+Unconstraines non-diagonal matrix elements of transition probability matrix.
 }

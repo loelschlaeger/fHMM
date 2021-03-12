@@ -2,20 +2,20 @@
 % Please edit documentation in R/apply_viterbi.R
 \name{apply_viterbi}
 \alias{apply_viterbi}
-\title{Apply the Viterbi algorithm for state decoding}
+\title{Viterbi algorithm}
 \usage{
 apply_viterbi(data, fit, controls)
 }
 \arguments{
-\item{data}{A list of processed data information}
+\item{data}{A list of processed data information.}
 
-\item{fit}{A fitted model}
+\item{fit}{A list of fitted model information.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-A vector (in case of HMM) or a matrix (in case of HHMM) of decoded states
+A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.
 }
 \description{
-Apply the Viterbi algorithm for state decoding
+Applies the Viterbi algorithm (\url{https://en.wikipedia.org/wiki/Viterbi_algorithm}) for state decoding.
 }

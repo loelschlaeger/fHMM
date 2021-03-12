@@ -4,79 +4,35 @@
 \alias{fit_hmm}
 \title{Fit (hierarchical) hidden Markov models to financial data}
 \usage{
-fit_hmm(controls, events = NULL, sim_par = NULL)
+fit_hmm(controls, events = NA, sim_par = NA)
 }
 \arguments{
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 
-\item{events}{A list of (historical, financial) events, default \code{NULL}}
+\item{events}{A list of (historical, financial) events, default \code{NA}.}
 
-\item{sim_par}{A list of model parameters for simulation in \code{thetaList} format, default \code{NULL}}
+\item{sim_par}{A list of model parameters for simulation in \code{thetaList} format, default \code{NA}.}
 }
 \value{
-No return value. Estimation results are saved in "\code{controls[["path"]]}/model/\code{controls[["id"]]}.
+No return value. Estimation results are saved in "\code{controls[["path"]]}/model/\code{controls[["id"]]}".
 }
 \description{
-Fit (hierarchical) hidden Markov models to financial data
+Performs data processing, fitting, state decoding and visualization.
 }
 \details{
 A model is specified by setting parameters of the named list \code{controls} and passing it to \code{fit_hmm}.
-The following parameters are mandatory:
-\itemize{
-\item{\code{id}: a character, identifying the model}
-\item{\code{path}: a character, setting the path of the data and the model results}
-\item{\code{states}: a numeric vector of length 2, determining the model type and the number of states: If \code{states = c(x,0)}, a HMM with \code{x} states is estimated. If \code{states = c(x,y)}, a HHMM with \code{x} coarse-scale and \code{y} fine-scale states is estimated.}
-\item{\code{sdds}: a character vector of length 2, specifying the state-dependent distributions for both scales: \code{"t"}, \code{"t(x)"}, \code{"gamma"}.}
-\item{either \code{data_source} along with \code{data_col} (for empirical data) or \code{time_horizon} (for simulated data), see below}
-}
-The following parameters are optional and set to default values (see below) if not specified:
-\itemize{
-\item{\code{accept_codes}: either a numeric vector or \code{"all"} (accepting all codes)}
-\item{\code{at_true}: a boolean, determining whether the optimization is initialised at the true parameter values}
-\item{\code{data_col}: a character vector of length 2, containing the name of the desired column of \code{data_source} for both scales}
-\item{\code{data_cs_type}: a character, determining the type of coarse-scale data (only for a HHMM and empirical data): \code{"mean"}, \code{"mean_abs"}, \code{"sum_abs"}.}
-\item{\code{data_source}: a character vector of length 2, containing the file names of the empirical data (data is simulated if \code{data_source = c(NA,NA)})}
-\item{\code{gradtol}: setting the tolerance at which the scaled gradient is considered close enough to zero}
-\item{\code{iterlim}: an integer, specifying the maximum number of optimization iterations to be performed before termination}
-\item{\code{overwrite}: a boolean, determining whether overwriting of existing results on the same \code{id} is allowed}
-\item{\code{print_level}: an integer, determining the level of printing during the optimization}
-\item{\code{runs}: an integer, setting the number of optimization runs}
-\item{\code{scale_par}: a positive numeric vector of length two, scaling the model parameters}
-\item{\code{seed}: setting a seed for the simulation and the optimization}
-\item{\code{steptol}: setting the minimum allowable relative step length during the optimization}
-\item{\code{time_horizon}: a vector of length 2 (first entry is mandatory if data is simulated, second entry is mandatory if the model is a HHMM), determining the length of the time horizion(s) and can either a numeric value be one of \code{w}, \code{m}, \code{q}, \code{y}}
-\item{\code{truncate_data}: a vector of length 2, containing lower and upper date limits to select a subset of the empirical data}
-}
-Default values for unspecified controls:
-\itemize{
-\item{\code{accept_codes = c(1,2)}}
-\item{\code{at_true = FALSE}}
-\item{\code{ci_level = 0.95}}
-\item{\code{data_col = c(NA,NA)}}
-\item{\code{data_cs_type = "mean_abs"}}
-\item{\code{data_source = c(NA,NA)}}
-\item{\code{gradtol = 1e-4}}
-\item{\code{iterlim = 500}}
-\item{\code{overwrite = FALSE}}
-\item{\code{print_level = 0}}
-\item{\code{runs = 100}}
-\item{\code{scale_par = c(1,1)}}
-\item{\code{seed} is not set}
-\item{\code{steptol = 1e-2}}
-\item{\code{time_horizon = c(NA,NA)}}
-\item{\code{truncate_data = c(NA,NA)}}
-}
+Some control parameters are mandatory, the others are set to default values if not specified.
+See the documentation \url{https://github.com/loelschlaeger/fHMM#readme} for a comprehensive list of all control parameters and their default values.
 }
 \examples{
-### Fitting a 3-state HMM with state-dependent t-distributions to simulated data
+### fitting a 3-state HMM with state-dependent t-distributions to simulated data
 controls = list(
- path         = tempdir(),
- id           = "HMM_3_t",
- sdds         = c("t",NA),
- states       = c(3,0),
- time_horizon = c(500,NA),
- runs         = 10,
- seed         = 1
+  path    = tempdir(),
+  id      = "HMM_3_t",
+  states  = c(3,0),
+  sdds    = c("t",NA),
+  horizon = c(500,NA),
+  fit     = list("runs" = 10, "seed" = 1)
 )
 fit_hmm(controls)
 }

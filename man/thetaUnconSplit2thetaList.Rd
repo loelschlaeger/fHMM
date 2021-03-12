@@ -2,18 +2,18 @@
 % Please edit documentation in R/thetaUnconSplit2thetaList.R
 \name{thetaUnconSplit2thetaList}
 \alias{thetaUnconSplit2thetaList}
-\title{Bring uncontrained fine-scale model parameters in constrained list form}
+\title{Brings uncontrained fine-scale model parameters in constrained list form.}
 \usage{
 thetaUnconSplit2thetaList(thetaUncon, controls)
 }
 \arguments{
-\item{thetaUncon}{Unconstrained fine-scale model parameters in vector form}
+\item{thetaUncon}{Unconstrained fine-scale model parameters in vector form.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-Constrained fine-scale model parameters in list form
+Constrained fine-scale model parameters in list form.
 }
 \description{
-Bring uncontrained fine-scale model parameters in constrained list form
+Brings uncontrained fine-scale model parameters in constrained list form.
 }

@@ -2,20 +2,20 @@
 % Please edit documentation in R/check_decoding.R
 \name{check_decoding}
 \alias{check_decoding}
-\title{Check and save decoded states}
+\title{Decoding check}
 \usage{
 check_decoding(decoding, data, controls)
 }
 \arguments{
-\item{decoding}{A vector (in case of HMM) or a matrix (in case of HHMM) of decoded states}
+\item{decoding}{A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.}
 
-\item{data}{A list of processed data information}
+\item{data}{A list of processed data information.}
 
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-No return value, called for side effects
+No return value. Creates output file "states.txt".
 }
 \description{
-Check and save decoded states
+Summarizes and saves decoded states.
 }

@@ -2,16 +2,16 @@
 % Please edit documentation in R/check_controls.R
 \name{check_controls}
 \alias{check_controls}
-\title{Check specification of controls}
+\title{Controls check}
 \usage{
 check_controls(controls)
 }
 \arguments{
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 }
 \value{
-Checked \code{controls}
+Checked version of \code{controls}.
 }
 \description{
-Check specification of controls
+Checks specification of \code{controls}.
 }
