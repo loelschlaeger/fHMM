@@ -29,7 +29,7 @@ process_data = function(controls,sim_par=NA){
     if(controls[["sdds"]][1]=="gamma" & any(data[["logReturns"]][,1]<0)){
       stop(sprintf("%s (%s)",exception("C.7")[2],exception("C.7")[1]),call.=FALSE)
     }
-    if(controls[["sdds"]][2]=="gamma" & any(data[["logReturns"]][,-1]<0)){
+    if(controls[["sdds"]][2]=="gamma" & any(data[["logReturns"]][,-1]<0,na.rm=TRUE)){
       stop(sprintf("%s (%s)",exception("C.7")[2],exception("C.7")[1]),call.=FALSE)
     }
   }

@@ -6,7 +6,7 @@
 #' @return A vector of fine-scale chunk sizes.
 
 compute_fs = function(fs_time_horizon,T=NA,fs_dates=NA){
-  if(is.na(fs_dates)){
+  if(all(is.na(fs_dates))){
     if(is.numeric(fs_time_horizon)){
       T_star = rep(fs_time_horizon,T)
     }
@@ -17,8 +17,7 @@ compute_fs = function(fs_time_horizon,T=NA,fs_dates=NA){
       if(fs_time_horizon == "y") size = 260
       T_star = sample(1:size,T,replace=TRUE,prob=dbinom(1:size,size,0.9)/sum(dbinom(1:size,size,0.9)))
     }
-  }
-  if(!is.na(fs_dates)){
+  } else {
     dates_overview = data.frame("w" = as.numeric(strftime(fs_dates,format ="%W")),
                                 "m" = as.numeric(strftime(fs_dates,format ="%m")),
                                 "q" = as.numeric(substr(quarters(fs_dates),2,2)),
