@@ -39,12 +39,12 @@ Specify your model by setting the following parameters of the named list `contro
 - `id`: A character, identifying the model.
 - `states`: A numeric vector of length 2, determining the model type and the number of states:
    - If `states = c(x,0)`, a HMM with `x` states is estimated.
-   - If `states = c(x,y)`, a hierarchical HMM with `x` coarse-scale and `y` fine-scale states is estimated.
+   - If `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated.
 - `sdds`: A character vector of length 2, specifying the state-dependent distributions for both scales:
    - `"t"`, the t-distribution
-   - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom (normal distribution is obtained by setting `x = Inf`)
+   - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom (`x = Inf` is allowed)
    - `"gamma"`, the gamma distribution
-- `time_horizon`: A vector of length 2, determining the length of the time horizion(s). The first entry is numeric and mandatory if data is simulated, the second entry is mandatory if the model is a HHMM and can be either numeric or one of
+- `horizon`: A vector of length 2, determining the length of the time horizion(s). The first entry is numeric and mandatory if data is simulated, the second entry is mandatory if the model is a HHMM and can be either numeric or one of
    - `"w"` for weekly fine-scale chunks,
    - `"m"` for monthly fine-scale chunks,
    - `"q"` for quarterly fine-scale chunks,
