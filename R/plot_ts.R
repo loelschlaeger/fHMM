@@ -112,7 +112,7 @@ plot_ts = function(controls,data,decoding,colors,events){
           }
         }
       }
-      if(!controls[["sim"]] & !is.null(events)){
+      if(!controls[["sim"]] & any(!is.na(events))){
         for(l in seq_len(length(events[["dates"]]))){
           if(events[["dates"]][l]<=xmax){
             abline(v=as.Date(events[["dates"]][l]))
