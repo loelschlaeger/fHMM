@@ -54,8 +54,8 @@ The following parameters are optional and set to [default values](#default-value
 - `data`: A list, containing
    - `soure`: A character vector of length 2, containing the file names of the empirical data:
       - If `source = c(NA,NA)`, data is simulated.
-      - If `source = c("x",NA)`, data `"./data/x.csv"` is modeled by a HMM.
-      - If `source = c("x","y")`, data `"./data/x.csv"` (type determined by `cs_type`) on the coarse scale and data `"./data/y.csv"` on the fine scale is modeled by a HHMM.
+      - If `source = c("x",NA)`, data "x.csv" in folder "`path`/data" is modeled by a HMM.
+      - If `source = c("x","y")`, data "x.csv" (type determined by `cs_type`) on the coarse scale and data "y.csv" in folder "`path`/data" on the fine scale is modeled by a HHMM.
    - `col`: A character vector of length 2, containing the names of the desired column of `source` for both scales.
    - `truncate`: A vector of length 2, containing lower and upper date limits (each in format `"YYYY-MM-DD"`) to select a subset of the empirical data (neither, one or both limits can be specified).
    - `cs_type`: A character, determining the type of empirical coarse-scale data in HHMMs, one of
