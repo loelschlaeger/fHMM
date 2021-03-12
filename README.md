@@ -16,7 +16,7 @@
 7. [Examples](#examples)
 
 ## Getting started
-Set the model's [controls](#specifying-controls) and execute `fit_hmm(controls)`. See below for [examples](#examples).
+Specify the model's [controls](#specifying-controls) and execute `fit_hmm(controls)`. See below for [examples](#examples).
 
 ## Data
 Download daily prices of your preferred stock from https://finance.yahoo.com/ via
@@ -126,6 +126,25 @@ The following model results are saved in the folder `path/models/id` (`path` and
 Some error or warning messages provide exception codes. Calling `exception(code)` yields suggestions for debugging.
 
 ## Examples
+### Fitting a 2-state HMM to simulated data using gamma-distributions
+Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HMM_2_sim_gamma) for the results.
+```R
+### Initialize code
+source("load_code.R")
+
+### Set and check controls
+controls = list(
+  path          = ".",
+  id            = "HMM_2_sim_gamma",
+  sdds          = c("gamma",NA),
+  states        = c(2,0),
+  time_horizon  = c(5000,NA),
+  seed          = 1
+)
+
+### Fit (H)HMM
+fit_hmm(controls)
+```
 ### Fitting a 3-state HMM to the DAX closing prices from 2000 to 2020 using t-distributions
 Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HMM_3_DAX) for the results.
 ```R
@@ -153,22 +172,26 @@ events = list(
 ### fit (H)HMM
 fit_hmm(controls,events)
 ```
-### Fitting a 2-state HMM to simulated data using gamma-distributions
-Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HMM_2_sim_gamma) for the results.
+### Fitting a (2,2)-state HHMM jointly to the DAX and the VW stock
+Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HHMM_2_2_DAX_VW_gamma_t) for the results.
 ```R
-### Initialize code
+### initialize code
 source("load_code.R")
 
-### Set and check controls
+### download data (optional)
+download_data("dax","^GDAXI",path=".")
+download_data("vw","VOW3.DE",path=".")
+
+### set and check controls
 controls = list(
-  path          = ".",
-  id            = "HMM_2_sim_gamma",
-  sdds          = c("gamma",NA),
-  states        = c(2,0),
-  time_horizon  = c(5000,NA),
-  seed          = 1
+  path    = ".",
+  id      = "HHMM_2_2_DAX_VW_gamma_t",
+  states  = c(2,2),
+  sdds    = c("gamma","t"),
+  horizon = c(NA,"m"),
+  data    = list("source" = c("dax","vw"), "col" = c("Close","Close"), "cs_type" = "mean_abs")
 )
 
-### Fit (H)HMM
+### fit (H)HMM
 fit_hmm(controls)
 ```
