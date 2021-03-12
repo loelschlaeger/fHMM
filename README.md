@@ -31,7 +31,7 @@ where
 
 Historical events can be highlighted in the visualization of the decoded, empirical time series by passing a named list `events` with elements `dates` (a vector of dates) and `names` (a vector of names for the events) to `fit_hmm`.
 
-If you do not specify the `data` parameter in the model's `controls`, data is simulated. You can specify the model coefficients by passing the list `sim_par` in [thetaList](#parameter-structures) format to `fit_hmm`. Otherwise, the parameters are randomly drawn from the ranges -1 to 1 for expected values of a t-distribution, 0 to 1 for expected values of a gamma-distribution and 0 to 1 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
+If you do not specify the `source` parameter in the model's `controls`, data is simulated. You can specify the model coefficients by passing the list `sim_par` in [thetaList](#parameter-structures) format to `fit_hmm`. Otherwise, the parameters are randomly drawn from the ranges -1 to 1 for expected values of a t-distribution, 0 to 1 for expected values of a gamma-distribution and 0 to 1 for standard deviations. Setting `scale_par(x,y)` in `controls` scales these values by `x` and `y` on the coarse scale and on the fine scale, respectively.
 
 ## Specifying controls
 A model is specified by setting parameters of the named list `controls` and passing it to `fit_hmm`. The following parameters are mandatory:
@@ -53,9 +53,9 @@ A model is specified by setting parameters of the named list `controls` and pass
 The following parameters are optional and set to [default values](#default-values) if you do not specify them:
 - `data`: A list, containing
    - `soure`: A character vector of length 2, containing the file names of the empirical data:
-      - If `data_source = c(NA,NA)`, data is simulated.
-      - If `data_source = c("x",NA)`, data `"./data/x.csv"` is modeled by a HMM.
-      - If `data_source = c("x","y")`, data `"./data/x.csv"` (type determined by `data_cs_type`) on the coarse scale and data `"./data/y.csv"` on the fine scale is modeled by a HHMM.
+      - If `source = c(NA,NA)`, data is simulated.
+      - If `source = c("x",NA)`, data `"./data/x.csv"` is modeled by a HMM.
+      - If `source = c("x","y")`, data `"./data/x.csv"` (type determined by `cs_type`) on the coarse scale and data `"./data/y.csv"` on the fine scale is modeled by a HHMM.
    - `col`: A character vector of length 2, containing the names of the desired column of `source` for both scales.
    - `truncate`: A vector of length 2, containing lower and upper date limits (each in format `"YYYY-MM-DD"`) to select a subset of the empirical data (neither, one or both limits can be specified).
    - `cs_type`: A character, determining the type of empirical coarse-scale data in HHMMs, one of
