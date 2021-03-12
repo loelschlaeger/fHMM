@@ -4,7 +4,7 @@
 \alias{create_visuals}
 \title{Visualization}
 \usage{
-create_visuals(data, fit, decoding, controls, events = NA)
+create_visuals(data, fit, decoding, controls, events)
 }
 \arguments{
 \item{data}{A list of processed data information.}
@@ -15,7 +15,7 @@ create_visuals(data, fit, decoding, controls, events = NA)
 
 \item{controls}{A list of controls.}
 
-\item{events}{A list of (historical, financial) events, default \code{NA}.}
+\item{events}{A list of (historical, financial) events.}
 }
 \value{
 No return value. Calls visualization functions \code{plot_sdd}, \code{plot_ts} and \code{pseudo_residuals}.
