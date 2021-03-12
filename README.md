@@ -16,7 +16,7 @@
 7. [Examples](#examples)
 
 ## Getting started
-Set the model's [controls](#specifying-controls) and execute `fit_hmm(controls)`. See below for [examples](#examples).
+Specify the model's [controls](#specifying-controls) and execute `fit_hmm(controls)`. See below for [examples](#examples).
 
 ## Data
 Download daily prices of your preferred stock from https://finance.yahoo.com/ via
