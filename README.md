@@ -2,7 +2,7 @@
 [![CRAN status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
 
-👉 Fitting (hierarchical) hidden Markov models (H)HMMs to financial data
+👉 Fitting (hierarchical) hidden Markov models (H)HMMs to financial data.
 
 💬 Found a bug? Request for a feature? Please [tell us](https://github.com/loelschlaeger/fHMM/issues)!
 
@@ -16,16 +16,7 @@
 7. [Examples](#examples)
 
 ## Getting started
-Set the model's [controls](#specifying-controls) and execute
-```r 
-fit_hmm(controls,events=NULL,sim_par=NULL)
-``` 
-where
-- `controls` is the list of controls defined in step 2,
-- `events` is a list of [events](#events) (optional),
-- `sim_par` is a [thetaList](#parameter-structures)-object specifying model parameters for a simulation (optional).
-   
-See below for [examples](#examples).
+Set the model's [controls](#specifying-controls) and execute `fit_hmm(controls)`. See below for [examples](#examples).
 
 ## Data
 The code is intended to be used on daily share prices provided by https://finance.yahoo.com/ or simulated data. 
