@@ -129,30 +129,28 @@ Some error or warning messages provide exception codes. Calling `exception(code)
 ### Fitting a 3-state HMM to the DAX closing prices from 2000 to 2020 using t-distributions
 Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HMM_3_DAX) for the results.
 ```R
-### Initialize code
+### initialize code
 source("load_code.R")
 
-### Download data 
+### download data (optional)
 download_data("dax","^GDAXI",path=".")
 
-### Set and check controls
+### set and check controls
 controls = list(
-  path          = ".",
-  id            = "HMM_3_DAX",
-  sdds          = c("t",NA),
-  states        = c(3,0),
-  data_source   = c("dax",NA),
-  data_col      = c("Close",NA),
-  truncate_data = c("2000-01-03","2020-12-30")
+  path    = ".",
+  id      = "HMM_3_DAX",
+  states  = c(3,0),
+  sdds    = c("t",NA),
+  data    = list("source" = c("dax",NA), "col" = c("Close",NA), "truncate" = c("2000-01-03","2020-12-30"))
 )
 
-### Define events 
+### define events (optional)
 events = list(
   dates = c("2001-09-11","2008-09-15","2020-01-27"),
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
 )
 
-### Fit (H)HMM
+### fit (H)HMM
 fit_hmm(controls,events)
 ```
 ### Fitting a 2-state HMM to simulated data using gamma-distributions
