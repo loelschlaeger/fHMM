@@ -4,6 +4,8 @@
 
 Fitting (hierarchical) hidden Markov models (H)HMMs to financial data
 
+Found a bug? Please fill an issue.
+
 ## Table of contents
 1. [Getting started](#getting-started)
 2. [Data](#data)
