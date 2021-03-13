@@ -4,12 +4,12 @@
 \alias{check_saving}
 \title{Saving check}
 \usage{
-check_saving(object = NA, name = NA, filetype, controls)
+check_saving(object = NULL, name = NULL, filetype, controls)
 }
 \arguments{
-\item{object}{An .rds-object to be saved, default \code{NA}.}
+\item{object}{An .rds-object to be saved, default \code{NULL}.}
 
-\item{name}{A character, the name of the object to be saved, default \code{NA}.}
+\item{name}{A character, the name of the object to be saved, default \code{NULL}.}
 
 \item{filetype}{A character, the filetype of the object to be saved.}
 
