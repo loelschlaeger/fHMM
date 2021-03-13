@@ -173,7 +173,6 @@ events = list(
 fit_hmm(controls,events)
 ```
 ### Fitting a (2,2)-state HHMM jointly to the DAX and the VW stock
-Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HHMM_2_2_DAX_VW_gamma_t) for the results.
 ```R
 ### initialize code
 source("load_code.R")
