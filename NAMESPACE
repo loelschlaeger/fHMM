@@ -2,6 +2,7 @@ useDynLib("fHMM")
 export(download_data)
 export(exception)
 export(fit_hmm)
+importFrom("graphics", "plot")
 importFrom("grDevices", "adjustcolor", "colorRampPalette", "dev.off",
              "pdf", "rgb")
 importFrom("graphics", "abline", "axis", "curve", "hist", "legend",
