@@ -7,7 +7,7 @@
 #' A model is specified by setting parameters of the named list \code{controls} and passing it to \code{fit_hmm}. 
 #' Some control parameters are mandatory, the others are set to default values if not specified.
 #' See the documentation <https://github.com/loelschlaeger/fHMM#readme> for a comprehensive list of all control parameters and their default values.
-#' @return No return value. Estimation results are saved in "\code{controls[["path"]]}/model/\code{controls[["id"]]}".
+#' @return No return value. Estimation results are saved in "\code{controls[["path"]]}/models/\code{controls[["id"]]}".
 #' @examples 
 #' ### fitting a 3-state HMM with state-dependent t-distributions to simulated data
 #' controls = list(
