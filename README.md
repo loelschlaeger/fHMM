@@ -134,12 +134,12 @@ source("load_code.R")
 
 ### Set and check controls
 controls = list(
-  path          = ".",
-  id            = "HMM_2_sim_gamma",
-  sdds          = c("gamma",NA),
-  states        = c(2,0),
-  time_horizon  = c(5000,NA),
-  seed          = 1
+  path    = ".",
+  id      = "HMM_2_sim_gamma",
+  sdds    = c("gamma",NA),
+  states  = c(2,0),
+  horizon = c(5000,NA),
+  fit     = list("seed" = 1)
 )
 
 ### Fit (H)HMM
