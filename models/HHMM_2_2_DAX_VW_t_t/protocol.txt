@@ -1,0 +1,14 @@
+model id:     HHMM_2_2_DAX_VW_t_t
+model type:   HHMM
+data type:    empirical
+states:       2 / 2
+SDDs:         t / t
+runs:         10 
+source:       dax.csv / vw.csv
+column:       Close / Close
+horizon:      1998-07-22 to 2021-03-19
+data points:  273 / 5803
+CS data type: mean_abs
+FS dim:       monthly
+run-time:     23 minute(s)
+accepted:     7 out of 10 runs
