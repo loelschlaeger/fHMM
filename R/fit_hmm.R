@@ -1,7 +1,7 @@
 #' @title Fit (hierarchical) hidden Markov models to financial data
 #' @description Performs data processing, fitting, state decoding and visualization.
 #' @param controls A list of controls.
-#' @param events A list of (historical, financial) events, default \code{NA}.
+#' @param events A list of (historical, financial) events, default \code{NULL}.
 #' @param sim_par A list of model parameters for simulation in \code{thetaList} format, default \code{NA}.
 #' @details 
 #' A model is specified by setting parameters of the named list \code{controls} and passing it to \code{fit_hmm}. 
@@ -21,7 +21,7 @@
 #' fit_hmm(controls)
 #' @export
 
-fit_hmm = function(controls,events=NA,sim_par=NA){
+fit_hmm = function(controls,events=NULL,sim_par=NA){
   
   ### check controls[["path"]]
   if(is.null(controls[["path"]]) || !dir.exists(controls[["path"]])){

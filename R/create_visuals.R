@@ -13,8 +13,8 @@ create_visuals = function(data,fit,decoding,controls,events){
   if(is.na(controls[["controls_checked"]])){
     stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
   }
-  if(controls[["sim"]] || all(is.na(events))){
-    events = NA
+  if(controls[["sim"]] || is.null(events)){
+    events = NULL
     warning(sprintf("%s (%s)",exception("V.1")[2],exception("V.2")[1]),call.=FALSE)
   } else {
     if(length(events[["dates"]])!=length(events[["names"]])){
@@ -23,9 +23,7 @@ create_visuals = function(data,fit,decoding,controls,events){
   }
   
   ### save events
-  if(!controls[["sim"]] & !is.na(events)){
-    check_saving(object = events, filetype = "rds", controls = controls)
-  }
+  check_saving(object = events, filetype = "rds", controls = controls)
   
   ### define colours
   var_col = function(col,n){
