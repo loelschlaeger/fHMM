@@ -1,21 +1,21 @@
 #' Visualize decoded time-series
-#' @param controls A list of controls
-#' @param data A list of processed data information
-#' @param decoding A matrix of decoded states
-#' @param colors A matrix of colors for different states
-#' @param events A list of events
+#' @param controls A list of controls.
+#' @param data A list of processed data information.
+#' @param decoding A matrix of decoded states.
+#' @param colors A matrix of colors for different states.
+#' @param events A list of events.
 #' @return No return value, creates graphic in \code{controls[["path"]]}/models/\code{controls[["id"]]}
 plot_ts = function(controls,data,decoding,colors,events){
   ### extract parameters
   if(controls[["model"]]=="HMM"){
-    T = length(data[["logReturns"]])
+    T = length(data[["data"]])
   }
   if(controls[["model"]]=="HHMM"){
-    T = dim(data[["logReturns"]])[1]
-    decoding_cs = rep(decoding[,1],times = data[["T_star"]])
+    T = dim(data[["data"]])[1]
+    decoding_cs = rep(decoding[,1], times = data[["T_star"]])
     decoding_fs = as.vector(t(decoding[,-1]))[!is.na(as.vector(t(decoding[,-1])))]
-    cs_logReturns = data[["logReturns"]][,1]
-    fs_logReturns = as.vector(t(data[["logReturns"]][,-1]))[!is.na(as.vector(t(data[["logReturns"]][,-1])))]
+    cs_data = data[["data"]][,1]
+    fs_data = as.vector(t(data[["data"]][,-1]))[!is.na(as.vector(t(data[["data"]][,-1])))]
   }
   if(check_saving(name = "decoded_time_series", filetype = "pdf", controls = controls)){
     pdf(file = paste0(controls[["path"]],"/models/",controls[["id"]],"/decoded_time_series.pdf"), width=20, height=10)
@@ -23,9 +23,9 @@ plot_ts = function(controls,data,decoding,colors,events){
       if(!controls[["sim"]]){
         xmin = as.Date(format(as.Date(head(data[["dates"]],n=1)),"%Y-01-01")); 
         xmax = as.Date(paste0(as.numeric(format(tail(data[["dates"]],n=1),"%Y"))+1,"-01-01"))
-        ymax = ceiling(max(data[["dataRaw"]]))
+        ymax = ceiling(max(data[["data_fs_raw"]]))
         ymin = -ymax
-        plot(data[["dates"]],data[["dataRaw"]],
+        plot(data[["dates"]],data[["data_fs_raw"]],
              type="l",
              xlim=c(xmin,xmax),ylim=c(1.2*ymin,1.2*ymax),
              col="lightgrey",xlab="",ylab="",
@@ -41,18 +41,18 @@ plot_ts = function(controls,data,decoding,colors,events){
         markdates = seq(xmin,xmax,by="year")
         markdates = markdates[1:length(markdates)%%2==1]
         axis(1, markdates, format(markdates, "%Y"))
-        y_ticks = signif(seq(floor(min(data[["dataRaw"]])),ymax,length.out=3),digits=3)
+        y_ticks = signif(seq(floor(min(data[["data_fs_raw"]])),ymax,length.out=3),digits=3)
         axis(4, y_ticks)
         mtext(data_lab,side=4,line=3.5,at=mean(y_ticks),cex=1.25,las=3)
         if(controls[["model"]]=="HMM"){
           for(s in seq_len(controls[["states"]][1])){
-            points(data[["dates"]][decoding==s],data[["dataRaw"]][decoding==s],col=colors[["HMM"]][s],pch=20)
+            points(data[["dates"]][decoding==s],data[["data_fs_raw"]][decoding==s],col=colors[["HMM"]][s],pch=20)
           }
         }
         if(controls[["model"]]=="HHMM"){
           for(cs in seq_len(controls[["states"]][1])){
             for(fs in seq_len(controls[["states"]][2])){
-              points(data[["dates"]][decoding_cs==cs&decoding_fs==fs],data[["dataRaw"]][decoding_cs==cs&decoding_fs==fs],col=colors[["HHMM_fs"]][[cs]][fs],pch=20)
+              points(data[["dates"]][decoding_cs==cs&decoding_fs==fs],data[["data_fs_raw"]][decoding_cs==cs&decoding_fs==fs],col=colors[["HHMM_fs"]][[cs]][fs],pch=20)
             }
           }
         }
@@ -63,23 +63,23 @@ plot_ts = function(controls,data,decoding,colors,events){
       if(controls[["sim"]]){
         xmin = 1
         if(controls[["model"]]=="HMM"){
-          xmax = length(data[["logReturns"]])
+          xmax = length(data[["data"]])
         }
         if(controls[["model"]]=="HHMM"){
-          xmax = length(fs_logReturns)
+          xmax = length(fs_data)
         }
         x_values = seq_len(xmax)
         ymax_factor = 1
       }
       if(controls[["model"]]=="HMM"){
-        ymin = min(data[["logReturns"]])
-        ymax = max(data[["logReturns"]])
-        plot(x_values,data[["logReturns"]],type="h",col="lightgrey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
+        ymin = min(data[["data"]])
+        ymax = max(data[["data"]])
+        plot(x_values,data[["data"]],type="h",col="lightgrey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
       }
       if(controls[["model"]]=="HHMM"){
-        ymin = min(fs_logReturns)
-        ymax = max(fs_logReturns)
-        plot(x_values,fs_logReturns,type="h",col="lightgrey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
+        ymin = min(fs_data)
+        ymax = max(fs_data)
+        plot(x_values,fs_data,type="h",col="lightgrey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
       }
       if(!controls[["sim"]]){
         mtext("Log-return",side=2,line=3.5,at=0,cex=1.25,las=3)
@@ -102,13 +102,13 @@ plot_ts = function(controls,data,decoding,colors,events){
       }
       if(controls[["model"]]=="HMM"){
         for(s in seq_len(controls[["states"]][1])){
-          points(x_values[decoding==s],data[["logReturns"]][decoding==s],col=colors[["HMM"]][s],pch=20)
+          points(x_values[decoding==s],data[["data"]][decoding==s],col=colors[["HMM"]][s],pch=20)
         }
       }
       if(controls[["model"]]=="HHMM"){
         for(cs in seq_len(controls[["states"]][1])){
           for(fs in seq_len(controls[["states"]][2])){
-            points(x_values[decoding_cs==cs&decoding_fs==fs],fs_logReturns[decoding_cs==cs&decoding_fs==fs],col=colors[["HHMM_fs"]][[cs]][fs],pch=20)
+            points(x_values[decoding_cs==cs&decoding_fs==fs],fs_data[decoding_cs==cs&decoding_fs==fs],col=colors[["HHMM_fs"]][[cs]][fs],pch=20)
           }
         }
       }
@@ -132,12 +132,12 @@ plot_ts = function(controls,data,decoding,colors,events){
       }
       if(controls[["model"]]=="HHMM"){
         par(new=TRUE)
-        ymin = min(cs_logReturns)
-        ymax = max(cs_logReturns)
+        ymin = min(cs_data)
+        ymax = max(cs_data)
         x_values_cs = x_values[round(seq(1,length(x_values),length.out=T))]
-        plot(x_values_cs,cs_logReturns,type="c",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor*1.5))
+        plot(x_values_cs,cs_data,type="c",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor*1.5))
         for(cs in seq_len(controls[["states"]][1])){
-          points(x_values_cs[decoding[,1]==cs],cs_logReturns[decoding[,1]==cs],col=colors[["HHMM_cs"]][[cs]],pch=1,cex=3,lwd=2)
+          points(x_values_cs[decoding[,1]==cs],cs_data[decoding[,1]==cs],col=colors[["HHMM_cs"]][[cs]],pch=1,cex=3,lwd=2)
         }
         if(ymin<0 & 0<ymax){
           axis(4,c(ymin,0,ymax),labels=sprintf("%.2g",c(ymin,0,ymax)))

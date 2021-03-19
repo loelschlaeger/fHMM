@@ -9,14 +9,14 @@
 pseudo_residuals = function(controls,data,fit,decoding){
   ### extract parameters
   if(controls[["model"]]=="HMM"){
-    T = length(data[["logReturns"]])
+    T = length(data[["data"]])
   }
   if(controls[["model"]]=="HHMM"){
-    T = dim(data[["logReturns"]])[1]
+    T = dim(data[["data"]])[1]
     decoding_cs = rep(decoding[,1],times = data[["T_star"]])
     decoding_fs = as.vector(t(decoding[,-1]))[!is.na(as.vector(t(decoding[,-1])))]
-    cs_logReturns = data[["logReturns"]][,1]
-    fs_logReturns = as.vector(t(data[["logReturns"]][,-1]))[!is.na(as.vector(t(data[["logReturns"]][,-1])))]
+    cs_data = data[["data"]][,1]
+    fs_data = as.vector(t(data[["data"]][,-1]))[!is.na(as.vector(t(data[["data"]][,-1])))]
   }
   compute_prs = function(no_prs,data,decoding,mus,sigmas,dfs,sdd){
     pseudos = numeric(no_prs)
@@ -70,7 +70,7 @@ pseudo_residuals = function(controls,data,fit,decoding){
     filename = paste0(controls[["path"]],"/models/",controls[["id"]],"/pseudo_residuals.pdf")
     if(controls[["model"]]=="HMM"){
       pseudos = compute_prs(no_prs   = T,
-                            data     = data[["logReturns"]],
+                            data     = data[["data"]],
                             decoding = decoding,
                             mus      = fit[["thetaList"]][["mus"]],
                             sigmas   = fit[["thetaList"]][["sigmas"]],
@@ -85,7 +85,7 @@ pseudo_residuals = function(controls,data,fit,decoding){
     }
     if(controls[["model"]]=="HHMM"){
       pseudos_cs = compute_prs(no_prs   = T,
-                               data     = data[["logReturns"]][,1],
+                               data     = cs_data,
                                decoding = decoding[,1],
                                mus      = fit[["thetaList"]][["mus"]],
                                sigmas   = fit[["thetaList"]][["sigmas"]],
@@ -94,7 +94,7 @@ pseudo_residuals = function(controls,data,fit,decoding){
       pseudos_fs = numeric(sum(data[["T_star"]]))
       for(t in seq_len(sum(data[["T_star"]]))){
         pseudos_fs[t] = compute_prs(no_prs   = 1,
-                                    data     = fs_logReturns[t],
+                                    data     = fs_data[t],
                                     decoding = decoding_fs[t],
                                     mus      = fit[["thetaList"]][["mus_star"]][[decoding_cs[t]]],
                                     sigmas   = fit[["thetaList"]][["sigmas_star"]][[decoding_cs[t]]],

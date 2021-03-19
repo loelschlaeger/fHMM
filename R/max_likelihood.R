@@ -23,7 +23,7 @@ max_likelihood = function(data,controls){
   optimized = function(start_value){
     nlm_out = nlm(f = target,
                   p = start_value,
-                  observations = data[["logReturns"]],
+                  observations = data[["data"]],
                   controls = controls,
                   iterlim = controls[["fit"]][["iterlim"]],
                   steptol = controls[["fit"]][["steptol"]],
@@ -71,11 +71,11 @@ max_likelihood = function(data,controls){
   
   ### select start values
   message("Selecting start values...",appendLF = FALSE)
-  controls[["fit"]][["scale_par"]] = adjust_scale_par(controls,data[["logReturns"]])
+  controls[["fit"]][["scale_par"]] = adjust_scale_par(controls,data[["data"]])
   start_values = generate_start_values(controls,runs)
   ll_at_start_values = rep(NA,runs)
   for(run in seq_len(runs)){
-    ll_at_start_values[run] = suppressWarnings(target(start_values[[run]],data[["logReturns"]],controls))
+    ll_at_start_values[run] = suppressWarnings(target(start_values[[run]],data[["data"]],controls))
   }
   message("\r",sprintf("Start values selected %10s"," "))
   
@@ -123,7 +123,7 @@ max_likelihood = function(data,controls){
     message("Computing the Hessian...",appendLF = FALSE)
     hessian = suppressWarnings(nlm(f = target,
                                    p = mods[[which.max(lls)]][["estimate"]],
-                                   observations = data[["logReturns"]],
+                                   observations = data[["data"]],
                                    controls = controls,
                                    iterlim = 1,
                                    hessian = TRUE,

@@ -30,7 +30,7 @@ apply_viterbi = function(data,fit,controls){
   }
   
   ### apply Viterbi algorithm
-  observations = data[["logReturns"]]
+  observations = data[["data"]]
   thetaList = fit[["thetaList"]]
   states = controls[["states"]]
   if(controls[["model"]]=="HMM"){

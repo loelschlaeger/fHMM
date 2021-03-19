@@ -1,12 +1,12 @@
 #' @title Data processing
 #' @description Calls functions for processing or simulating data.
 #' @param controls A list of controls.
-#' @param sim_par A vector of model parameters for simulation, default \code{NA}.
+#' @param sim_par A vector of model parameters for simulation.
 #' @return A list of processed data information and on-screen information.
 
-process_data = function(controls,sim_par=NA){
+process_data = function(controls,sim_par){
   
-  if(is.na(controls[["controls_checked"]])){
+  if(is.null(controls[["controls_checked"]])){
     stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
   }
   
@@ -21,15 +21,15 @@ process_data = function(controls,sim_par=NA){
   
   ### check for improper use of state-dependent gamma distribution
   if(controls[["model"]]=="HMM"){
-    if(controls[["sdds"]][1]=="gamma" & any(data[["logReturns"]]<0)){
+    if(controls[["sdds"]][1]=="gamma" & any(data[["data"]]<0)){
       stop(sprintf("%s (%s)",exception("C.7")[2],exception("C.7")[1]),call.=FALSE)
     }
   }
   if(controls[["model"]]=="HHMM"){
-    if(controls[["sdds"]][1]=="gamma" & any(data[["logReturns"]][,1]<0)){
+    if(controls[["sdds"]][1]=="gamma" & any(data[["data"]][,1]<0)){
       stop(sprintf("%s (%s)",exception("C.7")[2],exception("C.7")[1]),call.=FALSE)
     }
-    if(controls[["sdds"]][2]=="gamma" & any(data[["logReturns"]][,-1]<0,na.rm=TRUE)){
+    if(controls[["sdds"]][2]=="gamma" & any(data[["data"]][,-1]<0,na.rm=TRUE)){
       stop(sprintf("%s (%s)",exception("C.7")[2],exception("C.7")[1]),call.=FALSE)
     }
   }
@@ -37,10 +37,10 @@ process_data = function(controls,sim_par=NA){
   ### print data characteristics
   if(controls[["sim"]]){
     if(controls[["model"]]=="HMM"){
-      writeLines(sprintf("%13-s %s","sample size:",length(data[["logReturns"]])))
+      writeLines(sprintf("%13-s %s","sample size:",length(data[["data"]])))
     }
     if(controls[["model"]]=="HHMM"){
-      writeLines(sprintf("%13-s %s / %s","sample size:",dim(data[["logReturns"]])[1],length(data[["logReturns"]][,-1][!is.na(data[["logReturns"]][,-1])])))
+      writeLines(sprintf("%13-s %s / %s","sample size:",dim(data[["data"]])[1],length(data[["data"]][,-1][!is.na(data[["data"]][,-1])])))
     }
   } 
   if(!controls[["sim"]]){
@@ -48,13 +48,15 @@ process_data = function(controls,sim_par=NA){
       writeLines(sprintf("%13-s %s","source:",controls[["data"]][["source"]][1]))
       writeLines(sprintf("%13-s %s","column:",controls[["data"]][["col"]][1]))
       writeLines(sprintf("%13-s %s to %s","horizon:",data[["dates"]][1],rev(data[["dates"]])[1]))
-      writeLines(sprintf("%13-s %s","data points:",length(data[["logReturns"]])))
+      writeLines(sprintf("%13-s %s","data points:",length(data[["data"]])))
+      writeLines(sprintf("%13-s %s","log-returns:",controls[["data"]][["log_returns"]][1]))
     }
     if(controls[["model"]]=="HHMM"){
       writeLines(sprintf("%13-s %s / %s","source:",controls[["data"]][["source"]][1],controls[["data"]][["source"]][2]))
       writeLines(sprintf("%13-s %s / %s","column:",controls[["data"]][["col"]][1],controls[["data"]][["col"]][2]))
       writeLines(sprintf("%13-s %s to %s","horizon:",data[["dates"]][1],rev(data[["dates"]])[1]))
-      writeLines(sprintf("%13-s %s / %s","data points:",dim(data[["logReturns"]])[1],length(data[["logReturns"]][,-1][!is.na(data[["logReturns"]][,-1])])))
+      writeLines(sprintf("%13-s %s / %s","data points:",dim(data[["data"]])[1],length(data[["data"]][,-1][!is.na(data[["data"]][,-1])])))
+      writeLines(sprintf("%13-s %s / %s","log-returns:",controls[["data"]][["log_returns"]][1],controls[["data"]][["log_returns"]][2]))
       writeLines(sprintf("%13-s %s","CS data type:",controls[["data"]][["cs_type"]]))
       if(is.numeric(controls[["horizon"]][2])) writeLines(sprintf("%14-s%s","FS dim:",controls[["horizon"]][2]))
       if(controls[["horizon"]][2]=="w") writeLines(sprintf("%13-s %s","FS dim:","weekly"))

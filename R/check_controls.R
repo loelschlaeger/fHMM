@@ -14,6 +14,7 @@ check_controls = function(controls){
                               ###                    "col" (column of data), 
                               ###                    "truncate" (truncation of data), 
                               ###                    "cs_type" (coarse-scale type of data)
+                              ###                    "log_returns" (compute log-returns)
                    "fit",     ### a list, containing "runs" (number of optimizations), 
                               ###                    "at_true" (optimization at true values), 
                               ###                    "seed" (seed for the simulation and the optimization), 
@@ -47,6 +48,7 @@ check_controls = function(controls){
   if(!"col" %in% names(controls[["data"]]))         controls[["data"]][["col"]] = c(NA,NA)
   if(!"truncate" %in% names(controls[["data"]]))    controls[["data"]][["truncate"]] = c(NA,NA)
   if(!"cs_type" %in% names(controls[["data"]]))     controls[["data"]][["cs_type"]] = NA
+  if(!"log_returns" %in% names(controls[["data"]]))     controls[["data"]][["log_returns"]] = c(TRUE,TRUE)
   if(!"runs" %in% names(controls[["fit"]]))         controls[["fit"]][["runs"]] = 100
   if(!"at_true" %in% names(controls[["fit"]]))      controls[["fit"]][["at_true"]] = FALSE
   if(!"accept" %in% names(controls[["fit"]]))       controls[["fit"]][["accept"]] = c(1,2)
@@ -155,12 +157,12 @@ check_controls = function(controls){
   if(controls[["model"]]=="HMM"){
     if(!is.na(controls[["data"]][["cs_type"]])){
       warning("cs_type in data is ignored",call.=FALSE,immediate.=TRUE)
-      controls[["data"]][["_cs_type"]] = NA
+      controls[["data"]][["cs_type"]] = NA
     }
   }
   if(controls[["model"]]=="HHMM"){
-    if(!is.na(controls[["data"]][["cs_type"]]) & !controls[["data"]][["cs_type"]] %in% c("mean","mean_abs","sum_abs")){
-      stop(paste0("cs_type in data must be one of '",paste(c("mean","mean_abs","sum_abs"),collapse="', '"),"'"))
+    if(!is.na(controls[["data"]][["cs_type"]]) & !controls[["data"]][["cs_type"]] %in% c("mean","mean_abs","sum_abs","rel_change")){
+      stop(paste0("cs_type in data must be one of '",paste(c("mean","mean_abs","sum_abs","rel_change"),collapse="', '"),"'"))
     }
     if(!controls[["sim"]] & is.na(controls[["data"]][["cs_type"]])){
       stop("cs_type in data has to be specified")

@@ -85,7 +85,7 @@ plot_sdd = function(controls,data,fit,decoding,colors){
                          sigmas        = fit[["thetaList"]][["sigmas"]],
                          dfs           = fit[["thetaList"]][["dfs"]],
                          sdd           = controls[["sdds"]][1],
-                         x_range       = c(min(data[["logReturns"]]),max(data[["logReturns"]])),
+                         x_range       = c(min(data[["data"]]),max(data[["data"]])),
                          colors        = colors[["HMM"]],
                          llabel        = "State",
                          sdd_true_parm = sdd_true_parm)
@@ -105,7 +105,7 @@ plot_sdd = function(controls,data,fit,decoding,colors){
                          sigmas        = fit[["thetaList"]][["sigmas"]],
                          dfs           = fit[["thetaList"]][["dfs"]],
                          sdd           = controls[["sdds"]][1],
-                         x_range       = c(min(data[["logReturns"]][,1]),max(data[["logReturns"]][,1])),
+                         x_range       = c(min(data[["data"]][,1]),max(data[["data"]][,1])),
                          colors        = colors[["HHMM_cs"]],
                          llabel        = "Coarse-scale state",
                          sdd_true_parm = sdd_true_parm)
@@ -116,7 +116,7 @@ plot_sdd = function(controls,data,fit,decoding,colors){
                                         sigmas   = fit[["thetaList"]][["sigmas_star"]][[cs]],
                                         dfs      = fit[["thetaList"]][["dfs_star"]][[cs]],
                                         sdd      = controls[["sdds"]][2],
-                                        x_range  = c(min(data[["logReturns"]][,-1],na.rm=TRUE),max(data[["logReturns"]][,-1],na.rm=TRUE)),
+                                        x_range  = c(min(data[["data"]][,-1],na.rm=TRUE),max(data[["data"]][,-1],na.rm=TRUE)),
                                         c_xlim   = TRUE) 
         }
         for(cs in seq_len(controls[["states"]][1])){
@@ -132,7 +132,7 @@ plot_sdd = function(controls,data,fit,decoding,colors){
                            sigmas        = fit[["thetaList"]][["sigmas_star"]][[cs]],
                            dfs           = fit[["thetaList"]][["dfs_star"]][[cs]],
                            sdd           = controls[["sdds"]][2],
-                           x_range       = c(min(data[["logReturns"]][,-1],na.rm=TRUE),max(data[["logReturns"]][,-1],na.rm=TRUE)),
+                           x_range       = c(min(data[["data"]][,-1],na.rm=TRUE),max(data[["data"]][,-1],na.rm=TRUE)),
                            c_xlim        = FALSE,
                            xlim          = c(min(xlims[1,]),max(xlims[2,])),
                            colors        = colors[["HHMM_fs"]][[cs]],
