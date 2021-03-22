@@ -17,7 +17,7 @@ process_data = function(controls,sim_par){
   if(!controls[["sim"]]){
     data = read_data(controls)
   }
-  message("Data processed")
+  message("Data processed.")
   
   ### check for improper use of state-dependent gamma distribution
   if(controls[["model"]]=="HMM"){
@@ -45,24 +45,24 @@ process_data = function(controls,sim_par){
   } 
   if(!controls[["sim"]]){
     if(controls[["model"]]=="HMM"){
-      writeLines(sprintf("%13-s %s","source:",controls[["data"]][["source"]][1]))
-      writeLines(sprintf("%13-s %s","column:",controls[["data"]][["col"]][1]))
-      writeLines(sprintf("%13-s %s to %s","horizon:",data[["dates"]][1],rev(data[["dates"]])[1]))
-      writeLines(sprintf("%13-s %s","data points:",length(data[["data"]])))
-      writeLines(sprintf("%13-s %s","log-returns:",controls[["data"]][["log_returns"]][1]))
+      writeLines(sprintf("%18-s %s","data source:",controls[["data"]][["source"]][1]))
+      writeLines(sprintf("%18-s %s","data column:",controls[["data"]][["column"]][1]))
+      writeLines(sprintf("%18-s %s to %s","time horizon:",data[["dates"]][1],rev(data[["dates"]])[1]))
+      writeLines(sprintf("%18-s %s","data points:",length(data[["data"]])))
+      writeLines(sprintf("%18-s %s","log-returns:",controls[["data"]][["log_returns"]][1]))
     }
     if(controls[["model"]]=="HHMM"){
-      writeLines(sprintf("%13-s %s / %s","source:",controls[["data"]][["source"]][1],controls[["data"]][["source"]][2]))
-      writeLines(sprintf("%13-s %s / %s","column:",controls[["data"]][["col"]][1],controls[["data"]][["col"]][2]))
-      writeLines(sprintf("%13-s %s to %s","horizon:",data[["dates"]][1],rev(data[["dates"]])[1]))
-      writeLines(sprintf("%13-s %s / %s","data points:",dim(data[["data"]])[1],length(data[["data"]][,-1][!is.na(data[["data"]][,-1])])))
-      writeLines(sprintf("%13-s %s / %s","log-returns:",controls[["data"]][["log_returns"]][1],controls[["data"]][["log_returns"]][2]))
-      writeLines(sprintf("%13-s %s","CS data type:",controls[["data"]][["cs_type"]]))
-      if(is.numeric(controls[["horizon"]][2])) writeLines(sprintf("%14-s%s","FS dim:",controls[["horizon"]][2]))
-      if(controls[["horizon"]][2]=="w") writeLines(sprintf("%13-s %s","FS dim:","weekly"))
-      if(controls[["horizon"]][2]=="m") writeLines(sprintf("%13-s %s","FS dim:","monthly"))
-      if(controls[["horizon"]][2]=="q") writeLines(sprintf("%13-s %s","FS dim:","quarterly"))
-      if(controls[["horizon"]][2]=="y") writeLines(sprintf("%13-s %s","FS dim:","yearly"))
+      writeLines(sprintf("%18-s %s / %s","data source:",controls[["data"]][["source"]][1],controls[["data"]][["source"]][2]))
+      writeLines(sprintf("%18-s %s / %s","data column:",controls[["data"]][["column"]][1],controls[["data"]][["column"]][2]))
+      writeLines(sprintf("%18-s %s to %s","time horizon:",data[["dates"]][1],rev(data[["dates"]])[1]))
+      writeLines(sprintf("%18-s %s / %s","data points:",dim(data[["data"]])[1],length(data[["data"]][,-1][!is.na(data[["data"]][,-1])])))
+      writeLines(sprintf("%18-s %s / %s","log-returns:",controls[["data"]][["log_returns"]][1],controls[["data"]][["log_returns"]][2]))
+      writeLines(sprintf("%18-s %s","CS transformation:",controls[["data"]][["cs_transform"]]))
+      if(is.numeric(controls[["horizon"]][2])) writeLines(sprintf("%18-s %s","FS dimension:",controls[["horizon"]][2]))
+      if(controls[["horizon"]][2]=="w") writeLines(sprintf("%18-s %s","FS dimension:","weekly"))
+      if(controls[["horizon"]][2]=="m") writeLines(sprintf("%18-s %s","FS dimension:","monthly"))
+      if(controls[["horizon"]][2]=="q") writeLines(sprintf("%18-s %s","FS dimension:","quarterly"))
+      if(controls[["horizon"]][2]=="y") writeLines(sprintf("%18-s %s","FS dimension:","yearly"))
     }
   }
   

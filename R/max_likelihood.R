@@ -77,7 +77,7 @@ max_likelihood = function(data,controls){
   for(run in seq_len(runs)){
     ll_at_start_values[run] = suppressWarnings(target(start_values[[run]],data[["data"]],controls))
   }
-  message("\r",sprintf("Start values selected %10s"," "))
+  message("\r",sprintf("Start values selected. %10s"," "))
   
   ### check fails
   fails = failed_start_values(ll_at_start_values)
@@ -115,10 +115,16 @@ max_likelihood = function(data,controls){
     pb$tick()
   }
   end = Sys.time()
-  message("Estimation finished")
+  message("Estimation finished.")
   if(all(is.na(lls))){
     stop(sprintf("%s (%s)",exception("F.4")[2],exception("F.4")[1]),call.=FALSE)
   } else {
+    ### estimation Info
+    writeLines(sprintf("%18-s %s minute(s)","estimation time:",ceiling(difftime(end,start,units='mins'))))
+    if(!controls[["fit"]][["at_true"]]){
+      writeLines(sprintf("%18-s %s out of %s runs","accepted runs:",sum(!is.na(lls)),length(lls)))
+    }
+    
     ### compute Hessian
     message("Computing the Hessian...",appendLF = FALSE)
     hessian = suppressWarnings(nlm(f = target,
@@ -128,11 +134,7 @@ max_likelihood = function(data,controls){
                                    iterlim = 1,
                                    hessian = TRUE,
                                    typsize = mods[[which.max(lls)]][["estimate"]])[["hessian"]])
-    message("\r",sprintf("Hessian computed %10s"," "))
-    writeLines(sprintf("%13-s %s minute(s)","run-time:",ceiling(difftime(end,start,units='mins'))))
-    if(!controls[["fit"]][["at_true"]]){
-      writeLines(sprintf("%13-s %s out of %s runs","accepted:",sum(!is.na(lls)),length(lls)))
-    }
+    message("\r",sprintf("Hessian computed. %10s"," "))
     
     ### create and return fit object
     fit = check_estimation(mods,lls,data,hessian,controls)

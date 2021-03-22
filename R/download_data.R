@@ -88,10 +88,6 @@ download_data = function(name=NA,symbol=NA,from="1902-01-01",to=Sys.Date(),show_
     
     ### print summary of new data
     data = read.csv(file=filename,header=TRUE,sep=",",na.strings="null") 
-    message("Data download successful")
-    message(paste("source:",paste0(name,".csv")))
-    message(paste("symbol:",symbol))
-    message(paste("from:",head(data$Date,n=1)))
-    message(paste("to:",tail(data$Date,n=1)))
+    message(paste0("Downloaded data ",symbol," from ",head(data$Date,n=1)," to " ,tail(data$Date,n=1)),".")
   }
 }

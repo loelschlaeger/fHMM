@@ -62,5 +62,5 @@ check_decoding = function(decoding,data,controls){
   
   ### save decoding
   check_saving(object = decoding, filetype = "rds", controls = controls)
-  message("Hidden states decoded")
+  message("Hidden states decoded.")
 }
