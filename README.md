@@ -129,10 +129,7 @@ Some error or warning messages provide exception codes. Calling `exception(code)
 ### Fitting a 2-state HMM to simulated data using gamma-distributions
 Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HMM_2_sim_gamma) for the results.
 ```R
-### Initialize code
-source("load_code.R")
-
-### Set and check controls
+### set controls
 controls = list(
   path    = ".",
   id      = "HMM_2_sim_gamma",
@@ -142,19 +139,16 @@ controls = list(
   fit     = list("seed" = 1)
 )
 
-### Fit (H)HMM
+### fit (H)HMM
 fit_hmm(controls)
 ```
 ### Fitting a 3-state HMM to the DAX closing prices from 2000 to 2020 using t-distributions
 Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HMM_3_DAX) for the results.
 ```R
-### initialize code
-source("load_code.R")
-
 ### download data (optional)
 download_data("dax","^GDAXI",path=".")
 
-### set and check controls
+### set controls
 controls = list(
   path    = ".",
   id      = "HMM_3_DAX",
@@ -174,14 +168,11 @@ fit_hmm(controls,events)
 ```
 ### Fitting a (2,2)-state HHMM jointly to the DAX and the VW stock
 ```R
-### initialize code
-source("load_code.R")
-
 ### download data (optional)
 download_data("dax","^GDAXI",path=".")
 download_data("vw","VOW3.DE",path=".")
 
-### set and check controls
+### set controls
 controls = list(
   path    = ".",
   id      = "HHMM_2_2_DAX_VW_gamma_t",
