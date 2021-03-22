@@ -32,10 +32,10 @@ plot_ts = function(controls,data,decoding,colors,events){
              xaxt="n",yaxt="n",
              cex.lab=2, cex.main=2)
         if(controls[["model"]]=="HMM"){
-          data_lab = controls[["data"]][["col"]][1]
+          data_lab = controls[["data"]][["column"]][1]
         }
         if(controls[["model"]]=="HHMM"){
-          data_lab = controls[["data"]][["col"]][2]
+          data_lab = controls[["data"]][["column"]][2]
         }
         mtext("Year",side=1,line=2.5,cex=1.25)
         markdates = seq(xmin,xmax,by="year")
@@ -82,15 +82,15 @@ plot_ts = function(controls,data,decoding,colors,events){
         plot(x_values,fs_data,type="h",col="lightgrey",xlab="",ylab="",xaxt="n",yaxt="n",xlim=c(xmin,xmax),ylim=c(ymin,ymax*ymax_factor))
       }
       if(!controls[["sim"]]){
-        mtext("Log-return",side=2,line=3.5,at=0,cex=1.25,las=3)
+        mtext("Fine-scale data",side=2,line=3.5,at=0,cex=1.25,las=3)
       }
       if(controls[["sim"]]){
         mtext("Index",side=1,line=2.5,cex=1.25)
         if(controls[["model"]]=="HMM"){
-          mtext("Simulated observation",side=2,line=3.5,cex=1.25,las=3,at=mean(c(ymin,ymax)))
+          mtext("Simulated data",side=2,line=3.5,cex=1.25,las=3,at=mean(c(ymin,ymax)))
         }
         if(controls[["model"]]=="HHMM"){
-          mtext("Simulated fine-scale observation",side=2,line=3.5,cex=1.25,las=3,at=mean(c(ymin,ymax)))
+          mtext("Simulated fine-scale data",side=2,line=3.5,cex=1.25,las=3,at=mean(c(ymin,ymax)))
         }
         axis(1, c(xmin,xmax))
       }
@@ -113,14 +113,15 @@ plot_ts = function(controls,data,decoding,colors,events){
         }
       }
       if(!controls[["sim"]] & any(!is.na(events))){
+        events[["names"]] = events[["names"]][events[["dates"]] > xmin & events[["dates"]] < xmax]
+        events[["dates"]] = events[["dates"]][events[["dates"]] > xmin & events[["dates"]] < xmax]
         for(l in seq_len(length(events[["dates"]]))){
-          if(events[["dates"]][l]<=xmax){
+          if(events[["dates"]][l] > xmin & events[["dates"]][l] < xmax){
             abline(v=as.Date(events[["dates"]][l]))
             text(x=as.Date(events[["dates"]][l]),y=ymin,labels=l,pos=2,cex=1.25)
           }
         }
-        names_trunc = events[["names"]][events[["dates"]]<=xmax]
-        mtext(paste0(seq_len(length(names_trunc)),": ",names_trunc,collapse = "   "),side=1,line=4,cex=1.25)
+        mtext(paste0(seq_len(length(events[["names"]])),": ",events[["names"]],collapse = "   "),side=1,line=4,cex=1.25)
       }
       if(controls[["model"]]=="HMM"){
         legend(legend=paste("State",seq_len(controls[["states"]][1])),col=colors[["HMM"]],pch=20,cex=1.25,x="topleft",bg=rgb(1,1,1,0.5))
@@ -146,10 +147,10 @@ plot_ts = function(controls,data,decoding,colors,events){
           axis(4,c(ymin,ymax),labels=sprintf("%.2g",c(ymin,ymax)))
         }
         if(controls[["sim"]]){
-          mtext("Simulated coarse-scale observation",side=4,line=3.5,at=mean(c(ymin,ymax)),cex=1.25,las=3)
+          mtext("Simulated coarse-scale data",side=4,line=3.5,at=mean(c(ymin,ymax)),cex=1.25,las=3)
         }
         if(!controls[["sim"]]){
-          mtext("Coarse-scale observation",side=4,line=3.5,at=mean(c(ymin,ymax)),cex=1.25,las=3)
+          mtext("Coarse-scale data",side=4,line=3.5,at=mean(c(ymin,ymax)),cex=1.25,las=3)
         }
       } 
     invisible(dev.off())

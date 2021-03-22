@@ -16,7 +16,7 @@ read_data = function(controls){
   }
   
   data_source = controls[["data"]][["source"]]
-  data_col = controls[["data"]][["col"]]
+  data_col = controls[["data"]][["column"]]
   data_raw = list()
   for(i in 1:2){
     if(is.na(data_source)[i]){
@@ -136,18 +136,8 @@ read_data = function(controls){
     }
     
     ### transform CS data_raw
-    if(controls[["data"]][["cs_type"]] == "mean"){
-      cs_data = rowMeans(cs_data_tbt,na.rm=TRUE)
-    }
-    if(controls[["data"]][["cs_type"]] == "mean_abs"){
-      cs_data = rowMeans(abs(cs_data_tbt),na.rm=TRUE)
-    }
-    if(controls[["data"]][["cs_type"]] == "sum_abs"){
-      cs_data = rowSums(abs(cs_data_tbt),na.rm=TRUE)
-    }
-    if(controls[["data"]][["cs_type"]] == "rel_change"){
-      cs_data = apply(cs_data_tbt,1,function(x) {x = x[!is.na(x)]; return((tail(x,1)-head(x,1))/head(x,1))}) 
-    }
+    eval(parse(text = paste('f <- function(x) { return(' , controls[["data"]][["cs_transform"]] , ')}', sep='')))
+    cs_data = apply(cs_data_tbt,1,function(x) return(f(x[!is.na(x)]))) 
     
     out = list(
       "data"        = cbind(cs_data,fs_data,deparse.level=0),
