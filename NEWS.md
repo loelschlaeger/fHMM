@@ -1,9 +1,8 @@
 # fHMM 0.3.0 (not released)
-* Not supplied `events` treated as `NULL`.
-* New `controls`:
-  * `controls$data$cs_type = "rel_change"`: Compute relative change of coarse-scale data.
-  * `controls$data$returns`: Transform data to returns.
-* Fixed bugs.
+* Submit a function to `controls$data$cs_type` to make any coarse-scale data transformation.
+* Determine via `controls$data$log_returns` whether data should be transformed to log-returns.
+* Not supplied `events` and `sim_par` treated as `NULL`.
+* Fixed minor bugs.
 
 # fHMM 0.2.0
 * Improved documentation of functions and README.
