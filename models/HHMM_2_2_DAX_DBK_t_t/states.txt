@@ -1,0 +1,13 @@
+Frequency of decoded states
+
+CS state 1 CS state 2 
+       176         80 
+
+Conditional on CS state 1:
+FS state 1 FS state 2 
+       906       2813 
+
+Conditional on CS state 2:
+FS state 1 FS state 2 
+      1372        336 
+
