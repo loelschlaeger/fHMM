@@ -55,6 +55,9 @@ fit_hmm = function(controls,events=NULL,sim_par=NULL){
       create_visuals(data,fit,decoding,controls,events) 
     },
     error = function(cond) message(paste0(cond),appendLF=FALSE),
-    finally = { for(i in seq_len(sink.number())) sink() }
+    finally = { 
+        for(i in seq_len(sink.number())) sink() 
+        while(!is.null(dev.list())) dev.off()
+      }
   )
 }
