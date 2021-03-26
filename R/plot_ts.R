@@ -23,9 +23,16 @@ plot_ts = function(controls,data,decoding,colors,events){
       if(!controls[["sim"]]){
         xmin = as.Date(format(as.Date(head(data[["dates"]],n=1)),"%Y-01-01")); 
         xmax = as.Date(paste0(as.numeric(format(tail(data[["dates"]],n=1),"%Y"))+1,"-01-01"))
-        ymax = ceiling(max(data[["data_fs_raw"]]))
+        if(controls[["model"]]=="HMM"){
+          ydata = data[["data_raw"]]
+          ymax = ceiling(max(ydata))
+        }
+        if(controls[["model"]]=="HHMM"){
+          ydata = data[["data_fs_raw"]]
+          ymax = ceiling(max(ydata))
+        }
         ymin = -ymax
-        plot(data[["dates"]],data[["data_fs_raw"]],
+        plot(data[["dates"]],ydata,
              type="l",
              xlim=c(xmin,xmax),ylim=c(1.2*ymin,1.2*ymax),
              col="lightgrey",xlab="",ylab="",
@@ -41,18 +48,18 @@ plot_ts = function(controls,data,decoding,colors,events){
         markdates = seq(xmin,xmax,by="year")
         markdates = markdates[1:length(markdates)%%2==1]
         axis(1, markdates, format(markdates, "%Y"))
-        y_ticks = signif(seq(floor(min(data[["data_fs_raw"]])),ymax,length.out=3),digits=3)
+        y_ticks = signif(seq(floor(min(ydata)),ymax,length.out=3),digits=3)
         axis(4, y_ticks)
         mtext(data_lab,side=4,line=3.5,at=mean(y_ticks),cex=1.25,las=3)
         if(controls[["model"]]=="HMM"){
           for(s in seq_len(controls[["states"]][1])){
-            points(data[["dates"]][decoding==s],data[["data_fs_raw"]][decoding==s],col=colors[["HMM"]][s],pch=20)
+            points(data[["dates"]][decoding==s],ydata[decoding==s],col=colors[["HMM"]][s],pch=20)
           }
         }
         if(controls[["model"]]=="HHMM"){
           for(cs in seq_len(controls[["states"]][1])){
             for(fs in seq_len(controls[["states"]][2])){
-              points(data[["dates"]][decoding_cs==cs&decoding_fs==fs],data[["data_fs_raw"]][decoding_cs==cs&decoding_fs==fs],col=colors[["HHMM_fs"]][[cs]][fs],pch=20)
+              points(data[["dates"]][decoding_cs==cs&decoding_fs==fs],ydata[decoding_cs==cs&decoding_fs==fs],col=colors[["HHMM_fs"]][[cs]][fs],pch=20)
             }
           }
         }
