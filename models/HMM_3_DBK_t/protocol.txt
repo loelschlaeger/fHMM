@@ -1,0 +1,13 @@
+model id:          HMM_3_DBK_t
+model type:        HMM
+data type:         empirical
+number of states:  3
+SDDs:              t
+number of runs:    100 
+data source:       dbk.csv
+data column:       Close
+time horizon:      1996-11-18 to 2021-03-22
+data points:       6241
+log-returns:       TRUE
+estimation time:   36 minute(s)
+accepted runs:     97 out of 100 runs
