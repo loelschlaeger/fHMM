@@ -1,0 +1,15 @@
+model id:     HHMM_3_2_SP500_JPM
+model type:   HHMM
+data type:    empirical
+states:       3 / 2
+SDDs:         t / t
+runs:         100 
+source:       SP500.csv / JPM.csv
+column:       Close / Close
+horizon:      2000-01-03 to 2020-12-30
+data points:  252 / 5283
+log-returns:  FALSE / TRUE
+CS data type: rel_change
+FS dim:       monthly
+run-time:     474 minute(s)
+accepted:     98 out of 100 runs
