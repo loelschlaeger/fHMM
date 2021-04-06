@@ -23,7 +23,7 @@ create_visuals = function(data,fit,decoding,controls,events){
   }
   
   ### save events
-  check_saving(object = events, filetype = "rds", controls = controls)
+  if(!is.null(events)) check_saving(object = events, filetype = "rds", controls = controls)
   
   ### define colours
   var_col = function(col,n){

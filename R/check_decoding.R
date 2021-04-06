@@ -38,7 +38,7 @@ check_decoding = function(decoding,data,controls){
           rownames(c_table) = paste0("true ",label,"state ",seq_len(no_states))
           colnames(c_table) = paste0("decoded ",label,"state ",seq_len(no_states))
           for(i in seq_len(no_states)) for(j in seq_len(no_states)){
-            value = sum(decoded_states==i & true_states==j) / sum(decoded_states==i) * 100
+            value = sum(decoded_states==i & true_states==j, na.rm = TRUE) / sum(decoded_states==i, na.rm = TRUE) * 100
             c_table[i,j] = if(is.nan(value)) "NA" else sprintf("%.0f%%",value)
           }
           print(c_table,quote=FALSE,right=TRUE)
