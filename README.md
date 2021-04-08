@@ -4,7 +4,7 @@
 
 👉 Fitting (hierarchical) hidden Markov models (H)HMMs to financial data.
 
-💬 Found a bug? Request a feature? Please [tell us](https://github.com/loelschlaeger/fHMM/issues)!
+💬 Found a bug? Request a feature? Suggestion for documentation improvement? Please [tell us](https://github.com/loelschlaeger/fHMM/issues)!
 
 ## Table of contents
 1. [Getting started](#getting-started)
