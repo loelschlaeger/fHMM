@@ -10,6 +10,8 @@
 plot_sdd = function(controls,data,fit,decoding,colors){
   if(check_saving(name = "state_dependent_distributions", filetype = "pdf", controls = controls)){
     filename = paste0(controls[["path"]],"/models/",controls[["id"]],"/state_dependent_distributions.pdf")
+    
+    ### function to create SDD plots
     create_sdds_plot = function(nostates,mus,sigmas,dfs,sdd,x_range,c_xlim = FALSE,xlim = NULL,colors = NULL,llabel = NULL,ltitle = NULL,sdd_true_parm = NULL){
       lwd = 3
       x = seq(x_range[1]*ifelse(x_range[1]<0,1.5,0.5),x_range[2]*ifelse(x_range[2]>0,1.5,0.5),length.out=10000)
@@ -71,6 +73,7 @@ plot_sdd = function(controls,data,fit,decoding,colors){
         legend(legend=c("estimated","true"),col="grey",lwd=lwd,lty=c(1,2),cex=1.25,x="topright",bg=rgb(1,1,1,0.5))
       }
     }
+    
     if(controls[["model"]]=="HMM"){
       pdf(file = filename, width=8, height=8)
         if(controls[["sim"]]){
