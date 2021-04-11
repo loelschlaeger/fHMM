@@ -1,9 +1,0 @@
-model id:          HHMM_DBK_sim
-model type:        HHMM
-data type:         simulated
-number of states:  2 / 2
-SDDs:              t / t
-number of runs:    200 
-sample size:  256 / 5752
-estimation time:   357 minute(s)
-accepted runs:     198 out of 200 runs

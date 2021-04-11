@@ -3,11 +3,11 @@ model type:        HMM
 data type:         empirical
 number of states:  4
 SDDs:              t
-number of runs:    200 
+number of runs:    100 
 data source:       dbk.csv
 data column:       Close
 time horizon:      1996-11-18 to 2021-03-22
 data points:       6241
 log-returns:       TRUE
-estimation time:   172 minute(s)
-accepted runs:     186 out of 200 runs
+estimation time:   186 minute(s)
+accepted runs:     5 out of 100 runs
