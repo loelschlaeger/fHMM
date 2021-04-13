@@ -1,15 +1,15 @@
-%18-s HHMM_2_2_DAX_DBK_t_t
-%18-s HHMM
-%18-s empirical
-%18-s 2 / 2
-%18-s t / t
-%18-s 200 
-%18-s dax.csv / dbk.csv
-%18-s Close / Close
-%18-s 1999-12-31 to 2021-03-22
-%18-s 256 / 5427
-%18-s FALSE / TRUE
-%18-s (tail(x,1)-head(x,1))/head(x,1)
-%18-s monthly
-%18-s 349 minute(s)
-%18-s 196 out of 200 runs
+model id:          HHMM_2_2_DAX_DBK_t_t
+model type:        HHMM
+data type:         empirical
+number of states:  2 / 2
+SDDs:              t / t
+number of runs:    100 
+data source:       dax.csv / dbk.csv
+data column:       Close / Close
+time horizon:      1999-12-31 to 2021-03-22
+data points:       256 / 5427
+log-returns:       FALSE / TRUE
+CS transformation: (tail(x,1)-head(x,1))/head(x,1)
+FS dimension:      monthly
+estimation time:   433 minute(s)
+accepted runs:     87 out of 100 runs
