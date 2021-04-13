@@ -53,12 +53,12 @@ check_controls = function(controls){
   if(!"at_true" %in% names(controls[["fit"]]))       controls[["fit"]][["at_true"]] = FALSE
   if(!"accept" %in% names(controls[["fit"]]))        controls[["fit"]][["accept"]] = c(1,2)
   if(!"print.level" %in% names(controls[["fit"]]))   controls[["fit"]][["print.level"]] = 0
-  if(!"gradtol" %in% names(controls[["fit"]]))       controls[["fit"]][["gradtol"]] = 1e-4
+  if(!"gradtol" %in% names(controls[["fit"]]))       controls[["fit"]][["gradtol"]] = 1e-6
   if(!"stepmax" %in% names(controls[["fit"]]))       controls[["fit"]][["stepmax"]] = 1
-  if(!"steptol" %in% names(controls[["fit"]]))       controls[["fit"]][["steptol"]] = 1e-4
-  if(!"iterlim" %in% names(controls[["fit"]]))       controls[["fit"]][["iterlim"]] = 200
+  if(!"steptol" %in% names(controls[["fit"]]))       controls[["fit"]][["steptol"]] = 1e-6
+  if(!"iterlim" %in% names(controls[["fit"]]))       controls[["fit"]][["iterlim"]] = 500
   if(!"scale_par" %in% names(controls[["fit"]]))     controls[["fit"]][["scale_par"]] = c(1,1)
-  if(!"overwrite" %in% names(controls[["data"]]))    controls[["results"]][["overwrite"]] = FALSE
+  if(!"overwrite" %in% names(controls[["results"]])) controls[["results"]][["overwrite"]] = FALSE
   if(!"ci_level" %in% names(controls[["results"]]))  controls[["results"]][["ci_level"]] = 0.95
   
   ### check model type
