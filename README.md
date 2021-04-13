@@ -83,16 +83,16 @@ The following parameters are optional and set to [default values](#default-value
 - `ci_level = 0.95`
 - `col = c(NA,NA)`
 - `cs_type = NA` 
-- `gradtol = 1e-3`
+- `gradtol = 1e-6`
 - `iterlim = 200`
 - `overwrite = FALSE`
 - `print_level = 0`
-- `runs = 100`
+- `runs = 500`
 - `scale_par = c(1,1)`
 - `seed` is not set
 - `source = c(NA,NA)`
 - `stepmax = 1` 
-- `steptol = 1e-3`
+- `steptol = 1e-6`
 - `truncate = c(NA,NA)`
 
 ## Parameter structures
@@ -166,22 +166,34 @@ events = list(
 ### fit (H)HMM
 fit_hmm(controls,events)
 ```
-### Fitting a (2,2)-state HHMM jointly to the DAX and the VW stock
+### Fitting a (2,2)-state HHMM jointly to the DAX and the Deutsche Bank stock
+Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HHMM_2_2_DAX_DBK_t_t) for the results.
 ```R
 ### download data (optional)
 download_data("dax","^GDAXI",path=".")
-download_data("vw","VOW3.DE",path=".")
+download_data("dbk","DBK.DE",path=".")
 
 ### set controls
 controls = list(
   path    = ".",
-  id      = "HHMM_2_2_DAX_VW_gamma_t",
+  id      = "HHMM_2_2_DAX_DBK_t_t",
   states  = c(2,2),
-  sdds    = c("gamma","t"),
+  sdds    = c("t","t"),
   horizon = c(NA,"m"),
-  data    = list("source" = c("dax","vw"), "col" = c("Close","Close"), "cs_type" = "mean_abs")
+  data    = list("source"       = c("dax","dbk"), 
+                 "column"       = c("Close","Close"), 
+                 "cs_transform" = "(tail(x,1)-head(x,1))/head(x,1)", 
+                 "log_returns"  = c(FALSE,TRUE),
+                 "truncate"     = c("2000-01-01",NA)),
+  fit     = list("runs" = 100)
+)
+
+### define events (optional)
+events = list(
+  dates = c("2001-09-11","2008-09-15","2020-01-27"),
+  names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
 )
 
 ### fit (H)HMM
-fit_hmm(controls)
+fit_hmm(controls,events)
 ```
