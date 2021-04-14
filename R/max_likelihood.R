@@ -27,7 +27,6 @@ max_likelihood = function(data,controls){
                   controls = controls,
                   iterlim = controls[["fit"]][["iterlim"]],
                   steptol = controls[["fit"]][["steptol"]],
-                  stepmax = controls[["fit"]][["stepmax"]],
                   gradtol = controls[["fit"]][["gradtol"]],
                   print.level = controls[["fit"]][["print.level"]],
                   typsize = start_value,

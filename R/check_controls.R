@@ -21,7 +21,6 @@ check_controls = function(controls){
                               ###                    "accept" (acceptable exit codes of the optimization)
                               ###                    "print.level" (passed on to nlm), 
                               ###                    "gradtol" (passed on to nlm),
-                              ###                    "stepmax" (passed on to nlm),
                               ###                    "steptol" (passed on to nlm),
                               ###                    "iterlim" (passed on to nlm),
                               ###                    "scale_par" (scale of parameters), 
@@ -54,7 +53,6 @@ check_controls = function(controls){
   if(!"accept" %in% names(controls[["fit"]]))        controls[["fit"]][["accept"]] = c(1,2)
   if(!"print.level" %in% names(controls[["fit"]]))   controls[["fit"]][["print.level"]] = 0
   if(!"gradtol" %in% names(controls[["fit"]]))       controls[["fit"]][["gradtol"]] = 1e-6
-  if(!"stepmax" %in% names(controls[["fit"]]))       controls[["fit"]][["stepmax"]] = 1
   if(!"steptol" %in% names(controls[["fit"]]))       controls[["fit"]][["steptol"]] = 1e-6
   if(!"iterlim" %in% names(controls[["fit"]]))       controls[["fit"]][["iterlim"]] = 500
   if(!"scale_par" %in% names(controls[["fit"]]))     controls[["fit"]][["scale_par"]] = c(1,1)
