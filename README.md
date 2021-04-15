@@ -16,7 +16,9 @@
 7. [Examples](#examples)
 
 ## Getting started
-Run `install.packages("fHMM")` in your R console. Specify the model's [controls](#specifying-controls) and execute `fHMM::fit_hmm(controls)`. See below for [examples](#examples).
+1. Run `install.packages("fHMM")` in your R console. 
+2. Specify the model's [controls](#specifying-controls). See below for [examples](#examples).
+3. Execute `fHMM::fit_hmm(controls)`.
 
 ## Data
 Download daily prices of your preferred stock from https://finance.yahoo.com/ via
