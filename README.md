@@ -8,7 +8,7 @@
 
 ## How to get started?
 1. Run `install.packages("fHMM")` and `library("fHMM")` in your R console. to install fHMM.
-2. Specify your model by setting the [controls](#specifying-controls). See below for [examples](#examples).
+2. Specify your model by defining the named list `controls`. 
 3. Execute `fit_hmm(controls)`.
 
 We provide vignettes that give answers to the following FAQs:
