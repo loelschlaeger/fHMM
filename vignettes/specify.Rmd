@@ -1,0 +1,132 @@
+---
+title: "How to specify a model in fHMM?"
+author: "Lennart Oelschläger"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to specify a model in fHMM?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Specify your model by setting the following parameters of the named list `controls` and passing it to `fit_hmm`:
+
+- `path`: A character, setting the path of the data and the model results.
+
+- `id`: A character, identifying the model.
+
+- `states`: A numeric vector of length two, determining the model type and the number of states:
+
+   - If `states = c(x,0)`, a HMM with `x` states is estimated.
+   
+   - If `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated.
+   
+- `sdds`: A character vector of length two, specifying the state-dependent distributions for both scales:
+
+   - `"t"`, the t-distribution,
+   
+   - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom (`x = Inf` is allowed),
+   
+   - `"gamma"`, the gamma distribution.
+   
+- `horizon`: A vector of length 2, determining the length of the time horizion(s). The first entry is numeric and mandatory if data is simulated. The second entry is mandatory if the model is a HHMM and can be either numeric or one of
+
+   - `"w"` for weekly fine-scale chunks,
+   
+   - `"m"` for monthly fine-scale chunks,
+   
+   - `"q"` for quarterly fine-scale chunks,
+   
+   - `"y"` for yearly fine-scale chunks.
+
+The following parameters are optional and set to [default values](#default-values) if you do not specify them:
+
+- `data`: A list, containing
+
+   - `soure`: A character vector of length 2, containing the file names of the empirical data:
+   
+      - If `source = c(NA,NA)`, data is simulated.
+      
+      - If `source = c("x",NA)`, data "x.csv" in folder "`path`/data" is modeled by a HMM.
+      
+      - If `source = c("x","y")`, data "x.csv" (type determined by `cs_type`) on the coarse scale and data "y.csv" in folder "`path`/data" on the fine scale is modeled by a HHMM.
+      
+   - `col`: A character vector of length 2, containing the names of the desired column of `source` for both scales.
+   
+   - `truncate`: A vector of length 2, containing lower and upper date limits (each in format `"YYYY-MM-DD"`) to select a subset of the empirical data (neither, one or both limits can be specified).
+   
+   - `cs_type`: A character, determining the type of empirical coarse-scale data in HHMMs, one of
+   
+      - `"mean"`: means of the fine-scale data,
+      
+      - `"mean_abs"`: means of the fine-scale data in absolute value,
+      
+      - `"sum_abs"`: sums of fine-scale data in absolute value.
+
+- `fit`: A list, containing
+   
+   - `runs`: A numeric value, setting the number of optimization runs.
+   
+   - `at_true`: A boolean, determining whether the optimization is initialised at the true parameter values. Only for simulated data, sets `runs = 1` and `accept = "all"`.
+   
+   - `seed`: A numeric value, setting a seed for the simulation and the optimization.
+   
+   - `accept`: Either a numeric vector (containing acceptable exit codes of the [nlm optimization](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html)) or the character `"all"` (accepting all codes).
+   
+   - `print.level`: Passed on to [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
+   
+   - `gradtol`: Passed on to [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
+   
+   - `stepmax`: Passed on to [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
+   
+   - `steptol`: Passed on to [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
+   
+   - `iterlim`: Passed on to [nlm](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nlm.html).
+   
+   - `scale_par`: A positive numeric vector of length two, scaling the model parameters in a simulation on the coarse and fine scale, respectively.
+
+- `results`: A list, containing
+   - `overwrite`: A boolean, determining whether overwriting of existing results (on the same `id`) is allowed. Set to `TRUE` if `id = "test"`.
+   
+   - `ci_level`: A numeric value between 0 and 1, setting the confidence interval level.
+
+### Default values
+
+- `accept = c(1,2)` 
+
+- `at_true = FALSE`
+
+- `ci_level = 0.95`
+
+- `col = c(NA,NA)`
+
+- `cs_type = NA` 
+
+- `gradtol = 1e-6`
+
+- `iterlim = 200`
+
+- `overwrite = FALSE`
+
+- `print_level = 0`
+
+- `runs = 500`
+
+- `scale_par = c(1,1)`
+
+- `seed` is not set
+
+- `source = c(NA,NA)`
+
+- `stepmax = 1` 
+
+- `steptol = 1e-6`
+
+- `truncate = c(NA,NA)`

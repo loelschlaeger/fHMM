@@ -1,0 +1,19 @@
+---
+title: "How to debug fHMM?"
+author: "Lennart Oelschläger"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to debug fHMM?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Some error or warning messages provide exception codes. Calling `exception(code)` yields suggestions for debugging.
