@@ -25,7 +25,7 @@ download_data = function(name=NA,symbol=NA,from="1902-01-01",to=Sys.Date(),show_
   }
   if(file.exists(paste0(save_path,"/stock_symbols.rds"))){
     stock_symbols = readRDS(paste0(save_path,"/stock_symbols.rds"))
-    stock_symbols = unique(stock_symbols[order(stock_symbols["name"]),])
+    stock_symbols = unique(stock_symbols)
   } else {
     stock_symbols = data.frame("name"=character(),"symbol"=character())
     saveRDS(stock_symbols,file=paste0(save_path,"/stock_symbols.rds"))
