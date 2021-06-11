@@ -3,7 +3,7 @@
 #' @param data A list of processed data information.
 #' @param controls A list of controls.
 #' @return A list of fitted model information.
-#' @details Uses \code{nlm} for numerical optimization.
+#' @details Uses \code{nlm} for numerical optimization. R
 
 max_likelihood = function(data,controls){
   
