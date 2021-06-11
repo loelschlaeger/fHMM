@@ -11,11 +11,10 @@
 2. Specify your model by setting the [controls](#specifying-controls). See below for [examples](#examples).
 3. Execute `fit_hmm(controls)`.
 
-## Vignettes
-We provide several vignettes that give answers to the following questions:
+We provide vignettes that give answers to the following FAQs:
 - How to specify a model in fHMM?
 - How to process financial data in fHMM?
-- How to interprete fHMM outputs?
+- How to interpret fHMM outputs?
 - How to debug fHMM?
 - How does fHMM process model parameters?
 
