@@ -1,6 +1,6 @@
 ---
 title: "How to debug fHMM?"
-author: "Lennart Oelschläger"
+author: "Rouven Michels"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

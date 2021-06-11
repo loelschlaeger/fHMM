@@ -16,25 +16,65 @@ knitr::opts_chunk$set(
 )
 ```
 
-Specify your model by setting the following parameters of the named list `controls` and passing it to `fit_hmm`:
+Specifying a model in fHMM is simple. You only need to define the named list `controls` and pass it to `fit_hmm`, i.e.
 
-- `path`: A character, setting the path of the data and the model results.
+1. define `controls = list(<parameters>)` and
 
-- `id`: A character, identifying the model.
+2. call `fit_hmm(controls)` for estimation.
 
-- `states`: A numeric vector of length two, determining the model type and the number of states:
+The list `controls` can contain the following parameters. You can either specify none, all, or selected parameters. Unspecified parameters are set to default values.
 
-   - If `states = c(x,0)`, a HMM with `x` states is estimated.
+## `id`
+
+A character, which identifies a model. The default is `id = "test"`. We recommend to set a meaningful identification, e.g. `id = "dax_hmm_2_states"`.
+
+## `path`
+
+A character, setting the path where model results get saved. The default is `path = tempdir()`, which is the path of the per-session temporary directory. We recommend to set a path to your current working directory, e.g. `path = "."`.
+
+## `model`
+
+This control determines the type model that you want to estimate and can be one of
+
+   - `hmm` (to estimate a hidden Markov model),
    
-   - If `states = c(x,y)`, a HHMM with `x` coarse-scale and `y` fine-scale states is estimated.
+   - `hhmm` (to estimate a hierarchical hidden Markov model).
    
-- `sdds`: A character vector of length two, specifying the state-dependent distributions for both scales:
+The default is `model = hmm`.
+
+## `states`
+
+This control determines the number of states and depends on the control `model`.
+
+   - If `model = hmm`, `states` is an integer. If `states = x`, a hidden Marko model with `x` states is estimated.
+   
+   - If `model = hhmm`, `states` is a numeric vector of length two. If `states = c(x,y)`, a hierarchical hidden Markov model with `x` coarse-scale and `y` fine-scale states is estimated.
+   
+The default is `states = 2`, which defines a 2-state hidden Markov model.
+   
+## `sdds`
+
+This control determines the state-depenent distributions and depends on the control `model`.
+
+   - If `model = hmm`, `states` is one of the following values.
+   
+   - If `model = hhmm`, `states` is a vector of length two, containing the following values. The first entry defines the state-depenent distribution for the coarse scale, the second entry for the fine scale, respectively.
+   
+The following state-depenent distributions can be defined:
 
    - `"t"`, the t-distribution,
    
-   - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom (`x = Inf` is allowed),
+   - `"t(x)"`, the t-distribution with `x` fixed degrees of freedom (`x = Inf` yields the normal distribution),
    
    - `"gamma"`, the gamma distribution.
+   
+For example, `sdds = c("t","t(1)")` defines the t-distribution for the coarse scale (degrees of freedom get estimated) and the t-distribution with one degree of freedom for the fine scale.
+
+The default is `sdds = "t"`, which defines state-dependent t-distributions.
+   
+## `horizon`
+
+This control determines the length of the time horizon.
    
 - `horizon`: A vector of length 2, determining the length of the time horizion(s). The first entry is numeric and mandatory if data is simulated. The second entry is mandatory if the model is a HHMM and can be either numeric or one of
 
@@ -47,6 +87,8 @@ Specify your model by setting the following parameters of the named list `contro
    - `"y"` for yearly fine-scale chunks.
 
 The following parameters are optional and set to [default values](#default-values) if you do not specify them:
+
+## `data`
 
 - `data`: A list, containing
 
