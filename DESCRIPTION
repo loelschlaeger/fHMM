@@ -12,7 +12,6 @@ Description: Fitting (hierarchical) hidden Markov models
     See <https://github.com/loelschlaeger/fHMM#readme> for documentation and examples.
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
 Imports:
     MASS,
     progress,
