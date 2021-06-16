@@ -13,7 +13,7 @@ parameter_names = function(controls,all){
     }
     return(indices)
   }
-  if(controls[["model"]]=="HMM"){
+  if(controls[["model"]]=="hmm"){
     Gamma_names = paste0("Gamma_",matrix_indices(controls[["states"]][1],all))
     mu_names = paste0("mu_",seq_len(controls[["states"]][1]))
     sigma_names = paste0("sigma_",seq_len(controls[["states"]][1]))
@@ -24,7 +24,7 @@ parameter_names = function(controls,all){
       names = c(Gamma_names,mu_names,sigma_names)
     }
   }
-  if(controls[["model"]]=="HHMM"){
+  if(controls[["model"]]=="hhmm"){
     Gamma_names = paste0("Gamma_",matrix_indices(controls[["states"]][1],all))
     Gamma_star_names = vector()
     for(s in seq_len(controls[["states"]][1])){

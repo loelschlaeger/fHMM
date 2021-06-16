@@ -1,7 +1,9 @@
-#' @title Saving check
-#' @description Checks for overwriting and saves model results.
-#' @param object An .rds-object to be saved, default \code{NULL}.
-#' @param name A character, the name of the object to be saved, default \code{NULL}.
+#' @title 
+#' Saving check
+#' @description 
+#' This function saves model results while checking for overwriting.
+#' @param object An object to be saved.
+#' @param name A character, the name of the object to be saved.
 #' @param filetype A character, the filetype of the object to be saved.
 #' @param controls A list of controls.
 #' @return A boolean, determining whether saving is possible or not. If \code{filetype="rds"}, \code{object} is saved.

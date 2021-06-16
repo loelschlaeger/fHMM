@@ -16,7 +16,7 @@ init_est = function(controls){
     }
     return(Gamma)
   }
-  if(controls[["model"]]=="HMM"){
+  if(controls[["model"]]=="hmm"){
     gammasUncon = Gamma2gammasUncon(build_Gamma(M))
     sigmasUncon = sigmaCon2sigmaUncon((seq(0.1,1,length.out=M)*runif(1))*scale_par[1])
     if(controls[["sdds"]][1] == "t"){
@@ -29,7 +29,7 @@ init_est = function(controls){
       thetaUncon  = c(gammasUncon,musUncon,sigmasUncon)
     }
   }
-  if(controls[["model"]]=="HHMM"){
+  if(controls[["model"]]=="hhmm"){
     gammasUncon = Gamma2gammasUncon(build_Gamma(M))
     sigmasUncon = sigmaCon2sigmaUncon((seq(0.1,1,length.out=M)*runif(1))*scale_par[1])
     if(controls[["sdds"]][1] == "t"){

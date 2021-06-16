@@ -18,8 +18,8 @@ max_likelihood = function(data,controls){
   mods = list() 
   
   ### define optimizer
-  if(controls[["model"]]=="HMM") target = nLL_hmm
-  if(controls[["model"]]=="HHMM") target = nLL_hhmm
+  if(controls[["model"]]=="hmm") target = nLL_hmm
+  if(controls[["model"]]=="hhmm") target = nLL_hhmm
   optimized = function(start_value){
     nlm_out = nlm(f = target,
                   p = start_value,
@@ -58,10 +58,10 @@ max_likelihood = function(data,controls){
   ### adjust 'scale_par' based on method of moments estimates
   adjust_scale_par = function(controls,data){
     scale_par = c(NA,NA)
-    if(controls[["model"]]=="HMM"){
+    if(controls[["model"]]=="hmm"){
       scale_par[1] = mean(c(mean(data,na.rm="TRUE"),sd(data,na.rm="TRUE")))
     }
-    if(controls[["model"]]=="HHMM"){
+    if(controls[["model"]]=="hhmm"){
       scale_par[1] = mean(c(mean(data[,1],na.rm="TRUE"),sd(data[,1],na.rm="TRUE")))
       scale_par[2] = mean(c(mean(data[,-1],na.rm="TRUE"),sd(data[,-1],na.rm="TRUE")))
     }
@@ -119,9 +119,9 @@ max_likelihood = function(data,controls){
     stop(sprintf("%s (%s)",exception("F.4")[2],exception("F.4")[1]),call.=FALSE)
   } else {
     ### estimation Info
-    writeLines(sprintf("%18-s %s minute(s)","estimation time:",ceiling(difftime(end,start,units='mins'))))
+    writeLines(sprintf("- %s %s minute(s)","estimation time:",ceiling(difftime(end,start,units='mins'))))
     if(!controls[["fit"]][["at_true"]]){
-      writeLines(sprintf("%18-s %s out of %s runs","accepted runs:",sum(!is.na(lls)),length(lls)))
+      writeLines(sprintf("- %s %s out of %s runs","accepted runs:",sum(!is.na(lls)),length(lls)))
     }
     
     ### compute Hessian

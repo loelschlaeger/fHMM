@@ -1,6 +1,6 @@
 #' @title Decoding check
 #' @description Summarizes and saves decoded states.
-#' @param decoding A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.
+#' @param decoding A vector (in case of a hmm) or a matrix (in case of a hierarchical HMM) of decoded states.
 #' @param data A list of processed data information.
 #' @param controls A list of controls.
 #' @return No return value. Creates output file "states.txt".
@@ -11,13 +11,13 @@ check_decoding = function(decoding,data,controls){
       
       ### frequency of decoded states
       writeLines("Frequency of decoded states\n")
-      if(controls[["model"]]=="HMM"){ 
+      if(controls[["model"]]=="hmm"){ 
         out = table((decoding))
         names(out) = paste("state",names(out))
         print(out)
         cat("\n")
       }
-      if(controls[["model"]]=="HHMM"){
+      if(controls[["model"]]=="hhmm"){
         out_cs = table(factor(decoding[,1],levels = seq_len(controls[["states"]][1])))
         names(out_cs) = paste("CS state",names(out_cs))
         print(out_cs)
@@ -44,10 +44,10 @@ check_decoding = function(decoding,data,controls){
           print(c_table,quote=FALSE,right=TRUE)
         }
         writeLines("Comparison between true and decoded states\n")
-        if(controls[["model"]]=="HMM"){
+        if(controls[["model"]]=="hmm"){
           compare_true_predicted_states(controls[["states"]][1],decoding,data[["states0"]])
         }
-        if(controls[["model"]]=="HHMM"){
+        if(controls[["model"]]=="hhmm"){
           compare_true_predicted_states(controls[["states"]][1],decoding[,1],data[["states0"]][,1],label="CS ")
           writeLines("")
           for(cs_state in seq_len(controls[["states"]][1])){

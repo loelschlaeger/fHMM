@@ -11,18 +11,17 @@
 
 read_data = function(controls){
   
-  if(is.null(controls[["controls_checked"]])){
+  if(is.null(controls[["controls_checked"]]))
     stop(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
-  }
   
   data_source = controls[["data"]][["source"]]
   data_col = controls[["data"]][["column"]]
   data_raw = list()
   for(i in 1:2){
-    if(is.na(data_source)[i]){
+    if(is.na(data_source[i])){
       data_raw[[i]] = NA
     }
-    if(!is.na(data_source)[i]){
+    if(!is.na(data_source[i])){
       
       ### extract data
       data_raw[[i]] = read.csv(file=paste0(controls[["path"]],"/data/",data_source[i]),header=TRUE,sep=",",na.strings="null")
@@ -103,7 +102,7 @@ read_data = function(controls){
   }
   
   ### HMM data
-  if(controls[["model"]]=="HMM"){
+  if(controls[["model"]]=="hmm"){
     data_raw[[1]] = truncate_data(controls,data_raw[[1]])
     
     out = list(
@@ -115,7 +114,7 @@ read_data = function(controls){
   }
   
   ### HHMM data
-  if(controls[["model"]]=="HHMM"){
+  if(controls[["model"]]=="hhmm"){
     
     ### remove data points that do not occur in both files
     data_raw[[1]] = data_raw[[1]][ data_raw[[1]][["Date"]] %in% intersect(data_raw[[1]][["Date"]],data_raw[[2]][["Date"]]), ]
@@ -136,7 +135,7 @@ read_data = function(controls){
     }
     
     ### transform CS data_raw
-    eval(parse(text = paste('f <- function(x) { return(' , controls[["data"]][["cs_transform"]] , ')}', sep='')))
+    f = controls[["data"]][["cs_transform"]]
     cs_data = apply(cs_data_tbt,1,function(x) return(f(x[!is.na(x)]))) 
     
     out = list(
