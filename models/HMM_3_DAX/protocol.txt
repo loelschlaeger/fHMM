@@ -1,12 +1,14 @@
-model id:     HMM_3_DAX
-model type:   HMM
-data type:    empirical
-states:       3
-SDDs:         t
-runs:         100 
-source:       dax.csv
-column:       Close
-horizon:      2000-01-03 to 2020-12-30
-data points:  5370
-run-time:     28 minute(s)
-accepted:     99 out of 100 runs
+- path: .
+- model id: HMM_3_DAX
+- model type: hmm
+- data type: empirical
+- number of states: 3
+- SDDs: t
+- number of runs: 100 
+- data source: dax.csv
+- data column: Close
+- time horizon: 2000-01-03 to 2020-12-30
+- data points: 5370
+- log-returns: TRUE
+- estimation time: 27 minute(s)
+- accepted runs: 86 out of 100 runs
