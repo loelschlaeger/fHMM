@@ -7,6 +7,8 @@
 
 💬 Found a bug? Request a feature? Please [tell us](https://github.com/loelschlaeger/fHMM/issues)!
 
+📝 In R, type `citation("fHMM")` for citing this package in publications.
+
 ## How to get started?
 
 1. Run `install.packages("fHMM")` and `library("fHMM")` in your R console. to install **fHMM**.
