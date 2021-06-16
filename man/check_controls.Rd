@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_controls.R
 \name{check_controls}
 \alias{check_controls}
-\title{Controls check}
+\title{Check controls}
 \usage{
 check_controls(controls)
 }
@@ -13,5 +13,8 @@ check_controls(controls)
 Checked version of \code{controls}.
 }
 \description{
-Checks specification of \code{controls}.
+This function checks the specification of \code{controls}.
+}
+\details{
+See the vignettes on how to specify \code{controls}.
 }

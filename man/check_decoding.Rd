@@ -7,7 +7,7 @@
 check_decoding(decoding, data, controls)
 }
 \arguments{
-\item{decoding}{A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.}
+\item{decoding}{A vector (in case of a hmm) or a matrix (in case of a hierarchical HMM) of decoded states.}
 
 \item{data}{A list of processed data information.}
 

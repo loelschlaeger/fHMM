@@ -11,11 +11,12 @@ read_data(controls)
 }
 \value{
 A list containing the following elements:
-\item{logReturns}{log-returns (the data that is modeled)}
-\item{dataRaw}{raw data}
-\item{dataRaw_cs}{raw coarse-scale data}
-\item{dates}{vector of dates}
-\item{T_star}{vector of fine-scale chunk sizes}
+\item{data}{A matrix of data that is modeled.}
+\item{data_raw}{A matrix of raw data.}
+\item{data_fs_raw}{A matrix of raw fine-scale data.}
+\item{data_cs_raw}{A matrix of raw coarse-scale data.}
+\item{dates}{A vector of dates.}
+\item{T_star}{A vector of fine-scale chunk sizes.}
 }
 \description{
 Reads financial data from .csv-file.

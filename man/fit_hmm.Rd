@@ -4,34 +4,34 @@
 \alias{fit_hmm}
 \title{Fit (hierarchical) hidden Markov models to financial data}
 \usage{
-fit_hmm(controls, events = NA, sim_par = NA)
+fit_hmm(controls, events, sim_par)
 }
 \arguments{
-\item{controls}{A list of controls.}
+\item{controls}{A list of controls (optional).}
 
-\item{events}{A list of (historical, financial) events, default \code{NA}.}
+\item{events}{A list of (historical, financial) events (optional).}
 
-\item{sim_par}{A list of model parameters for simulation in \code{thetaList} format, default \code{NA}.}
+\item{sim_par}{A list of model parameters for simulation in \code{thetaList} format, default \code{NULL} (optional).}
 }
 \value{
-No return value. Estimation results are saved in "\code{controls[["path"]]}/model/\code{controls[["id"]]}".
+No return value. Estimation results are saved in "\code{controls[["path"]]}/models/\code{controls[["id"]]}".
 }
 \description{
 Performs data processing, fitting, state decoding and visualization.
 }
 \details{
-A model is specified by setting parameters of the named list \code{controls} and passing it to \code{fit_hmm}.
-Some control parameters are mandatory, the others are set to default values if not specified.
-See the documentation \url{https://github.com/loelschlaeger/fHMM#readme} for a comprehensive list of all control parameters and their default values.
+Specify a model by setting parameters of the named list \code{controls} and passing it to \code{fit_hmm}.
+See the vignettes on how to specify \code{controls}.
 }
 \examples{
-### fitting a 3-state HMM with state-dependent t-distributions to simulated data
+### fitting a 2-state HMM with state-dependent t-distributions to simulated data
 controls = list(
   path    = tempdir(),
-  id      = "HMM_3_t",
-  states  = c(3,0),
-  sdds    = c("t",NA),
-  horizon = c(500,NA),
+  id      = "test",
+  model   = "hmm",
+  states  = 2,
+  sdds    = "t",
+  horizon = 200,
   fit     = list("runs" = 10, "seed" = 1)
 )
 fit_hmm(controls)
