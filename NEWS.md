@@ -1,3 +1,5 @@
+# fHMM 0.3.0.9000
+
 # fHMM 0.3.0
 * Created vignettes.
 * Easier specification of `controls`. 
