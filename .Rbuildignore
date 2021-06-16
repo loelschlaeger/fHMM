@@ -1,8 +1,12 @@
+..Rcheck
 ^.*\.Rproj$
 ^\.Rproj\.user$
 sticker/
 models/
 data/
-inst/
 load_code.R
 sandbox.R
+R/predict_hmm.R
+^doc$
+^Meta$
+LICENSE

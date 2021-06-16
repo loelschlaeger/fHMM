@@ -1,8 +1,9 @@
-# fHMM 0.2.9000
-* Created Vignettes.
-* Submit a function to `controls$data$cs_type` to make any coarse-scale data transformation.
+# fHMM 0.3.0
+* Created vignettes.
+* Easier specification of `controls`. 
+* Submit a function to `controls$data$cs_transform` (former `controls$data$cs_type`) to make any coarse-scale data transformation.
 * Determine via `controls$data$log_returns` whether data should be transformed to log-returns.
-* Not supplied `events` and `sim_par` treated as `NULL`.
+* Created a package startup message.
 * Fixed minor bugs.
 
 # fHMM 0.2.0
