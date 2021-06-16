@@ -16,4 +16,4 @@ knitr::opts_chunk$set(
 )
 ```
 
-Some error or warning messages provide exception codes. Calling `exception(code)` yields suggestions for debugging.
+Some error or warning messages of **fHMM** provide exception codes. Calling `exception(code)` yields suggestions for debugging.

@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Four types of model parameters are estimated:
+In **fHMM**, four types of model parameters are estimated:
 
 1. non-diagonal elements (column-wise) `gammas` of transition probability matrices `Gamma`,
 
@@ -38,4 +38,4 @@ All of these parameters have to fulfill constraints. Constrained parameters get 
 
 - `thetaListOrdered`: `thetaList` in ordered form with respect to estimated expected values.
 
-The code provides functions to transform these structures. Their names follow the logic `x2y`, where `x` and `y` are two structures.  
+The package **fHMM** provides functions to transform these structures. Their names follow the logic `x2y`, where `x` and `y` are two structures.  
