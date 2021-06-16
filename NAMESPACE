@@ -4,11 +4,9 @@ export(exception)
 export(fit_hmm)
 import(Rcpp)
 importFrom("graphics", "plot")
-importFrom("grDevices", "adjustcolor", "colorRampPalette", "dev.off",
-             "pdf", "rgb")
-importFrom("graphics", "abline", "axis", "curve", "hist", "legend",
-             "lines", "mtext", "par", "points", "text", "title")
-importFrom("stats", "acf", "dbinom", "dgamma", "dnorm", "dt", "nlm",
-             "pgamma", "pt", "qnorm", "qqnorm", "rgamma", "rt", "runif",
-             "sd")
+importFrom("grDevices", "adjustcolor", "colorRampPalette", "dev.off", "pdf", "rgb")
+importFrom("graphics", "abline", "axis", "curve", "hist", "legend", "lines", "mtext", "par", "points", "text", "title")
+importFrom("stats", "acf", "dbinom", "dgamma", "dnorm", "dt", "nlm", "pgamma", "pt", "qnorm", "qqnorm", "rgamma", "rt", "runif", "sd")
 importFrom("utils", "download.file", "head", "read.csv", "tail")
+importFrom("grDevices", "dev.list")
+importFrom("utils", "packageVersion")

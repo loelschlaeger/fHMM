@@ -33,10 +33,10 @@ apply_viterbi = function(data,fit,controls){
   observations = data[["data"]]
   thetaList = fit[["thetaList"]]
   states = controls[["states"]]
-  if(controls[["model"]]=="HMM"){
+  if(controls[["model"]]=="hmm"){
     decoding = viterbi(observations,states[1],thetaList[["Gamma"]],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]],controls[["sdds"]][1])
   }
-  if(controls[["model"]]=="HHMM"){
+  if(controls[["model"]]=="hhmm"){
     T = dim(observations)[1]
     T_star = data[["T_star"]]
     decoding = matrix(NA,ncol=max(T_star)+1,nrow=T)

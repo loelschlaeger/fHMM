@@ -74,7 +74,7 @@ plot_sdd = function(controls,data,fit,decoding,colors){
       }
     }
     
-    if(controls[["model"]]=="HMM"){
+    if(controls[["model"]]=="hmm"){
       pdf(file = filename, width=8, height=8)
         if(controls[["sim"]]){
           sdd_true_parm = list("mus"    = data[["thetaList0"]][["mus"]],
@@ -89,12 +89,12 @@ plot_sdd = function(controls,data,fit,decoding,colors){
                          dfs           = fit[["thetaList"]][["dfs"]],
                          sdd           = controls[["sdds"]][1],
                          x_range       = c(min(data[["data"]]),max(data[["data"]])),
-                         colors        = colors[["HMM"]],
+                         colors        = colors[["hmm"]],
                          llabel        = "State",
                          sdd_true_parm = sdd_true_parm)
       invisible(dev.off())
     }
-    if(controls[["model"]]=="HHMM"){
+    if(controls[["model"]]=="hhmm"){
       pdf(file = filename, width=8, height=8)
         if(controls[["sim"]]){
           sdd_true_parm = list("mus"    = data[["thetaList0"]][["mus"]],
@@ -109,7 +109,7 @@ plot_sdd = function(controls,data,fit,decoding,colors){
                          dfs           = fit[["thetaList"]][["dfs"]],
                          sdd           = controls[["sdds"]][1],
                          x_range       = c(min(data[["data"]][,1]),max(data[["data"]][,1])),
-                         colors        = colors[["HHMM_cs"]],
+                         colors        = colors[["hhmm_cs"]],
                          llabel        = "Coarse-scale state",
                          sdd_true_parm = sdd_true_parm)
         xlims = matrix(0,nrow=2,ncol=controls[["states"]][1])
@@ -138,7 +138,7 @@ plot_sdd = function(controls,data,fit,decoding,colors){
                            x_range       = c(min(data[["data"]][,-1],na.rm=TRUE),max(data[["data"]][,-1],na.rm=TRUE)),
                            c_xlim        = FALSE,
                            xlim          = c(min(xlims[1,]),max(xlims[2,])),
-                           colors        = colors[["HHMM_fs"]][[cs]],
+                           colors        = colors[["hhmm_fs"]][[cs]],
                            llabel        = "Fine-scale state",
                            ltitle        = paste("Coarse-scale state",cs),
                            sdd_true_parm = sdd_true_parm)

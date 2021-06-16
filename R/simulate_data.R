@@ -10,13 +10,11 @@
 #' \item{thetaList0}{True parameters in format \code{thetaList}.}
 #' \item{T_star}{A vector of fine-scale chunk sizes.}
 
-simulate_data = function(controls,sim_par){
-  if(is.na(controls[["controls_checked"]])){
+simulate_data = function(controls, sim_par){
+  if(is.null(controls[["controls_checked"]]))
     stop(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
-  }
-  if(!is.null(controls[["fit"]][["seed"]])){
+  if(!is.null(controls[["fit"]][["seed"]]))
     set.seed(controls[["fit"]][["seed"]])
-  }
   T = as.numeric(controls[["horizon"]][1])
   
   ### define simulation parameters
@@ -54,12 +52,12 @@ simulate_data = function(controls,sim_par){
     return(data)
   }
   
-  if(controls[["model"]]=="HMM"){
+  if(controls[["model"]]=="hmm"){
     T_star = NA
     states = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
     data = simulate_observations(states,thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]],controls[["sdds"]][1])
   }
-  if(controls[["model"]]=="HHMM"){ 
+  if(controls[["model"]]=="hhmm"){ 
     T_star = compute_fs(fs_time_horizon = controls[["horizon"]][2], T = T)
     states = matrix(NA,T,max(T_star)+1) 
     data = matrix(NA,T,max(T_star)+1)

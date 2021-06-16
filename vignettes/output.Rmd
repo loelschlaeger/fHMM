@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The following model results are saved in the folder `path/models/id` (`path` and `id` specified in `controls`):
+The following molde results of **fHMM** are saved in the folder `path/models/id` (`path` and `id` specified in `controls`):
 
 - `estimates.txt`: Containing the model's likelihood value, AIC and BIC values, exit code, number of iterations, estimated and true parameters (only for simulated data), relaltive bias (only for simulated data) and confidence intervals.
 

@@ -8,10 +8,10 @@
 
 pseudo_residuals = function(controls,data,fit,decoding){
   ### extract parameters
-  if(controls[["model"]]=="HMM"){
+  if(controls[["model"]]=="hmm"){
     T = length(data[["data"]])
   }
-  if(controls[["model"]]=="HHMM"){
+  if(controls[["model"]]=="hhmm"){
     T = dim(data[["data"]])[1]
     decoding_cs = rep(decoding[,1],times = data[["T_star"]])
     decoding_fs = as.vector(t(decoding[,-1]))[!is.na(as.vector(t(decoding[,-1])))]
@@ -68,7 +68,7 @@ pseudo_residuals = function(controls,data,fit,decoding){
   }
   if(check_saving(name = "pseudo_residuals", filetype = "pdf", controls = controls)){
     filename = paste0(controls[["path"]],"/models/",controls[["id"]],"/pseudo_residuals.pdf")
-    if(controls[["model"]]=="HMM"){
+    if(controls[["model"]]=="hmm"){
       pseudos = compute_prs(no_prs   = T,
                             data     = data[["data"]],
                             decoding = decoding,
@@ -83,7 +83,7 @@ pseudo_residuals = function(controls,data,fit,decoding){
         create_prs_plots(pseudos)
       invisible(dev.off())
     }
-    if(controls[["model"]]=="HHMM"){
+    if(controls[["model"]]=="hhmm"){
       pseudos_cs = compute_prs(no_prs   = T,
                                data     = cs_data,
                                decoding = decoding[,1],

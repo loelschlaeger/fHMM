@@ -1,10 +1,11 @@
-model id:     HMM_2_sim_gamma
-model type:   HMM
-data type:    simulated
-states:       2
-SDDs:         gamma
-runs:         100 
-seed:         1
-sample size:  1000
-run-time:     1 minute(s)
-accepted:     96 out of 100 runs
+- path: .
+- model id: HMM_2_sim_gamma
+- model type: hmm
+- data type: simulated
+- number of states: 2
+- SDDs: gamma
+- number of runs: 100 
+seed: 1
+- sample size: 5000
+- estimation time: 3 minute(s)
+- accepted runs: 93 out of 100 runs

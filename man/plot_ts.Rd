@@ -7,15 +7,15 @@
 plot_ts(controls, data, decoding, colors, events)
 }
 \arguments{
-\item{controls}{A list of controls}
+\item{controls}{A list of controls.}
 
-\item{data}{A list of processed data information}
+\item{data}{A list of processed data information.}
 
-\item{decoding}{A matrix of decoded states}
+\item{decoding}{A matrix of decoded states.}
 
-\item{colors}{A matrix of colors for different states}
+\item{colors}{A matrix of colors for different states.}
 
-\item{events}{A list of events}
+\item{events}{A list of events.}
 }
 \value{
 No return value, creates graphic in \code{controls[["path"]]}/models/\code{controls[["id"]]}

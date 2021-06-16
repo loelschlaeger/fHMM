@@ -7,9 +7,9 @@
 check_saving(object = NULL, name = NULL, filetype, controls)
 }
 \arguments{
-\item{object}{An .rds-object to be saved, default \code{NULL}.}
+\item{object}{An object to be saved.}
 
-\item{name}{A character, the name of the object to be saved, default \code{NULL}.}
+\item{name}{A character, the name of the object to be saved.}
 
 \item{filetype}{A character, the filetype of the object to be saved.}
 
@@ -19,5 +19,5 @@ check_saving(object = NULL, name = NULL, filetype, controls)
 A boolean, determining whether saving is possible or not. If \code{filetype="rds"}, \code{object} is saved.
 }
 \description{
-Checks for overwriting and saves model results.
+This function saves model results while checking for overwriting.
 }

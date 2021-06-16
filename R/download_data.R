@@ -1,12 +1,15 @@
-#' @title Data download
-#' @description Download financial data from <https://finance.yahoo.com>.
+#' @title 
+#' Data download
+#' @description 
+#' Download financial data from <https://finance.yahoo.com>.
 #' @param name A character, personal identifier for a stock, default \code{NA}.
 #' @param symbol A character, the stock's symbol, default \code{NA}.
 #' @param from A date, setting the lower data bound, default is \code{"1902-01-01"}.
 #' @param to A date, setting the upper data bound, default is the current date \code{Sys.date()}.
 #' @param show_symbols A boolean, determining whether all saved symbols should be printed, default \code{FALSE}.
 #' @param path A character, setting the data saving path.
-#' @return No return value. Downloaded data is saved as "\code{name}.csv" in the folder "\code{path}/data".
+#' @return 
+#' No return value. Downloaded data is saved as "\code{name}.csv" in the folder "\code{path}/data".
 #' @details 
 #' \code{symbol} has to match the official symbol on <https://finance.yahoo.com>. 
 #' Once used stock symbols are saved in "stock_symbols.rds" in the folder "\code{path}/data".
@@ -16,7 +19,7 @@
 #' download_data(name="dax",symbol="^GDAXI",from=as.Date("2000-01-03"),path=tempdir())
 #' @export
 
-download_data = function(name=NA,symbol=NA,from="1902-01-01",to=Sys.Date(),show_symbols=FALSE,path){
+download_data = function(name=NA, symbol=NA, from="1902-01-01", to=Sys.Date(), show_symbols=FALSE, path){
   
   ### load and sort or create 'stock_symbols'
   save_path = paste0(path,"/data")

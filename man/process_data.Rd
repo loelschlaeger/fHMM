@@ -4,12 +4,12 @@
 \alias{process_data}
 \title{Data processing}
 \usage{
-process_data(controls, sim_par = NA)
+process_data(controls, sim_par)
 }
 \arguments{
 \item{controls}{A list of controls.}
 
-\item{sim_par}{A vector of model parameters for simulation, default \code{NA}.}
+\item{sim_par}{A vector of model parameters for simulation.}
 }
 \value{
 A list of processed data information and on-screen information.
