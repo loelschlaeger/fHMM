@@ -10,3 +10,4 @@ R/predict_hmm.R
 ^doc$
 ^Meta$
 LICENSE
+^\.github$
