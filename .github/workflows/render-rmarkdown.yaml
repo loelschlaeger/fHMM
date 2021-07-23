@@ -2,6 +2,8 @@ on:
   push:
     paths:
       - '**.Rmd'
+      
+name: Rmarkdown
 
 jobs:
   build:
