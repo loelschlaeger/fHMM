@@ -11,3 +11,6 @@ R/predict_hmm.R
 ^Meta$
 LICENSE
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
