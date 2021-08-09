@@ -167,28 +167,41 @@
 See the vignettes on how to specify <code>controls</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>### fitting a 2-state HMM with state-dependent t-distributions to simulated data</span>
-<span class='va'>controls</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-  path    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
-  id      <span class='op'>=</span> <span class='st'>"test"</span>,
-  model   <span class='op'>=</span> <span class='st'>"hmm"</span>,
-  states  <span class='op'>=</span> <span class='fl'>2</span>,
-  sdds    <span class='op'>=</span> <span class='st'>"t"</span>,
-  horizon <span class='op'>=</span> <span class='fl'>200</span>,
-  fit     <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"runs"</span> <span class='op'>=</span> <span class='fl'>10</span>, <span class='st'>"seed"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-<span class='op'>)</span>
-<span class='fu'>fit_hmm</span><span class='op'>(</span><span class='va'>controls</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Controls checked.</span></div><div class='output co'>#&gt; - path: C:\Users\Lennart\AppData\Local\Temp\RtmpC6Tpbp
-#&gt; - model id: test
-#&gt; - model type: hmm
-#&gt; - data type: simulated
-#&gt; - number of states: 2
-#&gt; - SDDs: t
-#&gt; - number of runs: 10 
-#&gt; - seed: 1</div><div class='output co'>#&gt; <span class='message'>Data processed.</span></div><div class='output co'>#&gt; - sample size: 200</div><div class='output co'>#&gt; <span class='message'>Selecting start values...</span></div><div class='output co'>#&gt; <span class='message'>Start values selected.           </span></div><div class='output co'>#&gt; <span class='message'>Estimation finished.</span></div><div class='output co'>#&gt; - estimation time: 1 minute(s)
-#&gt; - accepted runs: 10 out of 10 runs</div><div class='output co'>#&gt; <span class='message'>Computing the Hessian...</span></div><div class='output co'>#&gt; <span class='message'>Hessian computed.           </span></div><div class='output co'>#&gt; <span class='message'>Hidden states decoded.</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'quantmod':</span>
-#&gt; <span class='message'>  method            from</span>
-#&gt; <span class='message'>  as.zoo.data.frame zoo </span></div><div class='output co'>#&gt; <span class='message'>Model results visualized.</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>### fitting a 2-state HMM with state-dependent t-distributions to simulated data</span></span>
+<span class='r-in'><span class='va'>controls</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>  path    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span class='r-in'>  id      <span class='op'>=</span> <span class='st'>"test"</span>,</span>
+<span class='r-in'>  model   <span class='op'>=</span> <span class='st'>"hmm"</span>,</span>
+<span class='r-in'>  states  <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span class='r-in'>  sdds    <span class='op'>=</span> <span class='st'>"t"</span>,</span>
+<span class='r-in'>  horizon <span class='op'>=</span> <span class='fl'>200</span>,</span>
+<span class='r-in'>  fit     <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"runs"</span> <span class='op'>=</span> <span class='fl'>10</span>, <span class='st'>"seed"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>fit_hmm</span><span class='op'>(</span><span class='va'>controls</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Controls checked.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - path: C:\Users\LOELSC~1\AppData\Local\Temp\RtmpmU2dcr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - model id: test</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - model type: hmm</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - data type: simulated</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - number of states: 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - SDDs: t</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - number of runs: 10 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - seed: 1</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Data processed.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - sample size: 200</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Selecting start values...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Start values selected.           </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Estimation finished.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - estimation time: 1 minute(s)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> - accepted runs: 10 out of 10 runs</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Computing the Hessian...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Hessian computed.           </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Hidden states decoded.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Registered S3 method overwritten by 'quantmod':</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   method            from</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>   as.zoo.data.frame zoo </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Model results visualized.</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

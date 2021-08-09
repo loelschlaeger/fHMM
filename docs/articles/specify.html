@@ -84,13 +84,13 @@
 
       
 
-      </header><script src="specify_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><script src="specify_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>How to specify a model in fHMM?</h1>
                         <h4 class="author">Lennart Oelschläger</h4>
             
-            <h4 class="date">2021-07-24</h4>
+            <h4 class="date">2021-08-09</h4>
       
       
       <div class="hidden name"><code>specify.Rmd</code></div>
@@ -102,7 +102,7 @@
 <p>To specify a model in <strong>fHMM</strong>, you only need to define the named list <code>controls</code> and pass it to <code>fit_hmm</code>, i.e.</p>
 <ol style="list-style-type: decimal">
 <li><p>define <code>controls = list(&lt;parameters&gt;)</code> and</p></li>
-<li><p>call <code><a href="../reference/fit_hmm.html">fit_hmm(controls)</a></code> for estimation.</p></li>
+<li><p>call <code>fit_hmm(controls)</code> for estimation.</p></li>
 </ol>
 <p>The list <code>controls</code> can contain the following parameters. You can either specify none, all, or selected parameters. Unspecified parameters are set to default values.</p>
 <div id="path" class="section level2">
