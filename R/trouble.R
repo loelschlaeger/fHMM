@@ -1,15 +1,19 @@
-#' @title Debugging
-#' @description Provides suggestions for debugging for a given exception code.
-#' @param code A character, the exception code.
-#' @return A list containing the following elements:
+#' @title 
+#' Debugging
+#' @description 
+#' Provides suggestions for debugging for a given exception code.
+#' @param code 
+#' A character, the exception code.
+#' @return 
+#' A list containing the following elements:
 #' \item{code}{exception code}
 #' \item{response}{message}
 #' \item{debugging}{suggestions for debugging}
 #' @examples
-#' exception("S.1")
+#' trouble("S.1")
 #' @export
 
-exception = function(code){
+trouble = function(code){
   
   exceptions = data.frame(rbind(
     S.1 = c("Id invalid.","Id already exists in your path, set a unique identifier."),
