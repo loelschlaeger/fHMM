@@ -17,6 +17,7 @@
 
 trouble = function(code){
   
+  ### data frame of exceptions
   exceptions = data.frame(rbind(
     S.1 = c("Id invalid.",
             "Id already exists in your path, set a unique identifier."),
@@ -60,6 +61,7 @@ trouble = function(code){
             "Make sure that dates and names in events are of the same length.")
     ))
   
+  ### return exception
   colnames(exceptions) = c("response","debugging")
   if(code %in% rownames(exceptions)){
     out = list("code" = code, 

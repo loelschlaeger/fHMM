@@ -18,7 +18,7 @@ check_controls = function(controls) {
   ### check redundant controls
   redundant_controls = setdiff(names(controls),all_controls)
   if(length(redundant_controls)>0 & is.null(controls[["controls_checked"]]))
-    warning(sprintf("%s (%s)",exception("C.4")[2],exception("C.4")[1]),call.=FALSE,immediate.=TRUE)
+    warning("C.4", call.=FALSE, immediate.=TRUE)
   
   ### set default control values
   if(!"path" %in% names(controls))                   controls[["path"]] = tempdir()

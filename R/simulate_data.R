@@ -12,7 +12,7 @@
 
 simulate_data = function(controls, sim_par){
   if(is.null(controls[["controls_checked"]]))
-    stop(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
+    stop("F.6")
   if(!is.null(controls[["fit"]][["seed"]]))
     set.seed(controls[["fit"]][["seed"]])
   T = as.numeric(controls[["horizon"]][1])

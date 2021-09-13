@@ -7,9 +7,9 @@
 
 max_likelihood = function(data,controls){
   
-  if(is.null(controls[["controls_checked"]])){
-    stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
-  }
+  if(is.null(controls[["controls_checked"]]))
+    stop("C.1")
+
   if(!is.null(controls[["fit"]][["seed"]])){
     set.seed(controls[["fit"]][["seed"]])
   }
@@ -80,12 +80,12 @@ max_likelihood = function(data,controls){
   
   ### check fails
   fails = failed_start_values(ll_at_start_values)
-  if(length(fails)==runs){
-    stop(sprintf("%s (%s)",exception("F.2")[2],exception("F.2")[1]),call.=FALSE)
-  }
-  if(length(fails)/runs>0.5){
-    warning(sprintf("%s (%s)",exception("F.3")[2],exception("F.3")[1]),call.=FALSE)
-  }
+  if(length(fails)==runs)
+    stop("F.2")
+
+  if(length(fails)/runs>0.5)
+    warning("F.3")
+
   if(length(fails)>0){
     runs_seq = seq_len(runs)[-fails]
   } else {
@@ -116,7 +116,7 @@ max_likelihood = function(data,controls){
   end = Sys.time()
   message("Estimation finished.")
   if(all(is.na(lls))){
-    stop(sprintf("%s (%s)",exception("F.4")[2],exception("F.4")[1]),call.=FALSE)
+    stop("F.4")
   } else {
     ### estimation Info
     writeLines(sprintf("- %s %s minute(s)","estimation time:",ceiling(difftime(end,start,units='mins'))))
