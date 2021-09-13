@@ -4,12 +4,19 @@ Title: Fitting Hidden Markov Models to Financial Data
 Version: 0.3.0.9000
 Date: 2021-06-16
 Authors@R: c(
-    person("Lennart", "Oelschl\U00E4ger", email = "lennart.oelschlaeger@uni-bielefeld.de", role = c("aut", "cre")),
-    person("Timo", "Adam", email = "ta59@st-andrews.ac.uk", role = "aut"),
-    person("Michels", "Rouven", email = "r.michels@uni-bielefeld.de", role = "aut"))
+    person("Lennart", "Oelschl\U00E4ger", 
+           email = "lennart.oelschlaeger@uni-bielefeld.de", 
+           role = c("aut", "cre")),
+    person("Timo", "Adam", 
+           email = "ta59@st-andrews.ac.uk", 
+           role = "aut"),
+    person("Michels", "Rouven", 
+           email = "r.michels@uni-bielefeld.de", 
+           role = "aut"))
 Description: Fitting (hierarchical) hidden Markov models 
     to daily share prices provided by <https://finance.yahoo.com/>.
-    See <https://github.com/loelschlaeger/fHMM#readme> for documentation and examples.
+    See <https://loelschlaeger.github.io/fHMM/> for documentation and examples.
+    See <https://journals.sagepub.com/doi/10.1177/1471082X211034048> for a reference.
 License: GPL-3
 Encoding: UTF-8
 Imports:
