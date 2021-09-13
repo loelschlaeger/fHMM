@@ -1,0 +1,18 @@
+url: https://loelschlaeger.github.io/fHMM/
+
+template:
+  params:
+    bootswatch: simplex
+
+navbar:
+  type: default
+  left:
+  - text: Reference
+    icon: fa-clipboard
+    href: reference/index.html
+  - text: Changelog
+    icon: fa-wrench
+    href: news/index.html
+  - text: GitHub Repository
+    icon: fa-github fa-lg
+    href: https://github.com/loelschlaeger/fHMM
