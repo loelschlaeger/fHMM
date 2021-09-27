@@ -14,19 +14,19 @@ controls = list(
 )
 
 ### fit (H)HMM
-controls = setup(controls)
-true_parameter = set_true(controls)
-data = process_data(controls, true_parameter = NULL)
-fit = max_likelihood(data,controls)
-decoding = apply_viterbi(data,fit,controls)
+controls = set_controls(controls)
+parameter = set_parameter(controls)
+data = prepare_data(controls, true_parameter = NULL)
+fit = fit_model(data, controls)
+decoding = perform_decoding(data, model ,controls)
 
 ### visualize model results
-colors = get_colors(controls)
-plot_sdd(controls,data,fit,decoding, colors)
+colors = set_colors(controls)
+plot_sdd(controls, data, model, decoding, colors)
 events = list(
   dates = c("2001-09-11","2008-09-15","2020-01-27"),
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
 )
-plot_ts(controls,data,decoding,colors,events)
-pseudo_residuals(controls,data,fit,decoding)
+plot_ts(controls, data, decoding, colors, events)
+pseudo_residuals(controls, data, model, decoding)
 
