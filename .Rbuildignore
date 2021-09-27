@@ -4,9 +4,7 @@
 sticker/
 models/
 data/
-load_code.R
 sandbox.R
-R/predict_hmm.R
 ^doc$
 ^Meta$
 LICENSE

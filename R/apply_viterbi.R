@@ -1,15 +1,20 @@
-#' @title Viterbi algorithm
-#' @description Applies the Viterbi algorithm (<https://en.wikipedia.org/wiki/Viterbi_algorithm>) for state decoding.
-#' @param data A list of processed data information.
-#' @param fit A list of fitted model information.
-#' @param controls A list of controls.
-#' @return A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.
+#' Viterbi algorithm.
+#' @description 
+#' Applies the Viterbi algorithm 
+#' <https://en.wikipedia.org/wiki/Viterbi_algorithm> for state decoding.
+#' @param data 
+#' A list of processed data information.
+#' @param fit 
+#' A list of fitted model information.
+#' @param controls 
+#' A list of controls.
+#' @return 
+#' A vector (in case of a HMM) or a matrix (in case of a hierarchical HMM) of decoded states.
 
-apply_viterbi = function(data,fit,controls){
+apply_viterbi = function(data, fit, controls){
   
-  if(is.null(controls[["controls_checked"]])){
-    stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
-  }
+  if(is.null(controls[["controls_checked"]]))
+    stop("C.1")
   
   ### definition of the Viterbi algorithm for state decoding
   viterbi = function(observations,nstates,Gamma,mus,sigmas,dfs,sdd){

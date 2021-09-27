@@ -7,8 +7,8 @@
 process_data = function(controls,sim_par){
   
   if(is.null(controls[["controls_checked"]]))
-    stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
-  
+    stop("C.1")
+
   ### process data
   if(controls[["sim"]])
     data = simulate_data(controls,sim_par)
@@ -18,17 +18,14 @@ process_data = function(controls,sim_par){
   
   ### check for improper use of state-dependent gamma distribution
   if(controls[["model"]]=="hmm"){
-    if(controls[["sdds"]][1]=="gamma" & any(data[["data"]]<0)){
-      stop(sprintf("%s (%s)",exception("C.7")[2],exception("C.7")[1]),call.=FALSE)
-    }
+    if(controls[["sdds"]][1]=="gamma" & any(data[["data"]]<0))
+      stop("C.7")
   }
   if(controls[["model"]]=="hhmm"){
-    if(controls[["sdds"]][1]=="gamma" & any(data[["data"]][,1]<0)){
-      stop(sprintf("%s (%s)",exception("C.7")[2],exception("C.7")[1]),call.=FALSE)
-    }
-    if(controls[["sdds"]][2]=="gamma" & any(data[["data"]][,-1]<0,na.rm=TRUE)){
-      stop(sprintf("%s (%s)",exception("C.7")[2],exception("C.7")[1]),call.=FALSE)
-    }
+    if(controls[["sdds"]][1]=="gamma" & any(data[["data"]][,1]<0))
+      stop("C.7")
+    if(controls[["sdds"]][2]=="gamma" & any(data[["data"]][,-1]<0,na.rm=TRUE))
+      stop("C.7")
   }
   
   ### print data characteristics

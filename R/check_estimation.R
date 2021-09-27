@@ -27,15 +27,18 @@ check_estimation = function(mods,lls,data,hessian,controls){
   hessianOrdered[is.na(hessianOrdered)] = 0
   
   ### check if iteration limit was reached
-  if(mod[["iterations"]] >= controls[["fit"]][["iterlim"]]){
-    warning(sprintf("%s (%s)",exception("C.5")[2],exception("C.5")[1]),call.=FALSE)
-  }
+  if(mod[["iterations"]] >= controls[["fit"]][["iterlim"]])
+    warning("C.5",call.=FALSE)
   
   ### detect unidentified states
   check_unid_states = function(matrix_list){
     flag = FALSE
-    for(matrix in matrix_list) for(x in c(0,1)) if(any(abs(suppressWarnings(Gamma2delta(matrix))-x)<1e-04)==TRUE) flag = TRUE
-    if(flag) warning(sprintf("%s (%s)",exception("C.6")[2],exception("C.6")[1]),call.=FALSE)
+    for(matrix in matrix_list) 
+      for(x in c(0,1)) 
+        if(any(abs(suppressWarnings(Gamma2delta(matrix))-x)<1e-04)==TRUE) 
+          flag = TRUE
+    if(flag) 
+      warning("C.6", call.=FALSE)
   }
   if(controls[["model"]]=="HMM"){
     check_unid_states(list(thetaList[["Gamma"]]))

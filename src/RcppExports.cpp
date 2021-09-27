@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // LL_HHMM_Rcpp
 double LL_HHMM_Rcpp(arma::mat log_likelihoods, arma::mat allprobs, arma::mat Gamma, arma::vec delta, int M, int T);
 RcppExport SEXP _fHMM_LL_HHMM_Rcpp(SEXP log_likelihoodsSEXP, SEXP allprobsSEXP, SEXP GammaSEXP, SEXP deltaSEXP, SEXP MSEXP, SEXP TSEXP) {

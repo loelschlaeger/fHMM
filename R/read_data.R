@@ -12,7 +12,7 @@
 read_data = function(controls){
   
   if(is.null(controls[["controls_checked"]]))
-    stop(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
+    stop("F.6")
   
   data_source = controls[["data"]][["source"]]
   data_col = controls[["data"]][["column"]]
@@ -25,9 +25,9 @@ read_data = function(controls){
       
       ### extract data
       data_raw[[i]] = read.csv(file=paste0(controls[["path"]],"/data/",data_source[i]),header=TRUE,sep=",",na.strings="null")
-      if(!"Date" %in% colnames(data_raw[[i]]) || !data_col[i] %in% colnames(data_raw[[i]])){
-        stop(sprintf("%s (%s)",exception("D.4")[2],exception("D.4")[1]),call.=FALSE)
-      }
+      if(!"Date" %in% colnames(data_raw[[i]]) || !data_col[i] %in% colnames(data_raw[[i]]))
+        stop("D.4")
+
       data_raw[[i]] = data_raw[[i]][,colnames(data_raw[[i]]) %in% c("Date",data_col[i]), drop = FALSE]
       data_raw[[i]][["Date"]] = as.Date(data_raw[[i]][["Date"]], format="%Y-%m-%d")
       data_raw[[i]][[data_col[i]]] = as.numeric(data_raw[[i]][[data_col[i]]])

@@ -1,5 +1,6 @@
-# fHMM <img src='sticker/StickerShadesOfBlue.png' align="right" height="136" />
+# fHMM <img src="man/figures/sticker.png" align="right" height=136 />
 
+[![R-CMD-check](https://github.com/loelschlaeger/fHMM/workflows/R-CMD-check/badge.svg)](https://github.com/loelschlaeger/fHMM/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
 

@@ -49,7 +49,7 @@ download_data = function(name=NA, symbol=NA, from="1902-01-01", to=Sys.Date(), s
     ### define minimum date 'from'
     min_date = as.Date("1902-01-01")
     if(from < min_date){
-      warning(sprintf("%s (%s)",exception("D.1")[2],exception("D.1")[1]),call.=FALSE)
+      warning("D.1")
       from = min_date
     }
     ### function to create finance.yahoo.com-URL
@@ -68,7 +68,7 @@ download_data = function(name=NA, symbol=NA, from="1902-01-01", to=Sys.Date(), s
       if(name %in% stock_symbols[["name"]]){
         symbol = stock_symbols[which(stock_symbols["name"]==name),"symbol"]
       } else {
-        stop(sprintf("%s (%s)",exception("D.2")[2],exception("D.2")[1]),call.=FALSE)
+        stop("D.2")
       }
     } else {
       if(name %in% stock_symbols["name"]){
@@ -76,7 +76,7 @@ download_data = function(name=NA, symbol=NA, from="1902-01-01", to=Sys.Date(), s
       } else {
         read_try = suppressWarnings(try(read.csv(create_url(symbol,from,to)),silent=TRUE))
         if(inherits(read_try, "try-error")){
-          stop(sprintf("%s (%s)",exception("D.3")[2],exception("D.3")[1]),call.=FALSE)
+          stop("D.3")
         } else {
           ### save new symbol
           stock_symbols[nrow(stock_symbols)+1,] = c(name,symbol)

@@ -10,16 +10,14 @@
 create_visuals = function(data,fit,decoding,controls,events){
   
   ### pre-checks
-  if(is.na(controls[["controls_checked"]])){
-    stop(sprintf("%s (%s)",exception("C.1")[2],exception("C.1")[1]),call.=FALSE)
-  }
+  if(is.na(controls[["controls_checked"]]))
+    stop("C.1")
   if(controls[["sim"]] & !is.null(events)){
     events = NULL
-    warning(sprintf("%s (%s)",exception("V.1")[2],exception("V.1")[1]),call.=FALSE)
+    warning("V.1")
   } else {
-    if(length(events[["dates"]])!=length(events[["names"]])){
-      stop(sprintf("%s (%s)",exception("V.2")[2],exception("V.2")[1]),call.=FALSE)
-    }
+    if(length(events[["dates"]])!=length(events[["names"]]))
+      stop("V.2")
   }
   
   ### save events

@@ -9,13 +9,11 @@
 #' where \code{ci_level} is set in \code{controls}.
 
 compute_ci = function(fit,controls){
-  if(is.null(controls[["controls_checked"]])){
-    stop(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
-  }
+  if(is.null(controls[["controls_checked"]]))
+    stop("F.6")
   ci_level = controls[["results"]][["ci_level"]]
-  if(ci_level < 0 | ci_level > 1){
-    stop(sprintf("%s (%s)",exception("F.5")[2],exception("F.5")[1]),call.=FALSE)
-  }
+  if(ci_level < 0 | ci_level > 1)
+    stop("F.5")
   
   ### extract estimates
   fisher = fit[["hessian"]]
@@ -32,9 +30,8 @@ compute_ci = function(fit,controls){
   upper_limit[diag(inv_fisher) < 0] = NA
   out = lapply(list(lower_limit, estimatesUncon, upper_limit),thetaUncon2thetaCon,controls)
   names(out) = c(paste0("lb_",ci_level),"estimate",paste0("ub_",ci_level))
-  if(any(is.na(out))) {
-    warning(sprintf("%s (%s)",exception("F.6")[2],exception("F.6")[1]),call.=FALSE)
-  }
+  if(any(is.na(out)))
+    warning("F.6")
   
   return(out)
 }

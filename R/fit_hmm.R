@@ -37,7 +37,7 @@ fit_hmm = function(controls, events, sim_par){
   if(is.null(controls[["id"]]))
     controls[["id"]] = "test"
   if(!dir.exists(controls[["path"]]))
-    stop(sprintf("%s (%s)",exception("S.3")[2],exception("S.3")[1]))
+    stop("S.3")
   
   ### create folder
   if(!dir.exists(paste0(controls[["path"]],"/models")))
@@ -45,7 +45,7 @@ fit_hmm = function(controls, events, sim_par){
   if(!dir.exists(paste0(controls[["path"]],"/data")))
     dir.create(paste0(controls[["path"]],"/data"))
   if(dir.exists(paste0(controls[["path"]],"/models/",controls[["id"]])) & controls[["id"]]!="test"){
-    stop(sprintf("%s (%s)",exception("S.1")[2],exception("S.1")[1]))
+    stop("S.1")
   } else {
     if(!dir.exists(paste0(controls[["path"]],"/models/",controls[["id"]])))
       dir.create(paste0(controls[["path"]],"/models/",controls[["id"]]))

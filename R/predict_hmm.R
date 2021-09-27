@@ -1,9 +1,9 @@
-#' @title 
-#' @description 
+#' Prediction
+#' @description
+#' This function...
 #' @return 
-#' @examples 
-#' @export
+#' \code{NULL}
 
-predict_hmm = function() {
+predict = function() {
   
 }

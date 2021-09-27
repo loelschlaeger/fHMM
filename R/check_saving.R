@@ -23,7 +23,7 @@ check_saving = function(object=NULL,name=NULL,filetype,controls){
   if(!file.exists(filename) || controls[["results"]][["overwrite"]]){
     if(filetype == "rds") saveRDS(object,file=filename) else return(TRUE)
   } else {
-    warning(sprintf("%s (%s)",exception("S.2")[2],exception("S.2")[1]),call.=FALSE)
+    warning("S.2", call. = FALSE)
     return(FALSE)
   }
 }
