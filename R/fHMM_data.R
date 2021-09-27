@@ -144,8 +144,7 @@ prepare_data = function(controls, true_parameter){
 #' \item{T_star}{A vector of fine-scale chunk sizes.}
 
 simulate_data = function(controls, true_parameter){
-  if(is.null(controls[["controls_checked"]]))
-    stop("F.6")
+
   if(!is.null(controls[["fit"]][["seed"]]))
     set.seed(controls[["fit"]][["seed"]])
   T = as.numeric(controls[["horizon"]][1])
