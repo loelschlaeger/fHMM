@@ -5,7 +5,7 @@
 #' @return A list of fitted model information.
 #' @details Uses \code{nlm} for numerical optimization.
 
-fit = function(data,controls){
+fit_model = function(data,controls){
 
   if(!is.null(controls[["fit"]][["seed"]])){
     set.seed(controls[["fit"]][["seed"]])
