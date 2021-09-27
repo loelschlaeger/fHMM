@@ -1,19 +1,26 @@
-#' @title Check controls
-#' @description This function checks the specification of \code{controls}. 
-#' @details See the vignettes on how to specify \code{controls}.
-#' @param controls A list of controls.
-#' @return Checked version of \code{controls}. 
+#' Set and check controls for the fHMM package.
+#' @description 
+#' This function sets and checks the specification of controls for the fHMM 
+#' package. 
+#' @details 
+#' See the vignettes on how to specify \code{controls}.
+#' @param controls 
+#' A list of controls.
+#' @return 
+#' An object of class \code{RprobitB_controls}. 
+#' @export
 
-setup = function(controls) {
+set_controls = function(controls = NULL) {
   
   ### define names of all controls
-  all_controls = c("path","id","model","states","sdds","horizon","data","fit","results")
+  all_controls = c("path","model","states","sdds","horizon","data","fit")
   data_controls = c("source","column","truncate","cs_transform")
-  fit_controls = c("runs","at_true","seed","accept","print.level","gradtol","steptol","stepmax","steptol","iterlim","scale_par")
-  results_controls = c("overwrite","ci_level")
+  fit_controls = c("runs","at_true","seed","accept","print.level","gradtol",
+                   "steptol","stepmax","steptol","iterlim")
   
   ### initialize controls
-  if(missing(controls) || is.null(controls)) controls = list()
+  if(is.null(controls)) 
+    controls = list()
   
   ### check redundant controls
   redundant_controls = setdiff(names(controls),all_controls)
@@ -21,50 +28,63 @@ setup = function(controls) {
     warning("C.4", call.=FALSE, immediate.=TRUE)
   
   ### set default control values
-  if(!"path" %in% names(controls))                   controls[["path"]] = tempdir()
-  if(!"id" %in% names(controls))                     controls[["id"]] = "test"
-  if(!"model" %in% names(controls))                  controls[["model"]] = "hmm"
-  if(!"states" %in% names(controls))                 controls[["states"]] = 2
-  if(!"sdds" %in% names(controls))                   controls[["sdds"]] = "t"
-  if(!"horizon" %in% names(controls))                controls[["horizon"]] = 1000
+  if(!"path" %in% names(controls))                   
+    controls[["path"]] = tempdir()
+  if(!"model" %in% names(controls))                  
+    controls[["model"]] = "hmm"
+  if(!"states" %in% names(controls))                 
+    controls[["states"]] = 2
+  if(!"sdds" %in% names(controls))                   
+    controls[["sdds"]] = "t"
+  if(!"horizon" %in% names(controls))                
+    controls[["horizon"]] = 1000
   
   if(!"data" %in% names(controls)){
-                                                     controls[["data"]] = NA
+    controls[["data"]] = NA
   } else {
     if(!"source" %in% names(controls[["data"]])){
-      if(controls[["model"]] == "hmm")                 controls[["data"]][["source"]] = NA
-      if(controls[["model"]] == "hhmm")                controls[["data"]][["source"]] = c(NA,NA)
+      if(controls[["model"]] == "hmm")                 
+        controls[["data"]][["source"]] = NA
+      if(controls[["model"]] == "hhmm")                
+        controls[["data"]][["source"]] = c(NA,NA)
     }
     if(!"column" %in% names(controls[["data"]])){
-      if(controls[["model"]] == "hmm")                 controls[["data"]][["column"]] = NA
-      if(controls[["model"]] == "hhmm")                controls[["data"]][["column"]] = c(NA,NA)
+      if(controls[["model"]] == "hmm")                 
+        controls[["data"]][["column"]] = NA
+      if(controls[["model"]] == "hhmm")                
+        controls[["data"]][["column"]] = c(NA,NA)
     }
-    if(!"truncate" %in% names(controls[["data"]]))     controls[["data"]][["truncate"]] = c(NA,NA)
-    if(!"cs_transform" %in% names(controls[["data"]])) controls[["data"]][["cs_transform"]] = NA
+    if(!"truncate" %in% names(controls[["data"]]))     
+      controls[["data"]][["truncate"]] = c(NA,NA)
+    if(!"cs_transform" %in% names(controls[["data"]])) 
+      controls[["data"]][["cs_transform"]] = NA
     if(!"log_returns" %in% names(controls[["data"]])){
-      if(controls[["model"]] == "hmm")                 controls[["data"]][["log_returns"]] = TRUE
-      if(controls[["model"]] == "hhmm")                controls[["data"]][["log_returns"]] = c(TRUE,TRUE)
+      if(controls[["model"]] == "hmm")                 
+        controls[["data"]][["log_returns"]] = TRUE
+      if(controls[["model"]] == "hhmm")                
+        controls[["data"]][["log_returns"]] = c(TRUE,TRUE)
     }
   }
   
-  if(!"fit" %in% names(controls))                    controls[["fit"]] = list()
-  if(!"runs" %in% names(controls[["fit"]]))          controls[["fit"]][["runs"]] = 100
-  if(!"at_true" %in% names(controls[["fit"]]))       controls[["fit"]][["at_true"]] = FALSE
-  if(!"accept" %in% names(controls[["fit"]]))        controls[["fit"]][["accept"]] = c(1,2)
-  if(!"print.level" %in% names(controls[["fit"]]))   controls[["fit"]][["print.level"]] = 0
-  if(!"gradtol" %in% names(controls[["fit"]]))       controls[["fit"]][["gradtol"]] = 1e-6
-  if(!"stepmax" %in% names(controls[["fit"]]))       controls[["fit"]][["stepmax"]] = 1
-  if(!"steptol" %in% names(controls[["fit"]]))       controls[["fit"]][["steptol"]] = 1e-6
-  if(!"iterlim" %in% names(controls[["fit"]]))       controls[["fit"]][["iterlim"]] = 200
-  if(!"scale_par" %in% names(controls[["fit"]])){
-    if(controls[["model"]] == "hmm")                 controls[["fit"]][["scale_par"]] = 1
-    if(controls[["model"]] == "hhmm")                controls[["fit"]][["scale_par"]] = c(1,1)
-  }
-  
-  if(!"results" %in% names(controls))                controls[["results"]] = list()
-  if(!"overwrite" %in% names(controls[["results"]])) controls[["results"]][["overwrite"]] = FALSE
-  if(!"ci_level" %in% names(controls[["results"]]))  controls[["results"]][["ci_level"]] = 0.95
-  
+  if(!"fit" %in% names(controls))                    
+    controls[["fit"]] = list()
+  if(!"runs" %in% names(controls[["fit"]]))          
+    controls[["fit"]][["runs"]] = 100
+  if(!"at_true" %in% names(controls[["fit"]]))       
+    controls[["fit"]][["at_true"]] = FALSE
+  if(!"accept" %in% names(controls[["fit"]]))        
+    controls[["fit"]][["accept"]] = c(1,2)
+  if(!"print.level" %in% names(controls[["fit"]]))   
+    controls[["fit"]][["print.level"]] = 0
+  if(!"gradtol" %in% names(controls[["fit"]]))       
+    controls[["fit"]][["gradtol"]] = 1e-6
+  if(!"stepmax" %in% names(controls[["fit"]]))       
+    controls[["fit"]][["stepmax"]] = 1
+  if(!"steptol" %in% names(controls[["fit"]]))      
+    controls[["fit"]][["steptol"]] = 1e-6
+  if(!"iterlim" %in% names(controls[["fit"]]))       
+    controls[["fit"]][["iterlim"]] = 200
+
   ### define control that defines if data gets simulated
   if(is.list(controls[["data"]])) {
     if(length(controls[["data"]]) == 0){
@@ -91,9 +111,10 @@ setup = function(controls) {
   is.integer = function(x) is.numeric(x) && x>=0 && x%%1==0
   
   ### check single controls
-  if(!is.character(controls[["path"]])) stop("The control 'path' must be a character.")
-  if(!is.character(controls[["id"]])) stop("The control 'id' must be a character.")
-  if(!controls[["model"]] %in% c("hmm","hhmm")) stop("The control 'model' must be one of 'hmm' or 'hhmm'.")
+  if(!is.character(controls[["path"]])) 
+    stop("The control 'path' must be a character.")
+  if(!controls[["model"]] %in% c("hmm","hhmm")) 
+    stop("The control 'model' must be one of 'hmm' or 'hhmm'.")
   if(controls[["model"]] == "hmm") 
     if(!(is.integer(controls[["states"]]) & length(controls[["states"]]) == 1 & all(controls[["states"]] >= 2))) 
       stop("The control 'states' must be an integer greater or equal 2.")
@@ -148,12 +169,6 @@ setup = function(controls) {
   if(any(controls[["fit"]][["accept"]]=="all"))
     controls[["fit"]][["accept"]] = 1:5
   
-  
-  ### check 'results' controls
-  if(controls[["id"]]=="test" & !controls[["results"]][["overwrite"]]){
-    controls[["results"]][["overwrite"]] = TRUE
-  }
-  
   ### check if data paths are correct
   if(!controls[["sim"]]){
     for(i in c(1,2)){
@@ -176,23 +191,40 @@ setup = function(controls) {
   return(controls)
 }
   
+#' Print method for \code{fHMM_controls}.
+#' @description 
+#' This function is the print method for an object of class \code{fHMM_controls}.
+#' @param x
+#' An object of class \code{fHMM_controls}.
+#' @param ...
+#' Ignored.
+#' @return
+#' Returns \code{x} invisibly.
+#' No return value.
+#' @export
+
 print.fHMM_controls = function(x, ...) {
-  ### print model specification
-  writeLines(sprintf("- %s %s","path:",controls[["path"]]))
-  writeLines(sprintf("- %s %s","model id:",controls[["id"]]))
-  writeLines(sprintf("- %s %s","model type:",controls[["model"]]))
-  if(controls[["sim"]])
-    writeLines(sprintf("- %s %s","data type:","simulated"))
-  if(!controls[["sim"]])
-    writeLines(sprintf("- %s %s","data type:","empirical"))
-  if(controls[["model"]]=="hmm") {
-    writeLines(sprintf("- %s %s","number of states:",controls[["states"]][1]))
-    writeLines(sprintf("- %s %s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),""))))
+  cat("Controls:\n")
+  cat("> path:", x[["path"]], "\n")
+  cat("> model type:", x[["model"]], "\n")
+  cat("> data type:", ifelse(x[["sim"]],"simulated","empirical"), "\n")
+  if(x[["model"]] == "hmm") {
+    cat("> number of states:", x[["states"]][1], "\n")
+    cat("> SDDs:", paste0(x[["sdds"]][1],
+                          ifelse(!is.na(x[["fixed_dfs"]][1]),
+                                 paste0("(",x[["fixed_dfs"]][1],")"),"")),"\n")
   }
-  if(controls[["model"]]=="hhmm") {
-    writeLines(sprintf("- %s %s / %s","number of states:",controls[["states"]][1],controls[["states"]][2]))
-    writeLines(sprintf("- %s %s / %s","SDDs:",paste0(controls[["sdds"]][1],ifelse(!is.na(controls[["fixed_dfs"]][1]),paste0("(",controls[["fixed_dfs"]][1],")"),"")),paste0(controls[["sdds"]][2],ifelse(!is.na(controls[["fixed_dfs"]][2]),paste0("(",controls[["fixed_dfs"]][2],")"),""))))
+  if(x[["model"]] == "hhmm") {
+    cat("> number of states:", x[["states"]][1], x[["states"]][2], "\n")
+    cat("> SDDs:", paste0(x[["sdds"]][1],
+                          ifelse(!is.na(x[["fixed_dfs"]][1]),
+                                 paste0("(",x[["fixed_dfs"]][1],")"),"")),
+        paste0(x[["sdds"]][2],
+               ifelse(!is.na(x[["fixed_dfs"]][2]),
+                      paste0("(",x[["fixed_dfs"]][2],")"),"")),"\n")
   }
-  writeLines(sprintf("- %s %s %s","number of runs:",controls[["fit"]][["runs"]],ifelse(controls[["fit"]][["at_true"]],"(initialised at true values)","")))
-  if(!is.null(controls[["fit"]][["seed"]])) writeLines(sprintf("- %s %s","seed:",controls[["fit"]][["seed"]]))
+  cat("> number of runs:", x[["fit"]][["runs"]], 
+      ifelse(x[["fit"]][["at_true"]],"(initialised at true values)",""),"\n")
+  if(!is.null(x[["fit"]][["seed"]])) 
+    cat("> seed:",x[["fit"]][["seed"]],"\n")
 }
