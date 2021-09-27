@@ -1,7 +1,5 @@
-rm(list = ls()); cat("\f")
-
-### initialize code
-source("load_code.R")
+### load code
+devtools::load_all()
 
 ### download data (optional)
 download_data(name = "dax", symbol = "^GDAXI", path=".")
