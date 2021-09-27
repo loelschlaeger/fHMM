@@ -5,7 +5,7 @@
 #' @return A list of fitted model information.
 #' @details Uses \code{nlm} for numerical optimization.
 
-max_likelihood = function(data,controls){
+fit = function(data,controls){
 
   if(!is.null(controls[["fit"]][["seed"]])){
     set.seed(controls[["fit"]][["seed"]])
