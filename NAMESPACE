@@ -3,7 +3,6 @@ useDynLib("fHMM")
 S3method(print,fHMM_trouble)
 
 export(download_data)
-export(fit_hmm)
 export(trouble)
 
 import(Rcpp)

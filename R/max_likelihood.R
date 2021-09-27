@@ -6,9 +6,6 @@
 #' @details Uses \code{nlm} for numerical optimization.
 
 max_likelihood = function(data,controls){
-  
-  if(is.null(controls[["controls_checked"]]))
-    stop("C.1")
 
   if(!is.null(controls[["fit"]][["seed"]])){
     set.seed(controls[["fit"]][["seed"]])
@@ -92,26 +89,17 @@ max_likelihood = function(data,controls){
     runs_seq = seq_len(runs)
   }
   
-  ### define progress-bar
-  pb = progress::progress_bar$new(
-    format = "Estimation: [:bar] :percent, :eta ETA", 
-    total = length(runs_seq), 
-    clear = TRUE, 
-    width = 45, 
-    show_after = 0
-  )
-  
   ### start maximization
-  start = Sys.time()
+  start_time = Sys.time()
+  progress(run = 0, total_runs = length(runs_seq), start_time = start_time)
   for (run in runs_seq){
-    pb$tick(0)
     suppressWarnings({ tryCatch({ mods[[run]] = optimized(start_values[[run]])
     if(mods[[run]][["code"]] %in% controls[["fit"]][["accept"]] || controls[["fit"]][["at_true"]]){
       lls[run] = -mods[[run]]$minimum
     }
     },error = function(e){})
     })
-    pb$tick()
+    progress(run = run, total_runs = length(runs_seq), start_time = start_time)
   }
   end = Sys.time()
   message("Estimation finished.")
@@ -119,7 +107,7 @@ max_likelihood = function(data,controls){
     stop("F.4")
   } else {
     ### estimation Info
-    writeLines(sprintf("- %s %s minute(s)","estimation time:",ceiling(difftime(end,start,units='mins'))))
+    writeLines(sprintf("- %s %s minute(s)","estimation time:",ceiling(difftime(end,start_time,units='mins'))))
     if(!controls[["fit"]][["at_true"]]){
       writeLines(sprintf("- %s %s out of %s runs","accepted runs:",sum(!is.na(lls)),length(lls)))
     }

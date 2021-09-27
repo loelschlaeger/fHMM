@@ -4,7 +4,7 @@
 #' @param controls A list of controls.
 #' @return Checked version of \code{controls}. 
 
-check_controls = function(controls) {
+setup = function(controls) {
   
   ### define names of all controls
   all_controls = c("path","id","model","states","sdds","horizon","data","fit","results")
@@ -171,10 +171,12 @@ check_controls = function(controls) {
     }
   }
   
-  ### end of checks
-  message("Controls checked.")
-  controls[["controls_checked"]] = TRUE
+  ### return controls
+  class(controls) = "fHMM_controls"
+  return(controls)
+}
   
+print.fHMM_controls = function(x, ...) {
   ### print model specification
   writeLines(sprintf("- %s %s","path:",controls[["path"]]))
   writeLines(sprintf("- %s %s","model id:",controls[["id"]]))
@@ -193,11 +195,4 @@ check_controls = function(controls) {
   }
   writeLines(sprintf("- %s %s %s","number of runs:",controls[["fit"]][["runs"]],ifelse(controls[["fit"]][["at_true"]],"(initialised at true values)","")))
   if(!is.null(controls[["fit"]][["seed"]])) writeLines(sprintf("- %s %s","seed:",controls[["fit"]][["seed"]]))
-  
-  ### save controls
-  check_saving(object = controls, filetype = "rds", controls = controls)
-  
-  ### return controls
-  return(controls)
 }
-  

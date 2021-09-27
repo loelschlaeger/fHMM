@@ -1,7 +1,7 @@
 #' @title Data simulation
 #' @description Simulates data from a (hierarchical) hidden Markov model.
 #' @param controls A list of controls.
-#' @param sim_par A list of model parameters for simulation in \code{thetaList} format.
+#' @param true_parameter A list of model parameters for simulation in \code{thetaList} format.
 #' @return A list containing the following elements:
 #' \item{data}{A matrix of simulated data.}
 #' \item{states0}{A matrix of simulated hidden states.}
@@ -10,7 +10,7 @@
 #' \item{thetaList0}{True parameters in format \code{thetaList}.}
 #' \item{T_star}{A vector of fine-scale chunk sizes.}
 
-simulate_data = function(controls, sim_par){
+simulate_data = function(controls, true_parameter){
   if(is.null(controls[["controls_checked"]]))
     stop("F.6")
   if(!is.null(controls[["fit"]][["seed"]]))
@@ -18,8 +18,8 @@ simulate_data = function(controls, sim_par){
   T = as.numeric(controls[["horizon"]][1])
   
   ### define simulation parameters
-  if(!is.null(sim_par)){
-    thetaUncon = thetaList2thetaUncon(sim_par,controls)
+  if(!is.null(true_parameter)){
+    thetaUncon = thetaList2thetaUncon(true_parameter,controls)
   } else {
     thetaUncon = init_est(controls)
   }

@@ -1,20 +1,5 @@
-#' @title Data processing
-#' @description Calls functions for processing or simulating data.
-#' @param controls A list of controls.
-#' @param true_parameter A vector of model parameters for simulation.
-#' @return A list of processed data information and on-screen information.
-
-process_data = function(controls,true_parameter){
-  
-  if(is.null(controls[["controls_checked"]]))
-    stop("C.1")
-
-  ### process data
-  if(controls[["sim"]])
-    data = simulate_data(controls,true_parameter)
-  if(!controls[["sim"]])
-    data = read_data(controls)
-  message("Data processed.")
+fHMM_data = function(data, dates, states, simulated, path, source, column, truncate, 
+                     log_returns, true_parameters) {
   
   ### check for improper use of state-dependent gamma distribution
   if(controls[["model"]]=="hmm"){
@@ -27,6 +12,17 @@ process_data = function(controls,true_parameter){
     if(controls[["sdds"]][2]=="gamma" & any(data[["data"]][,-1]<0,na.rm=TRUE))
       stop("C.7")
   }
+}
+
+print.fHMM_data = function() {
+  
+}
+
+summary.fHMM_data = function() {
+  
+}
+
+print.summary.fHMM_data = function() {
   
   ### print data characteristics
   if(controls[["sim"]]){
@@ -60,9 +56,4 @@ process_data = function(controls,true_parameter){
     }
   }
   
-  ### save data object
-  check_saving(object = data, filetype = "rds", controls = controls)
-  
-  ### return data object
-  return(data)
 }
