@@ -3,11 +3,20 @@
 #' This function sets and checks the specification of controls for the fHMM 
 #' package. 
 #' @details 
-#' See the vignettes on how to specify \code{controls}.
+#' See the vignettes for more information on how to specify \code{controls}.
 #' @param controls 
-#' A list of controls.
+#' A list of controls. <Add more information here.>
 #' @return 
 #' An object of class \code{RprobitB_controls}. 
+#' @examples 
+#' controls = list(
+#'   path    = ".",
+#'   states  = 2,
+#'   sdds    = "t",
+#'   horizon = 400,
+#'   fit     = list("runs" = 50)
+#' )
+#' set_controls(controls)
 #' @export
 
 set_controls = function(controls = NULL) {
@@ -25,7 +34,7 @@ set_controls = function(controls = NULL) {
   ### check redundant controls
   redundant_controls = setdiff(names(controls),all_controls)
   if(length(redundant_controls)>0 & is.null(controls[["controls_checked"]]))
-    warning("C.4", call.=FALSE, immediate.=TRUE)
+    warning("C1", call.=FALSE, immediate.=TRUE)
   
   ### set default control values
   if(!"path" %in% names(controls))                   
