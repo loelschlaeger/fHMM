@@ -1,164 +1,15 @@
-#' Unconstrains expected values.
-#' @param muCon Vector of constrained expected values.
-#' @param link Boolean, determining whether to apply the link function.
-#' @return Vector of unconstrained expected values.
-#' @keywords internal
+#' This function transforms constrained model parameters from the vector form 
+#' \code{thetaCon} to the list form \code{thetaList}.
+#' @param thetaCon 
+#' A vector of constrained model parameters.
+#' @param controls 
+#' A list of controls.
+#' @return 
+#' A list of constrained model parameters.
+#' @keywords 
+#' internal
 
-muCon2muUncon = function(muCon,link){
-  if(link) muUncon = log(muCon)
-  if(!link) muUncon = muCon
-  return(muUncon)
-}
-
-#' Constrains expected values.
-#' @param muUncon Vector of unconstrained expected values.
-#' @param link Boolean, determining whether to apply the link function.
-#' @return Vector of constrained expected values.
-#' @keywords internal
-
-muUncon2muCon = function(muUncon,link){
-  if(link) muCon = exp(muUncon)
-  if(!link) muCon = muUncon
-  return(muCon)
-}
-
-#' Unconstrains standard deviations.
-#' @param sigmaCon Vector of constrained standard deviations.
-#' @return Vector of unconstrained standard deviations.
-#' @keywords internal
-
-sigmaCon2sigmaUncon = function(sigmaCon){
-  return(log(sigmaCon))
-}
-
-#' Constrains standard deviations.
-#' @param sigmaUncon Vector of unconstrained standard deviations.
-#' @return Vector of constrained standard deviations.
-#' @keywords internal
-
-sigmaUncon2sigmaCon = function(sigmaUncon){
-  return(exp(sigmaUncon))
-}
-
-#' Unconstrains degrees of freedom.
-#' @param dfCon Numeric, constrained degrees of freedom.
-#' @return Numeric, unconstrained degrees of freedom.
-#' @keywords internal
-
-dfCon2dfUncon = function(dfCon){
-  return(log(dfCon))
-}
-
-#' Constrains degrees of freedom.
-#' @param dfUncon Numeric, unconstrained degrees of freedom.
-#' @return Numeric, constrained degrees of freedom.
-#' @keywords internal
-
-dfUncon2dfCon = function(dfUncon){
-  return(exp(dfUncon))
-}
-
-#' Computes stationary distribution of transition probability matrix.
-#' @param Gamma Transition probability matrix.
-#' @return Stationary distribution vector.
-#' @keywords internal
-
-Gamma2delta = function(Gamma){
-  dim   = dim(Gamma)[1]
-  if(class(try(solve(t(diag(dim)-Gamma+1),rep(1,dim)),silent=TRUE))=="try-error"){ 
-    delta = rep(1/dim,dim)
-    warning("F.1")
-  } else { 
-    delta = solve(t(diag(dim)-Gamma+1),rep(1,dim))
-  }
-  return(delta)
-}
-
-#' Constrains non-diagonal matrix elements of transition probability matrix.
-#' @details Function may shift 0 and 1 non-diagonal elements by \code{1e-3}.
-#' @param Gamma Transition probability matrix.
-#' @param shift Boolean, determining wheter to shift boundary probabilities.
-#' @return Vector of constrained non-diagonal matrix elements (column-wise).
-#' @keywords internal
-
-Gamma2gammasCon = function(Gamma,shift=FALSE){
-  gammasCon = Gamma[row(Gamma)!=col(Gamma)] 
-  if(shift){
-    gammasCon = replace(gammasCon,gammasCon==0,1e-3)
-    gammasCon = replace(gammasCon,gammasCon==1,1-1e-3)
-  }
-  return(gammasCon)
-}
-
-#' Unconstraines non-diagonal matrix elements of transition probability matrix.
-#' @param Gamma Transition probability matrix.
-#' @return Vector of unconstrained non-diagonal matrix elements (column-wise).
-#' @keywords internal
-
-Gamma2gammasUncon = function(Gamma){
-  diag(Gamma) = 0
-  Gamma       = log(Gamma/(1-rowSums(Gamma)))
-  diag(Gamma) = NA
-  return(Gamma[!is.na(Gamma)])
-}
-
-#' Builds transition probability matrix from constrained non-diagonal elements.
-#' @param gammasCon Vector of constrained non-diagonal elements of transition probability matrix.
-#' @param dim Numeric, dimension of transition probability matrix.
-#' @return Transition probability matrix.
-#' @keywords internal
-
-gammasCon2Gamma = function(gammasCon,dim){
-  Gamma         = diag(dim)
-  Gamma[!Gamma] = gammasCon 
-  for(i in 1:dim){
-    Gamma[i,i] = 1-(rowSums(Gamma)[i]-1)
-  }
-  return(Gamma)
-}
-
-#' Unconstrains non-diagonal elements of transition probability matrix.
-#' @param gammasCon Vector of constrained non-diagonal elements of transition probability matrix.
-#' @param dim Numeric, dimension of transition probability matrix.
-#' @return Vector of unconstrained non-diagonal elements of transition probability matrix.
-#' @keywords internal
-
-gammasCon2gammasUncon = function(gammasCon,dim){
-  gammasUncon = Gamma2gammasUncon(gammasCon2Gamma(gammasCon,dim))
-  return(gammasUncon)
-}
-
-#' Builds transition probability matrix from unconstrained non-diagonal elements.
-#' @param gammasUncon Vector of unconstrained non-diagonal elements of transition probability matrix.
-#' @param dim Numeric, dimension of transition probability matrix.
-#' @return Transition probability matrix.
-#' @keywords internal
-
-gammasUncon2Gamma = function(gammasUncon,dim){
-  Gamma         = diag(dim)
-  Gamma[!Gamma] = exp(gammasUncon)
-  Gamma         = Gamma/rowSums(Gamma)
-  return(Gamma)
-}
-
-#' Constrains non-diagonal elements of transition probability matrix.
-#' @param gammasUncon Vector of unconstrained non-diagonal elements of transition probability matrix.
-#' @param dim Numeric, dimension of transition probability matrix.
-#' @return Vector of constrained non-diagonal elements of transition probability matrix.
-#' @keywords internal
-
-gammasUncon2gammasCon = function(gammasUncon,dim){
-  gammasCon = Gamma2gammasCon(gammasUncon2Gamma(gammasUncon,dim))
-  return(gammasCon)
-}
-
-#' Brings contrained model parameters from vector form \code{thetaCon} to list form \code{ThetaList}.
-#' @param thetaCon Constrained model parameters in vector form.
-#' @param controls A list of controls.
-#' @return Constrained model parameters in list form.
-#' @keywords internal
-
-thetaCon2thetaList = function(thetaCon,controls){
+thetaCon2thetaList = function(thetaCon, controls){
   M = controls[["states"]][1] 
   N = controls[["states"]][2]
   
@@ -240,10 +91,10 @@ thetaCon2thetaList = function(thetaCon,controls){
   return(thetaList)
 }
 
-#' Unconstrains model parameters.
+#' un-constrains model parameters.
 #' @param thetaCon Constrained model parameters in vector form.
 #' @param controls A list of controls.
-#' @return Unconstrained model parameters in vector form.
+#' @return un-constrained model parameters in vector form.
 #' @keywords internal
 
 thetaCon2thetaUncon = function(thetaCon,controls){
@@ -299,10 +150,10 @@ thetaList2thetaListOrdered = function(thetaList,controls){
   return(thetaList)
 }
 
-#' Brings constrained model parameters in list form to unconstrained parameters in vector form.
+#' Brings constrained model parameters in list form to un-constrained parameters in vector form.
 #' @param thetaList Constrained model parameters in list form.
 #' @param controls A list of controls.
-#' @return Unconstrained model parameters in vector form.
+#' @return un-constrained model parameters in vector form.
 #' @keywords internal
 
 thetaList2thetaUncon = function(thetaList,controls){
@@ -360,7 +211,7 @@ thetaList2thetaUncon = function(thetaList,controls){
 }
 
 #' Constrains model parameters.
-#' @param thetaUncon Unconstrained model parameters in vector form.
+#' @param thetaUncon un-constrained model parameters in vector form.
 #' @param controls A list of controls.
 #' @return Constrained model parameters in vector form.
 #' @keywords internal
@@ -451,8 +302,8 @@ thetaUncon2thetaCon = function(thetaUncon,controls){
   return(thetaCon)
 }
 
-#' Brings uncontrained model parameters \code{thetaUncon} in list form \code{thetaList}.
-#' @param thetaUncon Unconstrained model parameters in vector form.
+#' Brings un-constrained model parameters \code{thetaUncon} in list form \code{thetaList}.
+#' @param thetaUncon un-constrained model parameters in vector form.
 #' @param controls A list of controls.
 #' @return Constrained model parameters in list form.
 #' @keywords internal
@@ -462,9 +313,9 @@ thetaUncon2thetaList = function(thetaUncon,controls){
 }
 
 #' Splits uncontrained model parameters \code{thetaUncon} by fine-scale HMMs.
-#' @param thetaUncon Unconstrained model parameters in vector form.
+#' @param thetaUncon un-constrained model parameters in vector form.
 #' @param controls A list of controls.
-#' @return List of unconstrained fine-scale model parameters for each fine-scale HMM.
+#' @return List of un-constrained fine-scale model parameters for each fine-scale HMM.
 #' @keywords internal
 
 thetaUncon2thetaUnconSplit = function(thetaUncon,controls){
@@ -504,7 +355,7 @@ thetaUncon2thetaUnconSplit = function(thetaUncon,controls){
 }
 
 #' Brings uncontrained fine-scale model parameters in constrained list form.
-#' @param thetaUncon Unconstrained fine-scale model parameters in vector form.
+#' @param thetaUncon un-constrained fine-scale model parameters in vector form.
 #' @param controls A list of controls.
 #' @return Constrained fine-scale model parameters in list form.
 #' @keywords internal
@@ -533,4 +384,219 @@ thetaUnconSplit2thetaList = function(thetaUncon,controls){
     "dfs"    = dfsCon
   ) 
   return(thetaList)
+}
+
+#' This function un-constrains the constrained expected values \code{muCon}.
+#' @param muCon 
+#' A vector of constrained expected values.
+#' @param link 
+#' A boolean, determining whether to apply the link function.
+#' @return 
+#' A vector of un-constrained expected values.
+#' @keywords 
+#' internal
+
+muCon2muUncon = function(muCon, link){
+  if(link){
+    muUncon = log(muCon)
+  } else {
+    muUncon = muCon
+  }
+  return(muUncon)
+}
+
+#' This function constrains the un-constrained expected values \code{muUncon}.
+#' @param muUncon 
+#' A vector of un-constrained expected values.
+#' @param link 
+#' A boolean, determining whether to apply the link function.
+#' @return 
+#' A vector of constrained expected values.
+#' @keywords 
+#' internal
+
+muUncon2muCon = function(muUncon, link){
+  if(link){ 
+    muCon = exp(muUncon)
+  } else {
+    muCon = muUncon
+  }
+  return(muCon)
+}
+
+#' This function un-constrains the constrained standard deviations \code{sigmaCon}.
+#' @param sigmaCon 
+#' A vector of constrained standard deviations.
+#' @return 
+#' A vector of un-constrained standard deviations.
+#' @keywords 
+#' internal
+
+sigmaCon2sigmaUncon = function(sigmaCon){
+  return(log(sigmaCon))
+}
+
+#' This function constrains the un-constrained standard deviations \code{sigmaUncon}.
+#' @param sigmaUncon 
+#' A vector of un-constrained standard deviations.
+#' @return 
+#' A vector of constrained standard deviations.
+#' @keywords 
+#' internal
+
+sigmaUncon2sigmaCon = function(sigmaUncon){
+  return(exp(sigmaUncon))
+}
+
+#' This function un-constrains the constrained degrees of freedom \code{dfCon}.
+#' @param dfCon 
+#' A vector of constrained degrees of freedom.
+#' @return 
+#' A vector of un-constrained degrees of freedom.
+#' @keywords 
+#' internal
+
+dfCon2dfUncon = function(dfCon){
+  return(log(dfCon))
+}
+
+#' This function constrains the un-constrained degrees of freedom \code{dfUncon}.
+#' @param dfUncon 
+#' A vector of un-constrained degrees of freedom.
+#' @return 
+#' A vector of constrained degrees of freedom.
+#' @keywords 
+#' internal
+
+dfUncon2dfCon = function(dfUncon){
+  return(exp(dfUncon))
+}
+
+#' This function constrains the non-diagonal matrix elements of a transition 
+#' probability matrix \code{Gamma}.
+#' @param Gamma 
+#' A transition probability matrix.
+#' @param shift 
+#' A boolean, determining whether to shift boundary probabilities by \code{1e-3}.
+#' @return 
+#' A vector of constrained non-diagonal matrix elements (column-wise).
+#' @keywords 
+#' internal
+
+Gamma2gammasCon = function(Gamma, shift=FALSE){
+  gammasCon = Gamma[row(Gamma)!=col(Gamma)] 
+  if(shift){
+    gammasCon = replace(gammasCon,gammasCon==0,1e-3)
+    gammasCon = replace(gammasCon,gammasCon==1,1-1e-3)
+  }
+  return(gammasCon)
+}
+
+#' This function un-constraines the non-diagonal matrix elements of a transition 
+#' probability matrix \code{Gamma}.
+#' @inheritParams Gamma2gammasCon
+#' @return 
+#' A vector of un-constrained non-diagonal matrix elements (column-wise).
+#' @keywords 
+#' internal
+
+Gamma2gammasUncon = function(Gamma){
+  diag(Gamma) = 0
+  Gamma = log(Gamma/(1-rowSums(Gamma)))
+  diag(Gamma) = NA
+  return(Gamma[!is.na(Gamma)])
+}
+
+#' This function builds a transition probability matrix of dimension \code{dim}
+#' from constrained non-diagonal elements \code{gammasCon}.
+#' @param gammasCon 
+#' A vector of constrained non-diagonal elements of a transition probability 
+#' matrix.
+#' @param dim 
+#' The dimension of the transition probability matrix.
+#' @return 
+#' A transition probability matrix.
+#' @keywords 
+#' internal
+
+gammasCon2Gamma = function(gammasCon, dim){
+  Gamma = diag(dim)
+  Gamma[!Gamma] = gammasCon 
+  for(i in 1:dim){
+    Gamma[i,i] = 1-(rowSums(Gamma)[i]-1)
+  }
+  return(Gamma)
+}
+
+#' This function un-constrains the constrained non-diagonal elements 
+#' \code{gammasCon} of a transition probability matrix of dimension \code{dim}.
+#' @inheritParams gammasCon2Gamma
+#' @return 
+#' A vector of un-constrained non-diagonal elements of the transition probability 
+#' matrix.
+#' @keywords 
+#' internal
+
+gammasCon2gammasUncon = function(gammasCon,dim){
+  gammasUncon = Gamma2gammasUncon(gammasCon2Gamma(gammasCon,dim))
+  return(gammasUncon)
+}
+
+#' This function builds a transition probability matrix from un-constrained 
+#' non-diagonal elements \code{gammasUncon}.
+#' @param gammasUncon 
+#' A vector of un-constrained non-diagonal elements of a transition probability 
+#' matrix.
+#' @inheritParams gammasCon2Gamma
+#' @return 
+#' A transition probability matrix.
+#' @keywords 
+#' internal
+
+gammasUncon2Gamma = function(gammasUncon, dim){
+  Gamma = diag(dim)
+  Gamma[!Gamma] = exp(gammasUncon)
+  Gamma = Gamma/rowSums(Gamma)
+  return(Gamma)
+}
+
+#' This function constrains non-diagonal elements \code{gammasUncon} of a 
+#' transition probability matrix.
+#' @param gammasUncon 
+#' A vector of un-constrained non-diagonal elements of a transition probability 
+#' matrix.
+#' @inheritParams gammasUncon2Gamma
+#' @return 
+#' A vector of constrained non-diagonal elements of a transition probability 
+#' matrix.
+#' @keywords 
+#' internal
+
+gammasUncon2gammasCon = function(gammasUncon, dim){
+  gammasCon = Gamma2gammasCon(gammasUncon2Gamma(gammasUncon,dim))
+  return(gammasCon)
+}
+
+#' This function computes the stationary distribution of a transition 
+#' probability matrix \code{Gamma}.
+#' @param Gamma 
+#' A transition probability matrix.
+#' @return 
+#' A stationary distribution vector.
+#' @details
+#' If the stationary distribution vector cannot be computed, it is set to the
+#' discrete uniform distribution over the states.
+#' @keywords 
+#' internal
+
+Gamma2delta = function(Gamma){
+  dim = dim(Gamma)[1]
+  delta_try = try(solve(t(diag(dim) - Gamma + 1), rep(1,dim)), silent=TRUE)
+  if(class(delta_try) == "try-error"){ 
+    delta = rep(1/dim, dim)
+    warning("F.1")
+  } else { 
+    delta = delta_try
+  }
+  return(delta)
 }

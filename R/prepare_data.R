@@ -9,7 +9,7 @@
 #' An object of class \code{fHMM_data}.
 #' @export
 
-prepare_data = function(controls, true_parameter){
+prepare_data = function(controls, true_parameter = set_parameter(controls)) {
   
   ### process data
   if(controls[["sim"]])
