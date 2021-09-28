@@ -1,8 +1,8 @@
 ### load code
 devtools::load_all()
 
-### download data (optional)
-download_data(name = "dax", symbol = "^GDAXI", path = ".")
+### download data
+download_data(symbol = "^GDAXI", file = "dax.csv")
 
 ### set controls
 controls = list(
