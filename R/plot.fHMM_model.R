@@ -1,4 +1,4 @@
-get_colors = function(controls) {
+plot.fHMM_model = function() {
   var_col = function(col,n){
     colorRampPalette(c("white",col,"black"))(n+2)[2:(n+1)]
   }
@@ -18,5 +18,4 @@ get_colors = function(controls) {
       colors[["hhmm_fs"]][[s]] = col_alpha(var_col(colors[["hhmm_cs"]][s],controls[["states"]][2]))
     }
   }
-  return(colors)
 }
