@@ -20,7 +20,6 @@ Description: Fitting (hierarchical) hidden Markov models
 License: GPL-3
 Encoding: UTF-8
 Imports:
-    MASS,
     Rcpp,
     tseries
 LinkingTo:

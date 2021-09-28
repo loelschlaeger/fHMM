@@ -1,10 +1,12 @@
 useDynLib("fHMM")
 
+### S3 methods
 S3method(print,fHMM_trouble)
 
+### export functions
 export(download_data)
-export(trouble)
 
+### import functions
 import(Rcpp)
 importFrom("graphics", "plot")
 importFrom("grDevices", "adjustcolor", "colorRampPalette", "dev.off", "pdf", "rgb")
