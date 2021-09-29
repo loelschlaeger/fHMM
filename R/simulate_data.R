@@ -1,8 +1,12 @@
-#' @title Data simulation
-#' @description Simulates data from a (hierarchical) hidden Markov model.
-#' @param controls A list of controls.
-#' @param true_parameter A list of model parameters for simulation in \code{thetaList} format.
-#' @return A list containing the following elements:
+#' Simulate data for the fHMM package.
+#' @description 
+#' This function simulates financial data for the fHMM package.
+#' @param controls 
+#' An object of class \code{fHMM_controls}.
+#' @param true_parameters
+#' An object of class \code{fHMM_parameters}, used as simulation parameters.
+#' @return 
+#' A list containing the following elements:
 #' \item{data}{A matrix of simulated data.}
 #' \item{states0}{A matrix of simulated hidden states.}
 #' \item{thetaUncon0}{True parameters in format \code{thetaUncon}.}
@@ -10,53 +14,23 @@
 #' \item{thetaList0}{True parameters in format \code{thetaList}.}
 #' \item{T_star}{A vector of fine-scale chunk sizes.}
 
-simulate_data = function(controls, true_parameter){
+simulate_data = function(controls, true_parameter, seed = NULL){
   
-  if(!is.null(controls[["fit"]][["seed"]]))
-    set.seed(controls[["fit"]][["seed"]])
-  T = as.numeric(controls[["horizon"]][1])
+  ### check inputs
+  if(class(controls) != "fHMM_controls")
+    stop("Not of class 'fHMM_controls'.")
+  if(class(true_parameters) != "fHMM_parameters")
+    stop("Not of class 'fHMM_parameters'.")
   
-  ### define simulation parameters
-  if(!is.null(true_parameter)){
-    thetaUncon = thetaList2thetaUncon(true_parameter,controls)
-  } else {
-    thetaUncon = init_est(controls)
-  }
-  thetaCon   = thetaUncon2thetaCon(thetaUncon,controls)
-  thetaList  = thetaCon2thetaList(thetaCon,controls)
-  
-  ### simulate hidden states
-  simulate_states = function(delta,Gamma,T){
-    no_states = length(delta)
-    states = numeric(T)
-    states[1] = sample(1:no_states,1,prob=delta)
-    for(t in 2:T){
-      states[t] = sample(1:no_states,1,prob=Gamma[states[t-1],])
-    }
-    return(states)
-  }
-  
-  ### simulate observations
-  simulate_observations = function(states,mus,sigmas,dfs,sdd){
-    T = length(states)
-    data = numeric(T)
-    for(t in 1:T){
-      if(sdd == "t"){
-        data[t] = rt(1,dfs[states[t]])*sigmas[states[t]]+mus[states[t]]
-      }
-      if(sdd == "gamma"){
-        data[t] = rgamma(1,shape=mus[states[t]]^2/sigmas[states[t]]^2,scale=sigmas[states[t]]^2/mus[states[t]])
-      }
-    }
-    return(data)
-  }
-  
+  ### simulate data
   if(controls[["model"]]=="hmm"){
+    T = as.numeric(controls[["horizon"]][1])
     T_star = NA
     states = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
     data = simulate_observations(states,thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]],controls[["sdds"]][1])
   }
   if(controls[["model"]]=="hhmm"){ 
+    T = as.numeric(controls[["horizon"]][1])
     T_star = compute_fs(fs_time_horizon = controls[["horizon"]][2], T = T)
     states = matrix(NA,T,max(T_star)+1) 
     data = matrix(NA,T,max(T_star)+1)
@@ -69,6 +43,7 @@ simulate_data = function(controls, true_parameter){
     }
   }
   
+  ### return simulated data
   out = list(
     "data"        = data,
     "states0"     = states,

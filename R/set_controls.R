@@ -24,7 +24,7 @@ set_controls = function(controls = NULL) {
   ### define names of all controls
   all_controls = c("path","model","states","sdds","horizon","data","fit")
   data_controls = c("source","column","truncate","cs_transform")
-  fit_controls = c("runs","at_true","seed","accept","print.level","gradtol",
+  fit_controls = c("runs","at_true","accept","print.level","gradtol",
                    "steptol","stepmax","steptol","iterlim")
   
   ### initialize controls

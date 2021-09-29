@@ -1,27 +1,14 @@
 # checks of controls work
 
     Code
-      controls
-    Output
-      Controls:
-      * path: \\fs-home.uni-bielefeld.de\home\loelschlaeger\fHMM\tests\testthat 
-      * model type: hmm 
-      * data type: simulated 
-      * number of states: 2 
-      * SDDs: t 
-      * number of runs: 50  
-
----
-
-    Code
       unlist(controls)
     Output
-                 path          states            sdds         horizon        fit.runs 
-                  "."             "2"             "t"           "400"            "50" 
-          fit.at_true     fit.accept1     fit.accept2 fit.print.level     fit.gradtol 
-              "FALSE"             "1"             "2"             "0"         "1e-06" 
-          fit.stepmax     fit.steptol     fit.iterlim           model            data 
-                  "1"         "1e-06"           "200"           "hmm"              NA 
-                  sim      fixed_dfs1      fixed_dfs2 
-               "TRUE"              NA              NA 
+               states            sdds         horizon        fit.runs     fit.at_true 
+                  "2"             "t"           "400"            "50"         "FALSE" 
+          fit.accept1     fit.accept2 fit.print.level     fit.gradtol     fit.stepmax 
+                  "1"             "2"             "0"         "1e-06"             "1" 
+          fit.steptol     fit.iterlim           model            data             sim 
+              "1e-06"           "200"           "hmm"              NA          "TRUE" 
+           fixed_dfs1      fixed_dfs2 
+                   NA              NA 
 

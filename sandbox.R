@@ -19,8 +19,8 @@ Gamma = matrix(c(0.8,0.1,0.2,0.9),2,2)
 mus = c(-1,1)
 sigmas = c(0.5,2)
 dfs = c(1,Inf)
-true_parameter = set_parameters(controls, Gamma = Gamma, mus = mus, 
-                                sigmas = sigmas, dfs = dfs)
+true_parameters = set_parameters(controls, Gamma = Gamma, mus = mus, 
+                                 sigmas = sigmas, dfs = dfs)
 
 ### prepare data
 data = prepare_data(controls, true_parameter)

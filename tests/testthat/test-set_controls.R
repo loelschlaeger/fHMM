@@ -7,10 +7,6 @@ test_that("checks of controls work", {
     fit     = list("runs" = 50)
   )
   controls = set_controls(controls)
-  expect_snapshot(
-    controls
-  )
-  expect_snapshot(
-    unlist(controls)
-  )
+  controls$path = NULL
+  expect_snapshot(unlist(controls))
 })
