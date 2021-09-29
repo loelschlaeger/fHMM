@@ -10,3 +10,4 @@ LICENSE
 ^pkgdown$
 make_sticker.R
 sandbox.R
+*.csv
