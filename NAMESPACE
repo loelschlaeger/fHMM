@@ -2,6 +2,8 @@ useDynLib("fHMM")
 
 ### S3 methods
 S3method(print,fHMM_controls)
+S3method(print,fHMM_data)
+S3method(print,fHMM_parameters)
 S3method(print,fHMM_trouble)
 
 ### export functions

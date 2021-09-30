@@ -47,6 +47,7 @@ set_parameters = function(controls,
   
   ### specify missing parameters
   M = controls[["states"]][1] 
+  sdd = controls[["sdds"]][1]
   if(is.null(Gamma))
     Gamma = sample_tpm(M)
   if(is.null(mus))
@@ -56,7 +57,8 @@ set_parameters = function(controls,
   if(is.null(dfs))
     dfs = runif(M,0,30)
   if(controls[["model"]] == "hhmm"){
-    N  = controls[["states"]][2]
+    N = controls[["states"]][2]
+    sdd_star = controls[["sdds"]][2]
     if(is.null(Gammas_star)){
       Gammas_star = list()
       for(i in 1:M)
@@ -87,10 +89,12 @@ set_parameters = function(controls,
     "mus" = mus, 
     "sigmas" = sigmas, 
     "dfs" = dfs, 
+    "sdd" = controls[["sdds"]][1],
     "Gammas_star" = Gammas_star, 
     "mus_star" = mus_star, 
     "sigmas_star" = sigmas_star, 
-    "dfs_star" = dfs_star
+    "dfs_star" = dfs_star,
+    "sdd_star" = controls[["sdds"]][2],
   )
   class(out) = "fHMM_parameters"
   return(out)

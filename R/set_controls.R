@@ -16,14 +16,11 @@
 #'   A boolean, set to \code{TRUE} for an hierarchical HMM.
 #'   \item \code{states} \code{(*)} (\code{2}):
 #'   The number of states of the underlying Markov chain.
-#'   \item \code{sdds} \code{(*)} (\code{"t"}):
-#'   One of the following, specifying the state-dependent distribution:
-#'   \itemize{
-#'     \item \code{"t"}, the t-distribution,
-#'     \item \code{"t(x)"}, the t-distribution with \code{x} degrees of freedom
-#'     (where \code{x = Inf} yields the normal distribution),
-#'     \item \code{"gamma"}, the gamma distribution.
-#'   }
+#'   \item \code{sdds} \code{(*)} (\code{"t(df = Inf)"}):
+#'   Specifying the state-dependent distribution, one of the \code{"t"} (the 
+#'   t-distribution) or \code{"gamma"} (the gamma distribution). To fix one or
+#'   more parameter values, write e.g. \code{"t(mu = 0, sigma = 1, df = Inf)"} 
+#'   or \code{"gamma(mu = 0, sigma = 1)"}, respectively.
 #'   \item \code{horizon} \code{(*)} (\code{100}):
 #'   A numeric, specifying the length of the time horizon. Alternatively, the 
 #'   second entry of \code{horizon} can be one of:
@@ -42,13 +39,15 @@
 #'     (with financial data).
 #'     \item \code{column} \code{(*)}:
 #'     A character, the name of the column in \code{file} with financial data.
-#'     \item \code{from}:
-#'     A character of the format \code{"YYYY-MM-DD"}, setting a lower data limit.
-#'     \item \code{to}:
-#'     A character of the format \code{"YYYY-MM-DD"}, setting an upper data limit.
-#'     \item \code{logreturns} \code{(*)}:
+#'     \item \code{from} (\code{NA}):
+#'     A character of the format \code{"YYYY-MM-DD"}, setting a lower data 
+#'     limit. No lower limit if \code{from = NA}.
+#'     \item \code{to} (\code{NA}):
+#'     A character of the format \code{"YYYY-MM-DD"}, setting an upper data 
+#'     limit. No upper limit if \code{from = NA}.
+#'     \item \code{logreturns} \code{(*)} (\code{FALSE}):
 #'     A boolean, if \code{TRUE} the data is transformed to log-returns.
-#'     \item \code{merge}:
+#'     \item \code{merge} (\code{"mean(x)"}):
 #'     Only relevant, if \code{hierarchy = TRUE}. A character, which is an 
 #'     expression to merge fine-scale data \code{x} into one coarse-scale 
 #'     observation. For example,
@@ -70,7 +69,7 @@
 #'     \item \code{origin} (\code{FALSE}):
 #'     A boolean, if \code{TRUE} the optimization is initialized at the true
 #'     parameter values. Only for simulated data. If \code{origin = TRUE}, this
-#'     sets \code{run = 1} and \code{accept = "all"}.
+#'     sets \code{run = 1} and \code{accept = 1:5}.
 #'     \item \code{accept} (\code{1:3}):
 #'     An integer (vector), specifying which optimization runs are accepted
 #'     based on the output code of \code{\link[base]{nlm}}.
@@ -89,7 +88,7 @@
 #' @examples 
 #' controls = list(
 #'   states  = 2,
-#'   sdds    = "t",
+#'   sdds    = "t(mu = 0, sigma = 1, df = 1)",
 #'   horizon = 400,
 #'   fit     = list("runs" = 50)
 #' )
@@ -98,103 +97,109 @@
 
 set_controls = function(controls = NULL) {
   
-  ### define names of all controls
-  all_controls = c("model","states","sdds","horizon","data","fit")
-  data_controls = c("file","column","truncate","transformation","merge")
-  fit_controls = c("runs","origin","accept","gradtol","iterlim","print.level",
-                   "steptol","stepmax")
+  if(class(controls) != "fHMM_controls"){
+    ### initialize controls
+    if(is.null(controls)) 
+      controls = list()
+    
+    ### define names of all controls
+    all_controls = c("hierarchy","states","sdds","horizon","data","fit")
+    data_controls = c("file","column","from","to","logreturns","merge")
+    fit_controls = c("runs","origin","accept","gradtol","iterlim","print.level","steptol")
+    
+    ### check redundant controls
+    if(!is.null(controls)){
+      redundant_controls = setdiff(names(controls), all_controls)
+      if(length(redundant_controls) > 0) {
+        warning("Element(s) ",paste(redundant_controls, collapse = ", "),
+                " in 'controls' ignored.")
+        controls[redundant_controls] = NULL
+      }
+      if(!is.null(controls[["data"]])){
+        redundant_controls = setdiff(names(controls[["data"]]), data_controls)
+        if(length(redundant_controls) > 0) {
+          warning("Element(s) ",paste(redundant_controls, collapse = ", "),
+                  " in 'controls$data' ignored.")
+          controls[["data"]][redundant_controls] = NULL
+        }
+      }
+      if(!is.null(controls[["fit"]])){
+        redundant_controls = setdiff(names(controls[["fit"]]), fit_controls)
+        if(length(redundant_controls) > 0) {
+          warning("Element(s) ",paste(redundant_controls, collapse = ", "),
+                  " in 'controls$fit' ignored.")
+          controls[["fit"]][redundant_controls] = NULL
+        }
+      }
+    }
+  }
   
-  ### initialize controls
-  if(is.null(controls)) 
-    controls = list()
-  
-  ### check redundant controls
-  redundant_controls = setdiff(names(controls), all_controls)
-  if(length(redundant_controls) > 0)
-    warning("Element(s) ",paste(redundant_controls, collapse = ", "),
-            " in 'controls' ignored.")
-  
-  ### set default control values
-  if(!"model" %in% names(controls))                  
-    controls[["model"]] = "hmm"
+  ### set missing controls to default control values
+  if(!"hierarchy" %in% names(controls))                  
+    controls[["hierarchy"]] = FALSE
   if(!"states" %in% names(controls))                 
     controls[["states"]] = 2
   if(!"sdds" %in% names(controls))                   
     controls[["sdds"]] = "t"
   if(!"horizon" %in% names(controls))                
-    controls[["horizon"]] = 1000
-  
+    controls[["horizon"]] = 100
   if(!"data" %in% names(controls)){
     controls[["data"]] = NA
   } else {
     if(!"file" %in% names(controls[["data"]])){
-      if(controls[["model"]] == "hmm")                 
+      if(controls[["hierarchy"]]){                
         controls[["data"]][["file"]] = NA
-      if(controls[["model"]] == "hhmm")                
+      } else {
         controls[["data"]][["file"]] = c(NA,NA)
+      }
     }
     if(!"column" %in% names(controls[["data"]])){
-      if(controls[["model"]] == "hmm")                 
+      if(controls[["hierarchy"]]){                
         controls[["data"]][["column"]] = NA
-      if(controls[["model"]] == "hhmm")                
+      } else {
         controls[["data"]][["column"]] = c(NA,NA)
+      }
     }
-    if(!"truncate" %in% names(controls[["data"]]))     
-      controls[["data"]][["truncate"]] = c(NA,NA)
-    if(!"cs_transform" %in% names(controls[["data"]])) 
-      controls[["data"]][["cs_transform"]] = NA
-    if(!"log_returns" %in% names(controls[["data"]])){
-      if(controls[["model"]] == "hmm")                 
-        controls[["data"]][["log_returns"]] = TRUE
-      if(controls[["model"]] == "hhmm")                
-        controls[["data"]][["log_returns"]] = c(TRUE,TRUE)
+    if(!"from" %in% names(controls[["data"]]))     
+      controls[["data"]][["from"]] = NA
+    if(!"to" %in% names(controls[["data"]]))     
+      controls[["data"]][["to"]] = NA
+    if(!"logreturns" %in% names(controls[["data"]])){
+      if(controls[["hierarchy"]]){                
+        controls[["data"]][["logreturns"]] = FALSE
+      } else {
+        controls[["data"]][["logreturns"]] = c(FALSE,FALSE)
+      }
     }
+    if(!"merge" %in% names(controls[["data"]])) 
+      controls[["data"]][["merge"]] = "mean(x)"
   }
-  
   if(!"fit" %in% names(controls))                    
     controls[["fit"]] = list()
   if(!"runs" %in% names(controls[["fit"]]))          
     controls[["fit"]][["runs"]] = 100
-  if(!"at_true" %in% names(controls[["fit"]]))       
-    controls[["fit"]][["at_true"]] = FALSE
+  if(!"origin" %in% names(controls[["fit"]]))       
+    controls[["fit"]][["origin"]] = FALSE
   if(!"accept" %in% names(controls[["fit"]]))        
-    controls[["fit"]][["accept"]] = c(1,2)
-  if(!"print.level" %in% names(controls[["fit"]]))   
-    controls[["fit"]][["print.level"]] = 0
+    controls[["fit"]][["accept"]] = 1:3
   if(!"gradtol" %in% names(controls[["fit"]]))       
     controls[["fit"]][["gradtol"]] = 1e-6
-  if(!"stepmax" %in% names(controls[["fit"]]))       
-    controls[["fit"]][["stepmax"]] = 1
-  if(!"steptol" %in% names(controls[["fit"]]))      
-    controls[["fit"]][["steptol"]] = 1e-6
   if(!"iterlim" %in% names(controls[["fit"]]))       
     controls[["fit"]][["iterlim"]] = 200
+  if(!"print.level" %in% names(controls[["fit"]]))   
+    controls[["fit"]][["print.level"]] = 0
+  if(!"steptol" %in% names(controls[["fit"]]))      
+    controls[["fit"]][["steptol"]] = 1e-6
 
-  ### define control that defines if data gets simulated
-  if(is.list(controls[["data"]])) {
-    if(length(controls[["data"]]) == 0){
-      controls[["sim"]] = TRUE
-    } else {
-      controls[["sim"]] = FALSE
-    }
-  } else if (is.null(controls[["data"]])) {
-    controls[["sim"]] = TRUE
-  } else if (is.na(controls[["data"]])) {
-    controls[["sim"]] = TRUE
-  } else {
-    controls[["sim"]] = FALSE
-  }
+  ### define control that specifies if data gets simulated
+  controls[["simulated"]] = FALSE
+  if(!is.list(controls[["data"]]) || length(controls[["data"]] == 0))
+    controls[["simulated"]] = TRUE
   
-  ### check state-dependent distributions
-  all_sdds = c("gamma","t")
-  extract_dfs = function(x) grepl("^[t][\\(]([1-9][0-9]*|Inf)[\\)]$",x)
-  controls[["fixed_dfs"]] = c(NA,NA)
-  controls[["fixed_dfs"]][extract_dfs(controls[["sdds"]])] = as.numeric(sub("\\).*", "", sub(".*\\(", "", controls[["sdds"]][extract_dfs(controls[["sdds"]])])))
-  controls[["sdds"]][extract_dfs(controls[["sdds"]])] = "t"
+  ### check state-dependent distributions and extract fixed parameter values
+  out_split_sdd = split_sdd(sdd = controls[["sdds"]][1])
   
-  ### function that checks if value is an integer
-  is.integer = function(x) is.numeric(x) && x>=0 && x%%1==0
-  
+
   ### check single controls
   if(!is.character(controls[["path"]])) 
     stop("The control 'path' must be a character.")
