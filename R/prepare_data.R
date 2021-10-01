@@ -18,7 +18,7 @@ prepare_data = function(controls, true_parameters = set_parameters(controls)) {
     stop("Not of class 'fHMM_parameters'.")
   
   ### process data
-  if(controls[["sim"]]){
+  if(controls[["simulated"]]){
     data = simulate_data(controls, true_parameters)
   } else {
     data = read_data(controls)

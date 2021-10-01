@@ -3,7 +3,8 @@
 #' @param x
 #' An R object.
 #' @param int
-#' A boolean, if \code{TRUE} checks if \code{x} is an integer.
+#' A boolean, if \code{TRUE} checks if \code{x} is an integer, where \code{Inf}
+#' is considered as an integer.
 #' @param neg
 #' A boolean, if \code{TRUE} checks if \code{x} is negative
 #' @param non_neg
@@ -19,11 +20,11 @@ is_number = function(x, int = FALSE, neg = FALSE, non_neg = FALSE, pos = FALSE,
                      non_pos = FALSE) {
   for(i in 1:length(x)) {
     out = rep(TRUE,length(x))
-    if(!is.numeric(x)){
+    if(!is.numeric(x[i])){
       out[i] = FALSE
       break
     }
-    if(int) if(x[i]%%1!=0){
+    if(int) if(x[i] != Inf) if(x[i]%%1!=0){
       out[i] = FALSE
       break
     }

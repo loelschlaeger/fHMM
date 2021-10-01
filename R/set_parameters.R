@@ -47,8 +47,11 @@ set_parameters = function(controls,
     return(Gamma)
   }
   
-  ### specify missing parameters
+  ### extract number of states
   M = controls[["states"]][1] 
+  N = controls[["states"]][2]
+  
+  ### specify missing parameters
   if(is.null(Gamma))
     Gamma = sample_tpm(M)
   if(is.null(mus))
@@ -61,8 +64,7 @@ set_parameters = function(controls,
   } else {
     dfs = NULL
   }
-  if(controls[["model"]] == "hhmm"){
-    N = controls[["states"]][2]
+  if(controls[["hierarchy"]]){
     if(is.null(Gammas_star)){
       Gammas_star = list()
       for(i in 1:M)
@@ -90,9 +92,55 @@ set_parameters = function(controls,
   }
   
   ### set fixed parameters
+  if(!is.null(controls[["sdds"]][[1]]$fixed$mu))
+    mus = rep(controls[["sdds"]][[1]]$fixed$mu,M)
+  if(!is.null(controls[["sdds"]][[1]]$fixed$sigma))
+    sigmas = rep(controls[["sdds"]][[1]]$fixed$sigmas,M)
+  if(!is.null(controls[["sdds"]][[1]]$fixed$df))
+    dfs = rep(controls[["sdds"]][[1]]$fixed$df,M)
+  if(controls[["hierarchy"]]){
+    if(!is.null(controls[["sdds"]][[2]]$fixed$mu))
+      mus_star = rep(list(rep(controls[["sdds"]][[2]]$fixed$mu,N)),M)
+    if(!is.null(controls[["sdds"]][[2]]$fixed$sigma))
+      sigmas_star = rep(list(rep(controls[["sdds"]][[2]]$fixed$sigma,N)),M)
+    if(!is.null(controls[["sdds"]][[2]]$fixed$df))
+      dfs_star = rep(list(rep(controls[["sdds"]][[2]]$fixed$df,N)),M)
+  }
     
   ### check parameters
-
+  if(!is_tpm(Gamma) || nrow(Gamma) != M)
+    stop("'Gamma' must be a tpm of dimension 'controls$states[1]'.")
+  if(!all(is_number(mus)) || length(mus) != M)
+    stop("'mu' must be a numeric vector of length 'controls$states[1]'.")
+  if(!all(is_number(sigmas, pos = TRUE)) || length(sigmas) != M)
+    stop("'sigma' must be a positive numeric vector of length 'controls$states[1]'.")
+  if(controls[["sdds"]][[1]]$name == "t")
+    if(!all(is_number(dfs, int = TRUE, pos = TRUE)) || length(dfs) != M)
+      stop("'dfs' must be an integer vector of length 'controls$states[1]'.")
+  if(controls[["hierarchy"]]){
+    if(!is.list(Gammas_star) || length(Gammas_star) != N)
+      stop("'Gammas_star' must be a list of length 'controls$states[1]'.")
+    for(i in 1:M)
+      if(!is_tpm(Gammas_star[[i]]) || nrow(GGammas_star[[i]]) != N)
+        stop("Each element in 'Gammas_star' must be a tpm of dimension 'controls$states[2]'.")
+    if(!is.list(mus_star) || length(mus_star) != N)
+      stop("'mus_star' must be a list of length 'controls$states[1]'.")
+    for(i in 1:M)
+      if(!all(is_number(mus_star[[i]])) || length(mus_star[[i]]) != N)
+        stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.")
+    if(!is.list(sigmas_star) || length(sigmas_star) != N)
+      stop("'sigmas_star' must be a list of length 'controls$states[1]'.")
+    for(i in 1:M)
+      if(!all(is_number(sigmas_star[[i]], pos = TRUE)) || length(sigmas_star[[i]]) != N)
+        stop("Each element in 'sigmas_star' must be a positive numeric vector of length 'controls$states[2]'.")
+    if(controls[["sdds"]][[2]]$name == "t"){
+      if(!is.list(dfs_star) || length(dfs_star) != N)
+        stop("'dfs_star' must be a list of length 'controls$states[1]'.")
+      if(!all(is_number(dfs_star[[i]], int = TRUE, pos = TRUE)) || length(dfs_star[[i]]) != N)
+        stop("Each element in 'dfs_star' must be an integer vector of length 'controls$states[2]'.")
+    }
+  }
+  
   ### build 'fHMM_parameters'
   out = list(
     "Gamma" = Gamma, 
@@ -100,11 +148,11 @@ set_parameters = function(controls,
     "sigmas" = sigmas, 
     "dfs" = dfs, 
     "sdd" = controls[["sdds"]][1],
-    "Gammas_star" = Gammas_star, 
-    "mus_star" = mus_star, 
-    "sigmas_star" = sigmas_star, 
-    "dfs_star" = dfs_star,
-    "sdd_star" = controls[["sdds"]][2],
+    "Gammas_star" = if(controls[["hierarchy"]]) Gammas_star else NULL, 
+    "mus_star" = if(controls[["hierarchy"]]) mus_star else NULL, 
+    "sigmas_star" = if(controls[["hierarchy"]]) sigmas_star else NULL, 
+    "dfs_star" = if(controls[["hierarchy"]])dfs_star else NULL,
+    "sdd_star" = if(controls[["hierarchy"]]) controls[["sdds"]][2] else NULL
   )
   class(out) = "fHMM_parameters"
   return(out)

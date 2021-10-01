@@ -1,20 +1,13 @@
 #' Simulate data for the fHMM package.
 #' @description 
 #' This function simulates financial data for the fHMM package.
-#' @param controls 
-#' An object of class \code{fHMM_controls}.
-#' @param true_parameters
-#' An object of class \code{fHMM_parameters}, used as simulation parameters.
+#' @inheritParams prepare_data
+#' @param seed
+#' Set a seed for the data simulation.
 #' @return 
 #' A list containing the following elements:
-#' \item{data}{A matrix of simulated data.}
-#' \item{states0}{A matrix of simulated hidden states.}
-#' \item{thetaUncon0}{True parameters in format \code{thetaUncon}.}
-#' \item{thetaCon0}{True parameters in format \code{thetaCon}.}
-#' \item{thetaList0}{True parameters in format \code{thetaList}.}
-#' \item{T_star}{A vector of fine-scale chunk sizes.}
 
-simulate_data = function(controls, true_parameter, seed = NULL){
+simulate_data = function(controls, true_parameters, seed = NULL){
   
   ### check inputs
   if(class(controls) != "fHMM_controls")
@@ -23,14 +16,16 @@ simulate_data = function(controls, true_parameter, seed = NULL){
     stop("Not of class 'fHMM_parameters'.")
   
   ### simulate data
-  if(controls[["model"]]=="hmm"){
-    T = as.numeric(controls[["horizon"]][1])
-    T_star = NA
-    states = simulate_states(Gamma2delta(thetaList[["Gamma"]]),thetaList[["Gamma"]],T) 
-    data = simulate_observations(states,thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]],controls[["sdds"]][1])
-  }
-  if(controls[["model"]]=="hhmm"){ 
-    T = as.numeric(controls[["horizon"]][1])
+  if(!controls[["hierarchy"]]){
+    markov_chain = simulate_markov_chain(Gamma = true_parameters$Gamma,
+                                         T = controls[["horizon"]][1],
+                                         seed = seed) 
+    data = simulate_observations(markov_chain = markov_chain,
+                                 sdd = controls[["sdds"]][[1]]$name,
+                                 mus = true_parameters$mus,
+                                 sigmas = true_parameters$sigmas,
+                                 dfs = true_parameters$dfs)
+  } else {
     T_star = compute_fs(fs_time_horizon = controls[["horizon"]][2], T = T)
     states = matrix(NA,T,max(T_star)+1) 
     data = matrix(NA,T,max(T_star)+1)

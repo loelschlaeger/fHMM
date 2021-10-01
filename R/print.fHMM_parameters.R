@@ -10,5 +10,5 @@
 #' @export
 
 print.fHMM_parameters = function(x, ...) {
-  cat("not implemented yet.\n")
+  cat("fHMM parameters\n")
 }
