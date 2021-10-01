@@ -211,12 +211,12 @@ set_controls = function(controls = NULL) {
     if(!(length(controls[["horizon"]]) == 1 && is_number(controls[["horizon"]], int = TRUE, pos = TRUE)))
       stop("The control 'horizon' must be an integer.")
   }
-  if(class(controls[["sdds"]]) != "fHMM_data"){
+  if(class(controls[["sdds"]]) != "fHMM_sdds"){
     if(!is.character(controls[["sdds"]]) || 
        length(controls[["sdds"]]) != ifelse(controls[["hierarchy"]],2,1))
-      stop("The control 'sdds' must be a character",
-           if(controls[["hierarchy"]])"vector","of length",
-           ifelse(controls[["hierarchy"]],2,1))
+      stop("The control 'sdds' must be a character ",
+           if(controls[["hierarchy"]]) "vector ","of length ",
+           ifelse(controls[["hierarchy"]],2,1),".")
     controls[["sdds"]] = split_sdds(sdds = controls[["sdds"]])
   }
 

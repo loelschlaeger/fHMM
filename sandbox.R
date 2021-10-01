@@ -11,7 +11,7 @@ controls = list(
   horizon = 400,
   fit     = list("runs" = 50)
 )
-controls = set_controls(controls)
+(controls = set_controls(controls))
 
 ### set true parameters
 Gamma = matrix(c(0.8,0.1,0.2,0.9),2,2)

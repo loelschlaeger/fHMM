@@ -13,6 +13,7 @@
 #' A vector of standard deviations of length \code{controls$states[1]}.
 #' @param dfs
 #' A vector of degrees of freedom of length \code{controls$states[1]}.
+#' Only relevant if sdd is a t-distribution.
 #' @param Gammas_star
 #' A list of length \code{controls$states[1]} of tpm's. Each tpm must be of
 #' dimension \code{controls$states[2]}.
@@ -25,6 +26,7 @@
 #' @param dfs_star
 #' A list of length \code{controls$states[1]} of vectors of degrees of freedom. 
 #' Each vector must be of length \code{controls$states[2]}. 
+#' Only relevant if sdd is a t-distribution.
 #' @return 
 #' An object of class \code{fHMM_parameters}.
 #' @export
@@ -47,18 +49,20 @@ set_parameters = function(controls,
   
   ### specify missing parameters
   M = controls[["states"]][1] 
-  sdd = controls[["sdds"]][1]
   if(is.null(Gamma))
     Gamma = sample_tpm(M)
   if(is.null(mus))
     mus = runif(M,-1,1)
   if(is.null(sigmas))
     sigmas = runif(M,0,1)
-  if(is.null(dfs))
-    dfs = runif(M,0,30)
+  if(controls[["sdds"]][[1]]$name == "t"){
+    if(is.null(dfs))
+      dfs = runif(M,0,30)
+  } else {
+    dfs = NULL
+  }
   if(controls[["model"]] == "hhmm"){
     N = controls[["states"]][2]
-    sdd_star = controls[["sdds"]][2]
     if(is.null(Gammas_star)){
       Gammas_star = list()
       for(i in 1:M)
@@ -74,12 +78,18 @@ set_parameters = function(controls,
       for(i in 1:M)
         sigmas_star[[i]] = runif(M,0,1)
     }
-    if(is.null(dfs_star)){
-      dfs_star = list()
-      for(i in 1:M)
-        dfs_star[[i]] = runif(M,0,30)
+    if(controls[["sdds"]][[2]]$name == "t"){
+      if(is.null(dfs_star)){
+        dfs_star = list()
+        for(i in 1:M)
+          dfs_star[[i]] = runif(M,0,30)
+      }
+    } else {
+      dfs_star = NULL
     }
   }
+  
+  ### set fixed parameters
     
   ### check parameters
 
