@@ -86,11 +86,18 @@
 #' @return 
 #' An object of class \code{RprobitB_controls}. 
 #' @examples 
+#' ### HMM controls
 #' controls = list(
 #'   states  = 2,
 #'   sdds    = "t(mu = 0, sigma = 1, df = 1)",
 #'   horizon = 400,
 #'   fit     = list("runs" = 50)
+#' )
+#' set_controls(controls)
+#' 
+#' ### HHMM controls
+#' controls = list(
+#'   hierarchy = TRUE
 #' )
 #' set_controls(controls)
 #' @export
@@ -138,39 +145,24 @@ set_controls = function(controls = NULL) {
   if(!"hierarchy" %in% names(controls))                  
     controls[["hierarchy"]] = FALSE
   if(!"states" %in% names(controls))                 
-    controls[["states"]] = 2
+    controls[["states"]] = if(controls[["hierarchy"]]) c(2,2) else 2 
   if(!"sdds" %in% names(controls))                   
-    controls[["sdds"]] = "t"
+    controls[["sdds"]] = if(controls[["hierarchy"]]) c("t","t") else "t" 
   if(!"horizon" %in% names(controls))                
-    controls[["horizon"]] = 100
-  if(!"data" %in% names(controls)){
+    controls[["horizon"]] = if(controls[["hierarchy"]]) c(100,30) else 100 
+  if(!"data" %in% names(controls) || is.na(controls[["data"]])){
     controls[["data"]] = NA
   } else {
-    if(!"file" %in% names(controls[["data"]])){
-      if(controls[["hierarchy"]]){                
-        controls[["data"]][["file"]] = NA
-      } else {
-        controls[["data"]][["file"]] = c(NA,NA)
-      }
-    }
-    if(!"column" %in% names(controls[["data"]])){
-      if(controls[["hierarchy"]]){                
-        controls[["data"]][["column"]] = NA
-      } else {
-        controls[["data"]][["column"]] = c(NA,NA)
-      }
-    }
+    if(!"file" %in% names(controls[["data"]]))
+      controls[["data"]][["file"]] = if(controls[["hierarchy"]]) c(NA,NA) else NA 
+    if(!"column" %in% names(controls[["data"]]))
+      controls[["data"]][["column"]] = if(controls[["hierarchy"]]) c(NA,NA) else NA 
     if(!"from" %in% names(controls[["data"]]))     
       controls[["data"]][["from"]] = NA
     if(!"to" %in% names(controls[["data"]]))     
       controls[["data"]][["to"]] = NA
-    if(!"logreturns" %in% names(controls[["data"]])){
-      if(controls[["hierarchy"]]){                
-        controls[["data"]][["logreturns"]] = FALSE
-      } else {
-        controls[["data"]][["logreturns"]] = c(FALSE,FALSE)
-      }
-    }
+    if(!"logreturns" %in% names(controls[["data"]]))
+      controls[["data"]][["logreturns"]] = if(controls[["hierarchy"]]) c(FALSE,FALSE) else FALSE 
     if(!"merge" %in% names(controls[["data"]])) 
       controls[["data"]][["merge"]] = "mean(x)"
   }
@@ -206,7 +198,7 @@ set_controls = function(controls = NULL) {
       stop("The control 'states' must be a vector of length 2 containing integers greater or equal 2.")
     if(!(length(controls[["horizon"]]) == 2))
       stop("The control 'horizon' must be a vector of length 2.")
-    if(!(is.integer(controls[["horizon"]][1])))
+    if(!(is_number(controls[["horizon"]][1], int = TRUE, pos = TRUE)))
       stop("The first entry of the control 'horizon' must be an integer.")
     if(!(is_number(controls[["horizon"]][2], int = TRUE, pos = TRUE) || controls[["horizon"]][2] %in% c("w","m","q","y")))
       stop("The second entry of the control 'horizon' must be an integer or one of 'w', 'm', 'q', 'y'.")
@@ -215,16 +207,17 @@ set_controls = function(controls = NULL) {
     if(!(is_number(controls[["states"]], int = TRUE) && 
          length(controls[["states"]]) == 1 && all(controls[["states"]] >= 2)))
       stop("The control 'states' must be an integer greater or equal 2.")
+    
     if(!(length(controls[["horizon"]]) == 1 && is_number(controls[["horizon"]], int = TRUE, pos = TRUE)))
       stop("The control 'horizon' must be an integer.")
   }
-  
-  ### check 'sdds' control and extract fixed parameter values
-  sdds = controls[["sdds"]]
-  controls[["sdds"]] = list()
-  controls[["sdds"]][[1]] = split_sdd(sdd = sdds[1])
-  if(controls[["hierarchy"]]){
-    controls[["sdds"]][[2]] = split_sdd(sdd = sdds[2])
+  if(class(controls[["sdds"]]) != "fHMM_data"){
+    if(!is.character(controls[["sdds"]]) || 
+       length(controls[["sdds"]]) != ifelse(controls[["hierarchy"]],2,1))
+      stop("The control 'sdds' must be a character",
+           if(controls[["hierarchy"]])"vector","of length",
+           ifelse(controls[["hierarchy"]],2,1))
+    controls[["sdds"]] = split_sdds(sdds = controls[["sdds"]])
   }
 
   ### check 'data' controls

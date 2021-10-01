@@ -6,7 +6,6 @@ download_data(symbol = "^GDAXI", file = "dax.csv")
 
 ### set controls
 controls = list(
-  path    = ".",
   states  = 2,
   sdds    = "t",
   horizon = 400,
