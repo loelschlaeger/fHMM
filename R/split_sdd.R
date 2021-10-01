@@ -43,5 +43,6 @@ split_sdd = function(sdd) {
         stop("C5")
   }
   out = list("name" = distr, fixed = fixed)
+  class(out) = "fHMM_sdd"
   return(out)
 }
