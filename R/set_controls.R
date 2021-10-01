@@ -47,18 +47,18 @@
 #'     limit. No upper limit if \code{from = NA}.
 #'     \item \code{logreturns} \code{(*)} (\code{FALSE}):
 #'     A boolean, if \code{TRUE} the data is transformed to log-returns.
-#'     \item \code{merge} (\code{"mean(x)"}):
-#'     Only relevant, if \code{hierarchy = TRUE}. A character, which is an 
-#'     expression to merge fine-scale data \code{x} into one coarse-scale 
-#'     observation. For example,
+#'     \item \code{merge} (\code{function(x) mean(x)}):
+#'     Only relevant, if \code{hierarchy = TRUE}. In this case, a function, 
+#'     which merges a numeric vector of fine-scale data \code{x} into one 
+#'     coarse-scale observation. For example,
 #'     \itemize{
-#'       \item \code{merge = "mean(x)"} defines the mean of the 
+#'       \item \code{merge = function(x) mean(x)} defines the mean of the 
 #'       fine-scale data as the coarse-scale observation,
-#'       \item \code{merge = "mean(abs(x))} for the mean of the
+#'       \item \code{merge = function(x) mean(abs(x))} for the mean of the
 #'       absolute values,
-#'       \item \code{merge = "sum(abs(x))} for the sum of of the
+#'       \item \code{merge = function(x) (abs(x))} for the sum of of the
 #'       absolute values,
-#'       \item \code{merge = "(tail(x,1)-head(x,1))/head(x,1)} for
+#'       \item \code{merge = function(x) (tail(x,1)-head(x,1))/head(x,1)} for
 #'       the relative change of the first to the last fine-scale observation.
 #'     }
 #'   }
@@ -74,13 +74,13 @@
 #'     An integer (vector), specifying which optimization runs are accepted
 #'     based on the output code of \code{\link[base]{nlm}}.
 #'     \item \code{gradtol} (\code{1e-6}): 
-#'     Passed on to \code{\link[base]{nlm}}.
+#'     A positive numeric value, passed on to \code{\link[base]{nlm}}.
 #'     \item \code{iterlim} (\code{200}): 
-#'     Passed on to \code{\link[base]{nlm}}.
+#'     A positive integer, passed on to \code{\link[base]{nlm}}.
 #'     \item \code{print.level} (\code{0}): 
-#'     Passed on to \code{\link[base]{nlm}}.
+#'     One of \code{0}, \code{1}, and \code{2}, passed on to \code{\link[base]{nlm}}.
 #'     \item \code{steptol} (\code{1e-6}): 
-#'     Passed on to \code{\link[base]{nlm}}.
+#'     A positive numeric value, passed on to \code{\link[base]{nlm}}.
 #'   }
 #' }
 #' @return 
@@ -195,83 +195,110 @@ set_controls = function(controls = NULL) {
   controls[["simulated"]] = FALSE
   if(!is.list(controls[["data"]]) || length(controls[["data"]] == 0))
     controls[["simulated"]] = TRUE
-  
-  ### check state-dependent distributions and extract fixed parameter values
-  out_split_sdd = split_sdd(sdd = controls[["sdds"]][1])
-  
 
   ### check single controls
-  if(!is.character(controls[["path"]])) 
-    stop("The control 'path' must be a character.")
-  if(!controls[["model"]] %in% c("hmm","hhmm")) 
-    stop("The control 'model' must be one of 'hmm' or 'hhmm'.")
-  if(controls[["model"]] == "hmm") 
-    if(!(is.integer(controls[["states"]]) & length(controls[["states"]]) == 1 & all(controls[["states"]] >= 2))) 
-      stop("The control 'states' must be an integer greater or equal 2.")
-  if(controls[["model"]] == "hhmm")
-    if(!(is.integer(controls[["states"]]) & length(controls[["states"]]) == 2 & all(controls[["states"]] >= 2))) 
-      stop("The control 'states' must be a numeric vector of length 2 containing integers greater or equal 2.")
-  if(controls[["model"]] == "hmm")
-    if(!(length(controls[["sdds"]]) == 1 & controls[["sdds"]] %in% c("t","gamma")))
-      stop("The control 'sdds' must be one of 't' or 'gamma'.")
-  if(controls[["model"]] == "hhmm")
-    if(!(length(controls[["sdds"]]) == 2 & all(controls[["sdds"]] %in% c("t","gamma"))))
-      stop("The control 'sdds' must be a character vector of length 2 containing 't' or 'gamma'.")
-  if(controls[["model"]]=="hmm")
-    if(controls[["sim"]] & !is.integer(controls[["horizon"]]) & length(controls[["horizon"]]!=1))
-      stop("The control 'horizon' must be an integer.")
-  if(controls[["model"]]=="hhmm"){
-    if(length(controls[["horizon"]])!=2)
+  if(!is.logical(controls[["hierarchy"]])) 
+    stop("The control 'hierarchy' must be a boolean.")
+  if(controls[["hierarchy"]]){
+    ### controls with hierarchy
+    if(!(is_number(controls[["states"]], int = TRUE) && 
+         length(controls[["states"]]) == 2 && all(controls[["states"]] >= 2)))
+      stop("The control 'states' must be a vector of length 2 containing integers greater or equal 2.")
+    if(!(length(controls[["horizon"]]) == 2))
       stop("The control 'horizon' must be a vector of length 2.")
-    if(!(is.integer(controls[["horizon"]][2]) || controls[["horizon"]][2] %in% c("w","m","q","y")))
-      stop("The second entry of the control 'horizon' must be an integer or one of 'w', 'm', 'q', 'y'.")
-    if(controls[["sim"]] & !(is.integer(controls[["horizon"]][1])))
+    if(!(is.integer(controls[["horizon"]][1])))
       stop("The first entry of the control 'horizon' must be an integer.")
+    if(!(is_number(controls[["horizon"]][2], int = TRUE, pos = TRUE) || controls[["horizon"]][2] %in% c("w","m","q","y")))
+      stop("The second entry of the control 'horizon' must be an integer or one of 'w', 'm', 'q', 'y'.")
+  } else {
+    ### controls without hierarchy
+    if(!(is_number(controls[["states"]], int = TRUE) && 
+         length(controls[["states"]]) == 1 && all(controls[["states"]] >= 2)))
+      stop("The control 'states' must be an integer greater or equal 2.")
+    if(!(length(controls[["horizon"]]) == 1 && is_number(controls[["horizon"]], int = TRUE, pos = TRUE)))
+      stop("The control 'horizon' must be an integer.")
   }
   
+  ### check 'sdds' control and extract fixed parameter values
+  sdds = controls[["sdds"]]
+  controls[["sdds"]] = list()
+  controls[["sdds"]][[1]] = split_sdd(sdd = sdds[1])
+  if(controls[["hierarchy"]]){
+    controls[["sdds"]][[2]] = split_sdd(sdd = sdds[2])
+  }
+
   ### check 'data' controls
-  if(!controls[["sim"]]){
-    if(controls[["model"]]=="hmm"){
+  if(controls[["simulated"]]){
+    controls[["data"]] = NA
+  } else {
+    if(controls[["hierarchy"]]){
+      ### controls with hierarchy
+      if(!(is.character(controls[["data"]][["file"]])) && length(controls[["data"]][["file"]] == 2))
+        stop("The control 'file' in 'data' must be a character vector of length two.")
+      if(!(is.character(controls[["data"]][["column"]])) && length(controls[["data"]][["column"]] == 2))
+        stop("The control 'column' in 'data' must be a character vector of length two.")
+      if(!(is.logical(controls[["data"]][["logreturns"]])) && length(controls[["data"]][["logreturns"]] == 2))
+        stop("The control 'logreturns' in 'data' must be a boolean vector of length two.")
+      if(!is.function(controls[["data"]][["merge"]]))
+        stop("The control 'merge' in 'data' must be of class 'function'.")
+      try_merge = try(controls[["data"]][["merge"]](-10:10), silent = TRUE)
+      if(class(try_merge) == "try-error" || !is.numeric(try_merge) || length(try_merge) != 1)
+        stop("The controls 'merge' in 'data' must merge a numeric vector into a single numeric value.")
+    } else {
+      ### controls without hierarchy
       if(!(is.character(controls[["data"]][["file"]])) && length(controls[["data"]][["file"]] == 1))
-        stop("The control 'file' must be a character.")
-      if(is.na(controls[["data"]][["file"]]))
-        stop("The control 'file' in 'data' has to be specified.")
-      if(is.na(controls[["data"]][["column"]]))
-        stop("The control 'column' in 'data' has to be specified.")
+        stop("The control 'file' in 'data' must be a character.")
+      if(!(is.character(controls[["data"]][["column"]])) && length(controls[["data"]][["column"]] == 1))
+        stop("The control 'column' in 'data' must be a character.")
+      if(!(is.logical(controls[["data"]][["logreturns"]])) && length(controls[["data"]][["logreturns"]] == 1))
+        stop("The control 'logreturns' in 'data' must be a boolean.")
+      controls[["data"]][["merge"]] = NA
     }
-    if(controls[["model"]]=="hhmm"){
-      if(!(is.character(controls[["data"]][["file"]])) && length(controls[["data"]][["file"]] == 1))
-        stop("The control 'file' must be a character vector of length two.")
-      if(any(is.na(controls[["data"]][["file"]])))
-        stop("The control 'file' in 'data' has to be specified.")
-      if(!controls[["sim"]] & any(is.na(controls[["data"]][["column"]])))
-        stop("The control 'column' in 'data' has to be specified.")
-      if(!is.function(controls[["data"]][["cs_transform"]]))
-        stop("The control 'cs_transform' in 'data' has to of class 'function'.")
-    }
+    if(!is.na(controls[["from"]]))
+      controls[["from"]] = check_date(controls[["from"]])
+    if(!is.na(controls[["to"]]))
+      controls[["to"]] = check_date(controls[["to"]])
   }
 
   ### check 'fit' controls
-  if(!is.integer(controls[["fit"]][["runs"]]))
+  if(!is_number(controls[["fit"]][["runs"]], int = TRUE, pos = TRUE))
     stop("The control 'runs' in 'fit' must be an integer.")
-  if(!is.logical(controls[["fit"]][["at_true"]]))
-    stop("The control 'at_true' in 'fit' must be an integer.")
+  if(!is.logical(controls[["fit"]][["origin"]]))
+    stop("The control 'origin' in 'fit' must be a boolean.")
+  if(controls[["fit"]][["origin"]]){
+    controls[["fit"]][["runs"]] = 1
+    controls[["fit"]][["accept"]] = 1:5
+  }
+  if(!all(controls[["fit"]][["accept"]] %in% 1:5))
+    stop("The control 'accept' in 'fit' must be vector of integers from 1 to 5.")
   if(any(controls[["fit"]][["accept"]]=="all"))
     controls[["fit"]][["accept"]] = 1:5
+  if(!(length(controls[["fit"]][["gradtol"]]) == 1 && is_number(controls[["fit"]][["gradtol"]], pos = TRUE)))
+    stop("The control 'gradtol' in 'fit' must be positive numeric value.")
+  if(!(length(controls[["fit"]][["iterlim"]]) == 1 && is_number(controls[["fit"]][["iterlim"]], int = TRUE, pos = TRUE)))
+    stop("The control 'iterlim' in 'fit' must be a positive integer.")
+  if(!(length(controls[["fit"]][["print.level"]]) == 1 && controls[["fit"]][["print.level"]] %in% 0:2))
+    stop("The control 'print.level' in 'fit' must be one of 0, 1, and 2.")
+  if(!(length(controls[["fit"]][["steptol"]]) == 1 && is_number(controls[["fit"]][["steptol"]], pos = TRUE)))
+    stop("The control 'steptol' in 'fit' must be positive numeric value.")
   
-  ### check if data paths are correct
-  if(!controls[["sim"]]){
-    for(i in c(1,2)){
-      if(!is.na(controls[["data"]][["file"]][i])){
-        if(!grepl(".csv$",controls[["data"]][["file"]][i])){
-          controls[["data"]][["file"]][i] = paste0(controls[["data"]][["file"]][i],".csv")
-        }
-        if(!file.exists(paste0(controls[["path"]],"/data/",controls[["data"]][["file"]][i]))){
-          stop(paste0("File '",controls[["path"]],"/data/",controls[["data"]][["file"]][i],"' not found."))
-        }
-        if(!controls[["data"]][["column"]][i] %in% colnames(read.csv(file=paste0("data/",controls[["data"]][["file"]][i])))){
-          stop(paste0("Column '",controls[["data"]][["column"]][i],"' not found in the file '",controls[["path"]],"data/",controls[["data"]][["file"]][i],"'."))
-        }
+  ### check if data paths and column names are correct
+  if(!controls[["simulated"]]){
+    if(controls[["hierarchy"]]){
+      indices = 1:2
+    } else {
+      indices = 1
+    }
+    for(i in indices){
+      controls[["data"]][["file"]][i] = normalizePath(controls[["data"]][["file"]][i])
+      if(!file.exists(controls[["data"]][["file"]][i]))
+        stop("File '",controls[["data"]][["file"]][i],"' not found.")
+      read_try = try(read.csv(file = controls[["data"]][["file"]][i]), silent = TRUE)
+      if(class(read_try) == "try-error")
+        stop("Unable to read '",controls[["data"]][["file"]][i],"'.")
+      for(col in c("Date",controls[["data"]][["column"]][i])){
+        if(!col %in% colnames(read_try))
+          stop("Column '",col,"' not found in '",controls[["data"]][["file"]][i],"'.")
       }
     }
   }
@@ -280,3 +307,4 @@ set_controls = function(controls = NULL) {
   class(controls) = "fHMM_controls"
   return(controls)
 }
+
