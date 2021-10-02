@@ -190,7 +190,7 @@ set_controls = function(controls = NULL) {
 
   ### define control that specifies if data gets simulated
   controls[["simulated"]] = FALSE
-  if(!is.list(controls[["data"]]) || length(controls[["data"]] == 0))
+  if(!is.list(controls[["data"]]) || length(controls[["data"]]) == 0)
     controls[["simulated"]] = TRUE
 
   ### check single controls
@@ -231,11 +231,11 @@ set_controls = function(controls = NULL) {
   } else {
     if(controls[["hierarchy"]]){
       ### controls with hierarchy
-      if(!(is.character(controls[["data"]][["file"]])) && length(controls[["data"]][["file"]] == 2))
+      if(!(is.character(controls[["data"]][["file"]]) && length(controls[["data"]][["file"]]) == 2))
         stop("The control 'file' in 'data' must be a character vector of length two.")
-      if(!(is.character(controls[["data"]][["column"]])) && length(controls[["data"]][["column"]] == 2))
+      if(!(is.character(controls[["data"]][["column"]]) && length(controls[["data"]][["column"]]) == 2))
         stop("The control 'column' in 'data' must be a character vector of length two.")
-      if(!(is.logical(controls[["data"]][["logreturns"]])) && length(controls[["data"]][["logreturns"]] == 2))
+      if(!(is.logical(controls[["data"]][["logreturns"]]) && length(controls[["data"]][["logreturns"]]) == 2))
         stop("The control 'logreturns' in 'data' must be a boolean vector of length two.")
       if(!is.function(controls[["data"]][["merge"]]))
         stop("The control 'merge' in 'data' must be of class 'function'.")
@@ -252,10 +252,10 @@ set_controls = function(controls = NULL) {
         stop("The control 'logreturns' in 'data' must be a boolean.")
       controls[["data"]][["merge"]] = NA
     }
-    if(!is.na(controls[["from"]]))
-      controls[["from"]] = check_date(controls[["from"]])
-    if(!is.na(controls[["to"]]))
-      controls[["to"]] = check_date(controls[["to"]])
+    if(!is.na(controls[["data"]][["from"]]))
+      controls[["data"]][["from"]] = check_date(controls[["data"]][["from"]])
+    if(!is.na(controls[["data"]][["to"]]))
+      controls[["data"]][["to"]] = check_date(controls[["data"]][["to"]])
   }
 
   ### check 'fit' controls
