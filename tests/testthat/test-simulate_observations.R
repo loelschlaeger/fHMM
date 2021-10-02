@@ -5,4 +5,9 @@ test_that("simulation of state-dependent observations works", {
     simulate_observations(markov_chain = markov_chain, sdd = "t", mus = c(-1,1),
                           sigmas = c(0.5,2), dfs = c(1,Inf), seed = 1)
   )
+  expect_error(
+    simulate_observations(markov_chain = markov_chain, sdd = "t", mus = c(-1,1),
+                          sigmas = c(0.5,2), dfs = c(1,Inf), seed = 1,
+                          total_length = 9)
+  )
 })

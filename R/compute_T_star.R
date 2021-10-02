@@ -1,21 +1,34 @@
-#' @title Fine-scale chunk lengths
-#' @description  Computes (flexible) fine-scale chunk lengths.
-#' @param fs_time_horizon Either a numeric or one of \code{"w"}, \code{"m"}, \code{"q"}, \code{"y"}, setting the fine-scale dimension.
-#' @param T A numeric, the dimension of the coarse-scale process, default \code{NA}.
-#' @param fs_dates A vector of dates of empirical fine-scale observations, default \code{NA}.
-#' @return A vector of fine-scale chunk sizes.
+#' Compute lengths of fine-scale chunks
+#' @description  
+#' This helper-function computes the lengths of fine-scale chunks.
+#' @param horizon 
+#' The element \code{controls$horizon}, i.e. an integer vector of length 2,
+#' where alternatively the second entry can be one of \code{"w"}, \code{"m"},
+#' \code{"q"}, or \code{"y"}.
+#' @param dates
+#' A vector of dates of empirical fine-scale data. 
+#' @param seed
+#' Set a seed for the simulation of flexible chunk lengths.
+#' @return 
+#' A vector of fine-scale chunk sizes.
 
-compute_fs = function(fs_time_horizon,T=NA,fs_dates=NA){
-  if(all(is.na(fs_dates))){
-    if(is.numeric(fs_time_horizon)){
-      T_star = rep(fs_time_horizon,T)
-    }
-    if(fs_time_horizon %in% c("w","m","q","y")){
-      if(fs_time_horizon == "w") size = 5
-      if(fs_time_horizon == "m") size = 25
-      if(fs_time_horizon == "q") size = 70
-      if(fs_time_horizon == "y") size = 260
-      T_star = sample(1:size,T,replace=TRUE,prob=dbinom(1:size,size,0.9)/sum(dbinom(1:size,size,0.9)))
+compute_T_star = function(horizon, dates = NULL, seed = NULL){
+  if(is.null(dates)){
+    if(!is.null(seed))
+      set.seed(seed)
+    if(is.numeric(horizon[2]))
+      T_star = rep(horizon[2], horizon[1])
+    if(horizon[2] %in% c("w","m","q","y")){
+      if(horizon[2] == "w") 
+        size = 5
+      if(horizon[2] == "m") 
+        size = 25
+      if(horizon[2] == "q") 
+        size = 70
+      if(horizon[2] == "y") 
+        size = 260
+      T_star = sample(1:size, horizon[1], replace=TRUE, 
+                      prob = dbinom(1:size, size, 0.9))
     }
   } else {
     dates_overview = data.frame("w" = as.numeric(strftime(fs_dates,format ="%W")),

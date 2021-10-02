@@ -14,8 +14,13 @@
 #' A vector of degrees of freedom (only relevant if \code{sdd = "t"}).
 #' @param seed
 #' Set a seed.
+#' @param total_length
+#' An integer, the total length of the output vector. Must be greater or equal 
+#' than \code{length(markov_chain)}. 
 #' @return
-#' A numeric vector of length \code{T} with states.
+#' A numeric vector of length \code{total_length}, where the first 
+#' \code{length(markov_chain)} elements are numeric values and the last 
+#' \code{total_length - length(markov_chain)} elements are \code{NA}.
 #' @example
 #' Gamma = rbind(c(0.8,0.2),c(0.1,0.9))
 #' markov_chain = simulate_markov_chain(Gamma = Gamma, T = 10)
@@ -24,7 +29,7 @@
 #' @export
 
 simulate_observations = function(markov_chain, sdd, mus, sigmas, dfs = NULL, 
-                                 seed = NULL){
+                                 seed = NULL, total_length = length(markov_chain)){
   
   ### check inputs
   if(!all(is_number(markov_chain, int = TRUE, pos = TRUE)))
@@ -46,6 +51,8 @@ simulate_observations = function(markov_chain, sdd, mus, sigmas, dfs = NULL,
     if(!(all(is_number(dfs, pos = TRUE)) && length(dfs) == length(mus)))
       stop("'dfs' must be a positive number vector of length equal to 'mus' and 'sigmas'.")
   }
+  if(!is_number(total_length) || length(total_length) != 1 || total_length < length(markov_chain))
+    stop("'total_length' must be an integer greater or equal than 'length(markov_chain)'.")
   
   ### set seed
   if(!is.null(seed))
@@ -61,6 +68,9 @@ simulate_observations = function(markov_chain, sdd, mus, sigmas, dfs = NULL,
     if(sdd == "gamma")
       observations[t] = rgamma(1, shape = mus[s]^2/sigmas[s]^2, scale = sigmas[s]^2/mus[s])
   }
+  
+  ### append NA's
+  observations = c(observations, rep(NA, total_length - T))
   
   ### return observations
   return(observations)

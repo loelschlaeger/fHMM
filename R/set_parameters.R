@@ -115,13 +115,13 @@ set_parameters = function(controls,
   if(!all(is_number(sigmas, pos = TRUE)) || length(sigmas) != M)
     stop("'sigma' must be a positive numeric vector of length 'controls$states[1]'.")
   if(controls[["sdds"]][[1]]$name == "t")
-    if(!all(is_number(dfs, int = TRUE, pos = TRUE)) || length(dfs) != M)
-      stop("'dfs' must be an integer vector of length 'controls$states[1]'.")
+    if(!all(is_number(dfs, pos = TRUE)) || length(dfs) != M)
+      stop("'dfs' must be a positive numeric vector of length 'controls$states[1]'.")
   if(controls[["hierarchy"]]){
     if(!is.list(Gammas_star) || length(Gammas_star) != N)
       stop("'Gammas_star' must be a list of length 'controls$states[1]'.")
     for(i in 1:M)
-      if(!is_tpm(Gammas_star[[i]]) || nrow(GGammas_star[[i]]) != N)
+      if(!is_tpm(Gammas_star[[i]]) || nrow(Gammas_star[[i]]) != N)
         stop("Each element in 'Gammas_star' must be a tpm of dimension 'controls$states[2]'.")
     if(!is.list(mus_star) || length(mus_star) != N)
       stop("'mus_star' must be a list of length 'controls$states[1]'.")
@@ -136,8 +136,8 @@ set_parameters = function(controls,
     if(controls[["sdds"]][[2]]$name == "t"){
       if(!is.list(dfs_star) || length(dfs_star) != N)
         stop("'dfs_star' must be a list of length 'controls$states[1]'.")
-      if(!all(is_number(dfs_star[[i]], int = TRUE, pos = TRUE)) || length(dfs_star[[i]]) != N)
-        stop("Each element in 'dfs_star' must be an integer vector of length 'controls$states[2]'.")
+      if(!all(is_number(dfs_star[[i]], pos = TRUE)) || length(dfs_star[[i]]) != N)
+        stop("Each element in 'dfs_star' must be a positive numeric vector of length 'controls$states[2]'.")
     }
   }
   
