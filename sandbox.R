@@ -19,7 +19,8 @@ true_parameters = set_parameters(
 
 ### HHMM parameters ---------------------------------------------------------
 controls = list(
-  hierarchy = TRUE
+  hierarchy = TRUE,
+  horizon = c(100, NA)
 )
 controls = set_controls(controls)
 

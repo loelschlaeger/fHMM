@@ -1,7 +1,7 @@
 # computation of T_star works
 
     Code
-      compute_T_star(horizon = c(100, 30), seed = 1)
+      compute_T_star(horizon = c(100, 30), period = NA, seed = 1)
     Output
         [1] 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30
        [26] 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30
@@ -11,7 +11,7 @@
 ---
 
     Code
-      compute_T_star(horizon = c(100, "w"), seed = 1)
+      compute_T_star(horizon = c(100, NA), period = "w", seed = 1)
     Output
         [1] 5 5 5 4 5 4 3 4 4 5 5 5 4 5 4 5 4 2 5 4 3 5 4 5 5 5 5 5 4 5 5 4 5 5 4 4 4
        [38] 5 4 5 4 4 4 5 5 4 5 5 4 4 5 4 5 5 5 5 5 5 4 5 4 5 5 5 4 5 5 4 5 4 5 4 5 5
@@ -20,7 +20,7 @@
 ---
 
     Code
-      compute_T_star(horizon = c(100, "m"), seed = 1)
+      compute_T_star(horizon = c(100, NA), period = "m", seed = 1)
     Output
         [1] 23 22 24 20 23 25 20 24 24 23 23 23 24 22 21 24 21 18 22 21 20 23 24 23 22
        [26] 22 23 22 25 22 22 24 24 23 21 24 21 23 21 22 21 24 21 24 24 21 23 22 21 21
@@ -30,7 +30,7 @@
 ---
 
     Code
-      compute_T_star(horizon = c(100, "q"), seed = 1)
+      compute_T_star(horizon = c(100, NA), period = "q", seed = 1)
     Output
         [1] 64 62 65 59 64 59 58 61 61 63 64 64 66 62 66 65 66 69 62 60 58 64 61 63 64
        [26] 62 63 62 67 62 65 61 65 64 60 61 60 63 66 62 60 61 60 65 65 60 63 65 66 66
@@ -40,7 +40,7 @@
 ---
 
     Code
-      compute_T_star(horizon = c(100, "y"), seed = 1)
+      compute_T_star(horizon = c(100, NA), period = "y", seed = 1)
     Output
         [1] 236 232 238 226 233 242 243 239 230 234 233 233 239 232 240 231 229 221
        [19] 232 240 225 233 239 235 236 232 234 232 227 232 231 230 231 233 241 239

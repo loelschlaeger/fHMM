@@ -10,6 +10,9 @@
 #' is set to the stationary distribution vector.
 #' @param seed
 #' Set a seed.
+#' @param total_length
+#' An integer, the total length of the output vector. Must be greater or equal 
+#' than \code{T}. 
 #' @return
 #' A numeric vector of length \code{T} with states.
 #' @example
@@ -17,7 +20,8 @@
 #' simulate_markov_chain(Gamma = Gamma, T = 10)
 #' @export
 
-simulate_markov_chain = function(Gamma, T, delta = Gamma2delta(Gamma), seed = NULL){
+simulate_markov_chain = function(Gamma, T, delta = Gamma2delta(Gamma), 
+                                 seed = NULL, total_length = T){
   
   ### input checks
   if(!(is.matrix(Gamma) && all(rowSums(Gamma) == 1) && ncol(Gamma) == nrow(Gamma)))
@@ -26,6 +30,8 @@ simulate_markov_chain = function(Gamma, T, delta = Gamma2delta(Gamma), seed = NU
     stop("'T' must be a positive number.")
   if(!(is.numeric(delta) && length(delta) == nrow(Gamma)))
     stop("'delta' must be a numberic vector of length equal to the dimension of 'Gamma'.")
+  if(!is_number(total_length) || length(total_length) != 1 || total_length < T)
+    stop("'total_length' must be an integer greater or equal than 'T'.")
   
   ### set a seed
   if(!is.null(seed))
@@ -37,6 +43,9 @@ simulate_markov_chain = function(Gamma, T, delta = Gamma2delta(Gamma), seed = NU
   markov_chain[1] = sample(1:N, 1, prob = delta)
   for(t in 2:T)
     markov_chain[t] = sample(1:N, 1 ,prob = Gamma[markov_chain[t-1],])
+  
+  ### append NA's
+  markov_chain = c(markov_chain, rep(NA, total_length - T))
   
   ### return Markov chain
   return(markov_chain)

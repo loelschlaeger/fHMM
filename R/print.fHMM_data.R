@@ -9,7 +9,7 @@
 #' Returns \code{x} invisibly.
 #' @export
 
-print.fHMM_data = function() {
+print.fHMM_data = function(x, ...) {
   ### print data characteristics
   if(controls[["sim"]]){
     if(controls[["model"]]=="hmm"){

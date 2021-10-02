@@ -1,30 +1,30 @@
-#' @title Read .csv-file
-#' @description Reads financial data from .csv-file.
-#' @param controls A list of controls.
-#' @return A list containing the following elements:
-#' \item{data}{A matrix of data that is modeled.}
-#' \item{data_raw}{A matrix of raw data.}
-#' \item{data_fs_raw}{A matrix of raw fine-scale data.}
-#' \item{data_cs_raw}{A matrix of raw coarse-scale data.}
-#' \item{dates}{A vector of dates.}
-#' \item{T_star}{A vector of fine-scale chunk sizes.}
+#' Read data for the fHMM package.
+#' @description 
+#' This function reads financial data for the fHMM package.
+#' @inheritParams prepare_data
+#' @return 
+#' A list containing the following elements:
+#' \itemize{
+#'  \item the matrix of the \code{dates},
+#'  \item the matrix of the simulated \code{data},
+#'  \item the vector of fine-scale chunk sizes \code{T_star}.
+#' }
 
 read_data = function(controls){
   
-  if(is.null(controls[["controls_checked"]]))
-    stop("F.6")
+  ### check inputs
+  if(class(controls) != "fHMM_controls")
+    stop("Not of class 'fHMM_controls'.")
   
-  data_source = controls[["data"]][["source"]]
-  data_col = controls[["data"]][["column"]]
+  ### read data
   data_raw = list()
-  for(i in 1:2){
-    if(is.na(data_source[i])){
-      data_raw[[i]] = NA
-    }
+  for(i in 1:ifelse(controls[["hierarchy"]],2,1)){
+
     if(!is.na(data_source[i])){
       
       ### extract data
-      data_raw[[i]] = read.csv(file=paste0(controls[["path"]],"/data/",data_source[i]),header=TRUE,sep=",",na.strings="null")
+      data_raw[[i]] = read.csv(file = controls[["data"]][["file"]],
+                               header = TRUE, sep = ",", na.strings = "null")
       if(!"Date" %in% colnames(data_raw[[i]]) || !data_col[i] %in% colnames(data_raw[[i]]))
         stop("D.4")
       

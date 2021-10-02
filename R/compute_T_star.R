@@ -3,8 +3,10 @@
 #' This helper-function computes the lengths of fine-scale chunks.
 #' @param horizon 
 #' The element \code{controls$horizon}, i.e. an integer vector of length 2,
-#' where alternatively the second entry can be one of \code{"w"}, \code{"m"},
-#' \code{"q"}, or \code{"y"}.
+#' where the second entry can be \code{NA}.
+#' @param period
+#' The element \code{controls$period}, i.e. one of \code{"w"}, 
+#' \code{"m"}, code{"q"}, or \code{"y"}.
 #' @param dates
 #' A vector of dates of empirical fine-scale data. 
 #' @param seed
@@ -12,20 +14,20 @@
 #' @return 
 #' A vector of fine-scale chunk sizes.
 
-compute_T_star = function(horizon, dates = NULL, seed = NULL){
+compute_T_star = function(horizon, period, dates = NULL, seed = NULL){
   if(is.null(dates)){
     if(!is.null(seed))
       set.seed(seed)
-    if(is.numeric(horizon[2]))
+    if(!is.na(horizon[2])){
       T_star = rep(horizon[2], horizon[1])
-    if(horizon[2] %in% c("w","m","q","y")){
-      if(horizon[2] == "w") 
+    } else {
+      if(period == "w") 
         size = 5
-      if(horizon[2] == "m") 
+      if(period == "m") 
         size = 25
-      if(horizon[2] == "q") 
+      if(period == "q") 
         size = 70
-      if(horizon[2] == "y") 
+      if(period == "y") 
         size = 260
       T_star = sample(1:size, horizon[1], replace=TRUE, 
                       prob = dbinom(1:size, size, 0.9))

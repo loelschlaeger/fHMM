@@ -25,7 +25,10 @@ prepare_data = function(controls, true_parameters = set_parameters(controls)) {
   }
   
   ### build and return object of class 'fHMM_data'
-  data = data
+  data = list("simulated" = controls[["simulated"]],
+              "markov_chain" = if(controls[["simulated"]]) data$markov_chain else NA,
+              "data" = data$data,
+              "T_star" = data$T_star)
   class(data) = "fHMM_data"
   return(data)
 }

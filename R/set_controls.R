@@ -22,14 +22,17 @@
 #'   more parameter values, write e.g. \code{"t(mu = 0, sigma = 1, df = Inf)"} 
 #'   or \code{"gamma(mu = 0, sigma = 1)"}, respectively.
 #'   \item \code{horizon} \code{(*)} (\code{100}):
-#'   A numeric, specifying the length of the time horizon. Alternatively, the 
-#'   second entry of \code{horizon} can be one of:
+#'   A numeric, specifying the length of the time horizon. 
+#'   \item \code{period} (\code{"m"}):
+#'   Only relevant if \code{hierarchy = TRUE}. In this case, it specifies a 
+#'   flexible, periodic fine-scale time horizon and can be one of
 #'   \itemize{
 #'     \item \code{"w"} for a week,
 #'     \item \code{"m"} for a month,
 #'     \item \code{"q"} for a quarter,
 #'     \item \code{"y"} for a year.
 #'   }
+#'   \code{horizon[2]} has higher priority than \code{period}..
 #'   \item \code{data} (\code{NA}): A list of controls specifying the data. If 
 #'   \code{data = NA}, data gets simulated. Otherwise:
 #'   \itemize{
@@ -48,7 +51,7 @@
 #'     \item \code{logreturns} \code{(*)} (\code{FALSE}):
 #'     A boolean, if \code{TRUE} the data is transformed to log-returns.
 #'     \item \code{merge} (\code{function(x) mean(x)}):
-#'     Only relevant, if \code{hierarchy = TRUE}. In this case, a function, 
+#'     Only relevant if \code{hierarchy = TRUE}. In this case, a function, 
 #'     which merges a numeric vector of fine-scale data \code{x} into one 
 #'     coarse-scale observation. For example,
 #'     \itemize{
@@ -110,7 +113,7 @@ set_controls = function(controls = NULL) {
       controls = list()
     
     ### define names of all controls
-    all_controls = c("hierarchy","states","sdds","horizon","data","fit")
+    all_controls = c("hierarchy","states","sdds","horizon","period","data","fit")
     data_controls = c("file","column","from","to","logreturns","merge")
     fit_controls = c("runs","origin","accept","gradtol","iterlim","print.level","steptol")
     
@@ -150,6 +153,8 @@ set_controls = function(controls = NULL) {
     controls[["sdds"]] = if(controls[["hierarchy"]]) c("t","t") else "t" 
   if(!"horizon" %in% names(controls))                
     controls[["horizon"]] = if(controls[["hierarchy"]]) c(100,30) else 100 
+  if(!"period" %in% names(controls))                  
+    controls[["period"]] = "m"
   if(!"data" %in% names(controls) || is.na(controls[["data"]])){
     controls[["data"]] = NA
   } else {
@@ -164,7 +169,7 @@ set_controls = function(controls = NULL) {
     if(!"logreturns" %in% names(controls[["data"]]))
       controls[["data"]][["logreturns"]] = if(controls[["hierarchy"]]) c(FALSE,FALSE) else FALSE 
     if(!"merge" %in% names(controls[["data"]])) 
-      controls[["data"]][["merge"]] = "mean(x)"
+      controls[["data"]][["merge"]] = function(x) mean(x)
   }
   if(!"fit" %in% names(controls))                    
     controls[["fit"]] = list()
@@ -196,20 +201,20 @@ set_controls = function(controls = NULL) {
     if(!(is_number(controls[["states"]], int = TRUE) && 
          length(controls[["states"]]) == 2 && all(controls[["states"]] >= 2)))
       stop("The control 'states' must be a vector of length 2 containing integers greater or equal 2.")
-    if(!(length(controls[["horizon"]]) == 2))
-      stop("The control 'horizon' must be a vector of length 2.")
-    if(!(is_number(controls[["horizon"]][1], int = TRUE, pos = TRUE)))
-      stop("The first entry of the control 'horizon' must be an integer.")
-    if(!(is_number(controls[["horizon"]][2], int = TRUE, pos = TRUE) || controls[["horizon"]][2] %in% c("w","m","q","y")))
-      stop("The second entry of the control 'horizon' must be an integer or one of 'w', 'm', 'q', 'y'.")
+    if(!(length(controls[["horizon"]]) == 2 && is_number(controls[["horizon"]][!is.na(controls[["horizon"]])], int = TRUE, pos = TRUE)))
+      stop("The control 'horizon' must be an integer vector of length 2.")
+    if(!is.na(controls[["period"]]))
+      if(!controls[["period"]] %in% c("w","m","q","y"))
+        stop("The control 'period' must be eiter NA or one of 'w', 'm', 'q', 'y'.")
   } else {
     ### controls without hierarchy
     if(!(is_number(controls[["states"]], int = TRUE) && 
          length(controls[["states"]]) == 1 && all(controls[["states"]] >= 2)))
       stop("The control 'states' must be an integer greater or equal 2.")
-    
     if(!(length(controls[["horizon"]]) == 1 && is_number(controls[["horizon"]], int = TRUE, pos = TRUE)))
       stop("The control 'horizon' must be an integer.")
+    controls[["period"]] = NA
+    controls[["merge"]] = NA
   }
   if(class(controls[["sdds"]]) != "fHMM_sdds"){
     if(!is.character(controls[["sdds"]]) || 

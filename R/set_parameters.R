@@ -27,6 +27,8 @@
 #' A list of length \code{controls$states[1]} of vectors of degrees of freedom. 
 #' Each vector must be of length \code{controls$states[2]}. 
 #' Only relevant if sdd is a t-distribution.
+#' @param seed
+#' Set a seed for the sampling of parameters.
 #' @return 
 #' An object of class \code{fHMM_parameters}.
 #' @export
@@ -34,7 +36,11 @@
 set_parameters = function(controls, 
                           Gamma = NULL, mus = NULL, sigmas = NULL, dfs = NULL, 
                           Gammas_star = NULL, mus_star = NULL, 
-                          sigmas_star = NULL, dfs_star = NULL) {
+                          sigmas_star = NULL, dfs_star = NULL, seed = NULL) {
+  
+  ### set seed
+  if(!is.null(seed))
+    set.seed(seed)
   
   ### check 'controls'
   if(class(controls) != "fHMM_controls")
