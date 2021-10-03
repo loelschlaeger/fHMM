@@ -22,32 +22,38 @@
 #'   more parameter values, write e.g. \code{"t(mu = 0, sigma = 1, df = Inf)"} 
 #'   or \code{"gamma(mu = 0, sigma = 1)"}, respectively.
 #'   \item \code{horizon} \code{(*)} (\code{100}):
-#'   A numeric, specifying the length of the time horizon. 
+#'   A numeric, specifying the length of the time horizon. The first entry
+#'   of \code{horizon} is ignored if \code{data} is specified.
 #'   \item \code{period} (\code{"m"}):
-#'   Only relevant if \code{hierarchy = TRUE}. In this case, it specifies a 
-#'   flexible, periodic fine-scale time horizon and can be one of
+#'   Only relevant if \code{hierarchy = TRUE} and \code{horizon[2] = NA}. 
+#'   In this case, it specifies a flexible, periodic fine-scale time horizon 
+#'   and can be one of
 #'   \itemize{
 #'     \item \code{"w"} for a week,
 #'     \item \code{"m"} for a month,
 #'     \item \code{"q"} for a quarter,
 #'     \item \code{"y"} for a year.
 #'   }
-#'   \code{horizon[2]} has higher priority than \code{period}..
 #'   \item \code{data} (\code{NA}): A list of controls specifying the data. If 
 #'   \code{data = NA}, data gets simulated. Otherwise:
 #'   \itemize{
 #'     \item \code{file} \code{(*)}:
 #'     A character, the path to a .csv-file with financial data, which must 
-#'     have a column named \code{"Date"} (with dates) and \code{column} 
-#'     (with financial data).
-#'     \item \code{column} \code{(*)}:
+#'     have a column named \code{date_column} (with dates) and 
+#'     \code{data_column} (with financial data).
+#'     \item \code{date_column} \code{(*)} (\code{"Date"}):
+#'     A character, the name of the column in \code{file} with dates. Can be 
+#'     \code{NA} in which case consecutive integers are used as time points.
+#'     \item \code{data_column} \code{(*)} (\code{"Close"}):
 #'     A character, the name of the column in \code{file} with financial data.
 #'     \item \code{from} (\code{NA}):
 #'     A character of the format \code{"YYYY-MM-DD"}, setting a lower data 
-#'     limit. No lower limit if \code{from = NA}.
+#'     limit. No lower limit if \code{from = NA}. Ignored if 
+#'     \code{controls$data$date_column} is \code{NA}.
 #'     \item \code{to} (\code{NA}):
 #'     A character of the format \code{"YYYY-MM-DD"}, setting an upper data 
-#'     limit. No upper limit if \code{from = NA}.
+#'     limit. No upper limit if \code{from = NA}. Ignored if 
+#'     \code{controls$data$date_column} is \code{NA}.
 #'     \item \code{logreturns} \code{(*)} (\code{FALSE}):
 #'     A boolean, if \code{TRUE} the data is transformed to log-returns.
 #'     \item \code{merge} (\code{function(x) mean(x)}):
@@ -114,7 +120,7 @@ set_controls = function(controls = NULL) {
     
     ### define names of all controls
     all_controls = c("hierarchy","states","sdds","horizon","period","data","fit")
-    data_controls = c("file","column","from","to","logreturns","merge")
+    data_controls = c("file","date_column","data_column","from","to","logreturns","merge")
     fit_controls = c("runs","origin","accept","gradtol","iterlim","print.level","steptol")
     
     ### check redundant controls
@@ -160,8 +166,10 @@ set_controls = function(controls = NULL) {
   } else {
     if(!"file" %in% names(controls[["data"]]))
       controls[["data"]][["file"]] = if(controls[["hierarchy"]]) c(NA,NA) else NA 
-    if(!"column" %in% names(controls[["data"]]))
-      controls[["data"]][["column"]] = if(controls[["hierarchy"]]) c(NA,NA) else NA 
+    if(!"date_column" %in% names(controls[["data"]]))
+      controls[["data"]][["date_column"]] = if(controls[["hierarchy"]]) c("Date","Date") else "Date" 
+    if(!"data_column" %in% names(controls[["data"]]))
+      controls[["data"]][["data_column"]] = if(controls[["hierarchy"]]) c("Close","Close") else "Close" 
     if(!"from" %in% names(controls[["data"]]))     
       controls[["data"]][["from"]] = NA
     if(!"to" %in% names(controls[["data"]]))     
@@ -201,8 +209,12 @@ set_controls = function(controls = NULL) {
     if(!(is_number(controls[["states"]], int = TRUE) && 
          length(controls[["states"]]) == 2 && all(controls[["states"]] >= 2)))
       stop("The control 'states' must be a vector of length 2 containing integers greater or equal 2.")
+    if(!controls[["simulated"]])
+      controls[["horizon"]][1] = NA
     if(!(length(controls[["horizon"]]) == 2 && is_number(controls[["horizon"]][!is.na(controls[["horizon"]])], int = TRUE, pos = TRUE)))
       stop("The control 'horizon' must be an integer vector of length 2.")
+    if(!is.na(controls[["horizon"]][2]))
+      controls[["period"]] = NA
     if(!is.na(controls[["period"]]))
       if(!controls[["period"]] %in% c("w","m","q","y"))
         stop("The control 'period' must be eiter NA or one of 'w', 'm', 'q', 'y'.")
@@ -211,10 +223,14 @@ set_controls = function(controls = NULL) {
     if(!(is_number(controls[["states"]], int = TRUE) && 
          length(controls[["states"]]) == 1 && all(controls[["states"]] >= 2)))
       stop("The control 'states' must be an integer greater or equal 2.")
-    if(!(length(controls[["horizon"]]) == 1 && is_number(controls[["horizon"]], int = TRUE, pos = TRUE)))
-      stop("The control 'horizon' must be an integer.")
+    if(!controls[["simulated"]]){
+      controls[["horizon"]] = NA
+    } else {
+      if(!(length(controls[["horizon"]]) == 1 && is_number(controls[["horizon"]], int = TRUE, pos = TRUE)))
+        stop("The control 'horizon' must be an integer.")
+    }
     controls[["period"]] = NA
-    controls[["merge"]] = NA
+    controls[["data"]][["merge"]] = NA
   }
   if(class(controls[["sdds"]]) != "fHMM_sdds"){
     if(!is.character(controls[["sdds"]]) || 
@@ -233,8 +249,11 @@ set_controls = function(controls = NULL) {
       ### controls with hierarchy
       if(!(is.character(controls[["data"]][["file"]]) && length(controls[["data"]][["file"]]) == 2))
         stop("The control 'file' in 'data' must be a character vector of length two.")
-      if(!(is.character(controls[["data"]][["column"]]) && length(controls[["data"]][["column"]]) == 2))
-        stop("The control 'column' in 'data' must be a character vector of length two.")
+      if(!(all(is.na(controls[["data"]][["date_column"]])) || (all(!is.na(controls[["data"]][["date_column"]])) && all(is.character(controls[["data"]][["date_column"]]))) 
+           && length(controls[["data"]][["date_column"]]) == 2))
+        stop("The control 'date_column' in 'data' must be a vector with two characters or two NA's.")
+      if(!(all(!is.na(controls[["data"]][["data_column"]])) && is.character(controls[["data"]][["data_column"]]) && length(controls[["data"]][["data_column"]]) == 2))
+        stop("The control 'data_column' in 'data' must be a character vector of length two.")
       if(!(is.logical(controls[["data"]][["logreturns"]]) && length(controls[["data"]][["logreturns"]]) == 2))
         stop("The control 'logreturns' in 'data' must be a boolean vector of length two.")
       if(!is.function(controls[["data"]][["merge"]]))
@@ -244,13 +263,19 @@ set_controls = function(controls = NULL) {
         stop("The controls 'merge' in 'data' must merge a numeric vector into a single numeric value.")
     } else {
       ### controls without hierarchy
-      if(!(is.character(controls[["data"]][["file"]])) && length(controls[["data"]][["file"]] == 1))
+      if(!(is.character(controls[["data"]][["file"]])) && length(controls[["data"]][["file"]]) == 1)
         stop("The control 'file' in 'data' must be a character.")
-      if(!(is.character(controls[["data"]][["column"]])) && length(controls[["data"]][["column"]] == 1))
-        stop("The control 'column' in 'data' must be a character.")
-      if(!(is.logical(controls[["data"]][["logreturns"]])) && length(controls[["data"]][["logreturns"]] == 1))
+      if(!((is.character(controls[["data"]][["date_column"]]) || is.na(controls[["data"]][["date_column"]])) && length(controls[["data"]][["date_column"]]) == 1))
+        stop("The control 'date_column' in 'data' must be a character or NA.")
+      if(!(is.character(controls[["data"]][["data_column"]])) && length(controls[["data"]][["data_column"]]) == 1)
+        stop("The control 'data_column' in 'data' must be a character or NA.")
+      if(!(is.logical(controls[["data"]][["logreturns"]])) && length(controls[["data"]][["logreturns"]]) == 1)
         stop("The control 'logreturns' in 'data' must be a boolean.")
       controls[["data"]][["merge"]] = NA
+    }
+    if(all(is.na(controls[["data"]][["date_column"]]))){
+      controls[["data"]][["from"]] = NA
+      controls[["data"]][["to"]] = NA
     }
     if(!is.na(controls[["data"]][["from"]]))
       controls[["data"]][["from"]] = check_date(controls[["data"]][["from"]])
@@ -282,11 +307,7 @@ set_controls = function(controls = NULL) {
   
   ### check if data paths and column names are correct
   if(!controls[["simulated"]]){
-    if(controls[["hierarchy"]]){
-      indices = 1:2
-    } else {
-      indices = 1
-    }
+    indices = if(controls[["hierarchy"]]) 1:2 else 1
     for(i in indices){
       controls[["data"]][["file"]][i] = normalizePath(controls[["data"]][["file"]][i])
       if(!file.exists(controls[["data"]][["file"]][i]))
@@ -294,10 +315,11 @@ set_controls = function(controls = NULL) {
       read_try = try(read.csv(file = controls[["data"]][["file"]][i]), silent = TRUE)
       if(class(read_try) == "try-error")
         stop("Unable to read '",controls[["data"]][["file"]][i],"'.")
-      for(col in c("Date",controls[["data"]][["column"]][i])){
-        if(!col %in% colnames(read_try))
-          stop("Column '",col,"' not found in '",controls[["data"]][["file"]][i],"'.")
-      }
+      if(!is.na(controls[["data"]][["date_column"]][i]))
+        if(!controls[["data"]][["date_column"]][i] %in% colnames(read_try))
+          stop("Column '",controls[["data"]][["date_column"]][i],"' not found in '",controls[["data"]][["file"]][i],"'.")
+      if(!controls[["data"]][["data_column"]][i] %in% colnames(read_try))
+        stop("Column '",controls[["data"]][["data_column"]][i],"' not found in '",controls[["data"]][["file"]][i],"'.")
     }
   }
   

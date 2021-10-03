@@ -10,35 +10,25 @@
 #' @export
 
 print.fHMM_data = function(x, ...) {
-  ### print data characteristics
-  if(controls[["sim"]]){
-    if(controls[["model"]]=="hmm"){
-      writeLines(sprintf("- %s %s","sample size:",length(data[["data"]])))
+  cat("fHMM",ifelse(x$controls$simulated,"simulated","empirical"),"data:\n")
+  if(x$controls$simulated){
+    if(!x$controls[["hierarchy"]]){
+      cat("* number of observations:", length(x$data), "\n")
+    } else {
+      cat("* number of observations:", length(x[["data"]][,1]), length(x[["data"]][,-1][!is.na(x[["data"]][,-1])]), "\n")
+      cat("* fine-scale dimension:", if(!is.na(x$controls$horizon[2])) x$controls$horizon[2] else paste0("'",x$controls$period,"'"),"\n")
     }
-    if(controls[["model"]]=="hhmm"){
-      writeLines(sprintf("- %s %s / %s","sample size:",dim(data[["data"]])[1],length(data[["data"]][,-1][!is.na(data[["data"]][,-1])])))
-    }
-  } 
-  if(!controls[["sim"]]){
-    if(controls[["model"]]=="hmm"){
-      writeLines(sprintf("- %s %s","data source:",controls[["data"]][["source"]][1]))
-      writeLines(sprintf("- %s %s","data column:",controls[["data"]][["column"]][1]))
-      writeLines(sprintf("- %s %s to %s","time horizon:",data[["dates"]][1],rev(data[["dates"]])[1]))
-      writeLines(sprintf("- %s %s","data points:",length(data[["data"]])))
-      writeLines(sprintf("- %s %s","log-returns:",controls[["data"]][["log_returns"]][1]))
-    }
-    if(controls[["model"]]=="hhmm"){
-      writeLines(sprintf("- %s %s / %s","data source:",controls[["data"]][["source"]][1],controls[["data"]][["source"]][2]))
-      writeLines(sprintf("- %s %s / %s","data column:",controls[["data"]][["column"]][1],controls[["data"]][["column"]][2]))
-      writeLines(sprintf("- %s %s to %s","time horizon:",data[["dates"]][1],rev(data[["dates"]])[1]))
-      writeLines(sprintf("- %s %s / %s","data points:",dim(data[["data"]])[1],length(data[["data"]][,-1][!is.na(data[["data"]][,-1])])))
-      writeLines(sprintf("- %s %s / %s","log-returns:",controls[["data"]][["log_returns"]][1],controls[["data"]][["log_returns"]][2]))
-      writeLines(sprintf("- %s %s","CS transformation:",gsub(" ", "", paste(deparse(controls[["data"]][["cs_transform"]]),collapse=""),fixed = TRUE)))
-      if(is.numeric(controls[["horizon"]][2])) writeLines(sprintf("- %s %s","FS dimension:",controls[["horizon"]][2]))
-      if(controls[["horizon"]][2]=="w") writeLines(sprintf("- %s %s","FS dimension:","weekly"))
-      if(controls[["horizon"]][2]=="m") writeLines(sprintf("- %s %s","FS dimension:","monthly"))
-      if(controls[["horizon"]][2]=="q") writeLines(sprintf("- %s %s","FS dimension:","quarterly"))
-      if(controls[["horizon"]][2]=="y") writeLines(sprintf("- %s %s","FS dimension:","yearly"))
+  } else {
+    cat("* data source:",basename(x$controls$data$file), "\n")
+    cat("* date column:",x$controls$data$date_column, "\n")
+    cat("* data column:",x$controls$data$data_column, "\n")
+    cat("* log returns:",x$controls$data$logreturns, "\n")
+    if(!x$controls[["hierarchy"]]){
+      cat("* number of observations:", length(x$data), "\n")
+    } else {
+      cat("* number of observations:", length(x[["data"]][,1]), length(x[["data"]][,-1][!is.na(x[["data"]][,-1])]), "\n")
+      cat("* fine-scale dimension:", if(!is.na(x$controls$horizon[2])) x$controls$horizon[2] else paste0("'",x$controls$period,"'"),"\n")
+      cat("* coarse-scale merge:",deparse1(x$controls$data$merge, collapse = ""))
     }
   }
 }

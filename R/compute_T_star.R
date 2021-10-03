@@ -33,36 +33,37 @@ compute_T_star = function(horizon, period, dates = NULL, seed = NULL){
                       prob = dbinom(1:size, size, 0.9))
     }
   } else {
-    dates_overview = data.frame("w" = as.numeric(strftime(fs_dates,format ="%W")),
-                                "m" = as.numeric(strftime(fs_dates,format ="%m")),
-                                "q" = as.numeric(substr(quarters(fs_dates),2,2)),
-                                "y" = as.numeric(strftime(fs_dates,format ="%Y")))
-    if(fs_time_horizon == "w"){
-      T_star = vector()
-      for(y in unique(dates_overview[["y"]])){
-        dates_overview_subset = dates_overview[dates_overview[["y"]]==y,]
-        T_star = c(T_star,as.vector(table(dates_overview_subset[["w"]])))
+    dates_overview = data.frame("w" = as.numeric(strftime(dates,format ="%W")),
+                                "m" = as.numeric(strftime(dates,format ="%m")),
+                                "q" = as.numeric(substr(quarters(dates),2,2)),
+                                "y" = as.numeric(strftime(dates,format ="%Y")))
+    if(!is.na(horizon[2])){
+      T_star = rep(horizon[2],floor(length(dates)/horizon[2]))
+    } else {
+      if(period == "w"){
+        T_star = vector()
+        for(y in unique(dates_overview[["y"]])){
+          dates_overview_subset = dates_overview[dates_overview[["y"]]==y,]
+          T_star = c(T_star,as.vector(table(dates_overview_subset[["w"]])))
+        }
       }
-    }
-    if(fs_time_horizon == "m"){
-      T_star = vector()
-      for(y in unique(dates_overview[["y"]])){
-        dates_overview_subset = dates_overview[dates_overview[["y"]]==y,]
-        T_star = c(T_star,as.vector(table(dates_overview_subset[["m"]])))
+      if(period == "m"){
+        T_star = vector()
+        for(y in unique(dates_overview[["y"]])){
+          dates_overview_subset = dates_overview[dates_overview[["y"]]==y,]
+          T_star = c(T_star,as.vector(table(dates_overview_subset[["m"]])))
+        }
       }
-    }
-    if(fs_time_horizon == "q"){
-      T_star = vector()
-      for(y in unique(dates_overview[["y"]])){
-        dates_overview_subset = dates_overview[dates_overview[["y"]]==y,]
-        T_star = c(T_star,as.vector(table(dates_overview_subset[["q"]])))
+      if(period == "q"){
+        T_star = vector()
+        for(y in unique(dates_overview[["y"]])){
+          dates_overview_subset = dates_overview[dates_overview[["y"]]==y,]
+          T_star = c(T_star,as.vector(table(dates_overview_subset[["q"]])))
+        }
       }
-    }
-    if(fs_time_horizon == "y"){
-      T_star = as.vector(table(dates_overview[["y"]]))
-    }
-    if(is.numeric(fs_time_horizon)){
-      T_star = rep(fs_time_horizon,floor(length(fs_dates)/fs_time_horizon))
+      if(period == "y"){
+        T_star = as.vector(table(dates_overview[["y"]]))
+      }
     }
   }
   return(T_star)

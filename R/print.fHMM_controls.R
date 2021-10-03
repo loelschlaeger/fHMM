@@ -10,7 +10,7 @@
 #' @export
 
 print.fHMM_controls = function(x, ...) {
-  cat("Controls:\n")
+  cat("fHMM controls:\n")
   cat("* hierarchy:", x[["hierarchy"]], "\n")
   cat("* data type:", ifelse(x[["simulated"]],"simulated","empirical"), "\n")
   cat("* number of states:", x[["states"]], "\n")

@@ -17,6 +17,8 @@
 
 is_number = function(x, int = FALSE, neg = FALSE, non_neg = FALSE, pos = FALSE,
                      non_pos = FALSE) {
+  if(length(x) == 0)
+    return(TRUE)
   for(i in 1:length(x)) {
     out = rep(TRUE,length(x))
     if(!is.numeric(x[i])){
