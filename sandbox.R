@@ -47,7 +47,10 @@ controls = set_controls(controls)
 data = prepare_data(controls)
 
 ### fit model ---------------------------------------------------------------
-model = fit_model(data, decoding = TRUE)
+model = fit_model(data)
+
+### summarize model ---------------------------------------------------------
+summary(model)
 
 ### plot results ------------------------------------------------------------
 events = list(

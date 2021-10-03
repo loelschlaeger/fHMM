@@ -1,22 +1,33 @@
-#' @title Optimization
-#' @description Maximizes the model's log-likelihood function.
-#' @param data A list of processed data information.
-#' @param controls A list of controls.
-#' @return A list of fitted model information.
-#' @details Uses \code{nlm} for numerical optimization.
+#' Model fitting for the fHMM package.
+#' @description 
+#' This function fits an HMM or HHMM for the fHMM package.
+#' @param data 
+#' An object of class \code{fHMM_data}.
+#' @param seed
+#' Set a seed for the sampling of initial values.
+#' @return 
+#' An object of class \code{fHMM_model}.
 
-fit_model = function(data,controls){
+fit_model = function(data, seed = NULL){
 
-  if(!is.null(controls[["fit"]][["seed"]])){
-    set.seed(controls[["fit"]][["seed"]])
-  }
+  ### check inputs
+  if(class(data) != "fHMM_data")
+    stop("'data' is not of class 'fHMM_data'.")
+  
+  ### set seed
+  if(!is.null(seed))
+    set.seed(seed)
+  
+  ### TODO
   runs = controls[["fit"]][["runs"]]
   lls = rep(NA,runs) 
   mods = list() 
   
   ### define optimizer
-  if(controls[["model"]]=="hmm") target = nLL_hmm
-  if(controls[["model"]]=="hhmm") target = nLL_hhmm
+  if(controls[["model"]]=="hmm") 
+    target = nLL_hmm
+  if(controls[["model"]]=="hhmm") 
+    target = nLL_hhmm
   optimized = function(start_value){
     nlm_out = nlm(f = target,
                   p = start_value,
@@ -32,7 +43,7 @@ fit_model = function(data,controls){
   }
   
   ### generate start values
-  generate_start_values = function(controls,runs){
+  generate_start_values = function(controls, runs){
     start_values = list()
     if(controls[["fit"]][["at_true"]]){
       start_values[[1]] = data[["thetaUncon0"]]
