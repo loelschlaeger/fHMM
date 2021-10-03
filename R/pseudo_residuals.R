@@ -33,7 +33,6 @@ pseudo_residuals = function(controls,data,fit,decoding){
   }
   create_prs_plots = function(pseudos,label_add=""){
     pseudos = pseudos[!is.na(pseudos) & is.finite(pseudos)]
-    jbtest = tseries::jarque.bera.test(pseudos)[["p.value"]]
     plot(pseudos,
          ylim=c(floor(min(pseudos)),ceiling(max(pseudos))),
          main="Residual plot",
@@ -58,7 +57,6 @@ pseudo_residuals = function(controls,data,fit,decoding){
            xlab="N(0;1)-quantiles",
            las=1,
            pch=20)
-    legend("topleft",paste("P-value of Jarque-Bera test:",sprintf("%.2g",jbtest)),bty="n",bg=rgb(1,1,1,0.5))
     abline(a=0,b=1)
     acf(pseudos,
         main="Autocorrelation plot",

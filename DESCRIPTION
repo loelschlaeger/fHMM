@@ -13,19 +13,14 @@ Authors@R: c(
     person("Michels", "Rouven", 
            email = "r.michels@uni-bielefeld.de", 
            role = "aut"))
-Description: Fitting (hierarchical) hidden Markov models 
-    to daily share prices provided by <https://finance.yahoo.com/>.
-    See <https://loelschlaeger.github.io/fHMM/> for documentation and examples.
-    See <https://journals.sagepub.com/doi/10.1177/1471082X211034048> for a reference.
+Description: Fitting (hierarchical) hidden Markov models to financial data
+    via maximum likelihood estimation. For a reference on the model see
+    <https://journals.sagepub.com/doi/10.1177/1471082X211034048>.
+URL: https://loelschlaeger.github.io/fHMM/
+BugReports: https://github.com/loelschlaeger/fHMM/issues
 License: GPL-3
 Encoding: UTF-8
-Imports:
-    Rcpp,
-    tseries
-LinkingTo:
-    Rcpp,
-    RcppArmadillo
-Depends: R (>= 3.5.0)
+Imports: Rcpp
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Suggests: 
