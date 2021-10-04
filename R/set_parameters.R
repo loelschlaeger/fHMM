@@ -101,13 +101,13 @@ set_parameters = function(controls,
     if(is.null(sigmas_star)){
       sigmas_star = list()
       for(i in 1:M)
-        sigmas_star[[i]] = runif(M,0,1)*scale_par[2]
+        sigmas_star[[i]] = runif(N,0,1)*scale_par[2]
     }
     if(controls[["sdds"]][[2]]$name == "t"){
       if(is.null(dfs_star)){
         dfs_star = list()
         for(i in 1:M)
-          dfs_star[[i]] = runif(M,0,30)
+          dfs_star[[i]] = runif(N,0,30)
       }
     } else {
       dfs_star = NULL
@@ -145,12 +145,12 @@ set_parameters = function(controls,
     if(!all(is_number(dfs, pos = TRUE)) || length(dfs) != M)
       stop("'dfs' must be a positive numeric vector of length 'controls$states[1]'.")
   if(controls[["hierarchy"]]){
-    if(!is.list(Gammas_star) || length(Gammas_star) != N)
+    if(!is.list(Gammas_star) || length(Gammas_star) != M)
       stop("'Gammas_star' must be a list of length 'controls$states[1]'.")
     for(i in 1:M)
       if(!is_tpm(Gammas_star[[i]]) || nrow(Gammas_star[[i]]) != N)
         stop("Each element in 'Gammas_star' must be a tpm of dimension 'controls$states[2]'.")
-    if(!is.list(mus_star) || length(mus_star) != N)
+    if(!is.list(mus_star) || length(mus_star) != M)
       stop("'mus_star' must be a list of length 'controls$states[1]'.")
     for(i in 1:M){
       if(controls[["sdds"]][[2]]$name == "t")
@@ -160,13 +160,13 @@ set_parameters = function(controls,
         if(!all(is_number(mus_star[[i]])) || length(mus_star[[i]]) != N)
           stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.")
     }
-    if(!is.list(sigmas_star) || length(sigmas_star) != N)
+    if(!is.list(sigmas_star) || length(sigmas_star) != M)
       stop("'sigmas_star' must be a list of length 'controls$states[1]'.")
     for(i in 1:M)
       if(!all(is_number(sigmas_star[[i]], pos = TRUE)) || length(sigmas_star[[i]]) != N)
         stop("Each element in 'sigmas_star' must be a positive numeric vector of length 'controls$states[2]'.")
     if(controls[["sdds"]][[2]]$name == "t"){
-      if(!is.list(dfs_star) || length(dfs_star) != N)
+      if(!is.list(dfs_star) || length(dfs_star) != M)
         stop("'dfs_star' must be a list of length 'controls$states[1]'.")
       if(!all(is_number(dfs_star[[i]], pos = TRUE)) || length(dfs_star[[i]]) != N)
         stop("Each element in 'dfs_star' must be a positive numeric vector of length 'controls$states[2]'.")

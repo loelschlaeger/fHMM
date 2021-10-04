@@ -8,7 +8,7 @@ download_data(symbol = "VOW3.DE", file = "vw.csv")
 ### simulated HMM parameters ------------------------------------------------
 controls = list(
   states  = 2,
-  sdds    = "t(df = Inf)",
+  sdds    = "t(mu = 0, df = Inf)",
   horizon = 400,
   fit     = list("runs" = 50)
 )
@@ -28,6 +28,7 @@ controls = set_controls(controls)
 ### simulated HHMM parameters -----------------------------------------------
 controls = list(
   hierarchy = TRUE,
+  states = c(2,4),
   horizon   = c(100, 30)
 )
 controls = set_controls(controls)
