@@ -21,7 +21,7 @@ split_sdds = function(sdds) {
     sdd_tws_split = unlist(strsplit(sdd_tws, split = "[()]"))
     distr = sdd_tws_split[1]
     if(!distr %in% c("t","gamma"))
-      stop("C4")
+      stop("'distr' must be one of 't' or 'gamma'.")
     fixed_pars = strsplit(strsplit(sdd_tws_split[2], split = c(","))[[1]],"=")
     for(par in fixed_pars)
       if(!par[1] %in% c("mu","sigma","df"))
@@ -35,15 +35,20 @@ split_sdds = function(sdds) {
        fixed[!names(fixed) %in% c("mu","sigma","df")] = NULL
       if(distr == "gamma")
         fixed[!names(fixed) %in% c("mu","sigma","df")] = NULL
-      if(!is.null(fixed$mu)) 
-        if(!any(is_number(fixed$mu)))
-          stop("C5")
+      if(!is.null(fixed$mu)){ 
+        if(distr == "t")
+          if(!any(is_number(fixed$mu)))
+            stop("'mu' must be a numeric.")
+        if(distr == "gamma")
+          if(!any(is_number(fixed$mu, pos = TRUE)))
+            stop("'mu' must be a positive numeric.")
+      }
       if(!is.null(fixed$sigma)) 
         if(!any(is_number(fixed$sigma, pos = TRUE)))
-          stop("C5")
+          stop("'sigma' must be a positive numeric.")
       if(!is.null(fixed$df)) 
         if(!any(is_number(fixed$df, pos = TRUE)))
-          stop("C5")
+          stop("'df' must be a positive numeric.")
     }
     out[[length(out)+1]] = list("name" = distr, fixed = fixed)
   }

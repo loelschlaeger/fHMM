@@ -78,139 +78,139 @@
                  time_points97            time_points98            time_points99 
                           "97"                     "98"                     "99" 
                 time_points100            markov_chain1            markov_chain2 
-                         "100"                      "2"                      "1" 
+                         "100"                      "2"                      "2" 
                  markov_chain3            markov_chain4            markov_chain5 
-                           "2"                      "2"                      "1" 
+                           "2"                      "1"                      "2" 
                  markov_chain6            markov_chain7            markov_chain8 
                            "1"                      "1"                      "2" 
                  markov_chain9           markov_chain10           markov_chain11 
-                           "2"                      "1"                      "2" 
+                           "2"                      "2"                      "2" 
                 markov_chain12           markov_chain13           markov_chain14 
-                           "1"                      "2"                      "1" 
+                           "2"                      "2"                      "2" 
                 markov_chain15           markov_chain16           markov_chain17 
-                           "1"                      "2"                      "2" 
+                           "1"                      "2"                      "1" 
                 markov_chain18           markov_chain19           markov_chain20 
-                           "2"                      "1"                      "1" 
+                           "1"                      "2"                      "1" 
                 markov_chain21           markov_chain22           markov_chain23 
                            "1"                      "2"                      "2" 
                 markov_chain24           markov_chain25           markov_chain26 
-                           "1"                      "2"                      "1" 
+                           "2"                      "2"                      "2" 
                 markov_chain27           markov_chain28           markov_chain29 
-                           "2"                      "1"                      "1" 
+                           "2"                      "2"                      "1" 
                 markov_chain30           markov_chain31           markov_chain32 
-                           "2"                      "1"                      "2" 
+                           "2"                      "2"                      "2" 
                 markov_chain33           markov_chain34           markov_chain35 
-                           "1"                      "2"                      "2" 
+                           "2"                      "2"                      "1" 
                 markov_chain36           markov_chain37           markov_chain38 
-                           "2"                      "2"                      "1" 
+                           "2"                      "1"                      "2" 
                 markov_chain39           markov_chain40           markov_chain41 
-                           "2"                      "1"                      "1" 
-                markov_chain42           markov_chain43           markov_chain44 
-                           "2"                      "2"                      "2" 
-                markov_chain45           markov_chain46           markov_chain47 
-                           "2"                      "2"                      "1" 
-                markov_chain48           markov_chain49           markov_chain50 
-                           "2"                      "2"                      "2" 
-                markov_chain51           markov_chain52           markov_chain53 
-                           "1"                      "1"                      "2" 
-                markov_chain54           markov_chain55           markov_chain56 
                            "1"                      "2"                      "1" 
+                markov_chain42           markov_chain43           markov_chain44 
+                           "2"                      "1"                      "2" 
+                markov_chain45           markov_chain46           markov_chain47 
+                           "2"                      "1"                      "2" 
+                markov_chain48           markov_chain49           markov_chain50 
+                           "2"                      "1"                      "1" 
+                markov_chain51           markov_chain52           markov_chain53 
+                           "2"                      "1"                      "2" 
+                markov_chain54           markov_chain55           markov_chain56 
+                           "2"                      "2"                      "2" 
                 markov_chain57           markov_chain58           markov_chain59 
                            "2"                      "2"                      "2" 
                 markov_chain60           markov_chain61           markov_chain62 
-                           "1"                      "1"                      "2" 
+                           "2"                      "1"                      "2" 
                 markov_chain63           markov_chain64           markov_chain65 
-                           "1"                      "2"                      "2" 
+                           "2"                      "2"                      "2" 
                 markov_chain66           markov_chain67           markov_chain68 
-                           "1"                      "2"                      "2" 
-                markov_chain69           markov_chain70           markov_chain71 
-                           "1"                      "1"                      "2" 
-                markov_chain72           markov_chain73           markov_chain74 
-                           "2"                      "1"                      "2" 
-                markov_chain75           markov_chain76           markov_chain77 
-                           "1"                      "1"                      "1" 
-                markov_chain78           markov_chain79           markov_chain80 
-                           "2"                      "2"                      "2" 
-                markov_chain81           markov_chain82           markov_chain83 
-                           "1"                      "2"                      "1" 
-                markov_chain84           markov_chain85           markov_chain86 
                            "2"                      "2"                      "1" 
+                markov_chain69           markov_chain70           markov_chain71 
+                           "2"                      "1"                      "2" 
+                markov_chain72           markov_chain73           markov_chain74 
+                           "1"                      "2"                      "2" 
+                markov_chain75           markov_chain76           markov_chain77 
+                           "2"                      "1"                      "1" 
+                markov_chain78           markov_chain79           markov_chain80 
+                           "2"                      "1"                      "1" 
+                markov_chain81           markov_chain82           markov_chain83 
+                           "2"                      "1"                      "2" 
+                markov_chain84           markov_chain85           markov_chain86 
+                           "2"                      "1"                      "2" 
                 markov_chain87           markov_chain88           markov_chain89 
-                           "2"                      "1"                      "2" 
+                           "1"                      "2"                      "2" 
                 markov_chain90           markov_chain91           markov_chain92 
-                           "1"                      "2"                      "1" 
-                markov_chain93           markov_chain94           markov_chain95 
                            "2"                      "2"                      "2" 
+                markov_chain93           markov_chain94           markov_chain95 
+                           "2"                      "1"                      "1" 
                 markov_chain96           markov_chain97           markov_chain98 
-                           "2"                      "1"                      "2" 
+                           "1"                      "2"                      "2" 
                 markov_chain99          markov_chain100                    data1 
-                           "2"                      "2"    "-0.0724013357419941" 
+                           "1"                      "2"      "0.545991209384335" 
                          data2                    data3                    data4 
-           "-1.10695661280769"      "0.881724220261362"      "0.231062277999521" 
+            "1.21642368573202"       "1.09248329119288"       "0.78108191090987" 
                          data5                    data6                    data7 
-          "-0.801082050919968"     "-0.293464970350482"     "-0.863205224797344" 
+           "-2.65996357848293"      "0.503651151818152"      "-1.40365399124177" 
                          data8                    data9                   data10 
-           "0.502572927774835"       "1.24242256406685"    "-0.0193714168630176" 
+          "-0.288532393305628"       "1.01702886007605"      "0.758976565343489" 
                         data11                   data12                   data13 
-           "0.620940021219554"      "-0.30666884909485"     "-0.320074481922834" 
+          "-0.506445832132529"      "0.849477454744794"       "1.40330519117341" 
                         data14                   data15                   data16 
-          "-0.370559704728497"     "-0.693444763511892"      "0.449880851021721" 
+           "0.596329106275736"      "0.963511795895477"      "0.215117643729718" 
                         data17                   data18                   data19 
-            "1.54448497674395"        "1.4659207378046"     "-0.750489916641351" 
+           "-1.97467901066834"     "-0.283032111581036"      "0.733998201242787" 
                         data20                   data21                   data22 
-           "-1.40900926930983"      "-1.11796602920926"       "1.27241030835783" 
+          "-0.166106741375643"      "-1.37585771669394"       "2.67215041819694" 
                         data23                   data24                   data25 
-           "0.789605500353766"     "-0.301511224231026"       "0.73663988353992" 
+           "0.968800462767381"      "0.649873393699822"      "-0.87872846049773" 
                         data26                   data27                   data28 
-          "-0.735998560591058"      "0.481976067093533"     "-0.597444358439865" 
+            "1.64571680827342"     "-0.443790748912603"      "0.877352976191926" 
                         data29                   data30                   data31 
-           "-1.62118126848604"       "0.75389725301672"     "-0.607925348094487" 
+           "-0.70625938672566"     "-0.188234973217217"      "0.965848836626891" 
                         data32                   data33                   data34 
-          "-0.123088515915488"      "-1.51211903887297"     "0.0877804338855558" 
+           "0.649515624636241"       "1.07804605947821"       "1.84220242517484" 
                         data35                   data36                   data37 
-           "0.595382787474981"       "1.59757019150932"      "0.288878915241731" 
+           "-1.88763996255714"    "-0.0598769678697854"     "-0.540876555825564" 
                         data38                   data39                   data40 
-          "-0.412680648283688"      "0.238290474342085"     "-0.400315101533711" 
+            "1.88301777895303"     "-0.305580642780655"     "0.0791979574898208" 
                         data41                   data42                   data43 
-          "-0.614175173541565"       "1.92662570693436"     "-0.839612915105549" 
+          "-0.812105644118613"       "1.04719460546941"      "-0.36296874739742" 
                         data44                   data45                   data46 
-            "1.37433482140985"     "-0.314893186747664"      "0.686426132530031" 
+           "0.652710943155203"      "0.547231067484557"      "-1.12163114904151" 
                         data47                   data48                   data49 
-           "-1.36236337479704"       "0.13301691714577"     "0.0457569951834277" 
+          "-0.269952321763308"     "-0.605998567129155"      "-1.17223891409117" 
                         data50                   data51                   data52 
-            "2.05793586720402"      "0.365034289568154"     "-0.813233267519655" 
+           "0.114799920482009"      "0.286275653882759"      "-1.72814712772882" 
                         data53                   data54                   data55 
-           "0.330028331426279"         "-1.55562616176"      "0.429089725560074" 
+            "4.73979342643114"       "1.15497022311601"      "-1.34772954921193" 
                         data56                   data57                   data58 
-          "-0.676985241849641"      "0.513296271369276"      "0.107496395184542" 
+           "0.232957469628417"      "-0.49423171781408"       "2.06215708137672" 
                         data59                   data60                   data61 
-          "-0.333484804568709"      "-1.53979038903874"      "-1.06908695070068" 
+           "0.675314794684064"      "0.597859409029371"     "-0.921634074701664" 
                         data62                   data63                   data64 
-            "1.22513435181238"     "-0.922501629296192"     "-0.706351564995922" 
+           "0.435035437286983"       "1.17004000750143"      "0.529136473789304" 
                         data65                   data66                   data67 
-           "0.112813475674701"      "-1.31945877492679"     "-0.770927749525088" 
+            "1.06104842127195"       "1.28309148980659"       "3.02010377261778" 
                         data68                   data69                   data70 
-          "-0.655265797689087"      "-1.20742770160479"     "-0.631657623078104" 
+          "-0.077061169568483"      "0.157622221706936"      "0.476299010668181" 
                         data71                   data72                   data73 
-           "0.943089261181861"       "1.96356145246937"    "-0.0306334779520803" 
+            "1.27674899111169"      "-2.01862093951183"      "0.814739410771582" 
                         data74                   data75                   data76 
-          "-0.892641923056717"       "1.06898820597746"      "-0.27514469103327" 
+          "-0.614147667424362"       "1.14915171889847"       "1.01357856250007" 
                         data77                   data78                   data79 
-        "-0.00457662840463091"       "2.24397569689591"       "1.96304349477299" 
+         "-0.0699663744148555"        "2.2318756254164"     "-0.781807341255878" 
                         data80                   data81                   data82 
-          "0.0200422366861089"     "-0.216990472110898"       "2.12511207874643" 
+           "0.908096798905813"   "-0.00404226119726969"     "-0.657754987331833" 
                         data83                   data84                   data85 
-           "0.204875333989335"      "0.955147153991677"       "1.24141582063154" 
+            "1.03745753979615"       "4.38910297274724"      "-1.46303845130533" 
                         data86                   data87                   data88 
-           "-1.41467351173809"       "0.10789566310142"     "-0.386899112946653" 
+            "6.08841828777796"     "-0.658050913429286"       "1.77932616974933" 
                         data89                   data90                   data91 
-            "2.13374839021008"      "0.624668081852157"       "1.04057145882398" 
+           "0.793475852756473"       "2.17325236486422"      "-1.30966869832462" 
                         data92                   data93                   data94 
-          "0.0661461781447874"     "-0.554432228210093"        "1.2873841210049" 
+           "0.664112683427151"       "1.34241025388478"     "-0.500002468405804" 
                         data95                   data96                   data97 
-           "0.144810930740156"      "-0.76999238383306"      "-1.00729011371558" 
+          "0.0627562284662887"     "0.0497700990037125"       "1.06071683222517" 
                         data98                   data99                  data100 
-           "0.365850653718049"     "-0.943182965240563"        "-0.989204568326" 
+          "-0.306795813888658"      "-1.55026822398894"     "0.0247131288355943" 
             controls.hierarchy          controls.states       controls.sdds.name 
                        "FALSE"                      "2"                      "t" 
               controls.horizon          controls.period            controls.data 
@@ -222,13 +222,13 @@
           controls.fit.iterlim controls.fit.print.level     controls.fit.steptol 
                          "200"                      "0"                  "1e-06" 
             controls.simulated   true_parameters.Gamma1   true_parameters.Gamma2 
-                        "TRUE"      "0.275353039498742"      "0.502663270506671" 
+                        "TRUE"      "0.316699295473161"      "0.290646480634931" 
         true_parameters.Gamma3   true_parameters.Gamma4     true_parameters.mus1 
-           "0.724646960501258"      "0.497336729493329"     "-0.621612755116075" 
+           "0.683300704526839"      "0.709353519365069"     "-0.596636137925088" 
           true_parameters.mus2  true_parameters.sigmas1  true_parameters.sigmas2 
-           "0.516206104774028"      "0.724498892668635"      "0.943724818294868" 
+           "0.796779369935393"      "0.944675268605351"      "0.660797792486846" 
           true_parameters.dfs1     true_parameters.dfs2 true_parameters.sdd.name 
-            "16.4293976104818"       "21.3523160316981"                      "t" 
+            "18.8734213169664"       "1.85358811402693"                      "t" 
 
 # data preparation for empirical HMM works
 
@@ -593,7 +593,7 @@
       * date column: NA 
       * data column: Close 
       * log returns: FALSE 
-      * number of observations: 8695 
+      * number of observations: 8696 
 
 ---
 
@@ -1000,7 +1000,7 @@
                "990"          "991"          "992"          "993"          "994" 
       time_points995 time_points996 time_points997 time_points998 time_points999 
                "995"          "996"          "997"          "998"          "999" 
-       [ reached getOption("max.print") -- omitted 25108 entries ]
+       [ reached getOption("max.print") -- omitted 25111 entries ]
 
 ---
 
@@ -1012,7 +1012,7 @@
       * date column: Date 
       * data column: Close 
       * log returns: TRUE 
-      * number of observations: 8695 
+      * number of observations: 8696 
 
 ---
 
@@ -1353,7 +1353,7 @@
       "1991-10-16" "1991-10-17" "1991-10-18" "1991-10-21" "1991-10-22" "1991-10-23" 
           dates997     dates998     dates999    dates1000 
       "1991-10-24" "1991-10-25" "1991-10-28" "1991-10-29" 
-       [ reached getOption("max.print") -- omitted 25108 entries ]
+       [ reached getOption("max.print") -- omitted 25111 entries ]
 
 # data preparation for simulated HHMM works
 
@@ -1777,7 +1777,7 @@
       out
     Output
       fHMM simulated data:
-      * number of observations: 100 23361 
+      * number of observations: 100 23297 
       * fine-scale dimension: 'y' 
 
 ---
@@ -1786,406 +1786,406 @@
       unlist(out)
     Output
          time_points1    time_points2    time_points3    time_points4    time_points5 
-                  "1"           "242"           "469"           "701"           "933" 
+                  "1"           "232"           "462"           "693"           "926" 
          time_points6    time_points7    time_points8    time_points9   time_points10 
-               "1175"          "1405"          "1634"          "1864"          "2090" 
+               "1167"          "1406"          "1634"          "1869"          "2098" 
         time_points11   time_points12   time_points13   time_points14   time_points15 
-               "2326"          "2559"          "2801"          "3032"          "3259" 
+               "2335"          "2563"          "2793"          "3033"          "3271" 
         time_points16   time_points17   time_points18   time_points19   time_points20 
-               "3492"          "3732"          "3961"          "4204"          "4442" 
+               "3502"          "3730"          "3964"          "4195"          "4424" 
         time_points21   time_points22   time_points23   time_points24   time_points25 
-               "4671"          "4903"          "5138"          "5363"          "5599" 
+               "4663"          "4894"          "5121"          "5358"          "5594" 
         time_points26   time_points27   time_points28   time_points29   time_points30 
-               "5837"          "6072"          "6313"          "6549"          "6789" 
+               "5828"          "6063"          "6299"          "6530"          "6769" 
         time_points31   time_points32   time_points33   time_points34   time_points35 
-               "7025"          "7258"          "7489"          "7725"          "7958" 
+               "7006"          "7232"          "7468"          "7705"          "7937" 
         time_points36   time_points37   time_points38   time_points39   time_points40 
-               "8189"          "8427"          "8662"          "8898"          "9127" 
+               "8176"          "8412"          "8643"          "8883"          "9118" 
         time_points41   time_points42   time_points43   time_points44   time_points45 
-               "9351"          "9586"          "9826"         "10069"         "10297" 
+               "9345"          "9577"          "9818"         "10050"         "10282" 
         time_points46   time_points47   time_points48   time_points49   time_points50 
-              "10533"         "10772"         "10996"         "11220"         "11452" 
+              "10513"         "10755"         "10982"         "11214"         "11454" 
         time_points51   time_points52   time_points53   time_points54   time_points55 
-              "11688"         "11921"         "12153"         "12384"         "12609" 
+              "11678"         "11915"         "12144"         "12381"         "12613" 
         time_points56   time_points57   time_points58   time_points59   time_points60 
-              "12840"         "13076"         "13310"         "13547"         "13774" 
+              "12853"         "13086"         "13315"         "13550"         "13786" 
         time_points61   time_points62   time_points63   time_points64   time_points65 
-              "14006"         "14241"         "14473"         "14703"         "14935" 
+              "14021"         "14254"         "14488"         "14718"         "14945" 
         time_points66   time_points67   time_points68   time_points69   time_points70 
-              "15174"         "15413"         "15651"         "15888"         "16125" 
+              "15185"         "15413"         "15650"         "15887"         "16115" 
         time_points71   time_points72   time_points73   time_points74   time_points75 
-              "16361"         "16599"         "16825"         "17060"         "17297" 
+              "16345"         "16584"         "16816"         "17052"         "17273" 
         time_points76   time_points77   time_points78   time_points79   time_points80 
-              "17530"         "17767"         "18002"         "18239"         "18482" 
+              "17503"         "17736"         "17971"         "18202"         "18427" 
         time_points81   time_points82   time_points83   time_points84   time_points85 
-              "18722"         "18947"         "19178"         "19408"         "19639" 
+              "18657"         "18880"         "19109"         "19341"         "19578" 
         time_points86   time_points87   time_points88   time_points89   time_points90 
-              "19874"         "20110"         "20341"         "20573"         "20798" 
+              "19813"         "20047"         "20276"         "20511"         "20748" 
         time_points91   time_points92   time_points93   time_points94   time_points95 
-              "21029"         "21265"         "21501"         "21729"         "21958" 
+              "20978"         "21199"         "21430"         "21661"         "21894" 
         time_points96   time_points97   time_points98   time_points99  time_points100 
-              "22191"         "22425"         "22665"         "22895"         "23128" 
+              "22134"         "22371"         "22602"         "22835"         "23068" 
        time_points101  time_points102  time_points103  time_points104  time_points105 
-                  "1"           "242"           "469"           "701"           "933" 
+                  "1"           "232"           "462"           "693"           "926" 
        time_points106  time_points107  time_points108  time_points109  time_points110 
-               "1175"          "1405"          "1634"          "1864"          "2090" 
+               "1167"          "1406"          "1634"          "1869"          "2098" 
        time_points111  time_points112  time_points113  time_points114  time_points115 
-               "2326"          "2559"          "2801"          "3032"          "3259" 
+               "2335"          "2563"          "2793"          "3033"          "3271" 
        time_points116  time_points117  time_points118  time_points119  time_points120 
-               "3492"          "3732"          "3961"          "4204"          "4442" 
+               "3502"          "3730"          "3964"          "4195"          "4424" 
        time_points121  time_points122  time_points123  time_points124  time_points125 
-               "4671"          "4903"          "5138"          "5363"          "5599" 
+               "4663"          "4894"          "5121"          "5358"          "5594" 
        time_points126  time_points127  time_points128  time_points129  time_points130 
-               "5837"          "6072"          "6313"          "6549"          "6789" 
+               "5828"          "6063"          "6299"          "6530"          "6769" 
        time_points131  time_points132  time_points133  time_points134  time_points135 
-               "7025"          "7258"          "7489"          "7725"          "7958" 
+               "7006"          "7232"          "7468"          "7705"          "7937" 
        time_points136  time_points137  time_points138  time_points139  time_points140 
-               "8189"          "8427"          "8662"          "8898"          "9127" 
+               "8176"          "8412"          "8643"          "8883"          "9118" 
        time_points141  time_points142  time_points143  time_points144  time_points145 
-               "9351"          "9586"          "9826"         "10069"         "10297" 
+               "9345"          "9577"          "9818"         "10050"         "10282" 
        time_points146  time_points147  time_points148  time_points149  time_points150 
-              "10533"         "10772"         "10996"         "11220"         "11452" 
+              "10513"         "10755"         "10982"         "11214"         "11454" 
        time_points151  time_points152  time_points153  time_points154  time_points155 
-              "11688"         "11921"         "12153"         "12384"         "12609" 
+              "11678"         "11915"         "12144"         "12381"         "12613" 
        time_points156  time_points157  time_points158  time_points159  time_points160 
-              "12840"         "13076"         "13310"         "13547"         "13774" 
+              "12853"         "13086"         "13315"         "13550"         "13786" 
        time_points161  time_points162  time_points163  time_points164  time_points165 
-              "14006"         "14241"         "14473"         "14703"         "14935" 
+              "14021"         "14254"         "14488"         "14718"         "14945" 
        time_points166  time_points167  time_points168  time_points169  time_points170 
-              "15174"         "15413"         "15651"         "15888"         "16125" 
+              "15185"         "15413"         "15650"         "15887"         "16115" 
        time_points171  time_points172  time_points173  time_points174  time_points175 
-              "16361"         "16599"         "16825"         "17060"         "17297" 
+              "16345"         "16584"         "16816"         "17052"         "17273" 
        time_points176  time_points177  time_points178  time_points179  time_points180 
-              "17530"         "17767"         "18002"         "18239"         "18482" 
+              "17503"         "17736"         "17971"         "18202"         "18427" 
        time_points181  time_points182  time_points183  time_points184  time_points185 
-              "18722"         "18947"         "19178"         "19408"         "19639" 
+              "18657"         "18880"         "19109"         "19341"         "19578" 
        time_points186  time_points187  time_points188  time_points189  time_points190 
-              "19874"         "20110"         "20341"         "20573"         "20798" 
+              "19813"         "20047"         "20276"         "20511"         "20748" 
        time_points191  time_points192  time_points193  time_points194  time_points195 
-              "21029"         "21265"         "21501"         "21729"         "21958" 
+              "20978"         "21199"         "21430"         "21661"         "21894" 
        time_points196  time_points197  time_points198  time_points199  time_points200 
-              "22191"         "22425"         "22665"         "22895"         "23128" 
+              "22134"         "22371"         "22602"         "22835"         "23068" 
        time_points201  time_points202  time_points203  time_points204  time_points205 
-                  "2"           "243"           "470"           "702"           "934" 
+                  "2"           "233"           "463"           "694"           "927" 
        time_points206  time_points207  time_points208  time_points209  time_points210 
-               "1176"          "1406"          "1635"          "1865"          "2091" 
+               "1168"          "1407"          "1635"          "1870"          "2099" 
        time_points211  time_points212  time_points213  time_points214  time_points215 
-               "2327"          "2560"          "2802"          "3033"          "3260" 
+               "2336"          "2564"          "2794"          "3034"          "3272" 
        time_points216  time_points217  time_points218  time_points219  time_points220 
-               "3493"          "3733"          "3962"          "4205"          "4443" 
+               "3503"          "3731"          "3965"          "4196"          "4425" 
        time_points221  time_points222  time_points223  time_points224  time_points225 
-               "4672"          "4904"          "5139"          "5364"          "5600" 
+               "4664"          "4895"          "5122"          "5359"          "5595" 
        time_points226  time_points227  time_points228  time_points229  time_points230 
-               "5838"          "6073"          "6314"          "6550"          "6790" 
+               "5829"          "6064"          "6300"          "6531"          "6770" 
        time_points231  time_points232  time_points233  time_points234  time_points235 
-               "7026"          "7259"          "7490"          "7726"          "7959" 
+               "7007"          "7233"          "7469"          "7706"          "7938" 
        time_points236  time_points237  time_points238  time_points239  time_points240 
-               "8190"          "8428"          "8663"          "8899"          "9128" 
+               "8177"          "8413"          "8644"          "8884"          "9119" 
        time_points241  time_points242  time_points243  time_points244  time_points245 
-               "9352"          "9587"          "9827"         "10070"         "10298" 
+               "9346"          "9578"          "9819"         "10051"         "10283" 
        time_points246  time_points247  time_points248  time_points249  time_points250 
-              "10534"         "10773"         "10997"         "11221"         "11453" 
+              "10514"         "10756"         "10983"         "11215"         "11455" 
        time_points251  time_points252  time_points253  time_points254  time_points255 
-              "11689"         "11922"         "12154"         "12385"         "12610" 
+              "11679"         "11916"         "12145"         "12382"         "12614" 
        time_points256  time_points257  time_points258  time_points259  time_points260 
-              "12841"         "13077"         "13311"         "13548"         "13775" 
+              "12854"         "13087"         "13316"         "13551"         "13787" 
        time_points261  time_points262  time_points263  time_points264  time_points265 
-              "14007"         "14242"         "14474"         "14704"         "14936" 
+              "14022"         "14255"         "14489"         "14719"         "14946" 
        time_points266  time_points267  time_points268  time_points269  time_points270 
-              "15175"         "15414"         "15652"         "15889"         "16126" 
+              "15186"         "15414"         "15651"         "15888"         "16116" 
        time_points271  time_points272  time_points273  time_points274  time_points275 
-              "16362"         "16600"         "16826"         "17061"         "17298" 
+              "16346"         "16585"         "16817"         "17053"         "17274" 
        time_points276  time_points277  time_points278  time_points279  time_points280 
-              "17531"         "17768"         "18003"         "18240"         "18483" 
+              "17504"         "17737"         "17972"         "18203"         "18428" 
        time_points281  time_points282  time_points283  time_points284  time_points285 
-              "18723"         "18948"         "19179"         "19409"         "19640" 
+              "18658"         "18881"         "19110"         "19342"         "19579" 
        time_points286  time_points287  time_points288  time_points289  time_points290 
-              "19875"         "20111"         "20342"         "20574"         "20799" 
+              "19814"         "20048"         "20277"         "20512"         "20749" 
        time_points291  time_points292  time_points293  time_points294  time_points295 
-              "21030"         "21266"         "21502"         "21730"         "21959" 
+              "20979"         "21200"         "21431"         "21662"         "21895" 
        time_points296  time_points297  time_points298  time_points299  time_points300 
-              "22192"         "22426"         "22666"         "22896"         "23129" 
+              "22135"         "22372"         "22603"         "22836"         "23069" 
        time_points301  time_points302  time_points303  time_points304  time_points305 
-                  "3"           "244"           "471"           "703"           "935" 
+                  "3"           "234"           "464"           "695"           "928" 
        time_points306  time_points307  time_points308  time_points309  time_points310 
-               "1177"          "1407"          "1636"          "1866"          "2092" 
+               "1169"          "1408"          "1636"          "1871"          "2100" 
        time_points311  time_points312  time_points313  time_points314  time_points315 
-               "2328"          "2561"          "2803"          "3034"          "3261" 
+               "2337"          "2565"          "2795"          "3035"          "3273" 
        time_points316  time_points317  time_points318  time_points319  time_points320 
-               "3494"          "3734"          "3963"          "4206"          "4444" 
+               "3504"          "3732"          "3966"          "4197"          "4426" 
        time_points321  time_points322  time_points323  time_points324  time_points325 
-               "4673"          "4905"          "5140"          "5365"          "5601" 
+               "4665"          "4896"          "5123"          "5360"          "5596" 
        time_points326  time_points327  time_points328  time_points329  time_points330 
-               "5839"          "6074"          "6315"          "6551"          "6791" 
+               "5830"          "6065"          "6301"          "6532"          "6771" 
        time_points331  time_points332  time_points333  time_points334  time_points335 
-               "7027"          "7260"          "7491"          "7727"          "7960" 
+               "7008"          "7234"          "7470"          "7707"          "7939" 
        time_points336  time_points337  time_points338  time_points339  time_points340 
-               "8191"          "8429"          "8664"          "8900"          "9129" 
+               "8178"          "8414"          "8645"          "8885"          "9120" 
        time_points341  time_points342  time_points343  time_points344  time_points345 
-               "9353"          "9588"          "9828"         "10071"         "10299" 
+               "9347"          "9579"          "9820"         "10052"         "10284" 
        time_points346  time_points347  time_points348  time_points349  time_points350 
-              "10535"         "10774"         "10998"         "11222"         "11454" 
+              "10515"         "10757"         "10984"         "11216"         "11456" 
        time_points351  time_points352  time_points353  time_points354  time_points355 
-              "11690"         "11923"         "12155"         "12386"         "12611" 
+              "11680"         "11917"         "12146"         "12383"         "12615" 
        time_points356  time_points357  time_points358  time_points359  time_points360 
-              "12842"         "13078"         "13312"         "13549"         "13776" 
+              "12855"         "13088"         "13317"         "13552"         "13788" 
        time_points361  time_points362  time_points363  time_points364  time_points365 
-              "14008"         "14243"         "14475"         "14705"         "14937" 
+              "14023"         "14256"         "14490"         "14720"         "14947" 
        time_points366  time_points367  time_points368  time_points369  time_points370 
-              "15176"         "15415"         "15653"         "15890"         "16127" 
+              "15187"         "15415"         "15652"         "15889"         "16117" 
        time_points371  time_points372  time_points373  time_points374  time_points375 
-              "16363"         "16601"         "16827"         "17062"         "17299" 
+              "16347"         "16586"         "16818"         "17054"         "17275" 
        time_points376  time_points377  time_points378  time_points379  time_points380 
-              "17532"         "17769"         "18004"         "18241"         "18484" 
+              "17505"         "17738"         "17973"         "18204"         "18429" 
        time_points381  time_points382  time_points383  time_points384  time_points385 
-              "18724"         "18949"         "19180"         "19410"         "19641" 
+              "18659"         "18882"         "19111"         "19343"         "19580" 
        time_points386  time_points387  time_points388  time_points389  time_points390 
-              "19876"         "20112"         "20343"         "20575"         "20800" 
+              "19815"         "20049"         "20278"         "20513"         "20750" 
        time_points391  time_points392  time_points393  time_points394  time_points395 
-              "21031"         "21267"         "21503"         "21731"         "21960" 
+              "20980"         "21201"         "21432"         "21663"         "21896" 
        time_points396  time_points397  time_points398  time_points399  time_points400 
-              "22193"         "22427"         "22667"         "22897"         "23130" 
+              "22136"         "22373"         "22604"         "22837"         "23070" 
        time_points401  time_points402  time_points403  time_points404  time_points405 
-                  "4"           "245"           "472"           "704"           "936" 
+                  "4"           "235"           "465"           "696"           "929" 
        time_points406  time_points407  time_points408  time_points409  time_points410 
-               "1178"          "1408"          "1637"          "1867"          "2093" 
+               "1170"          "1409"          "1637"          "1872"          "2101" 
        time_points411  time_points412  time_points413  time_points414  time_points415 
-               "2329"          "2562"          "2804"          "3035"          "3262" 
+               "2338"          "2566"          "2796"          "3036"          "3274" 
        time_points416  time_points417  time_points418  time_points419  time_points420 
-               "3495"          "3735"          "3964"          "4207"          "4445" 
+               "3505"          "3733"          "3967"          "4198"          "4427" 
        time_points421  time_points422  time_points423  time_points424  time_points425 
-               "4674"          "4906"          "5141"          "5366"          "5602" 
+               "4666"          "4897"          "5124"          "5361"          "5597" 
        time_points426  time_points427  time_points428  time_points429  time_points430 
-               "5840"          "6075"          "6316"          "6552"          "6792" 
+               "5831"          "6066"          "6302"          "6533"          "6772" 
        time_points431  time_points432  time_points433  time_points434  time_points435 
-               "7028"          "7261"          "7492"          "7728"          "7961" 
+               "7009"          "7235"          "7471"          "7708"          "7940" 
        time_points436  time_points437  time_points438  time_points439  time_points440 
-               "8192"          "8430"          "8665"          "8901"          "9130" 
+               "8179"          "8415"          "8646"          "8886"          "9121" 
        time_points441  time_points442  time_points443  time_points444  time_points445 
-               "9354"          "9589"          "9829"         "10072"         "10300" 
+               "9348"          "9580"          "9821"         "10053"         "10285" 
        time_points446  time_points447  time_points448  time_points449  time_points450 
-              "10536"         "10775"         "10999"         "11223"         "11455" 
+              "10516"         "10758"         "10985"         "11217"         "11457" 
        time_points451  time_points452  time_points453  time_points454  time_points455 
-              "11691"         "11924"         "12156"         "12387"         "12612" 
+              "11681"         "11918"         "12147"         "12384"         "12616" 
        time_points456  time_points457  time_points458  time_points459  time_points460 
-              "12843"         "13079"         "13313"         "13550"         "13777" 
+              "12856"         "13089"         "13318"         "13553"         "13789" 
        time_points461  time_points462  time_points463  time_points464  time_points465 
-              "14009"         "14244"         "14476"         "14706"         "14938" 
+              "14024"         "14257"         "14491"         "14721"         "14948" 
        time_points466  time_points467  time_points468  time_points469  time_points470 
-              "15177"         "15416"         "15654"         "15891"         "16128" 
+              "15188"         "15416"         "15653"         "15890"         "16118" 
        time_points471  time_points472  time_points473  time_points474  time_points475 
-              "16364"         "16602"         "16828"         "17063"         "17300" 
+              "16348"         "16587"         "16819"         "17055"         "17276" 
        time_points476  time_points477  time_points478  time_points479  time_points480 
-              "17533"         "17770"         "18005"         "18242"         "18485" 
+              "17506"         "17739"         "17974"         "18205"         "18430" 
        time_points481  time_points482  time_points483  time_points484  time_points485 
-              "18725"         "18950"         "19181"         "19411"         "19642" 
+              "18660"         "18883"         "19112"         "19344"         "19581" 
        time_points486  time_points487  time_points488  time_points489  time_points490 
-              "19877"         "20113"         "20344"         "20576"         "20801" 
+              "19816"         "20050"         "20279"         "20514"         "20751" 
        time_points491  time_points492  time_points493  time_points494  time_points495 
-              "21032"         "21268"         "21504"         "21732"         "21961" 
+              "20981"         "21202"         "21433"         "21664"         "21897" 
        time_points496  time_points497  time_points498  time_points499  time_points500 
-              "22194"         "22428"         "22668"         "22898"         "23131" 
+              "22137"         "22374"         "22605"         "22838"         "23071" 
        time_points501  time_points502  time_points503  time_points504  time_points505 
-                  "5"           "246"           "473"           "705"           "937" 
+                  "5"           "236"           "466"           "697"           "930" 
        time_points506  time_points507  time_points508  time_points509  time_points510 
-               "1179"          "1409"          "1638"          "1868"          "2094" 
+               "1171"          "1410"          "1638"          "1873"          "2102" 
        time_points511  time_points512  time_points513  time_points514  time_points515 
-               "2330"          "2563"          "2805"          "3036"          "3263" 
+               "2339"          "2567"          "2797"          "3037"          "3275" 
        time_points516  time_points517  time_points518  time_points519  time_points520 
-               "3496"          "3736"          "3965"          "4208"          "4446" 
+               "3506"          "3734"          "3968"          "4199"          "4428" 
        time_points521  time_points522  time_points523  time_points524  time_points525 
-               "4675"          "4907"          "5142"          "5367"          "5603" 
+               "4667"          "4898"          "5125"          "5362"          "5598" 
        time_points526  time_points527  time_points528  time_points529  time_points530 
-               "5841"          "6076"          "6317"          "6553"          "6793" 
+               "5832"          "6067"          "6303"          "6534"          "6773" 
        time_points531  time_points532  time_points533  time_points534  time_points535 
-               "7029"          "7262"          "7493"          "7729"          "7962" 
+               "7010"          "7236"          "7472"          "7709"          "7941" 
        time_points536  time_points537  time_points538  time_points539  time_points540 
-               "8193"          "8431"          "8666"          "8902"          "9131" 
+               "8180"          "8416"          "8647"          "8887"          "9122" 
        time_points541  time_points542  time_points543  time_points544  time_points545 
-               "9355"          "9590"          "9830"         "10073"         "10301" 
+               "9349"          "9581"          "9822"         "10054"         "10286" 
        time_points546  time_points547  time_points548  time_points549  time_points550 
-              "10537"         "10776"         "11000"         "11224"         "11456" 
+              "10517"         "10759"         "10986"         "11218"         "11458" 
        time_points551  time_points552  time_points553  time_points554  time_points555 
-              "11692"         "11925"         "12157"         "12388"         "12613" 
+              "11682"         "11919"         "12148"         "12385"         "12617" 
        time_points556  time_points557  time_points558  time_points559  time_points560 
-              "12844"         "13080"         "13314"         "13551"         "13778" 
+              "12857"         "13090"         "13319"         "13554"         "13790" 
        time_points561  time_points562  time_points563  time_points564  time_points565 
-              "14010"         "14245"         "14477"         "14707"         "14939" 
+              "14025"         "14258"         "14492"         "14722"         "14949" 
        time_points566  time_points567  time_points568  time_points569  time_points570 
-              "15178"         "15417"         "15655"         "15892"         "16129" 
+              "15189"         "15417"         "15654"         "15891"         "16119" 
        time_points571  time_points572  time_points573  time_points574  time_points575 
-              "16365"         "16603"         "16829"         "17064"         "17301" 
+              "16349"         "16588"         "16820"         "17056"         "17277" 
        time_points576  time_points577  time_points578  time_points579  time_points580 
-              "17534"         "17771"         "18006"         "18243"         "18486" 
+              "17507"         "17740"         "17975"         "18206"         "18431" 
        time_points581  time_points582  time_points583  time_points584  time_points585 
-              "18726"         "18951"         "19182"         "19412"         "19643" 
+              "18661"         "18884"         "19113"         "19345"         "19582" 
        time_points586  time_points587  time_points588  time_points589  time_points590 
-              "19878"         "20114"         "20345"         "20577"         "20802" 
+              "19817"         "20051"         "20280"         "20515"         "20752" 
        time_points591  time_points592  time_points593  time_points594  time_points595 
-              "21033"         "21269"         "21505"         "21733"         "21962" 
+              "20982"         "21203"         "21434"         "21665"         "21898" 
        time_points596  time_points597  time_points598  time_points599  time_points600 
-              "22195"         "22429"         "22669"         "22899"         "23132" 
+              "22138"         "22375"         "22606"         "22839"         "23072" 
        time_points601  time_points602  time_points603  time_points604  time_points605 
-                  "6"           "247"           "474"           "706"           "938" 
+                  "6"           "237"           "467"           "698"           "931" 
        time_points606  time_points607  time_points608  time_points609  time_points610 
-               "1180"          "1410"          "1639"          "1869"          "2095" 
+               "1172"          "1411"          "1639"          "1874"          "2103" 
        time_points611  time_points612  time_points613  time_points614  time_points615 
-               "2331"          "2564"          "2806"          "3037"          "3264" 
+               "2340"          "2568"          "2798"          "3038"          "3276" 
        time_points616  time_points617  time_points618  time_points619  time_points620 
-               "3497"          "3737"          "3966"          "4209"          "4447" 
+               "3507"          "3735"          "3969"          "4200"          "4429" 
        time_points621  time_points622  time_points623  time_points624  time_points625 
-               "4676"          "4908"          "5143"          "5368"          "5604" 
+               "4668"          "4899"          "5126"          "5363"          "5599" 
        time_points626  time_points627  time_points628  time_points629  time_points630 
-               "5842"          "6077"          "6318"          "6554"          "6794" 
+               "5833"          "6068"          "6304"          "6535"          "6774" 
        time_points631  time_points632  time_points633  time_points634  time_points635 
-               "7030"          "7263"          "7494"          "7730"          "7963" 
+               "7011"          "7237"          "7473"          "7710"          "7942" 
        time_points636  time_points637  time_points638  time_points639  time_points640 
-               "8194"          "8432"          "8667"          "8903"          "9132" 
+               "8181"          "8417"          "8648"          "8888"          "9123" 
        time_points641  time_points642  time_points643  time_points644  time_points645 
-               "9356"          "9591"          "9831"         "10074"         "10302" 
+               "9350"          "9582"          "9823"         "10055"         "10287" 
        time_points646  time_points647  time_points648  time_points649  time_points650 
-              "10538"         "10777"         "11001"         "11225"         "11457" 
+              "10518"         "10760"         "10987"         "11219"         "11459" 
        time_points651  time_points652  time_points653  time_points654  time_points655 
-              "11693"         "11926"         "12158"         "12389"         "12614" 
+              "11683"         "11920"         "12149"         "12386"         "12618" 
        time_points656  time_points657  time_points658  time_points659  time_points660 
-              "12845"         "13081"         "13315"         "13552"         "13779" 
+              "12858"         "13091"         "13320"         "13555"         "13791" 
        time_points661  time_points662  time_points663  time_points664  time_points665 
-              "14011"         "14246"         "14478"         "14708"         "14940" 
+              "14026"         "14259"         "14493"         "14723"         "14950" 
        time_points666  time_points667  time_points668  time_points669  time_points670 
-              "15179"         "15418"         "15656"         "15893"         "16130" 
+              "15190"         "15418"         "15655"         "15892"         "16120" 
        time_points671  time_points672  time_points673  time_points674  time_points675 
-              "16366"         "16604"         "16830"         "17065"         "17302" 
+              "16350"         "16589"         "16821"         "17057"         "17278" 
        time_points676  time_points677  time_points678  time_points679  time_points680 
-              "17535"         "17772"         "18007"         "18244"         "18487" 
+              "17508"         "17741"         "17976"         "18207"         "18432" 
        time_points681  time_points682  time_points683  time_points684  time_points685 
-              "18727"         "18952"         "19183"         "19413"         "19644" 
+              "18662"         "18885"         "19114"         "19346"         "19583" 
        time_points686  time_points687  time_points688  time_points689  time_points690 
-              "19879"         "20115"         "20346"         "20578"         "20803" 
+              "19818"         "20052"         "20281"         "20516"         "20753" 
        time_points691  time_points692  time_points693  time_points694  time_points695 
-              "21034"         "21270"         "21506"         "21734"         "21963" 
+              "20983"         "21204"         "21435"         "21666"         "21899" 
        time_points696  time_points697  time_points698  time_points699  time_points700 
-              "22196"         "22430"         "22670"         "22900"         "23133" 
+              "22139"         "22376"         "22607"         "22840"         "23073" 
        time_points701  time_points702  time_points703  time_points704  time_points705 
-                  "7"           "248"           "475"           "707"           "939" 
+                  "7"           "238"           "468"           "699"           "932" 
        time_points706  time_points707  time_points708  time_points709  time_points710 
-               "1181"          "1411"          "1640"          "1870"          "2096" 
+               "1173"          "1412"          "1640"          "1875"          "2104" 
        time_points711  time_points712  time_points713  time_points714  time_points715 
-               "2332"          "2565"          "2807"          "3038"          "3265" 
+               "2341"          "2569"          "2799"          "3039"          "3277" 
        time_points716  time_points717  time_points718  time_points719  time_points720 
-               "3498"          "3738"          "3967"          "4210"          "4448" 
+               "3508"          "3736"          "3970"          "4201"          "4430" 
        time_points721  time_points722  time_points723  time_points724  time_points725 
-               "4677"          "4909"          "5144"          "5369"          "5605" 
+               "4669"          "4900"          "5127"          "5364"          "5600" 
        time_points726  time_points727  time_points728  time_points729  time_points730 
-               "5843"          "6078"          "6319"          "6555"          "6795" 
+               "5834"          "6069"          "6305"          "6536"          "6775" 
        time_points731  time_points732  time_points733  time_points734  time_points735 
-               "7031"          "7264"          "7495"          "7731"          "7964" 
+               "7012"          "7238"          "7474"          "7711"          "7943" 
        time_points736  time_points737  time_points738  time_points739  time_points740 
-               "8195"          "8433"          "8668"          "8904"          "9133" 
+               "8182"          "8418"          "8649"          "8889"          "9124" 
        time_points741  time_points742  time_points743  time_points744  time_points745 
-               "9357"          "9592"          "9832"         "10075"         "10303" 
+               "9351"          "9583"          "9824"         "10056"         "10288" 
        time_points746  time_points747  time_points748  time_points749  time_points750 
-              "10539"         "10778"         "11002"         "11226"         "11458" 
+              "10519"         "10761"         "10988"         "11220"         "11460" 
        time_points751  time_points752  time_points753  time_points754  time_points755 
-              "11694"         "11927"         "12159"         "12390"         "12615" 
+              "11684"         "11921"         "12150"         "12387"         "12619" 
        time_points756  time_points757  time_points758  time_points759  time_points760 
-              "12846"         "13082"         "13316"         "13553"         "13780" 
+              "12859"         "13092"         "13321"         "13556"         "13792" 
        time_points761  time_points762  time_points763  time_points764  time_points765 
-              "14012"         "14247"         "14479"         "14709"         "14941" 
+              "14027"         "14260"         "14494"         "14724"         "14951" 
        time_points766  time_points767  time_points768  time_points769  time_points770 
-              "15180"         "15419"         "15657"         "15894"         "16131" 
+              "15191"         "15419"         "15656"         "15893"         "16121" 
        time_points771  time_points772  time_points773  time_points774  time_points775 
-              "16367"         "16605"         "16831"         "17066"         "17303" 
+              "16351"         "16590"         "16822"         "17058"         "17279" 
        time_points776  time_points777  time_points778  time_points779  time_points780 
-              "17536"         "17773"         "18008"         "18245"         "18488" 
+              "17509"         "17742"         "17977"         "18208"         "18433" 
        time_points781  time_points782  time_points783  time_points784  time_points785 
-              "18728"         "18953"         "19184"         "19414"         "19645" 
+              "18663"         "18886"         "19115"         "19347"         "19584" 
        time_points786  time_points787  time_points788  time_points789  time_points790 
-              "19880"         "20116"         "20347"         "20579"         "20804" 
+              "19819"         "20053"         "20282"         "20517"         "20754" 
        time_points791  time_points792  time_points793  time_points794  time_points795 
-              "21035"         "21271"         "21507"         "21735"         "21964" 
+              "20984"         "21205"         "21436"         "21667"         "21900" 
        time_points796  time_points797  time_points798  time_points799  time_points800 
-              "22197"         "22431"         "22671"         "22901"         "23134" 
+              "22140"         "22377"         "22608"         "22841"         "23074" 
        time_points801  time_points802  time_points803  time_points804  time_points805 
-                  "8"           "249"           "476"           "708"           "940" 
+                  "8"           "239"           "469"           "700"           "933" 
        time_points806  time_points807  time_points808  time_points809  time_points810 
-               "1182"          "1412"          "1641"          "1871"          "2097" 
+               "1174"          "1413"          "1641"          "1876"          "2105" 
        time_points811  time_points812  time_points813  time_points814  time_points815 
-               "2333"          "2566"          "2808"          "3039"          "3266" 
+               "2342"          "2570"          "2800"          "3040"          "3278" 
        time_points816  time_points817  time_points818  time_points819  time_points820 
-               "3499"          "3739"          "3968"          "4211"          "4449" 
+               "3509"          "3737"          "3971"          "4202"          "4431" 
        time_points821  time_points822  time_points823  time_points824  time_points825 
-               "4678"          "4910"          "5145"          "5370"          "5606" 
+               "4670"          "4901"          "5128"          "5365"          "5601" 
        time_points826  time_points827  time_points828  time_points829  time_points830 
-               "5844"          "6079"          "6320"          "6556"          "6796" 
+               "5835"          "6070"          "6306"          "6537"          "6776" 
        time_points831  time_points832  time_points833  time_points834  time_points835 
-               "7032"          "7265"          "7496"          "7732"          "7965" 
+               "7013"          "7239"          "7475"          "7712"          "7944" 
        time_points836  time_points837  time_points838  time_points839  time_points840 
-               "8196"          "8434"          "8669"          "8905"          "9134" 
+               "8183"          "8419"          "8650"          "8890"          "9125" 
        time_points841  time_points842  time_points843  time_points844  time_points845 
-               "9358"          "9593"          "9833"         "10076"         "10304" 
+               "9352"          "9584"          "9825"         "10057"         "10289" 
        time_points846  time_points847  time_points848  time_points849  time_points850 
-              "10540"         "10779"         "11003"         "11227"         "11459" 
+              "10520"         "10762"         "10989"         "11221"         "11461" 
        time_points851  time_points852  time_points853  time_points854  time_points855 
-              "11695"         "11928"         "12160"         "12391"         "12616" 
+              "11685"         "11922"         "12151"         "12388"         "12620" 
        time_points856  time_points857  time_points858  time_points859  time_points860 
-              "12847"         "13083"         "13317"         "13554"         "13781" 
+              "12860"         "13093"         "13322"         "13557"         "13793" 
        time_points861  time_points862  time_points863  time_points864  time_points865 
-              "14013"         "14248"         "14480"         "14710"         "14942" 
+              "14028"         "14261"         "14495"         "14725"         "14952" 
        time_points866  time_points867  time_points868  time_points869  time_points870 
-              "15181"         "15420"         "15658"         "15895"         "16132" 
+              "15192"         "15420"         "15657"         "15894"         "16122" 
        time_points871  time_points872  time_points873  time_points874  time_points875 
-              "16368"         "16606"         "16832"         "17067"         "17304" 
+              "16352"         "16591"         "16823"         "17059"         "17280" 
        time_points876  time_points877  time_points878  time_points879  time_points880 
-              "17537"         "17774"         "18009"         "18246"         "18489" 
+              "17510"         "17743"         "17978"         "18209"         "18434" 
        time_points881  time_points882  time_points883  time_points884  time_points885 
-              "18729"         "18954"         "19185"         "19415"         "19646" 
+              "18664"         "18887"         "19116"         "19348"         "19585" 
        time_points886  time_points887  time_points888  time_points889  time_points890 
-              "19881"         "20117"         "20348"         "20580"         "20805" 
+              "19820"         "20054"         "20283"         "20518"         "20755" 
        time_points891  time_points892  time_points893  time_points894  time_points895 
-              "21036"         "21272"         "21508"         "21736"         "21965" 
+              "20985"         "21206"         "21437"         "21668"         "21901" 
        time_points896  time_points897  time_points898  time_points899  time_points900 
-              "22198"         "22432"         "22672"         "22902"         "23135" 
+              "22141"         "22378"         "22609"         "22842"         "23075" 
        time_points901  time_points902  time_points903  time_points904  time_points905 
-                  "9"           "250"           "477"           "709"           "941" 
+                  "9"           "240"           "470"           "701"           "934" 
        time_points906  time_points907  time_points908  time_points909  time_points910 
-               "1183"          "1413"          "1642"          "1872"          "2098" 
+               "1175"          "1414"          "1642"          "1877"          "2106" 
        time_points911  time_points912  time_points913  time_points914  time_points915 
-               "2334"          "2567"          "2809"          "3040"          "3267" 
+               "2343"          "2571"          "2801"          "3041"          "3279" 
        time_points916  time_points917  time_points918  time_points919  time_points920 
-               "3500"          "3740"          "3969"          "4212"          "4450" 
+               "3510"          "3738"          "3972"          "4203"          "4432" 
        time_points921  time_points922  time_points923  time_points924  time_points925 
-               "4679"          "4911"          "5146"          "5371"          "5607" 
+               "4671"          "4902"          "5129"          "5366"          "5602" 
        time_points926  time_points927  time_points928  time_points929  time_points930 
-               "5845"          "6080"          "6321"          "6557"          "6797" 
+               "5836"          "6071"          "6307"          "6538"          "6777" 
        time_points931  time_points932  time_points933  time_points934  time_points935 
-               "7033"          "7266"          "7497"          "7733"          "7966" 
+               "7014"          "7240"          "7476"          "7713"          "7945" 
        time_points936  time_points937  time_points938  time_points939  time_points940 
-               "8197"          "8435"          "8670"          "8906"          "9135" 
+               "8184"          "8420"          "8651"          "8891"          "9126" 
        time_points941  time_points942  time_points943  time_points944  time_points945 
-               "9359"          "9594"          "9834"         "10077"         "10305" 
+               "9353"          "9585"          "9826"         "10058"         "10290" 
        time_points946  time_points947  time_points948  time_points949  time_points950 
-              "10541"         "10780"         "11004"         "11228"         "11460" 
+              "10521"         "10763"         "10990"         "11222"         "11462" 
        time_points951  time_points952  time_points953  time_points954  time_points955 
-              "11696"         "11929"         "12161"         "12392"         "12617" 
+              "11686"         "11923"         "12152"         "12389"         "12621" 
        time_points956  time_points957  time_points958  time_points959  time_points960 
-              "12848"         "13084"         "13318"         "13555"         "13782" 
+              "12861"         "13094"         "13323"         "13558"         "13794" 
        time_points961  time_points962  time_points963  time_points964  time_points965 
-              "14014"         "14249"         "14481"         "14711"         "14943" 
+              "14029"         "14262"         "14496"         "14726"         "14953" 
        time_points966  time_points967  time_points968  time_points969  time_points970 
-              "15182"         "15421"         "15659"         "15896"         "16133" 
+              "15193"         "15421"         "15658"         "15895"         "16123" 
        time_points971  time_points972  time_points973  time_points974  time_points975 
-              "16369"         "16607"         "16833"         "17068"         "17305" 
+              "16353"         "16592"         "16824"         "17060"         "17281" 
        time_points976  time_points977  time_points978  time_points979  time_points980 
-              "17538"         "17775"         "18010"         "18247"         "18490" 
+              "17511"         "17744"         "17979"         "18210"         "18435" 
        time_points981  time_points982  time_points983  time_points984  time_points985 
-              "18730"         "18955"         "19186"         "19416"         "19647" 
+              "18665"         "18888"         "19117"         "19349"         "19586" 
        time_points986  time_points987  time_points988  time_points989  time_points990 
-              "19882"         "20118"         "20349"         "20581"         "20806" 
+              "19821"         "20055"         "20284"         "20519"         "20756" 
        time_points991  time_points992  time_points993  time_points994  time_points995 
-              "21037"         "21273"         "21509"         "21737"         "21966" 
+              "20986"         "21207"         "21438"         "21669"         "21902" 
        time_points996  time_points997  time_points998  time_points999 time_points1000 
-              "22199"         "22433"         "22673"         "22903"         "23136" 
-       [ reached getOption("max.print") -- omitted 72351 entries ]
+              "22142"         "22379"         "22610"         "22843"         "23076" 
+       [ reached getOption("max.print") -- omitted 72051 entries ]
 
 # data preparation for empirical HHMM works
 
@@ -5207,425 +5207,6 @@
       [1] "2003-03-07"
       
        [ reached getOption("max.print") -- omitted 26196 entries ]
-
----
-
-    Code
-      out
-    Output
-      fHMM empirical data:
-      * data source: dax.csv 
-      * date column: NA 
-      * data column: Close 
-      * log returns: FALSE 
-      * number of observations: 8695 
-
----
-
-    Code
-      unlist(out)
-    Output
-               dates   time_points1   time_points2   time_points3   time_points4 
-                  NA            "1"            "2"            "3"            "4" 
-        time_points5   time_points6   time_points7   time_points8   time_points9 
-                 "5"            "6"            "7"            "8"            "9" 
-       time_points10  time_points11  time_points12  time_points13  time_points14 
-                "10"           "11"           "12"           "13"           "14" 
-       time_points15  time_points16  time_points17  time_points18  time_points19 
-                "15"           "16"           "17"           "18"           "19" 
-       time_points20  time_points21  time_points22  time_points23  time_points24 
-                "20"           "21"           "22"           "23"           "24" 
-       time_points25  time_points26  time_points27  time_points28  time_points29 
-                "25"           "26"           "27"           "28"           "29" 
-       time_points30  time_points31  time_points32  time_points33  time_points34 
-                "30"           "31"           "32"           "33"           "34" 
-       time_points35  time_points36  time_points37  time_points38  time_points39 
-                "35"           "36"           "37"           "38"           "39" 
-       time_points40  time_points41  time_points42  time_points43  time_points44 
-                "40"           "41"           "42"           "43"           "44" 
-       time_points45  time_points46  time_points47  time_points48  time_points49 
-                "45"           "46"           "47"           "48"           "49" 
-       time_points50  time_points51  time_points52  time_points53  time_points54 
-                "50"           "51"           "52"           "53"           "54" 
-       time_points55  time_points56  time_points57  time_points58  time_points59 
-                "55"           "56"           "57"           "58"           "59" 
-       time_points60  time_points61  time_points62  time_points63  time_points64 
-                "60"           "61"           "62"           "63"           "64" 
-       time_points65  time_points66  time_points67  time_points68  time_points69 
-                "65"           "66"           "67"           "68"           "69" 
-       time_points70  time_points71  time_points72  time_points73  time_points74 
-                "70"           "71"           "72"           "73"           "74" 
-       time_points75  time_points76  time_points77  time_points78  time_points79 
-                "75"           "76"           "77"           "78"           "79" 
-       time_points80  time_points81  time_points82  time_points83  time_points84 
-                "80"           "81"           "82"           "83"           "84" 
-       time_points85  time_points86  time_points87  time_points88  time_points89 
-                "85"           "86"           "87"           "88"           "89" 
-       time_points90  time_points91  time_points92  time_points93  time_points94 
-                "90"           "91"           "92"           "93"           "94" 
-       time_points95  time_points96  time_points97  time_points98  time_points99 
-                "95"           "96"           "97"           "98"           "99" 
-      time_points100 time_points101 time_points102 time_points103 time_points104 
-               "100"          "101"          "102"          "103"          "104" 
-      time_points105 time_points106 time_points107 time_points108 time_points109 
-               "105"          "106"          "107"          "108"          "109" 
-      time_points110 time_points111 time_points112 time_points113 time_points114 
-               "110"          "111"          "112"          "113"          "114" 
-      time_points115 time_points116 time_points117 time_points118 time_points119 
-               "115"          "116"          "117"          "118"          "119" 
-      time_points120 time_points121 time_points122 time_points123 time_points124 
-               "120"          "121"          "122"          "123"          "124" 
-      time_points125 time_points126 time_points127 time_points128 time_points129 
-               "125"          "126"          "127"          "128"          "129" 
-      time_points130 time_points131 time_points132 time_points133 time_points134 
-               "130"          "131"          "132"          "133"          "134" 
-      time_points135 time_points136 time_points137 time_points138 time_points139 
-               "135"          "136"          "137"          "138"          "139" 
-      time_points140 time_points141 time_points142 time_points143 time_points144 
-               "140"          "141"          "142"          "143"          "144" 
-      time_points145 time_points146 time_points147 time_points148 time_points149 
-               "145"          "146"          "147"          "148"          "149" 
-      time_points150 time_points151 time_points152 time_points153 time_points154 
-               "150"          "151"          "152"          "153"          "154" 
-      time_points155 time_points156 time_points157 time_points158 time_points159 
-               "155"          "156"          "157"          "158"          "159" 
-      time_points160 time_points161 time_points162 time_points163 time_points164 
-               "160"          "161"          "162"          "163"          "164" 
-      time_points165 time_points166 time_points167 time_points168 time_points169 
-               "165"          "166"          "167"          "168"          "169" 
-      time_points170 time_points171 time_points172 time_points173 time_points174 
-               "170"          "171"          "172"          "173"          "174" 
-      time_points175 time_points176 time_points177 time_points178 time_points179 
-               "175"          "176"          "177"          "178"          "179" 
-      time_points180 time_points181 time_points182 time_points183 time_points184 
-               "180"          "181"          "182"          "183"          "184" 
-      time_points185 time_points186 time_points187 time_points188 time_points189 
-               "185"          "186"          "187"          "188"          "189" 
-      time_points190 time_points191 time_points192 time_points193 time_points194 
-               "190"          "191"          "192"          "193"          "194" 
-      time_points195 time_points196 time_points197 time_points198 time_points199 
-               "195"          "196"          "197"          "198"          "199" 
-      time_points200 time_points201 time_points202 time_points203 time_points204 
-               "200"          "201"          "202"          "203"          "204" 
-      time_points205 time_points206 time_points207 time_points208 time_points209 
-               "205"          "206"          "207"          "208"          "209" 
-      time_points210 time_points211 time_points212 time_points213 time_points214 
-               "210"          "211"          "212"          "213"          "214" 
-      time_points215 time_points216 time_points217 time_points218 time_points219 
-               "215"          "216"          "217"          "218"          "219" 
-      time_points220 time_points221 time_points222 time_points223 time_points224 
-               "220"          "221"          "222"          "223"          "224" 
-      time_points225 time_points226 time_points227 time_points228 time_points229 
-               "225"          "226"          "227"          "228"          "229" 
-      time_points230 time_points231 time_points232 time_points233 time_points234 
-               "230"          "231"          "232"          "233"          "234" 
-      time_points235 time_points236 time_points237 time_points238 time_points239 
-               "235"          "236"          "237"          "238"          "239" 
-      time_points240 time_points241 time_points242 time_points243 time_points244 
-               "240"          "241"          "242"          "243"          "244" 
-      time_points245 time_points246 time_points247 time_points248 time_points249 
-               "245"          "246"          "247"          "248"          "249" 
-      time_points250 time_points251 time_points252 time_points253 time_points254 
-               "250"          "251"          "252"          "253"          "254" 
-      time_points255 time_points256 time_points257 time_points258 time_points259 
-               "255"          "256"          "257"          "258"          "259" 
-      time_points260 time_points261 time_points262 time_points263 time_points264 
-               "260"          "261"          "262"          "263"          "264" 
-      time_points265 time_points266 time_points267 time_points268 time_points269 
-               "265"          "266"          "267"          "268"          "269" 
-      time_points270 time_points271 time_points272 time_points273 time_points274 
-               "270"          "271"          "272"          "273"          "274" 
-      time_points275 time_points276 time_points277 time_points278 time_points279 
-               "275"          "276"          "277"          "278"          "279" 
-      time_points280 time_points281 time_points282 time_points283 time_points284 
-               "280"          "281"          "282"          "283"          "284" 
-      time_points285 time_points286 time_points287 time_points288 time_points289 
-               "285"          "286"          "287"          "288"          "289" 
-      time_points290 time_points291 time_points292 time_points293 time_points294 
-               "290"          "291"          "292"          "293"          "294" 
-      time_points295 time_points296 time_points297 time_points298 time_points299 
-               "295"          "296"          "297"          "298"          "299" 
-      time_points300 time_points301 time_points302 time_points303 time_points304 
-               "300"          "301"          "302"          "303"          "304" 
-      time_points305 time_points306 time_points307 time_points308 time_points309 
-               "305"          "306"          "307"          "308"          "309" 
-      time_points310 time_points311 time_points312 time_points313 time_points314 
-               "310"          "311"          "312"          "313"          "314" 
-      time_points315 time_points316 time_points317 time_points318 time_points319 
-               "315"          "316"          "317"          "318"          "319" 
-      time_points320 time_points321 time_points322 time_points323 time_points324 
-               "320"          "321"          "322"          "323"          "324" 
-      time_points325 time_points326 time_points327 time_points328 time_points329 
-               "325"          "326"          "327"          "328"          "329" 
-      time_points330 time_points331 time_points332 time_points333 time_points334 
-               "330"          "331"          "332"          "333"          "334" 
-      time_points335 time_points336 time_points337 time_points338 time_points339 
-               "335"          "336"          "337"          "338"          "339" 
-      time_points340 time_points341 time_points342 time_points343 time_points344 
-               "340"          "341"          "342"          "343"          "344" 
-      time_points345 time_points346 time_points347 time_points348 time_points349 
-               "345"          "346"          "347"          "348"          "349" 
-      time_points350 time_points351 time_points352 time_points353 time_points354 
-               "350"          "351"          "352"          "353"          "354" 
-      time_points355 time_points356 time_points357 time_points358 time_points359 
-               "355"          "356"          "357"          "358"          "359" 
-      time_points360 time_points361 time_points362 time_points363 time_points364 
-               "360"          "361"          "362"          "363"          "364" 
-      time_points365 time_points366 time_points367 time_points368 time_points369 
-               "365"          "366"          "367"          "368"          "369" 
-      time_points370 time_points371 time_points372 time_points373 time_points374 
-               "370"          "371"          "372"          "373"          "374" 
-      time_points375 time_points376 time_points377 time_points378 time_points379 
-               "375"          "376"          "377"          "378"          "379" 
-      time_points380 time_points381 time_points382 time_points383 time_points384 
-               "380"          "381"          "382"          "383"          "384" 
-      time_points385 time_points386 time_points387 time_points388 time_points389 
-               "385"          "386"          "387"          "388"          "389" 
-      time_points390 time_points391 time_points392 time_points393 time_points394 
-               "390"          "391"          "392"          "393"          "394" 
-      time_points395 time_points396 time_points397 time_points398 time_points399 
-               "395"          "396"          "397"          "398"          "399" 
-      time_points400 time_points401 time_points402 time_points403 time_points404 
-               "400"          "401"          "402"          "403"          "404" 
-      time_points405 time_points406 time_points407 time_points408 time_points409 
-               "405"          "406"          "407"          "408"          "409" 
-      time_points410 time_points411 time_points412 time_points413 time_points414 
-               "410"          "411"          "412"          "413"          "414" 
-      time_points415 time_points416 time_points417 time_points418 time_points419 
-               "415"          "416"          "417"          "418"          "419" 
-      time_points420 time_points421 time_points422 time_points423 time_points424 
-               "420"          "421"          "422"          "423"          "424" 
-      time_points425 time_points426 time_points427 time_points428 time_points429 
-               "425"          "426"          "427"          "428"          "429" 
-      time_points430 time_points431 time_points432 time_points433 time_points434 
-               "430"          "431"          "432"          "433"          "434" 
-      time_points435 time_points436 time_points437 time_points438 time_points439 
-               "435"          "436"          "437"          "438"          "439" 
-      time_points440 time_points441 time_points442 time_points443 time_points444 
-               "440"          "441"          "442"          "443"          "444" 
-      time_points445 time_points446 time_points447 time_points448 time_points449 
-               "445"          "446"          "447"          "448"          "449" 
-      time_points450 time_points451 time_points452 time_points453 time_points454 
-               "450"          "451"          "452"          "453"          "454" 
-      time_points455 time_points456 time_points457 time_points458 time_points459 
-               "455"          "456"          "457"          "458"          "459" 
-      time_points460 time_points461 time_points462 time_points463 time_points464 
-               "460"          "461"          "462"          "463"          "464" 
-      time_points465 time_points466 time_points467 time_points468 time_points469 
-               "465"          "466"          "467"          "468"          "469" 
-      time_points470 time_points471 time_points472 time_points473 time_points474 
-               "470"          "471"          "472"          "473"          "474" 
-      time_points475 time_points476 time_points477 time_points478 time_points479 
-               "475"          "476"          "477"          "478"          "479" 
-      time_points480 time_points481 time_points482 time_points483 time_points484 
-               "480"          "481"          "482"          "483"          "484" 
-      time_points485 time_points486 time_points487 time_points488 time_points489 
-               "485"          "486"          "487"          "488"          "489" 
-      time_points490 time_points491 time_points492 time_points493 time_points494 
-               "490"          "491"          "492"          "493"          "494" 
-      time_points495 time_points496 time_points497 time_points498 time_points499 
-               "495"          "496"          "497"          "498"          "499" 
-      time_points500 time_points501 time_points502 time_points503 time_points504 
-               "500"          "501"          "502"          "503"          "504" 
-      time_points505 time_points506 time_points507 time_points508 time_points509 
-               "505"          "506"          "507"          "508"          "509" 
-      time_points510 time_points511 time_points512 time_points513 time_points514 
-               "510"          "511"          "512"          "513"          "514" 
-      time_points515 time_points516 time_points517 time_points518 time_points519 
-               "515"          "516"          "517"          "518"          "519" 
-      time_points520 time_points521 time_points522 time_points523 time_points524 
-               "520"          "521"          "522"          "523"          "524" 
-      time_points525 time_points526 time_points527 time_points528 time_points529 
-               "525"          "526"          "527"          "528"          "529" 
-      time_points530 time_points531 time_points532 time_points533 time_points534 
-               "530"          "531"          "532"          "533"          "534" 
-      time_points535 time_points536 time_points537 time_points538 time_points539 
-               "535"          "536"          "537"          "538"          "539" 
-      time_points540 time_points541 time_points542 time_points543 time_points544 
-               "540"          "541"          "542"          "543"          "544" 
-      time_points545 time_points546 time_points547 time_points548 time_points549 
-               "545"          "546"          "547"          "548"          "549" 
-      time_points550 time_points551 time_points552 time_points553 time_points554 
-               "550"          "551"          "552"          "553"          "554" 
-      time_points555 time_points556 time_points557 time_points558 time_points559 
-               "555"          "556"          "557"          "558"          "559" 
-      time_points560 time_points561 time_points562 time_points563 time_points564 
-               "560"          "561"          "562"          "563"          "564" 
-      time_points565 time_points566 time_points567 time_points568 time_points569 
-               "565"          "566"          "567"          "568"          "569" 
-      time_points570 time_points571 time_points572 time_points573 time_points574 
-               "570"          "571"          "572"          "573"          "574" 
-      time_points575 time_points576 time_points577 time_points578 time_points579 
-               "575"          "576"          "577"          "578"          "579" 
-      time_points580 time_points581 time_points582 time_points583 time_points584 
-               "580"          "581"          "582"          "583"          "584" 
-      time_points585 time_points586 time_points587 time_points588 time_points589 
-               "585"          "586"          "587"          "588"          "589" 
-      time_points590 time_points591 time_points592 time_points593 time_points594 
-               "590"          "591"          "592"          "593"          "594" 
-      time_points595 time_points596 time_points597 time_points598 time_points599 
-               "595"          "596"          "597"          "598"          "599" 
-      time_points600 time_points601 time_points602 time_points603 time_points604 
-               "600"          "601"          "602"          "603"          "604" 
-      time_points605 time_points606 time_points607 time_points608 time_points609 
-               "605"          "606"          "607"          "608"          "609" 
-      time_points610 time_points611 time_points612 time_points613 time_points614 
-               "610"          "611"          "612"          "613"          "614" 
-      time_points615 time_points616 time_points617 time_points618 time_points619 
-               "615"          "616"          "617"          "618"          "619" 
-      time_points620 time_points621 time_points622 time_points623 time_points624 
-               "620"          "621"          "622"          "623"          "624" 
-      time_points625 time_points626 time_points627 time_points628 time_points629 
-               "625"          "626"          "627"          "628"          "629" 
-      time_points630 time_points631 time_points632 time_points633 time_points634 
-               "630"          "631"          "632"          "633"          "634" 
-      time_points635 time_points636 time_points637 time_points638 time_points639 
-               "635"          "636"          "637"          "638"          "639" 
-      time_points640 time_points641 time_points642 time_points643 time_points644 
-               "640"          "641"          "642"          "643"          "644" 
-      time_points645 time_points646 time_points647 time_points648 time_points649 
-               "645"          "646"          "647"          "648"          "649" 
-      time_points650 time_points651 time_points652 time_points653 time_points654 
-               "650"          "651"          "652"          "653"          "654" 
-      time_points655 time_points656 time_points657 time_points658 time_points659 
-               "655"          "656"          "657"          "658"          "659" 
-      time_points660 time_points661 time_points662 time_points663 time_points664 
-               "660"          "661"          "662"          "663"          "664" 
-      time_points665 time_points666 time_points667 time_points668 time_points669 
-               "665"          "666"          "667"          "668"          "669" 
-      time_points670 time_points671 time_points672 time_points673 time_points674 
-               "670"          "671"          "672"          "673"          "674" 
-      time_points675 time_points676 time_points677 time_points678 time_points679 
-               "675"          "676"          "677"          "678"          "679" 
-      time_points680 time_points681 time_points682 time_points683 time_points684 
-               "680"          "681"          "682"          "683"          "684" 
-      time_points685 time_points686 time_points687 time_points688 time_points689 
-               "685"          "686"          "687"          "688"          "689" 
-      time_points690 time_points691 time_points692 time_points693 time_points694 
-               "690"          "691"          "692"          "693"          "694" 
-      time_points695 time_points696 time_points697 time_points698 time_points699 
-               "695"          "696"          "697"          "698"          "699" 
-      time_points700 time_points701 time_points702 time_points703 time_points704 
-               "700"          "701"          "702"          "703"          "704" 
-      time_points705 time_points706 time_points707 time_points708 time_points709 
-               "705"          "706"          "707"          "708"          "709" 
-      time_points710 time_points711 time_points712 time_points713 time_points714 
-               "710"          "711"          "712"          "713"          "714" 
-      time_points715 time_points716 time_points717 time_points718 time_points719 
-               "715"          "716"          "717"          "718"          "719" 
-      time_points720 time_points721 time_points722 time_points723 time_points724 
-               "720"          "721"          "722"          "723"          "724" 
-      time_points725 time_points726 time_points727 time_points728 time_points729 
-               "725"          "726"          "727"          "728"          "729" 
-      time_points730 time_points731 time_points732 time_points733 time_points734 
-               "730"          "731"          "732"          "733"          "734" 
-      time_points735 time_points736 time_points737 time_points738 time_points739 
-               "735"          "736"          "737"          "738"          "739" 
-      time_points740 time_points741 time_points742 time_points743 time_points744 
-               "740"          "741"          "742"          "743"          "744" 
-      time_points745 time_points746 time_points747 time_points748 time_points749 
-               "745"          "746"          "747"          "748"          "749" 
-      time_points750 time_points751 time_points752 time_points753 time_points754 
-               "750"          "751"          "752"          "753"          "754" 
-      time_points755 time_points756 time_points757 time_points758 time_points759 
-               "755"          "756"          "757"          "758"          "759" 
-      time_points760 time_points761 time_points762 time_points763 time_points764 
-               "760"          "761"          "762"          "763"          "764" 
-      time_points765 time_points766 time_points767 time_points768 time_points769 
-               "765"          "766"          "767"          "768"          "769" 
-      time_points770 time_points771 time_points772 time_points773 time_points774 
-               "770"          "771"          "772"          "773"          "774" 
-      time_points775 time_points776 time_points777 time_points778 time_points779 
-               "775"          "776"          "777"          "778"          "779" 
-      time_points780 time_points781 time_points782 time_points783 time_points784 
-               "780"          "781"          "782"          "783"          "784" 
-      time_points785 time_points786 time_points787 time_points788 time_points789 
-               "785"          "786"          "787"          "788"          "789" 
-      time_points790 time_points791 time_points792 time_points793 time_points794 
-               "790"          "791"          "792"          "793"          "794" 
-      time_points795 time_points796 time_points797 time_points798 time_points799 
-               "795"          "796"          "797"          "798"          "799" 
-      time_points800 time_points801 time_points802 time_points803 time_points804 
-               "800"          "801"          "802"          "803"          "804" 
-      time_points805 time_points806 time_points807 time_points808 time_points809 
-               "805"          "806"          "807"          "808"          "809" 
-      time_points810 time_points811 time_points812 time_points813 time_points814 
-               "810"          "811"          "812"          "813"          "814" 
-      time_points815 time_points816 time_points817 time_points818 time_points819 
-               "815"          "816"          "817"          "818"          "819" 
-      time_points820 time_points821 time_points822 time_points823 time_points824 
-               "820"          "821"          "822"          "823"          "824" 
-      time_points825 time_points826 time_points827 time_points828 time_points829 
-               "825"          "826"          "827"          "828"          "829" 
-      time_points830 time_points831 time_points832 time_points833 time_points834 
-               "830"          "831"          "832"          "833"          "834" 
-      time_points835 time_points836 time_points837 time_points838 time_points839 
-               "835"          "836"          "837"          "838"          "839" 
-      time_points840 time_points841 time_points842 time_points843 time_points844 
-               "840"          "841"          "842"          "843"          "844" 
-      time_points845 time_points846 time_points847 time_points848 time_points849 
-               "845"          "846"          "847"          "848"          "849" 
-      time_points850 time_points851 time_points852 time_points853 time_points854 
-               "850"          "851"          "852"          "853"          "854" 
-      time_points855 time_points856 time_points857 time_points858 time_points859 
-               "855"          "856"          "857"          "858"          "859" 
-      time_points860 time_points861 time_points862 time_points863 time_points864 
-               "860"          "861"          "862"          "863"          "864" 
-      time_points865 time_points866 time_points867 time_points868 time_points869 
-               "865"          "866"          "867"          "868"          "869" 
-      time_points870 time_points871 time_points872 time_points873 time_points874 
-               "870"          "871"          "872"          "873"          "874" 
-      time_points875 time_points876 time_points877 time_points878 time_points879 
-               "875"          "876"          "877"          "878"          "879" 
-      time_points880 time_points881 time_points882 time_points883 time_points884 
-               "880"          "881"          "882"          "883"          "884" 
-      time_points885 time_points886 time_points887 time_points888 time_points889 
-               "885"          "886"          "887"          "888"          "889" 
-      time_points890 time_points891 time_points892 time_points893 time_points894 
-               "890"          "891"          "892"          "893"          "894" 
-      time_points895 time_points896 time_points897 time_points898 time_points899 
-               "895"          "896"          "897"          "898"          "899" 
-      time_points900 time_points901 time_points902 time_points903 time_points904 
-               "900"          "901"          "902"          "903"          "904" 
-      time_points905 time_points906 time_points907 time_points908 time_points909 
-               "905"          "906"          "907"          "908"          "909" 
-      time_points910 time_points911 time_points912 time_points913 time_points914 
-               "910"          "911"          "912"          "913"          "914" 
-      time_points915 time_points916 time_points917 time_points918 time_points919 
-               "915"          "916"          "917"          "918"          "919" 
-      time_points920 time_points921 time_points922 time_points923 time_points924 
-               "920"          "921"          "922"          "923"          "924" 
-      time_points925 time_points926 time_points927 time_points928 time_points929 
-               "925"          "926"          "927"          "928"          "929" 
-      time_points930 time_points931 time_points932 time_points933 time_points934 
-               "930"          "931"          "932"          "933"          "934" 
-      time_points935 time_points936 time_points937 time_points938 time_points939 
-               "935"          "936"          "937"          "938"          "939" 
-      time_points940 time_points941 time_points942 time_points943 time_points944 
-               "940"          "941"          "942"          "943"          "944" 
-      time_points945 time_points946 time_points947 time_points948 time_points949 
-               "945"          "946"          "947"          "948"          "949" 
-      time_points950 time_points951 time_points952 time_points953 time_points954 
-               "950"          "951"          "952"          "953"          "954" 
-      time_points955 time_points956 time_points957 time_points958 time_points959 
-               "955"          "956"          "957"          "958"          "959" 
-      time_points960 time_points961 time_points962 time_points963 time_points964 
-               "960"          "961"          "962"          "963"          "964" 
-      time_points965 time_points966 time_points967 time_points968 time_points969 
-               "965"          "966"          "967"          "968"          "969" 
-      time_points970 time_points971 time_points972 time_points973 time_points974 
-               "970"          "971"          "972"          "973"          "974" 
-      time_points975 time_points976 time_points977 time_points978 time_points979 
-               "975"          "976"          "977"          "978"          "979" 
-      time_points980 time_points981 time_points982 time_points983 time_points984 
-               "980"          "981"          "982"          "983"          "984" 
-      time_points985 time_points986 time_points987 time_points988 time_points989 
-               "985"          "986"          "987"          "988"          "989" 
-      time_points990 time_points991 time_points992 time_points993 time_points994 
-               "990"          "991"          "992"          "993"          "994" 
-      time_points995 time_points996 time_points997 time_points998 time_points999 
-               "995"          "996"          "997"          "998"          "999" 
-       [ reached getOption("max.print") -- omitted 25108 entries ]
 
 ---
 

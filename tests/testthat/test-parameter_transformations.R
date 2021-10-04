@@ -1,3 +1,58 @@
+test_that("parameter transformations for HMM work", {
+  ### no fixed parameters
+  controls = set_controls()
+  par = set_parameters(controls)
+  parUncon = par2parUncon(par, controls)
+  expect_snapshot(parUncon)
+  parCon = parUncon2parCon(parUncon, controls)
+  expect_snapshot(parCon)
+  par2 = parCon2par(parCon, controls)
+  expect_snapshot(par2)
+  expect_equal(par, par2)
+  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par,controls),controls),controls))
+  ### fixed mu
+  controls = set_controls(list("sdds" = "t(mu = 1)"))
+  par = set_parameters(controls)
+  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par,controls),controls),controls))
+  ### fixed sigma
+  controls = set_controls(list("sdds" = "gamma(sigma = 1)"))
+  par = set_parameters(controls)
+  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par,controls),controls),controls))
+  ### fixed df
+  controls = set_controls(list("sdds" = "t(df = Inf)"))
+  par = set_parameters(controls)
+  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par,controls),controls),controls))
+})
+
+test_that("parameter transformations for HHMM work", {
+  ### no fixed parameters
+  controls = set_controls(list("hierarchy" = TRUE))
+  par = set_parameters(controls)
+  parUncon = par2parUncon(par, controls)
+  expect_snapshot(parUncon)
+  parCon = parUncon2parCon(parUncon, controls)
+  expect_snapshot(parCon)
+  par2 = parCon2par(parCon, controls)
+  expect_snapshot(par2)
+  expect_equal(par, par2)
+  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par,controls),controls),controls))
+  ### fixed mu
+  controls = set_controls(list("hierarchy" = TRUE,
+                               "sdds" = c("t(mu = 1)","t")))
+  par = set_parameters(controls)
+  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par,controls),controls),controls))
+  ### fixed sigma
+  controls = set_controls(list("hierarchy" = TRUE,
+                               "sdds" = c("gamma","gamma(sigma = 1)")))
+  par = set_parameters(controls)
+  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par,controls),controls),controls))
+  ### fixed df
+  controls = set_controls(list("hierarchy" = TRUE,
+                               "sdds" = c("gamma","t(df = 5)")))
+  par = set_parameters(controls)
+  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par,controls),controls),controls))
+})
+
 test_that("mu transformations work", {
   size = sample(10,1)
   muUncon = rnorm(size)

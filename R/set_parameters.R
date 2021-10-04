@@ -29,6 +29,12 @@
 #' Only relevant if sdd is a t-distribution.
 #' @param seed
 #' Set a seed for the sampling of parameters.
+#' @param scale_par
+#' A positive numeric vector of length two, containing scales for sampled 
+#' expectations and standard deviations. The first entry is the scale for 
+#' \code{mus} and \code{sigmas}, the second entry is the scale for 
+#' \code{mus_star} and \code{sigmas_star}. Set an entry to \code{1} for no 
+#' scaling.
 #' @return 
 #' An object of class \code{fHMM_parameters}.
 #' @export
@@ -36,15 +42,18 @@
 set_parameters = function(controls, 
                           Gamma = NULL, mus = NULL, sigmas = NULL, dfs = NULL, 
                           Gammas_star = NULL, mus_star = NULL, 
-                          sigmas_star = NULL, dfs_star = NULL, seed = NULL) {
+                          sigmas_star = NULL, dfs_star = NULL, seed = NULL,
+                          scale_par = c(1,1)) {
   
   ### set seed
   if(!is.null(seed))
     set.seed(seed)
   
-  ### check 'controls'
+  ### check 'controls' and 'scale_par'
   if(class(controls) != "fHMM_controls")
-    stop("not of class fHMM_controls.")
+    stop("'controls' is not of class fHMM_controls.")
+  if(!(length(scale_par) == 2 && is_number(scale_par, pos = TRUE)))
+    stop("'scale_par' must be a positive numeric vector of length 2.")
   
   ### function that samples tpm's
   sample_tpm = function(dim) {
@@ -60,10 +69,14 @@ set_parameters = function(controls,
   ### specify missing parameters
   if(is.null(Gamma))
     Gamma = sample_tpm(M)
-  if(is.null(mus))
-    mus = runif(M,-1,1)
+  if(is.null(mus)){
+    if(controls[["sdds"]][[1]]$name == "t")
+      mus = runif(M,-1,1)*scale_par[1]
+    if(controls[["sdds"]][[1]]$name == "gamma")
+      mus = runif(M,0,1)*scale_par[1]
+  }
   if(is.null(sigmas))
-    sigmas = runif(M,0,1)
+    sigmas = runif(M,0,1)*scale_par[1]
   if(controls[["sdds"]][[1]]$name == "t"){
     if(is.null(dfs))
       dfs = runif(M,0,30)
@@ -78,13 +91,17 @@ set_parameters = function(controls,
     }
     if(is.null(mus_star)){
       mus_star = list()
-      for(i in 1:M)
-        mus_star[[i]] = runif(N,-1,1)
+      for(i in 1:M){
+        if(controls[["sdds"]][[2]]$name == "t")
+          mus_star[[i]] = runif(N,-1,1)*scale_par[2]
+        if(controls[["sdds"]][[2]]$name == "gamma")
+          mus_star[[i]] = runif(N,0,1)*scale_par[2]
+      }
     }
     if(is.null(sigmas_star)){
       sigmas_star = list()
       for(i in 1:M)
-        sigmas_star[[i]] = runif(M,0,1)
+        sigmas_star[[i]] = runif(M,0,1)*scale_par[2]
     }
     if(controls[["sdds"]][[2]]$name == "t"){
       if(is.null(dfs_star)){
@@ -101,7 +118,7 @@ set_parameters = function(controls,
   if(!is.null(controls[["sdds"]][[1]]$fixed$mu))
     mus = rep(controls[["sdds"]][[1]]$fixed$mu,M)
   if(!is.null(controls[["sdds"]][[1]]$fixed$sigma))
-    sigmas = rep(controls[["sdds"]][[1]]$fixed$sigmas,M)
+    sigmas = rep(controls[["sdds"]][[1]]$fixed$sigma,M)
   if(!is.null(controls[["sdds"]][[1]]$fixed$df))
     dfs = rep(controls[["sdds"]][[1]]$fixed$df,M)
   if(controls[["hierarchy"]]){
@@ -116,8 +133,12 @@ set_parameters = function(controls,
   ### check parameters
   if(!is_tpm(Gamma) || nrow(Gamma) != M)
     stop("'Gamma' must be a tpm of dimension 'controls$states[1]'.")
-  if(!all(is_number(mus)) || length(mus) != M)
-    stop("'mu' must be a numeric vector of length 'controls$states[1]'.")
+  if(controls[["sdds"]][[1]]$name == "t")
+    if(!all(is_number(mus)) || length(mus) != M)
+      stop("'mu' must be a numeric vector of length 'controls$states[1]'.")
+  if(controls[["sdds"]][[1]]$name == "gamma")
+    if(!all(is_number(mus, pos = TRUE)) || length(mus) != M)
+      stop("'mu' must be a positive numeric vector of length 'controls$states[1]'.")
   if(!all(is_number(sigmas, pos = TRUE)) || length(sigmas) != M)
     stop("'sigma' must be a positive numeric vector of length 'controls$states[1]'.")
   if(controls[["sdds"]][[1]]$name == "t")
@@ -131,9 +152,14 @@ set_parameters = function(controls,
         stop("Each element in 'Gammas_star' must be a tpm of dimension 'controls$states[2]'.")
     if(!is.list(mus_star) || length(mus_star) != N)
       stop("'mus_star' must be a list of length 'controls$states[1]'.")
-    for(i in 1:M)
-      if(!all(is_number(mus_star[[i]])) || length(mus_star[[i]]) != N)
-        stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.")
+    for(i in 1:M){
+      if(controls[["sdds"]][[2]]$name == "t")
+        if(!all(is_number(mus_star[[i]])) || length(mus_star[[i]]) != N)
+          stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.")
+      if(controls[["sdds"]][[2]]$name == "gamma")
+        if(!all(is_number(mus_star[[i]])) || length(mus_star[[i]]) != N)
+          stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.")
+    }
     if(!is.list(sigmas_star) || length(sigmas_star) != N)
       stop("'sigmas_star' must be a list of length 'controls$states[1]'.")
     for(i in 1:M)

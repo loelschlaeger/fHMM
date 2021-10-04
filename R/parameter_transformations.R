@@ -1,114 +1,248 @@
-#' This function transforms constrained model parameters from the vector form 
-#' \code{thetaCon} to the list form \code{thetaList}.
-#' @param thetaCon 
-#' A vector of constrained model parameters.
+#' This function transforms an object of class \code{fHMM_parameters} into
+#' an object of class \code{parUncon}.
+#' @param par
+#' An object of class \code{fHMM_parameters}.
 #' @param controls 
-#' A list of controls.
+#' An object of class \code{fHMM_controls}.
 #' @return 
-#' A list of constrained model parameters.
+#' An object of class \code{parUncon}, i.e. a vector of unconstrained model 
+#' parameters to be estimated.
 #' @keywords 
 #' internal
 
-thetaCon2thetaList = function(thetaCon, controls){
+par2parUncon = function(par, controls){
+  stopifnot(class(par) == "fHMM_parameters")
+  stopifnot(class(controls) == "fHMM_controls")
+  parUncon = Gamma2gammasUncon(par[["Gamma"]])
+  if(is.null(controls$sdds[[1]]$fixed$mu))
+    parUncon = c(parUncon, 
+                 muCon2muUncon(muCon = par[["mus"]],
+                               link = (controls[["sdds"]][[1]]$name == "gamma")))
+  if(is.null(controls$sdds[[1]]$fixed$sigma))
+    parUncon = c(parUncon, 
+                 sigmaCon2sigmaUncon(par[["sigmas"]]))
+  if(controls[["sdds"]][[1]]$name == "t")
+    if(is.null(controls$sdds[[1]]$fixed$df))
+      parUncon = c(parUncon, 
+                   dfCon2dfUncon(par[["dfs"]]))
+  if(controls[["hierarchy"]]){
+    for(s in 1:controls[["states"]][1]){
+      parUncon = c(parUncon,
+                   Gamma2gammasUncon(par[["Gammas_star"]][[s]]))
+      if(is.null(controls$sdds[[2]]$fixed$mu))
+        parUncon = c(parUncon, 
+                     muCon2muUncon(par[["mus_star"]][[s]],
+                                   link = (controls[["sdds"]][[2]]$name == "gamma")))
+      if(is.null(controls$sdds[[2]]$fixed$sigma))
+        parUncon = c(parUncon, 
+                     sigmaCon2sigmaUncon(par[["sigmas_star"]][[s]]))
+      if(controls[["sdds"]][[2]]$name == "t")
+        if(is.null(controls$sdds[[2]]$fixed$df))
+          parUncon = c(parUncon, 
+                       dfCon2dfUncon(par[["dfs_star"]][[s]]))
+    }
+  }
+  class(parUncon) = "parUncon"
+  return(parUncon)
+}
+
+#' This function transforms an object of class \code{parUncon} into an object
+#' of class \code{parCon}.
+#' @param parUncon
+#' An object of class \code{parUncon}.
+#' @param controls 
+#' An object of class \code{fHMM_controls}.
+#' @return
+#' An object of class \code{parCon}, i.e. a vector of constrained model 
+#' parameters to be estimated.
+#' @keywords 
+#' internal
+
+parUncon2parCon = function(parUncon, controls){
+  stopifnot(class(parUncon) == "parUncon")
+  stopifnot(class(controls) == "fHMM_controls")
   M = controls[["states"]][1] 
-  N = controls[["states"]][2]
-  
-  gammasCon = thetaCon[1:((M-1)*M)]; thetaCon = thetaCon[-(1:((M-1)*M))]
-  Gamma = gammasCon2Gamma(gammasCon,M)
-  if(controls[["model"]]=="hhmm"){
-    Gammas_star = list()
-    for(m in seq_len(M)){
-      gammasCon_star   = thetaCon[1:((N-1)*N)]; thetaCon = thetaCon[-(1:((N-1)*N))]
-      Gammas_star[[m]] = gammasCon2Gamma(gammasCon_star,N)
+  parCon = gammasUncon2gammasCon(parUncon[1:((M-1)*M)],M)
+  parUncon = parUncon[-(1:((M-1)*M))]
+  if(is.null(controls$sdds[[1]]$fixed$mu)){
+    parCon = c(parCon, 
+               muUncon2muCon(parUncon[1:M],
+                             link = (controls[["sdds"]][[1]]$name == "gamma")))
+    parUncon = parUncon[-(1:M)]
+  }
+  if(is.null(controls$sdds[[1]]$fixed$sigma)){
+    parCon = c(parCon, 
+               sigmaUncon2sigmaCon(parUncon[1:M]))
+    parUncon = parUncon[-(1:M)]
+  }
+  if(controls[["sdds"]][[1]]$name == "t")
+    if(is.null(controls$sdds[[1]]$fixed$df)){
+      parCon = c(parCon, 
+                 dfUncon2dfCon(parUncon[1:M]))
+      parUncon = parUncon[-(1:M)]
     }
-  }
-  
-  musCon = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
-  if(controls[["model"]]=="hhmm"){ 
-    musCon_star = list()
-    for(m in seq_len(M)){
-      musCon_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
-    }
-  }
-  
-  sigmasCon = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
-  if(controls[["model"]]=="hhmm"){
-    sigmasCon_star = list()
-    for(m in seq_len(M)){
-      sigmasCon_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
-    }
-  }
-  
-  if(controls[["sdds"]][1] == "t"){
-    if(is.na(controls[["fixed_dfs"]][1])){
-      dfsCon = thetaCon[1:M]; thetaCon = thetaCon[-(1:M)]
-    } else {
-      dfsCon = rep(controls[["fixed_dfs"]][1],M)
-    }
-  }
-  if(controls[["sdds"]][1] == "gamma"){
-    dfsCon = NULL
-  }
-  
-  if(controls[["model"]]=="hhmm"){ 
-    if(controls[["sdds"]][2] == "t"){
-      dfsCon_star = list()
-      if(is.na(controls[["fixed_dfs"]][2])){
-        for(m in seq_len(M)){
-          dfsCon_star[[m]] = thetaCon[1:N]; thetaCon = thetaCon[-(1:N)]
+  if(controls[["hierarchy"]]){
+    N = controls[["states"]][2]
+    for(s in 1:M){
+      parCon = c(parCon, 
+                 gammasUncon2gammasCon(parUncon[1:((N-1)*N)],N))
+      parUncon = parUncon[-(1:((N-1)*N))]
+      if(is.null(controls$sdds[[2]]$fixed$mu)){
+        parCon = c(parCon, 
+                   muUncon2muCon(parUncon[1:N],
+                                 link = (controls[["sdds"]][[2]]$name == "gamma")))
+        parUncon = parUncon[-(1:N)]
+      }
+      if(is.null(controls$sdds[[2]]$fixed$sigma)){
+        parCon = c(parCon, 
+                   sigmaUncon2sigmaCon(parUncon[1:N]))
+        parUncon = parUncon[-(1:N)]
+      }
+      if(controls[["sdds"]][[2]]$name == "t")
+        if(is.null(controls$sdds[[2]]$fixed$df)){
+          parCon = c(parCon, 
+                     dfUncon2dfCon(parUncon[1:N]))
+          parUncon = parUncon[-(1:N)]
         }
+    }
+  }
+  class(parCon) = "parCon"
+  return(parCon)
+}
+
+#' This function transforms an object of class \code{parCon} into an object
+#' of class \code{fHMM_parameters}.
+#' @param parCon
+#' An object of class \code{parCon}.
+#' @param controls 
+#' An object of class \code{fHMM_controls}.
+#' @return
+#' An object of class \code{fHMM_parameters}.
+#' @keywords 
+#' internal
+
+parCon2par = function(parCon, controls){
+  stopifnot(class(parCon) == "parCon")
+  stopifnot(class(controls) == "fHMM_controls")
+  M = controls[["states"]][1] 
+  Gamma = gammasCon2Gamma(parCon[1:((M-1)*M)],M)
+  parCon = parCon[-(1:((M-1)*M))]
+  if(is.null(controls$sdds[[1]]$fixed$mu)){
+    mus = parCon[1:M]
+    parCon = parCon[-(1:M)]
+  } else {
+    mus = rep(controls$sdds[[1]]$fixed$mu,M)
+  }
+  if(is.null(controls$sdds[[1]]$fixed$sigma)){
+    sigmas = parCon[1:M]
+    parCon = parCon[-(1:M)]
+  } else {
+    sigmas = rep(controls$sdds[[1]]$fixed$sigma,M)
+  }
+  if(controls[["sdds"]][[1]]$name == "t"){
+    if(is.null(controls$sdds[[1]]$fixed$df)){
+      dfs = parCon[1:M]
+      parCon = parCon[-(1:M)]
+    } else {
+      dfs = rep(controls$sdds[[1]]$fixed$df,M)
+    }
+  } else {
+    dfs = NULL
+  }
+  if(controls[["hierarchy"]]){
+    N = controls[["states"]][2]
+    Gammas_star = list()
+    mus_star = list()
+    sigmas_star = list()
+    if(controls[["sdds"]][[2]]$name == "t"){
+      dfs_star = list()
+    } else {
+      dfs_star = NULL
+    }
+    for(s in 1:M){
+      Gammas_star[[s]] = gammasCon2Gamma(parCon[1:((N-1)*N)],N)
+      parCon = parCon[-(1:((N-1)*N))]
+      if(is.null(controls$sdds[[2]]$fixed$mu)){
+        mus_star[[s]] = parCon[1:M]
+        parCon = parCon[-(1:M)]
       } else {
-        for(m in seq_len(M)){
-          dfsCon_star[[m]] = rep(controls[["fixed_dfs"]][2],N)
+        mus_star[[s]] = rep(controls$sdds[[2]]$fixed$mu,M)
+      }
+      if(is.null(controls$sdds[[2]]$fixed$sigma)){
+        sigmas_star[[s]] = parCon[1:M]
+        parCon = parCon[-(1:M)]
+      } else {
+        sigmas_star[[s]] = rep(controls$sdds[[2]]$fixed$sigma,M)
+      }
+      if(controls[["sdds"]][[2]]$name == "t"){
+        if(is.null(controls$sdds[[2]]$fixed$df)){
+          dfs_star[[s]] = parCon[1:M]
+          parCon = parCon[-(1:M)]
+        } else {
+          dfs_star[[s]] = rep(controls$sdds[[2]]$fixed$df,M)
         }
       }
     }
-    if(controls[["sdds"]][2] == "gamma"){
-      dfsCon_star = NULL
-    }
+  } else {
+    Gammas_star = NULL
+    mus_star = NULL
+    sigmas_star = NULL
+    dfs_star = NULL
   }
-  
-  if(controls[["model"]]=="hmm"){
-    thetaList = list(
-      "Gamma"       = Gamma,
-      "mus"         = musCon,
-      "sigmas"      = sigmasCon,
-      "dfs"         = dfsCon
-    ) 
-  }
-  if(controls[["model"]]=="hhmm"){
-    thetaList = list(
-      "Gamma"       = Gamma,
-      "mus"         = musCon,
-      "sigmas"      = sigmasCon,
-      "dfs"         = dfsCon,
-      "Gammas_star" = Gammas_star,
-      "mus_star"    = musCon_star,
-      "sigmas_star" = sigmasCon_star,
-      "dfs_star"    = dfsCon_star
-    ) 
-  }
-  return(thetaList)
+  par = set_parameters(controls = controls, 
+                       Gamma = Gamma, mus = mus, sigmas = sigmas, dfs = dfs, 
+                       Gammas_star = Gammas_star, mus_star = mus_star, 
+                       sigmas_star = sigmas_star, dfs_star = dfs_star)
+  return(par)
 }
 
-#' un-constrains model parameters.
-#' @param thetaCon Constrained model parameters in vector form.
-#' @param controls A list of controls.
-#' @return un-constrained model parameters in vector form.
-#' @keywords internal
+#' This function transforms an object of class \code{fHMM_parameters} into an 
+#' object of class \code{parCon}.
+#' @param par
+#' An object of class \code{fHMM_parameters}.
+#' @param controls 
+#' An object of class{fHMM_controls}.
+#' @return
+#' An object of class \code{parCon}.
+#' @keywords 
+#' internal
 
-thetaCon2thetaUncon = function(thetaCon,controls){
-  return(thetaList2thetaUncon(thetaCon2thetaList(thetaCon,controls),controls))
+par2parCon = function(par, controls){
+  stopifnot(class(par) == "fHMM_parameters")
+  stopifnot(class(controls) == "fHMM_controls")
+  return(parUncon2parCon(par2parUncon(par,controls),controls))
 }
 
-#' Brings constrained model parameters from list form \code{thetaList} to vector form \code{thetaCon}.
-#' @param thetaList Constrained model parameters in list form.
-#' @param controls A list of controls.
-#' @return Constrained model parameters in vector form.
-#' @keywords internal
+#' This function transforms an object of class \code{parCon} into an 
+#' object of class \code{parUncon}.
+#' @param parCon
+#' An object of class \code{parCon}.
+#' @param controls 
+#' An object of class \code{fHMM_controls}.
+#' @return
+#' An object of class \code{parUncon}.
+#' @keywords 
+#' internal
 
-thetaList2thetaCon = function(thetaList,controls){
-  return(thetaUncon2thetaCon(thetaList2thetaUncon(thetaList,controls),controls))
+parCon2parUncon = function(parCon,controls){
+  stopifnot(class(parCon) == "parCon")
+  stopifnot(class(controls) == "fHMM_controls")
+  return(par2parUncon(parCon2par(parCon,controls),controls))
+}
+
+#' This function transforms an object of class \code{parUncon} into an 
+#' object of class \code{fHMM_parameters}.
+#' @param parUncon
+#' An object of class \code{parUncon}.
+#' @param controls 
+#' An object of class \code{fHMM_controls}.
+#' @return
+#' An object of class \code{fHMM_parameters}.
+#' @keywords 
+#' internal
+
+parUncon2par = function(parUncon,controls){
+  return(parCon2par(parUncon2parCon(parUncon,controls),controls))
 }
 
 #' Orders states in \code{thetaList} based on expected values.
@@ -148,168 +282,6 @@ thetaList2thetaListOrdered = function(thetaList,controls){
     }
   }
   return(thetaList)
-}
-
-#' Brings constrained model parameters in list form to un-constrained parameters in vector form.
-#' @param thetaList Constrained model parameters in list form.
-#' @param controls A list of controls.
-#' @return un-constrained model parameters in vector form.
-#' @keywords internal
-
-thetaList2thetaUncon = function(thetaList,controls){
-  if(controls[["model"]]=="hmm"){
-    gammasUncon = Gamma2gammasUncon(thetaList[["Gamma"]])
-    musUncon    = muCon2muUncon(thetaList[["mus"]],link=(controls[["sdds"]][1] == "gamma"))
-    sigmasUncon = sigmaCon2sigmaUncon(thetaList[["sigmas"]])
-    if(controls[["sdds"]][1]=="t" && is.na(controls[["fixed_dfs"]][1])){
-      dfsUncon = dfCon2dfUncon(thetaList[["dfs"]])
-      thetaUncon = c(gammasUncon,musUncon,sigmasUncon,dfsUncon)
-    } else {
-      thetaUncon = c(gammasUncon,musUncon,sigmasUncon)
-    }
-  }
-  if(controls[["model"]]=="hhmm"){
-    gammasUncon      = Gamma2gammasUncon(thetaList[["Gamma"]])
-    gammasUncon_star = vector()
-    for(s in seq_len(controls[["states"]][1])){
-      gammasUncon_star = c(gammasUncon_star,Gamma2gammasUncon(thetaList[["Gammas_star"]][[s]]))
-    }
-    musUncon      = muCon2muUncon(thetaList[["mus"]],link=(controls[["sdds"]][1] == "gamma"))
-    musUncon_star = vector()
-    for(s in seq_len(controls[["states"]][1] )){
-      musUncon_star = c(musUncon_star,muCon2muUncon(thetaList[["mus_star"]][[s]],link=(controls[["sdds"]][2] == "gamma")))
-    }
-    sigmasUncon      = sigmaCon2sigmaUncon(thetaList[["sigmas"]])
-    sigmasUncon_star = vector()
-    for(s in seq_len(controls[["states"]][1] )){
-      sigmasUncon_star = c(sigmasUncon_star,sigmaCon2sigmaUncon(thetaList[["sigmas_star"]][[s]]))
-    }
-    if(controls[["sdds"]][1]=="t" & is.na(controls[["fixed_dfs"]][1])){
-      dfsUncon = dfCon2dfUncon(thetaList[["dfs"]])
-      if(controls[["sdds"]][2]=="t" & is.na(controls[["fixed_dfs"]][2])){
-        dfsUncon_star = vector()
-        for(s in seq_len(controls[["states"]][1] )){
-          dfsUncon_star = c(dfsUncon_star,dfCon2dfUncon(thetaList[["dfs_star"]][[s]]))
-        }
-        thetaUncon = c(gammasUncon,gammasUncon_star,musUncon,musUncon_star,sigmasUncon,sigmasUncon_star,dfsUncon,dfsUncon_star)
-      } else {
-        thetaUncon = c(gammasUncon,gammasUncon_star,musUncon,musUncon_star,sigmasUncon,sigmasUncon_star,dfsUncon)
-      }
-    } else {
-      if(controls[["sdds"]][2]=="t" & is.na(controls[["fixed_dfs"]][2])){
-        dfsUncon_star = vector()
-        for(s in seq_len(controls[["states"]][1] )){
-          dfsUncon_star = c(dfsUncon_star,dfCon2dfUncon(thetaList[["dfs_star"]][[s]]))
-        }
-        thetaUncon = c(gammasUncon,gammasUncon_star,musUncon,musUncon_star,sigmasUncon,sigmasUncon_star,dfsUncon_star)
-      } else {
-        thetaUncon = c(gammasUncon,gammasUncon_star,musUncon,musUncon_star,sigmasUncon,sigmasUncon_star)
-      }
-    }
-  }
-  return(thetaUncon)
-}
-
-#' Constrains model parameters.
-#' @param thetaUncon un-constrained model parameters in vector form.
-#' @param controls A list of controls.
-#' @return Constrained model parameters in vector form.
-#' @keywords internal
-
-thetaUncon2thetaCon = function(thetaUncon,controls){
-  M  = controls[["states"]][1] 
-  N  = controls[["states"]][2]
-  if(controls[["model"]]=="hmm"){
-    gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
-    gammasCon   = gammasUncon2gammasCon(gammasUncon,M)
-    musUncon    = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
-    musCon      = muUncon2muCon(musUncon,link=(controls[["sdds"]][1] == "gamma"))
-    sigmasUncon = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
-    sigmasCon   = sigmaUncon2sigmaCon(sigmasUncon)
-    if(controls[["sdds"]][1] == "t"){
-      if(is.na(controls[["fixed_dfs"]][1])){
-        dfsUncon = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
-        dfsCon   = dfUncon2dfCon(dfsUncon)
-      } else {
-        dfsCon = integer(0)
-      }
-      thetaCon = c(gammasCon,musCon,sigmasCon,dfsCon)
-    }
-    if(controls[["sdds"]][1] == "gamma"){
-      thetaCon = c(gammasCon,musCon,sigmasCon)
-    }
-  }
-  if(controls[["model"]]=="hhmm"){
-    gammasUncon = thetaUncon[1:((M-1)*M)]; thetaUncon = thetaUncon[-(1:((M-1)*M))]
-    gammasCon   = gammasUncon2gammasCon(gammasUncon,M)
-    for(m in seq_len(M)){
-      gammasUncon_star = thetaUncon[1:((N-1)*N)]; thetaUncon = thetaUncon[-(1:((N-1)*N))]
-      gammasCon_star   = gammasUncon2gammasCon(gammasUncon_star,N)
-      gammasCon        = c(gammasCon,gammasCon_star)
-    }
-    musUncon = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
-    musCon   = muUncon2muCon(musUncon,link=(controls[["sdds"]][1] == "gamma"))
-    for(m in seq_len(M)){
-      musUncon_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
-      musCon_star   = muUncon2muCon(musUncon_star,link=(controls[["sdds"]][2] == "gamma"))
-      musCon        = c(musCon,musCon_star)
-    }
-    sigmasUncon = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
-    sigmasCon   = sigmaUncon2sigmaCon(sigmasUncon)
-    for(m in seq_len(M)){
-      sigmasUncon_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
-      sigmasCon_star   = sigmaUncon2sigmaCon(sigmasUncon_star)
-      sigmasCon        = c(sigmasCon,sigmasCon_star)
-    }
-    if(controls[["sdds"]][1] == "t"){
-      if(is.na(controls[["fixed_dfs"]][1])){
-        dfsUncon = thetaUncon[1:M]; thetaUncon = thetaUncon[-(1:M)]
-        dfsCon   = dfUncon2dfCon(dfsUncon)
-      } else {
-        dfsCon = integer(0)
-      }
-      if(controls[["sdds"]][2] == "t"){
-        if(is.na(controls[["fixed_dfs"]][2])){
-          for(m in seq_len(M)){
-            dfsUncon_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
-            dfsCon_star   = dfUncon2dfCon(dfsUncon_star)
-            dfsCon        = c(dfsCon,dfsCon_star)
-          }
-        }
-        thetaCon = c(gammasCon,musCon,sigmasCon,dfsCon)
-      }
-      if(controls[["sdds"]][2] == "gamma"){
-        thetaCon = c(gammasCon,musCon,sigmasCon,dfsCon) 
-      }
-    }
-    if(controls[["sdds"]][1] == "gamma"){
-      dfsCon = integer(0)
-      if(controls[["sdds"]][2] == "t"){
-        if(is.na(controls[["fixed_dfs"]][2])){
-          for(m in seq_len(M)){
-            dfsUncon_star = thetaUncon[1:N]; thetaUncon = thetaUncon[-(1:N)]
-            dfsCon_star   = dfUncon2dfCon(dfsUncon_star)
-            dfsCon        = c(dfsCon,dfsCon_star)
-          }
-        }
-        thetaCon = c(gammasCon,musCon,sigmasCon,dfsCon)
-      }
-      if(controls[["sdds"]][2] == "gamma"){
-        thetaCon = c(gammasCon,musCon,sigmasCon) 
-      }
-    }
-  }
-  return(thetaCon)
-}
-
-#' Brings un-constrained model parameters \code{thetaUncon} in list form \code{thetaList}.
-#' @param thetaUncon un-constrained model parameters in vector form.
-#' @param controls A list of controls.
-#' @return Constrained model parameters in list form.
-#' @keywords internal
-
-thetaUncon2thetaList = function(thetaUncon,controls){
-  return(thetaCon2thetaList(thetaUncon2thetaCon(thetaUncon,controls),controls))
 }
 
 #' Splits uncontrained model parameters \code{thetaUncon} by fine-scale HMMs.

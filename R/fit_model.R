@@ -1,6 +1,6 @@
 #' Model fitting for the fHMM package.
 #' @description 
-#' This function fits an HMM or HHMM for the fHMM package.
+#' This function fits an (hierarchical) HMM for the fHMM package.
 #' @param data 
 #' An object of class \code{fHMM_data}.
 #' @param seed
@@ -18,108 +18,78 @@ fit_model = function(data, seed = NULL){
   if(!is.null(seed))
     set.seed(seed)
   
-  ### TODO
-  runs = controls[["fit"]][["runs"]]
-  lls = rep(NA,runs) 
-  mods = list() 
-  
-  ### define optimizer
-  if(controls[["model"]]=="hmm") 
-    target = nLL_hmm
-  if(controls[["model"]]=="hhmm") 
-    target = nLL_hhmm
-  optimized = function(start_value){
-    nlm_out = nlm(f = target,
-                  p = start_value,
-                  observations = data[["data"]],
-                  controls = controls,
-                  iterlim = controls[["fit"]][["iterlim"]],
-                  steptol = controls[["fit"]][["steptol"]],
-                  gradtol = controls[["fit"]][["gradtol"]],
-                  print.level = controls[["fit"]][["print.level"]],
-                  typsize = start_value,
-                  hessian = FALSE)
-    return(nlm_out)
-  }
-  
   ### generate start values
-  generate_start_values = function(controls, runs){
-    start_values = list()
-    if(controls[["fit"]][["at_true"]]){
-      start_values[[1]] = data[["thetaUncon0"]]
-    }
-    if(!controls[["fit"]][["at_true"]]){
-      for(run in seq_len(runs)){
-        start_values[[run]] = init_est(controls)
-      }
-    }
-    return(start_values)
-  }
-  
-  ### check if log-likelihoods at start values can be computed 
-  failed_start_values = function(values){
-    failed = union(which(is.nan(values)),which(is.na(values)))
-    failed = c(failed,which(abs(values[-failed])>1e100))
-    return(failed)
-  }
-  
-  ### adjust 'scale_par' based on method of moments estimates
-  adjust_scale_par = function(controls,data){
-    scale_par = c(NA,NA)
-    if(controls[["model"]]=="hmm"){
-      scale_par[1] = mean(c(mean(data,na.rm="TRUE"),sd(data,na.rm="TRUE")))
-    }
-    if(controls[["model"]]=="hhmm"){
-      scale_par[1] = mean(c(mean(data[,1],na.rm="TRUE"),sd(data[,1],na.rm="TRUE")))
-      scale_par[2] = mean(c(mean(data[,-1],na.rm="TRUE"),sd(data[,-1],na.rm="TRUE")))
-    }
-    return(scale_par)
-  }
-  
-  ### select start values
-  message("Selecting start values...",appendLF = FALSE)
-  controls[["fit"]][["scale_par"]] = adjust_scale_par(controls,data[["data"]])
-  start_values = generate_start_values(controls,runs)
-  ll_at_start_values = rep(NA,runs)
-  for(run in seq_len(runs)){
-    ll_at_start_values[run] = suppressWarnings(target(start_values[[run]],data[["data"]],controls))
-  }
-  message("\r",sprintf("Start values selected. %10s"," "))
-  
-  ### check fails
-  fails = failed_start_values(ll_at_start_values)
-  if(length(fails)==runs)
-    stop("F.2")
-
-  if(length(fails)/runs>0.5)
-    warning("F.3")
-
-  if(length(fails)>0){
-    runs_seq = seq_len(runs)[-fails]
+  cat("Selecting start values.\n")
+  start_values = list()
+  if(data[["controls"]][["fit"]][["origin"]]){
+    start_values[[1]] = par2parUncon(data[["true_parameters"]], data[["controls"]])
   } else {
-    runs_seq = seq_len(runs)
+    ### compute parameter scales based on the method of moments
+    scale_par = c(1,1)
+    if(!data[["controls"]][["hierarchy"]]){
+      scale_par[1] = mean(c(mean(data[["data"]],na.rm="TRUE"),sd(data[["data"]],na.rm="TRUE")))
+    } else {
+      scale_par[1] = mean(c(mean(data[["data"]][,1],na.rm="TRUE"),sd(data[["data"]][,1],na.rm="TRUE")))
+      scale_par[2] = mean(c(mean(data[["data"]][,-1],na.rm="TRUE"),sd(data[["data"]][,-1],na.rm="TRUE")))
+    }
+    for(run in 1:data[["controls"]][["fit"]][["runs"]])
+      start_values[[run]] = par2parUncon(
+        set_parameters(data[["controls"]], scale_par = scale_par), 
+        data[["controls"]])
   }
   
-  ### start maximization
-  start_time = Sys.time()
-  progress(run = 0, total_runs = length(runs_seq), start_time = start_time)
-  for (run in runs_seq){
-    suppressWarnings({ tryCatch({ mods[[run]] = optimized(start_values[[run]])
-    if(mods[[run]][["code"]] %in% controls[["fit"]][["accept"]] || controls[["fit"]][["at_true"]]){
-      lls[run] = -mods[[run]]$minimum
+  ### define likelihood function
+  target = ifelse(!data[["controls"]][["hierarchy"]], nLL_hmm, nLL_hhmm)
+  
+  ### check start values
+  ll_at_start_values = rep(NA,data[["controls"]][["fit"]][["runs"]])
+  for(run in 1:data[["controls"]][["fit"]][["runs"]]){
+    ll = target(parUncon = start_values[[run]], 
+                observations = data[["data"]],
+                controls = data[["controls"]])
+    if(!(is.na(ll) || is.nan(ll) || abs(ll)>1e100)){
+      ll_at_start_values[run] = ll
     }
-    },error = function(e){})
-    })
+  }
+  if(length(is.na(ll_at_start_values)) == data[["controls"]][["fit"]][["runs"]])
+    stop("F.2")
+  if(length(is.na(ll_at_start_values)) / data[["controls"]][["fit"]][["runs"]] > 0.5)
+    warning("F.3", immediate. = TRUE)
+  runs_seq = which(!is.na(ll_at_start_values))
+  
+  ### start optimization
+  start_time = Sys.time()
+  mods = list()
+  lls = numeric(data[["controls"]][["fit"]][["runs"]])
+  progress(run = 0, total_runs = length(runs_seq), start_time = start_time)
+  for(run in runs_seq){
+    mod = try(
+      nlm(f = target,
+          p = start_values[[run]],
+          observations = data[["data"]],
+          controls = data[["controls"]],
+          iterlim = data[["controls"]][["fit"]][["iterlim"]],
+          steptol = data[["controls"]][["fit"]][["steptol"]],
+          gradtol = data[["controls"]][["fit"]][["gradtol"]],
+          print.level = data[["controls"]][["fit"]][["print.level"]],
+          typsize = start_values[[run]],
+          hessian = FALSE),
+      silent = TRUE)
+    if(class(mod) != "try-error" && mod[["code"]] %in% data[["controls"]][["fit"]][["accept"]]){
+      mods[[run]] = mod
+      lls[run] = -mod[["minimum"]]
+    }
     progress(run = run, total_runs = length(runs_seq), start_time = start_time)
   }
   end = Sys.time()
-  message("Estimation finished.")
+  
+  ### evaluate estimation
   if(all(is.na(lls))){
     stop("F.4")
   } else {
     ### estimation Info
     writeLines(sprintf("- %s %s minute(s)","estimation time:",ceiling(difftime(end,start_time,units='mins'))))
-    if(!controls[["fit"]][["at_true"]]){
+    if(!data[["controls"]][["fit"]][["at_true"]]){
       writeLines(sprintf("- %s %s out of %s runs","accepted runs:",sum(!is.na(lls)),length(lls)))
     }
     
@@ -128,14 +98,14 @@ fit_model = function(data, seed = NULL){
     hessian = suppressWarnings(nlm(f = target,
                                    p = mods[[which.max(lls)]][["estimate"]],
                                    observations = data[["data"]],
-                                   controls = controls,
+                                   controls = data[["controls"]],
                                    iterlim = 1,
                                    hessian = TRUE,
                                    typsize = mods[[which.max(lls)]][["estimate"]])[["hessian"]])
     message("\r",sprintf("Hessian computed. %10s"," "))
     
     ### create and return fit object
-    fit = check_estimation(mods,lls,data,hessian,controls)
+    fit = check_estimation(mods,lls,data,hessian,data[["controls"]])
     return(fit)
   }
 }

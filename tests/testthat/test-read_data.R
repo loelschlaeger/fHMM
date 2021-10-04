@@ -8,7 +8,8 @@ test_that("read of data works", {
   sink()
   controls = list(
     data = list(file = file,
-                data_column = "Close")
+                data_column = "Close",
+                to = "2021-10-01")
   )
   controls = set_controls(controls)
   expect_snapshot(read_data(controls))
@@ -42,7 +43,8 @@ test_that("read of data works", {
     horizon = c(100, NA),
     period = "m",
     data = list(file = c(file,file),
-                data_column = c("Close","Close"))
+                data_column = c("Close","Close"),
+                to = "2021-10-01")
   )
   controls = set_controls(controls)
   expect_snapshot(read_data(controls))

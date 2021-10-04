@@ -17,7 +17,8 @@ test_that("data preparation for empirical HMM works", {
     sdds    = "t",
     horizon = 400,
     data    = list(file        = file,
-                   data_column = "Close")
+                   data_column = "Close",
+                   to          = "2021-10-01")
   )
   controls = set_controls(controls)
   out = prepare_data(controls)
@@ -78,22 +79,8 @@ test_that("data preparation for empirical HHMM works", {
   controls = list(
     hierarchy = TRUE,
     data    = list(file        = c(file,file),
-                   data_column = c("Close","Close"))
-  )
-  controls = set_controls(controls)
-  out = prepare_data(controls)
-  expect_snapshot(out)
-  expect_snapshot(unlist(out))
-  ### without dates
-  controls = list(
-    states  = 2,
-    sdds    = "t",
-    horizon = 400,
-    data    = list(file        = file,
-                   date_column = NA,
-                   data_column = "Close",
-                   ### 'from' should be ignored in this case
-                   from        = "2020-01-01")
+                   data_column = c("Close","Close"),
+                   to          = "2021-10-01")
   )
   controls = set_controls(controls)
   out = prepare_data(controls)
@@ -106,7 +93,8 @@ test_that("data preparation for empirical HHMM works", {
     horizon = 400,
     data    = list(file        = file,
                    data_column = "Close",
-                   logreturns  = TRUE)
+                   logreturns  = TRUE,
+                   to          = "2021-10-01")
   )
   controls = set_controls(controls)
   out = prepare_data(controls)

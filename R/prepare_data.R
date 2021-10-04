@@ -36,7 +36,7 @@ prepare_data = function(controls, true_parameters = NULL, seed = NULL) {
   ### process data
   if(controls[["simulated"]]){
     if(is.null(true_parameters))
-      true_parameters = set_parameters(controls)
+      true_parameters = set_parameters(controls, seed = seed)
     if(class(true_parameters) != "fHMM_parameters")
       stop("'true_parameters' is not of class 'fHMM_parameters'.")
     data = simulate_data(controls, true_parameters, seed = seed)
