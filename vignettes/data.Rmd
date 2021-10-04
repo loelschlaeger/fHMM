@@ -1,6 +1,6 @@
 ---
-title: "How to process financial data in fHMM?"
-author: "Lennart Oelschläger"
+title: "Data management"
+author: ""
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
