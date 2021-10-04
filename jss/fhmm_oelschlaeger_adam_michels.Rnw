@@ -124,8 +124,7 @@ Content ...
 
 %
 <<some estimated model>>=
-controls = list("fit" = list("runs" = 5))
-fHMM::fit_hmm(controls)
+x = 1 
 @
 %
 

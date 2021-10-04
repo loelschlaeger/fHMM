@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2021.8.9)  4 OCT 2021 15:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2021.8.9)  4 OCT 2021 16:19
 entering extended mode
 **P:/fHMM/jss/fhmm_oelschlaeger_adam_michels.tex
 (P:/fHMM/jss/fhmm_oelschlaeger_adam_michels.tex
@@ -602,32 +602,32 @@ LaTeX Font Info:    Try loading font information for T1+lmtt on input line 123.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmtt.fd"
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [1
+) (fhmm_oelschlaeger_adam_michels.bbl [1
 
 {C:/Users/loelschlaeger/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./j
-sslogo.jpg>] (fhmm_oelschlaeger_adam_michels.bbl)
+sslogo.jpg>])
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/lmr/m/n/10.95 2 []
  []
 
 [2]
 LaTeX Font Info:    Font shape `T1/pzc/m/n' in size <13> not available
-(Font)              Font shape `T1/pzc/mb/it' tried instead on input line 191.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 191.
+(Font)              Font shape `T1/pzc/mb/it' tried instead on input line 178.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 178.
 
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [] \T1/lmr/m/n/10.95 3
  []
 
 [3]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 191.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 178.
 (fhmm_oelschlaeger_adam_michels.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 191.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 191.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 178.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 178.
 Package rerunfilecheck Info: File `fhmm_oelschlaeger_adam_michels.out' has not 
 changed.
 (rerunfilecheck)             Checksum: D6008DA8841D667538B22F679F4B9BFB;332.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 191.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 178.
  ) 
 Here is how much of TeX's memory you used:
  7842 strings out of 492973
@@ -636,7 +636,7 @@ Here is how much of TeX's memory you used:
  11495 multiletter control sequences out of 15000+200000
  78386 words of font info for 56 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 48i,9n,34p,248b,321s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 48i,9n,34p,248b,335s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/M
 iKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/
 public/lm/lmb10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.p
@@ -648,7 +648,7 @@ Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Program Files/M
 iKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
 ype1/public/lm/lmtto10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/zapfcha
 n/uzcmi8a.pfb>
-Output written on fhmm_oelschlaeger_adam_michels.pdf (3 pages, 277891 bytes).
+Output written on fhmm_oelschlaeger_adam_michels.pdf (3 pages, 260522 bytes).
 PDF statistics:
  104 PDF objects out of 1000 (max. 8388607)
  15 named destinations out of 1000 (max. 500000)

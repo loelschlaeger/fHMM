@@ -10,7 +10,6 @@ library("fHMM")
 ###################################################
 ### code chunk number 2: some estimated model
 ###################################################
-controls = list("fit" = list("runs" = 5))
-fHMM::fit_hmm(controls)
+x = 1 
 
 
