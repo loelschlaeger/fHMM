@@ -6,7 +6,10 @@
 #' @param seed
 #' Set a seed for the sampling of initial values.
 #' @return 
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{fHMM_model}, which is a list of
+#' \itemize{
+#'   \item ...
+#' }
 
 fit_model = function(data, seed = NULL){
 
@@ -104,13 +107,33 @@ fit_model = function(data, seed = NULL){
                                  typsize = mods[[which.max(lls)]][["estimate"]])[["hessian"]])
   cat("Hessian computed.\n")
   
-  ### estimation Info
+  ### estimation information
   cat("* total estimation time:",
       ceiling(difftime(end_time,start_time,units='mins')),"minutes\n")
   if(!data[["controls"]][["fit"]][["origin"]])
     cat("* accepted runs:",sum(!is.na(lls)),"of",data[["controls"]][["fit"]][["runs"]],"\n")
   
+  ### extract estimation results
+  mod = mods[[which.max(lls)]]
+  ll = -mod[["minimum"]]
+  
+  ### order estimates
+  # parUncon = mod[["estimate"]]
+  # thetaCon = thetaUncon2thetaCon(thetaUncon,controls)
+  # thetaList = thetaCon2thetaList(thetaCon,controls)
+  # thetaListOrdered = thetaList2thetaListOrdered(thetaList,controls)
+  # permut = diag(length(thetaUncon))[match(thetaCon,thetaConOrdered),]
+  # hessianOrdered = permut %*% hessian %*% t(permut)
+  # hessianOrdered[is.na(hessianOrdered)] = 0
+  
   ### create and return 'fHMM_model' object
-  out = fHMM_model(data, mods, lls, hessian)
+  out = list("data" = data[["data"]], 
+             "estimated_parameter" = mod[["estimate"]],
+             "nlm_output" = mod,
+             "ll" = ll,
+             "lls" = lls, 
+             "gradient" = mod$gradient,
+             "hessian" = hessian)
+  class(out) = "fHMM_model"
   return(out)
 }

@@ -1,3 +1,0 @@
-fHMM_parameter = function() {
-  
-}
