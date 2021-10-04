@@ -1,0 +1,191 @@
+\documentclass[article]{jss}
+
+%% -- LaTeX packages and custom commands ---------------------------------------
+
+%% recommended packages
+\usepackage{thumbpdf,lmodern}
+
+%% additional packages
+\usepackage{amssymb,amsmath}
+
+%% new custom commands
+\newcommand{\class}[1]{`\code{#1}'}
+\newcommand{\fct}[1]{\code{#1()}}
+
+%% For Sweave-based articles about R packages:
+%% need no \usepackage{Sweave}
+
+
+
+%% -- Article metainformation (author, title, ...) -----------------------------
+
+%% - \author{} with primary affiliation
+%% - \Plainauthor{} without affiliations
+%% - Separate authors by \And or \AND (in \author) or by comma (in \Plainauthor).
+%% - \AND starts a new line, \And does not.
+\author{authors}
+\Plainauthor{plainauthors}
+
+%% - \title{} in title case
+%% - \Plaintitle{} without LaTeX markup (if any)
+%% - \Shorttitle{} with LaTeX markup (if any), used as running title
+\title{\pkg{fHMM}: Fitting ... in \proglang{R}}
+\Plaintitle{fHMM: Fitting ... in R}
+\Shorttitle{fHMM}
+
+%% - \Abstract{} almost as usual
+\Abstract{
+\pkg{fHMM} is an \proglang{R} package for ...
+}
+
+%% - \Keywords{} with LaTeX markup, at least one required
+%% - \Plainkeywords{} without LaTeX markup (if necessary)
+%% - Should be comma-separated and in sentence case.
+\Keywords{keywords, \proglang{R}}
+\Plainkeywords{plainkeywords, R}
+
+%% - \Address{} of at least one author
+%% - May contain multiple affiliations for each author
+%%   (in extra lines, separated by \emph{and}\\).
+%% - May contain multiple authors for the same affiliation
+%%   (in the same first line, separated by comma).
+\Address{
+  Lennart Oelschl\"ager\\
+  Department of Business Administration and Economics\\
+  Bielefeld University\\
+  Postfach 10 01 31\\
+  E-mail: \email{lennart.oelschlaeger@uni-bielefeld.de}
+}
+
+\begin{document}
+
+%% -- Introduction -------------------------------------------------------------
+
+%% - In principle "as usual".
+%% - But should typically have some discussion of both _software_ and _methods_.
+%% - Use \proglang{}, \pkg{}, \fct{} and \code{} markup throughout the manuscript.
+%% - If such markup is in (sub)section titles, a plain text version has to be
+%%   added as well.
+%% - All software mentioned should be properly \cite-d.
+%% - All abbreviations should be introduced.
+%% - Unless the expansions of abbreviations are proper names (like "Journal
+%%   of Statistical Software" above) they should be in sentence case (like
+%%   "generalized linear models" below).
+
+\section{Introduction}
+\label{sec:intro}
+
+Introduction. This is a reference \cite{test:21}.
+
+
+
+%% -- Manuscript ---------------------------------------------------------------
+
+%% - In principle "as usual" again.
+%% - When using equations (e.g., {equation}, {eqnarray}, {align}, etc.
+%%   avoid empty lines before and after the equation (which would signal a new
+%%   paragraph.
+%% - When describing longer chunks of code that are _not_ meant for execution
+%%   (e.g., a function synopsis or list of arguments), the environment {Code}
+%%   is recommended. Alternatively, a plain {verbatim} can also be used.
+%%   (For executed code see the next section.)
+%% - Tables are placed at the top of the page
+%%   (\verb|[t!]|), centered (\verb|\centering|), with a caption below the table,
+%%   column headers and captions in sentence style, and if possible avoiding
+%%   vertical lines.
+
+\section{The method} \label{sec:method}
+
+Content ...
+
+%% -- Illustrations ------------------------------------------------------------
+
+%% - Virtually all JSS manuscripts list source code along with the generated
+%%   output. The style files provide dedicated environments for this.
+%% - In R, the environments {Sinput} and {Soutput} - as produced by Sweave() or
+%%   or knitr using the render_sweave() hook - are used (without the need to
+%%   load Sweave.sty).
+%% - Equivalently, {CodeInput} and {CodeOutput} can be used.
+%% - The code input should use "the usual" command prompt in the respective
+%%   software system.
+%% - For R code, the prompt "R> " should be used with "+  " as the
+%%   continuation prompt.
+%% - Comments within the code chunks should be avoided - these should be made
+%%   within the regular LaTeX text.
+%% - Please make sure that all code is properly spaced, e.g., using
+%%   \code{y = a + b * x} and \emph{not} \code{y=a+b*x}.
+%% - JSS prefers when the second line of code is indented by two spaces.
+
+\section{Illustrations} \label{sec:illustrations}
+
+%
+\begin{Schunk}
+\begin{Sinput}
+> controls = list("fit" = list("runs" = 5))
+> fHMM::fit_hmm(controls)
+\end{Sinput}
+\begin{Soutput}
+- path: C:\Users\LOELSC~1\AppData\Local\Temp\RtmpcpSCdo
+- model id: test
+- model type: hmm
+- data type: simulated
+- number of states: 2
+- SDDs: t
+- number of runs: 5 
+- sample size: 1000
+- estimation time: 1 minute(s)
+- accepted runs: 5 out of 5 runs
+\end{Soutput}
+\end{Schunk}
+%
+
+
+%% -- Summary/conclusions/discussion -------------------------------------------
+
+\section{Summary and discussion} \label{sec:summary}
+
+Content ...
+
+%% -- Optional special unnumbered sections -------------------------------------
+
+\section*{Computational details}
+
+The results in this paper were obtained using
+\proglang{R}~4.1.0 with the
+\pkg{fHMM}~0.3.0 package. \proglang{R} itself
+and all packages used are available from the Comprehensive
+\proglang{R} Archive Network (CRAN) at \url{https://CRAN.R-project.org/}.
+
+
+\section*{Acknowledgments}
+Content ...
+
+%% -- Bibliography -------------------------------------------------------------
+%% - References need to be provided in a .bib BibTeX database.
+%% - All references should be made with \cite, \citet, \citep, \citealp etc.
+%%   (and never hard-coded). See the FAQ for details.
+%% - JSS-specific markup (\proglang, \pkg, \code) should be used in the .bib.
+%% - Titles in the .bib should be in title case.
+%% - Journal titles should not be abbreviated and in title case.
+%% - DOIs should be included where available.
+%% - Software should be properly cited as well.
+
+\bibliography{refs}
+
+
+%% -- Appendix (if any) --------------------------------------------------------
+%% - After the bibliography with page break.
+%% - With proper section titles and _not_ just "Appendix".
+
+\newpage
+
+\begin{appendix}
+
+\section{Installation} \label{app:installation}
+
+\end{appendix}
+
+%% -----------------------------------------------------------------------------
+
+
+\end{document}
