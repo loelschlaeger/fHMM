@@ -13,6 +13,7 @@
 #' internal
 
 nLL_hmm = function(parUncon, observations, controls){
+  class(parUncon) = "parUncon"
   T = length(observations)
   if(!controls[["hierarchy"]]){
     nstates = controls[["states"]][1]

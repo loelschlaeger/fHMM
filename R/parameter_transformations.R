@@ -242,6 +242,8 @@ parCon2parUncon = function(parCon,controls){
 #' internal
 
 parUncon2par = function(parUncon,controls){
+  stopifnot(class(parUncon) == "parUncon")
+  stopifnot(class(controls) == "fHMM_controls")
   return(parCon2par(parUncon2parCon(parUncon,controls),controls))
 }
 

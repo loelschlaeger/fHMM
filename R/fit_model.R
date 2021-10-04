@@ -51,61 +51,66 @@ fit_model = function(data, seed = NULL){
       ll_at_start_values[run] = ll
     }
   }
-  if(length(is.na(ll_at_start_values)) == data[["controls"]][["fit"]][["runs"]])
+  if(sum(is.na(ll_at_start_values)) == data[["controls"]][["fit"]][["runs"]])
     stop("F.2")
-  if(length(is.na(ll_at_start_values)) / data[["controls"]][["fit"]][["runs"]] > 0.5)
+  if(sum(is.na(ll_at_start_values)) / data[["controls"]][["fit"]][["runs"]] > 0.5)
     warning("F.3", immediate. = TRUE)
   runs_seq = which(!is.na(ll_at_start_values))
   
   ### start optimization
   start_time = Sys.time()
   mods = list()
-  lls = numeric(data[["controls"]][["fit"]][["runs"]])
+  lls = rep(NA,data[["controls"]][["fit"]][["runs"]])
   progress(run = 0, total_runs = length(runs_seq), start_time = start_time)
-  for(run in runs_seq){
-    mod = try(
-      nlm(f = target,
-          p = start_values[[run]],
-          observations = data[["data"]],
-          controls = data[["controls"]],
-          iterlim = data[["controls"]][["fit"]][["iterlim"]],
-          steptol = data[["controls"]][["fit"]][["steptol"]],
-          gradtol = data[["controls"]][["fit"]][["gradtol"]],
-          print.level = data[["controls"]][["fit"]][["print.level"]],
-          typsize = start_values[[run]],
-          hessian = FALSE),
-      silent = TRUE)
-    if(class(mod) != "try-error" && mod[["code"]] %in% data[["controls"]][["fit"]][["accept"]]){
-      mods[[run]] = mod
-      lls[run] = -mod[["minimum"]]
+  for(run in 1:data[["controls"]][["fit"]][["runs"]]){
+    if(!is.na(ll_at_start_values[run])){
+      suppressWarnings({
+        mod = try(
+          nlm(f = target,
+              p = start_values[[run]],
+              observations = data[["data"]],
+              controls = data[["controls"]],
+              iterlim = data[["controls"]][["fit"]][["iterlim"]],
+              steptol = data[["controls"]][["fit"]][["steptol"]],
+              gradtol = data[["controls"]][["fit"]][["gradtol"]],
+              print.level = data[["controls"]][["fit"]][["print.level"]],
+              typsize = start_values[[run]],
+              hessian = FALSE),
+          silent = TRUE)
+      })
+      if(class(mod) != "try-error" && mod[["code"]] %in% data[["controls"]][["fit"]][["accept"]]){
+        mods[[run]] = mod
+        lls[run] = -mod[["minimum"]]
+      }
     }
-    progress(run = run, total_runs = length(runs_seq), start_time = start_time)
+    progress(run = run, total_runs = data[["controls"]][["fit"]][["runs"]], 
+             start_time = start_time)
   }
-  end = Sys.time()
+  end_time = Sys.time()
   
   ### evaluate estimation
   if(all(is.na(lls))){
     stop("F.4")
-  } else {
-    ### estimation Info
-    writeLines(sprintf("- %s %s minute(s)","estimation time:",ceiling(difftime(end,start_time,units='mins'))))
-    if(!data[["controls"]][["fit"]][["at_true"]]){
-      writeLines(sprintf("- %s %s out of %s runs","accepted runs:",sum(!is.na(lls)),length(lls)))
-    }
-    
-    ### compute Hessian
-    message("Computing the Hessian...",appendLF = FALSE)
-    hessian = suppressWarnings(nlm(f = target,
-                                   p = mods[[which.max(lls)]][["estimate"]],
-                                   observations = data[["data"]],
-                                   controls = data[["controls"]],
-                                   iterlim = 1,
-                                   hessian = TRUE,
-                                   typsize = mods[[which.max(lls)]][["estimate"]])[["hessian"]])
-    message("\r",sprintf("Hessian computed. %10s"," "))
-    
-    ### create and return fit object
-    fit = check_estimation(mods,lls,data,hessian,data[["controls"]])
-    return(fit)
-  }
+  } 
+  
+  ### compute Hessian
+  cat("Computing the Hessian...\n")
+  hessian = suppressWarnings(nlm(f = target,
+                                 p = mods[[which.max(lls)]][["estimate"]],
+                                 observations = data[["data"]],
+                                 controls = data[["controls"]],
+                                 iterlim = 1,
+                                 hessian = TRUE,
+                                 typsize = mods[[which.max(lls)]][["estimate"]])[["hessian"]])
+  cat("Hessian computed.\n")
+  
+  ### estimation Info
+  cat("* total estimation time:",
+      ceiling(difftime(end_time,start_time,units='mins')),"minutes\n")
+  if(!data[["controls"]][["fit"]][["origin"]])
+    cat("* accepted runs:",sum(!is.na(lls)),"of",data[["controls"]][["fit"]][["runs"]],"\n")
+  
+  ### create and return 'fHMM_model' object
+  out = fHMM_model(data, mods, lls, hessian)
+  return(out)
 }
