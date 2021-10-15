@@ -22,7 +22,6 @@ fit_model = function(data, seed = NULL){
     set.seed(seed)
   
   ### generate start values
-  cat("Selecting start values.\n")
   start_values = list()
   if(data[["controls"]][["fit"]][["origin"]]){
     start_values[[1]] = par2parUncon(data[["true_parameters"]], data[["controls"]])
@@ -45,6 +44,7 @@ fit_model = function(data, seed = NULL){
   target = ifelse(!data[["controls"]][["hierarchy"]], nLL_hmm, nLL_hhmm)
   
   ### check start values
+  cat("Checking start values ... ")
   ll_at_start_values = rep(NA,data[["controls"]][["fit"]][["runs"]])
   for(run in 1:data[["controls"]][["fit"]][["runs"]]){
     ll = target(parUncon = start_values[[run]], 
@@ -59,12 +59,14 @@ fit_model = function(data, seed = NULL){
   if(sum(is.na(ll_at_start_values)) / data[["controls"]][["fit"]][["runs"]] > 0.5)
     warning("F.3", immediate. = TRUE)
   runs_seq = which(!is.na(ll_at_start_values))
+  cat("Done.\n")
   
   ### start optimization
   start_time = Sys.time()
   mods = list()
   lls = rep(NA,data[["controls"]][["fit"]][["runs"]])
-  progress(run = 0, total_runs = length(runs_seq), start_time = start_time)
+  progress(run = 0, total_runs = length(runs_seq), start_time = start_time,
+           message = "Likelihood maximization:")
   for(run in 1:data[["controls"]][["fit"]][["runs"]]){
     if(!is.na(ll_at_start_values[run])){
       suppressWarnings({
@@ -87,7 +89,7 @@ fit_model = function(data, seed = NULL){
       }
     }
     progress(run = run, total_runs = data[["controls"]][["fit"]][["runs"]], 
-             start_time = start_time)
+             start_time = start_time, message = "Likelihood maximization:")
   }
   end_time = Sys.time()
   
@@ -95,9 +97,9 @@ fit_model = function(data, seed = NULL){
   if(all(is.na(lls))){
     stop("F.4")
   } 
-  
+
   ### compute Hessian
-  cat("Computing the Hessian...\n")
+  cat("Computing the Hessian ... ")
   hessian = suppressWarnings(nlm(f = target,
                                  p = mods[[which.max(lls)]][["estimate"]],
                                  observations = data[["data"]],
@@ -105,13 +107,7 @@ fit_model = function(data, seed = NULL){
                                  iterlim = 1,
                                  hessian = TRUE,
                                  typsize = mods[[which.max(lls)]][["estimate"]])[["hessian"]])
-  cat("Hessian computed.\n")
-  
-  ### estimation information
-  cat("* total estimation time:",
-      ceiling(difftime(end_time,start_time,units='mins')),"minutes\n")
-  if(!data[["controls"]][["fit"]][["origin"]])
-    cat("* accepted runs:",sum(!is.na(lls)),"of",data[["controls"]][["fit"]][["runs"]],"\n")
+  cat("Done.\n")
   
   ### extract estimation results
   mod = mods[[which.max(lls)]]
@@ -127,9 +123,10 @@ fit_model = function(data, seed = NULL){
   # hessianOrdered[is.na(hessianOrdered)] = 0
   
   ### create and return 'fHMM_model' object
-  out = list("data" = data[["data"]], 
+  out = list("data" = data, 
              "estimated_parameter" = mod[["estimate"]],
              "nlm_output" = mod,
+             "estimation_time" = ceiling(difftime(end_time,start_time,units='mins')),
              "ll" = ll,
              "lls" = lls, 
              "gradient" = mod$gradient,
