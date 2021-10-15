@@ -5,7 +5,7 @@ devtools::load_all()
 download_data(symbol = "^GDAXI", file = "dax.csv")
 download_data(symbol = "VOW3.DE", file = "vw.csv")
 
-### simulated HMM parameters ------------------------------------------------
+### simulated HMM -----------------------------------------------------------
 controls = list(
   states  = 2,
   sdds    = "t(mu = 0, df = Inf)",
@@ -13,8 +13,13 @@ controls = list(
   fit     = list("runs" = 50)
 )
 controls = set_controls(controls)
+data = prepare_data(controls)
+model = fit_model(data)
+summary(model)
+compare(model)
+plot(model, type = "ll", events)
 
-### empirical HMM parameters ------------------------------------------------
+### empirical HMM -----------------------------------------------------------
 controls = list(
   states  = 2,
   sdds    = "t",
@@ -24,16 +29,30 @@ controls = list(
                  logreturns  = TRUE)
 )
 controls = set_controls(controls)
+data = prepare_data(controls)
+model = fit_model(data)
+summary(model)
+events = list(
+  dates = c("2001-09-11","2008-09-15","2020-01-27"),
+  names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers",
+            "First COVID-19 case in Germany")
+)
+plot(model, type = "sdd", events)
 
-### simulated HHMM parameters -----------------------------------------------
+### simulated HHMM ----------------------------------------------------------
 controls = list(
   hierarchy = TRUE,
   states = c(2,4),
   horizon   = c(100, 30)
 )
 controls = set_controls(controls)
+data = prepare_data(controls)
+model = fit_model(data)
+summary(model)
+compare(model)
+plot(model, type = "ts")
 
-### empirical HHMM parameters -----------------------------------------------
+### empirical HHMM ----------------------------------------------------------
 controls = list(
   hierarchy = TRUE,
   horizon   = c(100, NA),
@@ -43,26 +62,14 @@ controls = list(
                    logreturns  = c(TRUE,TRUE))
 )
 controls = set_controls(controls)
-
-### prepare data ------------------------------------------------------------
 data = prepare_data(controls)
-
-### fit model ---------------------------------------------------------------
 model = fit_model(data)
-
-### summarize model ---------------------------------------------------------
 summary(model)
-
-### compare models ----------------------------------------------------------
-compare(model, model)
-
-### plot results ------------------------------------------------------------
 events = list(
   dates = c("2001-09-11","2008-09-15","2020-01-27"),
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers",
             "First COVID-19 case in Germany")
 )
 plot(model, type = "", events)
-
 
 
