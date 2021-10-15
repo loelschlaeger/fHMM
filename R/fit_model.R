@@ -112,25 +112,19 @@ fit_model = function(data, seed = NULL){
   ### extract estimation results
   mod = mods[[which.max(lls)]]
   ll = -mod[["minimum"]]
-  
-  ### order estimates
-  # parUncon = mod[["estimate"]]
-  # thetaCon = thetaUncon2thetaCon(thetaUncon,controls)
-  # thetaList = thetaCon2thetaList(thetaCon,controls)
-  # thetaListOrdered = thetaList2thetaListOrdered(thetaList,controls)
-  # permut = diag(length(thetaUncon))[match(thetaCon,thetaConOrdered),]
-  # hessianOrdered = permut %*% hessian %*% t(permut)
-  # hessianOrdered[is.na(hessianOrdered)] = 0
+  estimated_parameter = mod[["estimate"]]
+  class(estimated_parameter) = "parUncon"
   
   ### create and return 'fHMM_model' object
   out = list("data" = data, 
-             "estimated_parameter" = mod[["estimate"]],
+             "estimated_parameter" = estimated_parameter,
              "nlm_output" = mod,
              "estimation_time" = ceiling(difftime(end_time,start_time,units='mins')),
              "ll" = ll,
              "lls" = lls, 
              "gradient" = mod$gradient,
-             "hessian" = hessian)
+             "hessian" = hessian,
+             "decoded_states" = NULL)
   class(out) = "fHMM_model"
   return(out)
 }
