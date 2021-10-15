@@ -31,4 +31,5 @@ print.fHMM_data = function(x, ...) {
       cat("* coarse-scale merge:",deparse1(x$controls$data$merge, collapse = ""))
     }
   }
+  return(invisible(x))
 }
