@@ -1,10 +1,14 @@
 useDynLib("fHMM")
 
-### S3 methods
+### S3 print methods
 S3method(print,fHMM_controls)
 S3method(print,fHMM_data)
+S3method(print,fHMM_model)
 S3method(print,fHMM_sdds)
 S3method(print,fHMM_trouble)
+
+### S3 plot methods
+S3method(plot,fHMM_model)
 
 ### export functions
 export(download_data)
