@@ -15,6 +15,8 @@ controls = list(
 controls = set_controls(controls)
 data = prepare_data(controls)
 model = fit_model(data)
+model = decode(model)
+model = order_states(model)
 summary(model)
 compare(model)
 plot(model, type = "ll", events)
