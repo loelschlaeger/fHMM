@@ -1,4 +1,13 @@
-print.summary.fHMM_data = function() {
+#' Print method for the summary of \code{fHMM_data}.
+#' @param x
+#' An object of class \code{summary.fHMM_data}.
+#' @param ...
+#' Ignored.
+#' @return 
+#' ...
+#' @export
+
+print.summary.fHMM_data = function(x) {
   
   ### print data characteristics
   if(controls[["sim"]]){

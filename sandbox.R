@@ -14,6 +14,7 @@ controls = list(
 )
 controls = set_controls(controls)
 data = prepare_data(controls)
+summary(data)
 model = fit_model(data)
 model = decode(model)
 model = reorder_states(model, state_order = 2:1)

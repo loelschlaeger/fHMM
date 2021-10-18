@@ -1,4 +1,13 @@
-summary.fHMM_model = function() {
+#' Summary method for \code{fHMM_model}.
+#' @param object
+#' An object of class \code{fHMM_model}.
+#' @param ...
+#' Ignored.
+#' @return 
+#' An object of class \code{summary.fHMM_model}.
+#' @export
+
+summary.fHMM_model = function(object) {
   ### compute model selection criteria
   no_par   = length(mod[["estimate"]])
   comp_AIC = function(LL) return(2*no_par-2*LL)
