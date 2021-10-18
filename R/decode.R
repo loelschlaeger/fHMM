@@ -6,6 +6,7 @@
 #' An object of class \code{RprobitB_model}.
 #' @return 
 #' An object of class \code{RprobitB_model}.
+#' @export
 
 decode = function(x){
   
@@ -36,8 +37,8 @@ decode = function(x){
   }
   
   ### apply Viterbi algorithm
+  par = parUncon2par(x$estimate, x$data$controls)
   if(!x$data$controls$hierarchy){
-    par = parUncon2par(x$estimated_parameter, x$data$controls)
     decoding = viterbi(observations = x$data$data, 
                        nstates = x$data$controls$states[1], 
                        Gamma = par$Gamma, mus = par$mus, sigmas = par$sigmas,

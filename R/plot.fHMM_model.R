@@ -4,11 +4,14 @@
 #' @param x
 #' An object of class \code{fHMM_model}.
 #' @param type
-#' A character, specifying the typ of plot and can be one of
+#' A character, specifying the type of plot and can be one of
 #' \itemize{
 #'   \item \code{"ll"} for a visualization of the likelihood values in the 
 #'         different optimization runs,
-#'   \item
+#'   \item \code{"sdd"} for a visualization of the estimated state-dependent
+#'         distributions,
+#'   \item \code{"pr"}
+#'   \item \code{"ts"}
 #' }
 #' @param events
 #' ...
@@ -18,34 +21,35 @@
 #' No return value.
 #' @export
 
-plot.fHMM_model = function(x, type = "", events = NULL) {
+plot.fHMM_model = function(x, type = "ts", events = NULL, colors = NULL, ...) {
   
   ### check input
+  if(!class(x) == "fHMM_model")
+    stop("'x' is not of class 'fHMM_model'.")
+  if(!(length(type) == 1 && type %in% c("ll", "sdd", "pr", "ts")))
+    stop("...")
+  if(!is.null(events))
+    if(!is.list(events))
+      stop("...")
+  if(!is.null(colors))
+    if(class(colors) != "fHMM_colors")
+      stop("")
   
-  ### create colors
-  var_col = function(col,n){
-    colorRampPalette(c("white",col,"black"))(n+2)[2:(n+1)]
-  }
-  base_col = function(n){
-    colorRampPalette(c("darkgreen","green","yellow","orange","red","darkred"))(n)
-  }
-  col_alpha = function(col,alpha=0.6){
-    adjustcolor(col,alpha)
-  }
-  colors = list()
-  if(!x$data$controls[["hierarchy"]]){
-    colors[["hmm"]] = col_alpha(base_col(controls[["states"]][1]))
+  ### create and check colors
+  if(is.null(colors))
+    colors = fHMM_colors(controls = x$data$controls)
+  if(x$controls$hierarchy){
+    if(length(colors) != x$data$controls$states)
+      stop("...")
   } else {
-    colors[["hhmm_cs"]] = col_alpha(base_col(controls[["states"]][1]))
-    for(s in seq_len(x$data$controls[["states"]][1])){
-      colors[["hhmm_fs"]][[s]] = col_alpha(var_col(colors[["hhmm_cs"]][s],
-                                                   x$data$controls[["states"]][2]))
-    }
+    if(any(dim(colors) != x$data$controls$states + c(0,1)))
+      stop("...")
   }
   
-  ### likelihood plot
-  if(type == "ll"){
+  ### visualizations
+  if(type == "ll") 
     plot_ll(lls = x$lls)  
-  }
+  if(type == "sdd")
+    plot_sdd()
     
 }

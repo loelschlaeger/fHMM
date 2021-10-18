@@ -451,18 +451,16 @@ dfUncon2dfCon = function(dfUncon){
 #' @param Gamma 
 #' A transition probability matrix.
 #' @param shift 
-#' A boolean, determining whether to shift boundary probabilities by \code{1e-3}.
+#' A numeric value for shifting boundary probabilities.
 #' @return 
 #' A vector of constrained non-diagonal matrix elements (column-wise).
 #' @keywords 
 #' internal
 
-Gamma2gammasCon = function(Gamma, shift=FALSE){
+Gamma2gammasCon = function(Gamma, shift = 1e-3){
   gammasCon = Gamma[row(Gamma)!=col(Gamma)] 
-  if(shift){
-    gammasCon = replace(gammasCon,gammasCon==0,1e-3)
-    gammasCon = replace(gammasCon,gammasCon==1,1-1e-3)
-  }
+  gammasCon = replace(gammasCon, gammasCon == 0, shift)
+  gammasCon = replace(gammasCon, gammasCon == 1, 1-shift)
   return(gammasCon)
 }
 

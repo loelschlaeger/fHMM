@@ -112,19 +112,20 @@ fit_model = function(data, seed = NULL){
   ### extract estimation results
   mod = mods[[which.max(lls)]]
   ll = -mod[["minimum"]]
-  estimated_parameter = mod[["estimate"]]
-  class(estimated_parameter) = "parUncon"
+  estimate = mod[["estimate"]]
+  class(estimate) = "parUncon"
+  estimation_time = ceiling(difftime(end_time,start_time,units='mins'))
   
   ### create and return 'fHMM_model' object
   out = list("data" = data, 
-             "estimated_parameter" = estimated_parameter,
+             "estimate" = estimate,
              "nlm_output" = mod,
-             "estimation_time" = ceiling(difftime(end_time,start_time,units='mins')),
+             "estimation_time" = estimation_time,
              "ll" = ll,
              "lls" = lls, 
              "gradient" = mod$gradient,
              "hessian" = hessian,
-             "decoded_states" = NULL)
+             "decoding" = NULL)
   class(out) = "fHMM_model"
   return(out)
 }

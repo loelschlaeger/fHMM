@@ -16,10 +16,13 @@ controls = set_controls(controls)
 data = prepare_data(controls)
 model = fit_model(data)
 model = decode(model)
-model = order_states(model)
+model = reorder_states(model, state_order = 2:1)
 summary(model)
 compare(model)
-plot(model, type = "ll", events)
+plot(model, type = "ll")
+plot(model, type = "sdd")
+plot(model, type = "pr")
+predict(model, time_points = 1:10)
 
 ### empirical HMM -----------------------------------------------------------
 controls = list(
