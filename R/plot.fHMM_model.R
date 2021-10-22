@@ -3,17 +3,19 @@
 #' This function is the plot method for an object of class \code{fHMM_model}.
 #' @param x
 #' An object of class \code{fHMM_model}.
-#' @param type
-#' A character, specifying the type of plot and can be one of
+#' @param plot_type
+#' A character (vector), specifying the type of plot and can be one (or more) of
 #' \itemize{
 #'   \item \code{"ll"} for a visualization of the likelihood values in the 
 #'         different optimization runs,
 #'   \item \code{"sdd"} for a visualization of the estimated state-dependent
 #'         distributions,
-#'   \item \code{"pr"}
-#'   \item \code{"ts"}
+#'   \item \code{"pr"} for a visualization of the model's (pseudo-) residuals,
+#'   \item \code{"ts"} for a visualiation of the financial time series.
 #' }
 #' @param events
+#' ...
+#' @param colors
 #' ...
 #' @param ...
 #' Ignored.
@@ -21,13 +23,13 @@
 #' No return value.
 #' @export
 
-plot.fHMM_model = function(x, type = "ts", events = NULL, colors = NULL, ...) {
+plot.fHMM_model = function(x, plot_type = "ts", events = NULL, 
+                           colors = NULL, ...) {
   
   ### check input
   if(!class(x) == "fHMM_model")
     stop("'x' is not of class 'fHMM_model'.")
-  if(!(length(type) == 1 && type %in% c("ll", "sdd", "pr", "ts")))
-    stop("...")
+  plot_type = intersect(plot_type, c("ll", "sdd", "pr", "ts"))
   if(!is.null(events))
     if(!is.list(events))
       stop("...")
@@ -47,9 +49,18 @@ plot.fHMM_model = function(x, type = "ts", events = NULL, colors = NULL, ...) {
   }
   
   ### visualizations
-  if(type == "ll") 
+  if("ll" %in% plot_type) 
     plot_ll(lls = x$lls)  
-  if(type == "sdd")
+  if("sdd" %in% plot_type)
     plot_sdd()
+  if("pr" %in% plot_type){
+    if(is.null(x$residuals)){
+      warning("'residuals not available.'")
+    } else {
+      plot_pr(x$residuals)
+    }
+  }
+  if("ts" %in% plot_type)
+    plot_ts()
     
 }
