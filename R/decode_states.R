@@ -8,7 +8,7 @@
 #' An object of class \code{RprobitB_model}.
 #' @export
 
-decode = function(x){
+decode_states = function(x){
   
   ### definition of the Viterbi algorithm for state decoding
   viterbi = function(observations, nstates, Gamma, mus, sigmas, dfs, sdd){
