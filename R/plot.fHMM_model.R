@@ -11,7 +11,7 @@
 #'   \item \code{"sdd"} for a visualization of the estimated state-dependent
 #'         distributions,
 #'   \item \code{"pr"} for a visualization of the model's (pseudo-) residuals,
-#'   \item \code{"ts"} for a visualiation of the financial time series.
+#'   \item \code{"ts"} for a visualization of the financial time series.
 #' }
 #' @param events
 #' ...
@@ -40,7 +40,7 @@ plot.fHMM_model = function(x, plot_type = "ts", events = NULL,
   ### create and check colors
   if(is.null(colors))
     colors = fHMM_colors(controls = x$data$controls)
-  if(x$controls$hierarchy){
+  if(x$data$controls$hierarchy){
     if(length(colors) != x$data$controls$states)
       stop("...")
   } else {

@@ -21,9 +21,10 @@ model = reorder_states(model, state_order = 2:1)
 model = compute_residuals(model)
 summary(model)
 compare(model)
-plot(model, type = "ll")
-plot(model, type = "sdd")
-plot(model, type = "pr")
+plot(model, plot_type = "ll")
+plot(model, plot_type = "sdd")
+plot(model, plot_type = "pr")
+plot(model, plot_type = "ts")
 predict(model, time_points = 1:10)
 
 ### empirical HMM -----------------------------------------------------------
@@ -44,7 +45,7 @@ events = list(
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers",
             "First COVID-19 case in Germany")
 )
-plot(model, type = "sdd", events)
+plot(model, plot_type = "sdd", events)
 
 ### simulated HHMM ----------------------------------------------------------
 controls = list(
@@ -57,7 +58,7 @@ data = prepare_data(controls)
 model = fit_model(data)
 summary(model)
 compare(model)
-plot(model, type = "ts")
+plot(model, plot_type = "ts")
 
 ### empirical HHMM ----------------------------------------------------------
 controls = list(
@@ -77,6 +78,6 @@ events = list(
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers",
             "First COVID-19 case in Germany")
 )
-plot(model, type = "", events)
+plot(model, plot_type = "", events)
 
 

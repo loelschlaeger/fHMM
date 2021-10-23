@@ -22,7 +22,7 @@ compute_residuals = function(x) {
   for(t in seq_len(T)){
     if(par$sdd[[1]]$name == "t"){
       Fxt = pt(q = (x$data$data[t] - par$mus[x$decoding[t]]) / par$sigmas[x$decoding[t]],
-               df = par$dfs[decoding[t]])
+               df = par$dfs[x$decoding[t]])
     }
     if(par$sdd[[1]]$name == "gamma"){
       Fxt = pgamma(q = x$data$data[t],
