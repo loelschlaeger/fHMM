@@ -8,7 +8,7 @@
 #' \itemize{
 #'   \item \code{"ll"} for a visualization of the likelihood values in the 
 #'         different optimization runs,
-#'   \item \code{"sdd"} for a visualization of the estimated state-dependent
+#'   \item \code{"sdds"} for a visualization of the estimated state-dependent
 #'         distributions,
 #'   \item \code{"pr"} for a visualization of the model's (pseudo-) residuals,
 #'   \item \code{"ts"} for a visualization of the financial time series.
@@ -29,7 +29,7 @@ plot.fHMM_model = function(x, plot_type = "ts", events = NULL,
   ### check input
   if(!class(x) == "fHMM_model")
     stop("'x' is not of class 'fHMM_model'.")
-  plot_type = intersect(plot_type, c("ll", "sdd", "pr", "ts"))
+  plot_type = intersect(plot_type, c("ll", "sdds", "pr", "ts"))
   if(!is.null(events))
     if(!is.list(events))
       stop("...")
@@ -51,8 +51,9 @@ plot.fHMM_model = function(x, plot_type = "ts", events = NULL,
   ### visualizations
   if("ll" %in% plot_type) 
     plot_ll(lls = x$lls)  
-  if("sdd" %in% plot_type)
-    plot_sdd()
+  if("sdds" %in% plot_type)
+    plot_sdds(estimated_parameters = parUncon2par(x$estimate, x$data$controls),
+              true_parameters = x$data$true_parameters)
   if("pr" %in% plot_type){
     if(is.null(x$residuals)){
       warning("'residuals not available.'")

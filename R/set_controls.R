@@ -238,7 +238,7 @@ set_controls = function(controls = NULL) {
       stop("The control 'sdds' must be a character ",
            if(controls[["hierarchy"]]) "vector ","of length ",
            ifelse(controls[["hierarchy"]],2,1),".")
-    controls[["sdds"]] = split_sdds(sdds = controls[["sdds"]])
+    controls[["sdds"]] = fHMM_sdds(sdds = controls[["sdds"]])
   }
 
   ### check 'data' controls

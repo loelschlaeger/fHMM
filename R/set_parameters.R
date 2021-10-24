@@ -115,19 +115,21 @@ set_parameters = function(controls,
   }
   
   ### set fixed parameters
-  if(!is.null(controls[["sdds"]][[1]]$fixed$mu))
-    mus = rep(controls[["sdds"]][[1]]$fixed$mu,M)
-  if(!is.null(controls[["sdds"]][[1]]$fixed$sigma))
-    sigmas = rep(controls[["sdds"]][[1]]$fixed$sigma,M)
-  if(!is.null(controls[["sdds"]][[1]]$fixed$df))
-    dfs = rep(controls[["sdds"]][[1]]$fixed$df,M)
+  if(!is.na(controls[["sdds"]][[1]]$pars$mu))
+    mus = rep(controls[["sdds"]][[1]]$pars$mu,M)
+  if(!is.na(controls[["sdds"]][[1]]$pars$sigma))
+    sigmas = rep(controls[["sdds"]][[1]]$pars$sigma,M)
+  if(controls[["sdds"]][[1]]$name == "t")
+    if(!is.na(controls[["sdds"]][[1]]$pars$df))
+      dfs = rep(controls[["sdds"]][[1]]$pars$df,M)
   if(controls[["hierarchy"]]){
-    if(!is.null(controls[["sdds"]][[2]]$fixed$mu))
-      mus_star = rep(list(rep(controls[["sdds"]][[2]]$fixed$mu,N)),M)
-    if(!is.null(controls[["sdds"]][[2]]$fixed$sigma))
-      sigmas_star = rep(list(rep(controls[["sdds"]][[2]]$fixed$sigma,N)),M)
-    if(!is.null(controls[["sdds"]][[2]]$fixed$df))
-      dfs_star = rep(list(rep(controls[["sdds"]][[2]]$fixed$df,N)),M)
+    if(!is.na(controls[["sdds"]][[2]]$pars$mu))
+      mus_star = rep(list(rep(controls[["sdds"]][[2]]$pars$mu,N)),M)
+    if(!is.na(controls[["sdds"]][[2]]$pars$sigma))
+      sigmas_star = rep(list(rep(controls[["sdds"]][[2]]$pars$sigma,N)),M)
+    if(controls[["sdds"]][[2]]$name == "t")
+      if(!is.na(controls[["sdds"]][[2]]$pars$df))
+        dfs_star = rep(list(rep(controls[["sdds"]][[2]]$pars$df,N)),M)
   }
     
   ### check parameters
@@ -179,12 +181,11 @@ set_parameters = function(controls,
     "mus" = mus, 
     "sigmas" = sigmas, 
     "dfs" = dfs, 
-    "sdd" = controls[["sdds"]][1],
+    "sdds" = controls[["sdds"]],
     "Gammas_star" = if(controls[["hierarchy"]]) Gammas_star else NULL, 
     "mus_star" = if(controls[["hierarchy"]]) mus_star else NULL, 
     "sigmas_star" = if(controls[["hierarchy"]]) sigmas_star else NULL, 
-    "dfs_star" = if(controls[["hierarchy"]])dfs_star else NULL,
-    "sdd_star" = if(controls[["hierarchy"]]) controls[["sdds"]][2] else NULL
+    "dfs_star" = if(controls[["hierarchy"]])dfs_star else NULL
   )
   class(out) = "fHMM_parameters"
   return(out)

@@ -1,13 +1,15 @@
 #' Visualization of estimated state-dependent distributions.
 #' @description 
 #' This function plots the estimated state-dependent distributions.
-#' @param x
-#' An object of class \code{fHMM_model}.
+#' @param estimated_parameters
+#' An object of class \code{fHMM_parameters}.
+#' @param true_parameters
+#' Either \code{NULL} or an object of class \code{fHMM_parameters}.
 #' @param colors
 #' An object of class \code{fHMM_colors}.
 #' @return 
 
-plot_sdd = function(controls,data,fit,decoding,colors){
+plot_sdds = function(estimated_parameters, true_parameters, colors){
 
     ### function to create SDD plots
     create_sdds_plot = function(nostates,mus,sigmas,dfs,sdd,x_range,c_xlim = FALSE,xlim = NULL,colors = NULL,llabel = NULL,ltitle = NULL,sdd_true_parm = NULL){

@@ -14,30 +14,30 @@ par2parUncon = function(par, controls){
   stopifnot(class(par) == "fHMM_parameters")
   stopifnot(class(controls) == "fHMM_controls")
   parUncon = Gamma2gammasUncon(par[["Gamma"]])
-  if(is.null(controls$sdds[[1]]$fixed$mu))
+  if(is.na(controls$sdds[[1]]$pars$mu))
     parUncon = c(parUncon, 
                  muCon2muUncon(muCon = par[["mus"]],
                                link = (controls[["sdds"]][[1]]$name == "gamma")))
-  if(is.null(controls$sdds[[1]]$fixed$sigma))
+  if(is.na(controls$sdds[[1]]$pars$sigma))
     parUncon = c(parUncon, 
                  sigmaCon2sigmaUncon(par[["sigmas"]]))
   if(controls[["sdds"]][[1]]$name == "t")
-    if(is.null(controls$sdds[[1]]$fixed$df))
+    if(is.na(controls$sdds[[1]]$pars$df))
       parUncon = c(parUncon, 
                    dfCon2dfUncon(par[["dfs"]]))
   if(controls[["hierarchy"]]){
     for(s in 1:controls[["states"]][1]){
       parUncon = c(parUncon,
                    Gamma2gammasUncon(par[["Gammas_star"]][[s]]))
-      if(is.null(controls$sdds[[2]]$fixed$mu))
+      if(is.na(controls$sdds[[2]]$pars$mu))
         parUncon = c(parUncon, 
                      muCon2muUncon(par[["mus_star"]][[s]],
                                    link = (controls[["sdds"]][[2]]$name == "gamma")))
-      if(is.null(controls$sdds[[2]]$fixed$sigma))
+      if(is.na(controls$sdds[[2]]$pars$sigma))
         parUncon = c(parUncon, 
                      sigmaCon2sigmaUncon(par[["sigmas_star"]][[s]]))
       if(controls[["sdds"]][[2]]$name == "t")
-        if(is.null(controls$sdds[[2]]$fixed$df))
+        if(is.na(controls$sdds[[2]]$pars$df))
           parUncon = c(parUncon, 
                        dfCon2dfUncon(par[["dfs_star"]][[s]]))
     }
@@ -64,19 +64,19 @@ parUncon2parCon = function(parUncon, controls){
   M = controls[["states"]][1] 
   parCon = gammasUncon2gammasCon(parUncon[1:((M-1)*M)],M)
   parUncon = parUncon[-(1:((M-1)*M))]
-  if(is.null(controls$sdds[[1]]$fixed$mu)){
+  if(is.na(controls$sdds[[1]]$pars$mu)){
     parCon = c(parCon, 
                muUncon2muCon(parUncon[1:M],
                              link = (controls[["sdds"]][[1]]$name == "gamma")))
     parUncon = parUncon[-(1:M)]
   }
-  if(is.null(controls$sdds[[1]]$fixed$sigma)){
+  if(is.na(controls$sdds[[1]]$pars$sigma)){
     parCon = c(parCon, 
                sigmaUncon2sigmaCon(parUncon[1:M]))
     parUncon = parUncon[-(1:M)]
   }
   if(controls[["sdds"]][[1]]$name == "t")
-    if(is.null(controls$sdds[[1]]$fixed$df)){
+    if(is.na(controls$sdds[[1]]$pars$df)){
       parCon = c(parCon, 
                  dfUncon2dfCon(parUncon[1:M]))
       parUncon = parUncon[-(1:M)]
@@ -87,19 +87,19 @@ parUncon2parCon = function(parUncon, controls){
       parCon = c(parCon, 
                  gammasUncon2gammasCon(parUncon[1:((N-1)*N)],N))
       parUncon = parUncon[-(1:((N-1)*N))]
-      if(is.null(controls$sdds[[2]]$fixed$mu)){
+      if(is.na(controls$sdds[[2]]$pars$mu)){
         parCon = c(parCon, 
                    muUncon2muCon(parUncon[1:N],
                                  link = (controls[["sdds"]][[2]]$name == "gamma")))
         parUncon = parUncon[-(1:N)]
       }
-      if(is.null(controls$sdds[[2]]$fixed$sigma)){
+      if(is.na(controls$sdds[[2]]$pars$sigma)){
         parCon = c(parCon, 
                    sigmaUncon2sigmaCon(parUncon[1:N]))
         parUncon = parUncon[-(1:N)]
       }
       if(controls[["sdds"]][[2]]$name == "t")
-        if(is.null(controls$sdds[[2]]$fixed$df)){
+        if(is.na(controls$sdds[[2]]$pars$df)){
           parCon = c(parCon, 
                      dfUncon2dfCon(parUncon[1:N]))
           parUncon = parUncon[-(1:N)]
@@ -127,24 +127,24 @@ parCon2par = function(parCon, controls){
   M = controls[["states"]][1] 
   Gamma = gammasCon2Gamma(parCon[1:((M-1)*M)],M)
   parCon = parCon[-(1:((M-1)*M))]
-  if(is.null(controls$sdds[[1]]$fixed$mu)){
+  if(is.na(controls$sdds[[1]]$pars$mu)){
     mus = parCon[1:M]
     parCon = parCon[-(1:M)]
   } else {
-    mus = rep(controls$sdds[[1]]$fixed$mu,M)
+    mus = rep(controls$sdds[[1]]$pars$mu,M)
   }
-  if(is.null(controls$sdds[[1]]$fixed$sigma)){
+  if(is.na(controls$sdds[[1]]$pars$sigma)){
     sigmas = parCon[1:M]
     parCon = parCon[-(1:M)]
   } else {
-    sigmas = rep(controls$sdds[[1]]$fixed$sigma,M)
+    sigmas = rep(controls$sdds[[1]]$pars$sigma,M)
   }
   if(controls[["sdds"]][[1]]$name == "t"){
-    if(is.null(controls$sdds[[1]]$fixed$df)){
+    if(is.na(controls$sdds[[1]]$pars$df)){
       dfs = parCon[1:M]
       parCon = parCon[-(1:M)]
     } else {
-      dfs = rep(controls$sdds[[1]]$fixed$df,M)
+      dfs = rep(controls$sdds[[1]]$pars$df,M)
     }
   } else {
     dfs = NULL
@@ -162,24 +162,24 @@ parCon2par = function(parCon, controls){
     for(s in 1:M){
       Gammas_star[[s]] = gammasCon2Gamma(parCon[1:((N-1)*N)],N)
       parCon = parCon[-(1:((N-1)*N))]
-      if(is.null(controls$sdds[[2]]$fixed$mu)){
+      if(is.na(controls$sdds[[2]]$pars$mu)){
         mus_star[[s]] = parCon[1:M]
         parCon = parCon[-(1:M)]
       } else {
-        mus_star[[s]] = rep(controls$sdds[[2]]$fixed$mu,M)
+        mus_star[[s]] = rep(controls$sdds[[2]]$pars$mu,M)
       }
-      if(is.null(controls$sdds[[2]]$fixed$sigma)){
+      if(is.na(controls$sdds[[2]]$pars$sigma)){
         sigmas_star[[s]] = parCon[1:M]
         parCon = parCon[-(1:M)]
       } else {
-        sigmas_star[[s]] = rep(controls$sdds[[2]]$fixed$sigma,M)
+        sigmas_star[[s]] = rep(controls$sdds[[2]]$pars$sigma,M)
       }
       if(controls[["sdds"]][[2]]$name == "t"){
-        if(is.null(controls$sdds[[2]]$fixed$df)){
+        if(is.na(controls$sdds[[2]]$pars$df)){
           dfs_star[[s]] = parCon[1:M]
           parCon = parCon[-(1:M)]
         } else {
-          dfs_star[[s]] = rep(controls$sdds[[2]]$fixed$df,M)
+          dfs_star[[s]] = rep(controls$sdds[[2]]$pars$df,M)
         }
       }
     }

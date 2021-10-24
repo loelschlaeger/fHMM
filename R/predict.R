@@ -2,8 +2,12 @@
 #' @description
 #' This function...
 #' @return 
-#' \code{NULL}
+#' An object of class \code{fHMM_predict}, which is ...
 
 predict = function() {
   
+  ### use plot_ts()
+  
+  class(out) = "fHMM_predict"
+  return(out)
 }

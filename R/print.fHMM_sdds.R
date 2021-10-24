@@ -12,11 +12,9 @@
 print.fHMM_sdds = function(x, ...){
   for(sdd in x){
     cat(sdd$name)
-    if(length(sdd$fixed)>0){
-      cat("(")
-      cat(paste(names(sdd$fixed),unlist(sdd$fixed), collapse = ", ", sep = " = "))
-      cat(")")
-    }
+    cat("(")
+    cat(paste(names(sdd$pars), unlist(sdd$pars), collapse = ", ", sep = " = "))
+    cat(")")
     cat(" ")
   }
   return(invisible(x))
