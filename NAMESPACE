@@ -6,12 +6,18 @@ S3method(print,fHMM_data)
 S3method(print,fHMM_model)
 S3method(print,fHMM_sdds)
 S3method(print,fHMM_trouble)
+S3method(print,summary.fHMM_data)
 
 ### S3 plot methods
 S3method(plot,fHMM_model)
 
+### S3 summary methods
+S3method(summary,fHMM_data)
+
 ### export functions
 export(download_data)
+export(set_controls)
+export(prepare_data)
 
 ### import functions
 import(Rcpp)
