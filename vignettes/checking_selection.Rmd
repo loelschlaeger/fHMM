@@ -1,10 +1,10 @@
 ---
-title: "Introduction"
+title: "Model checking and selection"
 author: ""
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How to process financial data in fHMM?}
+  %\VignetteIndexEntry{checking_selection}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
