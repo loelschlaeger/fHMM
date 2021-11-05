@@ -20,7 +20,6 @@
 #' @param verbose
 #' If \code{TRUE}, information are printed to the current device.
 #' @inheritParams set_controls
-#' @inheritParams 
 #' @return
 #' No return value. If \code{verbose = TRUE}, information are printed to the
 #' current device. The following files are saved in \code{path}:

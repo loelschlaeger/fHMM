@@ -15,10 +15,6 @@
 #' than \code{T}. 
 #' @return
 #' A numeric vector of length \code{T} with states.
-#' @example
-#' Gamma = rbind(c(0.8,0.2),c(0.1,0.9))
-#' simulate_markov_chain(Gamma = Gamma, T = 10)
-#' @export
 
 simulate_markov_chain = function(Gamma, T, delta = Gamma2delta(Gamma), 
                                  seed = NULL, total_length = T){

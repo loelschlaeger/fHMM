@@ -21,12 +21,6 @@
 #' A numeric vector of length \code{total_length}, where the first 
 #' \code{length(markov_chain)} elements are numeric values and the last 
 #' \code{total_length - length(markov_chain)} elements are \code{NA}.
-#' @example
-#' Gamma = rbind(c(0.8,0.2),c(0.1,0.9))
-#' markov_chain = simulate_markov_chain(Gamma = Gamma, T = 10)
-#' simulate_observations(markov_chain = markov_chain, sdd = "t", mus = c(-1,1),
-#'                       sigmas = c(0.5,2), dfs = c(1,Inf), seed = 1)
-#' @export
 
 simulate_observations = function(markov_chain, sdd, mus, sigmas, dfs = NULL, 
                                  seed = NULL, total_length = length(markov_chain)){
