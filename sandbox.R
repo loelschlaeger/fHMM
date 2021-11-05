@@ -2,8 +2,8 @@
 devtools::load_all()
 
 ### download data -----------------------------------------------------------
-download_data(symbol = "^GDAXI", file = "dax.csv")
-download_data(symbol = "VOW3.DE", file = "vw.csv")
+download_data(symbol = "^GDAXI", file = "dax.csv", verbose = FALSE)
+download_data(symbol = "VOW3.DE", file = "vw.csv", verbose = FALSE)
 
 ### simulated HMM -----------------------------------------------------------
 controls = list(
@@ -15,7 +15,7 @@ controls = list(
 controls = set_controls(controls)
 data = prepare_data(controls)
 summary(data)
-model = fit_model(data)
+model = fit_model(data, ncluster = 7)
 model = decode_states(model)
 model = reorder_states(model, state_order = 2:1)
 model = compute_residuals(model)

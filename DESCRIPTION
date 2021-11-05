@@ -20,12 +20,19 @@ URL: https://loelschlaeger.github.io/fHMM/
 BugReports: https://github.com/loelschlaeger/fHMM/issues
 License: GPL-3
 Encoding: UTF-8
-Imports: Rcpp
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
-Suggests: 
+Imports: 
+    Rcpp,
+    progress
+LinkingTo:
+    Rcpp,
+    RcppArmadillo
+Suggests:
+    parallel,
+    doSNOW,
     rmarkdown,
     knitr,
     testthat (>= 3.0.0)
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 Config/testthat/edition: 3

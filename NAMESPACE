@@ -19,5 +19,6 @@ export(download_data)
 export(set_controls)
 export(prepare_data)
 
-### import functions
+### imports
 import(Rcpp)
+importFrom(foreach,"%dopar%")
