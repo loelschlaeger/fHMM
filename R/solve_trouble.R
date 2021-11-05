@@ -12,7 +12,7 @@
 #'   \item \code{debugging}: Suggestions for debugging.
 #' }
 #' @examples
-#' trouble("S.1")
+#' solve_trouble("S.1")
 #' @export
 
 solve_trouble = function(code){

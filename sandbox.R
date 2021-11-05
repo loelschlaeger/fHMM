@@ -15,6 +15,7 @@ controls = list(
 controls = set_controls(controls)
 data = prepare_data(controls)
 summary(data)
+plot(data)
 model = fit_model(data, ncluster = 7)
 model = decode_states(model)
 model = reorder_states(model, state_order = 2:1)

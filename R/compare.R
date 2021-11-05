@@ -38,17 +38,13 @@ compare = function(...) {
   
   ### fill output
   for(i in seq_len(length(models))){
-    par_i = length(models[[i]]$estimated_parameter)
-    n_i = length(as.vector(models[[i]]$data$data))
-    ll_i = models[[i]]$ll
-    aic_i = -2*ll_i + 2*par_i
-    bic_i = -2*ll_i + par_i*log(n_i)
-    output[i,"parameters"] = par_i
-    output[i,"log-likelihood"] = ll_i
-    output[i,"AIC"] = aic_i
-    output[i,"BIC"] = bic_i
+    summary_i = summary(models[[i]])
+    output[i,"parameters"] = summary_i$no_par
+    output[i,"log-likelihood"] = summary_i$ll
+    output[i,"AIC"] = summary_i$aic
+    output[i,"BIC"] = summary_i$bic
   }
   
   ### return output
-  return(round(output,2))
+  return(round(output, 2))
 }
