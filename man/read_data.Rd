@@ -2,22 +2,27 @@
 % Please edit documentation in R/read_data.R
 \name{read_data}
 \alias{read_data}
-\title{Read .csv-file}
+\title{Read data for the fHMM package.}
 \usage{
 read_data(controls)
 }
 \arguments{
-\item{controls}{A list of controls.}
+\item{controls}{An object of class \code{fHMM_controls}.}
 }
 \value{
 A list containing the following elements:
-\item{data}{A matrix of data that is modeled.}
-\item{data_raw}{A matrix of raw data.}
-\item{data_fs_raw}{A matrix of raw fine-scale data.}
-\item{data_cs_raw}{A matrix of raw coarse-scale data.}
-\item{dates}{A vector of dates.}
-\item{T_star}{A vector of fine-scale chunk sizes.}
+\itemize{
+\item the matrix of the \code{dates} if \code{controls$simulated = FALSE}
+and \code{controls$data$data_column} is specified,
+\item the matrix of the \code{time_points} if \code{controls$simulated = TRUE}
+or \code{controls$data$data_column} is not specified,
+\item the matrix of the empirical \code{data} used for estimation,
+\item the matrix \code{time_series} of empirical data before the transformation
+to log-returns,
+\item the vector of fine-scale chunk sizes \code{T_star} if
+\code{controls$hierarchy = TRUE}.
+}
 }
 \description{
-Reads financial data from .csv-file.
+This function reads financial data for the fHMM package.
 }

@@ -2,24 +2,28 @@
 % Please edit documentation in R/plot_ts.R
 \name{plot_ts}
 \alias{plot_ts}
-\title{Visualize decoded time-series}
+\title{Visualize data time series.}
 \usage{
-plot_ts(controls, data, decoding, colors, events)
+plot_ts(data, decoding, colors, events, predict)
 }
 \arguments{
-\item{controls}{A list of controls.}
-
 \item{data}{A list of processed data information.}
 
 \item{decoding}{A matrix of decoded states.}
 
-\item{colors}{A matrix of colors for different states.}
+\item{colors}{An object of class \code{fHMM_colors}. Ignored if \code{decoding = NULL}.}
 
 \item{events}{A list of events.}
+
+\item{predict}{An object of class \code{fHMM_predict}.}
+
+\item{This}{function visualizes the data time series. If \code{decoding} is
+specified, the decoding is highlighted. If \code{events} is specified,
+the events are highlighted.}
 }
 \value{
-No return value, creates graphic in \code{controls[["path"]]}/models/\code{controls[["id"]]}
+...
 }
 \description{
-Visualize decoded time-series
+Visualize data time series.
 }

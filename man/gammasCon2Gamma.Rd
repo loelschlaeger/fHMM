@@ -2,19 +2,22 @@
 % Please edit documentation in R/parameter_transformations.R
 \name{gammasCon2Gamma}
 \alias{gammasCon2Gamma}
-\title{Builds transition probability matrix from constrained non-diagonal elements.}
+\title{This function builds a transition probability matrix of dimension \code{dim}
+from constrained non-diagonal elements \code{gammasCon}.}
 \usage{
 gammasCon2Gamma(gammasCon, dim)
 }
 \arguments{
-\item{gammasCon}{Vector of constrained non-diagonal elements of transition probability matrix.}
+\item{gammasCon}{A vector of constrained non-diagonal elements of a transition probability
+matrix.}
 
-\item{dim}{Numeric, dimension of transition probability matrix.}
+\item{dim}{The dimension of the transition probability matrix.}
 }
 \value{
-Transition probability matrix.
+A transition probability matrix.
 }
 \description{
-Builds transition probability matrix from constrained non-diagonal elements.
+This function builds a transition probability matrix of dimension \code{dim}
+from constrained non-diagonal elements \code{gammasCon}.
 }
 \keyword{internal}

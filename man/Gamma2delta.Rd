@@ -2,17 +2,23 @@
 % Please edit documentation in R/parameter_transformations.R
 \name{Gamma2delta}
 \alias{Gamma2delta}
-\title{Computes stationary distribution of transition probability matrix.}
+\title{This function computes the stationary distribution of a transition
+probability matrix \code{Gamma}.}
 \usage{
 Gamma2delta(Gamma)
 }
 \arguments{
-\item{Gamma}{Transition probability matrix.}
+\item{Gamma}{A transition probability matrix.}
 }
 \value{
-Stationary distribution vector.
+A stationary distribution vector.
 }
 \description{
-Computes stationary distribution of transition probability matrix.
+This function computes the stationary distribution of a transition
+probability matrix \code{Gamma}.
+}
+\details{
+If the stationary distribution vector cannot be computed, it is set to the
+discrete uniform distribution over the states.
 }
 \keyword{internal}

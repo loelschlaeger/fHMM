@@ -7,7 +7,7 @@
 thetaUnconSplit2thetaList(thetaUncon, controls)
 }
 \arguments{
-\item{thetaUncon}{Unconstrained fine-scale model parameters in vector form.}
+\item{thetaUncon}{un-constrained fine-scale model parameters in vector form.}
 
 \item{controls}{A list of controls.}
 }

@@ -12,7 +12,7 @@
 \item{...}{Ignored.}
 }
 \value{
-No return value.
+Returns invisibly \code{x}.
 }
 \description{
 This function is the print method for an object of class \code{fHMM_trouble}.

@@ -7,12 +7,12 @@
 thetaUncon2thetaUnconSplit(thetaUncon, controls)
 }
 \arguments{
-\item{thetaUncon}{Unconstrained model parameters in vector form.}
+\item{thetaUncon}{un-constrained model parameters in vector form.}
 
 \item{controls}{A list of controls.}
 }
 \value{
-List of unconstrained fine-scale model parameters for each fine-scale HMM.
+List of un-constrained fine-scale model parameters for each fine-scale HMM.
 }
 \description{
 Splits uncontrained model parameters \code{thetaUncon} by fine-scale HMMs.

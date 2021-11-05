@@ -2,17 +2,17 @@
 % Please edit documentation in R/parameter_transformations.R
 \name{dfUncon2dfCon}
 \alias{dfUncon2dfCon}
-\title{Constrains degrees of freedom.}
+\title{This function constrains the un-constrained degrees of freedom \code{dfUncon}.}
 \usage{
 dfUncon2dfCon(dfUncon)
 }
 \arguments{
-\item{dfUncon}{Numeric, unconstrained degrees of freedom.}
+\item{dfUncon}{A vector of un-constrained degrees of freedom.}
 }
 \value{
-Numeric, constrained degrees of freedom.
+A vector of constrained degrees of freedom.
 }
 \description{
-Constrains degrees of freedom.
+This function constrains the un-constrained degrees of freedom \code{dfUncon}.
 }
 \keyword{internal}

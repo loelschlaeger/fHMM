@@ -2,18 +2,16 @@
 % Please edit documentation in R/plot_ll.R
 \name{plot_ll}
 \alias{plot_ll}
-\title{Visualization of log-likelihood values}
+\title{Visualization of log-likelihood values.}
 \usage{
-plot_ll(lls, controls)
+plot_ll(lls)
 }
 \arguments{
-\item{lls}{A vector of log-likelihood values.}
-
-\item{controls}{A list of controls.}
+\item{lls}{A numeric vector of log-likelihood values.}
 }
 \value{
-No return value. Creates file "log_likelihoods.pdf" in "\code{controls[["path"]]}/models/\code{controls[["id"]]}".
+No return value.
 }
 \description{
-Plots log-likelihood values of the different estimation runs.
+This function plots the log-likelihood values of the different estimation runs.
 }
