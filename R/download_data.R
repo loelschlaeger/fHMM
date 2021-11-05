@@ -25,6 +25,8 @@
 #' @param file
 #' The name of the file where the .csv-file is saved. Per default, it is saved
 #' in the current working directory with the name "\code{symbol}.csv".
+#' @param verbose
+#' If \code{TRUE} returns information about download success.
 #' @return 
 #' No return value.
 #' @examples
@@ -34,7 +36,7 @@
 #' @export
 
 download_data = function(symbol, from = "1902-01-01", to = Sys.Date(), 
-                         file = paste0(symbol,".csv")){
+                         file = paste0(symbol,".csv"), verbose = TRUE){
   
   ### check 'from' and 'to'
   from = as.Date(from)
@@ -72,7 +74,7 @@ download_data = function(symbol, from = "1902-01-01", to = Sys.Date(),
   ### check 'download_try'
   if(inherits(download_try, "try-error")){
     stop("D3")
-  } else{
+  } else if(verbose){
     ### print summary of new data
     data = read.csv(file = file, header = TRUE, sep = ",", na.strings = "null") 
     cat("Download successful.\n")
