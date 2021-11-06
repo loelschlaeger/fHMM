@@ -15,6 +15,7 @@ print.fHMM_model = function(x) {
       "\n")
   cat("* accepted runs:", sum(!is.na(x$lls)), "of", length(x$lls), "\n")
   cat("* log-likelihood:", x$ll, "\n")
-  cat("* decoding:", !is.null(x$decoding))
+  cat("* decoding:", !is.null(x$decoding), "\n")
+  cat("* residuals:", !is.null(x$residuals))
   return(invisible(x))
 }
