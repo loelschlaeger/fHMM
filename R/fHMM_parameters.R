@@ -39,11 +39,11 @@
 #' An object of class \code{fHMM_parameters}.
 #' @export
 
-set_parameters = function(controls, 
-                          Gamma = NULL, mus = NULL, sigmas = NULL, dfs = NULL, 
-                          Gammas_star = NULL, mus_star = NULL, 
-                          sigmas_star = NULL, dfs_star = NULL, seed = NULL,
-                          scale_par = c(1,1)) {
+fHMM_parameters = function(controls, 
+                           Gamma = NULL, mus = NULL, sigmas = NULL, dfs = NULL, 
+                           Gammas_star = NULL, mus_star = NULL, 
+                           sigmas_star = NULL, dfs_star = NULL, seed = NULL,
+                           scale_par = c(1,1)) {
   
   ### set seed
   if(!is.null(seed))
@@ -115,21 +115,21 @@ set_parameters = function(controls,
   }
   
   ### set fixed parameters
-  if(!is.na(controls[["sdds"]][[1]]$pars$mu))
-    mus = rep(controls[["sdds"]][[1]]$pars$mu,M)
-  if(!is.na(controls[["sdds"]][[1]]$pars$sigma))
-    sigmas = rep(controls[["sdds"]][[1]]$pars$sigma,M)
+  if(!is.null(controls[["sdds"]][[1]]$pars$mu))
+    mus = rep_len(controls[["sdds"]][[1]]$pars$mu,M)
+  if(!is.null(controls[["sdds"]][[1]]$pars$sigma))
+    sigmas = rep_len(controls[["sdds"]][[1]]$pars$sigma,M)
   if(controls[["sdds"]][[1]]$name == "t")
-    if(!is.na(controls[["sdds"]][[1]]$pars$df))
-      dfs = rep(controls[["sdds"]][[1]]$pars$df,M)
+    if(!is.null(controls[["sdds"]][[1]]$pars$df))
+      dfs = rep_len(controls[["sdds"]][[1]]$pars$df,M)
   if(controls[["hierarchy"]]){
-    if(!is.na(controls[["sdds"]][[2]]$pars$mu))
-      mus_star = rep(list(rep(controls[["sdds"]][[2]]$pars$mu,N)),M)
-    if(!is.na(controls[["sdds"]][[2]]$pars$sigma))
-      sigmas_star = rep(list(rep(controls[["sdds"]][[2]]$pars$sigma,N)),M)
+    if(!is.null(controls[["sdds"]][[2]]$pars$mu))
+      mus_star = rep(list(rep_len(controls[["sdds"]][[2]]$pars$mu,N)),M)
+    if(!is.null(controls[["sdds"]][[2]]$pars$sigma))
+      sigmas_star = rep(list(rep_len(controls[["sdds"]][[2]]$pars$sigma,N)),M)
     if(controls[["sdds"]][[2]]$name == "t")
-      if(!is.na(controls[["sdds"]][[2]]$pars$df))
-        dfs_star = rep(list(rep(controls[["sdds"]][[2]]$pars$df,N)),M)
+      if(!is.null(controls[["sdds"]][[2]]$pars$df))
+        dfs_star = rep(list(rep_len(controls[["sdds"]][[2]]$pars$df,N)),M)
   }
     
   ### check parameters
