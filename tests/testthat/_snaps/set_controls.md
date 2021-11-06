@@ -7,7 +7,7 @@
       * hierarchy: FALSE 
       * data type: simulated 
       * number of states: 2 
-      * sdds: t 
+      * sdds: t() 
       * number of runs: 50  
 
 ---
@@ -33,7 +33,7 @@
       * hierarchy: FALSE 
       * data type: empirical 
       * number of states: 2 
-      * sdds: t 
+      * sdds: t() 
       * number of runs: 100  
 
 # checks of controls for simulated HHMM work
@@ -45,7 +45,7 @@
       * hierarchy: TRUE 
       * data type: simulated 
       * number of states: 2 2 
-      * sdds: t t 
+      * sdds: t() t() 
       * number of runs: 100  
 
 ---
@@ -71,7 +71,7 @@
       * hierarchy: TRUE 
       * data type: simulated 
       * number of states: 2 2 
-      * sdds: t t 
+      * sdds: t() t() 
       * number of runs: 100  
 
 ---
@@ -97,7 +97,7 @@
       * hierarchy: TRUE 
       * data type: simulated 
       * number of states: 2 2 
-      * sdds: t t 
+      * sdds: t() t() 
       * number of runs: 100  
 
 ---
@@ -123,7 +123,7 @@
       * hierarchy: TRUE 
       * data type: simulated 
       * number of states: 2 2 
-      * sdds: t t 
+      * sdds: t() t() 
       * number of runs: 100  
 
 ---
@@ -149,7 +149,7 @@
       * hierarchy: TRUE 
       * data type: empirical 
       * number of states: 2 2 
-      * sdds: t t 
+      * sdds: t() t() 
       * number of runs: 100  
 
 ---
@@ -161,6 +161,6 @@
       * hierarchy: TRUE 
       * data type: empirical 
       * number of states: 2 2 
-      * sdds: t t 
+      * sdds: t() t() 
       * number of runs: 100  
 

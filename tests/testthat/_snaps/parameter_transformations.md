@@ -37,16 +37,8 @@
       $dfs
       [1] 27.72223 17.96283
       
-      $sdd
-      $sdd[[1]]
-      $sdd[[1]]$name
-      [1] "t"
-      
-      $sdd[[1]]$fixed
-      list()
-      
-      
-      
+      $sdds
+      t() 
       $Gammas_star
       NULL
       
@@ -57,9 +49,6 @@
       NULL
       
       $dfs_star
-      NULL
-      
-      $sdd_star
       NULL
       
       attr(,"class")
@@ -108,16 +97,8 @@
       $dfs
       [1]  5.253803 22.400948
       
-      $sdd
-      $sdd[[1]]
-      $sdd[[1]]$name
-      [1] "t"
-      
-      $sdd[[1]]$fixed
-      list()
-      
-      
-      
+      $sdds
+      t() t() 
       $Gammas_star
       $Gammas_star[[1]]
                 [,1]      [,2]
@@ -152,16 +133,6 @@
       
       $dfs_star[[2]]
       [1]  1.914254 10.064625
-      
-      
-      $sdd_star
-      $sdd_star[[1]]
-      $sdd_star[[1]]$name
-      [1] "t"
-      
-      $sdd_star[[1]]$fixed
-      list()
-      
       
       
       attr(,"class")
