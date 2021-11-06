@@ -29,7 +29,7 @@ compute_ci = function(x, ci_level = 0.05){
   
   ### create and return output
   out = lapply(list(lower_limit, x$estimate, upper_limit),
-               parUncon2par, x$data$controls)
+               parUncon2parCon, x$data$controls)
   if(any(is.na(out)))
     warning("F.6")
   names(out) = c("lb","estimate","ub")

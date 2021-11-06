@@ -40,7 +40,7 @@ fit_model = function(data, ncluster = 1, seed = NULL){
     }
     for(run in 1:data[["controls"]][["fit"]][["runs"]])
       start_values[[run]] = par2parUncon(
-        set_parameters(data[["controls"]], scale_par = scale_par), 
+        fHMM_parameters(data[["controls"]], scale_par = scale_par), 
         data[["controls"]])
   }
   

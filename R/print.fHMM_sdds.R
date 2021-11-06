@@ -13,7 +13,8 @@ print.fHMM_sdds = function(x, ...){
   for(sdd in x){
     cat(sdd$name)
     cat("(")
-    cat(paste(names(sdd$pars), unlist(sdd$pars), collapse = ", ", sep = " = "))
+    cat(paste(names(sdd$pars), unlist(sapply(sdd$pars, paste, collapse = "|")), 
+              collapse = ", ", sep = " = "))
     cat(")")
     cat(" ")
   }

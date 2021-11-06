@@ -35,14 +35,12 @@ compare = function(...) {
   output = matrix(NA, nrow = length(models), ncol = length(criteria))
   rownames(output) = model_names
   colnames(output) = criteria
-  
-  ### fill output
   for(i in seq_len(length(models))){
     summary_i = summary(models[[i]])
     output[i,"parameters"] = summary_i$no_par
-    output[i,"log-likelihood"] = summary_i$ll
-    output[i,"AIC"] = summary_i$aic
-    output[i,"BIC"] = summary_i$bic
+    output[i,"log-likelihood"] = summary_i$model_info$LL
+    output[i,"AIC"] = summary_i$model_info$AIC
+    output[i,"BIC"] = summary_i$model_info$BIC
   }
   
   ### return output
