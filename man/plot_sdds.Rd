@@ -14,7 +14,7 @@ plot_sdds(estimated_parameters, true_parameters, colors)
 \item{colors}{An object of class \code{fHMM_colors}.}
 }
 \value{
-
+...
 }
 \description{
 This function plots the estimated state-dependent distributions.

@@ -1,5 +1,6 @@
 ### load code ---------------------------------------------------------------
 devtools::load_all()
+#install.packages("fHMM_0.3.0.9000.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
 
 ### download data -----------------------------------------------------------
 download_data(symbol = "^GDAXI", file = "dax.csv", verbose = FALSE)
@@ -8,7 +9,7 @@ download_data(symbol = "VOW3.DE", file = "vw.csv", verbose = FALSE)
 ### simulated HMM -----------------------------------------------------------
 controls = list(
   states  = 2,
-  sdds    = "t",
+  sdds    = "t(mu = -1|1, sigma = 1, df = Inf)",
   horizon = 1000,
   fit     = list("runs" = 100)
 )
@@ -16,7 +17,7 @@ controls = set_controls(controls)
 data = prepare_data(controls)
 summary(data)
 #plot(data)
-model = fit_model(data, ncluster = 1)
+model = fit_model(data, ncluster = 7)
 model = decode_states(model)
 model = reorder_states(model, state_order = 2:1)
 model = compute_residuals(model)

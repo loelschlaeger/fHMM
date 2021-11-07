@@ -38,15 +38,15 @@ fit_model = function(data, ncluster = 1, seed = NULL){
       scale_par[1] = mean(c(mean(data[["data"]][,1],na.rm="TRUE"),sd(data[["data"]][,1],na.rm="TRUE")))
       scale_par[2] = mean(c(mean(data[["data"]][,-1],na.rm="TRUE"),sd(data[["data"]][,-1],na.rm="TRUE")))
     }
+    scale_par = abs(scale_par)
     for(run in 1:data[["controls"]][["fit"]][["runs"]])
       start_values[[run]] = par2parUncon(
-        fHMM_parameters(data[["controls"]], scale_par = scale_par), 
+        fHMM_parameters(controls = data[["controls"]], scale_par = scale_par), 
         data[["controls"]])
   }
   
   ### define likelihood function
-  target = ifelse(!data[["controls"]][["hierarchy"]], 
-                  fHMM:::nLL_hmm, fHMM:::nLL_hhmm)
+  target = ifelse(!data[["controls"]][["hierarchy"]], nLL_hmm, nLL_hhmm)
   
   ### check start values
   message("Checking start values")

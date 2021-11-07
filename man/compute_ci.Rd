@@ -8,6 +8,8 @@ compute_ci(x, ci_level = 0.05)
 }
 \arguments{
 \item{x}{An object of class \code{fHMM_model}.}
+
+\item{ci_level}{The confidence level, a numeric between 0 and 1.}
 }
 \value{
 A list containing the following elements:

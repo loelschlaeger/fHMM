@@ -9,7 +9,7 @@
 #' Returns \code{x} invisibly.
 #' @export
 
-print.fHMM_model = function(x) {
+print.fHMM_model = function(x, ...) {
   cat("fHMM fitted model:\n")
   cat("* total estimation time:", x$estimation_time, units(x$estimation_time), 
       "\n")

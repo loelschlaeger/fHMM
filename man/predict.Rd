@@ -4,7 +4,7 @@
 \alias{predict}
 \title{Prediction}
 \usage{
-predict()
+predict(model, time_points)
 }
 \value{
 An object of class \code{fHMM_predict}, which is ...

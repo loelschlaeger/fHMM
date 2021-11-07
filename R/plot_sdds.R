@@ -8,6 +8,7 @@
 #' @param colors
 #' An object of class \code{fHMM_colors}.
 #' @return 
+#' ...
 
 plot_sdds = function(estimated_parameters, true_parameters, colors){
 

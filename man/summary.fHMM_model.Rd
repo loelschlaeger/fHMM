@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{An object of class \code{fHMM_model}.}
 
-\item{ci_level}{Level of confidence.}
+\item{ci_level}{The confidence level, a numeric between 0 and 1.}
 
 \item{...}{Ignored.}
 }

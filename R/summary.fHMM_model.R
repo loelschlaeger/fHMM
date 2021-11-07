@@ -1,8 +1,7 @@
 #' Summary method for \code{fHMM_model}.
 #' @param object
 #' An object of class \code{fHMM_model}.
-#' @param ci_level
-#' Level of confidence.
+#' @inheritParams compute_ci
 #' @param ...
 #' Ignored.
 #' @return 

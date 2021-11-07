@@ -31,8 +31,8 @@
 #' No return value.
 #' @examples
 #' ### download 21st century DAX data 
-#' download(symbol = "^GDAXI", from = "2000-01-03", 
-#'          file = paste0(tempfile(),".csv"))
+#' download_data(symbol = "^GDAXI", from = "2000-01-03", 
+#'               file = paste0(tempfile(),".csv"))
 #' @export
 
 download_data = function(symbol, from = "1902-01-01", to = Sys.Date(), 

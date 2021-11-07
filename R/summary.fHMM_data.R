@@ -7,7 +7,7 @@
 #' An object of class \code{summary.fHMM_data}.
 #' @export
 
-summary.fHMM_data = function(object) {
+summary.fHMM_data = function(object, ...) {
   
   ### meta data
   simulated = object$controls[["simulated"]]

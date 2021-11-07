@@ -20,7 +20,16 @@ S3method(summary,fHMM_model)
 export(download_data)
 export(set_controls)
 export(prepare_data)
+export(fit_model)
 
 ### imports
 import(Rcpp)
-importFrom(foreach,"%dopar%")
+importFrom(foreach, "%dopar%")
+importFrom("grDevices", "adjustcolor", "col2rgb", "colorRampPalette", "dev.off", 
+           "pdf", "rgb")
+importFrom("graphics", "abline", "axis", "curve", "hist", "legend", "lines", 
+           "mtext", "par", "points", "text", "title")
+importFrom("stats", "acf", "dbinom", "dgamma", "dist", "dnorm", "dt", "nlm", 
+           "pgamma", "pt", "qnorm", "qqnorm", "rgamma", "rt", "runif", "sd")
+importFrom("utils", "data", "download.file", "head", "packageVersion", 
+           "read.csv", "tail")

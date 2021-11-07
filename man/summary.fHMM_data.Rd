@@ -4,7 +4,7 @@
 \alias{summary.fHMM_data}
 \title{Summary method for \code{fHMM_data}.}
 \usage{
-\method{summary}{fHMM_data}(object)
+\method{summary}{fHMM_data}(object, ...)
 }
 \arguments{
 \item{object}{An object of class \code{fHMM_data}.}

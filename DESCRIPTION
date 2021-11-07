@@ -22,7 +22,8 @@ License: GPL-3
 Encoding: UTF-8
 Imports: 
     Rcpp,
-    progress
+    progress,
+    foreach
 LinkingTo:
     Rcpp,
     RcppArmadillo

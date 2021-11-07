@@ -83,16 +83,16 @@
 #'     sets \code{run = 1} and \code{accept = 1:5}.
 #'     \item \code{accept} (\code{1:3}):
 #'     An integer (vector), specifying which optimization runs are accepted
-#'     based on the output code of \code{\link[base]{nlm}}.
+#'     based on the output code of \code{\link[stats]{nlm}}.
 #'     \item \code{gradtol} (\code{1e-6}): 
-#'     A positive numeric value, passed on to \code{\link[base]{nlm}}.
+#'     A positive numeric value, passed on to \code{\link[stats]{nlm}}.
 #'     \item \code{iterlim} (\code{200}): 
-#'     A positive integer, passed on to \code{\link[base]{nlm}}.
+#'     A positive integer, passed on to \code{\link[stats]{nlm}}.
 #'     \item \code{print.level} (\code{0}): 
 #'     One of \code{0}, \code{1}, and \code{2}, passed on to 
-#'     \code{\link[base]{nlm}}.
+#'     \code{\link[stats]{nlm}}.
 #'     \item \code{steptol} (\code{1e-6}): 
-#'     A positive numeric value, passed on to \code{\link[base]{nlm}}.
+#'     A positive numeric value, passed on to \code{\link[stats]{nlm}}.
 #'   }
 #' }
 #' @return 

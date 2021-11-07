@@ -4,7 +4,7 @@
 #' @return 
 #' An object of class \code{fHMM_predict}, which is ...
 
-predict = function() {
+predict = function(model, time_points) {
   
   ### use plot_ts()
   

@@ -4,7 +4,7 @@
 \alias{print.fHMM_model}
 \title{Print method for \code{fHMM_model}.}
 \usage{
-\method{print}{fHMM_model}(x)
+\method{print}{fHMM_model}(x, ...)
 }
 \arguments{
 \item{x}{An object of class \code{fHMM_model}.}

@@ -11,7 +11,7 @@
 #' No return value.
 #' @export
 
-plot.fHMM_model = function(x, events = NULL, ...) {
+plot.fHMM_data = function(x, events = NULL, ...) {
   
   ### check input
   if(!class(x) == "fHMM_data")

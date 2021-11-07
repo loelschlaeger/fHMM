@@ -3,6 +3,8 @@
 #' Computes confidence intervals for the estimates.
 #' @param x
 #' An object of class \code{fHMM_model}.
+#' @param ci_level
+#' The confidence level, a numeric between 0 and 1.
 #' @return 
 #' A list containing the following elements:
 #' \itemize{
