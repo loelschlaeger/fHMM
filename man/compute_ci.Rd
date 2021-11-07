@@ -4,19 +4,18 @@
 \alias{compute_ci}
 \title{Confidence intervals}
 \usage{
-compute_ci(fit, controls)
+compute_ci(x, ci_level = 0.05)
 }
 \arguments{
-\item{fit}{A list of fitted model information.}
-
-\item{controls}{A list of controls.}
+\item{x}{An object of class \code{fHMM_model}.}
 }
 \value{
 A list containing the following elements:
-\item{lb_ci_level}{lower bound of the intervals}
-\item{estimate}{estimates}
-\item{ub_ci_level}{upper bound of the intervals}
-where \code{ci_level} is set in \code{controls}.
+\itemize{
+\item \code{lb}: lower bound of confidence
+\item \code{estimate}: point estimate
+\item \code{ub}: upper bound of confidence
+}
 }
 \description{
 Computes confidence intervals for the estimates.

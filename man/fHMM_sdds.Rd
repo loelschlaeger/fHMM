@@ -16,13 +16,8 @@ A list of length \code{length(sdds)}. Each element is a list, containing
 \item the \code{"name"} of the distribution
 \item and a list \code{"pars"} of its parameters.
 }
-Unknown parameters are set to \code{NA}.
+Unknown parameters are set to \code{NULL}.
 }
 \description{
-This function defines state-dependent distributions of an (H)HMM.
-}
-\examples{
-fHMM_sdds(sdds = "t")
-fHMM_sdds(sdds = "gamma")
-fHMM_sdds(sdds = c("t(mu = 1, sigma = 2, df = 3)","gamma(sigma = 1)"))
+This function defines state-dependent distributions.
 }

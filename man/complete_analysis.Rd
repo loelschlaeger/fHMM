@@ -31,9 +31,11 @@ A boolean, set to \code{TRUE} for an hierarchical HMM.
 The number of states of the underlying Markov chain.
 \item \code{sdds} \code{(*)} (\code{"t(df = Inf)"}):
 Specifying the state-dependent distribution, one of the \code{"t"} (the
-t-distribution) or \code{"gamma"} (the gamma distribution). To fix one or
-more parameter values, write e.g. \code{"t(mu = 0, sigma = 1, df = Inf)"}
-or \code{"gamma(mu = 0, sigma = 1)"}, respectively.
+t-distribution) or \code{"gamma"} (the gamma distribution).
+To fix one or more parameter values, write e.g.
+\code{"t(df = Inf)"} or \code{"gamma(mu = 0, sigma = 1)"}, respectively.
+To fix different values of one parameter for different states, separate by
+"|", e.g. \code{"t(mu = -1|1)"}.
 \item \code{horizon} \code{(*)} (\code{100}):
 A numeric, specifying the length of the time horizon. The first entry
 of \code{horizon} is ignored if \code{data} is specified.
@@ -100,7 +102,8 @@ A positive numeric value, passed on to \code{\link[base]{nlm}}.
 \item \code{iterlim} (\code{200}):
 A positive integer, passed on to \code{\link[base]{nlm}}.
 \item \code{print.level} (\code{0}):
-One of \code{0}, \code{1}, and \code{2}, passed on to \code{\link[base]{nlm}}.
+One of \code{0}, \code{1}, and \code{2}, passed on to
+\code{\link[base]{nlm}}.
 \item \code{steptol} (\code{1e-6}):
 A positive numeric value, passed on to \code{\link[base]{nlm}}.
 }

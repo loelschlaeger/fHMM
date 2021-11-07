@@ -22,5 +22,5 @@ following elements:
 Provides suggestions for debugging for a given exception code.
 }
 \examples{
-trouble("S.1")
+solve_trouble("S.1")
 }

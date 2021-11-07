@@ -4,10 +4,12 @@
 \alias{summary.fHMM_model}
 \title{Summary method for \code{fHMM_model}.}
 \usage{
-\method{summary}{fHMM_model}(object)
+\method{summary}{fHMM_model}(object, ci_level = 0.05, ...)
 }
 \arguments{
 \item{object}{An object of class \code{fHMM_model}.}
+
+\item{ci_level}{Level of confidence.}
 
 \item{...}{Ignored.}
 }

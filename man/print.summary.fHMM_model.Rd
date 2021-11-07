@@ -4,7 +4,7 @@
 \alias{print.summary.fHMM_model}
 \title{Print method for the summary of \code{fHMM_model}.}
 \usage{
-\method{print}{summary.fHMM_model}(x)
+\method{print}{summary.fHMM_model}(x, digits = 4, ...)
 }
 \arguments{
 \item{x}{An object of class \code{summary.fHMM_model}.}
@@ -12,7 +12,7 @@
 \item{...}{Ignored.}
 }
 \value{
-...
+Returns \code{x} invisibly.
 }
 \description{
 Print method for the summary of \code{fHMM_model}.

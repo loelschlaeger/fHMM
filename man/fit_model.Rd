@@ -4,10 +4,12 @@
 \alias{fit_model}
 \title{Model fitting for the fHMM package.}
 \usage{
-fit_model(data, seed = NULL)
+fit_model(data, ncluster = 1, seed = NULL)
 }
 \arguments{
 \item{data}{An object of class \code{fHMM_data}.}
+
+\item{ncluster}{Set the number of clusters for parallelization.}
 
 \item{seed}{Set a seed for the sampling of initial values.}
 }

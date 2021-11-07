@@ -17,3 +17,4 @@ Vector of model parameter names.
 \description{
 Creates model parameter names.
 }
+\keyword{internal}
