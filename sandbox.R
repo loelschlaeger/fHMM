@@ -1,4 +1,5 @@
 ### load code ---------------------------------------------------------------
+rm(list = ls())
 devtools::load_all()
 #install.packages("fHMM_0.3.0.9000.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
 
@@ -13,20 +14,20 @@ controls = list(
   horizon = 100,
   fit     = list("runs" = 100)
 )
-controls = set_controls(controls)
+controls %<>% set_controls
 data = prepare_data(controls)
 summary(data)
-plot(data)
-model = fit_model(data, ncluster = 7)
-model = decode_states(model)
-model = reorder_states(model, state_order = 2:1)
-model = compute_residuals(model)
+#plot(data)
+model = fit_model(data, ncluster = 7) %>%
+  decode_states %>%
+  compute_residuals
 summary(model)
+model %<>% reorder_states(state_order = 2:1)
 compare(model)
-plot(model, plot_type = "ll")
-plot(model, plot_type = "sdds")
-plot(model, plot_type = "pr")
-plot(model, plot_type = "ts")
+model %>% plot("ll")
+model %>% plot("sdds")
+model %>% plot("pr")
+model %>% plot("ts")
 predict(model, time_points = 1:10)
 
 ### empirical HMM -----------------------------------------------------------
