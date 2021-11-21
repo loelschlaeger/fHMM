@@ -68,6 +68,9 @@ plot_sdds = function(est, true = NULL, controls, colors) {
   for(s in 1:controls$states[1]){
     lines(x, f.x[[s]])
     lines(x, f.x_true[[s]], lty = 2)
+    lines(x, f.x[[s]], col = colors[s], lty = 1, lwd = 2)
+    if(!is.null(true))
+      lines(x, f.x_true[[s]], lty = 2, col = colors[s], lwd = 2)
   }
   
 }
