@@ -68,8 +68,7 @@ fit_model = function(data, ncluster = 1, seed = NULL){
   ### define progress bar
   pb = progress::progress_bar$new(
     format = "[:bar] :percent, :eta ETA",
-    total = data[["controls"]][["fit"]][["runs"]],  
-    width = 45, clear = TRUE, show_after = 1,
+    total = data[["controls"]][["fit"]][["runs"]], width = 45, clear = TRUE,
     complete = "=", incomplete = "-", current = ">")
   
   ### start optimization
