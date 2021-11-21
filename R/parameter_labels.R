@@ -10,7 +10,7 @@
 #' @keywords 
 #' internal
 
-par_labels = function(controls, expected_length) {
+parameter_labels = function(controls, expected_length) {
   
   ### check input
   if(class(controls) != "fHMM_controls")
