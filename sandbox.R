@@ -1,5 +1,6 @@
 ### load code ---------------------------------------------------------------
 rm(list = ls())
+library(magrittr)
 devtools::load_all()
 #install.packages("fHMM_0.3.0.9000.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
 
@@ -47,12 +48,13 @@ model = fit_model(data, ncluster = 7) %>%
   decode_states %>%
   compute_residuals
 summary(model)
-events = list(
-  dates = c("2001-09-11","2008-09-15","2020-01-27"),
-  names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers",
-            "First COVID-19 case in Germany")
-)
-plot(model, plot_type = "ts", events)
+events = list(dates = c("2001-09-11","2008-09-15","2020-01-27"),
+              names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers",
+                        "First COVID-19 case in Germany")) %>% fHMM_events
+model %>% plot("ll")
+model %>% plot("sdds")
+model %>% plot("pr")
+model %>% plot("ts", events)
 
 ### simulated HHMM ----------------------------------------------------------
 controls = list(
