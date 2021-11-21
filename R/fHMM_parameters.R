@@ -51,7 +51,7 @@ fHMM_parameters = function(controls,
   
   ### check 'controls' and 'scale_par'
   if(class(controls) != "fHMM_controls")
-    stop("'controls' is not of class fHMM_controls.")
+    stop("'controls' is not of class 'fHMM_controls'.")
   if(!(length(scale_par) == 2 && is_number(scale_par, pos = TRUE)))
     stop("'scale_par' must be a positive numeric vector of length 2.")
   
