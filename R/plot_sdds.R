@@ -1,149 +1,69 @@
 #' Visualization of estimated state-dependent distributions.
 #' @description 
 #' This function plots the estimated state-dependent distributions.
-#' @param estimated_parameters
-#' An object of class \code{fHMM_parameters}.
-#' @param true_parameters
-#' Either \code{NULL} or an object of class \code{fHMM_parameters}.
+#' @param est
+#' An object of class \code{fHMM_parameters} with estimated parameters.
+#' @param true
+#' Either \code{NULL} or an object of class \code{fHMM_parameters} with true
+#' parameters.
+#' @param controls
+#' An object of class \code{fHMM_controls}.
 #' @param colors
 #' An object of class \code{fHMM_colors}.
 #' @return 
-#' ...
+#' No return value. Draws a plot to the current device.
 
-plot_sdds = function(estimated_parameters, true_parameters, colors){
-
-    ### function to create SDD plots
-    create_sdds_plot = function(nostates,mus,sigmas,dfs,sdd,x_range,c_xlim = FALSE,xlim = NULL,colors = NULL,llabel = NULL,ltitle = NULL,sdd_true_parm = NULL){
-      lwd = 3
-      x = seq(x_range[1]*ifelse(x_range[1]<0,1.5,0.5),x_range[2]*ifelse(x_range[2]>0,1.5,0.5),length.out=10000)
-      if(sdd=="gamma") x = x[x>0.001]
-      sdd_density_values = list()
-      sdd_true_density_values = list()
-      sdd_density = function(mus,sigmas,dfs,state,sdd,x){
-        if(sdd=="t"){
-          return((1/sigmas[s])*dt((x-mus[s])/sigmas[s],dfs[s]))
-        }
-        if(sdd=="gamma"){
-          return(dgamma(x,shape=mus[s]^2/sigmas[s]^2,scale=sigmas[s]^2/mus[s]))
-        }
-      }
-      for(s in seq_len(nostates)){
-        sdd_density_values[[s]] = sdd_density(mus,sigmas,dfs,s,sdd,x)
-        if(!is.null(sdd_true_parm)){
-          sdd_true_density_values[[s]] = sdd_density(sdd_true_parm[["mus"]],sdd_true_parm[["sigmas"]],sdd_true_parm[["dfs"]],s,sdd,x)
-        }
-      }
-      trunc_distr = 0.01 * min(sapply(c(sdd_density_values,sdd_true_density_values),max))
-      ymin = 0
-      ymax = max(c(unlist(sdd_density_values),unlist(sdd_true_density_values)))
-      if(c_xlim){
-        xmin = max(-1,min(rep(x,nostates)[unlist(sdd_density_values)>trunc_distr]))
-        xmin = round(xmin,digits=5)
-        xmax = min(100,max(rep(x,nostates)[unlist(sdd_density_values)>trunc_distr]))
-        xmax = round(xmax,digits=5)
-        return(c(xmin,xmax))
-      }
-      if(!is.null(xlim)){
-        xmin = xlim[1]
-        xmax = xlim[2]
-      } else {
-        xmin = max(-1,min(rep(x,nostates)[unlist(sdd_density_values)>trunc_distr]))
-        xmin = round(xmin,digits=5)
-        xmax = min(100,max(rep(x,nostates)[unlist(sdd_density_values)>trunc_distr]))
-        xmax = round(xmax,digits=5)
-      }
-      hist(0,prob=TRUE,xlim=c(xmin,xmax),ylim=c(ymin,ymax),col="white",border="white",xaxt="n",yaxt="n",xlab="",ylab="",main="")
-      if(xmin<0 & 0<xmax){
-        axis(1,c(xmin,0,xmax),labels=sprintf("%.1g",c(xmin,0,xmax)))
-      }
-      if(0<=xmin || 0>=xmax){
-        axis(1,c(xmin,xmax),labels=sprintf("%.1g",c(xmin,xmax)))
-      }
-      axis(2,c(ymin,sapply(c(sdd_density_values,sdd_true_density_values),max)),labels=sprintf("%.2g",c(ymin,sapply(c(sdd_density_values,sdd_true_density_values),max))),las=1)
-      title(main = paste0("Density of state-dependent ",sdd,"-distributions"),
-            xlab = "Log-return",
-            ylab = "")
-      for(s in seq_len(nostates)){
-        lines(x[sdd_density_values[[s]]>trunc_distr],sdd_density_values[[s]][sdd_density_values[[s]]>trunc_distr],col=colors[s],lwd=lwd)
-        if(!is.null(sdd_true_parm)){
-          lines(x[sdd_true_density_values[[s]]>trunc_distr],sdd_true_density_values[[s]][sdd_true_density_values[[s]]>trunc_distr],col=colors[s],lwd=lwd,lty=2)
-        }
-      }
-      legend(legend=paste(llabel,seq_len(nostates)),col=colors,lwd=lwd,title=ltitle,cex=1.25,x="topleft",bg=rgb(1,1,1,0.5))
-      if(!is.null(sdd_true_parm)){
-        legend(legend=c("estimated","true"),col="grey",lwd=lwd,lty=c(1,2),cex=1.25,x="topright",bg=rgb(1,1,1,0.5))
-      }
+plot_sdds = function(est, true = NULL, controls, colors) {
+  
+  ### define densities
+  density = function(name, x, sigma, mu, df){
+    if(name == "t"){
+      (1/sigma) * dt(x = (x - mu)/sigma, df = df)
+    } else if(name == "gamma"){
+      dgamma(x = x, shape = mu^2/sigma^2, scale = sigma^2/mu)
+    } else {
+      stop()
     }
+  }
+  
+  ### compute densities
+  xmin = -1
+  xmax = 1
+  length.out = 1e4
+  while(TRUE){
+    x = seq(from = xmin, to = xmax, length.out = length.out)
+    f.x = list()
+    for(s in 1:controls$states[1])
+      f.x[[s]] = density(name = est$sdds[[1]]$name, x = x, mu = est$mus[s], 
+                         sigma = est$sigmas[s], df = est$dfs[s])
+    f.x_true = list()
+    if(!is.null(true))
+      for(s in 1:controls$states[1])
+        f.x_true[[s]] = density(name = true$sdds[[1]]$name, x = x, 
+                                mu = true$mus[s], sigma = true$sigmas[s], 
+                                df = true$dfs[s])
     
-    if(controls[["model"]]=="hmm"){
-      pdf(file = filename, width=8, height=8)
-        if(controls[["sim"]]){
-          sdd_true_parm = list("mus"    = data[["thetaList0"]][["mus"]],
-                               "sigmas" = data[["thetaList0"]][["sigmas"]],
-                               "dfs"    = data[["thetaList0"]][["dfs"]])
-        } else {
-          sdd_true_parm = NULL
-        }
-        create_sdds_plot(nostates      = controls[["states"]][1],
-                         mus           = fit[["thetaList"]][["mus"]],
-                         sigmas        = fit[["thetaList"]][["sigmas"]],
-                         dfs           = fit[["thetaList"]][["dfs"]],
-                         sdd           = controls[["sdds"]][1],
-                         x_range       = c(min(data[["data"]]),max(data[["data"]])),
-                         colors        = colors[["hmm"]],
-                         llabel        = "State",
-                         sdd_true_parm = sdd_true_parm)
-      invisible(dev.off())
+    ### determine limits
+    xmin_ind = min(sapply(c(f.x, f.x_true), function(x) min(which(x > 1e-2))))
+    xmax_ind = max(sapply(c(f.x, f.x_true), function(x) max(which(x > 1e-2))))
+    if(xmin_ind == 1){
+      xmin = xmin * 2 
+    } else if(xmax_ind == length.out){
+      xmax = xmax * 2 
+    } else {
+      break
     }
-    if(controls[["model"]]=="hhmm"){
-      pdf(file = filename, width=8, height=8)
-        if(controls[["sim"]]){
-          sdd_true_parm = list("mus"    = data[["thetaList0"]][["mus"]],
-                               "sigmas" = data[["thetaList0"]][["sigmas"]],
-                               "dfs"    = data[["thetaList0"]][["dfs"]])
-        } else {
-          sdd_true_parm = NULL
-        }
-        create_sdds_plot(nostates      = controls[["states"]][1],
-                         mus           = fit[["thetaList"]][["mus"]],
-                         sigmas        = fit[["thetaList"]][["sigmas"]],
-                         dfs           = fit[["thetaList"]][["dfs"]],
-                         sdd           = controls[["sdds"]][1],
-                         x_range       = c(min(data[["data"]][,1]),max(data[["data"]][,1])),
-                         colors        = colors[["hhmm_cs"]],
-                         llabel        = "Coarse-scale state",
-                         sdd_true_parm = sdd_true_parm)
-        xlims = matrix(0,nrow=2,ncol=controls[["states"]][1])
-        for(cs in seq_len(controls[["states"]][1])){
-          xlims[,cs] = create_sdds_plot(nostates = controls[["states"]][2],
-                                        mus      = fit[["thetaList"]][["mus_star"]][[cs]],
-                                        sigmas   = fit[["thetaList"]][["sigmas_star"]][[cs]],
-                                        dfs      = fit[["thetaList"]][["dfs_star"]][[cs]],
-                                        sdd      = controls[["sdds"]][2],
-                                        x_range  = c(min(data[["data"]][,-1],na.rm=TRUE),max(data[["data"]][,-1],na.rm=TRUE)),
-                                        c_xlim   = TRUE) 
-        }
-        for(cs in seq_len(controls[["states"]][1])){
-          if(controls[["sim"]]){
-            sdd_true_parm = list("mus"    = data[["thetaList0"]][["mus_star"]][[cs]],
-                                 "sigmas" = data[["thetaList0"]][["sigmas_star"]][[cs]],
-                                 "dfs"    = data[["thetaList0"]][["dfs_star"]][[cs]])
-          } else {
-            sdd_true_parm = NULL
-          } 
-          create_sdds_plot(nostates      = controls[["states"]][2],
-                           mus           = fit[["thetaList"]][["mus_star"]][[cs]],
-                           sigmas        = fit[["thetaList"]][["sigmas_star"]][[cs]],
-                           dfs           = fit[["thetaList"]][["dfs_star"]][[cs]],
-                           sdd           = controls[["sdds"]][2],
-                           x_range       = c(min(data[["data"]][,-1],na.rm=TRUE),max(data[["data"]][,-1],na.rm=TRUE)),
-                           c_xlim        = FALSE,
-                           xlim          = c(min(xlims[1,]),max(xlims[2,])),
-                           colors        = colors[["hhmm_fs"]][[cs]],
-                           llabel        = "Fine-scale state",
-                           ltitle        = paste("Coarse-scale state",cs),
-                           sdd_true_parm = sdd_true_parm)
-        }
-      invisible(dev.off())
-    }
+  }
+  ylim = round(c(0, max(sapply(f.x, max))),1)
+  xlim = c(xmin, xmax)
+  
+  ### define x range and initialize plot
+  plot(0, type = "n", xlim = xlim, ylim = ylim)
+  
+  ### plot densities
+  for(s in 1:controls$states[1]){
+    lines(x, f.x[[s]])
+    lines(x, f.x_true[[s]], lty = 2)
+  }
+  
 }
