@@ -6,8 +6,10 @@
 
 predict = function(model, time_points) {
   
-  ### use plot_ts()
+  stop("Not implemented yet.")
   
-  class(out) = "fHMM_predict"
+  # class(out) = "fHMM_predict"
+  # plot_ts()
+  
   return(out)
 }
