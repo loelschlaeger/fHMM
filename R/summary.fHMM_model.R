@@ -34,7 +34,7 @@ summary.fHMM_model = function(object, ci_level = 0.05, ...) {
     true = par2parCon(object$data$true_parameters, object$data$controls)
     estimates_table = cbind(estimates_table, true = as.vector(true))
   }
-  rownames(estimates_table) = par_labels(
+  rownames(estimates_table) = parameter_labels(
     controls = object$data$controls, expected_length = nrow(estimates_table))
   
   ### states
