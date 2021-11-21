@@ -1,4 +1,6 @@
-#' Summary method for \code{fHMM_model}.
+#' Summary method for an object of class \code{fHMM_model}.
+#' @description 
+#' This function is the summary method for an object of class \code{fHMM_model}.
 #' @param object
 #' An object of class \code{fHMM_model}.
 #' @inheritParams compute_ci
@@ -19,8 +21,7 @@ summary.fHMM_model = function(object, ci_level = 0.05, ...) {
   aic = -2*ll + 2*no_par
   bic = -2*ll + no_par*log(data_size)
   model_info = data.frame(
-    simulated, hierarchy, "LL" = ll, "AIC" = aic, "BIC" = bic,
-    row.names = "value"
+    simulated, hierarchy, "LL" = ll, "AIC" = aic, "BIC" = bic
   )
   
   ### state-dependent distributions
@@ -33,6 +34,8 @@ summary.fHMM_model = function(object, ci_level = 0.05, ...) {
     true = par2parCon(object$data$true_parameters, object$data$controls)
     estimates_table = cbind(estimates_table, true = as.vector(true))
   }
+  rownames(estimates_table) = par_labels(
+    controls = object$data$controls, expected_length = nrow(estimates_table))
   
   ### states
   if(!is.null(object$decoding)){
