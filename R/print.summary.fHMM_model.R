@@ -14,7 +14,7 @@ print.summary.fHMM_model = function(x, digits = 4, ...) {
   print(x$sdds)
   cat("\n")
   cat("\nEstimates:\n")
-  print(x$estimates, digits = digits)
+  print(x$estimates_table, digits = digits)
   if(!is.null(x$decoding_table)){
     cat("\nStates:\n")
     print(x$decoding_table, digits = digits)
