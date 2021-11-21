@@ -4,17 +4,19 @@
 #' @param controls
 #' An object of class \code{fHMM_controls}.
 #' @param colors
-#' A character vector of color names or hexadecimal RGB triplets.
+#' Either \code{NULL} or a a character vector of color names or hexadecimal RGB 
+#' triplets.
 #' @return
 #' An object of class \code{fHMM_colors}, which is...
 #' @export
 
-fHMM_colors = function(controls, colors = c("darkgreen", "green", "yellow",
-                                            "orange", "red", "darkred")) {
+fHMM_colors = function(controls, colors = NULL) {
 
   ### check inputs
   if(!class(controls) == "fHMM_controls")
     stop("'controls' must be of class 'fHMM_controls'.")
+  if(is.null(colors))
+    colors = c("darkgreen", "green", "yellow", "orange", "red", "darkred")
   if(!is.character(colors))
     stop("'colors' must be a character vector.")
   for(col in colors){
