@@ -18,7 +18,33 @@
 plot_ts = function(data, decoding = NULL, colors = NULL, events = NULL, 
                    predict = NULL){
   
-  plot(x = data$time_points, y = data$data, type = "h")
+  if(!data$controls$hierarchy){
+    
+    if(data$controls$simulated){
+  
+      plot(x = data$time_points, y = data$data, type = "h")
+      
+    } else {
+      
+      par(las = 1, mar = c(0,1,1,1), oma = c(3,3,0,0))
+      
+      layout(matrix(1:2, nrow = 2))
+   
+      plot(x = as.Date(data$dates), y = data$time_series, type = "l",
+           xaxt = "n", xlab = "", ylab = "")
+      
+      plot(x = as.Date(data$dates), y = data$data, type = "h", xlab = "",
+           ylab = "")
+      
+      
+      
+    }
+    
+  } else {
+    
+    stop("Not implemented yet.")
+     
+  }
   
  
 }
