@@ -42,7 +42,7 @@ decode_states = function(x){
     decoding = viterbi(observations = x$data$data, 
                        nstates = x$data$controls$states[1], 
                        Gamma = par$Gamma, mus = par$mus, sigmas = par$sigmas,
-                       dfs = par$sigmas, sdd = par$sdd[[1]]$name)
+                       dfs = par$dfs, sdd = par$sdd[[1]]$name)
   } else {
     T = dim(observations)[1]
     T_star = data[["T_star"]]
