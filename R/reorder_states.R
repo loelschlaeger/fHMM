@@ -57,16 +57,20 @@ reorder_states = function(x, state_order) {
     par$dfs = as.vector(permut %*% par$dfs)
     parUncon = par2parUncon(par, x$data$controls)
     permut_all = diag(length(x$estimate))[match_all(x$estimate, parUncon),]
-    x$estimate = as.vector(permut_all %*% parUncon)
-    class(x$estimate) = "parUncon"
+    x$estimate = parUncon
     x$gradient = as.vector(permut_all %*% x$gradient)
     x$hessian = permut_all %*% x$hessian %*% t(permut_all)
     x$nlm_output$estimate = x$estimate
     x$nlm_output$gradient = x$gradient
-    if(!is.null(x$decode)) x = decode(x)
   } else {
     stop("not implemented yet.")
   }
+  
+  ### redo decoding and residual computation
+  if(!is.null(x$decoding)) 
+    x = decode_states(x)
+  if(!is.null(x$residuals))
+    x = compute_residuals(x)
   
   ### return reorderd 'fHMM_model'
   return(x)
