@@ -1,4 +1,4 @@
-#' Plot method for \code{fHMM_model}.
+#' Plot method for an object of class \code{fHMM_model}.
 #' @description 
 #' This function is the plot method for an object of class \code{fHMM_model}.
 #' @param x
@@ -20,7 +20,7 @@
 #' @param ...
 #' Ignored.
 #' @return
-#' No return value.
+#' No return value. Draws a plot to the current device.
 #' @export
 
 plot.fHMM_model = function(x, plot_type = "ts", events = NULL, 
@@ -38,22 +38,15 @@ plot.fHMM_model = function(x, plot_type = "ts", events = NULL,
       stop("")
   
   ### create and check colors
-  if(is.null(colors))
-    colors = fHMM_colors(controls = x$data$controls)
-  if(x$data$controls$hierarchy){
-    if(length(colors) != x$data$controls$states)
-      stop("...")
-  } else {
-    if(any(dim(colors) != x$data$controls$states + c(0,1)))
-      stop("...")
-  }
+  colors = fHMM_colors(controls = x$data$controls, colors = colors)
   
   ### visualizations
   if("ll" %in% plot_type) 
     plot_ll(lls = x$lls)  
   if("sdds" %in% plot_type)
-    plot_sdds(estimated_parameters = parUncon2par(x$estimate, x$data$controls),
-              true_parameters = x$data$true_parameters)
+    plot_sdds(est = parUncon2par(x$estimate, x$data$controls),
+              true = x$data$true_parameters, controls = x$data$controls,
+              colors = colors)
   if("pr" %in% plot_type){
     if(is.null(x$residuals)){
       warning("'residuals not available.'")
@@ -62,6 +55,6 @@ plot.fHMM_model = function(x, plot_type = "ts", events = NULL,
     }
   }
   if("ts" %in% plot_type)
-    plot_ts()
-    
+    plot_ts(data = x$data, decoding = x$decoding, colors = colors,
+            events = events, predict = x$predict)
 }
