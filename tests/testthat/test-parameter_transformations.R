@@ -99,7 +99,6 @@ test_that("Gamma transformations work", {
   expect_equal(Gamma, gammasUncon2Gamma(gammasCon2gammasUncon(Gamma2gammasCon(Gamma), dim = dim), dim = dim))
   expect_equal(gammasCon, Gamma2gammasCon(gammasUncon2Gamma(gammasCon2gammasUncon(gammasCon, dim = dim), dim = dim)))
   expect_equal(gammasUncon, gammasCon2gammasUncon(Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim = dim)), dim = dim))
-  Gamma2gammasUncon(Gamma)
   delta = Gamma2delta(Gamma)
   expect_equal(delta, as.numeric(delta %*% Gamma))
   expect_warning(Gamma2delta(diag(3)))
