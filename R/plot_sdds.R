@@ -44,12 +44,16 @@ plot_sdds = function(est, true = NULL, controls, colors) {
                                 df = true$dfs[s])
     
     ### determine limits
-    xmin_ind = min(sapply(c(f.x, f.x_true), function(x) min(which(x > 1e-2))))
-    xmax_ind = max(sapply(c(f.x, f.x_true), function(x) max(which(x > 1e-2))))
+    xmin_ind = min(sapply(c(f.x, f.x_true), function(x) min(which(x > 0.1))))
+    xmax_ind = max(sapply(c(f.x, f.x_true), function(x) max(which(x > 0.1))))
     if(xmin_ind == 1){
-      xmin = xmin * 2 
+      xmin = xmin * 2
+    } else if(xmin_ind > 0.1*length.out){
+      xmin = xmin / 1.5
     } else if(xmax_ind == length.out){
-      xmax = xmax * 2 
+      xmax = xmax * 2
+    } else if(xmax_ind < 0.9*length.out){
+      xmax = xmax / 1.5
     } else {
       break
     }
