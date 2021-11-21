@@ -20,10 +20,13 @@ URL: https://loelschlaeger.github.io/fHMM/
 BugReports: https://github.com/loelschlaeger/fHMM/issues
 License: GPL-3
 Encoding: UTF-8
+Depends:
+    R (>= 4.0.0),
 Imports: 
     Rcpp,
     progress,
-    foreach
+    foreach,
+    magrittr
 LinkingTo:
     Rcpp,
     RcppArmadillo
