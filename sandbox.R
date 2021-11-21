@@ -17,7 +17,7 @@ controls = list(
 controls %<>% set_controls
 data = prepare_data(controls)
 summary(data)
-#plot(data)
+plot(data)
 model = fit_model(data, ncluster = 7) %>%
   decode_states %>%
   compute_residuals
@@ -28,7 +28,7 @@ model %>% plot("ll")
 model %>% plot("sdds")
 model %>% plot("pr")
 model %>% plot("ts")
-predict(model, time_points = 1:10)
+predict(model, ahead = 10)
 
 ### empirical HMM -----------------------------------------------------------
 controls = list(
@@ -39,16 +39,20 @@ controls = list(
                  data_column = "Close",
                  logreturns  = TRUE)
 )
-controls = set_controls(controls)
+controls %<>% set_controls
 data = prepare_data(controls)
-model = fit_model(data)
+summary(data)
+plot(data)
+model = fit_model(data, ncluster = 7) %>%
+  decode_states %>%
+  compute_residuals
 summary(model)
 events = list(
   dates = c("2001-09-11","2008-09-15","2020-01-27"),
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers",
             "First COVID-19 case in Germany")
 )
-plot(model, plot_type = "sdd", events)
+plot(model, plot_type = "ts", events)
 
 ### simulated HHMM ----------------------------------------------------------
 controls = list(
@@ -81,6 +85,5 @@ events = list(
   names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers",
             "First COVID-19 case in Germany")
 )
-plot(model, plot_type = "", events)
 
 
