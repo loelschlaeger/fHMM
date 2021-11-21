@@ -10,6 +10,7 @@ S3method(print,summary.fHMM_data)
 S3method(print,summary.fHMM_model)
 
 ### S3 plot methods
+S3method(plot,fHMM_data)
 S3method(plot,fHMM_model)
 
 ### S3 summary methods

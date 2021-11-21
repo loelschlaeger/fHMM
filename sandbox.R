@@ -9,14 +9,14 @@ download_data(symbol = "VOW3.DE", file = "vw.csv", verbose = FALSE)
 ### simulated HMM -----------------------------------------------------------
 controls = list(
   states  = 2,
-  sdds    = "t(mu = -1|1, sigma = 1, df = Inf)",
-  horizon = 1000,
+  sdds    = "t(mu = -1|1, df = Inf)",
+  horizon = 100,
   fit     = list("runs" = 100)
 )
 controls = set_controls(controls)
 data = prepare_data(controls)
 summary(data)
-#plot(data)
+plot(data)
 model = fit_model(data, ncluster = 7)
 model = decode_states(model)
 model = reorder_states(model, state_order = 2:1)
