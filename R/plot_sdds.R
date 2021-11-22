@@ -62,7 +62,8 @@ plot_sdds = function(est, true = NULL, controls, colors) {
   xlim = c(xmin, xmax)
   
   ### define x range and initialize plot
-  plot(0, type = "n", xlim = xlim, ylim = ylim)
+  plot(0, type = "n", xlim = xlim, ylim = ylim, xlab = "", ylab = "", 
+       main = "State-dependent distributions")
   
   ### plot densities
   for(s in 1:controls$states[1]){
