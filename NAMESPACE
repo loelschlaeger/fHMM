@@ -3,6 +3,7 @@ useDynLib("fHMM")
 ### S3 print methods
 S3method(print,fHMM_controls)
 S3method(print,fHMM_data)
+S3method(print,fHMM_events)
 S3method(print,fHMM_model)
 S3method(print,fHMM_sdds)
 S3method(print,fHMM_trouble)
@@ -19,9 +20,10 @@ S3method(summary,fHMM_model)
 
 ### export functions
 export(download_data)
-export(set_controls)
-export(prepare_data)
+export(fHMM_events)
 export(fit_model)
+export(prepare_data)
+export(set_controls)
 
 ### imports
 import(Rcpp)
