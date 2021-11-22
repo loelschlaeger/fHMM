@@ -48,11 +48,12 @@ model = fit_model(data, ncluster = 7) %>%
   decode_states %>%
   compute_residuals
 summary(model)
-events = list(dates = c("2001-09-11","2008-09-15","2020-01-27"),
-              names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers",
-                        "First COVID-19 case in Germany")) %>% fHMM_events
+events = list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
+              labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers",
+                         "First COVID-19 case Germany")) %>% fHMM_events
 model %>% plot("ll")
 model %>% plot("sdds")
+model %<>% reorder_states(state_order = 2:1)
 model %>% plot("pr")
 model %>% plot("ts", events)
 
