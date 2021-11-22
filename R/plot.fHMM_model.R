@@ -40,6 +40,10 @@ plot.fHMM_model = function(x, plot_type = "ts", events = NULL,
   ### create and check colors
   colors = fHMM_colors(controls = x$data$controls, colors = colors)
   
+  ### reset of 'par' settings
+  oldpar = par(no.readonly = TRUE)
+  on.exit(suppressWarnings(par(oldpar)))
+  
   ### visualizations
   if("ll" %in% plot_type) 
     plot_ll(lls = x$lls)  
