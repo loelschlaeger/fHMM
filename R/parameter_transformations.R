@@ -17,7 +17,7 @@ par2parUncon = function(par, controls){
   if(is.null(controls$sdds[[1]]$pars$mu))
     parUncon = c(parUncon, 
                  muCon2muUncon(muCon = par[["mus"]],
-                               link = (controls[["sdds"]][[1]]$name == "gamma")))
+                              link = (controls[["sdds"]][[1]]$name == "gamma")))
   if(is.null(controls$sdds[[1]]$pars$sigma))
     parUncon = c(parUncon, 
                  sigmaCon2sigmaUncon(par[["sigmas"]]))
@@ -32,7 +32,7 @@ par2parUncon = function(par, controls){
       if(is.null(controls$sdds[[2]]$pars$mu))
         parUncon = c(parUncon, 
                      muCon2muUncon(par[["mus_star"]][[s]],
-                                   link = (controls[["sdds"]][[2]]$name == "gamma")))
+                              link = (controls[["sdds"]][[2]]$name == "gamma")))
       if(is.null(controls$sdds[[2]]$pars$sigma))
         parUncon = c(parUncon, 
                      sigmaCon2sigmaUncon(par[["sigmas_star"]][[s]]))
@@ -90,7 +90,7 @@ parUncon2parCon = function(parUncon, controls){
       if(is.null(controls$sdds[[2]]$pars$mu)){
         parCon = c(parCon, 
                    muUncon2muCon(parUncon[1:N],
-                                 link = (controls[["sdds"]][[2]]$name == "gamma")))
+                              link = (controls[["sdds"]][[2]]$name == "gamma")))
         parUncon = parUncon[-(1:N)]
       }
       if(is.null(controls$sdds[[2]]$pars$sigma)){
@@ -163,21 +163,21 @@ parCon2par = function(parCon, controls){
       Gammas_star[[s]] = gammasCon2Gamma(parCon[1:((N-1)*N)],N)
       parCon = parCon[-(1:((N-1)*N))]
       if(is.null(controls$sdds[[2]]$pars$mu)){
-        mus_star[[s]] = parCon[1:M]
-        parCon = parCon[-(1:M)]
+        mus_star[[s]] = parCon[1:N]
+        parCon = parCon[-(1:N)]
       } else {
         mus_star[[s]] = rep(controls$sdds[[2]]$pars$mu,M)
       }
       if(is.null(controls$sdds[[2]]$pars$sigma)){
-        sigmas_star[[s]] = parCon[1:M]
-        parCon = parCon[-(1:M)]
+        sigmas_star[[s]] = parCon[1:N]
+        parCon = parCon[-(1:N)]
       } else {
         sigmas_star[[s]] = rep(controls$sdds[[2]]$pars$sigma,M)
       }
       if(controls[["sdds"]][[2]]$name == "t"){
         if(is.null(controls$sdds[[2]]$pars$df)){
-          dfs_star[[s]] = parCon[1:M]
-          parCon = parCon[-(1:M)]
+          dfs_star[[s]] = parCon[1:N]
+          parCon = parCon[-(1:N)]
         } else {
           dfs_star[[s]] = rep(controls$sdds[[2]]$pars$df,M)
         }
@@ -247,45 +247,6 @@ parUncon2par = function(parUncon,controls){
   return(parCon2par(parUncon2parCon(parUncon,controls),controls))
 }
 
-#' Orders states in \code{thetaList} based on expected values.
-#' @param thetaList Constrained model parameters in list form.
-#' @param controls A list of controls.
-#' @return Constrained and ordered model parameters in list form.
-#' @details 
-#' If state-dependent distribution is *t*, states are ordered decreasing with respect to expected values. If distribution is *Gamma*, vice versa.
-#' @keywords internal
-
-thetaList2thetaListOrdered = function(thetaList,controls){
-  M = controls[["states"]][1] 
-  N = controls[["states"]][2] 
-  mu_order = order(thetaList[["mus"]],decreasing=(controls[["sdds"]][1]=="t"))
-  permut = diag(M)[mu_order,]
-  thetaList[["Gamma"]] = permut %*% thetaList[["Gamma"]] %*% t(permut)
-  thetaList[["mus"]] = as.vector(permut %*% thetaList[["mus"]])
-  thetaList[["sigmas"]] = as.vector(permut %*% thetaList[["sigmas"]])
-  if(controls[["sdds"]][1]=="t"){
-    thetaList[["dfs"]] = as.vector(permut %*% thetaList[["dfs"]]); thetaList[["dfs"]][which(is.nan(thetaList[["dfs"]]))] = Inf
-  }
-  if(controls$model=="hhmm"){
-    thetaList[["Gammas_star"]] = thetaList[["Gammas_star"]][mu_order]
-    thetaList[["mus_star"]] = thetaList[["mus_star"]][mu_order]
-    thetaList[["sigmas_star"]] = thetaList[["sigmas_star"]][mu_order]
-    if(controls[["sdds"]][2]=="t"){
-      thetaList[["dfs_star"]] = thetaList[["dfs_star"]][mu_order]
-    }
-    for(m in seq_len(M)){
-      permut = diag(N)[order(thetaList[["mus_star"]][[m]],decreasing=TRUE),]
-      thetaList[["Gammas_star"]][[m]] = permut %*% thetaList[["Gammas_star"]][[m]] %*% t(permut)
-      thetaList[["mus_star"]][[m]] = as.vector(permut %*% thetaList[["mus_star"]][[m]])
-      thetaList[["sigmas_star"]][[m]] = as.vector(permut %*% thetaList[["sigmas_star"]][[m]])
-      if(controls[["sdds"]][2]=="t"){
-        thetaList[["dfs_star"]][[m]] = as.vector(permut %*% thetaList[["dfs_star"]][[m]]); thetaList[["dfs_star"]][[m]][which(is.nan(thetaList[["dfs_star"]][[m]]))] = Inf
-      }
-    }
-  }
-  return(thetaList)
-}
-
 #' This function un-constrains the constrained expected values \code{muCon}.
 #' @param muCon 
 #' A vector of constrained expected values.
@@ -324,7 +285,8 @@ muUncon2muCon = function(muUncon, link){
   return(muCon)
 }
 
-#' This function un-constrains the constrained standard deviations \code{sigmaCon}.
+#' This function un-constrains the constrained standard deviations 
+#' \code{sigmaCon}.
 #' @param sigmaCon 
 #' A vector of constrained standard deviations.
 #' @return 
@@ -336,7 +298,8 @@ sigmaCon2sigmaUncon = function(sigmaCon){
   return(log(sigmaCon))
 }
 
-#' This function constrains the un-constrained standard deviations \code{sigmaUncon}.
+#' This function constrains the un-constrained standard deviations 
+#' \code{sigmaUncon}.
 #' @param sigmaUncon 
 #' A vector of un-constrained standard deviations.
 #' @return 
@@ -430,8 +393,8 @@ gammasCon2Gamma = function(gammasCon, dim){
 #' \code{gammasCon} of a transition probability matrix of dimension \code{dim}.
 #' @inheritParams gammasCon2Gamma
 #' @return 
-#' A vector of un-constrained non-diagonal elements of the transition probability 
-#' matrix.
+#' A vector of un-constrained non-diagonal elements of the transition 
+#' probability matrix.
 #' @keywords 
 #' internal
 
