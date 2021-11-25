@@ -26,44 +26,36 @@ plot_sdds = function(est, true = NULL, controls, colors) {
     }
   }
   
-  ### compute densities
-  xmin = -1
-  xmax = 1
-  length.out = 1e4
-  while(TRUE){
-    x = seq(from = xmin, to = xmax, length.out = length.out)
-    f.x = list()
-    for(s in 1:controls$states[1])
-      f.x[[s]] = density(name = est$sdds[[1]]$name, x = x, mu = est$mus[s], 
-                         sigma = est$sigmas[s], df = est$dfs[s])
-    f.x_true = list()
-    if(!is.null(true))
-      for(s in 1:controls$states[1])
-        f.x_true[[s]] = density(name = true$sdds[[1]]$name, x = x, 
-                                mu = true$mus[s], sigma = true$sigmas[s], 
-                                df = true$dfs[s])
-    
-    ### determine limits
-    xmin_ind = min(sapply(c(f.x, f.x_true), function(x) min(which(x > 0.1))))
-    xmax_ind = max(sapply(c(f.x, f.x_true), function(x) max(which(x > 0.1))))
-    if(xmin_ind == 1){
-      xmin = xmin * 2
-    } else if(xmin_ind > 0.1*length.out){
-      xmin = xmin / 1.5
-    } else if(xmax_ind == length.out){
-      xmax = xmax * 2
-    } else if(xmax_ind < 0.9*length.out){
-      xmax = xmax / 1.5
-    } else {
-      break
-    }
+  ### define x-limits
+  if(est$sdds[[1]]$name == "t"){
+    xmin = min(est$mus - 3*est$sigmas)
+    xmax = max(est$mus + 3*est$sigmas)
   }
+  if(est$sdds[[1]]$name == "gamma"){
+    xmin = 0
+    xmax = max(est$mus + 3*est$sigmas)
+  }
+  
+  ### compute densities
+  length.out = 1e4
+  x = seq(from = xmin, to = xmax, length.out = length.out)
+  f.x = list()
+  for(s in 1:controls$states[1])
+    f.x[[s]] = density(name = est$sdds[[1]]$name, x = x, mu = est$mus[s], 
+                       sigma = est$sigmas[s], df = est$dfs[s])
+  f.x_true = list()
+  if(!is.null(true))
+    for(s in 1:controls$states[1])
+      f.x_true[[s]] = density(name = true$sdds[[1]]$name, x = x, 
+                              mu = true$mus[s], sigma = true$sigmas[s], 
+                              df = true$dfs[s])
   ylim = round(c(0, max(sapply(f.x, max))),1)
-  xlim = c(xmin, xmax)
+
   
   ### define x range and initialize plot
-  plot(0, type = "n", xlim = xlim, ylim = ylim, xlab = "", ylab = "", 
-       main = "State-dependent distributions")
+  plot(0, type = "n", xlim = c(xmin,xmax), 
+       ylim = round(c(0, max(sapply(c(f.x,f.x_true), max))),1), 
+       xlab = "", ylab = "", main = "State-dependent distributions")
   
   ### plot densities
   for(s in 1:controls$states[1]){
