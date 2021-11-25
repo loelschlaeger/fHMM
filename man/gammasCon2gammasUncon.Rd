@@ -14,8 +14,8 @@ matrix.}
 \item{dim}{The dimension of the transition probability matrix.}
 }
 \value{
-A vector of un-constrained non-diagonal elements of the transition probability
-matrix.
+A vector of un-constrained non-diagonal elements of the transition
+probability matrix.
 }
 \description{
 This function un-constrains the constrained non-diagonal elements

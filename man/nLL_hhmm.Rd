@@ -4,7 +4,7 @@
 \alias{nLL_hhmm}
 \title{Negative log-likelihood function of an HHMM}
 \usage{
-nLL_hhmm(parUncon, data)
+nLL_hhmm(parUncon, observations, controls)
 }
 \arguments{
 \item{parUncon}{An object of class \code{parUncon}.}

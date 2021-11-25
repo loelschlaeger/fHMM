@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_date.R
 \name{check_date}
 \alias{check_date}
-\title{Check the correct date format "YYYY-MM-DD".}
+\title{Check date format "YYYY-MM-DD".}
 \usage{
 check_date(date)
 }
@@ -10,8 +10,8 @@ check_date(date)
 \item{date}{A character, specifying a date in format "YYYY-MM-DD".}
 }
 \value{
-\code{as.date(date)} if \code{date} has the correct format. Otherwise, the
-function throws an error.
+\code{as.Date(date)} if \code{date} has the format "YYYY-MM-DD".
+Otherwise, the function throws an error.
 }
 \description{
 This function checks if the input \code{date} has the format "YYYY-MM-DD".

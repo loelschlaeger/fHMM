@@ -4,17 +4,20 @@
 \alias{plot_sdds}
 \title{Visualization of estimated state-dependent distributions.}
 \usage{
-plot_sdds(estimated_parameters, true_parameters, colors)
+plot_sdds(est, true = NULL, controls, colors)
 }
 \arguments{
-\item{estimated_parameters}{An object of class \code{fHMM_parameters}.}
+\item{est}{An object of class \code{fHMM_parameters} with estimated parameters.}
 
-\item{true_parameters}{Either \code{NULL} or an object of class \code{fHMM_parameters}.}
+\item{true}{Either \code{NULL} or an object of class \code{fHMM_parameters} with true
+parameters.}
+
+\item{controls}{An object of class \code{fHMM_controls}.}
 
 \item{colors}{An object of class \code{fHMM_colors}.}
 }
 \value{
-...
+No return value. Draws a plot to the current device.
 }
 \description{
 This function plots the estimated state-dependent distributions.

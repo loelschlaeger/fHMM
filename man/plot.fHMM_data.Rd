@@ -2,14 +2,14 @@
 % Please edit documentation in R/plot.fHMM_data.R
 \name{plot.fHMM_data}
 \alias{plot.fHMM_data}
-\title{Plot method for \code{fHMM_data}.}
+\title{Plot method for an object of class \code{fHMM_data}.}
 \usage{
 \method{plot}{fHMM_data}(x, events = NULL, ...)
 }
 \arguments{
 \item{x}{An object of class \code{fHMM_data}.}
 
-\item{events}{...}
+\item{events}{Either \code{NULL} or an object of class \code{fHMM_events}.}
 
 \item{...}{Ignored.}
 }

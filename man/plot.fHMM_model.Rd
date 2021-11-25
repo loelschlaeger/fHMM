@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.fHMM_model.R
 \name{plot.fHMM_model}
 \alias{plot.fHMM_model}
-\title{Plot method for \code{fHMM_model}.}
+\title{Plot method for an object of class \code{fHMM_model}.}
 \usage{
 \method{plot}{fHMM_model}(x, plot_type = "ts", events = NULL, colors = NULL, ...)
 }
@@ -26,7 +26,7 @@ distributions,
 \item{...}{Ignored.}
 }
 \value{
-No return value.
+No return value. Draws a plot to the current device.
 }
 \description{
 This function is the plot method for an object of class \code{fHMM_model}.

@@ -4,15 +4,13 @@
 \alias{fHMM_colors}
 \title{Set color scheme for visualizations in the fHMM package.}
 \usage{
-fHMM_colors(
-  controls,
-  colors = c("darkgreen", "green", "yellow", "orange", "red", "darkred")
-)
+fHMM_colors(controls, colors = NULL)
 }
 \arguments{
 \item{controls}{An object of class \code{fHMM_controls}.}
 
-\item{colors}{A character vector of color names or hexadecimal RGB triplets.}
+\item{colors}{Either \code{NULL} or a a character vector of color names or hexadecimal RGB
+triplets.}
 }
 \value{
 An object of class \code{fHMM_colors}, which is...

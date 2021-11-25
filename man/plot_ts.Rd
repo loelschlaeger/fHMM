@@ -2,28 +2,25 @@
 % Please edit documentation in R/plot_ts.R
 \name{plot_ts}
 \alias{plot_ts}
-\title{Visualize data time series.}
+\title{Visualize time series.}
 \usage{
-plot_ts(data, decoding, colors, events, predict)
+plot_ts(data, decoding = NULL, colors = NULL, events = NULL, predict = NULL)
 }
 \arguments{
-\item{data}{A list of processed data information.}
+\item{data}{An object of class \code{fHMM_data}.}
 
-\item{decoding}{A matrix of decoded states.}
+\item{decoding}{Either \code{NULL} or an object of class \code{fHMM_decoding}.}
 
-\item{colors}{An object of class \code{fHMM_colors}. Ignored if \code{decoding = NULL}.}
+\item{colors}{Either \code{NULL} or an object of class \code{fHMM_colors}.
+Ignored if \code{decoding = NULL}.}
 
-\item{events}{A list of events.}
+\item{events}{Either \code{NULL} or an object of class \code{fHMM_events}.}
 
-\item{predict}{An object of class \code{fHMM_predict}.}
-
-\item{This}{function visualizes the data time series. If \code{decoding} is
-specified, the decoding is highlighted. If \code{events} is specified,
-the events are highlighted.}
+\item{predict}{Either \code{NULL} or an object of class \code{fHMM_predict}.}
 }
 \value{
-...
+No return value. Draws a plot to the current device.
 }
 \description{
-Visualize data time series.
+This function visualizes the data time series.
 }

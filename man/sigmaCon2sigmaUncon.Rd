@@ -2,7 +2,8 @@
 % Please edit documentation in R/parameter_transformations.R
 \name{sigmaCon2sigmaUncon}
 \alias{sigmaCon2sigmaUncon}
-\title{This function un-constrains the constrained standard deviations \code{sigmaCon}.}
+\title{This function un-constrains the constrained standard deviations
+\code{sigmaCon}.}
 \usage{
 sigmaCon2sigmaUncon(sigmaCon)
 }
@@ -13,6 +14,7 @@ sigmaCon2sigmaUncon(sigmaCon)
 A vector of un-constrained standard deviations.
 }
 \description{
-This function un-constrains the constrained standard deviations \code{sigmaCon}.
+This function un-constrains the constrained standard deviations
+\code{sigmaCon}.
 }
 \keyword{internal}

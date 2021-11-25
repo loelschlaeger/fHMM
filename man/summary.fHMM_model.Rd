@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary.fHMM_model.R
 \name{summary.fHMM_model}
 \alias{summary.fHMM_model}
-\title{Summary method for \code{fHMM_model}.}
+\title{Summary method for an object of class \code{fHMM_model}.}
 \usage{
 \method{summary}{fHMM_model}(object, ci_level = 0.05, ...)
 }
@@ -17,5 +17,5 @@
 An object of class \code{summary.fHMM_model}.
 }
 \description{
-Summary method for \code{fHMM_model}.
+This function is the summary method for an object of class \code{fHMM_model}.
 }
