@@ -61,7 +61,7 @@ fit_model = function(data, ncluster = 1, seed = NULL){
   }
   if(sum(is.na(ll_at_start_values)) == data[["controls"]][["fit"]][["runs"]])
     stop("F.2")
-  if(sum(is.na(ll_at_start_values)) / data[["controls"]][["fit"]][["runs"]] > 0.5)
+  if(sum(is.na(ll_at_start_values)) > 0.5*data[["controls"]][["fit"]][["runs"]])
     warning("F.3", immediate. = TRUE)
   runs_seq = which(!is.na(ll_at_start_values))
   
