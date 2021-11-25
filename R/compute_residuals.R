@@ -46,7 +46,7 @@ compute_residuals = function(x) {
                        sigmas = par$sigmas, dfs = par$dfs, 
                        sdd_name = x$data$controls$sdds[[1]]$name,
                        decoding = x$decoding[,1])
-    for(t in seq_along(nrow(residuals))){
+    for(t in seq_len(nrow(residuals))){
       curr = x$decoding[t,1]
       residuals[t,-1] = cr(data = x$data$data[t,-1], 
                            mus = par$mus_star[[curr]], 
