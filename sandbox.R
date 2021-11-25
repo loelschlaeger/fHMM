@@ -54,7 +54,7 @@ summary(model)
 model %>% plot("ll")
 model %>% plot("sdds")
 model %>% plot("pr")
-model %>% plot("ts", events)
+model %>% plot("ts", events = NULL)
 
 ### simulated HHMM ----------------------------------------------------------
 controls = list(
@@ -74,7 +74,7 @@ model = fit_model(data, ncluster = 7) %>%
 summary(model)
 compare(model)
 model %>% plot("ll")
-#TODO: model %>% plot("sdds")
+model %>% plot("sdds")
 #TODO: model %>% plot("pr")
 #TODO: model %>% plot("ts", events)
 

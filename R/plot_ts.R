@@ -1,86 +1,84 @@
 #' Visualize time series.
-#' @description  
-#' This function visualizes the data time series. 
-#' @param data 
+#' @description
+#' This function visualizes the data time series.
+#' @param data
 #' An object of class \code{fHMM_data}.
-#' @param decoding 
+#' @param decoding
 #' Either \code{NULL} or an object of class \code{fHMM_decoding}.
-#' @param colors 
-#' Either \code{NULL} or an object of class \code{fHMM_colors}. 
+#' @param colors
+#' Either \code{NULL} or an object of class \code{fHMM_colors}.
 #' Ignored if \code{decoding = NULL}.
-#' @param events 
+#' @param events
 #' Either \code{NULL} or an object of class \code{fHMM_events}.
 #' @param predict
 #' Either \code{NULL} or an object of class \code{fHMM_predict}.
-#' @return 
+#' @return
 #' No return value. Draws a plot to the current device.
 
-plot_ts = function(data, decoding = NULL, colors = NULL, events = NULL, 
-                   predict = NULL){
-  
+plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL,
+                    predict = NULL) {
+
   ### reset of 'par' settings
-  oldpar = par(no.readonly = TRUE)
+  oldpar <- par(no.readonly = TRUE)
   on.exit(suppressWarnings(par(oldpar)))
-  
+
   ### helper functions
-  add_events = function(events, labels = FALSE){
+  add_events <- function(events, labels = FALSE) {
     abline(v = as.Date(events$dates))
-    if(labels){
+    if (labels) {
       axis(3, as.Date(events$dates), seq_along(events$dates))
-      mtext(paste0(seq_along(events$dates),": ",events$names, collapse = "; "), 
-            side = 3, line = 2)
+      mtext(paste0(seq_along(events$dates), ": ", events$names, collapse = "; "),
+        side = 3, line = 2
+      )
     }
   }
-  
-  if(!data$controls$hierarchy){
-    
-    if(data$controls$simulated){
-      
+
+  if (!data$controls$hierarchy) {
+    if (data$controls$simulated) {
       par(las = 1)
-  
-      plot(x = data$time_points, y = data$data, type = "h", col = "grey",
-           xlab = "time points", ylab = "", main = "Data time series")
-      
+
+      plot(
+        x = data$time_points, y = data$data, type = "h", col = "grey",
+        xlab = "time points", ylab = "", main = "Data time series"
+      )
     } else {
-      
-      par(las = 1, mar = c(0,1,1,1), oma = c(3,3,0,0))
-      
+      par(las = 1, mar = c(0, 1, 1, 1), oma = c(3, 3, 0, 0))
+
       layout(matrix(1:2, nrow = 2))
-   
-      plot(x = as.Date(data$dates), y = data$time_series, type = "l", 
-           col = "grey",
-           xaxt = "n", xlab = "", ylab = "")
-      
+
+      plot(
+        x = as.Date(data$dates), y = data$time_series, type = "l",
+        col = "grey",
+        xaxt = "n", xlab = "", ylab = ""
+      )
+
       add_events(events)
-      
-      plot(x = as.Date(data$dates), y = data$data, type = "h", xlab = "",
-           col = "grey",
-           ylab = "")
-      
+
+      plot(
+        x = as.Date(data$dates), y = data$data, type = "h", xlab = "",
+        col = "grey",
+        ylab = ""
+      )
+
       add_events(events, labels = TRUE)
-      
     }
-    
   } else {
-    
-    if(data$controls$simulated){
-      
+    if (data$controls$simulated) {
       par(las = 1)
-      
+
       layout(matrix(1:2, nrow = 2))
-      
-      plot(x = data$time_points[,1], y = data$data[,1], type = "h", col = "grey",
-           xlab = "time points", ylab = "", main = "Coarse-scale data time series")
-      
-      plot(x = data$time_points[,-1], y = data$data[,-1], type = "h", col = "grey",
-           xlab = "time points", ylab = "", main = "Fine-scale data time series")
-      
+
+      plot(
+        x = data$time_points[, 1], y = data$data[, 1], type = "h", col = "grey",
+        xlab = "time points", ylab = "", main = "Coarse-scale data time series"
+      )
+
+      plot(
+        x = data$time_points[, -1], y = data$data[, -1], type = "h", col = "grey",
+        xlab = "time points", ylab = "", main = "Fine-scale data time series"
+      )
     } else {
-    
       stop("Not implemented yet.")
-     
     }
   }
-  
- 
 }

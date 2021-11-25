@@ -7,7 +7,7 @@
 #   )
 #   controls = set_controls(controls)
 #   true_parameters = fHMM_parameters(
-#     controls, Gamma = matrix(c(0.8,0.1,0.2,0.9),2,2), mus = c(-1,1), 
+#     controls, Gamma = matrix(c(0.8,0.1,0.2,0.9),2,2), mus = c(-1,1),
 #     sigmas = c(0.5,2), dfs = c(1,Inf), seed = 1
 #   )
 #   expect_snapshot(simulate_data(controls, true_parameters, seed = 1))

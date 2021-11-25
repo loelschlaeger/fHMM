@@ -1,6 +1,6 @@
 test_that("data preparation for simulated HMM works", {
-  controls = set_controls()
-  out = prepare_data(controls, seed = 1)
+  controls <- set_controls()
+  out <- prepare_data(controls, seed = 1)
   expect_snapshot(out)
   expect_snapshot(unlist(out))
 })
@@ -66,7 +66,7 @@ test_that("data preparation for simulated HMM works", {
 #   expect_snapshot(out)
 #   expect_snapshot(unlist(out))
 # })
-# 
+#
 # test_that("data preparation for empirical HHMM works", {
 #   skip_if_offline()
 #   file = paste0(tempdir(),"/dax.csv")

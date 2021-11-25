@@ -1,4 +1,4 @@
-#' Check if \code{x} is a ((non)-negative) ((non-)positive) (integer) numeric 
+#' Check if \code{x} is a ((non)-negative) ((non-)positive) (integer) numeric
 #' (vector).
 #' @param x
 #' An R object.
@@ -15,35 +15,46 @@
 #' @return
 #' A boolean.
 
-is_number = function(x, int = FALSE, neg = FALSE, non_neg = FALSE, pos = FALSE,
-                     non_pos = FALSE) {
-  if(length(x) == 0)
+is_number <- function(x, int = FALSE, neg = FALSE, non_neg = FALSE, pos = FALSE,
+                      non_pos = FALSE) {
+  if (length(x) == 0) {
     return(TRUE)
-  for(i in 1:length(x)) {
-    out = rep(TRUE,length(x))
-    if(!is.numeric(x[i])){
-      out[i] = FALSE
+  }
+  for (i in 1:length(x)) {
+    out <- rep(TRUE, length(x))
+    if (!is.numeric(x[i])) {
+      out[i] <- FALSE
       break
     }
-    if(int) if(x[i]%%1!=0){
-      out[i] = FALSE
-      break
+    if (int) {
+      if (x[i] %% 1 != 0) {
+        out[i] <- FALSE
+        break
+      }
     }
-    if(neg) if(!x[i]<0){
-      out[i] = FALSE
-      break
+    if (neg) {
+      if (!x[i] < 0) {
+        out[i] <- FALSE
+        break
+      }
     }
-    if(non_neg) if(!x[i]>=0){
-      out[i] = FALSE
-      break
+    if (non_neg) {
+      if (!x[i] >= 0) {
+        out[i] <- FALSE
+        break
+      }
     }
-    if(pos) if(!x[i]>0){
-      out[i] = FALSE
-      break
+    if (pos) {
+      if (!x[i] > 0) {
+        out[i] <- FALSE
+        break
+      }
     }
-    if(non_pos) if(!x[i]<=0){
-      out[i] = FALSE
-      break
+    if (non_pos) {
+      if (!x[i] <= 0) {
+        out[i] <- FALSE
+        break
+      }
     }
   }
   return(out)

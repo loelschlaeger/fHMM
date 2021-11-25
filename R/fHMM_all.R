@@ -1,5 +1,5 @@
 #' Wrapper for the functionality of the fHMM package.
-#' @description 
+#' @description
 #' This function executes the following functionalities of the fHMM package and
 #' saves the results in \code{path}:
 #' \itemize{
@@ -28,24 +28,24 @@
 #'   \item controls.rds (the output of \code{set_controls(controls)})
 #'   \item data.rds (the output of \code{prepare_data(controls)})
 #'   \item data.pdf ()
-#'   \item model.rds (the output of 
+#'   \item model.rds (the output of
 #'         \code{compute_residuals(decode_states(fit_model(data)))})
 #'   \item \code{t}.pdf, where \code{t in plot_type}
 #' }
 
-complete_analysis = function(path = paste0(tempdir(), "/", Sys.time()), 
-                             controls = NULL, plot_type, events, future,
-                             verbose = FALSE, seed = NULL) {
-  path = path.expand(path)
+fHMM_all <- function(path = paste0(tempdir(), "/", Sys.time()),
+                     controls = NULL, plot_type, events, ahead,
+                     verbose = FALSE, seed = NULL) {
+  path <- path.expand(path)
   sink(dir, split = verbose)
   on.exit(sink())
-  controls = set_controls(controls)
+  controls <- set_controls(controls)
   print(controls)
-  data = prepare_data(controls)
+  data <- prepare_data(controls)
   print(summary(data))
   plot(data)
-  model = compute_residuals(decode_states(fit_model(data)))
+  model <- compute_residuals(decode_states(fit_model(data)))
   print(summary(model))
-  plot(model, type = type, events = events)
-  predict(model, time_points = future)
+  plot(model, plot_type = plot_type, events = events)
+  predict(model, ahead = ahead)
 }

@@ -31,8 +31,9 @@ importFrom(foreach, "%dopar%")
 importFrom("grDevices", "adjustcolor", "col2rgb", "colorRampPalette", "dev.off", 
            "pdf", "rgb")
 importFrom("graphics", "abline", "axis", "curve", "hist", "legend", "lines", 
-           "mtext", "par", "points", "text", "title")
+           "layout", "mtext", "par", "points", "text", "title")
 importFrom("stats", "acf", "dbinom", "dgamma", "dist", "dnorm", "dt", "nlm", 
-           "pgamma", "pt", "qnorm", "qqnorm", "rgamma", "rt", "runif", "sd")
+           "pgamma", "pt", "qnorm", "qqnorm", "rgamma", "rt", "runif", "sd",
+           "qgamma", "qt")
 importFrom("utils", "data", "download.file", "head", "packageVersion", 
            "read.csv", "tail")

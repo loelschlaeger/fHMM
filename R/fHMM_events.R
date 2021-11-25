@@ -1,34 +1,37 @@
 #' Check events.
-#' @description 
+#' @description
 #' This function checks the input \code{events}.
 #' @param events
-#' A list of two elements. 
-#' The first element is named \code{"dates"} and contains characters in format 
-#' "YYYY-MM-DD". 
+#' A list of two elements.
+#' The first element is named \code{"dates"} and contains characters in format
+#' "YYYY-MM-DD".
 #' The second element is named \code{"labels"} and is a character vector of the
 #' same length as \code{"dates"}.
 #' @return
 #' An object of class \code{fHMM_data}.
 #' @export
 
-fHMM_events = function(events) {
-  if(class(events) == "fHMM_events"){
+fHMM_events <- function(events) {
+  if (class(events) == "fHMM_events") {
     warning()
   } else {
-    if(class(events) != "list")
-     stop() 
-    if(length(events) != 2)
+    if (class(events) != "list") {
       stop()
-    if(!identical(names(events), c("dates","labels")))
+    }
+    if (length(events) != 2) {
       stop()
-    events$dates = check_date(events$dates)
-    class(events) = "fHMM_events"
+    }
+    if (!identical(names(events), c("dates", "labels"))) {
+      stop()
+    }
+    events$dates <- check_date(events$dates)
+    class(events) <- "fHMM_events"
   }
   return(events)
 }
 
 #' Print method for \code{fHMM_events}.
-#' @description 
+#' @description
 #' This function is the print method for an object of class \code{fHMM_events}.
 #' @param x
 #' An object of class \code{fHMM_events}.
@@ -38,7 +41,7 @@ fHMM_events = function(events) {
 #' Returns \code{x} invisibly.
 #' @export
 
-print.fHMM_events = function(x){
+print.fHMM_events <- function(x, ...) {
   print(data.frame("dates" = events$dates, "labels" = events$labels))
   return(invisible(x))
 }

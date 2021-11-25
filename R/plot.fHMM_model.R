@@ -1,12 +1,12 @@
 #' Plot method for an object of class \code{fHMM_model}.
-#' @description 
+#' @description
 #' This function is the plot method for an object of class \code{fHMM_model}.
 #' @param x
 #' An object of class \code{fHMM_model}.
 #' @param plot_type
 #' A character (vector), specifying the type of plot and can be one (or more) of
 #' \itemize{
-#'   \item \code{"ll"} for a visualization of the likelihood values in the 
+#'   \item \code{"ll"} for a visualization of the likelihood values in the
 #'         different optimization runs,
 #'   \item \code{"sdds"} for a visualization of the estimated state-dependent
 #'         distributions,
@@ -23,38 +23,50 @@
 #' No return value. Draws a plot to the current device.
 #' @export
 
-plot.fHMM_model = function(x, plot_type = "ts", events = NULL, 
-                           colors = NULL, ...) {
-  
+plot.fHMM_model <- function(x, plot_type = "ts", events = NULL,
+                            colors = NULL, ...) {
+
   ### check input
-  if(!class(x) == "fHMM_model")
+  if (!class(x) == "fHMM_model") {
     stop("'x' is not of class 'fHMM_model'.")
-  plot_type = intersect(plot_type, c("ll", "sdds", "pr", "ts"))
-  if(!is.null(events))
-    if(!is.list(events))
+  }
+  plot_type <- intersect(plot_type, c("ll", "sdds", "pr", "ts"))
+  if (!is.null(events)) {
+    if (!is.list(events)) {
       stop("...")
-  if(!is.null(colors))
-    if(class(colors) != "fHMM_colors")
+    }
+  }
+  if (!is.null(colors)) {
+    if (class(colors) != "fHMM_colors") {
       stop("")
-  
+    }
+  }
+
   ### create and check colors
-  colors = fHMM_colors(controls = x$data$controls, colors = colors)
-  
+  colors <- fHMM_colors(controls = x$data$controls, colors = colors)
+
   ### visualizations
-  if("ll" %in% plot_type) 
-    plot_ll(lls = x$lls)  
-  if("sdds" %in% plot_type)
-    plot_sdds(est = parUncon2par(x$estimate, x$data$controls),
-              true = x$data$true_parameters, controls = x$data$controls,
-              colors = colors)
-  if("pr" %in% plot_type){
-    if(is.null(x$residuals)){
+  if ("ll" %in% plot_type) {
+    plot_ll(lls = x$lls)
+  }
+  if ("sdds" %in% plot_type) {
+    plot_sdds(
+      est = parUncon2par(x$estimate, x$data$controls),
+      true = x$data$true_parameters, controls = x$data$controls,
+      colors = colors
+    )
+  }
+  if ("pr" %in% plot_type) {
+    if (is.null(x$residuals)) {
       warning("'residuals not available.'")
     } else {
       plot_pr(x$residuals)
     }
   }
-  if("ts" %in% plot_type)
-    plot_ts(data = x$data, decoding = x$decoding, colors = colors,
-            events = events, predict = x$predict)
+  if ("ts" %in% plot_type) {
+    plot_ts(
+      data = x$data, decoding = x$decoding, colors = colors,
+      events = events, predict = x$predict
+    )
+  }
 }
