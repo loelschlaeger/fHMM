@@ -44,13 +44,23 @@ decode_states = function(x){
                        Gamma = par$Gamma, mus = par$mus, sigmas = par$sigmas,
                        dfs = par$dfs, sdd = par$sdd[[1]]$name)
   } else {
-    T = dim(observations)[1]
-    T_star = data[["T_star"]]
-    decoding = matrix(NA,ncol=max(T_star)+1,nrow=T)
-    decoding[,1] = viterbi(observations[,1],states[1],thetaList[["Gamma"]],thetaList[["mus"]],thetaList[["sigmas"]],thetaList[["dfs"]],controls[["sdds"]][1])
-    for(t in seq_len(T)){
+    decoding = matrix(NA, ncol = ncol(x$data$data), nrow = nrow(x$data$data))
+    decoding[,1] = viterbi(observations = x$data$data[,1],
+                           nstates = x$data$controls$states[1],
+                           Gamma = par$Gamma, mus = par$mus, 
+                           sigmas = par$sigmas, dfs = par$dfs, 
+                           sdd = par$sdd[[1]]$name)
+    for(t in seq_len(nrow(decoding))){
       curr = decoding[t,1]
-      decoding[t,-1] = c(viterbi(observations[t,-1][!is.na(observations[t,-1])],states[2],thetaList[["Gammas_star"]][[curr]],thetaList[["mus_star"]][[curr]],thetaList[["sigmas_star"]][[curr]],thetaList[["dfs_star"]][[curr]],controls[["sdds"]][2]),rep(NA,max(T_star)-T_star[t]))
+      observations = x$data$data[t,-1][!is.na(x$data$data[t,-1])]
+      decoding[t,-1] = c(viterbi(observations = observations,
+                                 nstates = x$data$controls$states[2],
+                                 Gamma = par$Gammas_star[[curr]], 
+                                 mus = par$mus_star[[curr]], 
+                                 sigmas = par$sigmas_star[[curr]], 
+                                 dfs = par$dfs_star[[curr]], 
+                                 sdd = par$sdd[[2]]$name),
+                         rep(NA,max(x$data$T_star)-x$data$T_star[t]))
     }
   }
   

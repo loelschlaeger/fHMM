@@ -9,31 +9,55 @@
 
 compute_residuals = function(x) {
   
-  residuals = if(!x$data$controls$hierarchy){
-    numeric(length(x$data$data))
-  } else {
-    matrix(NA)
+  ### check if decoding is available
+  if(is.null(x$decoding)){
+    warning("need decoding.")
+    return(x)
   }
   
-  T = ifelse(!x$data$controls$hierarchy, length(x$data$data), dim(x$data$data)[1]) 
+  ### function that computes the residuals
+  cr = function(data, mus, sigmas, dfs, sdd_name, decoding){
+    stopifnot(length(data) == length(decoding))
+    out = rep(NA, length(data))
+    for(t in seq_along(data)){
+      if(sdd_name == "t"){
+        Fxt = pt(q = (data[t] - mus[decoding[t]]) / sigmas[decoding[t]],
+                 df = dfs[decoding[t]])
+      }
+      if(sdd_name == "gamma"){
+        Fxt = pgamma(q = data[t],
+                     shape = mus[decoding[t]]^2 / sigmas[decoding[t]]^2,
+                     scale = sigmas[decoding[t]]^2 / mus[decoding[t]])
+      }
+      out[t] = qnorm(Fxt)
+    }
+    return(out)
+  }
   
+  ### compute residuals
   par = parUncon2par(x$estimate, x$data$controls)
-  
-  for(t in seq_len(T)){
-    if(par$sdd[[1]]$name == "t"){
-      Fxt = pt(q = (x$data$data[t] - par$mus[x$decoding[t]]) / par$sigmas[x$decoding[t]],
-               df = par$dfs[x$decoding[t]])
+  if(!x$data$controls$hierarchy){
+    residuals = cr(data = x$data$data, mus = par$mus, sigmas = par$sigmas,
+                   dfs = par$dfs, sdd_name = x$data$controls$sdds[[1]]$name,
+                   decoding = x$decoding)
+  } else {
+    residuals = matrix(NA, nrow = nrow(x$data$data), ncol = ncol(x$data$data))
+    residuals[,1] = cr(data = x$data$data[,1], mus = par$mus, 
+                       sigmas = par$sigmas, dfs = par$dfs, 
+                       sdd_name = x$data$controls$sdds[[1]]$name,
+                       decoding = x$decoding[,1])
+    for(t in seq_along(nrow(residuals))){
+      curr = x$decoding[t,1]
+      residuals[t,-1] = cr(data = x$data$data[t,-1], 
+                           mus = par$mus_star[[curr]], 
+                           sigmas = par$sigmas_star[[curr]], 
+                           dfs = par$dfs_star[[curr]], 
+                           sdd_name = x$data$controls$sdds[[2]]$name,
+                           decoding = x$decoding[t,-1])
     }
-    if(par$sdd[[1]]$name == "gamma"){
-      Fxt = pgamma(q = x$data$data[t],
-                   shape = par$mus[x$decoding[t]]^2 / par$sigmas[x$decoding[t]]^2,
-                   scale = par$sigmas[x$decoding[t]]^2 / par$mus[x$decoding[t]])
-    }
-    residuals[t] = qnorm(Fxt)
   }
   
+  ### save residuals in 'x' and return 'x'
   x$residuals = residuals
-  
   return(x)
-  
 }

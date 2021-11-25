@@ -67,10 +67,10 @@ controls = list(
 )
 controls %<>% set_controls
 data = prepare_data(controls)
-#TODO: plot(data)
-model = fit_model(data, ncluster = 7)
-#TODO: model %<>% decode_states
-#TODO: model %<>% compute_residuals
+plot(data)
+model = fit_model(data, ncluster = 7) %>% 
+  decode_states %>%
+  compute_residuals 
 summary(model)
 compare(model)
 model %>% plot("ll")
