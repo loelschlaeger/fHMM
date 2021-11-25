@@ -15,15 +15,9 @@
 nLL_hmm = function(parUncon, observations, controls){
   class(parUncon) = "parUncon"
   T = length(observations)
-  if(!controls[["hierarchy"]]){
-    nstates = controls[["states"]][1]
-    par = parUncon2par(parUncon, controls)
-    sdd = controls[["sdds"]][[1]]$name
-  } else {
-    nstates = controls[["states"]][2]
-    thetaList = thetaUnconSplit2thetaList(parUncon,controls)
-    sdd = controls[["sdds"]][2]
-  }
+  nstates = controls[["states"]][1]
+  par = parUncon2par(parUncon, controls)
+  sdd = controls[["sdds"]][[1]]$name
   Gamma = par[["Gamma"]]
   delta = Gamma2delta(Gamma)
   mus = par[["mus"]]

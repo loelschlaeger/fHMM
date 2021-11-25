@@ -12,29 +12,43 @@
 #' @keywords 
 #' internal
 
-nLL_hhmm = function(parUncon, data){
-  M  = controls[["states"]][1] 
-  N  = controls[["states"]][2]
+nLL_hhmm = function(parUncon, observations, controls){
+  class(parUncon) = "parUncon"
+  M = controls[["states"]][1] 
+  N = controls[["states"]][2]
   observations_cs = observations[,1]
   observations_fs = observations[,-1]
   T = length(observations_cs)
-  thetaList = thetaUncon2thetaList(parUncon,controls)
-  Gamma  = thetaList[["Gamma"]]
-  delta  = Gamma2delta(Gamma)
-  mus    = thetaList[["mus"]]
-  sigmas = thetaList[["sigmas"]]
-  dfs    = thetaList[["dfs"]]
+  par = parUncon2par(parUncon, controls)
+  Gamma = par[["Gamma"]]
+  delta = Gamma2delta(Gamma)
+  mus = par[["mus"]]
+  sigmas = par[["sigmas"]]
+  dfs = par[["dfs"]]
   allprobs = matrix(0,M,T)
   log_likelihoods = matrix(0,M,T)
-  thetaUnconSplit = thetaUncon2thetaUnconSplit(parUncon,controls)
+  controls_split = list("hierarchy" = FALSE,
+                        "states" = controls$states[2],
+                        "sdds" = controls$sdds[2])
+  class(controls_split) = "fHMM_controls"
   for (m in seq_len(M)){
-    if(controls[["sdds"]][1]=="t")
-      allprobs[m,] = 1/sigmas[m]*dt((observations_cs-mus[m])/sigmas[m],dfs[m])
-    if(controls[["sdds"]][1]=="gamma")
-      allprobs[m,] = dgamma(observations_cs,shape=mus[m]^2/sigmas[m]^2,scale=sigmas[m]^2/mus[m])
+    if(controls[["sdds"]][[1]]$name == "t")
+      allprobs[m,] = 1/sigmas[m]*dt((observations_cs-mus[m])/sigmas[m], dfs[m])
+    if(controls[["sdds"]][[1]]$name == "gamma")
+      allprobs[m,] = dgamma(observations_cs, shape = mus[m]^2/sigmas[m]^2,
+                            scale = sigmas[m]^2/mus[m])
+    par_m = list("Gamma" = par$Gammas_star[[m]], 
+                 "mus" = par$mus_star[[m]],
+                 "sigmas" = par$sigmas_star[[m]],
+                 "dfs" = par$dfs_star[[m]])
+    class(par_m) = "fHMM_parameters"
+    parUncon_m = par2parUncon(par = par_m, controls = controls_split)
     for(t in seq_len(T))
-      log_likelihoods[m,t] = -nLL_hmm(thetaUnconSplit[[m]],observations_fs[t,][!is.na(observations_fs[t,])],controls)
+      log_likelihoods[m,t] = -nLL_hmm(
+        parUncon_m, observations_fs[t,][!is.na(observations_fs[t,])],
+        controls_split)
   }
-  nLL = -LL_HHMM_Rcpp(log_likelihoods=log_likelihoods,allprobs=allprobs,Gamma=Gamma,delta=delta,M=M,T=T) 
+  nLL = -LL_HHMM_Rcpp(log_likelihoods = log_likelihoods, allprobs = allprobs,
+                      Gamma = Gamma, delta = delta, M = M, T = T) 
   return(nLL)
 }
