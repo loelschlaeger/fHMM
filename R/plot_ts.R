@@ -18,6 +18,10 @@
 plot_ts = function(data, decoding = NULL, colors = NULL, events = NULL, 
                    predict = NULL){
   
+  ### reset of 'par' settings
+  oldpar = par(no.readonly = TRUE)
+  on.exit(suppressWarnings(par(oldpar)))
+  
   ### helper functions
   add_events = function(events, labels = FALSE){
     abline(v = as.Date(events$dates))
@@ -59,8 +63,23 @@ plot_ts = function(data, decoding = NULL, colors = NULL, events = NULL,
     
   } else {
     
-    stop("Not implemented yet.")
+    if(data$controls$simulated){
+      
+      par(las = 1)
+      
+      layout(matrix(1:2, nrow = 2))
+      
+      plot(x = data$time_points[,1], y = data$data[,1], type = "h", col = "grey",
+           xlab = "time points", ylab = "", main = "Coarse-scale data time series")
+      
+      plot(x = data$time_points[,-1], y = data$data[,-1], type = "h", col = "grey",
+           xlab = "time points", ylab = "", main = "Fine-scale data time series")
+      
+    } else {
+    
+      stop("Not implemented yet.")
      
+    }
   }
   
  
