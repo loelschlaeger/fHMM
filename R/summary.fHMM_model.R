@@ -40,10 +40,28 @@ summary.fHMM_model = function(object, ci_level = 0.05, ...) {
   ### states
   if(!is.null(object$decoding)){
     if(simulated){
-      decoding_table = table(object$data$markov_chain, object$decoding,
-                             dnn = c("true", "decoded"))
+      if(!hierarchy){
+        decoding_table = table(object$data$markov_chain, object$decoding,
+                               dnn = c("true", "decoded"))
+      } else {
+        decoding_table_cs = table(object$data$markov_chain[,1], 
+                                  object$decoding[,1], 
+                                  dnn = c("true", "decoded"))
+        decoding_table_fs = table(object$data$markov_chain[,-1], 
+                                  object$decoding[,-1], 
+                                  dnn = c("true", "decoded"))
+        decoding_table = list("coarse-scale" = decoding_table_cs,
+                              "fine-scale" = decoding_table_fs)
+      }
     } else {
-      decoding_table = table(object$decoding, dnn = "decoded")
+      if(!hierarchy){
+        decoding_table = table(object$decoding, dnn = "decoded")
+      } else {
+        decoding_table_cs = table(object$decoding[,1], dnn = "decoded")
+        decoding_table_fs = table(object$decoding[,-1], dnn = "decoded")
+        decoding_table = list("coarse-scale" = decoding_table_cs,
+                              "fine-scale" = decoding_table_fs)
+      }
     }
   } else {
     decoding_table = NULL
@@ -51,7 +69,14 @@ summary.fHMM_model = function(object, ci_level = 0.05, ...) {
   
   ### residuals
   if(!is.null(object$residuals)){
-    res_summary = summary(object$residuals)
+    if(!hierarchy){
+      res_summary = summary(object$residuals)
+    } else {
+      res_summary_cs = summary(object$residuals[,1])
+      res_summary_fs = summary(as.vector(object$residuals[,-1]))
+      res_summary = list("coarse-scale" = res_summary_cs,
+                         "fine-scale" = res_summary_fs)
+    }
   } else {
     res_summary = NULL
   }
