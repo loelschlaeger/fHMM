@@ -26,7 +26,8 @@ Imports:
     Rcpp,
     progress,
     foreach,
-    magrittr
+    magrittr,
+    crayon
 LinkingTo:
     Rcpp,
     RcppArmadillo

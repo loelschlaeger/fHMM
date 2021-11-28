@@ -10,7 +10,8 @@
 #' @export
 
 print.fHMM_trouble <- function(x, ...) {
-  cat(x$code, ":", x$response, "\n")
-  cat(x$debugging, "\n")
+  cat(crayon::red("\U2716", x$code, ":", x$response, "\n"))
+  cat(crayon::blue("\U2139", x$debugging, "\n"))
   return(invisible(x))
 }
+
