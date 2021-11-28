@@ -19,5 +19,6 @@ print.fHMM_model <- function(x, ...) {
   cat("* log-likelihood:", x$ll, "\n")
   cat("* decoding:", !is.null(x$decoding), "\n")
   cat("* residuals:", !is.null(x$residuals))
+  cat("* prediction:", !is.null(x$prediction))
   return(invisible(x))
 }

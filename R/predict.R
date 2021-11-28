@@ -7,12 +7,11 @@
 #' A positive integer.
 #' @inheritParams compute_ci
 #' @return
-#' An object of class \code{fHMM_predict}.
+#' An object of class \code{fHMM_model}.
 
 predict <- function(model, ahead, ci_level = 0.05) {
 
-  ### check input
-
+  ### TODO: check input
 
   ### extract parameters
   par <- parUncon2par(model$estimate, model$data$controls)
@@ -58,5 +57,6 @@ predict <- function(model, ahead, ci_level = 0.05) {
   ### build and return output
   out <- list("states" = state_prediction, "data" = data_prediction)
   class(out) <- "fHMM_predict"
-  return(out)
+  model$predict = out
+  return(model)
 }

@@ -23,5 +23,9 @@ print.summary.fHMM_model <- function(x, digits = 4, ...) {
     cat("\nResiduals:\n")
     print(x$res_summary, digits = digits)
   }
+  if (!is.null(x$predict)) {
+    cat("\nPrediction:\n")
+    print(x$predict, digits = digits)
+  }
   return(invisible(x))
 }
