@@ -10,26 +10,26 @@ download_data(symbol = "VOW3.DE", file = "vw.csv", verbose = FALSE)
 
 ### simulated HMM -----------------------------------------------------------
 controls = list(
-  states  = 2,
-  sdds    = "t(mu = -1|1, df = Inf)",
-  horizon = 100,
+  states  = 3,
+  sdds    = "gamma",
+  horizon = 1000,
   fit     = list("runs" = 100)
 )
 controls %<>% set_controls
 data = prepare_data(controls)
-summary(data)
-plot(data)
+data %>% summary
+data %>% plot
 model = fit_model(data, ncluster = 7) %>%
   decode_states %>%
   compute_residuals
 summary(model)
-model %<>% reorder_states(state_order = 2:1)
+model %<>% reorder_states(state_order = 3:1)
 compare(model)
 model %>% plot("ll")
-model %>% plot("sdds")
+model %>% plot("sdds", colors = c("green","red"))
 model %>% plot("pr")
+model %<>% predict(ahead = 10)
 model %>% plot("ts")
-predict(model, ahead = 10)
 
 ### empirical HMM -----------------------------------------------------------
 controls = list(
@@ -54,16 +54,16 @@ summary(model)
 model %>% plot("ll")
 model %>% plot("sdds")
 model %>% plot("pr")
-model %>% plot("ts", events = NULL)
+model %>% plot("ts", events = events)
 
 ### simulated HHMM ----------------------------------------------------------
 controls = list(
   hierarchy = TRUE,
   states    = c(2,2),
-  sdds      = c("t(mu = -1|1, sigma = 0.1, df = Inf)", 
-                "t(mu = -1|1, sigma = 0.1, df = Inf)"),
+  sdds      = c("t(sigma = 0.1, df = Inf)", 
+                "gamma(sigma = 0.1)"),
   horizon   = c(100,30),
-  fit       = list("runs" = 10)
+  fit       = list("runs" = 20)
 )
 controls %<>% set_controls
 data = prepare_data(controls)
@@ -75,21 +75,32 @@ summary(model)
 compare(model)
 model %>% plot("ll")
 model %>% plot("sdds")
-#TODO: model %>% plot("pr")
-#TODO: model %>% plot("ts", events)
+model %<>% reorder_states(state_order = matrix(c(2,1,2,1,1,2),2,3))
+model %>% plot("pr")
+model %>% plot("ts")
 
 ### empirical HHMM ----------------------------------------------------------
 controls = list(
   hierarchy = TRUE,
-  horizon = c(100, NA),
-  sdds = c("t(df = 1)", "t(df = 1)"),
-  period = "m",
-  data = list(file = c("dax.csv","vw.csv"),
-              logreturns = c(TRUE,TRUE))
+  horizon   = c(100, NA),
+  sdds      = c("t(df = 1)", "t(df = 1)"),
+  period    = "m",
+  data      = list(file = c("dax.csv","vw.csv"),
+                   from = "2010-01-01",
+                   to = "2015-01-01",
+                   logreturns = c(TRUE,TRUE)),
+  fit       = list("runs" = 10)
 )
 controls = set_controls(controls)
 data = prepare_data(controls)
-model = fit_model(data)
+plot(data)
+model = fit_model(data, ncluster = 7) %>% 
+  decode_states %>%
+  compute_residuals
 summary(model)
-
+compare(model)
+model %>% plot("ll")
+model %>% plot("sdds")
+model %>% plot("pr")
+model %>% plot("ts", events)
 
