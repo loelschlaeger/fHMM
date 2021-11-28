@@ -83,6 +83,7 @@ decode_states <- function(x) {
   }
 
   ### save decoding in 'x' and return 'x'
+  message("Decoded states")
   x$decoding <- decoding
   return(x)
 }

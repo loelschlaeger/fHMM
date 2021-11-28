@@ -68,6 +68,7 @@ compute_residuals <- function(x) {
   }
 
   ### save residuals in 'x' and return 'x'
+  message("Computed residuals")
   x$residuals <- residuals
   return(x)
 }
