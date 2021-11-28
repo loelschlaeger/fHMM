@@ -7,7 +7,7 @@
 #' Either \code{NULL} or a a character vector of color names or hexadecimal RGB
 #' triplets.
 #' @return
-#' An object of class \code{fHMM_colors}, which is...
+#' An object of class \code{fHMM_colors}.
 #' @export
 
 fHMM_colors <- function(controls, colors = NULL) {
