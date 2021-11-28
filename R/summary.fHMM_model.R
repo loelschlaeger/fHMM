@@ -101,7 +101,7 @@ summary.fHMM_model <- function(object, ci_level = 0.05, ...) {
     "estimates_table" = estimates_table,
     "decoding_table" = decoding_table,
     "res_summary" = res_summary,
-    "predict" = x$predict
+    "predict" = object$predict
   )
   class(out) <- "summary.fHMM_model"
   return(out)
