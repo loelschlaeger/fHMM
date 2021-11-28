@@ -14,6 +14,16 @@
 #' No return value. Draws a plot to the current device.
 
 plot_sdds <- function(est, true = NULL, controls, colors) {
+  
+  ### check input
+  stopifnot(class(est) == "fHMM_parameters")
+  stopifnot(is.null(true) || class(true) == "fHMM_parameters")
+  stopifnot(class(controls) == "fHMM_controls")
+  stopifnot(class(colors) == "fHMM_colors")
+  
+  ### reset of 'par' settings
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(suppressWarnings(par(oldpar)))
 
   ### define densities
   density <- function(name, x, sigma, mu, df) {
