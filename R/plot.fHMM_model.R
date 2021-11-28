@@ -14,7 +14,7 @@
 #'   \item \code{"ts"} for a visualization of the financial time series.
 #' }
 #' @param events
-#' ...
+#' An object of class \code{fHMM_events}.
 #' @param colors
 #' ...
 #' @param ...
@@ -52,15 +52,14 @@ plot.fHMM_model <- function(x, plot_type = "ts", events = NULL,
   if ("sdds" %in% plot_type) {
     plot_sdds(
       est = parUncon2par(x$estimate, x$data$controls),
-      true = x$data$true_parameters, controls = x$data$controls,
-      colors = colors
+      true = x$data$true_parameters, controls = x$data$controls, colors = colors
     )
   }
   if ("pr" %in% plot_type) {
     if (is.null(x$residuals)) {
       warning("'residuals not available.'")
     } else {
-      plot_pr(x$residuals)
+      plot_pr(x$residuals, hierarchy = x$data$controls$hierarchy)
     }
   }
   if ("ts" %in% plot_type) {

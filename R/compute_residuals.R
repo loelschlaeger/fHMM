@@ -69,6 +69,7 @@ compute_residuals <- function(x) {
 
   ### save residuals in 'x' and return 'x'
   message("Computed residuals")
+  class(residuals) = "fHMM_residuals"
   x$residuals <- residuals
   return(x)
 }
