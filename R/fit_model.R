@@ -52,19 +52,52 @@ fit_model <- function(data, ncluster = 1, seed = NULL) {
 
   ### define likelihood function
   target <- ifelse(!data[["controls"]][["hierarchy"]], nLL_hmm, nLL_hhmm)
-
+  
   ### check start values
-  message("Checking start values")
+  pb <- progress::progress_bar$new(
+    format = "[:bar] :percent, :eta ETA",
+    total = data[["controls"]][["fit"]][["runs"]], width = 45, clear = TRUE,
+    complete = "=", incomplete = "-", current = ">"
+  )
+  pb$message("Checking start values")
   ll_at_start_values <- rep(NA, data[["controls"]][["fit"]][["runs"]])
-  for (run in 1:data[["controls"]][["fit"]][["runs"]]) {
-    ll <- target(
-      parUncon = start_values[[run]],
-      observations = data[["data"]],
-      controls = data[["controls"]]
-    )
-    if (!(is.na(ll) || is.nan(ll) || abs(ll) > 1e100)) {
-      ll_at_start_values[run] <- ll
+  if (ncluster == 1) {
+    for (run in 1:data[["controls"]][["fit"]][["runs"]]) {
+      pb$tick(0)
+      ll <- target(
+        parUncon = start_values[[run]],
+        observations = data[["data"]],
+        controls = data[["controls"]]
+      )
+      if (!(is.na(ll) || is.nan(ll) || abs(ll) > 1e100)) {
+        ll_at_start_values[run] <- ll
+      }
+      pb$tick()
     }
+  } else if (ncluster > 1) {
+    numCores <- parallel::detectCores()
+    cluster <- parallel::makeCluster(ncluster)
+    doSNOW::registerDoSNOW(cluster)
+    opts <- list(progress = function(n) pb$tick())
+    ll_at_start_values <- foreach::foreach(
+      run = 1:data[["controls"]][["fit"]][["runs"]],
+      .packages = "fHMM", .options.snow = opts
+    ) %dopar% {
+      pb$tick(0)
+      ll <- target(
+        parUncon = start_values[[run]],
+        observations = data[["data"]],
+        controls = data[["controls"]]
+      )
+      if (!(is.na(ll) || is.nan(ll) || abs(ll) > 1e100)) {
+        ll
+      } else {
+        NA
+      }
+      pb$tick()
+    }
+    parallel::stopCluster(cluster)
+    ll_at_start_values <- unlist(ll_at_start_values)
   }
   if (sum(is.na(ll_at_start_values)) == data[["controls"]][["fit"]][["runs"]]) {
     stop("F.2")
@@ -74,14 +107,12 @@ fit_model <- function(data, ncluster = 1, seed = NULL) {
   }
   runs_seq <- which(!is.na(ll_at_start_values))
 
-  ### define progress bar
+  ### start optimization
   pb <- progress::progress_bar$new(
     format = "[:bar] :percent, :eta ETA",
     total = data[["controls"]][["fit"]][["runs"]], width = 45, clear = TRUE,
     complete = "=", incomplete = "-", current = ">"
   )
-
-  ### start optimization
   pb$message("Maximizing likelihood")
   start_time <- Sys.time()
   if (ncluster == 1) {
@@ -126,6 +157,7 @@ fit_model <- function(data, ncluster = 1, seed = NULL) {
       run = 1:data[["controls"]][["fit"]][["runs"]],
       .packages = "fHMM", .options.snow = opts
     ) %dopar% {
+      pb$tick(0)
       if (!is.na(ll_at_start_values[run])) {
         suppressWarnings({
           mod <- try(
