@@ -10,10 +10,6 @@
 
 plot_pr <- function(residuals, hierarchy) {
   
-  ### reset of 'par' settings
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(suppressWarnings(par(oldpar)))
-  
   ### check input
   stopifnot(class(residuals) == "fHMM_residuals")
   
@@ -71,7 +67,6 @@ plot_pr <- function(residuals, hierarchy) {
     layout(matrix(1:4,2,2))
     helper_pr(residuals)
   } else {
-    par(oma = c(1,1,1,1))
     layout(matrix(1:8,2,4, byrow = TRUE))
     helper_pr(residuals[,1])
     mtext("coarse scale", side=4, line=2, cex=1)
