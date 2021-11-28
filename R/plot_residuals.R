@@ -13,6 +13,10 @@ plot_pr <- function(residuals, hierarchy) {
   ### check input
   stopifnot(class(residuals) == "fHMM_residuals")
   
+  ### reset of 'par' settings
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(suppressWarnings(par(oldpar)))
+  
   ### define helper function for plotting residuals
   helper_pr <- function(residuals){
     
