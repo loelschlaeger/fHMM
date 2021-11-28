@@ -27,9 +27,14 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL,
     abline(v = as.Date(events$dates))
     if (labels) {
       axis(3, as.Date(events$dates), seq_along(events$dates))
-      mtext(paste0(seq_along(events$dates), ": ", events$names, collapse = "; "),
+      mtext(paste0(seq_along(events$dates), ": ", events$labels, collapse = "; "),
         side = 3, line = 2
       )
+    }
+  }
+  add_decoding <- function(nstates, decoding, x, y, colors) {
+    for(s in seq_len(nstates)){
+      points(x = x[decoding==s], y = y[decoding==s], col = colors[s], pch=20)
     }
   }
 
@@ -41,6 +46,11 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL,
         x = data$time_points, y = data$data, type = "h", col = "grey",
         xlab = "time points", ylab = "", main = "Data time series"
       )
+      
+      if(!is.null(decoding))
+        add_decoding(nstates = data$controls$states[1], decoding = decoding,
+                     x = data$time_points, y = data$data, colors = colors)
+      
     } else {
       par(las = 1, mar = c(0, 1, 1, 1), oma = c(3, 3, 0, 0))
 
@@ -63,9 +73,12 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL,
       add_events(events, labels = TRUE)
     }
   } else {
+    
+    
     if (data$controls$simulated) {
+      
       par(las = 1)
-
+      
       layout(matrix(1:2, nrow = 2))
 
       plot(
@@ -78,7 +91,38 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL,
         xlab = "time points", ylab = "", main = "Fine-scale data time series"
       )
     } else {
-      stop("Not implemented yet.")
+      
+      par(las = 1, mar = c(0, 1, 1, 1), oma = c(3, 3, 0, 0))
+      
+      layout(matrix(1:4, nrow = 2, ncol = 2))
+
+      plot(
+        x = as.Date(data$dates[,1]), y = data$data[, 1], type = "h", col = "grey",
+        xlab = "time points", ylab = "", main = "Coarse-scale data time series"
+      )
+      
+      add_events(events)
+      
+      plot(
+        x = as.Date(data$dates[,-1]), y = data$data[, -1], type = "h", col = "grey",
+        xlab = "time points", ylab = "", main = "Fine-scale data time series"
+      )
+      
+      add_events(events, labels = FALSE)
+      
+      plot(
+        x = as.Date(data$dates[,1]), y = data$time_series[, 1], type = "l", col = "grey",
+        xlab = "time points", ylab = "", main = "Coarse-scale data time series"
+      )
+      
+      add_events(events)
+      
+      plot(
+        x = as.Date(data$dates[,-1]), y = data$time_series[, -1], type = "l", col = "grey",
+        xlab = "time points", ylab = "", main = "Fine-scale data time series"
+      )
+      
+      add_events(events, labels = FALSE)
     }
   }
 }
