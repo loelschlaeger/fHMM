@@ -25,57 +25,97 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
       stop()
     }
   }
+  
+  ### helper function to plot sdds
+  helper_sdds = function(name, nstates, colors, main, est, true = NULL) {
 
-  ### define x-limits
-  if (est$sdds[[1]]$name == "t") {
+    ### define x-limits
     xmin <- min(est$mus - 3 * est$sigmas)
     xmax <- max(est$mus + 3 * est$sigmas)
-  }
-  if (est$sdds[[1]]$name == "gamma") {
-    xmin <- 0
-    xmax <- max(est$mus + 3 * est$sigmas)
-  }
-
-  ### compute densities
-  length.out <- 1e4
-  x <- seq(from = xmin, to = xmax, length.out = length.out)
-  f.x <- list()
-  for (s in 1:controls$states[1]) {
-    f.x[[s]] <- density(
-      name = est$sdds[[1]]$name, x = x, mu = est$mus[s],
-      sigma = est$sigmas[s], df = est$dfs[s]
-    )
-  }
-  f.x_true <- list()
-  if (!is.null(true)) {
-    for (s in 1:controls$states[1]) {
-      f.x_true[[s]] <- density(
-        name = true$sdds[[1]]$name, x = x,
-        mu = true$mus[s], sigma = true$sigmas[s],
-        df = true$dfs[s]
+    if(!is.null(true)){
+      xmin <- min(xmin, min(true$mus - 3 * true$sigmas))
+      xmax <- max(xmax, max(true$mus + 3 * true$sigmas))
+    }
+    if (name == "gamma") {
+      xmin <- 0.01
+    }
+  
+    ### compute densities
+    length.out <- 1e4
+    x <- seq(from = xmin, to = xmax, length.out = length.out)
+    f.x <- list()
+    for (s in 1:nstates) {
+      f.x[[s]] <- density(
+        name = name, x = x, mu = est$mus[s], sigma = est$sigmas[s], 
+        df = est$dfs[s]
       )
     }
-  }
-  ylim <- round(c(0, max(sapply(f.x, max))), 1)
-
-
-  ### define x range and initialize plot
-  plot(0,
-    type = "n", xlim = c(xmin, xmax),
-    ylim = round(c(0, max(sapply(c(f.x, f.x_true), max))), 1),
-    xlab = "", ylab = "", main = "State-dependent distributions"
-  )
-
-  ### plot densities
-  for (s in 1:controls$states[1]) {
-    lines(x, f.x[[s]], col = colors[s], lty = 1, lwd = 2)
+    f.x_true <- list()
     if (!is.null(true)) {
-      lines(x, f.x_true[[s]], lty = 2, col = colors[s], lwd = 2)
+      for (s in 1:nstates) {
+        f.x_true[[s]] <- density(
+          name = name, x = x, mu = true$mus[s], sigma = true$sigmas[s],
+          df = true$dfs[s]
+        )
+      }
     }
+    ylim <- max(round(c(0, max(sapply(f.x, max))), 1),100)
+  
+    ### define x range and initialize plot
+    plot(0,
+      type = "n", xlim = c(xmin, xmax),
+      ylim = round(c(0, max(sapply(c(f.x, f.x_true), max))), 1),
+      xlab = "", ylab = "", main = main
+    )
+  
+    ### plot densities
+    for (s in 1:nstates) {
+      lines(x, f.x[[s]], col = colors[s], lty = 1, lwd = 2)
+      if (!is.null(true)) {
+        lines(x, f.x_true[[s]], lty = 2, col = colors[s], lwd = 2)
+      }
+    }
+  
+    ### add legend
+    if (!is.null(true)) {
+      legend("topright", c("estimated", "true"), lwd = 2, lty = 1:2)
+    }
+    
   }
-
-  ### add legend
-  if (!is.null(true)) {
-    legend("topright", c("estimated", "true"), lwd = 2, lty = 1:2)
+  
+  ### plot sdds
+  if(controls$hierarchy){
+    layout(matrix(c(rep(1, controls$states[1]), (1:controls$states[1])+1), 
+                  nrow = 2, byrow = TRUE))
+  }
+  helper_sdds(name = est$sdds[[1]]$name, nstates = controls$states[1], 
+              colors = colors, 
+              main = "State-dependent distributions",
+              est = list("mus" = est$mus, "sigmas" = est$sigmas, 
+                         "dfs" = est$dfs), 
+              true = if(!is.null(true)){
+                list("mus" = true$mus, "sigmas" = true$sigmas, 
+                     "dfs" = true$dfs)
+                } else {
+                  NULL
+                  }
+              )
+  if(controls$hierarchy){
+    for(s in 1:controls$states[1]){
+      helper_sdds(name = est$sdds[[2]]$name, nstates = controls$states[2], 
+                  colors = colors, 
+                  main = paste("Coarse-scale state",s),
+                  est = list("mus" = est$mus_star[[s]], 
+                             "sigmas" = est$sigmas_star[[s]], 
+                             "dfs" = est$dfs_star[[s]]), 
+                  true = if(!is.null(true)){
+                    list("mus" = true$mus_star[[s]], 
+                         "sigmas" = true$sigmas_star[[s]], 
+                         "dfs" = true$dfs_star[[s]])
+                  } else {
+                    NULL
+                  }
+                  )
+    }
   }
 }
