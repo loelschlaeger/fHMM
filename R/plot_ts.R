@@ -37,7 +37,8 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL,
       points(x = x[decoding==s], y = y[decoding==s], col = colors[s], pch=20)
     }
   }
-
+  
+  ### plot
   if (!data$controls$hierarchy) {
     if (data$controls$simulated) {
       par(las = 1)
@@ -50,6 +51,15 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL,
       if(!is.null(decoding))
         add_decoding(nstates = data$controls$states[1], decoding = decoding,
                      x = data$time_points, y = data$data, colors = colors)
+      
+      if(!is.null(predict)){
+        plotrix::plotCI(x = max(data$time_points) + seq_len(nrow(predict$data)),              
+                        y = predict$data[,"estimate"],
+                        li = predict$data[,"lb"],
+                        ui = predict$data[,"ub"],
+                        add = TRUE, gap = TRUE)
+        
+      }
       
     } else {
       par(las = 1, mar = c(0, 1, 1, 1), oma = c(3, 3, 0, 0))

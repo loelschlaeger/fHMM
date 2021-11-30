@@ -28,7 +28,8 @@ Imports:
     progress,
     foreach,
     magrittr,
-    crayon
+    crayon,
+    plotrix
 LinkingTo:
     Rcpp,
     RcppArmadillo

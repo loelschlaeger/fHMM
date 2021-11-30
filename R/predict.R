@@ -6,12 +6,22 @@
 #' @param ahead
 #' A positive integer.
 #' @inheritParams compute_ci
+#' @param verbose
+#' If \code{TRUE} prints prediction.
 #' @return
 #' An object of class \code{fHMM_model}.
 
-predict <- function(model, ahead, ci_level = 0.05) {
+predict <- function(model, ahead, ci_level = 0.05, verbose = FALSE) {
 
-  ### TODO: check input
+  ### check input
+  if(class(model) != "fHMM_model")
+    stop("'model' must be of class 'fHMM_model'.")
+  if(!(length(ahead) == 1 && is_number(ahead, int = TRUE, pos = TRUE)))
+    stop("'ahead' must be a positive integer")
+  if(!(length(ci_level) == 1 && is_number(ci_level, pos = TRUE) && ci_level <= 1))
+    stop("'ci_level' must be a numeric between 0 and 1.")
+  if(!is.logical(verbose))
+    stop("'verbose' must be a boolean.")
 
   ### extract parameters
   par <- parUncon2par(model$estimate, model$data$controls)
@@ -54,9 +64,11 @@ predict <- function(model, ahead, ci_level = 0.05) {
   rownames(data_prediction) <- 1:ahead
   colnames(data_prediction) <- c("lb", "estimate", "ub")
 
-  ### build and return output
+  ### build, possibly print and return output
   out <- list("states" = state_prediction, "data" = data_prediction)
   class(out) <- "fHMM_predict"
   model$predict = out
+  if(verbose)
+    print(out)
   return(model)
 }
