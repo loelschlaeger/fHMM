@@ -42,6 +42,6 @@ fHMM_events <- function(events) {
 #' @export
 
 print.fHMM_events <- function(x, ...) {
-  print(data.frame("dates" = events$dates, "labels" = events$labels))
+  print(data.frame("dates" = x$dates, "labels" = x$labels))
   return(invisible(x))
 }
