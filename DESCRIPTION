@@ -23,6 +23,7 @@ Encoding: UTF-8
 Depends:
     R (>= 4.0.0)
 Imports: 
+    MASS,
     Rcpp,
     progress,
     foreach,
