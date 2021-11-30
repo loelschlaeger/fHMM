@@ -25,7 +25,6 @@ plot.fHMM_data <- function(x, events = NULL, ...) {
 
   ### visualization
   plot_ts(
-    data = x, decoding = NULL, colors = NULL, events = events,
-    predict = NULL
+    data = x, decoding = NULL, colors = NULL, events = events, predict = NULL
   )
 }
