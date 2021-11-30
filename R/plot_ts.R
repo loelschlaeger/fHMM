@@ -118,29 +118,22 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL,
         x = as.Date(data$dates[,1]), y = data$data[, 1], type = "h", col = "grey",
         xlab = "time points", ylab = "", main = "Coarse-scale data time series"
       )
-      
-      add_events(events)
-      
+
       plot(
         x = as.Date(data$dates[,-1]), y = data$data[, -1], type = "h", col = "grey",
         xlab = "time points", ylab = "", main = "Fine-scale data time series"
       )
-      
-      add_events(events, labels = FALSE)
       
       plot(
         x = as.Date(data$dates[,1]), y = data$time_series[, 1], type = "l", col = "grey",
         xlab = "time points", ylab = "", main = "Coarse-scale data time series"
       )
       
-      add_events(events)
-      
       plot(
         x = as.Date(data$dates[,-1]), y = data$time_series[, -1], type = "l", col = "grey",
         xlab = "time points", ylab = "", main = "Fine-scale data time series"
       )
       
-      add_events(events, labels = FALSE)
     }
   }
 }
