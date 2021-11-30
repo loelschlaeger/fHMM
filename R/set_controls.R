@@ -237,7 +237,7 @@ set_controls <- function(controls = NULL) {
   }
   if (controls[["hierarchy"]]) {
     ### controls with hierarchy
-    if (!(is_number(controls[["states"]], int = TRUE) &&
+    if (!(all(is_number(controls[["states"]], int = TRUE)) &&
       length(controls[["states"]]) == 2 && all(controls[["states"]] >= 2))) {
       stop("The control 'states' must be a vector of length 2 containing integers greater or equal 2.")
     }
