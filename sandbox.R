@@ -9,36 +9,39 @@ download_data(symbol = "^GDAXI", file = "dax.csv", verbose = FALSE)
 download_data(symbol = "VOW3.DE", file = "vw.csv", verbose = FALSE)
 
 ### simulated HMM -----------------------------------------------------------
+seed = 1
 controls = list(
-  states  = 3,
+  states  = 2,
   sdds    = "gamma",
-  horizon = 1000,
+  horizon = 500,
   fit     = list("runs" = 100)
 )
 controls %<>% set_controls
-data = prepare_data(controls)
+data = prepare_data(controls, seed = seed)
 data %>% summary
 data %>% plot
-model = fit_model(data, ncluster = 7) %>%
+model = fit_model(data, ncluster = 7, seed = seed) %>%
   decode_states %>%
   compute_residuals
 summary(model)
-model %<>% reorder_states(state_order = 3:1)
+model %<>% reorder_states(state_order = 1:2)
 compare(model)
 model %>% plot("ll")
-model %>% plot("sdds", colors = c("green","red"))
+model %>% plot("sdds")
 model %>% plot("pr")
-model %<>% predict(ahead = 10)
+model %<>% predict(ahead = 10, verbose = TRUE)
 model %>% plot("ts")
 
 ### empirical HMM -----------------------------------------------------------
+seed = 1
 controls = list(
-  states = 2,
+  states = 3,
   sdds   = "t",
   data   = list(file        = "dax.csv",
                 date_column = "Date",
                 data_column = "Close",
-                logreturns  = TRUE)
+                logreturns  = TRUE,
+                from        = "2010-01-01")
 )
 controls %<>% set_controls
 data = prepare_data(controls)
@@ -47,16 +50,19 @@ events = list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
               labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers",
                          "First COVID-19 case Germany")) %>% fHMM_events
 plot(data, events)
-model = fit_model(data, ncluster = 7) %>%
+model = fit_model(data, ncluster = 7, seed = seed) %>%
   decode_states %>%
   compute_residuals
 summary(model)
 model %>% plot("ll")
 model %>% plot("sdds")
+model %<>% reorder_states(state_order = 3:1)
 model %>% plot("pr")
+model %<>% predict(ahead = 10, verbose = TRUE)
 model %>% plot("ts", events = events)
 
 ### simulated HHMM ----------------------------------------------------------
+seed = 1
 controls = list(
   hierarchy = TRUE,
   states    = c(2,2),
@@ -66,7 +72,8 @@ controls = list(
   fit       = list("runs" = 20)
 )
 controls %<>% set_controls
-data = prepare_data(controls)
+data = prepare_data(controls, seed = seed)
+summary(data)
 plot(data)
 model = fit_model(data, ncluster = 7) %>% 
   decode_states %>%
@@ -80,6 +87,7 @@ model %>% plot("pr")
 model %>% plot("ts")
 
 ### empirical HHMM ----------------------------------------------------------
+seed = 1
 controls = list(
   hierarchy = TRUE,
   horizon   = c(100, NA),
@@ -94,7 +102,7 @@ controls = list(
 controls = set_controls(controls)
 data = prepare_data(controls)
 plot(data)
-model = fit_model(data, ncluster = 7) %>% 
+model = fit_model(data, ncluster = 7, seed = seed) %>% 
   decode_states %>%
   compute_residuals
 summary(model)
@@ -102,5 +110,5 @@ compare(model)
 model %>% plot("ll")
 model %>% plot("sdds")
 model %>% plot("pr")
-model %>% plot("ts", events)
+model %>% plot("ts", events = NULL)
 
