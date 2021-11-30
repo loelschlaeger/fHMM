@@ -244,7 +244,7 @@ set_controls <- function(controls = NULL) {
     if (!controls[["simulated"]]) {
       controls[["horizon"]][1] <- NA
     }
-    if (!(length(controls[["horizon"]]) == 2 && is_number(controls[["horizon"]][!is.na(controls[["horizon"]])], int = TRUE, pos = TRUE))) {
+    if (!(length(controls[["horizon"]]) == 2 && all(is_number(controls[["horizon"]][!is.na(controls[["horizon"]])], int = TRUE, pos = TRUE)))) {
       stop("The control 'horizon' must be an integer vector of length 2.")
     }
     if (!is.na(controls[["horizon"]][2])) {
