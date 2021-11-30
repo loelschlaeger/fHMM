@@ -19,11 +19,15 @@ S3method(summary,fHMM_data)
 S3method(summary,fHMM_model)
 
 ### export functions
+export(compute_residuals)
+export(decode_states)
 export(download_data)
 export(fHMM_events)
 export(fit_model)
 export(prepare_data)
+export(reorder_states)
 export(set_controls)
+export(solve_trouble)
 
 ### imports
 import(Rcpp)
