@@ -25,7 +25,7 @@ is_number(
 
 \item{pos}{A boolean, if \code{TRUE} checks if \code{x} is positive.}
 
-\item{non-pos}{A boolean, if \code{TRUE} checks if \code{x} is non-positive.}
+\item{non_pos}{A boolean, if \code{TRUE} checks if \code{x} is non-positive.}
 }
 \value{
 A boolean.

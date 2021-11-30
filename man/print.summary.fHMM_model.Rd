@@ -9,6 +9,8 @@
 \arguments{
 \item{x}{An object of class \code{summary.fHMM_model}.}
 
+\item{digits}{An integer indicating the number of displayed decimal places in the summary.}
+
 \item{...}{Ignored.}
 }
 \value{
