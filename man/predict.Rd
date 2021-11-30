@@ -4,7 +4,7 @@
 \alias{predict}
 \title{Prediction}
 \usage{
-predict(model, ahead, ci_level = 0.05)
+predict(model, ahead, ci_level = 0.05, verbose = FALSE)
 }
 \arguments{
 \item{model}{An object of class \code{fHMM_model}.}
@@ -12,6 +12,8 @@ predict(model, ahead, ci_level = 0.05)
 \item{ahead}{A positive integer.}
 
 \item{ci_level}{The confidence level, a numeric between 0 and 1.}
+
+\item{verbose}{If \code{TRUE} prints prediction.}
 }
 \value{
 An object of class \code{fHMM_model}.
