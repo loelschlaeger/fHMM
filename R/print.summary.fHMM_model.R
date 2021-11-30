@@ -1,6 +1,8 @@
 #' Print method for the summary of \code{fHMM_model}.
 #' @param x
 #' An object of class \code{summary.fHMM_model}.
+#' @param digits
+#' An integer indicating the number of displayed decimal places in the summary. 
 #' @param ...
 #' Ignored.
 #' @return
