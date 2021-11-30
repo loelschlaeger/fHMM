@@ -27,7 +27,7 @@ check_date <- function(date) {
 #' A boolean, if \code{TRUE} checks if \code{x} is non-negative.
 #' @param pos
 #' A boolean, if \code{TRUE} checks if \code{x} is positive.
-#' @param non-pos
+#' @param non_pos
 #' A boolean, if \code{TRUE} checks if \code{x} is non-positive.
 #' @return
 #' A boolean.
