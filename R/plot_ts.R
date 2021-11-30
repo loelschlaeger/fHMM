@@ -23,12 +23,12 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL,
   on.exit(suppressWarnings(par(oldpar)))
 
   ### helper functions
-  add_events <- function(events, labels = FALSE) {
+  add_events <- function(events, legend = FALSE) {
     abline(v = as.Date(events$dates))
-    if (labels) {
-      axis(3, as.Date(events$dates), seq_along(events$dates))
+    mtext(seq_along(events$dates), at = as.Date(events$dates), line = -1, adj = 1)
+    if (legend) {
       mtext(paste0(seq_along(events$dates), ": ", events$labels, collapse = "; "),
-        side = 3, line = 2
+        side = 1, line = 2
       )
     }
   }
@@ -71,6 +71,10 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL,
         col = "grey",
         xaxt = "n", xlab = "", ylab = ""
       )
+      
+      if(!is.null(decoding))
+        add_decoding(nstates = data$controls$states[1], decoding = decoding,
+                     x = as.Date(data$dates), y = data$time_series, colors = colors)
 
       add_events(events)
 
@@ -80,7 +84,11 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL,
         ylab = ""
       )
 
-      add_events(events, labels = TRUE)
+      add_events(events, legend = TRUE)
+      
+      if(!is.null(decoding))
+        add_decoding(nstates = data$controls$states[1], decoding = decoding,
+                     x = as.Date(data$dates), y = data$data, colors = colors)
     }
   } else {
     
