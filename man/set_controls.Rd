@@ -110,7 +110,7 @@ See the vignettes for more information on how to specify \code{controls}.
 }
 \examples{
 ### HMM controls
-controls = list(
+controls <- list(
   states  = 2,
   sdds    = "t(mu = 0, sigma = 1, df = 1)",
   horizon = 400,
@@ -119,7 +119,7 @@ controls = list(
 set_controls(controls)
 
 ### HHMM controls
-controls = list(
+controls <- list(
   hierarchy = TRUE
 )
 set_controls(controls)

@@ -14,7 +14,7 @@ predict(model, ahead, ci_level = 0.05)
 \item{ci_level}{The confidence level, a numeric between 0 and 1.}
 }
 \value{
-An object of class \code{fHMM_predict}.
+An object of class \code{fHMM_model}.
 }
 \description{
 This function...

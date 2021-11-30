@@ -47,7 +47,9 @@ The downloaded data is a .csv-file with the following columns:
 }
 }
 \examples{
-### download 21st century DAX data 
-download_data(symbol = "^GDAXI", from = "2000-01-03", 
-              file = paste0(tempfile(),".csv"))
+### download 21st century DAX data
+download_data(
+  symbol = "^GDAXI", from = "2000-01-03",
+  file = paste0(tempfile(), ".csv")
+)
 }

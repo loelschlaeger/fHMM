@@ -16,18 +16,17 @@ be a vector of length \code{x$data$controls$states} with integer
 values from \code{1} to \code{x$data$controls$states}. If the old
 state number \code{x} should be the new state number \code{y}, put
 the value \code{x} at the position \code{y} of \code{state_order}.
-E.g. for a 2-state HMM, specifying \code{state_order = c(2,1)}
-swaps the states.
+E.g. for a 2-state HMM, specifying \code{state_order = c(2,1)} swaps
+the states.
 \item If \code{x$data$controls$hierarchy = TRUE}, \code{state_order} must
 be a matrix of dimension \code{x$data$controls$states[1]} x
 \code{x$data$controls$states[2] + 1}. The first column orders the
 coarse-scale states with the logic as described above. For each row,
-the second to last elements order the fine-scale states of the
-coarse-scale state specified by the first element. E.g. for an HHMM
-with 2 coarse- and 2 fine-scale states, specifying
-\code{state_order = matrix(c(1,2,2,1,1,2),2,3)} swaps both
-coarse-scale states and the fine-scale states for coarse-scale state
-2.
+the elements from second to last position order the fine-scale states
+of the coarse-scale state specified by the first element. E.g. for an
+HHMM with 2 coarse-scale and 2 fine-scale states, specifying
+\code{state_order = matrix(c(2,1,2,1,1,2),2,3)} swaps the
+coarse-scale states and the fine-scale states of coarse-scale state 2.
 }}
 }
 \value{

@@ -13,7 +13,7 @@ fHMM_colors(controls, colors = NULL)
 triplets.}
 }
 \value{
-An object of class \code{fHMM_colors}, which is...
+An object of class \code{fHMM_colors}.
 }
 \description{
 This function defines a color scheme for visualizations in the fHMM package.

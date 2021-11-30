@@ -19,9 +19,10 @@ distributions,
 \item \code{"ts"} for a visualization of the financial time series.
 }}
 
-\item{events}{...}
+\item{events}{An object of class \code{fHMM_events}.}
 
-\item{colors}{...}
+\item{colors}{Either \code{NULL} or a a character vector of color names or hexadecimal RGB
+triplets.}
 
 \item{...}{Ignored.}
 }
