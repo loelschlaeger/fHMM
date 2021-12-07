@@ -1,14 +1,18 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1
+pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
-  data: data.html
-  debug: debug.html
-  model-parameters: model-parameters.html
-  output: output.html
-  specify: specify.html
-last_built: 2021-09-27T14:28Z
+  data_management: data_management.html
+  debugging: debugging.html
+  introduction: introduction.html
+  model_checking: model_checking.html
+  model_definition: model_definition.html
+  model_fitting: model_fitting.html
+  model_results: model_results.html
+  model_selection: model_selection.html
+  prediction: prediction.html
+last_built: 2021-12-07T18:57Z
 urls:
-  reference: https://loelschlaeger.github.io/fHMM//reference
-  article: https://loelschlaeger.github.io/fHMM//articles
+  reference: https://loelschlaeger.github.io/fHMM/reference
+  article: https://loelschlaeger.github.io/fHMM/articles
 
