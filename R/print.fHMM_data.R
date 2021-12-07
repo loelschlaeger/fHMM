@@ -7,7 +7,7 @@
 #' Ignored.
 #' @return
 #' Returns \code{x} invisibly.
-#' @export
+#' @noRd
 
 print.fHMM_data <- function(x, ...) {
   cat("fHMM", ifelse(x$controls$simulated, "simulated", "empirical"), "data\n")

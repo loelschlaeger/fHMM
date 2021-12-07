@@ -7,7 +7,7 @@
 #' Ignored.
 #' @return
 #' Returns \code{x} invisibly.
-#' @export
+#' @noRd
 
 print.fHMM_predict <- function(x, ...) {
   print(cbind(x$states,x$data))

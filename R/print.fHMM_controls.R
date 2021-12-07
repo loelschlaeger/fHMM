@@ -7,7 +7,7 @@
 #' Ignored.
 #' @return
 #' Returns \code{x} invisibly.
-#' @export
+#' @noRd
 
 print.fHMM_controls <- function(x, ...) {
   cat("fHMM controls:\n")

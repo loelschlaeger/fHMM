@@ -7,7 +7,7 @@
 #' Ignored.
 #' @return
 #' Returns invisibly \code{x}.
-#' @export
+#' @noRd
 
 print.fHMM_trouble <- function(x, ...) {
   cat(crayon::red("\U2716", x$code, ":", x$response, "\n"))
