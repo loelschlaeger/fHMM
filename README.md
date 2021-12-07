@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# fHMM <img src="man/figures/sticker.png" align="right" height=136 />
+# fHMM <img src="man/figures/sticker.png" align="right" alt="" width="120" />
 
 <!-- badges: start -->
 
@@ -10,6 +10,8 @@
 status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
 [![CRAN
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
+[![Codecov test
+coverage](https://codecov.io/gh/loelschlaeger/fHMM/branch/main/graph/badge.svg)](https://app.codecov.io/gh/loelschlaeger/fHMM?branch=main)
 <!-- badges: end -->
 
 The goal of fHMM is to detect bearish and bullish markets in financial
@@ -104,22 +106,22 @@ summary(model)
 #> t() 
 #> 
 #> Estimates:
-#>                   lb    estimate         ub
-#> Gamma_2.1         NA   5.017e-02         NA
-#> Gamma_3.1         NA   2.846e-02         NA
-#> Gamma_1.2  3.929e-02   4.000e-02  4.072e-02
-#> Gamma_3.2         NA  2.885e-141         NA
-#> Gamma_1.3  6.818e-03   6.990e-03  7.166e-03
-#> Gamma_2.3         NA   4.277e-50         NA
-#> mu_1      -2.487e-05  -1.193e-05  1.012e-06
-#> mu_2       1.210e-03   1.224e-03  1.238e-03
-#> mu_3      -1.490e-03  -1.405e-03 -1.320e-03
-#> sigma_1    1.215e-02   1.217e-02  1.220e-02
-#> sigma_2    5.082e-03   5.102e-03  5.123e-03
-#> sigma_3    2.129e-02   2.139e-02  2.148e-02
-#> df_1       1.528e+71   1.528e+71  1.528e+71
-#> df_2       4.387e+00   4.436e+00  4.486e+00
-#> df_3       7.457e+00   7.628e+00  7.802e+00
+#>                   lb   estimate         ub
+#> Gamma_2.1         NA  5.017e-02         NA
+#> Gamma_3.1  2.779e-02  2.846e-02  2.913e-02
+#> Gamma_1.2  3.930e-02  4.000e-02  4.071e-02
+#> Gamma_3.2  5.069e-53  5.066e-53  5.062e-53
+#> Gamma_1.3  6.818e-03  6.990e-03  7.166e-03
+#> Gamma_2.3         NA  1.565e-18         NA
+#> mu_1              NA -1.194e-05         NA
+#> mu_2       1.211e-03  1.224e-03  1.237e-03
+#> mu_3      -1.490e-03 -1.405e-03 -1.320e-03
+#> sigma_1    1.215e-02  1.217e-02  1.220e-02
+#> sigma_2    5.082e-03  5.102e-03  5.123e-03
+#> sigma_3    2.129e-02  2.139e-02  2.148e-02
+#> df_1       1.549e+17  1.549e+17  1.549e+17
+#> df_2       4.387e+00  4.436e+00  4.486e+00
+#> df_3       7.457e+00  7.628e+00  7.802e+00
 #> 
 #> States:
 #> decoded
