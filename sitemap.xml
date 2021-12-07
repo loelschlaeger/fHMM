@@ -178,9 +178,6 @@
     <loc>https://loelschlaeger.github.io/fHMM/reference/prepare_data.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/reference/print.fHMM_events.html</loc>
-  </url>
-  <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/read_data.html</loc>
   </url>
   <url>
@@ -206,11 +203,5 @@
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/solve_trouble.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/reference/summary.fHMM_data.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/reference/summary.fHMM_model.html</loc>
   </url>
 </urlset>

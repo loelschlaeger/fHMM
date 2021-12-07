@@ -58,9 +58,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="data-preparation">Data preparation<a class="anchor" aria-label="anchor" href="#data-preparation"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Use these functions to prepare or simulate financial data.</p>
 
       
     </div><div id="" class="section level2">
@@ -70,24 +70,61 @@
 
       <dl><dt>
           
-          <code><a href="check_date.html">check_date()</a></code> 
+          <code><a href="download_data.html">download_data()</a></code> 
         </dt>
-        <dd>Check date format "YYYY-MM-DD".</dd>
+        <dd>Download financial data.</dd>
       </dl><dl><dt>
+          
+          <code><a href="plot.fHMM_data.html">plot(<i>&lt;fHMM_data&gt;</i>)</a></code> 
+        </dt>
+        <dd>Plot method for an object of class <code>fHMM_data</code>.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="prepare_data.html">prepare_data()</a></code> 
+        </dt>
+        <dd>Prepare data for the fHMM package.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="set_controls.html">set_controls()</a></code> 
+        </dt>
+        <dd>Set and check controls for the fHMM package.</dd>
+      </dl></div><div class="section level2">
+      <h2 id="model-estimation">Model estimation<a class="anchor" aria-label="anchor" href="#model-estimation"></a></h2>
+      
+      <p class="section-desc"></p><p>Use these function for model estimation.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="decode_states.html">decode_states()</a></code> 
+        </dt>
+        <dd>Decode the underlying hidden state sequence.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="fit_model.html">fit_model()</a></code> 
+        </dt>
+        <dd>Model fitting for the fHMM package.</dd>
+      </dl></div><div class="section level2">
+      <h2 id="model-evaluation">Model evaluation<a class="anchor" aria-label="anchor" href="#model-evaluation"></a></h2>
+      
+      <p class="section-desc"></p><p>Use these functions to evaluate your model.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="compare.html">compare()</a></code> 
         </dt>
         <dd>Comparison of multiple <code>fHMM_model</code>.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="compute_T_star.html">compute_T_star()</a></code> 
-        </dt>
-        <dd>Compute lengths of fine-scale chunks</dd>
-      </dl><dl><dt>
-          
-          <code><a href="compute_ci.html">compute_ci()</a></code> 
-        </dt>
-        <dd>Confidence intervals</dd>
       </dl><dl><dt>
           
           <code><a href="compute_residuals.html">compute_residuals()</a></code> 
@@ -95,15 +132,47 @@
         <dd>Compute (pseudo-) residuals.</dd>
       </dl><dl><dt>
           
-          <code><a href="decode_states.html">decode_states()</a></code> 
+          <code><a href="plot.fHMM_model.html">plot(<i>&lt;fHMM_model&gt;</i>)</a></code> 
         </dt>
-        <dd>Decode the underlying hidden state sequence.</dd>
+        <dd>Plot method for an object of class <code>fHMM_model</code>.</dd>
       </dl><dl><dt>
           
-          <code><a href="download_data.html">download_data()</a></code> 
+          <code><a href="predict.html">predict()</a></code> 
         </dt>
-        <dd>Download financial data.</dd>
+        <dd>Prediction</dd>
       </dl><dl><dt>
+          
+          <code><a href="reorder_states.html">reorder_states()</a></code> 
+        </dt>
+        <dd>Reordering of estimated states.</dd>
+      </dl></div><div class="section level2">
+      <h2 id="debugging">Debugging<a class="anchor" aria-label="anchor" href="#debugging"></a></h2>
+      
+      <p class="section-desc"></p><p>Use this function for solving bugs.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="solve_trouble.html">solve_trouble()</a></code> 
+        </dt>
+        <dd>Debugging.</dd>
+      </dl></div><div class="section level2">
+      <h2 id="s-classes">S3 classes<a class="anchor" aria-label="anchor" href="#s-classes"></a></h2>
+      
+      <p class="section-desc"></p><p>These functions construct the S3 classes of fHMM.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="fHMM_colors.html">fHMM_colors()</a></code> 
         </dt>
@@ -123,11 +192,22 @@
           <code><a href="fHMM_sdds.html">fHMM_sdds()</a></code> 
         </dt>
         <dd>Define state-dependent distributions.</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="small-utilities">Small utilities<a class="anchor" aria-label="anchor" href="#small-utilities"></a></h2>
+      
+      <p class="section-desc"></p><p>These functions may be useful beyond fHMM.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
-          <code><a href="fit_model.html">fit_model()</a></code> 
+          <code><a href="check_date.html">check_date()</a></code> 
         </dt>
-        <dd>Model fitting for the fHMM package.</dd>
+        <dd>Check date format "YYYY-MM-DD".</dd>
       </dl><dl><dt>
           
           <code><a href="is_number.html">is_number()</a></code> 
@@ -146,96 +226,12 @@
         <dd>Match positions of two numeric vectors "as good as possible".</dd>
       </dl><dl><dt>
           
-          <code><a href="plot.fHMM_data.html">plot(<i>&lt;fHMM_data&gt;</i>)</a></code> 
-        </dt>
-        <dd>Plot method for an object of class <code>fHMM_data</code>.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plot.fHMM_model.html">plot(<i>&lt;fHMM_model&gt;</i>)</a></code> 
-        </dt>
-        <dd>Plot method for an object of class <code>fHMM_model</code>.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plot_ll.html">plot_ll()</a></code> 
-        </dt>
-        <dd>Visualization of log-likelihood values.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plot_pr.html">plot_pr()</a></code> 
-        </dt>
-        <dd>Visualize pseudo residuals.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plot_sdds.html">plot_sdds()</a></code> 
-        </dt>
-        <dd>Visualization of estimated state-dependent distributions.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plot_ts.html">plot_ts()</a></code> 
-        </dt>
-        <dd>Visualize time series.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="predict.html">predict()</a></code> 
-        </dt>
-        <dd>Prediction</dd>
-      </dl><dl><dt>
-          
-          <code><a href="prepare_data.html">prepare_data()</a></code> 
-        </dt>
-        <dd>Prepare data for the fHMM package.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="print.fHMM_events.html">print(<i>&lt;fHMM_events&gt;</i>)</a></code> 
-        </dt>
-        <dd>Print method for <code>fHMM_events</code>.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="read_data.html">read_data()</a></code> 
-        </dt>
-        <dd>Read data for the fHMM package.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="reorder_states.html">reorder_states()</a></code> 
-        </dt>
-        <dd>Reordering of estimated states.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="set_controls.html">set_controls()</a></code> 
-        </dt>
-        <dd>Set and check controls for the fHMM package.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="simulate_data.html">simulate_data()</a></code> 
-        </dt>
-        <dd>Simulate data for the fHMM package.</dd>
-      </dl><dl><dt>
-          
           <code><a href="simulate_markov_chain.html">simulate_markov_chain()</a></code> 
         </dt>
         <dd>Simulate a Markov chain.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="simulate_observations.html">simulate_observations()</a></code> 
-        </dt>
-        <dd>Simulate state-dependent observations.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="solve_trouble.html">solve_trouble()</a></code> 
-        </dt>
-        <dd>Debugging.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="summary.fHMM_data.html">summary(<i>&lt;fHMM_data&gt;</i>)</a></code> 
-        </dt>
-        <dd>Summary method for <code>fHMM_data</code>.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="summary.fHMM_model.html">summary(<i>&lt;fHMM_model&gt;</i>)</a></code> 
-        </dt>
-        <dd>Summary method for an object of class <code>fHMM_model</code>.</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
