@@ -2,17 +2,19 @@
 % Please edit documentation in R/parameter_transformations.R
 \name{sigmaUncon2sigmaCon}
 \alias{sigmaUncon2sigmaCon}
-\title{Constrains standard deviations.}
+\title{This function constrains the un-constrained standard deviations
+\code{sigmaUncon}.}
 \usage{
 sigmaUncon2sigmaCon(sigmaUncon)
 }
 \arguments{
-\item{sigmaUncon}{Vector of unconstrained standard deviations.}
+\item{sigmaUncon}{A vector of un-constrained standard deviations.}
 }
 \value{
-Vector of constrained standard deviations.
+A vector of constrained standard deviations.
 }
 \description{
-Constrains standard deviations.
+This function constrains the un-constrained standard deviations
+\code{sigmaUncon}.
 }
 \keyword{internal}

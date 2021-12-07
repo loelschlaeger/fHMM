@@ -1,113 +1,143 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # fHMM <img src="man/figures/sticker.png" align="right" height=136 />
 
+<!-- badges: start -->
+
 [![R-CMD-check](https://github.com/loelschlaeger/fHMM/workflows/R-CMD-check/badge.svg)](https://github.com/loelschlaeger/fHMM/actions)
-[![CRAN status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
-[![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
+[![CRAN
+status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
+<!-- badges: end -->
 
-👉 Fitting (hierarchical) hidden Markov models to financial data.
+The goal of fHMM is to detect bearish and bullish markets in financial
+time series aplying (hierarchical) hidden Markov models.
 
-💬 Found a bug? Request a feature? Please [tell us](https://github.com/loelschlaeger/fHMM/issues)!
+## Installation
 
-📝 In R, type `citation("fHMM")` for citing this package in publications.
+You can install the released version of fHMM from
+[CRAN](https://CRAN.R-project.org) with:
 
-## How to get started?
-
-1. Run `install.packages("fHMM")` and `library("fHMM")` in your R console. to install **fHMM**.
-2. Specify your model by defining the named list `controls`. 
-3. Execute `fit_hmm(controls)`.
-
-We provide vignettes that give answers to the following FAQs:
-- How to specify a model in **fHMM**?
-- How to process financial data in **fHMM**?
-- How to interpret **fHMM** outputs?
-- How to debug **fHMM**?
-- How does **fHMM** process model parameters?
-
-## Examples
-
-### Fitting a 2-state HMM to simulated data using gamma-distributions
-
-Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HMM_2_sim_gamma) for the results.
-
-```R
-### set controls
-controls = list(
-  path    = ".",
-  id      = "HMM_2_sim_gamma",
-  model   = "hmm",
-  states  = 2,
-  sdds    = "gamma",
-  horizon = 5000,
-  fit     = list("seed" = 1)
-)
-
-### fit (H)HMM
-fit_hmm(controls)
+``` r
+install.packages("fHMM")
 ```
 
-### Fitting a 3-state HMM to the DAX closing prices from 2000 to 2020 using t-distributions
+And the development version from [GitHub](https://github.com/) with:
 
-Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HMM_3_DAX) for the results.
-
-```R
-### download data (optional)
-download_data(name = "dax", symbol = "^GDAXI", path = ".")
-
-### set controls
-controls = list(
-  path    = ".",
-  id      = "HMM_3_DAX",
-  model   = "hmm",
-  states  = 3,
-  sdds    = "t",
-  data    = list("source" = "dax", 
-                 "column" = "Close", 
-                 "truncate" = c("2000-01-03","2020-12-30")
-                 )
-)
-
-### define events (optional)
-events = list(
-  dates = c("2001-09-11","2008-09-15","2020-01-27"),
-  names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
-)
-
-### fit (H)HMM
-fit_hmm(controls,events)
+``` r
+# install.packages("devtools")
+devtools::install_github("loelschlaeger/fHMM")
 ```
 
-### Fitting a (2,2)-state HHMM jointly to the DAX and the Deutsche Bank stock
+## Example: Fitting an HMM to the DAX
 
-Click [here](https://github.com/loelschlaeger/fHMM/tree/master/models/HHMM_2_2_DAX_DBK_t_t) for the results.
-
-```R
-### download data (optional)
-download_data(name = "dax", symbol = "^GDAXI", path = ".")
-download_data(name = "dbk", symbol = "DBK.DE", path = ".")
-
-### set controls
-controls = list(
-  path    = ".",
-  id      = "HHMM_2_2_DAX_DBK_t_t",
-  model   = "hhmm",
-  states  = c(2,2),
-  sdds    = c("t","t"),
-  horizon = c(NA,"m"),
-  data    = list("source"       = c("dax","dbk"), 
-                 "column"       = c("Close","Close"), 
-                 "cs_transform" = function(x) (tail(x,1)-head(x,1))/head(x,1), 
-                 "log_returns"  = c(FALSE,TRUE),
-                 "truncate"     = c("2000-01-01",NA)),
-  fit     = list("runs" = 100)
-)
-
-### define events (optional)
-events = list(
-  dates = c("2001-09-11","2008-09-15","2020-01-27"),
-  names = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
-)
-
-### fit (H)HMM
-fit_hmm(controls,events)
-
+``` r
+library(fHMM)
+#> Thanks for using fHMM version 0.3.0.9000, have fun!
+#> See https://loelschlaeger.github.io/fHMM for help.
+#> Type 'citation("fHMM")' for citing this R package.
+library(magrittr)
 ```
+
+We fit a 3-state HMM with state-dependent t-distributions to the DAX
+log-returns from 2010 to 2020.
+
+The package has a build-in function to download the data from [Yahoo
+Finance](https://finance.yahoo.com/):
+
+``` r
+download_data(symbol = "^GDAXI", file = "dax.csv", verbose = FALSE)
+```
+
+We first need to define the model by setting the `controls`:
+
+``` r
+controls = list(
+  states = 3,
+  sdds   = "t",
+  data   = list(file        = "dax.csv",
+                date_column = "Date",
+                data_column = "Close",
+                logreturns  = TRUE,
+                from        = "2010-01-01",
+                to          = "2020-12-31")
+)
+(controls %<>% set_controls)
+#> fHMM controls:
+#> * hierarchy: FALSE 
+#> * data type: empirical 
+#> * number of states: 3 
+#> * sdds: t() 
+#> * number of runs: 100
+```
+
+The function `prepare_data` prepares the data for estimation:
+
+``` r
+data = prepare_data(controls)
+summary(data)
+#> Summary of fHMM empirical data
+#> * number of observations: 2791 
+#> * data source: dax.csv 
+#> * date column: Date 
+#> * log returns: TRUE
+```
+
+We now fit the model and subsequentially decode the hidden states:
+
+``` r
+model = fit_model(data, ncluster = 7) %>% decode_states 
+#> Checking start values
+#> Maximizing likelihood
+#> Computing Hessian
+#> Fitting completed
+#> Decoded states
+summary(model)
+#> Summary of fHMM model
+#> 
+#>   simulated hierarchy       LL       AIC       BIC
+#> 1     FALSE     FALSE 8632.274 -17234.55 -17145.54
+#> 
+#> State-dependent distributions:
+#> t() 
+#> 
+#> Estimates:
+#>                   lb    estimate         ub
+#> Gamma_2.1         NA   5.017e-02         NA
+#> Gamma_3.1         NA   2.846e-02         NA
+#> Gamma_1.2  3.929e-02   4.000e-02  4.072e-02
+#> Gamma_3.2         NA  2.885e-141         NA
+#> Gamma_1.3  6.818e-03   6.990e-03  7.166e-03
+#> Gamma_2.3         NA   4.277e-50         NA
+#> mu_1      -2.487e-05  -1.193e-05  1.012e-06
+#> mu_2       1.210e-03   1.224e-03  1.238e-03
+#> mu_3      -1.490e-03  -1.405e-03 -1.320e-03
+#> sigma_1    1.215e-02   1.217e-02  1.220e-02
+#> sigma_2    5.082e-03   5.102e-03  5.123e-03
+#> sigma_3    2.129e-02   2.139e-02  2.148e-02
+#> df_1       1.528e+71   1.528e+71  1.528e+71
+#> df_2       4.387e+00   4.436e+00  4.486e+00
+#> df_3       7.457e+00   7.628e+00  7.802e+00
+#> 
+#> States:
+#> decoded
+#>    1    2    3 
+#> 1448 1028  315
+```
+
+Let’s visualize the estimated state-dependent distributions and the
+decoded time series:
+
+``` r
+model %>% plot("sdds")
+```
+
+<img src="man/figures/README-plots-1.png" width="100%" />
+
+``` r
+model %>% plot("ts")
+```
+
+<img src="man/figures/README-plots-2.png" width="100%" />

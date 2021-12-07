@@ -1,16 +1,44 @@
 useDynLib("fHMM")
 
+### S3 print methods
+S3method(print,fHMM_controls)
+S3method(print,fHMM_data)
+S3method(print,fHMM_events)
+S3method(print,fHMM_model)
+S3method(print,fHMM_predict)
+S3method(print,fHMM_sdds)
 S3method(print,fHMM_trouble)
+S3method(print,summary.fHMM_data)
+S3method(print,summary.fHMM_model)
 
+### S3 plot methods
+S3method(plot,fHMM_data)
+S3method(plot,fHMM_model)
+
+### S3 summary methods
+S3method(summary,fHMM_data)
+S3method(summary,fHMM_model)
+
+### export functions
+export(compute_residuals)
+export(decode_states)
 export(download_data)
-export(fit_hmm)
-export(trouble)
+export(fHMM_events)
+export(fit_model)
+export(prepare_data)
+export(reorder_states)
+export(set_controls)
+export(solve_trouble)
 
+### imports
 import(Rcpp)
-importFrom("graphics", "plot")
-importFrom("grDevices", "adjustcolor", "colorRampPalette", "dev.off", "pdf", "rgb")
-importFrom("graphics", "abline", "axis", "curve", "hist", "legend", "lines", "mtext", "par", "points", "text", "title")
-importFrom("stats", "acf", "dbinom", "dgamma", "dnorm", "dt", "nlm", "pgamma", "pt", "qnorm", "qqnorm", "rgamma", "rt", "runif", "sd")
-importFrom("utils", "download.file", "head", "read.csv", "tail")
-importFrom("grDevices", "dev.list")
-importFrom("utils", "packageVersion")
+importFrom(foreach, "%dopar%")
+importFrom("grDevices", "adjustcolor", "col2rgb", "colorRampPalette", "dev.off", 
+           "pdf", "rgb")
+importFrom("graphics", "abline", "axis", "curve", "hist", "legend", "lines", 
+           "layout", "mtext", "par", "points", "text", "title", "plot.new")
+importFrom("stats", "acf", "dbinom", "dgamma", "dist", "dnorm", "dt", "nlm", 
+           "pgamma", "pt", "qnorm", "qqnorm", "rgamma", "rt", "runif", "sd",
+           "qgamma", "qt","qunif")
+importFrom("utils", "data", "download.file", "head", "packageVersion", 
+           "read.csv", "tail")

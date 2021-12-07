@@ -1,0 +1,93 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# fHMM <img src="man/figures/sticker.png" align="right" height=136 />
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/loelschlaeger/fHMM/workflows/R-CMD-check/badge.svg)](https://github.com/loelschlaeger/fHMM/actions)
+[![CRAN status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
+<!-- badges: end -->
+
+The goal of fHMM is to detect bearish and bullish markets in financial time series aplying (hierarchical) hidden Markov models.
+
+## Installation
+
+You can install the released version of fHMM from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("fHMM")
+```
+
+And the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("loelschlaeger/fHMM")
+```
+
+## Example: Fitting an HMM to the DAX
+
+```{r load}
+library(fHMM)
+library(magrittr)
+```
+
+We fit a 3-state HMM with state-dependent t-distributions to the DAX log-returns from 2010 to 2020. 
+
+The package has a build-in function to download the data from [Yahoo Finance](https://finance.yahoo.com/):
+
+```{r data download}
+download_data(symbol = "^GDAXI", file = "dax.csv", verbose = FALSE)
+```
+
+We first need to define the model by setting the `controls`:
+
+```{r controls}
+controls = list(
+  states = 3,
+  sdds   = "t",
+  data   = list(file        = "dax.csv",
+                date_column = "Date",
+                data_column = "Close",
+                logreturns  = TRUE,
+                from        = "2010-01-01",
+                to          = "2020-12-31")
+)
+(controls %<>% set_controls)
+```
+
+The function `prepare_data` prepares the data for estimation:
+
+```{r data}
+data = prepare_data(controls)
+summary(data)
+```
+
+We now fit the model and subsequentially decode the hidden states:
+
+```{r fit}
+model = fit_model(data, ncluster = 7) %>% decode_states 
+summary(model)
+```
+
+Let's visualize the estimated state-dependent distributions and the decoded time series:
+
+```{r plots}
+model %>% plot("sdds")
+model %>% plot("ts")
+```
+
+

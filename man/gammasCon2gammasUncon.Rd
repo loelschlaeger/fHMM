@@ -2,19 +2,23 @@
 % Please edit documentation in R/parameter_transformations.R
 \name{gammasCon2gammasUncon}
 \alias{gammasCon2gammasUncon}
-\title{Unconstrains non-diagonal elements of transition probability matrix.}
+\title{This function un-constrains the constrained non-diagonal elements
+\code{gammasCon} of a transition probability matrix of dimension \code{dim}.}
 \usage{
 gammasCon2gammasUncon(gammasCon, dim)
 }
 \arguments{
-\item{gammasCon}{Vector of constrained non-diagonal elements of transition probability matrix.}
+\item{gammasCon}{A vector of constrained non-diagonal elements of a transition probability
+matrix.}
 
-\item{dim}{Numeric, dimension of transition probability matrix.}
+\item{dim}{The dimension of the transition probability matrix.}
 }
 \value{
-Vector of unconstrained non-diagonal elements of transition probability matrix.
+A vector of un-constrained non-diagonal elements of the transition
+probability matrix.
 }
 \description{
-Unconstrains non-diagonal elements of transition probability matrix.
+This function un-constrains the constrained non-diagonal elements
+\code{gammasCon} of a transition probability matrix of dimension \code{dim}.
 }
 \keyword{internal}

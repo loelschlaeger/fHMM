@@ -2,42 +2,54 @@
 % Please edit documentation in R/download_data.R
 \name{download_data}
 \alias{download_data}
-\title{Data download}
+\title{Download financial data.}
 \usage{
 download_data(
-  name = NA,
-  symbol = NA,
+  symbol,
   from = "1902-01-01",
   to = Sys.Date(),
-  show_symbols = FALSE,
-  path
+  file = paste0(symbol, ".csv"),
+  verbose = TRUE
 )
 }
 \arguments{
-\item{name}{A character, personal identifier for a stock, default \code{NA}.}
+\item{symbol}{A character, the stock's symbol. It must match the identifier on
+\url{https://finance.yahoo.com}.}
 
-\item{symbol}{A character, the stock's symbol, default \code{NA}.}
+\item{from}{A date in format "YYYY-MM-DD", setting the lower data bound. Must not be
+earlier than \code{"1902-01-01"}.}
 
-\item{from}{A date, setting the lower data bound, default is \code{"1902-01-01"}.}
+\item{to}{A date in format "YYYY-MM-DD", setting the upper data bound. Default is the
+current date \code{Sys.date()}.}
 
-\item{to}{A date, setting the upper data bound, default is the current date \code{Sys.date()}.}
+\item{file}{The name of the file where the .csv-file is saved. Per default, it is saved
+in the current working directory with the name "\code{symbol}.csv".}
 
-\item{show_symbols}{A boolean, determining whether all saved symbols should be printed, default \code{FALSE}.}
-
-\item{path}{A character, setting the data saving path.}
+\item{verbose}{If \code{TRUE} returns information about download success.}
 }
 \value{
-No return value. Downloaded data is saved as "\code{name}.csv" in the folder "\code{path}/data".
+No return value.
 }
 \description{
-Download financial data from \url{https://finance.yahoo.com}.
+This function downloads stock data from \url{https://finance.yahoo.com} and saves
+it as a .csv-file.
 }
 \details{
-\code{symbol} has to match the official symbol on \url{https://finance.yahoo.com}.
-Once used stock symbols are saved in "stock_symbols.rds" in the folder "\code{path}/data".
-Values for \code{from} earlier than its default value are set to the default value.
+The downloaded data is a .csv-file with the following columns:
+\itemize{
+\item \code{Date}: The date.
+\item \code{Open}: Opening price.
+\item \code{High}: Highest price.
+\item \code{Low}: Lowest price.
+\item \code{Close}: Close price adjusted for splits.
+\item \code{Adj.Close}: Close price adjusted for dividends and splits.
+\item \code{Volume}: Trade volume.
+}
 }
 \examples{
 ### download 21st century DAX data
-download_data(name="dax",symbol="^GDAXI",from=as.Date("2000-01-03"),path=tempdir())
+download_data(
+  symbol = "^GDAXI", from = "2000-01-03",
+  file = paste0(tempfile(), ".csv")
+)
 }

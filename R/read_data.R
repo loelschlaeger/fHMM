@@ -1,150 +1,208 @@
-#' @title Read .csv-file
-#' @description Reads financial data from .csv-file.
-#' @param controls A list of controls.
-#' @return A list containing the following elements:
-#' \item{data}{A matrix of data that is modeled.}
-#' \item{data_raw}{A matrix of raw data.}
-#' \item{data_fs_raw}{A matrix of raw fine-scale data.}
-#' \item{data_cs_raw}{A matrix of raw coarse-scale data.}
-#' \item{dates}{A vector of dates.}
-#' \item{T_star}{A vector of fine-scale chunk sizes.}
+#' Read data for the fHMM package.
+#' @description
+#' This function reads financial data for the fHMM package.
+#' @inheritParams prepare_data
+#' @return
+#' A list containing the following elements:
+#' \itemize{
+#'  \item the matrix of the \code{dates} if \code{controls$simulated = FALSE}
+#'        and \code{controls$data$data_column} is specified,
+#'  \item the matrix of the \code{time_points} if \code{controls$simulated = TRUE}
+#'        or \code{controls$data$data_column} is not specified,
+#'  \item the matrix of the empirical \code{data} used for estimation,
+#'  \item the matrix \code{time_series} of empirical data before the transformation
+#'        to log-returns,
+#'  \item the vector of fine-scale chunk sizes \code{T_star} if
+#'        \code{controls$hierarchy = TRUE}.
+#' }
 
-read_data = function(controls){
-  
-  if(is.null(controls[["controls_checked"]]))
-    stop("F.6")
-  
-  data_source = controls[["data"]][["source"]]
-  data_col = controls[["data"]][["column"]]
-  data_raw = list()
-  for(i in 1:2){
-    if(is.na(data_source[i])){
-      data_raw[[i]] = NA
+read_data <- function(controls) {
+
+  ### check inputs
+  if (class(controls) != "fHMM_controls") {
+    stop("'controls' is not of class 'fHMM_controls'.")
+  }
+  if (controls$simulated) {
+    stop("'controls$simulated' is not 'FALSE'.")
+  }
+
+  ### read data
+  data_raw <- list()
+  for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
+    data_raw[[i]] <- read.csv(
+      file = controls[["data"]][["file"]][i],
+      header = TRUE, sep = ",", na.strings = "null"
+    )
+  }
+
+
+  ### check columns in data
+  date_column <- controls[["data"]][["date_column"]]
+  data_column <- controls[["data"]][["data_column"]]
+
+  ### remove NA dates
+  for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
+    if (!is.na(date_column[i])) {
+      data_raw[[i]] <- data_raw[[i]][!is.na(data_raw[[i]][[date_column[i]]]), ]
     }
-    if(!is.na(data_source[i])){
-      
-      ### extract data
-      data_raw[[i]] = read.csv(file=paste0(controls[["path"]],"/data/",data_source[i]),header=TRUE,sep=",",na.strings="null")
-      if(!"Date" %in% colnames(data_raw[[i]]) || !data_col[i] %in% colnames(data_raw[[i]]))
-        stop("D.4")
+  }
 
-      data_raw[[i]] = data_raw[[i]][,colnames(data_raw[[i]]) %in% c("Date",data_col[i]), drop = FALSE]
-      data_raw[[i]][["Date"]] = as.Date(data_raw[[i]][["Date"]], format="%Y-%m-%d")
-      data_raw[[i]][[data_col[i]]] = as.numeric(data_raw[[i]][[data_col[i]]])
-      
-      ### remove NA dates
-      data_raw[[i]] = data_raw[[i]][!is.na(data_raw[[i]][["Date"]]),]
-      
-      ### replace NA values by neighbour means
-      for(na_value in which(is.na(data_raw[[i]][[data_col[i]]]))){
-        incr = 1
-        while(TRUE){
-          range = unique(abs(c((na_value-incr):(na_value-1),(na_value+1):(na_value+incr))))
-          replace = mean(data_raw[[i]][[data_col[i]]][range],na.rm=TRUE)
-          if(!is.nan(replace)){
-            data_raw[[i]][[data_col[i]]][na_value] = replace
-            break
-          }
-          incr = incr + 1
+  ### replace NA values by neighbor means
+  for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
+    for (na_value in which(is.na(data_raw[[i]][[data_column[i]]]))) {
+      incr <- 1
+      while (TRUE) {
+        range <- unique(abs(c((na_value - incr):(na_value - 1), (na_value + 1):(na_value + incr))))
+        replace <- mean(data_raw[[i]][[data_column[i]]][range], na.rm = TRUE)
+        if (!is.nan(replace)) {
+          data_raw[[i]][[data_column[i]]][na_value] <- replace
+          break
         }
+        incr <- incr + 1
       }
-      
-      if(controls[["data"]][["log_returns"]][i]){
-        ### compute log-returns
-        data_length = length(data_raw[[i]][[data_col[i]]])
-        data_raw[[i]][["LogReturns"]] = numeric(data_length)
-        for(t in seq_len(data_length)[-1]){
-          data_raw[[i]][["LogReturns"]][t] = log(data_raw[[i]][[data_col[i]]][t]/data_raw[[i]][[data_col[i]]][t-1])
-        }
-      
-        ### remove 0 log-returns in case of gamma sdd to avoid numerical conflicts
-        if(controls[["sdds"]][i]=="gamma"){
-          for(t in seq_len(data_length)){
-            if(data_raw[[i]][["LogReturns"]][t]==0){
-              step = 1
-              cand = 0
-              while(cand==0){
-                cand = mean(data_raw[[i]][["LogReturns"]][abs((t-step):(t+step))],na.rm=TRUE)
-                step = step + 1
-              }
-              data_raw[[i]][["LogReturns"]][t] = cand
+    }
+  }
+
+  ### compute log-returns
+  for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
+    if (controls[["data"]][["logreturns"]][i]) {
+      data_length <- length(data_raw[[i]][[data_column[i]]])
+      data_raw[[i]][["logreturns"]] <- numeric(data_length)
+      for (t in seq_len(data_length)[-1]) {
+        data_raw[[i]][["logreturns"]][t] <- log(data_raw[[i]][[data_column[i]]][t] / data_raw[[i]][[data_column[i]]][t - 1])
+      }
+
+      ### remove 0 log-returns in case of gamma sdd to avoid numerical conflicts
+      if (controls[["sdds"]][[i]]$name == "gamma") {
+        for (t in seq_len(data_length)) {
+          if (data_raw[[i]][["logreturns"]][t] == 0) {
+            step <- 1
+            cand <- 0
+            while (cand == 0) {
+              cand <- mean(data_raw[[i]][["logreturns"]][abs((t - step):(t + step))], na.rm = TRUE)
+              step <- step + 1
             }
+            data_raw[[i]][["logreturns"]][t] <- cand
           }
         }
       }
     }
   }
-  
-  ### function that truncates data_raw
-  truncate_data = function(controls,data_raw){
-    
-    ### find exact or nearest position of 'date' in 'data_raw' 
-    find_date = function(date,data_raw){
-      incr = 0
-      while(TRUE){
-        candidate = which(data_raw[["Date"]]==as.Date(date)+incr)
-        if(length(candidate)==1) return(candidate)
-        candidate = which(data_raw[["Date"]]==as.Date(date)-incr)
-        if(length(candidate)==1) return(candidate)
-        incr = incr + 1
+
+  if (!all(is.na(date_column))) {
+
+    ### remove data points that do not occur in both files based on dates
+    if (controls[["hierarchy"]]) {
+      data_raw[[1]] <- data_raw[[1]][data_raw[[1]][[date_column[1]]] %in% intersect(data_raw[[1]][[date_column[1]]], data_raw[[2]][[date_column[2]]]), ]
+      data_raw[[2]] <- data_raw[[2]][data_raw[[2]][[date_column[2]]] %in% intersect(data_raw[[2]][[date_column[2]]], data_raw[[1]][[date_column[1]]]), ]
+    }
+
+    ### truncate data based on 'controls$data$from' and 'controls$data$to'
+    for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
+      ### find exact or nearest position of 'date' in 'data'
+      find_date <- function(date, data) {
+        incr <- 0
+        while (TRUE) {
+          candidate <- which(data[[date_column[i]]] == as.Date(date) + incr)
+          if (length(candidate) == 1) {
+            return(candidate)
+          }
+          candidate <- which(data[[date_column[i]]] == as.Date(date) - incr)
+          if (length(candidate) == 1) {
+            return(candidate)
+          }
+          incr <- incr + 1
+        }
+      }
+      t_max <- controls[["data"]][["to"]]
+      if (!is.na(t_max)) {
+        data_raw[[i]] <- data_raw[[i]][seq_len(find_date(t_max, data_raw[[i]])), ]
+      }
+      t_min <- controls[["data"]][["from"]]
+      if (!is.na(t_min)) {
+        temp <- seq_len(find_date(t_min, data_raw[[i]]) - 1)
+        if (length(temp) > 0) {
+          data_raw[[i]] <- data_raw[[i]][-temp, ]
+        }
       }
     }
-    t_max = controls[["data"]][["truncate"]][2]
-    if(!is.na(t_max)){
-      data_raw = data_raw[seq_len(find_date(t_max,data_raw)),]
-    }
-    t_min = controls[["data"]][["truncate"]][1]
-    if(!is.na(t_min)){
-      temp = seq_len(find_date(t_min,data_raw)-1)
-      if(length(temp)>0) data_raw = data_raw[-temp,]
-    }
-    return(data_raw)
   }
-  
-  ### HMM data
-  if(controls[["model"]]=="hmm"){
-    data_raw[[1]] = truncate_data(controls,data_raw[[1]])
-    
-    out = list(
-      "data"     = data_raw[[1]][[if(controls[["data"]][["log_returns"]][1]) "LogReturns" else data_col[1]]],
-      "data_raw" = data_raw[[1]][[data_col[1]]],
-      "dates"    = data_raw[[1]][["Date"]],
-      "T_star"   = NA
+
+  ### compute 'T_star'
+  if (controls[["hierarchy"]]) {
+    T_star <- compute_T_star(
+      horizon = controls[["horizon"]],
+      period = controls[["period"]],
+      dates = as.Date(data_raw[[2]][[date_column[2]]])
     )
-  }
-  
-  ### HHMM data
-  if(controls[["model"]]=="hhmm"){
-    
-    ### remove data points that do not occur in both files
-    data_raw[[1]] = data_raw[[1]][ data_raw[[1]][["Date"]] %in% intersect(data_raw[[1]][["Date"]],data_raw[[2]][["Date"]]), ]
-    data_raw[[2]] = data_raw[[2]][ data_raw[[2]][["Date"]] %in% intersect(data_raw[[2]][["Date"]],data_raw[[1]][["Date"]]), ]
-    data_raw[[1]] = truncate_data(controls,data_raw[[1]])
-    data_raw[[2]] = truncate_data(controls,data_raw[[2]])
-    T_star = compute_fs(fs_time_horizon = controls[["horizon"]][2], fs_dates = data_raw[[2]][["Date"]])
-    T = length(T_star)
-    data_raw[[1]] = data_raw[[1]][seq_len(sum(T_star)),]
-    data_raw[[2]] = data_raw[[2]][seq_len(sum(T_star)),]
-    
-    ### format CS and FS data
-    cs_data_tbt = matrix(NA,nrow=T,ncol=max(T_star))
-    fs_data     = matrix(NA,nrow=T,ncol=max(T_star))
-    for(t in seq_len(T)){
-      cs_data_tbt[t,] = c(data_raw[[1]][[if(controls[["data"]][["log_returns"]][1]) "LogReturns" else data_col[1]]][(sum(T_star[seq_len(t-1)])+1):sum(T_star[seq_len(t)])],rep(NA,max(T_star)-T_star[t]))
-      fs_data[t,]     = c(data_raw[[2]][[if(controls[["data"]][["log_returns"]][2]) "LogReturns" else data_col[2]]][(sum(T_star[seq_len(t-1)])+1):sum(T_star[seq_len(t)])],rep(NA,max(T_star)-T_star[t]))
+    T <- length(T_star)
+    for (i in 1:2) {
+      data_raw[[i]] <- data_raw[[i]][seq_len(sum(T_star)), ]
     }
-    
-    ### transform CS data_raw
-    f = controls[["data"]][["cs_transform"]]
-    cs_data = apply(cs_data_tbt,1,function(x) return(f(x[!is.na(x)]))) 
-    
-    out = list(
-      "data"        = cbind(cs_data,fs_data,deparse.level=0),
-      "data_fs_raw" = data_raw[[2]][[data_col[2]]],
-      "data_cs_raw" = data_raw[[1]][[data_col[1]]],
-      "dates"       = data_raw[[2]][["Date"]],
-      "T_star"      = T_star
-    )
   }
+
+  ### build 'data' and 'time_series' matrix
+  if (controls[["hierarchy"]]) {
+    data <- matrix(NA, nrow = T, ncol = max(T_star) + 1)
+    time_series <- matrix(NA, nrow = T, ncol = max(T_star) + 1)
+    col_name <- if (controls[["data"]][["logreturns"]][2]) "logreturns" else data_column[2]
+    for (t in seq_len(T)) {
+      data[t, -1] <- c(
+        data_raw[[2]][[col_name]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])],
+        rep(NA, max(T_star) - T_star[t])
+      )
+      time_series[t, -1] <- c(
+        data_raw[[2]][[data_column[2]]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])],
+        rep(NA, max(T_star) - T_star[t])
+      )
+    }
+    col_name <- if (controls[["data"]][["logreturns"]][1]) "logreturns" else data_column[1]
+    for (t in seq_len(T)) {
+      cs_data_raw_t <- data_raw[[1]][[col_name]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])]
+      data[t, 1] <- controls[["data"]][["merge"]](cs_data_raw_t)
+      cs_data_raw_t <- data_raw[[1]][[data_column[1]]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])]
+      time_series[t, 1] <- controls[["data"]][["merge"]](cs_data_raw_t)
+    }
+  } else {
+    data <- data_raw[[1]][, ifelse(controls[["data"]][["logreturns"]][1], "logreturns", data_column[i])]
+    time_series <- data_raw[[1]][, data_column[1]]
+  }
+
+  ### build 'dates' or 'time_points' matrix
+  if (!all(is.na(date_column))) {
+    time_points <- NA
+    if (controls[["hierarchy"]]) {
+      dates <- matrix(NA, nrow = T, ncol = max(T_star) + 1)
+      for (t in seq_len(T)) {
+        dates[t, -1] <- c(
+          data_raw[[2]][[date_column[2]]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])],
+          rep(NA, max(T_star) - T_star[t])
+        )
+      }
+      dates[, 1] <- dates[, 2]
+    } else {
+      dates <- data_raw[[1]][, date_column[1]]
+    }
+  } else {
+    dates <- NA
+    if (controls[["hierarchy"]]) {
+      time_points <- matrix(NA, nrow = T, ncol = max(T_star) + 1)
+      time_points[, 1] <- head(c(1, cumsum(T_star) + 1), -1)
+      for (t in seq_len(T)) {
+        time_points[t, -1] <- c(time_points[t, 1] - 1 + (1:T_star[t]), rep(NA, max(T_star) - T_star[t]))
+      }
+    } else {
+      time_points <- 1:length(data)
+    }
+  }
+
+  ### return
+  out <- list(
+    "dates" = dates,
+    "time_points" = time_points,
+    "data" = data,
+    "time_series" = time_series,
+    "T_star" = if (controls[["hierarchy"]]) T_star else NULL
+  )
   return(out)
 }

@@ -2,19 +2,19 @@
 % Please edit documentation in R/parameter_transformations.R
 \name{muUncon2muCon}
 \alias{muUncon2muCon}
-\title{Constrains expected values.}
+\title{This function constrains the un-constrained expected values \code{muUncon}.}
 \usage{
 muUncon2muCon(muUncon, link)
 }
 \arguments{
-\item{muUncon}{Vector of unconstrained expected values.}
+\item{muUncon}{A vector of un-constrained expected values.}
 
-\item{link}{Boolean, determining whether to apply the link function.}
+\item{link}{A boolean, determining whether to apply the link function.}
 }
 \value{
-Vector of constrained expected values.
+A vector of constrained expected values.
 }
 \description{
-Constrains expected values.
+This function constrains the un-constrained expected values \code{muUncon}.
 }
 \keyword{internal}
