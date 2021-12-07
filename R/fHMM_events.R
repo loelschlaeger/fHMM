@@ -42,6 +42,7 @@ fHMM_events <- function(events) {
 #' @return
 #' Returns \code{x} invisibly.
 #' @export
+#' @noRd
 
 print.fHMM_events <- function(x, ...) {
   print(data.frame("dates" = x$dates, "labels" = x$labels))
