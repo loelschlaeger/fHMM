@@ -175,7 +175,7 @@ set_controls <- function(controls = NULL) {
   if (!"period" %in% names(controls)) {
     controls[["period"]] <- "m"
   }
-  if (!"data" %in% names(controls) || is.na(controls[["data"]])) {
+  if (!"data" %in% names(controls) || identical(controls[["data"]], NA)) {
     controls[["data"]] <- NA
   } else {
     if (!"file" %in% names(controls[["data"]])) {
