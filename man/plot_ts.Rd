@@ -4,7 +4,7 @@
 \alias{plot_ts}
 \title{Visualize time series.}
 \usage{
-plot_ts(data, decoding = NULL, colors = NULL, events = NULL, predict = NULL)
+plot_ts(data, decoding = NULL, colors = NULL, events = NULL)
 }
 \arguments{
 \item{data}{An object of class \code{fHMM_data}.}
@@ -15,8 +15,6 @@ plot_ts(data, decoding = NULL, colors = NULL, events = NULL, predict = NULL)
 Ignored if \code{decoding = NULL}.}
 
 \item{events}{Either \code{NULL} or an object of class \code{fHMM_events}.}
-
-\item{predict}{Either \code{NULL} or an object of class \code{fHMM_predict}.}
 }
 \value{
 No return value. Draws a plot to the current device.
