@@ -1,18 +1,16 @@
 url: https://loelschlaeger.github.io/fHMM/
 
-template:
-  params:
-    bootswatch: simplex
+home:
+  title: Fit mixed probit models to choice data
 
-navbar:
-  type: default
-  left:
-  - text: Reference
-    icon: fa-clipboard
-    href: reference/index.html
-  - text: Changelog
-    icon: fa-wrench
-    href: news/index.html
-  - text: GitHub Repository
-    icon: fa-github fa-lg
-    href: https://github.com/loelschlaeger/fHMM
+authors:
+  Lennart Oelschläger:
+    href: https://www.oilbat.de
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#0054AD"
+    border-radius: 0.5rem
+    btn-border-radius: 0.25rem
+
