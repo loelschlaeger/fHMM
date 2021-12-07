@@ -22,9 +22,8 @@ A list containing the following elements:
 \item the vector of fine-scale chunk sizes \code{T_star} if
 \code{controls$hierarchy = TRUE}.
 }
-#' @keywords
-internal
 }
 \description{
 This function simulates financial data for the fHMM package.
 }
+\keyword{internal}

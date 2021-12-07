@@ -11,7 +11,7 @@
 #'  \item the vector of fine-scale chunk sizes \code{T_star} if
 #'        \code{controls$hierarchy = TRUE}.
 #' }
-#' #' @keywords
+#' @keywords
 #' internal
 
 simulate_data <- function(controls, true_parameters, seed = NULL) {
