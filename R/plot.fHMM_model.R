@@ -61,8 +61,7 @@ plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, .
   }
   if ("ts" %in% plot_type) {
     plot_ts(
-      data = x$data, decoding = x$decoding, colors = colors,
-      events = events, predict = x$predict
+      data = x$data, decoding = x$decoding, colors = colors, events = events
     )
   }
 }

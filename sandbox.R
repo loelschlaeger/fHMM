@@ -29,8 +29,8 @@ compare(model)
 model %>% plot("ll")
 model %>% plot("sdds")
 model %>% plot("pr")
-model %<>% predict(ahead = 10, verbose = TRUE)
 model %>% plot("ts")
+model %>% predict(ahead = 10)
 
 ### empirical HMM -----------------------------------------------------------
 seed = 1
@@ -41,7 +41,7 @@ controls = list(
                 date_column = "Date",
                 data_column = "Close",
                 logreturns  = TRUE,
-                from        = "2010-01-01")
+                from        = "2015-01-01")
 )
 controls %<>% set_controls
 data = prepare_data(controls)
@@ -58,8 +58,8 @@ model %>% plot("ll")
 model %>% plot("sdds")
 model %<>% reorder_states(state_order = 3:1)
 model %>% plot("pr")
-model %<>% predict(ahead = 10, verbose = TRUE)
 model %>% plot("ts", events = events)
+model %>% predict(ahead = 10)
 
 ### simulated HHMM ----------------------------------------------------------
 seed = 1
@@ -68,7 +68,7 @@ controls = list(
   states    = c(2,2),
   sdds      = c("t(sigma = 0.1, df = Inf)", 
                 "gamma(sigma = 0.1)"),
-  horizon   = c(100,30),
+  horizon   = c(100,10),
   fit       = list("runs" = 20)
 )
 controls %<>% set_controls
@@ -82,9 +82,10 @@ summary(model)
 compare(model)
 model %>% plot("ll")
 model %>% plot("sdds")
-model %<>% reorder_states(state_order = matrix(c(2,1,2,1,1,2),2,3))
+model %<>% reorder_states(state_order = matrix(c(1,2,1,2,2,1),2,3))
 model %>% plot("pr")
 model %>% plot("ts")
+model %>% predict(ahead = 10)
 
 ### empirical HHMM ----------------------------------------------------------
 seed = 1
@@ -94,14 +95,17 @@ controls = list(
   sdds      = c("t(df = 1)", "t(df = 1)"),
   period    = "m",
   data      = list(file = c("dax.csv","vw.csv"),
-                   from = "2010-01-01",
-                   to = "2015-01-01",
+                   from = "2015-01-01",
+                   to = "2021-01-01",
                    logreturns = c(TRUE,TRUE)),
   fit       = list("runs" = 10)
 )
 controls = set_controls(controls)
 data = prepare_data(controls)
-plot(data)
+events = list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
+              labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers",
+                         "First COVID-19 case Germany")) %>% fHMM_events
+plot(data, events = events)
 model = fit_model(data, ncluster = 7, seed = seed) %>% 
   decode_states %>%
   compute_residuals
@@ -110,5 +114,6 @@ compare(model)
 model %>% plot("ll")
 model %>% plot("sdds")
 model %>% plot("pr")
-model %>% plot("ts", events = NULL)
+model %>% plot("ts", events = events)
+model %>% predict(ahead = 10)
 

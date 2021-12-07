@@ -60,7 +60,7 @@ reorder_states <- function(x, state_order) {
     par$dfs <- as.vector(permut %*% par$dfs)
   if(x$data$controls$hierarchy){
     for(s in state_order[,1]){
-      permut <- diag(x$data$controls$states[2])[state_order[which(state_order[,1] == 2),-1], ]
+      permut <- diag(x$data$controls$states[2])[state_order[which(state_order[,1] == s),-1], ]
       par$Gammas_star[[s]] <- permut %*% par$Gammas_star[[s]] %*% t(permut)
       par$mus_star[[s]] <- as.vector(permut %*% par$mus_star[[s]])
       par$sigmas_star[[s]] <- as.vector(permut %*% par$sigmas_star[[s]])
