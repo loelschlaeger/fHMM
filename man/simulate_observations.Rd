@@ -39,3 +39,4 @@ A numeric vector of length \code{total_length}, where the first
 \description{
 This function simulates state-dependent observations.
 }
+\keyword{internal}

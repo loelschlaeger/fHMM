@@ -11,6 +11,8 @@
 #'   \item and a list \code{"pars"} of its parameters.
 #' }
 #' Unknown parameters are set to \code{NULL}.
+#' @keywords
+#' s3
 
 fHMM_sdds <- function(sdds) {
   out <- list()

@@ -19,3 +19,4 @@ An object of class \code{fHMM_data}.
 \description{
 This function checks the input \code{events}.
 }
+\keyword{s3}

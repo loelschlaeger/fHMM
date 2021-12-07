@@ -10,6 +10,6 @@
 #' @noRd
 
 print.fHMM_predict <- function(x, ...) {
-  print(cbind(x$states,x$data))
+  print(cbind(x$states, x$data))
   return(invisible(x))
 }

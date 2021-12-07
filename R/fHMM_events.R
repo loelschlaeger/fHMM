@@ -10,6 +10,8 @@
 #' @return
 #' An object of class \code{fHMM_data}.
 #' @export
+#' @keywords
+#' s3
 
 fHMM_events <- function(events) {
   if (class(events) == "fHMM_events") {

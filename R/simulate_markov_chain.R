@@ -15,6 +15,9 @@
 #' than \code{T}.
 #' @return
 #' A numeric vector of length \code{T} with states.
+#' @keywords
+#' utils
+#' @export
 
 simulate_markov_chain <- function(Gamma, T, delta = Gamma2delta(Gamma),
                                   seed = NULL, total_length = T) {

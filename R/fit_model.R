@@ -12,6 +12,7 @@
 #' \itemize{
 #'   \item ...
 #' }
+#' @export
 
 fit_model <- function(data, ncluster = 1, seed = NULL) {
 
@@ -52,7 +53,7 @@ fit_model <- function(data, ncluster = 1, seed = NULL) {
 
   ### define likelihood function
   target <- ifelse(!data[["controls"]][["hierarchy"]], nLL_hmm, nLL_hhmm)
-  
+
   ### check start values
   pb <- progress::progress_bar$new(
     format = "[:bar] :percent, :eta ETA",

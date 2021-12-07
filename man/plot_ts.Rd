@@ -22,3 +22,4 @@ No return value. Draws a plot to the current device.
 \description{
 This function visualizes the data time series.
 }
+\keyword{internal}

@@ -15,3 +15,4 @@ No return value.
 \description{
 This function plots the log-likelihood values of the different estimation runs.
 }
+\keyword{internal}

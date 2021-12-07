@@ -9,6 +9,8 @@
 #' @return
 #' An object of class \code{fHMM_colors}.
 #' @export
+#' @keywords
+#' s3
 
 fHMM_colors <- function(controls, colors = NULL) {
 

@@ -2,7 +2,7 @@
 #' @param x
 #' An object of class \code{summary.fHMM_model}.
 #' @param digits
-#' An integer indicating the number of displayed decimal places in the summary. 
+#' An integer indicating the number of displayed decimal places in the summary.
 #' @param ...
 #' Ignored.
 #' @return

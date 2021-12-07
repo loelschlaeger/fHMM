@@ -38,6 +38,8 @@
 #' @return
 #' An object of class \code{fHMM_parameters}.
 #' @export
+#' @keywords
+#' s3
 
 fHMM_parameters <- function(controls,
                             Gamma = NULL, mus = NULL, sigmas = NULL, dfs = NULL,
@@ -75,18 +77,18 @@ fHMM_parameters <- function(controls,
   }
   if (is.null(mus)) {
     if (controls[["sdds"]][[1]]$name == "t") {
-      mus <- qunif((0:(M-1)/M + runif(1, 0, 1/M)), -1, 1) * scale_par[1]
+      mus <- qunif((0:(M - 1) / M + runif(1, 0, 1 / M)), -1, 1) * scale_par[1]
     }
     if (controls[["sdds"]][[1]]$name == "gamma") {
-      mus <- qunif((0:(M-1)/M + runif(1, 0, 1/M)), 0, 1) * scale_par[1]
+      mus <- qunif((0:(M - 1) / M + runif(1, 0, 1 / M)), 0, 1) * scale_par[1]
     }
   }
   if (is.null(sigmas)) {
-    sigmas <- qunif((0:(M-1)/M + runif(1, 0, 1/M)), 0, 1) * scale_par[1]
+    sigmas <- qunif((0:(M - 1) / M + runif(1, 0, 1 / M)), 0, 1) * scale_par[1]
   }
   if (controls[["sdds"]][[1]]$name == "t") {
     if (is.null(dfs)) {
-      dfs <- qunif((0:(M-1)/M + runif(1, 0, 1/M)), 0, 30)
+      dfs <- qunif((0:(M - 1) / M + runif(1, 0, 1 / M)), 0, 30)
     }
   } else {
     dfs <- NULL
@@ -102,24 +104,24 @@ fHMM_parameters <- function(controls,
       mus_star <- list()
       for (i in 1:M) {
         if (controls[["sdds"]][[2]]$name == "t") {
-          mus_star[[i]] <- qunif((0:(N-1)/N + runif(1, 0, 1/N)), -1, 1) * scale_par[2]
+          mus_star[[i]] <- qunif((0:(N - 1) / N + runif(1, 0, 1 / N)), -1, 1) * scale_par[2]
         }
         if (controls[["sdds"]][[2]]$name == "gamma") {
-          mus_star[[i]] <- qunif((0:(N-1)/N + runif(1, 0, 1/N)), 0, 1) * scale_par[2]
+          mus_star[[i]] <- qunif((0:(N - 1) / N + runif(1, 0, 1 / N)), 0, 1) * scale_par[2]
         }
       }
     }
     if (is.null(sigmas_star)) {
       sigmas_star <- list()
       for (i in 1:M) {
-        sigmas_star[[i]] <- qunif((0:(N-1)/N + runif(1, 0, 1/N)), 0, 1) * scale_par[2]
+        sigmas_star[[i]] <- qunif((0:(N - 1) / N + runif(1, 0, 1 / N)), 0, 1) * scale_par[2]
       }
     }
     if (controls[["sdds"]][[2]]$name == "t") {
       if (is.null(dfs_star)) {
         dfs_star <- list()
         for (i in 1:M) {
-          dfs_star[[i]] <- qunif((0:(N-1)/N + runif(1, 0, 1/N)), 0, 30)
+          dfs_star[[i]] <- qunif((0:(N - 1) / N + runif(1, 0, 1 / N)), 0, 30)
         }
       }
     } else {

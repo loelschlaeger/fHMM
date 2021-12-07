@@ -17,3 +17,4 @@ No return value. Draws a plot to the current device.
 \description{
 This function visualizes the pseudo residuals.
 }
+\keyword{internal}

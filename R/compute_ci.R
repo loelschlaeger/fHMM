@@ -12,6 +12,8 @@
 #'   \item \code{estimate}: point estimate
 #'   \item \code{ub}: upper bound of confidence
 #' }
+#' @keywords
+#' internal
 
 compute_ci <- function(x, ci_level = 0.05) {
 
@@ -21,7 +23,7 @@ compute_ci <- function(x, ci_level = 0.05) {
   }
 
   ### compute confidence intervals using the inverse Hessian approach
-  x$hessian[which(x$hessian %in% c(Inf,-Inf,NA,NaN))] <- 0
+  x$hessian[which(x$hessian %in% c(Inf, -Inf, NA, NaN))] <- 0
   inv_fisher <- MASS::ginv(x$hessian)
   sds <- suppressWarnings(sqrt(diag(inv_fisher)))
   lower_limit <- x$estimate + qnorm(p = (1 - ci_level) / 2) * sds

@@ -23,3 +23,4 @@ A vector of fine-scale chunk sizes.
 \description{
 This helper-function computes the lengths of fine-scale chunks.
 }
+\keyword{internal}

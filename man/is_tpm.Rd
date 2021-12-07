@@ -15,3 +15,4 @@ A boolean.
 \description{
 Check if \code{x} is a transition probability matrix.
 }
+\keyword{utils}

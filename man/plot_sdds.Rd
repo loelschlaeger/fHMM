@@ -22,3 +22,4 @@ No return value. Draws a plot to the current device.
 \description{
 This function plots the estimated state-dependent distributions.
 }
+\keyword{internal}

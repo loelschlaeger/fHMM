@@ -60,3 +60,4 @@ This function sets and checks parameters for the fHMM package.
 \details{
 See the vignettes for more information on how to specify parameters.
 }
+\keyword{s3}

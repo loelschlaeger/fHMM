@@ -6,6 +6,8 @@
 #' @return
 #' \code{as.Date(date)} if \code{date} has the format "YYYY-MM-DD".
 #' Otherwise, the function throws an error.
+#' @keywords
+#' utils
 
 check_date <- function(date) {
   date <- try(as.Date(date), silent = TRUE)
@@ -31,6 +33,8 @@ check_date <- function(date) {
 #' A boolean, if \code{TRUE} checks if \code{x} is non-positive.
 #' @return
 #' A boolean.
+#' @keywords
+#' utils
 
 is_number <- function(x, int = FALSE, neg = FALSE, non_neg = FALSE, pos = FALSE,
                       non_pos = FALSE) {
@@ -82,11 +86,13 @@ is_number <- function(x, int = FALSE, neg = FALSE, non_neg = FALSE, pos = FALSE,
 #' A matrix.
 #' @return
 #' A boolean.
+#' @keywords
+#' utils
 
 is_tpm <- function(x) {
   if (nrow(x) != ncol(x) ||
-      any(abs(rowSums(x) - 1) > .Machine$double.eps) ||
-      any(x < 0)) {
+    any(abs(rowSums(x) - 1) > .Machine$double.eps) ||
+    any(x < 0)) {
     return(FALSE)
   } else {
     return(TRUE)
@@ -103,6 +109,8 @@ is_tpm <- function(x) {
 #' @return
 #' An integer vector of length \code{length(x)} with the positions of \code{y}
 #' in \code{x}.
+#' @keywords
+#' utils
 
 match_all <- function(x, y) {
   stopifnot(length(x) == length(y))
@@ -125,4 +133,3 @@ match_all <- function(x, y) {
   }
   return(matches)
 }
-

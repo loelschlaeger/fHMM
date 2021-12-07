@@ -21,6 +21,8 @@
 #' A numeric vector of length \code{total_length}, where the first
 #' \code{length(markov_chain)} elements are numeric values and the last
 #' \code{total_length - length(markov_chain)} elements are \code{NA}.
+#' @keywords
+#' internal
 
 simulate_observations <- function(markov_chain, sdd, mus, sigmas, dfs = NULL,
                                   seed = NULL, total_length = length(markov_chain)) {

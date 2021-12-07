@@ -22,3 +22,4 @@ A list containing the following elements:
 \description{
 Computes confidence intervals for the estimates.
 }
+\keyword{internal}

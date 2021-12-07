@@ -16,3 +16,4 @@ Otherwise, the function throws an error.
 \description{
 This function checks if the input \code{date} has the format "YYYY-MM-DD".
 }
+\keyword{utils}

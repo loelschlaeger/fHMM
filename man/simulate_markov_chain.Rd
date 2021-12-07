@@ -31,3 +31,4 @@ A numeric vector of length \code{T} with states.
 \description{
 This function simulates a Markov chain.
 }
+\keyword{utils}

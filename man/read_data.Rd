@@ -26,3 +26,4 @@ to log-returns,
 \description{
 This function reads financial data for the fHMM package.
 }
+\keyword{internal}

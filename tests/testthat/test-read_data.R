@@ -1,5 +1,4 @@
 test_that("read of data works", {
-
   file <- paste0(tempdir(), "/test.csv")
   data <- data.frame("a" = c("2020-01-01", "2020-01-02"), "b" = 1:2)
   write.csv(data, file)

@@ -18,3 +18,4 @@ in \code{x}.
 \description{
 This function matches the positions of two numeric vectors.
 }
+\keyword{utils}

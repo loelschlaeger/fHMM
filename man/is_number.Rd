@@ -34,3 +34,4 @@ A boolean.
 Check if \code{x} is a ((non)-negative) ((non-)positive) (integer) numeric
 (vector).
 }
+\keyword{utils}

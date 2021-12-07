@@ -21,3 +21,4 @@ Unknown parameters are set to \code{NULL}.
 \description{
 This function defines state-dependent distributions.
 }
+\keyword{s3}

@@ -18,8 +18,8 @@
 #'         be a matrix of dimension \code{x$data$controls$states[1]} x
 #'         \code{x$data$controls$states[2] + 1}. The first column orders the
 #'         coarse-scale states with the logic as described above. For each row,
-#'         the elements from second to last position order the fine-scale states 
-#'         of the coarse-scale state specified by the first element. E.g. for an 
+#'         the elements from second to last position order the fine-scale states
+#'         of the coarse-scale state specified by the first element. E.g. for an
 #'         HHMM with 2 coarse-scale and 2 fine-scale states, specifying
 #'         \code{state_order = matrix(c(2,1,2,1,1,2),2,3)} swaps the
 #'         coarse-scale states and the fine-scale states of coarse-scale state 2.
@@ -40,7 +40,7 @@ reorder_states <- function(x, state_order) {
       all(state_order %in% 1:x$data$controls$states))) {
       stop("'state_order' missspecified>")
     }
-    state_order = as.matrix(state_order)
+    state_order <- as.matrix(state_order)
   } else {
     if (!(is.numeric(state_order) && is.matrix(state_order) &&
       all(dim(state_order) == x$data$controls$states + c(0, 1)) &&
@@ -52,20 +52,22 @@ reorder_states <- function(x, state_order) {
 
   ### reorder states
   par <- parUncon2par(x$estimate, x$data$controls)
-  permut <- diag(x$data$controls$states[1])[state_order[,1], ]
+  permut <- diag(x$data$controls$states[1])[state_order[, 1], ]
   par$Gamma <- permut %*% par$Gamma %*% t(permut)
   par$mus <- as.vector(permut %*% par$mus)
   par$sigmas <- as.vector(permut %*% par$sigmas)
-  if(x$data$controls$sdds[[1]]$name == "t")
+  if (x$data$controls$sdds[[1]]$name == "t") {
     par$dfs <- as.vector(permut %*% par$dfs)
-  if(x$data$controls$hierarchy){
-    for(s in state_order[,1]){
-      permut <- diag(x$data$controls$states[2])[state_order[which(state_order[,1] == s),-1], ]
+  }
+  if (x$data$controls$hierarchy) {
+    for (s in state_order[, 1]) {
+      permut <- diag(x$data$controls$states[2])[state_order[which(state_order[, 1] == s), -1], ]
       par$Gammas_star[[s]] <- permut %*% par$Gammas_star[[s]] %*% t(permut)
       par$mus_star[[s]] <- as.vector(permut %*% par$mus_star[[s]])
       par$sigmas_star[[s]] <- as.vector(permut %*% par$sigmas_star[[s]])
-      if(x$data$controls$sdds[[2]]$name == "t")
+      if (x$data$controls$sdds[[2]]$name == "t") {
         par$dfs_star[[s]] <- as.vector(permut %*% par$dfs_star[[s]])
+      }
     }
   }
   parUncon <- par2parUncon(par, x$data$controls)

@@ -14,3 +14,40 @@ template:
     border-radius: 0.5rem
     btn-border-radius: 0.25rem
 
+reference:
+- title: Data preparation
+  desc: Use these functions to prepare or simulate financial data.
+  contents:
+  - download_data
+  - plot.fHMM_data
+  - prepare_data
+  - set_controls
+- title: Model estimation
+  desc: Use these function for model estimation.
+  contents:
+  - decode_states
+  - fit_model
+- title: Model evaluation
+  desc: Use these functions to evaluate your model.
+  contents:
+  - compare
+  - compute_residuals
+  - plot.fHMM_model
+  - predict
+  - reorder_states
+- title: Debugging
+  desc: Use this function for solving bugs.
+  contents:
+  - solve_trouble
+- title: S3 classes
+  desc: These functions construct the S3 classes of fHMM.
+  contents:
+  - has_keyword("s3")
+- title: Small utilities
+  desc: These functions may be useful beyond fHMM.
+  contents:
+  - has_keyword("utils")
+- title: internal
+  desc: These functions are not user-level.
+  contents:
+  - has_keyword("internal")

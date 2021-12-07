@@ -5,6 +5,7 @@
 #' A list of one or more objects of class \code{fHMM_model}.
 #' @return
 #' A data frame.
+#' @export
 
 compare <- function(...) {
 

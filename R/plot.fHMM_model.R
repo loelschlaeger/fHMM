@@ -30,9 +30,9 @@ plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, .
   }
   plot_type <- intersect(plot_type, c("ll", "sdds", "pr", "ts"))
   if (!is.null(events)) {
-    if(x$data$controls$simulated){
+    if (x$data$controls$simulated) {
       warning("cannot display events")
-      events = NULL
+      events <- NULL
     }
     if (!is.list(events)) {
       stop("...")

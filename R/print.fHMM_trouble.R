@@ -14,4 +14,3 @@ print.fHMM_trouble <- function(x, ...) {
   cat(crayon::blue("\U2139", x$debugging, "\n"))
   return(invisible(x))
 }
-

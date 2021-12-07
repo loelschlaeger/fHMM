@@ -5,6 +5,8 @@
 #' A numeric vector of log-likelihood values.
 #' @return
 #' No return value.
+#' @keywords
+#' internal
 
 plot_ll <- function(lls) {
   if (length(lls) <= 5) {

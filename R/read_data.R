@@ -15,6 +15,8 @@
 #'  \item the vector of fine-scale chunk sizes \code{T_star} if
 #'        \code{controls$hierarchy = TRUE}.
 #' }
+#' @keywords
+#' internal
 
 read_data <- function(controls) {
 

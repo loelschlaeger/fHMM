@@ -13,6 +13,8 @@
 #' Set a seed for the simulation of flexible chunk lengths.
 #' @return
 #' A vector of fine-scale chunk sizes.
+#' @keywords
+#' internal
 
 compute_T_star <- function(horizon, period, dates = NULL, seed = NULL) {
   if (is.null(dates)) {

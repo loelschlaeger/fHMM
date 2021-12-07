@@ -18,3 +18,4 @@ An object of class \code{fHMM_colors}.
 \description{
 This function defines a color scheme for visualizations in the fHMM package.
 }
+\keyword{s3}
