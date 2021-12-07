@@ -1,10 +1,10 @@
 ---
 title: "Prediction"
-author: ""
+author: "Lennart Oelschläger, Timo Adam and Rouven Michels"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{prediction}
+  %\VignetteIndexEntry{Prediction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

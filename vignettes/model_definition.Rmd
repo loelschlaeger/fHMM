@@ -1,14 +1,14 @@
 ---
-title: "Model checking and selection"
-author: ""
+title: "Model definition"
+author: "Lennart Oelschläger, Timo Adam and Rouven Michels"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{checking_selection}
+  %\VignetteIndexEntry{Model definition}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
+  
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
