@@ -88,8 +88,6 @@ Hierarchical HMMs.
 
 Outline of the paper.
 
-This is a reference \cite{test:21}.
-
 
 
 %% -- Manuscript ---------------------------------------------------------------
