@@ -27,26 +27,26 @@ library("fHMM")
 %% - \Plainauthor{} without affiliations
 %% - Separate authors by \And or \AND (in \author) or by comma (in \Plainauthor).
 %% - \AND starts a new line, \And does not.
-\author{authors}
-\Plainauthor{plainauthors}
+\author{Lennart Oelschl\"ager \And Timo Adam \And Rouven Michels}
+\Plainauthor{Lennart Oelschl\"ager, Timo Adam, Rouven Michels}
 
 %% - \title{} in title case
 %% - \Plaintitle{} without LaTeX markup (if any)
 %% - \Shorttitle{} with LaTeX markup (if any), used as running title
-\title{\pkg{fHMM}: Fitting ... in \proglang{R}}
-\Plaintitle{fHMM: Fitting ... in R}
+\title{\pkg{fHMM}: Fitting Hidden Markov Models to Financial Time Series in \proglang{R}}
+\Plaintitle{fHMM: Fitting Hidden Markov Models to Financial Time Series in R}
 \Shorttitle{fHMM}
 
 %% - \Abstract{} almost as usual
 \Abstract{
-\pkg{fHMM} is an \proglang{R} package for ...
+\pkg{fHMM} is an \proglang{R} package for modelling financial time series data using hidden Markov models.
 }
 
 %% - \Keywords{} with LaTeX markup, at least one required
 %% - \Plainkeywords{} without LaTeX markup (if necessary)
 %% - Should be comma-separated and in sentence case.
-\Keywords{keywords, \proglang{R}}
-\Plainkeywords{plainkeywords, R}
+\Keywords{decoding market behavior, hidden Markov models, state-space models, temporal resolution, time series modeling, \proglang{R}}
+\Plainkeywords{decoding market behavior, hidden Markov models, state-space models, temporal resolution, time series modeling, R}
 
 %% - \Address{} of at least one author
 %% - May contain multiple affiliations for each author
@@ -62,6 +62,7 @@ library("fHMM")
 }
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 %% -- Introduction -------------------------------------------------------------
 
