@@ -15,3 +15,11 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+## What are pseudo-residuals?
+
+Timo
+
+## How to implement pseudo-residuals in fHMM?
+
+Lennart

@@ -21,6 +21,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+Rouven
+
 ## The Hidden Markov Model
 
 HMMs constitute a versatile class of statistical models for time series, see e.g. [@zuc16] for a comprehensive introduction. They predicate that the behavior of the nature can be divided into a finite number of states, where the state that is active cannot be directly observed. However, at each point in time, a data point is observed, which depends on the current state of the nature and thus yields information on the latter. More formally, this concept can be formulated by introducing two stochastic processes:

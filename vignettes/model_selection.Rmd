@@ -15,3 +15,11 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+## AIC, BIC und Probleme
+
+Timo
+
+## Application
+
+Lennart
