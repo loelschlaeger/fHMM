@@ -33,13 +33,13 @@ library("fHMM")
 %% - \title{} in title case
 %% - \Plaintitle{} without LaTeX markup (if any)
 %% - \Shorttitle{} with LaTeX markup (if any), used as running title
-\title{\pkg{fHMM}: Fitting ... in \proglang{R}}
-\Plaintitle{fHMM: Fitting ... in R}
+\title{\pkg{fHMM}: Fitting Hidden Markov Models to Financial Time Series in \proglang{R}}
+\Plaintitle{fHMM: Fitting Hidden Markov Models to Financial Time Series in R}
 \Shorttitle{fHMM}
 
 %% - \Abstract{} almost as usual
 \Abstract{
-\pkg{fHMM} is an \proglang{R} package for ...
+\pkg{fHMM} is an \proglang{R} package for modelling financial time series data using hidden Markov models.
 }
 
 %% - \Keywords{} with LaTeX markup, at least one required
