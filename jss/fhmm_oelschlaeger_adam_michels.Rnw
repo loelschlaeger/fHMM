@@ -80,7 +80,15 @@ library("fHMM")
 \section{Introduction}
 \label{sec:intro}
 
-Introduction. This is a reference \cite{test:21}.
+Introduction to financial data.
+
+Hidden Markov models (HMMs).
+
+Hierarchical HMMs.
+
+Outline of the paper.
+
+This is a reference \cite{test:21}.
 
 
 
