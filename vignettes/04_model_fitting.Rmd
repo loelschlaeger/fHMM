@@ -11,6 +11,11 @@ bibliography: ref.bib
 link-citations: true
 ---
 
+<!-- 
+Assignee: Timo (theory part), Lennart (application part)
+Purpose: definition of likelihood, maximization of likelihood, challenges in the maximization, application in fHMM
+--> 
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -19,8 +24,6 @@ knitr::opts_chunk$set(
 ```
 
 ## Likelihood evaluation and numerical maximization
-
-Timo
 
 Conceptually, an HHMM can be treated as an HMM with two conditionally independent observations, the coarse-scale observation on the one hand and the corresponding chunk of fine-scale observations connected to a fine-scale HMM on the other hand. To derive the likelihood of an HHMM, we start by stating the likelihood formula for the fine-scale HMMs. 
 
@@ -81,5 +84,3 @@ A third source of conflicts arises from the fact that the likelihood is maximize
 
 
 ## Application
-
-Lennart

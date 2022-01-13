@@ -8,6 +8,11 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+<!-- 
+Assignee: Lennart
+Purpose: explain debugging function, link to GitHub issue page
+--> 
   
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -15,5 +20,3 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
-Lennart

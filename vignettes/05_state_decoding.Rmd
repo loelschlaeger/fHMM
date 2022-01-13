@@ -1,13 +1,18 @@
 ---
-title: "Model results"
+title: "State decoding"
 author: "Lennart Oelschläger, Timo Adam and Rouven Michels"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Model results}
+  %\VignetteIndexEntry{State decoding}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+<!-- 
+Assignee: Rouven (theory part), Lennart (application part)
+Purpose: definition of Viterbi algorithm, application in fHMM
+--> 
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -18,8 +23,4 @@ knitr::opts_chunk$set(
 
 ## Viterbi
 
-Rouven
-
 ## Application
-
-Lennart

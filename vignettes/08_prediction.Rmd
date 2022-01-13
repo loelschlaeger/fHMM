@@ -9,6 +9,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<!-- 
+Assignee: Lennart
+Purpose: using (H)HMMs for predictions, application in fHMM
+--> 
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -18,9 +23,6 @@ knitr::opts_chunk$set(
 
 ## How to predict?
 
-Rouven
-
+Cite book of Roland.
 
 ## Application
-
-Lennart

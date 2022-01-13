@@ -8,7 +8,12 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-  
+
+<!-- 
+Assignee: Timo (theory part), Lennart (application part)
+Purpose: definition of model selection criteria, problems in using them, using them in fHMM
+--> 
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -16,10 +21,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-## AIC, BIC und Probleme
+## AIC, BIC
 
-Timo
+## Problems in using them
+
+Cite paper of Jenny.
 
 ## Application
-
-Lennart

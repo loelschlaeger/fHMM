@@ -9,6 +9,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<!-- 
+Assignee: Timo (theory part), Lennart (application part)
+Purpose: definition and calculation of pseudo-residuals, application in fHMM
+--> 
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -18,8 +23,4 @@ knitr::opts_chunk$set(
 
 ## What are pseudo-residuals?
 
-Timo
-
 ## How to implement pseudo-residuals in fHMM?
-
-Lennart
