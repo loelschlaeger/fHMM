@@ -9,6 +9,7 @@
 #' @return
 #' An object of class \code{fHMM_model}.
 #' @export
+#' @importFrom stats qt qgamma
 
 predict <- function(x, ahead, ci_level = 0.05) {
 
@@ -61,7 +62,7 @@ predict <- function(x, ahead, ci_level = 0.05) {
       for (i in 1:ahead) {
         data_prediction[i, ] <- sapply(props, function(x) {
           state_prediction[i, ] %*%
-            (qt(p = x, df = par$dfs) * par$sigmas + par$mus)
+            (stats::qt(p = x, df = par$dfs) * par$sigmas + par$mus)
         })
       }
     }
@@ -69,7 +70,7 @@ predict <- function(x, ahead, ci_level = 0.05) {
       for (i in 1:ahead) {
         data_prediction[i, ] <- sapply(props, function(x) {
           state_prediction[i, ] %*%
-            qgamma(
+            stats::qgamma(
               p = x, shape = par$mus^2 / par$sigmas^2,
               scale = par$sigmas^2 / par$mus
             )
@@ -81,7 +82,7 @@ predict <- function(x, ahead, ci_level = 0.05) {
       for (i in 1:ahead) {
         data_prediction[i, ] <- sapply(props, function(x) {
           state_prediction[i, -(1:M)] %*%
-            (qt(p = x, df = unlist(par$dfs_star)) * unlist(par$sigmas_star) + unlist(par$mus_star))
+            (stats::qt(p = x, df = unlist(par$dfs_star)) * unlist(par$sigmas_star) + unlist(par$mus_star))
         })
       }
     }
@@ -89,7 +90,7 @@ predict <- function(x, ahead, ci_level = 0.05) {
       for (i in 1:ahead) {
         data_prediction[i, ] <- sapply(props, function(x) {
           state_prediction[i, -(1:M)] %*%
-            qgamma(
+            stats::qgamma(
               p = x, shape = unlist(par$mus_star)^2 / unlist(par$sigmas_star)^2,
               scale = unlist(par$sigmas_star)^2 / unlist(par$mus_star)
             )

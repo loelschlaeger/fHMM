@@ -113,6 +113,7 @@
 #' )
 #' set_controls(controls)
 #' @export
+#' @importFrom utils read.csv
 
 set_controls <- function(controls = NULL) {
   if (class(controls) != "fHMM_controls") {
@@ -375,7 +376,7 @@ set_controls <- function(controls = NULL) {
       if (!file.exists(controls[["data"]][["file"]][i])) {
         stop("File '", controls[["data"]][["file"]][i], "' not found.")
       }
-      read_try <- try(read.csv(file = controls[["data"]][["file"]][i]), silent = TRUE)
+      read_try <- try(utils::read.csv(file = controls[["data"]][["file"]][i]), silent = TRUE)
       if (class(read_try) == "try-error") {
         stop("Unable to read '", controls[["data"]][["file"]][i], "'.")
       }

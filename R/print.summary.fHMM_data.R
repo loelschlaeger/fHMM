@@ -6,6 +6,7 @@
 #' @return
 #' Returns \code{x} invisibly.
 #' @noRd
+#' @export
 
 print.summary.fHMM_data <- function(x, ...) {
   cat("Summary of fHMM", ifelse(x$simulated, "simulated", "empirical"), "data\n")

@@ -15,6 +15,7 @@
 #' A vector of fine-scale chunk sizes.
 #' @keywords
 #' internal
+#' @importFrom stats dbinom
 
 compute_T_star <- function(horizon, period, dates = NULL, seed = NULL) {
   if (is.null(dates)) {
@@ -38,7 +39,7 @@ compute_T_star <- function(horizon, period, dates = NULL, seed = NULL) {
       }
       T_star <- sample(1:size, horizon[1],
         replace = TRUE,
-        prob = dbinom(1:size, size, 0.9)
+        prob = stats::dbinom(1:size, size, 0.9)
       )
     }
   } else {

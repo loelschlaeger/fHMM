@@ -7,6 +7,7 @@
 #' No return value.
 #' @keywords
 #' internal
+#' @importFrom graphics axis points
 
 plot_ll <- function(lls) {
   if (length(lls) <= 5) {
@@ -15,7 +16,7 @@ plot_ll <- function(lls) {
       main = "Log-likelihoods", pch = 16,
       ylim = c(floor(min(lls, na.rm = TRUE)), ceiling(max(lls, na.rm = TRUE)))
     )
-    axis(1, las = 1, at = seq_len(length(lls)), labels = seq_len(length(lls)))
+    graphics::axis(1, las = 1, at = seq_len(length(lls)), labels = seq_len(length(lls)))
   } else {
     plot(lls,
       yaxt = "n", xlab = "Estimation run", ylab = "",
@@ -23,11 +24,11 @@ plot_ll <- function(lls) {
       ylim = c(floor(min(lls, na.rm = TRUE)), ceiling(max(lls, na.rm = TRUE)))
     )
   }
-  points(
+  graphics::points(
     x = which.max(lls), y = lls[which.max(lls)], pch = 16, cex = 1.25,
     col = "red"
   )
-  axis(2,
+  graphics::axis(2,
     las = 1, at = unique(round(lls[!is.na(lls)])),
     labels = unique(round(lls[!is.na(lls)]))
   )

@@ -111,11 +111,12 @@ is_tpm <- function(x) {
 #' in \code{x}.
 #' @keywords
 #' utils
+#' @importFrom stats dist
 
 match_all <- function(x, y) {
   stopifnot(length(x) == length(y))
   matches <- numeric(length(x))
-  distances <- unique(sort(dist(c(x, y)))) + sqrt(.Machine$double.eps)
+  distances <- unique(sort(stats::dist(c(x, y)))) + sqrt(.Machine$double.eps)
   for (d in distances) {
     if (any(c(!is.na(x), !is.na(y)))) {
       for (i_x in 1:length(x)) {

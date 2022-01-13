@@ -8,6 +8,7 @@
 #' @return
 #' Returns \code{x} invisibly.
 #' @noRd
+#' @export
 
 print.fHMM_sdds <- function(x, ...) {
   for (sdd in x) {

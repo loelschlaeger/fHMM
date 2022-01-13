@@ -8,6 +8,7 @@
 #' @return
 #' Returns \code{x} invisibly.
 #' @noRd
+#' @export
 
 print.fHMM_model <- function(x, ...) {
   cat("fHMM fitted model:\n")

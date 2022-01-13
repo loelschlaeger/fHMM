@@ -11,6 +11,7 @@
 #' The negative log-likelihood value.
 #' @keywords
 #' internal
+#' @importFrom stats dt dgamma
 
 nLL_hhmm <- function(parUncon, observations, controls) {
   class(parUncon) <- "parUncon"
@@ -35,10 +36,10 @@ nLL_hhmm <- function(parUncon, observations, controls) {
   class(controls_split) <- "fHMM_controls"
   for (m in seq_len(M)) {
     if (controls[["sdds"]][[1]]$name == "t") {
-      allprobs[m, ] <- 1 / sigmas[m] * dt((observations_cs - mus[m]) / sigmas[m], dfs[m])
+      allprobs[m, ] <- 1 / sigmas[m] * stats::dt((observations_cs - mus[m]) / sigmas[m], dfs[m])
     }
     if (controls[["sdds"]][[1]]$name == "gamma") {
-      allprobs[m, ] <- dgamma(observations_cs,
+      allprobs[m, ] <- stats::dgamma(observations_cs,
         shape = mus[m]^2 / sigmas[m]^2,
         scale = sigmas[m]^2 / mus[m]
       )

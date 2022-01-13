@@ -14,6 +14,7 @@
 #' }
 #' @keywords
 #' internal
+#' @importFrom stats qnorm
 
 compute_ci <- function(x, ci_level = 0.05) {
 
@@ -26,8 +27,8 @@ compute_ci <- function(x, ci_level = 0.05) {
   x$hessian[which(x$hessian %in% c(Inf, -Inf, NA, NaN))] <- 0
   inv_fisher <- MASS::ginv(x$hessian)
   sds <- suppressWarnings(sqrt(diag(inv_fisher)))
-  lower_limit <- x$estimate + qnorm(p = (1 - ci_level) / 2) * sds
-  upper_limit <- x$estimate + qnorm(p = 1 - (1 - ci_level) / 2) * sds
+  lower_limit <- x$estimate + stats::qnorm(p = (1 - ci_level) / 2) * sds
+  upper_limit <- x$estimate + stats::qnorm(p = 1 - (1 - ci_level) / 2) * sds
 
   ### if negative variance, replace by NA
   lower_limit[diag(inv_fisher) < 0] <- NA

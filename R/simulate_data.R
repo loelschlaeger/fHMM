@@ -13,6 +13,7 @@
 #' }
 #' @keywords
 #' internal
+#' @importFrom utils head
 
 simulate_data <- function(controls, true_parameters, seed = NULL) {
 
@@ -61,7 +62,7 @@ simulate_data <- function(controls, true_parameters, seed = NULL) {
       dfs = true_parameters$dfs,
       seed = seed
     )
-    time_points[, 1] <- head(c(1, cumsum(T_star) + 1), -1)
+    time_points[, 1] <- utils::head(c(1, cumsum(T_star) + 1), -1)
     for (t in 1:controls[["horizon"]][1]) {
       S_t <- markov_chain[t, 1]
       markov_chain[t, -1] <- simulate_markov_chain(

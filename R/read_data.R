@@ -17,6 +17,7 @@
 #' }
 #' @keywords
 #' internal
+#' @importFrom utils read.csv head
 
 read_data <- function(controls) {
 
@@ -31,7 +32,7 @@ read_data <- function(controls) {
   ### read data
   data_raw <- list()
   for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
-    data_raw[[i]] <- read.csv(
+    data_raw[[i]] <- utils::read.csv(
       file = controls[["data"]][["file"]][i],
       header = TRUE, sep = ",", na.strings = "null"
     )
@@ -189,7 +190,7 @@ read_data <- function(controls) {
     dates <- NA
     if (controls[["hierarchy"]]) {
       time_points <- matrix(NA, nrow = T, ncol = max(T_star) + 1)
-      time_points[, 1] <- head(c(1, cumsum(T_star) + 1), -1)
+      time_points[, 1] <- utils::head(c(1, cumsum(T_star) + 1), -1)
       for (t in seq_len(T)) {
         time_points[t, -1] <- c(time_points[t, 1] - 1 + (1:T_star[t]), rep(NA, max(T_star) - T_star[t]))
       }

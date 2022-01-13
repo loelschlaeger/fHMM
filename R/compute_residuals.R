@@ -6,6 +6,7 @@
 #' @return
 #' An object of class \code{RprobitB_model}.
 #' @export
+#' @importFrom stats pt pgamma qnorm
 
 compute_residuals <- function(x) {
 
@@ -21,19 +22,19 @@ compute_residuals <- function(x) {
     out <- rep(NA, length(data))
     for (t in seq_along(data)) {
       if (sdd_name == "t") {
-        Fxt <- pt(
+        Fxt <- stats::pt(
           q = (data[t] - mus[decoding[t]]) / sigmas[decoding[t]],
           df = dfs[decoding[t]]
         )
       }
       if (sdd_name == "gamma") {
-        Fxt <- pgamma(
+        Fxt <- stats::pgamma(
           q = data[t],
           shape = mus[decoding[t]]^2 / sigmas[decoding[t]]^2,
           scale = sigmas[decoding[t]]^2 / mus[decoding[t]]
         )
       }
-      out[t] <- qnorm(Fxt)
+      out[t] <- stats::qnorm(Fxt)
     }
     return(out)
   }

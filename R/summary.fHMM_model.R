@@ -9,6 +9,7 @@
 #' @return
 #' An object of class \code{summary.fHMM_model}.
 #' @noRd
+#' @export
 
 summary.fHMM_model <- function(object, ci_level = 0.05, ...) {
 

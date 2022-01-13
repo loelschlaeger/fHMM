@@ -23,36 +23,7 @@
     Code
       par2
     Output
-      $Gamma
-                [,1]      [,2]
-      [1,] 0.7078218 0.2921782
-      [2,] 0.2624282 0.7375718
-      
-      $mus
-      [1] -0.3665067  0.6334933
-      
-      $sigmas
-      [1] 0.1066041 0.6066041
-      
-      $dfs
-      [1]  1.940585 16.940585
-      
-      $sdds
-      t() 
-      $Gammas_star
-      NULL
-      
-      $mus_star
-      NULL
-      
-      $sigmas_star
-      NULL
-      
-      $dfs_star
-      NULL
-      
-      attr(,"class")
-      [1] "fHMM_parameters"
+      fHMM parameters
 
 # parameter transformations for HHMM work
 
@@ -83,58 +54,5 @@
     Code
       par2
     Output
-      $Gamma
-                [,1]      [,2]
-      [1,] 0.2583794 0.7416206
-      [2,] 0.2845669 0.7154331
-      
-      $mus
-      [1] -0.92293562  0.07706438
-      
-      $sigmas
-      [1] 0.01777029 0.51777029
-      
-      $dfs
-      [1]  9.641932 24.641932
-      
-      $sdds
-      t() t() 
-      $Gammas_star
-      $Gammas_star[[1]]
-                [,1]      [,2]
-      [1,] 0.6234342 0.3765658
-      [2,] 0.5320538 0.4679462
-      
-      $Gammas_star[[2]]
-                [,1]      [,2]
-      [1,] 0.5906260 0.4093740
-      [2,] 0.4576718 0.5423282
-      
-      
-      $mus_star
-      $mus_star[[1]]
-      [1] -0.7611313  0.2388687
-      
-      $mus_star[[2]]
-      [1] -0.7418341  0.2581659
-      
-      
-      $sigmas_star
-      $sigmas_star[[1]]
-      [1] 0.3646548 0.8646548
-      
-      $sigmas_star[[2]]
-      [1] 0.2262854 0.7262854
-      
-      
-      $dfs_star
-      $dfs_star[[1]]
-      [1]  2.626902 17.626902
-      
-      $dfs_star[[2]]
-      [1] 11.20047 26.20047
-      
-      
-      attr(,"class")
-      [1] "fHMM_parameters"
+      fHMM parameters
 

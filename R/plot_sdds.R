@@ -14,6 +14,8 @@
 #' No return value. Draws a plot to the current device.
 #' @keywords
 #' internal
+#' @importFrom graphics par lines legend layout
+#' @importFrom stats dt dgamma 
 
 plot_sdds <- function(est, true = NULL, controls, colors) {
 
@@ -24,15 +26,15 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
   stopifnot(class(colors) == "fHMM_colors")
 
   ### reset of 'par' settings
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(suppressWarnings(par(oldpar)))
+  oldpar <- graphics::par(no.readonly = TRUE)
+  on.exit(suppressWarnings(graphics::par(oldpar)))
 
   ### define densities
   density <- function(name, x, sigma, mu, df) {
     if (name == "t") {
-      (1 / sigma) * dt(x = (x - mu) / sigma, df = df)
+      (1 / sigma) * stats::dt(x = (x - mu) / sigma, df = df)
     } else if (name == "gamma") {
-      dgamma(x = x, shape = mu^2 / sigma^2, scale = sigma^2 / mu)
+      stats::dgamma(x = x, shape = mu^2 / sigma^2, scale = sigma^2 / mu)
     } else {
       stop()
     }
@@ -82,21 +84,21 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 
     ### plot densities
     for (s in 1:nstates) {
-      lines(x, f.x[[s]], col = colors[s], lty = 1, lwd = 2)
+      graphics::lines(x, f.x[[s]], col = colors[s], lty = 1, lwd = 2)
       if (!is.null(true)) {
-        lines(x, f.x_true[[s]], lty = 2, col = colors[s], lwd = 2)
+        graphics::lines(x, f.x_true[[s]], lty = 2, col = colors[s], lwd = 2)
       }
     }
 
     ### add legend
     if (!is.null(true)) {
-      legend("topright", c("estimated", "true"), lwd = 2, lty = 1:2)
+      graphics::legend("topright", c("estimated", "true"), lwd = 2, lty = 1:2)
     }
   }
 
   ### plot sdds
   if (controls$hierarchy) {
-    layout(matrix(c(rep(1, controls$states[1]), (1:controls$states[1]) + 1),
+    graphics::layout(matrix(c(rep(1, controls$states[1]), (1:controls$states[1]) + 1),
       nrow = 2, byrow = TRUE
     ))
   }

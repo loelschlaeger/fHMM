@@ -11,6 +11,7 @@
 #' @export
 #' @keywords
 #' s3
+#' @importFrom grDevices col2rgb colorRampPalette adjustcolor
 
 fHMM_colors <- function(controls, colors = NULL) {
 
@@ -25,16 +26,16 @@ fHMM_colors <- function(controls, colors = NULL) {
     stop("'colors' must be a character vector.")
   }
   for (col in colors) {
-    out <- tryCatch(is.matrix(col2rgb(col)), error = function(e) FALSE)
+    out <- tryCatch(is.matrix(grDevices::col2rgb(col)), error = function(e) FALSE)
     if (out == FALSE) {
       stop("'", col, "' in 'colors' is not a valid color representation.")
     }
   }
 
   ### helper functions
-  var_col <- function(col, n) colorRampPalette(c("white", col, "black"))(n + 2)[2:(n + 1)]
-  base_col <- function(n) colorRampPalette(colors)(n)
-  col_alpha <- function(col, alpha = 0.6) adjustcolor(col, alpha)
+  var_col <- function(col, n) grDevices::colorRampPalette(c("white", col, "black"))(n + 2)[2:(n + 1)]
+  base_col <- function(n) grDevices::colorRampPalette(colors)(n)
+  col_alpha <- function(col, alpha = 0.6) grDevices::adjustcolor(col, alpha)
 
   ### create and return 'fHMM_colors'
   if (!controls[["hierarchy"]]) {

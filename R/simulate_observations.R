@@ -23,6 +23,7 @@
 #' \code{total_length - length(markov_chain)} elements are \code{NA}.
 #' @keywords
 #' internal
+#' @importFrom stats rt rgamma
 
 simulate_observations <- function(markov_chain, sdd, mus, sigmas, dfs = NULL,
                                   seed = NULL, total_length = length(markov_chain)) {
@@ -70,10 +71,10 @@ simulate_observations <- function(markov_chain, sdd, mus, sigmas, dfs = NULL,
   for (t in 1:T) {
     s <- markov_chain[t]
     if (sdd == "t") {
-      observations[t] <- rt(1, dfs[s]) * sigmas[s] + mus[s]
+      observations[t] <- stats::rt(1, dfs[s]) * sigmas[s] + mus[s]
     }
     if (sdd == "gamma") {
-      observations[t] <- rgamma(1, shape = mus[s]^2 / sigmas[s]^2, scale = sigmas[s]^2 / mus[s])
+      observations[t] <- stats::rgamma(1, shape = mus[s]^2 / sigmas[s]^2, scale = sigmas[s]^2 / mus[s])
     }
   }
 

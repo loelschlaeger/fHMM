@@ -36,6 +36,7 @@
 #'   file = paste0(tempfile(), ".csv")
 #' )
 #' @export
+#' @importFrom utils download.file read.csv head tail
 
 download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
                           file = paste0(symbol, ".csv"), verbose = TRUE) {
@@ -75,7 +76,7 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
   ### try to download data
   data_url <- create_url(symbol, from, to)
   download_try <- suppressWarnings(
-    try(download.file(data_url, destfile = file, quiet = TRUE),
+    try(utils::download.file(data_url, destfile = file, quiet = TRUE),
       silent = TRUE
     )
   )
@@ -85,11 +86,11 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
     stop("D3")
   } else if (verbose) {
     ### print summary of new data
-    data <- read.csv(file = file, header = TRUE, sep = ",", na.strings = "null")
+    data <- utils::read.csv(file = file, header = TRUE, sep = ",", na.strings = "null")
     cat("Download successful.\n")
     cat("* symbol:", symbol, "\n")
-    cat("* from:", head(data$Date, n = 1), "\n")
-    cat("* to:", tail(data$Date, n = 1), "\n")
+    cat("* from:", utils::head(data$Date, n = 1), "\n")
+    cat("* to:", utils::tail(data$Date, n = 1), "\n")
     cat("* path:", normalizePath(file))
   }
 }

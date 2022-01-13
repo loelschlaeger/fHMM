@@ -14,12 +14,13 @@
 #' No return value. Draws a plot to the current device.
 #' @keywords
 #' internal
+#' @importFrom graphics par abline mtext points layout plot.new
 
 plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL) {
 
   ### reset of 'par' settings
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(suppressWarnings(par(oldpar)))
+  oldpar <- graphics::par(no.readonly = TRUE)
+  on.exit(suppressWarnings(graphics::par(oldpar)))
 
   ### truncate events
   if (!is.null(events)) {
@@ -35,18 +36,18 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL) {
   ### helper functions
   add_events <- function() {
     if (!is.null(events)) {
-      abline(v = as.Date(events$dates))
-      mtext(seq_along(events$dates), at = as.Date(events$dates), line = -1, adj = 1)
+      graphics::abline(v = as.Date(events$dates))
+      graphics::mtext(seq_along(events$dates), at = as.Date(events$dates), line = -1, adj = 1)
     }
   }
   add_event_labels <- function() {
     if (!is.null(events)) {
-      mtext(paste0(seq_along(events$dates), ": ", events$labels, collapse = "; "), line = -3)
+      graphics::mtext(paste0(seq_along(events$dates), ": ", events$labels, collapse = "; "), line = -3)
     }
   }
   add_decoding <- function(nstates, decoding, x, y, colors) {
     for (s in seq_len(nstates)) {
-      points(x = x[decoding == s], y = y[decoding == s], col = colors[s], pch = 20)
+      graphics::points(x = x[decoding == s], y = y[decoding == s], col = colors[s], pch = 20)
     }
   }
 
@@ -64,11 +65,11 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL) {
         )
       }
     } else {
-      par(mar = c(0, 1, 1, 1), oma = c(3, 3, 0, 0))
+      graphics::par(mar = c(0, 1, 1, 1), oma = c(3, 3, 0, 0))
       if (is.null(events)) {
-        layout(matrix(1:2, nrow = 2))
+        graphics::layout(matrix(1:2, nrow = 2))
       } else {
-        layout(matrix(1:3, nrow = 3), heights = c(5, 5, 1))
+        graphics::layout(matrix(1:3, nrow = 3), heights = c(5, 5, 1))
       }
       plot(
         x = as.Date(data$dates), y = data$time_series, type = "l",
@@ -95,13 +96,13 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL) {
       }
       add_events()
       if (!is.null(events)) {
-        plot.new()
+        graphics::plot.new()
         add_event_labels()
       }
     }
   } else {
     if (data$controls$simulated) {
-      layout(matrix(1:2, ncol = 2))
+      graphics::layout(matrix(1:2, ncol = 2))
       plot(
         x = data$time_points[, 1], y = data$data[, 1], type = "h", col = "grey",
         xlab = "time points", ylab = "", main = "Coarse-scale data time series"
@@ -126,11 +127,11 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL) {
         }
       }
     } else {
-      par(mar = c(0, 2, 2, 1), oma = c(3, 2, 2, 0))
+      graphics::par(mar = c(0, 2, 2, 1), oma = c(3, 2, 2, 0))
       if (is.null(events)) {
-        layout(matrix(1:4, nrow = 2, ncol = 2))
+        graphics::layout(matrix(1:4, nrow = 2, ncol = 2))
       } else {
-        layout(matrix(c(1, 2, 5, 3, 4, 5), nrow = 3, ncol = 2), heights = c(5, 5, 1))
+        graphics::layout(matrix(c(1, 2, 5, 3, 4, 5), nrow = 3, ncol = 2), heights = c(5, 5, 1))
       }
       plot(
         x = as.Date(data$dates[, 1]), y = data$data[, 1], type = "h", col = "grey",
@@ -183,7 +184,7 @@ plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL) {
       }
       add_events()
       if (!is.null(events)) {
-        plot.new()
+        graphics::plot.new()
         add_event_labels()
       }
     }

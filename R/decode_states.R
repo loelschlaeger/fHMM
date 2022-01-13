@@ -8,6 +8,7 @@
 #' @return
 #' An object of class \code{fHMM_model}.
 #' @export
+#' @importFrom stats dt dgamma
 
 decode_states <- function(x) {
 
@@ -18,13 +19,13 @@ decode_states <- function(x) {
     allprobs <- matrix(0, nstates, T)
     for (n in seq_len(nstates)) {
       if (sdd == "t") {
-        allprobs[n, ] <- (1 / sigmas[n]) * dt(
+        allprobs[n, ] <- (1 / sigmas[n]) * stats::dt(
           (observations - mus[n]) / sigmas[n],
           dfs[n]
         )
       }
       if (sdd == "gamma") {
-        allprobs[n, ] <- dgamma(observations,
+        allprobs[n, ] <- stats::dgamma(observations,
           shape = mus[n]^2 / sigmas[n]^2,
           scale = sigmas[n]^2 / mus[n]
         )

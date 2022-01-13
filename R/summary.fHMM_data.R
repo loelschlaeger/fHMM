@@ -6,6 +6,7 @@
 #' @return
 #' An object of class \code{summary.fHMM_data}.
 #' @noRd
+#' @export
 
 summary.fHMM_data <- function(object, ...) {
 

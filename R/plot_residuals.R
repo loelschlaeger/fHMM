@@ -9,6 +9,8 @@
 #' No return value. Draws a plot to the current device.
 #' @keywords
 #' internal
+#' @importFrom graphics hist curve abline layout mtext
+#' @importFrom stats dnorm qqnorm acf
 
 plot_pr <- function(residuals, hierarchy) {
 
@@ -35,7 +37,7 @@ plot_pr <- function(residuals, hierarchy) {
     )
 
     ### histogram with normal density
-    hist(residuals,
+    graphics::hist(residuals,
       freq = FALSE,
       breaks = 25,
       col = "lightgrey",
@@ -45,10 +47,10 @@ plot_pr <- function(residuals, hierarchy) {
       las = 1
     )
     x <- seq(floor(min(residuals)), ceiling(max(residuals)), 0.01)
-    curve(dnorm(x), add = TRUE, lwd = 2)
+    graphics::curve(stats::dnorm(x), add = TRUE, lwd = 2)
 
     ### qq-plot
-    qqnorm(residuals,
+    stats::qqnorm(residuals,
       ylim = c(floor(min(residuals)), ceiling(max(residuals))),
       xlim = c(floor(min(residuals)), ceiling(max(residuals))),
       main = "Normal Q-Q plot",
@@ -57,10 +59,10 @@ plot_pr <- function(residuals, hierarchy) {
       las = 1,
       pch = 20
     )
-    abline(a = 0, b = 1)
+    graphics::abline(a = 0, b = 1)
 
     ### acf plot
-    acf(residuals,
+    stats::acf(residuals,
       main = "Autocorrelation plot",
       ylab = "Autocorrelation of pseudo-residuals",
       xlab = "Lag",
@@ -70,13 +72,13 @@ plot_pr <- function(residuals, hierarchy) {
 
   ### create plots
   if (!hierarchy) {
-    layout(matrix(1:4, 2, 2))
+    graphics::layout(matrix(1:4, 2, 2))
     helper_pr(residuals)
   } else {
-    layout(matrix(1:8, 2, 4, byrow = TRUE))
+    graphics::layout(matrix(1:8, 2, 4, byrow = TRUE))
     helper_pr(residuals[, 1])
-    mtext("coarse scale", side = 4, line = 2, cex = 1)
+    graphics::mtext("coarse scale", side = 4, line = 2, cex = 1)
     helper_pr(residuals[, -1])
-    mtext("fine scale", side = 4, line = 2, cex = 1)
+    graphics::mtext("fine scale", side = 4, line = 2, cex = 1)
   }
 }
