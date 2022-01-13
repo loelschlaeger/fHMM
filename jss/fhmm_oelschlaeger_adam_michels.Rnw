@@ -62,7 +62,8 @@ library("fHMM")
 }
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+%% I have no idea what this does. Maybe we need this in the future.
+%% \SweaveOpts{concordance=TRUE}
 
 %% -- Introduction -------------------------------------------------------------
 
@@ -79,6 +80,8 @@ library("fHMM")
 
 \section{Introduction}
 \label{sec:intro}
+
+Basic idea.
 
 Introduction to financial data.
 
