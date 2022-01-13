@@ -18,10 +18,10 @@ reference:
 - title: Data preparation
   desc: Use these functions to prepare or simulate financial data.
   contents:
-  - download_data
-  - plot.fHMM_data
-  - prepare_data
   - set_controls
+  - download_data
+  - prepare_data
+  - plot.fHMM_data
 - title: Model estimation
   desc: Use these function for model estimation.
   contents:

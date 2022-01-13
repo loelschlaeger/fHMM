@@ -96,7 +96,7 @@
 #'   }
 #' }
 #' @return
-#' An object of class \code{RprobitB_controls}.
+#' An object of class \code{fHMM_controls}.
 #' @examples
 #' ### HMM controls
 #' controls <- list(

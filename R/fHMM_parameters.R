@@ -6,7 +6,7 @@
 #' @param controls
 #' An object of class \code{fHMM_controls}.
 #' @param Gamma
-#' A tpm of dimension \code{controls$states[1]}.
+#' A tpm (transition probability matrix) of dimension \code{controls$states[1]}.
 #' @param mus
 #' A vector of expectations of length \code{controls$states[1]}.
 #' @param sigmas

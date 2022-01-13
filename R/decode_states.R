@@ -1,11 +1,12 @@
 #' Decode the underlying hidden state sequence.
 #' @description
-#' This function decodes the underlying hidden state sequence by applying the
-#' Viterbi algorithm <https://en.wikipedia.org/wiki/Viterbi_algorithm>.
+#' This function decodes the (most likely) underlying hidden state sequence by 
+#' applying the Viterbi algorithm 
+#' <https://en.wikipedia.org/wiki/Viterbi_algorithm>.
 #' @param x
-#' An object of class \code{RprobitB_model}.
+#' An object of class \code{fHMM_model}.
 #' @return
-#' An object of class \code{RprobitB_model}.
+#' An object of class \code{fHMM_model}.
 #' @export
 
 decode_states <- function(x) {
