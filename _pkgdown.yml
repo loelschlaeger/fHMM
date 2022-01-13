@@ -1,7 +1,7 @@
 url: https://loelschlaeger.github.io/fHMM/
 
 home:
-  title: Fit mixed probit models to choice data
+  title: Fit hidden Markov models to financial data
 
 authors:
   Lennart Oelschläger:
@@ -36,7 +36,7 @@ reference:
   - predict
   - reorder_states
 - title: Debugging
-  desc: Use this function for solving bugs.
+  desc: Use this function for debugging.
   contents:
   - solve_trouble
 - title: S3 classes
