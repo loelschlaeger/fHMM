@@ -8,3 +8,4 @@
 This package provides tools for downloading and modeling financial data via
 the (hierarchical) hidden Markov model.
 }
+\keyword{internal}
