@@ -7,34 +7,34 @@
     <loc>https://loelschlaeger.github.io/fHMM/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/data_management.html</loc>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/01_introduction.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/debugging.html</loc>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/02_model_definition.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/03_data_management.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/04_model_fitting.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/05_state_decoding.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/06_model_checking.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/07_model_selection.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/08_prediction.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/09_debugging.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/introduction.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/model_checking.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/model_definition.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/model_fitting.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/model_results.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/model_selection.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/prediction.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/authors.html</loc>

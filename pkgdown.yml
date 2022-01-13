@@ -2,16 +2,16 @@ pandoc: 2.7.3
 pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
-  data_management: data_management.html
-  debugging: debugging.html
-  introduction: introduction.html
-  model_checking: model_checking.html
-  model_definition: model_definition.html
-  model_fitting: model_fitting.html
-  model_results: model_results.html
-  model_selection: model_selection.html
-  prediction: prediction.html
-last_built: 2021-12-20T16:38Z
+  01_introduction: 01_introduction.html
+  02_model_definition: 02_model_definition.html
+  03_data_management: 03_data_management.html
+  04_model_fitting: 04_model_fitting.html
+  05_state_decoding: 05_state_decoding.html
+  06_model_checking: 06_model_checking.html
+  07_model_selection: 07_model_selection.html
+  08_prediction: 08_prediction.html
+  09_debugging: 09_debugging.html
+last_built: 2022-01-13T09:46Z
 urls:
   reference: https://loelschlaeger.github.io/fHMM/reference
   article: https://loelschlaeger.github.io/fHMM/articles
