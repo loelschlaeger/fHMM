@@ -6,4 +6,6 @@
 #' @docType package
 #' @name fHMM
 #' @useDynLib fHMM
+#' @keywords 
+#' internal
 NULL
