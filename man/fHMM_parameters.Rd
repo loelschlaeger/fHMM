@@ -21,7 +21,7 @@ fHMM_parameters(
 \arguments{
 \item{controls}{An object of class \code{fHMM_controls}.}
 
-\item{Gamma}{A tpm of dimension \code{controls$states[1]}.}
+\item{Gamma}{A tpm (transition probability matrix) of dimension \code{controls$states[1]}.}
 
 \item{mus}{A vector of expectations of length \code{controls$states[1]}.}
 

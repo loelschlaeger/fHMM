@@ -7,12 +7,13 @@
 decode_states(x)
 }
 \arguments{
-\item{x}{An object of class \code{RprobitB_model}.}
+\item{x}{An object of class \code{fHMM_model}.}
 }
 \value{
-An object of class \code{RprobitB_model}.
+An object of class \code{fHMM_model}.
 }
 \description{
-This function decodes the underlying hidden state sequence by applying the
-Viterbi algorithm \url{https://en.wikipedia.org/wiki/Viterbi_algorithm}.
+This function decodes the (most likely) underlying hidden state sequence by
+applying the Viterbi algorithm
+\url{https://en.wikipedia.org/wiki/Viterbi_algorithm}.
 }

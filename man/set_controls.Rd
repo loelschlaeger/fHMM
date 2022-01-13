@@ -99,7 +99,7 @@ A positive numeric value, passed on to \code{\link[stats]{nlm}}.
 }}
 }
 \value{
-An object of class \code{RprobitB_controls}.
+An object of class \code{fHMM_controls}.
 }
 \description{
 This function sets and checks the specification of controls for the fHMM
