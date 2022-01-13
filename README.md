@@ -10,8 +10,7 @@
 status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
 [![CRAN
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
-[![Codecov test
-coverage](https://codecov.io/gh/loelschlaeger/fHMM/branch/main/graph/badge.svg)](https://app.codecov.io/gh/loelschlaeger/fHMM?branch=main)
+[![codecov](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg?token=OYU22T74DV)](https://codecov.io/gh/loelschlaeger/fHMM)
 <!-- badges: end -->
 
 The goal of fHMM is to detect bearish and bullish markets in financial
@@ -100,33 +99,33 @@ summary(model)
 #> Summary of fHMM model
 #> 
 #>   simulated hierarchy       LL       AIC       BIC
-#> 1     FALSE     FALSE 8632.274 -17234.55 -17145.54
+#> 1     FALSE     FALSE 8633.669 -17237.34 -17148.32
 #> 
 #> State-dependent distributions:
 #> t() 
 #> 
 #> Estimates:
 #>                   lb   estimate         ub
-#> Gamma_2.1         NA  5.017e-02         NA
-#> Gamma_3.1  2.779e-02  2.846e-02  2.913e-02
-#> Gamma_1.2  3.930e-02  4.000e-02  4.071e-02
-#> Gamma_3.2  5.069e-53  5.066e-53  5.062e-53
-#> Gamma_1.3  6.818e-03  6.990e-03  7.166e-03
-#> Gamma_2.3         NA  1.565e-18         NA
-#> mu_1              NA -1.194e-05         NA
-#> mu_2       1.211e-03  1.224e-03  1.237e-03
-#> mu_3      -1.490e-03 -1.405e-03 -1.320e-03
-#> sigma_1    1.215e-02  1.217e-02  1.220e-02
-#> sigma_2    5.082e-03  5.102e-03  5.123e-03
-#> sigma_3    2.129e-02  2.139e-02  2.148e-02
-#> df_1       1.549e+17  1.549e+17  1.549e+17
-#> df_2       4.387e+00  4.436e+00  4.486e+00
-#> df_3       7.457e+00  7.628e+00  7.802e+00
+#> Gamma_2.1  3.965e-06  3.961e-06  3.957e-06
+#> Gamma_3.1  6.191e-03  6.351e-03  6.515e-03
+#> Gamma_1.2  1.385e-08  1.384e-08  1.383e-08
+#> Gamma_3.2  3.261e-02  3.328e-02  3.397e-02
+#> Gamma_1.3  2.715e-02  2.781e-02  2.848e-02
+#> Gamma_2.3  4.772e-02  4.874e-02  4.978e-02
+#> mu_1      -1.544e-03 -1.459e-03 -1.373e-03
+#> mu_2       1.215e-03  1.230e-03  1.244e-03
+#> mu_3       1.099e-04  1.330e-04  1.561e-04
+#> sigma_1    2.131e-02  2.141e-02  2.151e-02
+#> sigma_2    4.994e-03  5.016e-03  5.039e-03
+#> sigma_3    1.133e-02  1.137e-02  1.140e-02
+#> df_1       7.507e+00  7.679e+00  7.854e+00
+#> df_2       4.536e+00  4.592e+00  4.649e+00
+#> df_3       1.820e+01  1.890e+01  1.962e+01
 #> 
 #> States:
 #> decoded
 #>    1    2    3 
-#> 1448 1028  315
+#>  315  943 1533
 ```
 
 Let’s visualize the estimated state-dependent distributions and the

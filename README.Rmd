@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/loelschlaeger/fHMM/workflows/R-CMD-check/badge.svg)](https://github.com/loelschlaeger/fHMM/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
-[![Codecov test coverage](https://codecov.io/gh/loelschlaeger/fHMM/branch/main/graph/badge.svg)](https://app.codecov.io/gh/loelschlaeger/fHMM?branch=main)
+[![codecov](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg?token=OYU22T74DV)](https://codecov.io/gh/loelschlaeger/fHMM)
 <!-- badges: end -->
 
 The goal of fHMM is to detect bearish and bullish markets in financial time series aplying (hierarchical) hidden Markov models.
