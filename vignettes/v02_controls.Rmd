@@ -88,7 +88,7 @@ set_controls(controls)
 The help page of the `set_controls()` function provides an overview of all possible specifications.
 
 ```{r, set_controls help page, printr.help.sections=c('arguments')}
-?fHMM::set_controls
+?set_controls
 ```
 
 
