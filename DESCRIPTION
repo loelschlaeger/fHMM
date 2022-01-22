@@ -10,7 +10,7 @@ Authors@R: c(
     person("Timo", "Adam", 
            email = "ta59@st-andrews.ac.uk", 
            role = "aut"),
-    person("Michels", "Rouven", 
+    person("Rouven", "Michels", 
            email = "r.michels@uni-bielefeld.de", 
            role = "aut"))
 Description: Fitting (hierarchical) hidden Markov models to financial data
