@@ -1,0 +1,25 @@
+---
+title: "Controls"
+author: "Lennart Oelschläger, Timo Adam and Rouven Michels"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Controls}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<!-- 
+Assignee: Lennart
+Purpose: explain fHMM controls
+--> 
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette explains how to set controls in fHMM for model and estimation specifications. The vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the fHMM `r utils::packageVersion("fHMM")` package.
+

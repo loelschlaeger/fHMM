@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The package **fHMM** can model empirical and simulated data. 
+This vignette explains how to prepare or simulate data in fHMM for estimation. The vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the fHMM `r utils::packageVersion("fHMM")` package.
 
 ## Empirical data
 
@@ -53,7 +53,7 @@ download_data(name = "dax", symbol = "^GDAXI", from = "2000-01-01", to = Sys.Dat
 
 downloads the 21st century daily data of the Deutscher Aktienindex into the folder *data* in the current working directory (because `path = "."`).
 
-## Historical events
+### Highlighting events
 
 Historical events can be highlighted in the visualization of the decoded, empirical time series by passing a named list `events` with elements `dates` (a vector of dates) and `names` (a vector of names for the events) to `fit_hmm`.
 

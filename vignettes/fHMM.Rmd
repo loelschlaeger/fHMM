@@ -37,21 +37,23 @@ The functionality of the fHMM package can be classified into functions for data 
 
 ![A flowchart of the fHMM package. Functions are displayed as boxed and classes as circles.](flowchart.png){width=80%}
 
-The tasks data preparation, model estimation, and model evaluation as well as their corresponding functions and classes are explained in detail in separate vignettes:
+The tasks *data preparation*, *model estimation*, and *model evaluation* as well as their corresponding functions and classes are explained in detail in separate vignettes:
 
 - The vignette [*Model definition*](http://loelschlaeger.de/fHMM/articles/v01_model_definition.html) defines the hidden Markov model and its hierarchical extension.
 
-- The vignette [*Data management*](http://loelschlaeger.de/fHMM/articles/v02_data_management.html) explains how to prepare or simulate data in fHMM. It explains the `set_control()` function that specifies the fitted model and creates an `fHMM_controls` object. The function `download_data()` is introduced that can download financial data directly from https://finance.yahoo.com. The goal for the data preparation task in the fHMM package is to create an `fHMM_data` object via the `prepare_data()` function that can be fed into the estimation routine in the next step.
+- The vignette [*Controls*](http://loelschlaeger.de/fHMM/articles/v02_controls.html) introduces the `set_controls()` function which is used for model and estimation specifications. It creates an `fHMM_controls` object that can be fed into the `prepare_data()` function in the next step.
 
-- The vignette [*Model estimation*](http://loelschlaeger.de/fHMM/articles/v03_model_estimation.html) defines the likelihood function and explain the task of its numerical maximization. Subsequently, the `fit_model()` function is introduced that receives an `fHMM_data`, fits an hidden Markov model (specified by `fHMM_controls`) and return an `fHMM_model` object, for which the package provides a `plot`, `print` and `summary` method. 
+- The vignette [*Data management*](http://loelschlaeger.de/fHMM/articles/v03_data_management.html) explains how to prepare or simulate data in fHMM. The goal for the data preparation task in the fHMM package is to create an `fHMM_data` object via the `prepare_data()` function that can be fed into the estimation routine in the next step. Furthermore, the function `download_data()` is introduced that can download financial data directly from https://finance.yahoo.com.
 
-- The vignette [*State decoding*](http://loelschlaeger.de/fHMM/articles/v04_state_decoding.html) defines the Viterbi algorithm that is used for decoding the most likely underlying state sequence. It furthermore introduces its implementation in fHMM via the `decode_state()` function. The `reorder_states()` function can be used for state relabeling after the decoding.
+- The vignette [*Model estimation*](http://loelschlaeger.de/fHMM/articles/v04_model_estimation.html) defines the likelihood function and explain the task of its numerical maximization. Subsequently, the `fit_model()` function is introduced that receives an `fHMM_data`, fits an hidden Markov model (specified by `fHMM_controls`) and return an `fHMM_model` object, for which the package provides a `plot`, `print` and `summary` method. 
 
-- The vignette [*Model checking*](http://loelschlaeger.de/fHMM/articles/v05_model_checking.html) explains the task of checking a fitted model via computing (pseudo-) residuals, which is implemented via the `compute_residuals()` function.
+- The vignette [*State decoding*](http://loelschlaeger.de/fHMM/articles/v05_state_decoding.html) defines the Viterbi algorithm that is used for decoding the most likely underlying state sequence. It furthermore introduces its implementation in fHMM via the `decode_state()` function. The `reorder_states()` function can be used for state relabeling after the decoding.
 
-- The vignette [*Model selection*](http://loelschlaeger.de/fHMM/articles/v06_model_selection.html) discusses the task of selecting the (in some sense) best model among a set of competing models. The fHMM package provides a convenient `compare_models()` function that receives an arbitrary number of `fHMM_model`-objects and returns comparison statistics.
+- The vignette [*Model checking*](http://loelschlaeger.de/fHMM/articles/v06_model_checking.html) explains the task of checking a fitted model via computing (pseudo-) residuals, which is implemented via the `compute_residuals()` function.
 
-- The vignette [*Prediction*](http://loelschlaeger.de/fHMM/articles/v06_model_selection.html) discusses how the package can be used for market forecasting via the `predict()` function.
+- The vignette [*Model selection*](http://loelschlaeger.de/fHMM/articles/v07_model_selection.html) discusses the task of selecting the (in some sense) best model among a set of competing models. The fHMM package provides a convenient `compare_models()` function that receives an arbitrary number of `fHMM_model`-objects and returns comparison statistics.
+
+- The vignette [*Prediction*](http://loelschlaeger.de/fHMM/articles/v08_prediction.html) discusses how the package can be used for market forecasting via the `predict()` function.
 
 ## Debugging
 
