@@ -27,7 +27,7 @@ library("fHMM")
 %% - \Plainauthor{} without affiliations
 %% - Separate authors by \And or \AND (in \author) or by comma (in \Plainauthor).
 %% - \AND starts a new line, \And does not.
-\author{Lennart Oelschl\"ager \And Timo Adam \And Rouven Michels}
+\author{Lennart Oelschl\"ager \\Bielefeld University \And Timo Adam \\University of St. Andrews\And Rouven Michels \\Bielefeld University}
 \Plainauthor{Lennart Oelschl\"ager, Timo Adam, Rouven Michels}
 
 %% - \title{} in title case
