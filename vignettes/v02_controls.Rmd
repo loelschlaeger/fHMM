@@ -19,7 +19,76 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(printr)
 ```
 
 This vignette explains how to set controls in fHMM for model and estimation specifications. The vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the fHMM `r utils::packageVersion("fHMM")` package.
+
+```{r load fHMM}
+library(fHMM)
+```
+
+## The `set_controls` function 
+
+The fHMM philosophie is to start by setting all model and estimation specification, which is done by specifying a named list of settings and passing it to the `set_controls()` function. The function checks the specifications and returns an `fHMM_controls` object which stores all specifications and thereby provides required information for other fHMM functionalities.
+
+## Examples
+
+Let's look at some example specifications. We download DAX data for demonstration^[The `download_data()` function is explained in the vignette on data management.]:
+
+```{r}
+download_data(symbol = "^GDAXI", file = "dax.csv")
+```
+
+### HMMs for empirical data
+
+The following specifies a 3-state HMM with state-dependent t-distributions on the data in the file dax.csv, in which the dates are provided in the column called Date and the data in the column called Close. The data is transformed to log-returns and truncated from below. We already specify that we want 50 numerical optimization runs.
+
+```{r, set controls emp hmm}
+controls = list(
+  states = 3,
+  sdds   = "t",
+  data   = list(file        = "dax.csv",
+                date_column = "Date",
+                data_column = "Close",
+                logreturns  = TRUE,
+                from        = "2015-01-01"),
+  fit    = list(runs        = 50)
+)
+set_controls(controls)
+```
+
+### Simulated HMM data
+
+The following specifies a 2-state HMM with state-dependent Gamma distributions, where the expectiation values for state 1 and 2 are fixed to -1 and 1, respectively. The model will be fitted to `horizon = 500` simulated data points from this specification. 
+
+```{r, set controls sim hmm}
+controls = list(
+  states  = 2,
+  sdds    = "gamma(mu = -1|1)",
+  horizon = 500
+)
+set_controls(controls)
+```
+
+### Hierarchical HMMs
+
+Specifying hierarchical HMMs is analogously, except that new parameters can be specified (for example `period`) and some parameters now can be specified for both hierarchies.
+
+```{r, set controls hhmm}
+controls = list(
+  hierarchy = TRUE,
+  horizon   = c(100, 10),
+  sdds      = c("t(df = 1)", "t(df = 1)"),
+  period    = "m"
+)
+set_controls(controls)
+```
+
+The help page of the `set_controls()` function provides an overview of all possible specifications.
+
+```{r, set_controls help page, printr.help.sections=c('arguments')}
+?fHMM::set_controls
+```
+
 
