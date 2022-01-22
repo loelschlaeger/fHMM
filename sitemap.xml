@@ -7,34 +7,31 @@
     <loc>https://loelschlaeger.github.io/fHMM/LICENSE-text.html</loc>
   </url>
   <url>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/fHMM.html</loc>
+  </url>
+  <url>
     <loc>https://loelschlaeger.github.io/fHMM/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/v01_introduction.html</loc>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/v01_model_definition.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/v02_model_definition.html</loc>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/v02_data_management.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/v03_data_management.html</loc>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/v03_model_estimation.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/v04_model_fitting.html</loc>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/v04_state_decoding.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/v05_state_decoding.html</loc>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/v05_model_checking.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/v06_model_checking.html</loc>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/v06_model_selection.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/v07_model_selection.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/v08_prediction.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/articles/v09_debugging.html</loc>
+    <loc>https://loelschlaeger.github.io/fHMM/articles/v07_prediction.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/authors.html</loc>
@@ -58,7 +55,7 @@
     <loc>https://loelschlaeger.github.io/fHMM/reference/check_date.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/reference/compare.html</loc>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/compare_models.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/compute_T_star.html</loc>
