@@ -4,13 +4,14 @@ pkgdown_sha: ~
 articles:
   fHMM: fHMM.html
   v01_model_definition: v01_model_definition.html
-  v02_data_management: v02_data_management.html
-  v03_model_estimation: v03_model_estimation.html
-  v04_state_decoding: v04_state_decoding.html
-  v05_model_checking: v05_model_checking.html
-  v06_model_selection: v06_model_selection.html
-  v07_prediction: v07_prediction.html
-last_built: 2022-01-22T09:42Z
+  v02_controls: v02_controls.html
+  v03_data_management: v03_data_management.html
+  v04_model_estimation: v04_model_estimation.html
+  v05_state_decoding: v05_state_decoding.html
+  v06_model_checking: v06_model_checking.html
+  v07_model_selection: v07_model_selection.html
+  v08_prediction: v08_prediction.html
+last_built: 2022-01-22T20:24Z
 urls:
   reference: https://loelschlaeger.github.io/fHMM/reference
   article: https://loelschlaeger.github.io/fHMM/articles
