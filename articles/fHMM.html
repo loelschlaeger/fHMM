@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,12 +45,13 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/v01_model_definition.html">Model definition</a>
-    <a class="dropdown-item" href="../articles/v02_data_management.html">Data management</a>
-    <a class="dropdown-item" href="../articles/v03_model_estimation.html">Model estimation</a>
-    <a class="dropdown-item" href="../articles/v04_state_decoding.html">State decoding</a>
-    <a class="dropdown-item" href="../articles/v05_model_checking.html">Model checking</a>
-    <a class="dropdown-item" href="../articles/v06_model_selection.html">Model selection</a>
-    <a class="dropdown-item" href="../articles/v07_prediction.html">Prediction</a>
+    <a class="dropdown-item" href="../articles/v02_controls.html">Controls</a>
+    <a class="dropdown-item" href="../articles/v03_data_management.html">Data management</a>
+    <a class="dropdown-item" href="../articles/v04_model_estimation.html">Model estimation</a>
+    <a class="dropdown-item" href="../articles/v05_state_decoding.html">State decoding</a>
+    <a class="dropdown-item" href="../articles/v06_model_checking.html">Model checking</a>
+    <a class="dropdown-item" href="../articles/v07_model_selection.html">Model selection</a>
+    <a class="dropdown-item" href="../articles/v08_prediction.html">Prediction</a>
   </div>
 </li>
 <li class="nav-item">
@@ -108,15 +109,16 @@ Purpose: motivation of HMMs for financial data and hierarchical structure, overv
 <div class="figure">
 <img src="flowchart.png" style="width:80.0%" alt=""><p class="caption">A flowchart of the fHMM package. Functions are displayed as boxed and classes as circles.</p>
 </div>
-<p>The tasks data preparation, model estimation, and model evaluation as well as their corresponding functions and classes are explained in detail in separate vignettes:</p>
+<p>The tasks <em>data preparation</em>, <em>model estimation</em>, and <em>model evaluation</em> as well as their corresponding functions and classes are explained in detail in separate vignettes:</p>
 <ul>
 <li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v01_model_definition.html" class="external-link"><em>Model definition</em></a> defines the hidden Markov model and its hierarchical extension.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v02_data_management.html" class="external-link"><em>Data management</em></a> explains how to prepare or simulate data in fHMM. It explains the <code>set_control()</code> function that specifies the fitted model and creates an <code>fHMM_controls</code> object. The function <code><a href="../reference/download_data.html">download_data()</a></code> is introduced that can download financial data directly from <a href="https://finance.yahoo.com" class="external-link uri">https://finance.yahoo.com</a>. The goal for the data preparation task in the fHMM package is to create an <code>fHMM_data</code> object via the <code><a href="../reference/prepare_data.html">prepare_data()</a></code> function that can be fed into the estimation routine in the next step.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v03_model_estimation.html" class="external-link"><em>Model estimation</em></a> defines the likelihood function and explain the task of its numerical maximization. Subsequently, the <code><a href="../reference/fit_model.html">fit_model()</a></code> function is introduced that receives an <code>fHMM_data</code>, fits an hidden Markov model (specified by <code>fHMM_controls</code>) and return an <code>fHMM_model</code> object, for which the package provides a <code>plot</code>, <code>print</code> and <code>summary</code> method.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v04_state_decoding.html" class="external-link"><em>State decoding</em></a> defines the Viterbi algorithm that is used for decoding the most likely underlying state sequence. It furthermore introduces its implementation in fHMM via the <code>decode_state()</code> function. The <code><a href="../reference/reorder_states.html">reorder_states()</a></code> function can be used for state relabeling after the decoding.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v05_model_checking.html" class="external-link"><em>Model checking</em></a> explains the task of checking a fitted model via computing (pseudo-) residuals, which is implemented via the <code><a href="../reference/compute_residuals.html">compute_residuals()</a></code> function.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v06_model_selection.html" class="external-link"><em>Model selection</em></a> discusses the task of selecting the (in some sense) best model among a set of competing models. The fHMM package provides a convenient <code><a href="../reference/compare_models.html">compare_models()</a></code> function that receives an arbitrary number of <code>fHMM_model</code>-objects and returns comparison statistics.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v06_model_selection.html" class="external-link"><em>Prediction</em></a> discusses how the package can be used for market forecasting via the <code><a href="../reference/predict.html">predict()</a></code> function.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v02_controls.html" class="external-link"><em>Controls</em></a> introduces the <code><a href="../reference/set_controls.html">set_controls()</a></code> function which is used for model and estimation specifications. It creates an <code>fHMM_controls</code> object that can be fed into the <code><a href="../reference/prepare_data.html">prepare_data()</a></code> function in the next step.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v03_data_management.html" class="external-link"><em>Data management</em></a> explains how to prepare or simulate data in fHMM. The goal for the data preparation task in the fHMM package is to create an <code>fHMM_data</code> object via the <code><a href="../reference/prepare_data.html">prepare_data()</a></code> function that can be fed into the estimation routine in the next step. Furthermore, the function <code><a href="../reference/download_data.html">download_data()</a></code> is introduced that can download financial data directly from <a href="https://finance.yahoo.com" class="external-link uri">https://finance.yahoo.com</a>.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v04_model_estimation.html" class="external-link"><em>Model estimation</em></a> defines the likelihood function and explain the task of its numerical maximization. Subsequently, the <code><a href="../reference/fit_model.html">fit_model()</a></code> function is introduced that receives an <code>fHMM_data</code>, fits an hidden Markov model (specified by <code>fHMM_controls</code>) and return an <code>fHMM_model</code> object, for which the package provides a <code>plot</code>, <code>print</code> and <code>summary</code> method.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v05_state_decoding.html" class="external-link"><em>State decoding</em></a> defines the Viterbi algorithm that is used for decoding the most likely underlying state sequence. It furthermore introduces its implementation in fHMM via the <code>decode_state()</code> function. The <code><a href="../reference/reorder_states.html">reorder_states()</a></code> function can be used for state relabeling after the decoding.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v06_model_checking.html" class="external-link"><em>Model checking</em></a> explains the task of checking a fitted model via computing (pseudo-) residuals, which is implemented via the <code><a href="../reference/compute_residuals.html">compute_residuals()</a></code> function.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v07_model_selection.html" class="external-link"><em>Model selection</em></a> discusses the task of selecting the (in some sense) best model among a set of competing models. The fHMM package provides a convenient <code><a href="../reference/compare_models.html">compare_models()</a></code> function that receives an arbitrary number of <code>fHMM_model</code>-objects and returns comparison statistics.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v08_prediction.html" class="external-link"><em>Prediction</em></a> discusses how the package can be used for market forecasting via the <code><a href="../reference/predict.html">predict()</a></code> function.</p></li>
 </ul>
 </div>
 <div class="section level2">
@@ -195,7 +197,7 @@ Purpose: motivation of HMMs for financial data and hierarchical structure, overv
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by <a href="https://www.oilbat.de" class="external-link">Lennart Oelschläger</a>, <a href="https://timoadam.github.io/" class="external-link">Timo Adam</a>, <a href="https://ekvv.uni-bielefeld.de/pers_publ/publ/PersonDetail.jsp?personId=241029889" class="external-link">Rouven Michels</a>.</p>
+<p>Developed by <a href="https://loelschlaeger.de" class="external-link">Lennart Oelschläger</a>, <a href="https://timoadam.github.io/" class="external-link">Timo Adam</a>, <a href="https://ekvv.uni-bielefeld.de/pers_publ/publ/PersonDetail.jsp?personId=241029889" class="external-link">Rouven Michels</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
