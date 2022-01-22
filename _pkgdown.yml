@@ -6,6 +6,10 @@ home:
 authors:
   Lennart Oelschläger:
     href: https://www.oilbat.de
+  Timo Adam:
+    href: https://timoadam.github.io/
+  Rouven Michels:
+    href: https://ekvv.uni-bielefeld.de/pers_publ/publ/PersonDetail.jsp?personId=241029889
 
 template:
   bootstrap: 5
