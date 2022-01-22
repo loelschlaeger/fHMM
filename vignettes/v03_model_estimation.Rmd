@@ -1,10 +1,10 @@
 ---
-title: "Model fitting"
+title: "Model estimation"
 author: "Lennart Oelschläger, Timo Adam and Rouven Michels"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Model fitting}
+  %\VignetteIndexEntry{Model estimation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: ref.bib
@@ -52,6 +52,7 @@ The coarse-scale forward probabilities can be calculated similarly by applying t
 \end{align*}
 
 ## Challenges in the maximization of the likelihood
+
 Maximization of the likelihood function is numerically feasible using the Newton-Raphson method. In practice, we often face the technical issues such as numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way. Instead of computing the forward probabilities directly, we consider the logarithmic transformation 
 $\phi^{*(i)}_{k,t^*}=\log[\alpha^{*(i)}_{k,t^*}]$ and $\phi_{i,t}=\log[\alpha_{i,t}]$
 thereof (log-forward probabilities). The recursive form described above remains: The fine-scale log-forward probabilities satisfy
