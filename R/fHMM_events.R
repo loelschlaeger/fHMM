@@ -15,16 +15,16 @@
 
 fHMM_events <- function(events) {
   if (class(events) == "fHMM_events") {
-    warning()
+    warning("This element already is of class 'fHMM_events'.")
   } else {
     if (class(events) != "list") {
-      stop()
+      stop("'events' must be a list.")
     }
     if (length(events) != 2) {
-      stop()
+      stop("'events' must be a list of two elements.")
     }
     if (!identical(names(events), c("dates", "labels"))) {
-      stop()
+      stop("'events' must be a list containing the elements 'dates' and 'labels'.")
     }
     events$dates <- check_date(events$dates)
     class(events) <- "fHMM_events"
