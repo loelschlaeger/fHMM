@@ -25,7 +25,7 @@ model = fit_model(data, ncluster = 7, seed = seed) %>%
   compute_residuals
 summary(model)
 model %<>% reorder_states(state_order = 1:2)
-compare(model)
+compare_models(model)
 model %>% plot("ll")
 model %>% plot("sdds")
 model %>% plot("pr")
@@ -79,7 +79,7 @@ model = fit_model(data, ncluster = 7) %>%
   decode_states %>%
   compute_residuals 
 summary(model)
-compare(model)
+compare_models(model)
 model %>% plot("ll")
 model %>% plot("sdds")
 model %<>% reorder_states(state_order = matrix(c(1,2,1,2,2,1),2,3))
@@ -110,7 +110,7 @@ model = fit_model(data, ncluster = 7, seed = seed) %>%
   decode_states %>%
   compute_residuals
 summary(model)
-compare(model)
+compare_models(model)
 model %>% plot("ll")
 model %>% plot("sdds")
 model %>% plot("pr")

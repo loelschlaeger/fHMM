@@ -25,16 +25,16 @@ reference:
 - title: Model estimation
   desc: Use these function for model estimation.
   contents:
-  - decode_states
   - fit_model
+  - decode_states
+  - reorder_states
 - title: Model evaluation
   desc: Use these functions to evaluate your model.
   contents:
-  - compare
+  - compare_models
   - compute_residuals
   - plot.fHMM_model
   - predict
-  - reorder_states
 - title: Debugging
   desc: Use this function for debugging.
   contents:

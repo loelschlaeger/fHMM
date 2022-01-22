@@ -7,7 +7,7 @@
 #' A data frame.
 #' @export
 
-compare <- function(...) {
+compare_models <- function(...) {
 
   ### read models
   models <- as.list(list(...))
