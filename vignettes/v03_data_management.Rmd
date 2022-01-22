@@ -35,7 +35,7 @@ library(fHMM)
 Empirical data for modeling must be in csv-format and its path must be specified in `set_controls()`, see [the vignette on specifying the controls](http://loelschlaeger.de/fHMM/articles/v02_controls.html) for details^[The `download_data()` function explaind below provides a convenient tool for downloading stock data from https://finance.yahoo.com/ in a suitable format.] We assume here that our working directory contains such a file named `dax.csv`:
 
 ```{r, download dax data, include = FALSE}
-download_data(symbol = "^GDAXI")
+download_data(symbol = "^GDAXI", file = "dax.csv")
 ```
 ```{r, head dax}
 str(read.csv("dax.csv"))
@@ -86,7 +86,7 @@ downloads the 21st century daily data of the Deutscher Aktienindex into the curr
 
 Historical events can be highlighted in empirical data time series by specifying a named list `events` with elements `dates` (a vector of dates) and `names` (a vector of names for the events) and passing it to the plot method, for example:
 
-```{r, events}
+```{r, events, eval = FALSE}
 events = fHMM_events(
   list(
     dates = c("2001-09-11","2008-09-15","2020-01-27"),

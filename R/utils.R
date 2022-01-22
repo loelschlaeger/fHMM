@@ -11,7 +11,7 @@
 
 check_date <- function(date) {
   date <- try(as.Date(date), silent = TRUE)
-  if (class(date) == "try-error" || is.na(as.Date(date, format = "%Y-%m-%d"))) {
+  if (any(class(date) == "try-error" || is.na(as.Date(date, format = "%Y-%m-%d")))) {
     stop("C7")
   }
   return(date)
