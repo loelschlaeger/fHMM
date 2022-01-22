@@ -12,8 +12,8 @@ link-citations: true
 ---
 
 <!-- 
-Assignee: Timo
-Purpose: motivation of HMMs for financial data and hierarchical structure, overview vignettes, overview literature
+Assignee: Timo, Lennart
+Purpose: motivation of HMMs for financial data and hierarchical structure, overview vignettes, overview literature, explain debugging function, link to GitHub issue page
 --> 
 
 ```{r, include = FALSE}
