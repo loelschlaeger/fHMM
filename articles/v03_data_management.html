@@ -83,7 +83,7 @@
       <img src="" class="logo" alt=""><h1>Data management</h1>
                         <h4 data-toc-skip class="author">Lennart Oelschläger, Timo Adam and Rouven Michels</h4>
             
-            <h4 data-toc-skip class="date">2022-01-22</h4>
+            <h4 data-toc-skip class="date">2022-01-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/loelschlaeger/fHMM/blob/HEAD/vignettes/v03_data_management.Rmd" class="external-link"><code>vignettes/v03_data_management.Rmd</code></a></small>
       <div class="d-none name"><code>v03_data_management.Rmd</code></div>
@@ -112,7 +112,7 @@ Purpose: handling of empirical and simulated financial data in fHMM
 <p>Empirical data for modeling must be in csv-format and its path must be specified in <code><a href="../reference/set_controls.html">set_controls()</a></code>, see <a href="http://loelschlaeger.de/fHMM/articles/v02_controls.html" class="external-link">the vignette on specifying the controls</a> for details<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;The &lt;code&gt;&lt;a href="../reference/download_data.html"&gt;download_data()&lt;/a&gt;&lt;/code&gt; function explaind below provides a convenient tool for downloading stock data from &lt;a href="https://finance.yahoo.com/" class="external-link uri"&gt;https://finance.yahoo.com/&lt;/a&gt; in a suitable format.&lt;/p&gt;'><sup>1</sup></a> We assume here that our working directory contains such a file named <code>dax.csv</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"dax.csv"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; 'data.frame':    8773 obs. of  7 variables:</span>
+<span class="co">#&gt; 'data.frame':    8776 obs. of  7 variables:</span>
 <span class="co">#&gt;  $ Date     : chr  "1987-12-30" "1987-12-31" "1988-01-01" "1988-01-04" ...</span>
 <span class="co">#&gt;  $ Open     : chr  "1005.190002" "null" "null" "956.489990" ...</span>
 <span class="co">#&gt;  $ High     : chr  "1005.190002" "null" "null" "956.489990" ...</span>
@@ -136,7 +136,7 @@ Purpose: handling of empirical and simulated financial data in fHMM
 <span class="co">#&gt; [1] "fHMM_data"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
 <span class="co">#&gt; Summary of fHMM empirical data</span>
-<span class="co">#&gt; * number of observations: 8773 </span>
+<span class="co">#&gt; * number of observations: 8776 </span>
 <span class="co">#&gt; * data source: dax.csv </span>
 <span class="co">#&gt; * date column: Date </span>
 <span class="co">#&gt; * log returns: TRUE</span></code></pre></div>
@@ -159,7 +159,7 @@ Purpose: handling of empirical and simulated financial data in fHMM
 <span class="co">#&gt; Download successful.</span>
 <span class="co">#&gt; * symbol: ^GDAXI </span>
 <span class="co">#&gt; * from: 2000-01-03 </span>
-<span class="co">#&gt; * to: 2022-01-21 </span>
+<span class="co">#&gt; * to: 2022-01-26 </span>
 <span class="co">#&gt; * path: /Users/runner/work/fHMM/fHMM/vignettes/^GDAXI.csv</span></code></pre></div>
 <p>downloads the 21st century daily data of the Deutscher Aktienindex into the current working directory.</p>
 </div>
