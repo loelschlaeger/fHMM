@@ -83,7 +83,7 @@
       <img src="" class="logo" alt=""><h1>Model estimation</h1>
                         <h4 data-toc-skip class="author">Lennart Oelschläger, Timo Adam and Rouven Michels</h4>
             
-            <h4 data-toc-skip class="date">2022-01-22</h4>
+            <h4 data-toc-skip class="date">2022-01-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/loelschlaeger/fHMM/blob/HEAD/vignettes/v04_model_estimation.Rmd" class="external-link"><code>vignettes/v04_model_estimation.Rmd</code></a></small>
       <div class="d-none name"><code>v04_model_estimation.Rmd</code></div>
@@ -99,13 +99,13 @@ Purpose: definition of likelihood, maximization of likelihood, challenges in the
 <h2 id="likelihood-evaluation-and-numerical-maximization">Likelihood evaluation and numerical maximization<a class="anchor" aria-label="anchor" href="#likelihood-evaluation-and-numerical-maximization"></a>
 </h2>
 <p>Conceptually, an HHMM can be treated as an HMM with two conditionally independent observations, the coarse-scale observation on the one hand and the corresponding chunk of fine-scale observations connected to a fine-scale HMM on the other hand. To derive the likelihood of an HHMM, we start by stating the likelihood formula for the fine-scale HMMs.</p>
-<p>Assume that we want to fit the <span class="math inline">\(i\)</span>-th fine-scale HMM, with model parameters <span class="math inline">\(\theta^{*(i)}=(\delta^{*(i)},\Gamma^{*(i)},(f^{*(i,k)})_k)\)</span>, to the <span class="math inline">\(t\)</span>-th chunk of fine-scale observations, <span class="math inline">\((X_{t,t^*})_{t^*}\)</span>. Consider the so-called fine-scale forward probabilities <span class="math inline">\(\alpha^{*(i)}_{k,t^*}=f^{*(i)}(X^*_{t,1},\dots,X^*_{t,t^*}, S^*_{t,t^*}=k)\)</span>, where <span class="math inline">\(t^*=1,\dots,T^*\)</span> and <span class="math inline">\(k=1,\dots,N^*\)</span>. Obviously, <span class="math display">\[\begin{align*}
+<p>To fit the <span class="math inline">\(i\)</span>-th fine-scale HMM, with model parameters <span class="math inline">\(\theta^{*(i)}=(\delta^{*(i)},\Gamma^{*(i)},(f^{*(i,k)})_k)\)</span>, to the <span class="math inline">\(t\)</span>-th chunk of fine-scale observations, <span class="math inline">\((X_{t,t^*})_{t^*}\)</span>, we consider the fine-scale forward probabilities <span class="math inline">\(\alpha^{*(i)}_{k,t^*}=f^{*(i)}(X^*_{t,1},\dots,X^*_{t,t^*}, S^*_{t,t^*}=k)\)</span>, where <span class="math inline">\(t^*=1,\dots,T^*\)</span> and <span class="math inline">\(k=1,\dots,N^*\)</span>. Obviously, <span class="math display">\[\begin{align*}
 \mathcal{L}^\text{HMM}(\theta^{*(i)}\mid (X^*_{t,t^*})_{t^*})=\sum_{k=1}^{N^*}\alpha^{*(i)}_{k,T^*}.
-\end{align*}\]</span> The forward probabilities can be calculated in a recursive way of linear complexity: <span class="math display">\[\begin{align*}
+\end{align*}\]</span> The forward probabilities can be calculated in a recursively as <span class="math display">\[\begin{align*}
 \alpha^{*(i)}_{k,1} = \delta^{*(i)}_k f^{*(i,k)}(X^*_{t,1}) \quad \text{and} \quad
 \alpha^{*(i)}_{k,t^*} = f^{*(i,k)}(X^*_{t,t^*})\sum_{j=1}^{N^*}\gamma^{*(i)}_{jk}\alpha^{*(i)}_{j,t^*-1}, \quad t^*=2,\dots,T^*.
 \end{align*}\]</span></p>
-<p>The transition from the likelihood function of an HMM to the likelihood function of an HHMM is straightforward: Consider the so-called coarse-scale forward probabilities <span class="math inline">\(\alpha_{i,t}=f(X_1,\dots,X_t,(X^*_{1,t^*})_{t^*},\dots,(X^*_{t,t^*})_{t^*}, S_t=i)\)</span>, where <span class="math inline">\(t=1,\dots,T\)</span> and <span class="math inline">\(i=1,\dots,N\)</span>. The likelihood function of the HHMM results as <span class="math display">\[\begin{align*}
+<p>The transition from the likelihood function of an HMM to the likelihood function of an HHMM is straightforward: Consider the coarse-scale forward probabilities <span class="math inline">\(\alpha_{i,t}=f(X_1,\dots,X_t,(X^*_{1,t^*})_{t^*},\dots,(X^*_{t,t^*})_{t^*}, S_t=i)\)</span>, where <span class="math inline">\(t=1,\dots,T\)</span> and <span class="math inline">\(i=1,\dots,N\)</span>. The likelihood function of the HHMM results as <span class="math display">\[\begin{align*}
 \mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)=\sum_{i=1}^{N}\alpha_{i,T}.
 \end{align*}\]</span> The coarse-scale forward probabilities can be calculated similarly by applying the recursive scheme <span class="math display">\[\begin{align*}
 \alpha_{i,1} &amp;= \delta_i \mathcal{L}^\text{HMM}(\theta^{*(i)}\mid (X^*_{1,t^*})_{t^*})f^{(i)}(X_1), \\
@@ -113,9 +113,10 @@ Purpose: definition of likelihood, maximization of likelihood, challenges in the
 \end{align*}\]</span></p>
 </div>
 <div class="section level2">
-<h2 id="challenges-in-the-maximization-of-the-likelihood">Challenges in the maximization of the likelihood<a class="anchor" aria-label="anchor" href="#challenges-in-the-maximization-of-the-likelihood"></a>
+<h2 id="challenges-associated-with-the-likelihood-maximization">Challenges associated with the likelihood maximization<a class="anchor" aria-label="anchor" href="#challenges-associated-with-the-likelihood-maximization"></a>
 </h2>
-<p>Maximization of the likelihood function is numerically feasible using the Newton-Raphson method. In practice, we often face the technical issues such as numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way. Instead of computing the forward probabilities directly, we consider the logarithmic transformation <span class="math inline">\(\phi^{*(i)}_{k,t^*}=\log[\alpha^{*(i)}_{k,t^*}]\)</span> and <span class="math inline">\(\phi_{i,t}=\log[\alpha_{i,t}]\)</span> thereof (log-forward probabilities). The recursive form described above remains: The fine-scale log-forward probabilities satisfy <span class="math display">\[\begin{align*}
+<p>(Note: can be much shorter, not relevant for users of the package, refer to the paper.)</p>
+<p>Maximization of the likelihood function is numerically feasible using the Newton-Raphson method. In practice, we often face technical issues such as numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way. Instead of computing the forward probabilities directly, we consider the logarithmic transformation <span class="math inline">\(\phi^{*(i)}_{k,t^*}=\log[\alpha^{*(i)}_{k,t^*}]\)</span> and <span class="math inline">\(\phi_{i,t}=\log[\alpha_{i,t}]\)</span> thereof (log-forward probabilities). The recursive form described above remains: The fine-scale log-forward probabilities satisfy <span class="math display">\[\begin{align*}
 \phi^{*(i)}_{k,1}&amp;=\log[\delta^{*(i)}_k]+\log[f^{*(i,k)}(X^*_{t,1})], \\
 \phi^{*(i)}_{k,t^*}&amp;=\log[f^{*(i,k)}(X^*_{t,t^*})]+\log\left[\sum_{j=1}^{N^*} \gamma^{*(i)}_{jk} \exp[ \phi^{*(i)}_{j,t^*-1} -c_{t^*-1}]\right]+c_{t^*-1},
 \end{align*}\]</span> where <span class="math inline">\(c_{t^*-1}=\max \{ \phi^{*(i)}_{1,t^*-1},\dots,\phi^{*(i)}_{N^*,t^*-1} \}\)</span> and <span class="math inline">\(t^*=2,\dots,T^*\)</span>. The log-likelihood of a fine-scale HMM results from these variables as <span class="math display">\[\begin{align*}
@@ -133,6 +134,10 @@ Purpose: definition of likelihood, maximization of likelihood, challenges in the
 </div>
 <div class="section level2">
 <h2 id="application">Application<a class="anchor" aria-label="anchor" href="#application"></a>
+</h2>
+</div>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
