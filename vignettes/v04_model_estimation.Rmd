@@ -27,19 +27,19 @@ knitr::opts_chunk$set(
 
 Conceptually, an HHMM can be treated as an HMM with two conditionally independent observations, the coarse-scale observation on the one hand and the corresponding chunk of fine-scale observations connected to a fine-scale HMM on the other hand. To derive the likelihood of an HHMM, we start by stating the likelihood formula for the fine-scale HMMs. 
 
-Assume that we want to fit the $i$-th fine-scale HMM, with model parameters $\theta^{*(i)}=(\delta^{*(i)},\Gamma^{*(i)},(f^{*(i,k)})_k)$, to the $t$-th chunk of fine-scale observations, $(X_{t,t^*})_{t^*}$. Consider the so-called fine-scale forward probabilities 
+To fit the $i$-th fine-scale HMM, with model parameters $\theta^{*(i)}=(\delta^{*(i)},\Gamma^{*(i)},(f^{*(i,k)})_k)$, to the $t$-th chunk of fine-scale observations, $(X_{t,t^*})_{t^*}$, we consider the fine-scale forward probabilities 
 $\alpha^{*(i)}_{k,t^*}=f^{*(i)}(X^*_{t,1},\dots,X^*_{t,t^*}, S^*_{t,t^*}=k)$,
 where $t^*=1,\dots,T^*$ and $k=1,\dots,N^*$. Obviously,
 \begin{align*}
 \mathcal{L}^\text{HMM}(\theta^{*(i)}\mid (X^*_{t,t^*})_{t^*})=\sum_{k=1}^{N^*}\alpha^{*(i)}_{k,T^*}.
 \end{align*}
-The forward probabilities can be calculated in a recursive way of linear complexity:
+The forward probabilities can be calculated in a recursively as
 \begin{align*}
 \alpha^{*(i)}_{k,1} = \delta^{*(i)}_k f^{*(i,k)}(X^*_{t,1}) \quad \text{and} \quad
 \alpha^{*(i)}_{k,t^*} = f^{*(i,k)}(X^*_{t,t^*})\sum_{j=1}^{N^*}\gamma^{*(i)}_{jk}\alpha^{*(i)}_{j,t^*-1}, \quad t^*=2,\dots,T^*.
 \end{align*}
 
-The transition from the likelihood function of an HMM to the likelihood function of an HHMM is straightforward: Consider the so-called coarse-scale forward probabilities
+The transition from the likelihood function of an HMM to the likelihood function of an HHMM is straightforward: Consider the coarse-scale forward probabilities
 $\alpha_{i,t}=f(X_1,\dots,X_t,(X^*_{1,t^*})_{t^*},\dots,(X^*_{t,t^*})_{t^*}, S_t=i)$,
 where $t=1,\dots,T$ and $i=1,\dots,N$. The likelihood function of the HHMM results as
 \begin{align*}
@@ -51,9 +51,11 @@ The coarse-scale forward probabilities can be calculated similarly by applying t
 \alpha_{i,t} &= \mathcal{L}^\text{HMM}(\theta^{*(i)}\mid (X^*_{t,t^*})_{t^*}) f^{(i)}(X_t)\sum_{j=1}^{N}\gamma_{ji}\alpha_{j,t-1}, \quad t=2,\dots,T.
 \end{align*}
 
-## Challenges in the maximization of the likelihood
+## Challenges associated with the likelihood maximization
 
-Maximization of the likelihood function is numerically feasible using the Newton-Raphson method. In practice, we often face the technical issues such as numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way. Instead of computing the forward probabilities directly, we consider the logarithmic transformation 
+(Note: can be much shorter, not relevant for users of the package, refer to the paper.)
+
+Maximization of the likelihood function is numerically feasible using the Newton-Raphson method. In practice, we often face technical issues such as numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way. Instead of computing the forward probabilities directly, we consider the logarithmic transformation 
 $\phi^{*(i)}_{k,t^*}=\log[\alpha^{*(i)}_{k,t^*}]$ and $\phi_{i,t}=\log[\alpha_{i,t}]$
 thereof (log-forward probabilities). The recursive form described above remains: The fine-scale log-forward probabilities satisfy
 \begin{align*}
@@ -83,5 +85,6 @@ The diagonal entries result from the unity condition $\gamma_{ii}=1-\sum_{j\neq 
 
 A third source of conflicts arises from the fact that the likelihood is maximized with respect to a relatively large number of parameters, which can lead to local maxima apart from the global maximum. Common Newton-Raphson-type optimization routines are unable to distinguish local maxima from the global one. To avoid the trap of ending up at a local maximum, we recommended to run the maximization routine multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood. A reasonable set of starting points can be chosen based on the observed data, e.g.\ using the method of moments estimator. Due to the increasingly complex likelihood surface, the number of optimization runs should increase with the number of parameters.
 
-
 ## Application
+
+## References
