@@ -21,10 +21,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-## AIC, BIC
+## Model selection using information criteria
 
-## Problems in using them
+AIC, BIC.
+
+## Challanges associated with model selection
 
 Cite paper of Jenny.
 
 ## Application
+
+## References
