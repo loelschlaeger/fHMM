@@ -23,11 +23,21 @@ knitr::opts_chunk$set(
 
 ## Model selection using information criteria
 
-AIC, BIC.
+Idea: find a compromise between model fit and model complexity.
+
+AIC:
+\begin{align*}
+\text{AIC} =
+\end{align*}
+
+BIC:
+\begin{align*}
+\text{BIC} =
+\end{align*}
 
 ## Challanges associated with model selection
 
-Cite paper of Jenny.
+HHMMs (as HMMs) favor models with too many states. Pragmatic selection of the number of states. Cite paper of Jenny.
 
 ## Application
 
