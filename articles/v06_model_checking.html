@@ -96,8 +96,10 @@ Assignee: Timo (theory part), Lennart (application part)
 Purpose: definition and calculation of pseudo-residuals, application in fHMM
 -->
 <div class="section level2">
-<h2 id="what-are-pseudo-residuals">What are pseudo-residuals?<a class="anchor" aria-label="anchor" href="#what-are-pseudo-residuals"></a>
+<h2 id="model-checking-using-pseudo-residuals">Model checking using pseudo-residuals<a class="anchor" aria-label="anchor" href="#model-checking-using-pseudo-residuals"></a>
 </h2>
+<p>Analyzing so-called pseudo-residuals enables us to check whether a fitted HMM describes the data sufficiently well. This cannot be done by standard residual analysis since the observations are explained by different distributions, depending on the active state. Therefore, all observations have to be transformed on a common scale, which can be achieved in the following way: If <span class="math inline">\(X_t\)</span> has the invertible distribution function <span class="math inline">\(F_{X_t}\)</span>, then <span class="math inline">\(Z_t=\Phi^{-1}(F_{X_t} (X_t))\)</span> is standard normally distributed, where <span class="math inline">\(\Phi\)</span> denotes the cumulative distribution function of the standard normal distribution. The observations, <span class="math inline">\((X_t)_t\)</span>, are modeled well if the pseudo-residuals, <span class="math inline">\((Z_t)_t\)</span>, are approximately standard normally distributed .</p>
+<p>For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm (see Section ). Subsequently, we assign each coarse-scale observation its associated distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.</p>
 </div>
 <div class="section level2">
 <h2 id="how-to-implement-pseudo-residuals-in-fhmm">How to implement pseudo-residuals in fHMM?<a class="anchor" aria-label="anchor" href="#how-to-implement-pseudo-residuals-in-fhmm"></a>
