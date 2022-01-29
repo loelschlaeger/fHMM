@@ -4,14 +4,16 @@
 \alias{predict.fHMM_model}
 \title{Prediction}
 \usage{
-\method{predict}{fHMM_model}(x, ahead, ci_level = 0.05)
+\method{predict}{fHMM_model}(object, ahead, ci_level = 0.05, ...)
 }
 \arguments{
-\item{x}{An object of class \code{fHMM_model}.}
+\item{object}{An object of class \code{fHMM_model}.}
 
 \item{ahead}{A positive integer.}
 
 \item{ci_level}{The confidence level, a numeric between 0 and 1.}
+
+\item{...}{Ignored.}
 }
 \value{
 An object of class \code{fHMM_model}.
