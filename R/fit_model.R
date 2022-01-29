@@ -78,7 +78,6 @@ fit_model <- function(data, ncluster = 1, seed = NULL) {
       pb$tick()
     }
   } else if (ncluster > 1) {
-    numCores <- parallel::detectCores()
     cluster <- parallel::makeCluster(ncluster)
     doSNOW::registerDoSNOW(cluster)
     opts <- list(progress = function(n) pb$tick())
@@ -86,7 +85,6 @@ fit_model <- function(data, ncluster = 1, seed = NULL) {
       run = 1:data[["controls"]][["fit"]][["runs"]],
       .packages = "fHMM", .options.snow = opts
     ) %dopar% {
-      pb$tick(0)
       ll <- target(
         parUncon = start_values[[run]],
         observations = data[["data"]],
@@ -152,7 +150,6 @@ fit_model <- function(data, ncluster = 1, seed = NULL) {
       pb$tick()
     }
   } else if (ncluster > 1) {
-    numCores <- parallel::detectCores()
     cluster <- parallel::makeCluster(ncluster)
     doSNOW::registerDoSNOW(cluster)
     opts <- list(progress = function(n) pb$tick())

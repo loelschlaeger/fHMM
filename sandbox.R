@@ -2,7 +2,7 @@
 rm(list = ls())
 library(magrittr)
 devtools::load_all()
-#install.packages("../fHMM_0.3.0.9000.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
+#install.packages("../fHMM_1.0.0.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
 
 ### download data -----------------------------------------------------------
 download_data(symbol = "^GDAXI", file = "dax.csv", verbose = FALSE)
@@ -20,7 +20,7 @@ controls %<>% set_controls
 data = prepare_data(controls, seed = seed)
 data %>% summary
 data %>% plot
-model = fit_model(data, ncluster = 7, seed = seed) %>%
+model = fit_model(data, ncluster = 2, seed = seed) %>%
   decode_states %>%
   compute_residuals
 summary(model)
