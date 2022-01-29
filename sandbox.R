@@ -5,8 +5,7 @@ devtools::load_all()
 #install.packages("../fHMM_1.0.0.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
 
 ### download data -----------------------------------------------------------
-download_data(symbol = "^GDAXI", file = "data/dax.csv", verbose = FALSE)
-download_data(symbol = "VOW3.DE", file = "data/vw.csv", verbose = FALSE)
+download_data(symbol = "^GDAXI", file = tempfile())
 
 ### simulated HMM -----------------------------------------------------------
 seed = 1
@@ -66,8 +65,7 @@ seed = 1
 controls = list(
   hierarchy = TRUE,
   states    = c(2,2),
-  sdds      = c("t(sigma = 0.1, df = Inf)", 
-                "gamma(sigma = 0.1)"),
+  sdds      = c("t(sigma = 0.1, df = Inf)", "gamma(sigma = 0.1)"),
   horizon   = c(100,10),
   fit       = list("runs" = 20)
 )
