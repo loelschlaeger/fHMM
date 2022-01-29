@@ -49,7 +49,7 @@ prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
 
   ### build and return object of class 'fHMM_data'
   data <- list(
-    "dates" = data$dates,
+    "dates" = as.Date(data$dates),
     "time_points" = data$time_points,
     "markov_chain" = data$markov_chain,
     "data" = data$data,

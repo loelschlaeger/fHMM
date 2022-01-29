@@ -20,7 +20,7 @@ controls %<>% set_controls
 data = prepare_data(controls, seed = seed)
 data %>% summary
 data %>% plot
-model = fit_model(data, ncluster = 2, seed = seed) %>%
+model = fit_model(data, ncluster = 7, seed = seed) %>%
   decode_states %>%
   compute_residuals
 summary(model)

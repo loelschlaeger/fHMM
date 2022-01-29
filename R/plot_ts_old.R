@@ -16,7 +16,7 @@
 #' internal
 #' @importFrom graphics par abline mtext points layout plot.new
 
-plot_ts <- function(data, decoding = NULL, colors = NULL, events = NULL) {
+plot_ts_old <- function(data, decoding = NULL, colors = NULL, events = NULL) {
 
   ### reset of 'par' settings
   oldpar <- graphics::par(no.readonly = TRUE)
