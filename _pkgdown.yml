@@ -39,10 +39,6 @@ reference:
   - compute_residuals
   - plot.fHMM_model
   - predict
-- title: Debugging
-  desc: Use this function for debugging.
-  contents:
-  - solve_trouble
 - title: S3 classes
   desc: These functions construct the S3 classes of fHMM.
   contents:
