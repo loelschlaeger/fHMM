@@ -100,32 +100,22 @@ Purpose: handling of empirical and simulated financial data in fHMM
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://loelschlaeger.github.io/fHMM/">fHMM</a></span><span class="op">)</span>
 <span class="co">#&gt; Thanks for using fHMM version 1.0.0!</span>
 <span class="co">#&gt; See https://loelschlaeger.de/fHMM for help.</span>
-<span class="co">#&gt; Type 'citation("fHMM")' for citing this R package.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'fHMM'</span>
-<span class="co">#&gt; The following object is masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     predict</span></code></pre></div>
+<span class="co">#&gt; Type 'citation("fHMM")' for citing this R package.</span></code></pre></div>
 <div class="section level2">
 <h2 id="empirical-data">Empirical data<a class="anchor" aria-label="anchor" href="#empirical-data"></a>
 </h2>
-<p>Empirical data for modeling must be in csv-format and its path must be specified in <code><a href="../reference/set_controls.html">set_controls()</a></code>, see <a href="http://loelschlaeger.de/fHMM/articles/v02_controls.html" class="external-link">the vignette on specifying the controls</a> for details<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;The &lt;code&gt;&lt;a href="../reference/download_data.html"&gt;download_data()&lt;/a&gt;&lt;/code&gt; function explaind below provides a convenient tool for downloading stock data from &lt;a href="https://finance.yahoo.com/" class="external-link uri"&gt;https://finance.yahoo.com/&lt;/a&gt; in a suitable format.&lt;/p&gt;'><sup>1</sup></a> We assume here that our working directory contains such a file named <code>dax.csv</code>:</p>
+<p>Empirical data for modeling must be in csv-format and its path must be specified in <code><a href="../reference/set_controls.html">set_controls()</a></code>, see <a href="http://loelschlaeger.de/fHMM/articles/v02_controls.html" class="external-link">the vignette on specifying the controls</a> for details.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;The &lt;code&gt;&lt;a href="../reference/download_data.html"&gt;download_data()&lt;/a&gt;&lt;/code&gt; function explained below provides a convenient tool for downloading stock data from &lt;a href="https://finance.yahoo.com/" class="external-link uri"&gt;https://finance.yahoo.com/&lt;/a&gt; in a suitable format.&lt;/p&gt;'><sup>1</sup></a> The fHMM package contains two datasets of the DAX and the VW stock for demonstration purpose that can be accessed as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"dax.csv"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; 'data.frame':    8778 obs. of  7 variables:</span>
-<span class="co">#&gt;  $ Date     : chr  "1987-12-30" "1987-12-31" "1988-01-01" "1988-01-04" ...</span>
-<span class="co">#&gt;  $ Open     : chr  "1005.190002" "null" "null" "956.489990" ...</span>
-<span class="co">#&gt;  $ High     : chr  "1005.190002" "null" "null" "956.489990" ...</span>
-<span class="co">#&gt;  $ Low      : chr  "1005.190002" "null" "null" "956.489990" ...</span>
-<span class="co">#&gt;  $ Close    : chr  "1005.190002" "null" "null" "956.489990" ...</span>
-<span class="co">#&gt;  $ Adj.Close: chr  "1005.190002" "null" "null" "956.489990" ...</span>
-<span class="co">#&gt;  $ Volume   : chr  "0" "null" "null" "0" ...</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dax.csv"</span>, package <span class="op">=</span> <span class="st">"fHMM"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "/Users/runner/work/_temp/Library/fHMM/extdata/dax.csv"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"vw.csv"</span>, package <span class="op">=</span> <span class="st">"fHMM"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "/Users/runner/work/_temp/Library/fHMM/extdata/vw.csv"</span></code></pre></div>
 <p>The <code><a href="../reference/prepare_data.html">prepare_data()</a></code> function prepares the data based on the <code>data</code> controls specifications and returns an <code>fHMM_data</code> object that can be passed to the <code><a href="../reference/fit_model.html">fit_model()</a></code> function.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">controls</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   states <span class="op">=</span> <span class="fl">3</span>,
   sdds   <span class="op">=</span> <span class="st">"t"</span>,
-  data   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>file        <span class="op">=</span> <span class="st">"dax.csv"</span>,
+  data   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>file        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dax.csv"</span>, package <span class="op">=</span> <span class="st">"fHMM"</span><span class="op">)</span>,
                 date_column <span class="op">=</span> <span class="st">"Date"</span>,
                 data_column <span class="op">=</span> <span class="st">"Close"</span>,
                 logreturns  <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -161,7 +151,7 @@ Purpose: handling of empirical and simulated financial data in fHMM
 <span class="co">#&gt; * from: 2000-01-03 </span>
 <span class="co">#&gt; * to: 2022-01-28 </span>
 <span class="co">#&gt; * path: /Users/runner/work/fHMM/fHMM/vignettes/^GDAXI.csv</span></code></pre></div>
-<p>downloads the 21st century daily data of the Deutscher Aktienindex into the current working directory.</p>
+<p>downloads the 21st century daily data of the DAX into the current working directory.</p>
 </div>
 <div class="section level2">
 <h2 id="highlighting-events">Highlighting events<a class="anchor" aria-label="anchor" href="#highlighting-events"></a>
@@ -175,7 +165,12 @@ Purpose: handling of empirical and simulated financial data in fHMM
     <span class="op">)</span>
   <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">events</span><span class="op">)</span>
+<span class="co">#&gt;        dates                         labels</span>
+<span class="co">#&gt; 1 2001-09-11          9/11 terrorist attack</span>
+<span class="co">#&gt; 2 2008-09-15  Bankruptcy of Lehman Brothers</span>
+<span class="co">#&gt; 3 2020-01-27 First COVID-19 case in Germany</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">data</span>, events <span class="op">=</span> <span class="va">events</span><span class="op">)</span></code></pre></div>
+<p><img src="v03_data_management_files/figure-html/events-1.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="simulated-data">Simulated data<a class="anchor" aria-label="anchor" href="#simulated-data"></a>

@@ -175,7 +175,7 @@
     <loc>https://loelschlaeger.github.io/fHMM/reference/plot_ts.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.github.io/fHMM/reference/predict.html</loc>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/predict.fHMM_model.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/prepare_data.html</loc>
@@ -203,8 +203,5 @@
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/simulate_observations.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.github.io/fHMM/reference/solve_trouble.html</loc>
   </url>
 </urlset>
