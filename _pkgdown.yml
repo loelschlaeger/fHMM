@@ -42,7 +42,7 @@ reference:
   - compare_models
   - compute_residuals
   - plot.fHMM_model
-  - predict
+  - predict.fHMM_model
 - title: S3 classes
   desc: These functions construct the S3 classes of fHMM.
   contents:

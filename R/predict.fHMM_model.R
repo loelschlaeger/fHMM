@@ -11,7 +11,7 @@
 #' @export
 #' @importFrom stats qt qgamma
 
-predict <- function(x, ahead, ci_level = 0.05) {
+predict.fHMM_model <- function(x, ahead, ci_level = 0.05) {
 
   ### check input
   if (class(x) != "fHMM_model") {

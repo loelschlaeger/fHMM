@@ -36,7 +36,7 @@ seed = 1
 controls = list(
   states = 3,
   sdds   = "t",
-  data   = list(file        = "dax.csv",
+  data   = list(file        = "inst/extdata/dax.csv",
                 date_column = "Date",
                 data_column = "Close",
                 logreturns  = TRUE,
@@ -92,7 +92,7 @@ controls = list(
   horizon   = c(100, NA),
   sdds      = c("t(df = 1)", "t(df = 1)"),
   period    = "m",
-  data      = list(file = c("dax.csv","vw.csv"),
+  data      = list(file = c("inst/extdata/dax.csv","inst/extdata/vw.csv"),
                    from = "2015-01-01",
                    to = "2021-01-01",
                    logreturns = c(TRUE,TRUE)),

@@ -372,7 +372,7 @@ set_controls <- function(controls = NULL) {
   if (!controls[["simulated"]]) {
     indices <- if (controls[["hierarchy"]]) 1:2 else 1
     for (i in indices) {
-      controls[["data"]][["file"]][i] <- normalizePath(controls[["data"]][["file"]][i])
+      controls[["data"]][["file"]][i] <- suppressWarnings(normalizePath(controls[["data"]][["file"]][i]))
       if (!file.exists(controls[["data"]][["file"]][i])) {
         stop("File '", controls[["data"]][["file"]][i], "' not found.")
       }
