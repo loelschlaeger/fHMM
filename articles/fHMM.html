@@ -118,14 +118,8 @@ Purpose: motivation of HMMs for financial data and hierarchical structure, overv
 <li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v05_state_decoding.html" class="external-link"><em>State decoding</em></a> defines the Viterbi algorithm that is used for decoding the most likely underlying state sequence. It furthermore introduces its implementation in fHMM via the <code>decode_state()</code> function. The <code><a href="../reference/reorder_states.html">reorder_states()</a></code> function can be used for state relabeling after the decoding.</p></li>
 <li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v06_model_checking.html" class="external-link"><em>Model checking</em></a> explains the task of checking a fitted model via computing (pseudo-) residuals, which is implemented via the <code><a href="../reference/compute_residuals.html">compute_residuals()</a></code> function.</p></li>
 <li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v07_model_selection.html" class="external-link"><em>Model selection</em></a> discusses the task of selecting the (in some sense) best model among a set of competing models. The fHMM package provides a convenient <code><a href="../reference/compare_models.html">compare_models()</a></code> function that receives an arbitrary number of <code>fHMM_model</code>-objects and returns comparison statistics.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v08_prediction.html" class="external-link"><em>Prediction</em></a> discusses how the package can be used for market forecasting via the <code><a href="../reference/predict.html">predict()</a></code> function.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v08_prediction.html" class="external-link"><em>Prediction</em></a> discusses how the package can be used for market forecasting via the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function.</p></li>
 </ul>
-</div>
-<div class="section level2">
-<h2 id="debugging">Debugging<a class="anchor" aria-label="anchor" href="#debugging"></a>
-</h2>
-<p>It was our aim to provide meaningful warning and error messages when something unexpected happens. However, we found that some situations require a more detailed feedback. Therefore, the package includes the <code><a href="../reference/solve_trouble.html">solve_trouble()</a></code> function which can be fed by thrown error codes and returns debugging suggestions.</p>
-<p>For any issues that are not covered by this course of action, please <a href="https://github.com/loelschlaeger/fHMM/issues" class="external-link">open an issue on the project’s GitHub page</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="placement-in-the-literature">Placement in the literature<a class="anchor" aria-label="anchor" href="#placement-in-the-literature"></a>
