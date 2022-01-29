@@ -5,8 +5,8 @@ devtools::load_all()
 #install.packages("../fHMM_1.0.0.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
 
 ### download data -----------------------------------------------------------
-download_data(symbol = "^GDAXI", file = "dax.csv", verbose = FALSE)
-download_data(symbol = "VOW3.DE", file = "vw.csv", verbose = FALSE)
+download_data(symbol = "^GDAXI", file = "data/dax.csv", verbose = FALSE)
+download_data(symbol = "VOW3.DE", file = "data/vw.csv", verbose = FALSE)
 
 ### simulated HMM -----------------------------------------------------------
 seed = 1
