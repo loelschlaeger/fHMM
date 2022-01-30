@@ -1,6 +1,6 @@
 ---
 title: "Model selection"
-author: "Lennart Oelschläger, Timo Adam and Rouven Michels"
+author: "Lennart Oelschläger, Timo Adam, and Rouven Michels"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -27,17 +27,19 @@ Idea: find a compromise between model fit and model complexity.
 
 AIC:
 \begin{align*}
-\text{AIC} =
+\text{AIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + 2 p,
 \end{align*}
+where $p$ denotes the number of parameters.
 
 BIC:
 \begin{align*}
-\text{BIC} =
+\text{BIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + \log(T T^*) p,
 \end{align*}
+where $T T^*$ is the number of observations.
 
 ## Challanges associated with model selection
 
-HHMMs (as HMMs) favor models with too many states. Pragmatic selection of the number of states. Cite paper of Jenny.
+HHMMs (as HMMs) favor models with too many states. Pragmatic selection of the number of states. Cite @poh17.
 
 ## Application
 
