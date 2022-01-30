@@ -69,7 +69,7 @@ Furthermore, variances are strictly positive, which can be achieved by applying 
 
 When numerically maximizing the likelihood using some Newton-Raphson-type method, we often face numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way (see @zuc16 and @oel21 for details).
 
-As the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one To avoid this trap, it is recommended to run the maximization routine multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood (see @zuc16 and @oel21 for details).
+As the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one. To avoid this problem, it is recommended to run the maximization multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood (see @zuc16 and @oel21 for details).
 
 ## Application
 
