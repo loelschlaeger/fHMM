@@ -124,8 +124,8 @@ Purpose: definition of likelihood, maximization of likelihood, challenges in the
 \end{align*}\]</span> rather than estimating the probabilities <span class="math inline">\((\gamma_{ij})_{i,j}\)</span> directly. The diagonal entries result from the unity condition as <span class="math display">\[\begin{align*}
 \gamma_{ii}=1-\sum_{j\neq i}\gamma_{ij}.
 \end{align*}\]</span> Furthermore, variances are strictly positive, which can be achieved by applying an exponential transformation to the unconstrained estimator.</p>
-<p>When numerically maximizing the likelihood using some Newton-Raphson-type method, we often face numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way (see <span class="citation">Oelschläger and Adam (<a href="#ref-oel21" role="doc-biblioref">2021</a>)</span> for details).</p>
-<p>As the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one To avoid this trap, it is recommended to run the maximization routine multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood (see <span class="citation">Oelschläger and Adam (<a href="#ref-oel21" role="doc-biblioref">2021</a>)</span> for details).</p>
+<p>When numerically maximizing the likelihood using some Newton-Raphson-type method, we often face numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way (see <span class="citation">Zucchini and Langrock (<a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span> and <span class="citation">Oelschläger and Adam (<a href="#ref-oel21" role="doc-biblioref">2021</a>)</span> for details).</p>
+<p>As the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one To avoid this trap, it is recommended to run the maximization routine multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood (see <span class="citation">Zucchini and Langrock (<a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span> and <span class="citation">Oelschläger and Adam (<a href="#ref-oel21" role="doc-biblioref">2021</a>)</span> for details).</p>
 </div>
 <div class="section level2">
 <h2 id="application">Application<a class="anchor" aria-label="anchor" href="#application"></a>
@@ -137,6 +137,9 @@ Purpose: definition of likelihood, maximization of likelihood, challenges in the
 <div id="refs" class="references">
 <div id="ref-oel21">
 <p>Oelschläger, Lennart, and Timo Adam. 2021. “Detecting Bearish and Bullish Markets in Financial Time Series Using Hierarchical Hidden Markov Models.” <em>Statistical Modelling</em>. <a href="https://doi.org/10.1177/1471082X211034048" class="external-link">https://doi.org/10.1177/1471082X211034048</a>.</p>
+</div>
+<div id="ref-zuc16">
+<p>Zucchini, MacDonald, W., and R. Langrock. 2016. “Hidden Markov Models for Time Series: An Introduction Using R, 2nd Edition.” <em>Chapman and Hall/CRC</em>.</p>
 </div>
 </div>
 </div>
