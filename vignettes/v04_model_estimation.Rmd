@@ -67,9 +67,9 @@ rather than estimating the probabilities $(\gamma_{ij})_{i,j}$ directly. The dia
 \end{align*}
 Furthermore, variances are strictly positive, which can be achieved by applying an exponential transformation to the unconstrained estimator.
 
-When numerically maximizing the likelihood using some Newton-Raphson-type method, we often face numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way (see CITE PAPER for details).
+When numerically maximizing the likelihood using some Newton-Raphson-type method, we often face numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way (see @oel21 for details).
 
-As the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one To avoid this trap, it is recommended to run the maximization routine multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood (see CITE PAPER for details).
+As the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one To avoid this trap, it is recommended to run the maximization routine multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood (see @oel21 for details).
 
 ## Application
 
