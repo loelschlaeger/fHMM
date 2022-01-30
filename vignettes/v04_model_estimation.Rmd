@@ -42,7 +42,9 @@ The forward probabilities can be calculated in a recursively as
 \end{align*}
 
 The transition from the likelihood function of an HMM to the likelihood function of an HHMM is straightforward: Consider the coarse-scale forward probabilities
-$\alpha_{i,t}=f(X_1,\dots,X_t,(X^*_{1,t^*})_{t^*},\dots,(X^*_{t,t^*})_{t^*}, S_t=i)$,
+\begin{align*}
+\alpha_{i,t}=f(X_1,\dots,X_t,(X^*_{1,t^*})_{t^*},\dots,(X^*_{t,t^*})_{t^*}, S_t=i),
+\end{align*}
 where $t=1,\dots,T$ and $i=1,\dots,N$. The likelihood function of the HHMM results as
 \begin{align*}
 \mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)=\sum_{i=1}^{N}\alpha_{i,T}.
