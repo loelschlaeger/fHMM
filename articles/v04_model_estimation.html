@@ -107,7 +107,9 @@ Purpose: definition of likelihood, maximization of likelihood, challenges in the
 \alpha^{*(i)}_{k,1} &amp;= \delta^{*(i)}_k f^{*(i,k)}(X^*_{t,1}), \\
 \alpha^{*(i)}_{k,t^*} &amp;= f^{*(i,k)}(X^*_{t,t^*})\sum_{j=1}^{N^*}\gamma^{*(i)}_{jk}\alpha^{*(i)}_{j,t^*-1}, \quad t^*=2,\dots,T^*.
 \end{align*}\]</span></p>
-<p>The transition from the likelihood function of an HMM to the likelihood function of an HHMM is straightforward: Consider the coarse-scale forward probabilities <span class="math inline">\(\alpha_{i,t}=f(X_1,\dots,X_t,(X^*_{1,t^*})_{t^*},\dots,(X^*_{t,t^*})_{t^*}, S_t=i)\)</span>, where <span class="math inline">\(t=1,\dots,T\)</span> and <span class="math inline">\(i=1,\dots,N\)</span>. The likelihood function of the HHMM results as <span class="math display">\[\begin{align*}
+<p>The transition from the likelihood function of an HMM to the likelihood function of an HHMM is straightforward: Consider the coarse-scale forward probabilities <span class="math display">\[\begin{align*}
+\alpha_{i,t}=f(X_1,\dots,X_t,(X^*_{1,t^*})_{t^*},\dots,(X^*_{t,t^*})_{t^*}, S_t=i),
+\end{align*}\]</span> where <span class="math inline">\(t=1,\dots,T\)</span> and <span class="math inline">\(i=1,\dots,N\)</span>. The likelihood function of the HHMM results as <span class="math display">\[\begin{align*}
 \mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)=\sum_{i=1}^{N}\alpha_{i,T}.
 \end{align*}\]</span> The coarse-scale forward probabilities can be calculated similarly by applying the recursive scheme <span class="math display">\[\begin{align*}
 \alpha_{i,1} &amp;= \delta_i \mathcal{L}^\text{HMM}(\theta^{*(i)}\mid (X^*_{1,t^*})_{t^*})f^{(i)}(X_1), \\
