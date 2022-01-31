@@ -98,11 +98,10 @@ Purpose: definition of model selection criteria, problems in using them, using t
 <div class="section level2">
 <h2 id="model-selection-using-information-criteria">Model selection using information criteria<a class="anchor" aria-label="anchor" href="#model-selection-using-information-criteria"></a>
 </h2>
-<p>Idea: find a compromise between model fit and model complexity.</p>
-<p>AIC: <span class="math display">\[\begin{align*}
+<p>Model selection involves the choice of a family for the state-dependent distribution and the selection of the number of states. This can be achieved using information criteria, such as the Akaike information criterion (AIC) or the Bayesian information criterion (BIC), both of which aim at finding a compromise between model fit and model complexity.</p>
+<p>The AIC is defined as <span class="math display">\[\begin{align*}
 \text{AIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + 2 p,
-\end{align*}\]</span> where <span class="math inline">\(p\)</span> denotes the number of parameters.</p>
-<p>BIC: <span class="math display">\[\begin{align*}
+\end{align*}\]</span> where <span class="math inline">\(p\)</span> denotes the number of parameters, while the BIC is defined as <span class="math display">\[\begin{align*}
 \text{BIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + \log(T T^*) p,
 \end{align*}\]</span> where <span class="math inline">\(T T^*\)</span> is the number of observations.</p>
 </div>
