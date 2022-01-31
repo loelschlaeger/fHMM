@@ -25,15 +25,13 @@ knitr::opts_chunk$set(
 
 ## Model selection using information criteria
 
-Idea: find a compromise between model fit and model complexity.
+Model selection involves the choice of a family for the state-dependent distribution and the selection of the number of states. This can be achieved using information criteria, such as the Akaike information criterion (AIC) or the Bayesian information criterion (BIC), both of which aim at finding a compromise between model fit and model complexity.
 
-AIC:
+The AIC is defined as
 \begin{align*}
 \text{AIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + 2 p,
 \end{align*}
-where $p$ denotes the number of parameters.
-
-BIC:
+where $p$ denotes the number of parameters, while the BIC is defined as
 \begin{align*}
 \text{BIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + \log(T T^*) p,
 \end{align*}
