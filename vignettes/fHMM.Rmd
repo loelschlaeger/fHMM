@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-author: "Lennart Oelschläger, Timo Adam and Rouven Michels"
+author: "Lennart Oelschläger, Timo Adam, and Rouven Michels"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -23,13 +23,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-Welcome to fHMM, a package for modeling financial time series with hidden Markov models. This introductory vignette [motivates the approach](#motivation), gives an [overview](#package-and-vignettes-overview) of the package functionality and the vignettes, informs about [debugging](#debugging) options, and [places the approach in the existing literature](#placement-in-the-literature).
+Welcome to fHMM, a package for modeling financial time series with hidden Markov models (HMMs). This introductory vignette [motivates the approach](#motivation), gives an [overview](#package-and-vignettes-overview) of the package functionality and the vignettes, informs about [debugging](#debugging) options, and [places the approach in the existing literature](#placement-in-the-literature).
 
 ## Motivation
 
 Earning money with stock trading is simple: one only needs to buy and sell stocks at the right moment. In general, stock traders seek to invest at the beginning of upward trends (hereon termed as bullish markets) and repel their stocks just in time before the prices fall again (hereon termed as bearish markets). As stock prices depend on a variety of environmental factors [@hum09; @coh13], chance certainly plays a fundamental role in hitting those exact moments. However, investigating market behavior can lead to a better understanding of how trends alternate and thereby increases the chance of making profitable investment decisions. 
 
-The fHMM package aims at contributing to those investigations by applying hidden Markov models to detect bearish and bullish markets in financial time series. It also implemented the hierarchical extension presented in [@oel21], which improves the model's capability for distinguishing between short- and long-term trends and allows to interpret market dynamics at multiple time scales.
+The fHMM package aims at contributing to those investigations by applying HMMs to detect bearish and bullish markets in financial time series. It also implemented the hierarchical extension presented in [@oel21], which improves the model's capability for distinguishing between short- and long-term trends and allows to interpret market dynamics at multiple time scales.
 
 ## Package and vignettes overview
 
@@ -39,13 +39,13 @@ The functionality of the fHMM package can be classified into functions for data 
 
 The tasks *data preparation*, *model estimation*, and *model evaluation* as well as their corresponding functions and classes are explained in detail in separate vignettes:
 
-- The vignette [*Model definition*](http://loelschlaeger.de/fHMM/articles/v01_model_definition.html) defines the hidden Markov model and its hierarchical extension.
+- The vignette [*Model definition*](http://loelschlaeger.de/fHMM/articles/v01_model_definition.html) defines the HMM and its hierarchical extension.
 
 - The vignette [*Controls*](http://loelschlaeger.de/fHMM/articles/v02_controls.html) introduces the `set_controls()` function which is used for model and estimation specifications. It creates an `fHMM_controls` object that can be fed into the `prepare_data()` function in the next step.
 
 - The vignette [*Data management*](http://loelschlaeger.de/fHMM/articles/v03_data_management.html) explains how to prepare or simulate data in fHMM. The goal for the data preparation task in the fHMM package is to create an `fHMM_data` object via the `prepare_data()` function that can be fed into the estimation routine in the next step. Furthermore, the function `download_data()` is introduced that can download financial data directly from https://finance.yahoo.com.
 
-- The vignette [*Model estimation*](http://loelschlaeger.de/fHMM/articles/v04_model_estimation.html) defines the likelihood function and explain the task of its numerical maximization. Subsequently, the `fit_model()` function is introduced that receives an `fHMM_data`, fits an hidden Markov model (specified by `fHMM_controls`) and return an `fHMM_model` object, for which the package provides a `plot`, `print` and `summary` method. 
+- The vignette [*Model estimation*](http://loelschlaeger.de/fHMM/articles/v04_model_estimation.html) defines the likelihood function and explain the task of its numerical maximization. Subsequently, the `fit_model()` function is introduced that receives an `fHMM_data`, fits an HMM (specified by `fHMM_controls`) and returns an `fHMM_model` object, for which the package provides `plot`, `print`, and `summary` methods. 
 
 - The vignette [*State decoding*](http://loelschlaeger.de/fHMM/articles/v05_state_decoding.html) defines the Viterbi algorithm that is used for decoding the most likely underlying state sequence. It furthermore introduces its implementation in fHMM via the `decode_state()` function. The `reorder_states()` function can be used for state relabeling after the decoding.
 
