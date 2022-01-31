@@ -41,7 +41,8 @@ controls = list(
                 date_column = "Date",
                 data_column = "Close",
                 logreturns  = TRUE,
-                from        = "2015-01-01")
+                from        = "2015-01-01"),
+  fit    = list("runs" = 10)
 )
 controls %<>% set_controls
 data = prepare_data(controls)
@@ -68,8 +69,8 @@ controls = list(
   states    = c(2,2),
   sdds      = c("t(sigma = 0.1, df = Inf)", 
                 "gamma(sigma = 0.1)"),
-  horizon   = c(100,10),
-  fit       = list("runs" = 20)
+  horizon   = c(50,10),
+  fit       = list("runs" = 7)
 )
 controls %<>% set_controls
 data = prepare_data(controls, seed = seed)
@@ -92,13 +93,13 @@ seed = 1
 controls = list(
   hierarchy = TRUE,
   horizon   = c(100, NA),
-  sdds      = c("t(df = 1)", "t(df = 1)"),
+  sdds      = c("t(df = 1, mu = 0)", "t(df = 1, mu = 0)"),
   period    = "m",
   data      = list(file = c("dax.csv","vw.csv"),
                    from = "2015-01-01",
-                   to = "2021-01-01",
+                   to = "2020-01-01",
                    logreturns = c(TRUE,TRUE)),
-  fit       = list("runs" = 10)
+  fit       = list("runs" = 7)
 )
 controls = set_controls(controls)
 data = prepare_data(controls)

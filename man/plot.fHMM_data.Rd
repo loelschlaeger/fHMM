@@ -14,7 +14,7 @@
 \item{...}{Ignored.}
 }
 \value{
-No return value.
+No return value. Draws a plot to the current device.
 }
 \description{
 This function is the plot method for an object of class \code{fHMM_data}.

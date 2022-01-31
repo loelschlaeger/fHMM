@@ -1,15 +1,20 @@
 #' Visualize pseudo residuals.
+#' 
 #' @description
 #' This function visualizes the pseudo residuals.
+#' 
 #' @param residuals
 #' An object of class \code{fHMM_residuals}.
 #' @param hierarchy
 #' The element \code{controls$hierarchy}.
+#' 
 #' @return
 #' No return value. Draws a plot to the current device.
+#' 
 #' @keywords
 #' internal
-#' @importFrom graphics hist curve abline layout mtext
+#' 
+#' @importFrom graphics hist curve abline layout mtext title
 #' @importFrom stats dnorm qqnorm acf
 
 plot_pr <- function(residuals, hierarchy) {
@@ -75,10 +80,11 @@ plot_pr <- function(residuals, hierarchy) {
     graphics::layout(matrix(1:4, 2, 2))
     helper_pr(residuals)
   } else {
+    oma <- c(0, 0, 1, 0) ### bottom, left, top, and right
+    par(oma = oma, bty = "n")
     graphics::layout(matrix(1:8, 2, 4, byrow = TRUE))
-    helper_pr(residuals[, 1])
-    graphics::mtext("coarse scale", side = 4, line = 2, cex = 1)
-    helper_pr(residuals[, -1])
-    graphics::mtext("fine scale", side = 4, line = 2, cex = 1)
+    helper_pr(residuals = residuals[, 1])
+    graphics::title("Coarse-scale (top row) and fine-scale pseudo-residuals (bottom row)", line = 0, outer = TRUE)
+    helper_pr(residuals = as.vector(residuals[, -1]))
   }
 }

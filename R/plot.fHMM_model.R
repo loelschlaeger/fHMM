@@ -1,6 +1,8 @@
 #' Plot method for an object of class \code{fHMM_model}.
+#' 
 #' @description
 #' This function is the plot method for an object of class \code{fHMM_model}.
+#' 
 #' @param x
 #' An object of class \code{fHMM_model}.
 #' @param plot_type
@@ -18,8 +20,10 @@
 #' @inheritParams fHMM_colors
 #' @param ...
 #' Ignored.
+#' 
 #' @return
 #' No return value. Draws a plot to the current device.
+#' 
 #' @export
 
 plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, ...) {
@@ -54,9 +58,9 @@ plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, .
   }
   if ("pr" %in% plot_type) {
     if (is.null(x$residuals)) {
-      warning("'residuals not available.'")
+      warning("Residuals are not available, please call 'compute_residuals()' first.")
     } else {
-      plot_pr(x$residuals, hierarchy = x$data$controls$hierarchy)
+      plot_pr(residuals = x$residuals, hierarchy = x$data$controls$hierarchy)
     }
   }
   if ("ts" %in% plot_type) {

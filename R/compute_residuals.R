@@ -1,10 +1,14 @@
 #' Compute (pseudo-) residuals.
+#' 
 #' @description
 #' This function computes (pseudo-) residuals of the estimated model.
+#' 
 #' @param x
 #' An object of class \code{RprobitB_model}.
+#' 
 #' @return
 #' An object of class \code{RprobitB_model}.
+#' 
 #' @export
 #' @importFrom stats pt pgamma qnorm
 
@@ -12,7 +16,7 @@ compute_residuals <- function(x) {
 
   ### check if decoding is available
   if (is.null(x$decoding)) {
-    warning("need decoding.")
+    warning("Cannot compute residuals without decoding, please call 'decode_states()' first.")
     return(x)
   }
 
