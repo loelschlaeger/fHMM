@@ -4,7 +4,7 @@
 \alias{plot_ts}
 \title{Visualize time series.}
 \usage{
-plot_ts(data, decoding = NULL, colors = NULL, events = NULL)
+plot_ts(data, decoding, colors, events)
 }
 \arguments{
 \item{data}{An object of class \code{fHMM_data}.}

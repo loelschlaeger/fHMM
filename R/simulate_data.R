@@ -1,18 +1,22 @@
 #' Simulate data for the fHMM package.
+#' 
 #' @description
 #' This function simulates financial data for the fHMM package.
+#' 
 #' @inheritParams prepare_data
+#' 
 #' @return
 #' A list containing the following elements:
 #' \itemize{
 #'  \item the matrix of \code{time_points},
 #'  \item the matrix of the simulated \code{markov_chain},
 #'  \item the matrix of the simulated \code{data},
-#'  \item the vector of fine-scale chunk sizes \code{T_star} if
-#'        \code{controls$hierarchy = TRUE}.
+#'  \item the vector of fine-scale chunk sizes \code{T_star} if \code{controls$hierarchy = TRUE}.
 #' }
+#' 
 #' @keywords
 #' internal
+#' 
 #' @importFrom utils head
 
 simulate_data <- function(controls, true_parameters, seed = NULL) {
@@ -68,7 +72,7 @@ simulate_data <- function(controls, true_parameters, seed = NULL) {
       markov_chain[t, -1] <- simulate_markov_chain(
         Gamma = true_parameters$Gammas_star[[S_t]],
         T = T_star[t],
-        seed = seed,
+        seed = seed + t,
         total_length = max(T_star)
       )
       data[t, -1] <- simulate_observations(
@@ -77,7 +81,7 @@ simulate_data <- function(controls, true_parameters, seed = NULL) {
         mus = true_parameters$mus_star[[S_t]],
         sigmas = true_parameters$sigmas_star[[S_t]],
         dfs = true_parameters$dfs_star[[S_t]],
-        seed = seed,
+        seed = seed + t,
         total_length = max(T_star)
       )
       time_points[t, -1] <- c(time_points[t, 1] - 1 + (1:T_star[t]), rep(NA, max(T_star) - T_star[t]))

@@ -104,7 +104,7 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
   }
   helper_sdds(
     name = est$sdds[[1]]$name, nstates = controls$states[1],
-    colors = colors,
+    colors = if(controls$hierarchy) colors[["cs"]] else colors,
     main = "State-dependent distributions",
     est = list(
       "mus" = est$mus, "sigmas" = est$sigmas,
@@ -123,7 +123,7 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
     for (s in 1:controls$states[1]) {
       helper_sdds(
         name = est$sdds[[2]]$name, nstates = controls$states[2],
-        colors = colors,
+        colors = colors[["fs"]][s,],
         main = paste("Coarse-scale state", s),
         est = list(
           "mus" = est$mus_star[[s]],

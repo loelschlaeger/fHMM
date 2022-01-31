@@ -42,7 +42,7 @@ prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
     if (class(true_parameters) != "fHMM_parameters") {
       stop("'true_parameters' is not of class 'fHMM_parameters'.")
     }
-    data <- simulate_data(controls, true_parameters, seed = seed)
+    data <- simulate_data(controls = controls, true_parameters = true_parameters, seed = seed)
   } else {
     data <- read_data(controls)
   }
