@@ -1,15 +1,20 @@
-#' Compute (pseudo-) residuals.
+#' Computing (pseudo-) residuals
 #' 
 #' @description
-#' This function computes (pseudo-) residuals of the estimated model.
+#' This function computes (pseudo-) residuals of an \code{fHMM_model} object.
 #' 
 #' @param x
-#' An object of class \code{RprobitB_model}.
+#' An object of class \code{fHMM_model}.
 #' 
 #' @return
-#' An object of class \code{RprobitB_model}.
+#' An object of class \code{fHMM_model} with residuals included.
 #' 
 #' @export
+#' 
+#' @examples
+#' data(dax_model)
+#' compute_residuals(dax_model)
+#' 
 #' @importFrom stats pt pgamma qnorm
 
 compute_residuals <- function(x) {

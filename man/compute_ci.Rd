@@ -2,7 +2,7 @@
 % Please edit documentation in R/compute_ci.R
 \name{compute_ci}
 \alias{compute_ci}
-\title{Confidence intervals}
+\title{Computing confidence intervals}
 \usage{
 compute_ci(x, ci_level = 0.05)
 }
@@ -20,6 +20,12 @@ A list containing the following elements:
 }
 }
 \description{
-Computes confidence intervals for the estimates.
+This function computes confidence intervals for the estimates of an
+\code{fHMM_model} object.
+}
+\examples{
+data(dax_model)
+fHMM:::compute_ci(dax_model, ci_level = 0.10)
+
 }
 \keyword{internal}

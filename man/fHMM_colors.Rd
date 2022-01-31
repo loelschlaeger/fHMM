@@ -2,7 +2,7 @@
 % Please edit documentation in R/fHMM_colors.R
 \name{fHMM_colors}
 \alias{fHMM_colors}
-\title{Set color scheme for visualizations in the fHMM package.}
+\title{Setting color scheme for visualizations in the fHMM package}
 \usage{
 fHMM_colors(controls, colors = NULL)
 }
@@ -26,5 +26,10 @@ An object of class \code{fHMM_colors}, which is:
 }
 \description{
 This function defines a color scheme for visualizations in the fHMM package.
+}
+\examples{
+controls <- set_controls()
+fHMM_colors(controls, colors = c("red","blue"))
+
 }
 \keyword{s3}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_data.R
 \name{download_data}
 \alias{download_data}
-\title{Download financial data.}
+\title{Downloading financial data}
 \usage{
 download_data(
   symbol,
@@ -52,4 +52,5 @@ download_data(
   symbol = "^GDAXI", from = "2000-01-03",
   file = paste0(tempfile(), ".csv")
 )
+
 }

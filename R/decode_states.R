@@ -1,13 +1,21 @@
-#' Decode the underlying hidden state sequence.
+#' Decoding the underlying hidden state sequence
+#' 
 #' @description
 #' This function decodes the (most likely) underlying hidden state sequence by 
-#' applying the Viterbi algorithm 
-#' <https://en.wikipedia.org/wiki/Viterbi_algorithm>.
+#' applying the Viterbi algorithm <https://en.wikipedia.org/wiki/Viterbi_algorithm>.
+#' 
 #' @param x
 #' An object of class \code{fHMM_model}.
+#' 
 #' @return
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{fHMM_model} with decoded state sequence included.
+#' 
 #' @export
+#' 
+#' @examples 
+#' data(dax_model)
+#' decode_states(dax_model)
+#' 
 #' @importFrom stats dt dgamma
 
 decode_states <- function(x) {

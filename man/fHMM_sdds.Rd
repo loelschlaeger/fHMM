@@ -2,7 +2,7 @@
 % Please edit documentation in R/fHMM_sdds.R
 \name{fHMM_sdds}
 \alias{fHMM_sdds}
-\title{Define state-dependent distributions.}
+\title{Defining state-dependent distributions}
 \usage{
 fHMM_sdds(sdds)
 }
@@ -20,5 +20,9 @@ Unknown parameters are set to \code{NULL}.
 }
 \description{
 This function defines state-dependent distributions.
+}
+\examples{
+sdds <- c("t(sigma = 0.1, df = Inf)", "gamma")
+fHMM:::fHMM_sdds(sdds)
 }
 \keyword{s3}

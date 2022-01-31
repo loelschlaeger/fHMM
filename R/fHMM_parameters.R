@@ -1,8 +1,11 @@
-#' Set and check parameters for the fHMM package.
+#' Setting and checking parameters for the fHMM package
+#' 
 #' @description
 #' This function sets and checks parameters for the fHMM package.
+#' 
 #' @details
 #' See the vignettes for more information on how to specify parameters.
+#' 
 #' @param controls
 #' An object of class \code{fHMM_controls}.
 #' @param Gamma
@@ -35,11 +38,19 @@
 #' \code{mus} and \code{sigmas}, the second entry is the scale for
 #' \code{mus_star} and \code{sigmas_star}. Set an entry to \code{1} for no
 #' scaling.
+#' 
 #' @return
 #' An object of class \code{fHMM_parameters}.
+#' 
 #' @export
+#' 
+#' @examples 
+#' controls <- set_controls()
+#' fHMM_parameters(controls)
+#' 
 #' @keywords
 #' s3
+#' 
 #' @importFrom stats runif qunif runif
 
 fHMM_parameters <- function(controls,

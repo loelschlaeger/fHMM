@@ -1,11 +1,10 @@
-#' Set color scheme for visualizations in the fHMM package.
+#' Setting color scheme for visualizations in the fHMM package
 #' 
 #' @description
 #' This function defines a color scheme for visualizations in the fHMM package.
 #' 
 #' @param controls
 #' An object of class \code{fHMM_controls}.
-#' 
 #' @param colors
 #' Either \code{NULL} or a a character vector of color names or hexadecimal RGB
 #' triplets.
@@ -26,6 +25,10 @@
 #' 
 #' @keywords
 #' s3
+#' 
+#' @examples
+#' controls <- set_controls()
+#' fHMM_colors(controls, colors = c("red","blue"))
 #' 
 #' @importFrom grDevices col2rgb colorRampPalette adjustcolor
 

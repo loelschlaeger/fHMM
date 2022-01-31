@@ -1,7 +1,9 @@
-#' Download financial data.
+#' Downloading financial data
+#' 
 #' @description
 #' This function downloads stock data from <https://finance.yahoo.com> and saves
 #' it as a .csv-file.
+#' 
 #' @details
 #' The downloaded data is a .csv-file with the following columns:
 #' \itemize{
@@ -13,6 +15,7 @@
 #'   \item \code{Adj.Close}: Close price adjusted for dividends and splits.
 #'   \item \code{Volume}: Trade volume.
 #' }
+#' 
 #' @param symbol
 #' A character, the stock's symbol. It must match the identifier on
 #' <https://finance.yahoo.com>.
@@ -27,15 +30,19 @@
 #' in the current working directory with the name "\code{symbol}.csv".
 #' @param verbose
 #' If \code{TRUE} returns information about download success.
+#' 
 #' @return
 #' No return value.
+#' 
 #' @examples
 #' ### download 21st century DAX data
 #' download_data(
 #'   symbol = "^GDAXI", from = "2000-01-03",
 #'   file = paste0(tempfile(), ".csv")
 #' )
+#' 
 #' @export
+#' 
 #' @importFrom utils download.file read.csv head tail
 
 download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),

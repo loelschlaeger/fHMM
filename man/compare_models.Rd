@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare_models.R
 \name{compare_models}
 \alias{compare_models}
-\title{Comparison of multiple \code{fHMM_model}.}
+\title{Comparing multiple \code{fHMM_model}-objects}
 \usage{
 compare_models(...)
 }
@@ -10,8 +10,19 @@ compare_models(...)
 \item{...}{A list of one or more objects of class \code{fHMM_model}.}
 }
 \value{
-A data frame.
+A data frame with models in rows and comparison criteria in columns.
 }
 \description{
-This function compares multiple \code{fHMM_model}.
+This function compares multiple \code{fHMM_model} with respect to
+\itemize{
+\item the number of model parameters,
+\item the log-likelihood value,
+\item the AIC,
+\item the BIC.
+}
+}
+\examples{
+data(dax_model)
+compare_models(dax_model)
+
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fHMM_events.R
 \name{fHMM_events}
 \alias{fHMM_events}
-\title{Check events.}
+\title{Checking events}
 \usage{
 fHMM_events(events)
 }
@@ -14,9 +14,16 @@ The second element is named \code{"labels"} and is a character vector of the
 same length as \code{"dates"}.}
 }
 \value{
-An object of class \code{fHMM_data}.
+An object of class \code{fHMM_events}.
 }
 \description{
 This function checks the input \code{events}.
+}
+\examples{
+events = list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
+  labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers",
+             "First COVID-19 case Germany"))
+fHMM_events(events)
+
 }
 \keyword{s3}

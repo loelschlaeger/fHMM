@@ -1,10 +1,24 @@
-#' Comparison of multiple \code{fHMM_model}.
+#' Comparing multiple \code{fHMM_model}-objects
+#' 
 #' @description
-#' This function compares multiple \code{fHMM_model}.
+#' This function compares multiple \code{fHMM_model} with respect to
+#' \itemize{
+#'   \item the number of model parameters,
+#'   \item the log-likelihood value,
+#'   \item the AIC,
+#'   \item the BIC.
+#' }
+#' 
 #' @param ...
 #' A list of one or more objects of class \code{fHMM_model}.
+#' 
 #' @return
-#' A data frame.
+#' A data frame with models in rows and comparison criteria in columns.
+#' 
+#' @examples 
+#' data(dax_model)
+#' compare_models(dax_model)
+#' 
 #' @export
 
 compare_models <- function(...) {
@@ -15,7 +29,7 @@ compare_models <- function(...) {
   ### get model names
   model_names <- unlist(lapply(sys.call()[-1], as.character))
 
-  ### check if models are of class "RprobitB_model"
+  ### check if models are of class "fHMM_model"
   for (i in seq_len(length(models))) {
     if (class(models[[i]]) != "fHMM_model") {
       stop(paste0("Model '", model_names[i], "' is not of class 'fHMM_model'."))
@@ -29,8 +43,7 @@ compare_models <- function(...) {
       data_j <- as.numeric(unlist(models[[j]]$data$data))
       if (!identical(data_i, data_j)) {
         warning(paste0(
-          "Models '", model_names[i], "' and '", model_names[j],
-          "' are not estimated on the same data."
+          "Models '", model_names[i], "' and '", model_names[j], "' are not estimated on the same data."
         ))
       }
     }

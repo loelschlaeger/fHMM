@@ -2,7 +2,7 @@
 % Please edit documentation in R/fHMM_parameters.R
 \name{fHMM_parameters}
 \alias{fHMM_parameters}
-\title{Set and check parameters for the fHMM package.}
+\title{Setting and checking parameters for the fHMM package}
 \usage{
 fHMM_parameters(
   controls,
@@ -59,5 +59,10 @@ This function sets and checks parameters for the fHMM package.
 }
 \details{
 See the vignettes for more information on how to specify parameters.
+}
+\examples{
+controls <- set_controls()
+fHMM_parameters(controls)
+
 }
 \keyword{s3}

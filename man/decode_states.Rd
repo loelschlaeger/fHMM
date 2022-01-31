@@ -2,7 +2,7 @@
 % Please edit documentation in R/decode_states.R
 \name{decode_states}
 \alias{decode_states}
-\title{Decode the underlying hidden state sequence.}
+\title{Decoding the underlying hidden state sequence}
 \usage{
 decode_states(x)
 }
@@ -10,10 +10,14 @@ decode_states(x)
 \item{x}{An object of class \code{fHMM_model}.}
 }
 \value{
-An object of class \code{fHMM_model}.
+An object of class \code{fHMM_model} with decoded state sequence included.
 }
 \description{
 This function decodes the (most likely) underlying hidden state sequence by
-applying the Viterbi algorithm
-\url{https://en.wikipedia.org/wiki/Viterbi_algorithm}.
+applying the Viterbi algorithm \url{https://en.wikipedia.org/wiki/Viterbi_algorithm}.
+}
+\examples{
+data(dax_model)
+decode_states(dax_model)
+
 }

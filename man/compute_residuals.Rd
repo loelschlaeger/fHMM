@@ -2,16 +2,21 @@
 % Please edit documentation in R/compute_residuals.R
 \name{compute_residuals}
 \alias{compute_residuals}
-\title{Compute (pseudo-) residuals.}
+\title{Computing (pseudo-) residuals}
 \usage{
 compute_residuals(x)
 }
 \arguments{
-\item{x}{An object of class \code{RprobitB_model}.}
+\item{x}{An object of class \code{fHMM_model}.}
 }
 \value{
-An object of class \code{RprobitB_model}.
+An object of class \code{fHMM_model} with residuals included.
 }
 \description{
-This function computes (pseudo-) residuals of the estimated model.
+This function computes (pseudo-) residuals of an \code{fHMM_model} object.
+}
+\examples{
+data(dax_model)
+compute_residuals(dax_model)
+
 }

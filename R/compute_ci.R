@@ -1,10 +1,15 @@
-#' Confidence intervals
+#' Computing confidence intervals
+#' 
 #' @description
-#' Computes confidence intervals for the estimates.
+#' This function computes confidence intervals for the estimates of an 
+#' \code{fHMM_model} object.
+#' 
 #' @param x
 #' An object of class \code{fHMM_model}.
+#' 
 #' @param ci_level
 #' The confidence level, a numeric between 0 and 1.
+#' 
 #' @return
 #' A list containing the following elements:
 #' \itemize{
@@ -12,8 +17,14 @@
 #'   \item \code{estimate}: point estimate
 #'   \item \code{ub}: upper bound of confidence
 #' }
+#' 
 #' @keywords
 #' internal
+#' 
+#' @examples
+#' data(dax_model)
+#' fHMM:::compute_ci(dax_model, ci_level = 0.10)
+#' 
 #' @importFrom stats qnorm
 
 compute_ci <- function(x, ci_level = 0.05) {

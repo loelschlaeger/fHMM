@@ -1,15 +1,26 @@
-#' Check events.
+#' Checking events
+#' 
 #' @description
 #' This function checks the input \code{events}.
+#' 
 #' @param events
 #' A list of two elements.
 #' The first element is named \code{"dates"} and contains characters in format
 #' "YYYY-MM-DD".
 #' The second element is named \code{"labels"} and is a character vector of the
 #' same length as \code{"dates"}.
+#' 
 #' @return
-#' An object of class \code{fHMM_data}.
+#' An object of class \code{fHMM_events}.
+#' 
 #' @export
+#' 
+#' @examples
+#' events = list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
+#'   labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers",
+#'              "First COVID-19 case Germany"))
+#' fHMM_events(events)
+#' 
 #' @keywords
 #' s3
 
