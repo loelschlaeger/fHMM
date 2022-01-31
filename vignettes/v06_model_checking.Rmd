@@ -27,7 +27,7 @@ Analyzing pseudo-residuals allows us to check whether the fitted model describes
 \begin{align*}
 Z_t=\Phi^{-1}(F_{X_t} (X_t))
 \end{align*}
-is standard normally distributed, where $\Phi$ denotes the cumulative distribution function of the standard normal distribution. The observations, $(X_t)_t$, are modeled well if the pseudo-residuals, $(Z_t)_t$, are approximately standard normally distributed, which can be visually assessed using quantile-quantile plots or investigated using statistical tests such as the Jarque-Bera test @zuc16. 
+is standard normally distributed, where $\Phi$ denotes the cumulative distribution function of the standard normal distribution. The observations, $(X_t)_t$, are modeled well if the pseudo-residuals, $(Z_t)_t$, are approximately standard normally distributed, which can be visually assessed using quantile-quantile plots or further investigated using statistical tests such as the Jarque-Bera test @zuc16. 
 
 For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm. Subsequently, we assign each coarse-scale observation its distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.
 
