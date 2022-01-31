@@ -7,6 +7,8 @@ vignette: >
   %\VignetteIndexEntry{Model selection}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: ref.bib
+link-citations: true
 ---
 
 <!-- 
