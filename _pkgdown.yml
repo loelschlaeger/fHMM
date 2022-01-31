@@ -19,10 +19,6 @@ template:
     btn-border-radius: 0.25rem
 
 reference:
-- title: Datasets
-  desc: The following datasets are included in the package.
-  contents:
-  - has_keyword("dataset")
 - title: Data preparation
   desc: Use these functions to prepare or simulate financial data.
   contents:
@@ -43,6 +39,10 @@ reference:
   - compute_residuals
   - plot.fHMM_model
   - predict.fHMM_model
+- title: Models
+  desc: The following pre-computed models are included in the package.
+  contents:
+  - has_keyword("model")
 - title: S3 classes
   desc: These functions construct the S3 classes of fHMM.
   contents:

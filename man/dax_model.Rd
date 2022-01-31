@@ -8,7 +8,7 @@
 An object of class \code{fHMM_model}.
 }
 \usage{
-data(dax_data)
+data(dax_model)
 }
 \description{
 A pre-computed \code{fHMM_model} on closing prices of the DAX from 2000 to 2020
@@ -31,4 +31,4 @@ controls = list(
 }
 Set \code{file = "extdata/dax.csv"} to reproduce this code.
 }
-\keyword{datasets}
+\keyword{model}

@@ -4,7 +4,7 @@
 #' A pre-computed \code{fHMM_model} on closing prices of the DAX from 2000 to 2020
 #' for demonstration purpose.
 #' 
-#' @usage data(dax_data)
+#' @usage data(dax_model)
 #' 
 #' @details
 #' The model was derived via specifying 
@@ -24,4 +24,7 @@
 #' Set `file = "extdata/dax.csv"` to reproduce this code.
 #'
 #' @format An object of class \code{fHMM_model}.
+#' 
+#' @keywords 
+#' model
 "dax_model"
