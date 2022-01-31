@@ -100,7 +100,7 @@ Purpose: definition and calculation of pseudo-residuals, application in fHMM
 </h2>
 <p>Analyzing pseudo-residuals allows us to check whether the fitted model describes the data well. Since the observations are explained by different distributions (depending on the active state), this cannot be done by analyzing standard residuals. To transform all observations on a common scale, we proceed as follows: If <span class="math inline">\(X_t\)</span> has the invertible distribution function <span class="math inline">\(F_{X_t}\)</span>, then <span class="math display">\[\begin{align*}
 Z_t=\Phi^{-1}(F_{X_t} (X_t))
-\end{align*}\]</span> is standard normally distributed, where <span class="math inline">\(\Phi\)</span> denotes the cumulative distribution function of the standard normal distribution. The observations, <span class="math inline">\((X_t)_t\)</span>, are modeled well if the pseudo-residuals, <span class="math inline">\((Z_t)_t\)</span>, are approximately standard normally distributed, which can be visually assessed using quantile-quantile plots or further investigated using statistical tests such as the Jarque-Bera test <span class="citation">(Zucchini and Langrock <a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span>.</p>
+\end{align*}\]</span> is standard normally distributed, where <span class="math inline">\(\Phi\)</span> denotes the cumulative distribution function of the standard normal distribution. The observations, <span class="math inline">\((X_t)_t\)</span>, are modeled well if the pseudo-residuals, <span class="math inline">\((Z_t)_t\)</span>, are approximately standard normally distributed, which can be visually assessed using quantile-quantile plots or further investigated using statistical tests such as the Jarque-Bera test <span class="citation">(Zucchini, MacDonald, and Langrock <a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span>.</p>
 <p>For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm. Subsequently, we assign each coarse-scale observation its distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.</p>
 </div>
 <div class="section level2">
@@ -112,7 +112,7 @@ Z_t=\Phi^{-1}(F_{X_t} (X_t))
 </h2>
 <div id="refs" class="references">
 <div id="ref-zuc16">
-<p>Zucchini, MacDonald, W., and R. Langrock. 2016. “Hidden Markov Models for Time Series: An Introduction Using R, 2nd Edition.” <em>Chapman and Hall/CRC</em>.</p>
+<p>Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. “Hidden Markov Models for Time Series: An Introduction Using R, 2nd Edition.” <em>Chapman and Hall/CRC</em>.</p>
 </div>
 </div>
 </div>
