@@ -21,6 +21,29 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Viterbi
+## State decoding usig the Viterbi algorithm
+
+In practice, the primary interest often lies in decoding the hidden states. The term $\argmax_{S_1,\dots,S_T} f(S_1,\dots,S_T\mid X_1,\dots,X_T)$ represents the most-likely underlying state sequence $(S_t)_t$ of an HMM given the data $(X_t)_t$, which is equivalent to the expression $\argmax_{S_1,\dots,S_T} f(S_1,\dots,S_T, X_1,\dots,X_T)$. This can be computed using the Viterbi algorithm (see \citealp{zuc16}), which is based on the variables
+\begin{align*}
+\xi_{i,t} &= \max_{S_1,\dots,S_{t-1}} f(S_1,\dots,S_{t-1},S_t=i,X_1,\dots,X_t),
+\end{align*}
+$t=1,\dots,T$ and $i=1,\dots,N$, which can be calculated recursively via
+\begin{align*}
+\xi_{i,1} = \delta_i f^{(i)}(X_1) \quad \text{and} \quad \xi_{i,t} = \max_j \left(  \xi_{j,t-1}\gamma_{ji}  \right)f^{(i)}(X_t).
+\end{align*}
+Obtaining the most-likely state sequence $(\hat{S}_t)_t$ is feasible using these variables, starting at the end of the time horizon and going backwards in time:  
+\begin{align*}
+\hat{S}_T = \argmax_i \xi_{i,T}  \quad \text{and} \quad \hat{S}_t = \argmax_i \xi_{i,t}\gamma_{i\hat{S}_{t+1}},~t=T-1,\dots,1.
+\end{align*}
+As for the likelihood function, we need to prevent numerical conflicts. Therefore, we again apply a logarithmic transformation, see Algorithm $\ref{alg:viterbi}$ in the appendix, where $\kappa_{i,t}=\log [ \xi_{i,t} ]$. 
+
+State decoding in HHMMs is straightforward by first decoding the coarse-scale state process and then, using this information, to decode the fine-scale state process afterwards (see \citealp{ada19}).
+
+\subsection{Model checking} 
+Analyzing so-called pseudo-residuals enables us to check whether a fitted HMM describes the data sufficiently well. This cannot be done by standard residual analysis since the observations are explained by different distributions, depending on the active state. Therefore, all observations have to be transformed on a common scale, which can be achieved in the following way: If $X_t$ has the invertible distribution function $F_{X_t}$, then $Z_t=\Phi^{-1}(F_{X_t} (X_t))$ is standard normally distributed, where $\Phi$ denotes the cumulative distribution function of the standard normal distribution. The observations, $(X_t)_t$, are modeled well if the pseudo-residuals, $(Z_t)_t$, are approximately standard normally distributed \citep{zuc16}. 
+
+For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm (see Section \ref{sec2:3}). Subsequently, we assign each coarse-scale observation its associated distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.
 
 ## Application
+
+## References
