@@ -10,7 +10,6 @@ LICENSE
 ^pkgdown$
 make_sticker.R
 sandbox.R
-^.*\.csv
 jss/
 ^README\.Rmd$
 ^codecov\.yml$

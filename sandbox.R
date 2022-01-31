@@ -5,8 +5,7 @@ devtools::load_all()
 #install.packages("../fHMM_1.0.0.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
 
 ### download data -----------------------------------------------------------
-download_data(symbol = "^GDAXI", file = "dax.csv", verbose = FALSE)
-download_data(symbol = "VOW3.DE", file = "vw.csv", verbose = FALSE)
+download_data(symbol = "^GDAXI", file = tempfile())
 
 ### simulated HMM -----------------------------------------------------------
 seed = 1
@@ -37,7 +36,7 @@ seed = 1
 controls = list(
   states = 3,
   sdds   = "t",
-  data   = list(file        = "dax.csv",
+  data   = list(file        = "inst/extdata/dax.csv",
                 date_column = "Date",
                 data_column = "Close",
                 logreturns  = TRUE,
@@ -95,7 +94,7 @@ controls = list(
   horizon   = c(100, NA),
   sdds      = c("t(df = 1, mu = 0)", "t(df = 1, mu = 0)"),
   period    = "m",
-  data      = list(file = c("dax.csv","vw.csv"),
+  data      = list(file = c("inst/extdata/dax.csv","inst/extdata/vw.csv"),
                    from = "2015-01-01",
                    to = "2020-01-01",
                    logreturns = c(TRUE,TRUE)),

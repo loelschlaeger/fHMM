@@ -14,7 +14,7 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs
 <!-- badges: end -->
 
 The goal of fHMM is to detect bearish and bullish markets in financial
-time series aplying (hierarchical) hidden Markov models.
+time series applying (hierarchical) hidden Markov models.
 
 ## Installation
 
@@ -36,29 +36,31 @@ devtools::install_github("loelschlaeger/fHMM")
 
 ``` r
 library(fHMM)
-#> Thanks for using fHMM version 0.3.0.9000, have fun!
-#> See https://loelschlaeger.github.io/fHMM for help.
+#> Thanks for using fHMM version 1.0.0!
+#> See https://loelschlaeger.de/fHMM for help.
 #> Type 'citation("fHMM")' for citing this R package.
 library(magrittr)
 ```
 
-We fit a 3-state HMM with state-dependent t-distributions to the DAX
-log-returns from 2010 to 2020.
+We fit a 2-state HMM with state-dependent t-distributions to the DAX
+log-returns from 2010 to 2020. The states can be interpreted as proxies
+for bearish and bullish markets.
 
 The package has a build-in function to download the data from [Yahoo
 Finance](https://finance.yahoo.com/):
 
 ``` r
-download_data(symbol = "^GDAXI", file = "dax.csv", verbose = FALSE)
+path <- paste0(tempdir(),"/dax.csv")
+download_data(symbol = "^GDAXI", file = path, verbose = FALSE)
 ```
 
 We first need to define the model by setting the `controls`:
 
 ``` r
-controls = list(
-  states = 3,
+controls <- list(
+  states = 2,
   sdds   = "t",
-  data   = list(file        = "dax.csv",
+  data   = list(file        = path,
                 date_column = "Date",
                 data_column = "Close",
                 logreturns  = TRUE,
@@ -69,7 +71,7 @@ controls = list(
 #> fHMM controls:
 #> * hierarchy: FALSE 
 #> * data type: empirical 
-#> * number of states: 3 
+#> * number of states: 2 
 #> * sdds: t() 
 #> * number of runs: 100
 ```
@@ -77,7 +79,7 @@ controls = list(
 The function `prepare_data` prepares the data for estimation:
 
 ``` r
-data = prepare_data(controls)
+data <- prepare_data(controls)
 summary(data)
 #> Summary of fHMM empirical data
 #> * number of observations: 2791 
@@ -89,7 +91,8 @@ summary(data)
 We now fit the model and subsequentially decode the hidden states:
 
 ``` r
-model = fit_model(data, ncluster = 7) %>% decode_states 
+set.seed(1)
+model <- fit_model(data, ncluster = 7) %>% decode_states 
 #> Checking start values
 #> Maximizing likelihood
 #> Computing Hessian
@@ -99,33 +102,26 @@ summary(model)
 #> Summary of fHMM model
 #> 
 #>   simulated hierarchy       LL       AIC       BIC
-#> 1     FALSE     FALSE 8633.669 -17237.34 -17148.32
+#> 1     FALSE     FALSE 8577.094 -17138.19 -17090.71
 #> 
 #> State-dependent distributions:
 #> t() 
 #> 
 #> Estimates:
 #>                   lb   estimate         ub
-#> Gamma_2.1  3.965e-06  3.961e-06  3.957e-06
-#> Gamma_3.1  6.191e-03  6.351e-03  6.515e-03
-#> Gamma_1.2  1.385e-08  1.384e-08  1.383e-08
-#> Gamma_3.2  3.261e-02  3.328e-02  3.397e-02
-#> Gamma_1.3  2.715e-02  2.781e-02  2.848e-02
-#> Gamma_2.3  4.772e-02  4.874e-02  4.978e-02
-#> mu_1      -1.544e-03 -1.459e-03 -1.373e-03
-#> mu_2       1.215e-03  1.230e-03  1.244e-03
-#> mu_3       1.099e-04  1.330e-04  1.561e-04
-#> sigma_1    2.131e-02  2.141e-02  2.151e-02
-#> sigma_2    4.994e-03  5.016e-03  5.039e-03
-#> sigma_3    1.133e-02  1.137e-02  1.140e-02
-#> df_1       7.507e+00  7.679e+00  7.854e+00
-#> df_2       4.536e+00  4.592e+00  4.649e+00
-#> df_3       1.820e+01  1.890e+01  1.962e+01
+#> Gamma_2.1  0.0313615  0.0319495  0.0325481
+#> Gamma_1.2  0.0107352  0.0109757  0.0112215
+#> mu_1       0.0009344  0.0009467  0.0009591
+#> mu_2      -0.0010204 -0.0009720 -0.0009235
+#> sigma_1    0.0072680  0.0072860  0.0073039
+#> sigma_2    0.0168010  0.0168710  0.0169412
+#> df_1       5.3519409  5.3999003  5.4482894
+#> df_2       6.5553795  6.6527687  6.7516048
 #> 
 #> States:
 #> decoded
-#>    1    2    3 
-#>  315  943 1533
+#>    1    2 
+#> 2208  583
 ```
 
 Let’s visualize the estimated state-dependent distributions and the

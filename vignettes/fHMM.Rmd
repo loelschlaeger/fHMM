@@ -55,12 +55,6 @@ The tasks *data preparation*, *model estimation*, and *model evaluation* as well
 
 - The vignette [*Prediction*](http://loelschlaeger.de/fHMM/articles/v08_prediction.html) discusses how the package can be used for market forecasting via the `predict()` function.
 
-## Debugging
-
-It was our aim to provide meaningful warning and error messages when something unexpected happens. However, we found that some situations require a more detailed feedback. Therefore, the package includes the `solve_trouble()` function which can be fed by thrown error codes and returns debugging suggestions. 
-
-For any issues that are not covered by this course of action, please [open an issue on the project's GitHub page](https://github.com/loelschlaeger/fHMM/issues).
-
 ## Placement in the literature
 
 Over the last decades, various HMM-type models have emerged as popular tools for modeling financial time series that are subject to state-switching over time [@sch97] [@dia09] [@ang12] [@dea17]. [@ryd98], [@bul06], and [@nys15a], e.g., used HMMs to derive stylized facts of stock returns, while [@has05] and [@nys17] demonstrated that HMMs can prove useful for economic forecasting. More recently, [@lih17] applied HMMs to the Standard and Poor's 500 (S\&P 500), where HMMs were used to identify different levels of market volatility, aiming at providing evidence for the conjecture that returns exhibit negative correlation with volatility. Another application to the S\&P 500 can be found in [@ngu18], where HMMs were used to predict monthly closing prices to derive an optimal trading strategy, which was shown to outperform the conventional buy-and-hold strategy. Further applications, which involve HMM-type models for asset allocation and portfolio optimization, can be found in [@ang02], [@bul11], and [@nys15a] [@nys18], to name but a few examples. All these applications demonstrate that HMMs constitute a versatile class of time series models that naturally accounts for the dynamics typically exhibited by financial time series.

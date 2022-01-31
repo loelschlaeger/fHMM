@@ -1,21 +1,23 @@
 #' Prediction
 #' @description
 #' This function...
-#' @param x
+#' @param object
 #' An object of class \code{fHMM_model}.
 #' @param ahead
 #' A positive integer.
 #' @inheritParams compute_ci
+#' @param ...
+#' Ignored.
 #' @return
 #' An object of class \code{fHMM_model}.
 #' @export
 #' @importFrom stats qt qgamma
 
-predict <- function(x, ahead, ci_level = 0.05) {
+predict.fHMM_model <- function(object, ahead, ci_level = 0.05, ...) {
 
   ### check input
-  if (class(x) != "fHMM_model") {
-    stop("'x' must be of class 'fHMM_model'.")
+  if (class(object) != "fHMM_model") {
+    stop("'object' must be of class 'fHMM_model'.")
   }
   if (!(length(ahead) == 1 && is_number(ahead, int = TRUE, pos = TRUE))) {
     stop("'ahead' must be a positive integer")
@@ -25,14 +27,14 @@ predict <- function(x, ahead, ci_level = 0.05) {
   }
 
   ### extract parameters
-  par <- parUncon2par(x$estimate, x$data$controls)
-  M <- x$data$controls$states[1]
-  N <- x$data$controls$states[2]
-  sdds <- x$data$controls$sdds
+  par <- parUncon2par(object$estimate, object$data$controls)
+  M <- object$data$controls$states[1]
+  N <- object$data$controls$states[2]
+  sdds <- object$data$controls$sdds
 
   ### predict states
   state_prediction <- matrix(NA, nrow = ahead, ncol = M)
-  last_state <- tail(if (x$data$controls$hierarchy) x$decoding[, 1] else x$decoding, n = 1)
+  last_state <- tail(if (object$data$controls$hierarchy) object$decoding[, 1] else object$decoding, n = 1)
   state_prob <- replace(numeric(M), last_state, 1)
   for (i in 1:ahead) {
     state_prob <- state_prob %*% par$Gamma
@@ -40,7 +42,7 @@ predict <- function(x, ahead, ci_level = 0.05) {
   }
   rownames(state_prediction) <- 1:ahead
   colnames(state_prediction) <- paste("state", 1:M, sep = "_")
-  if (x$data$controls$hierarchy) {
+  if (object$data$controls$hierarchy) {
     for (s in 1:M) {
       state_prob <- rep(1 / N, N)
       fs_state_prediction <- matrix(NA, nrow = ahead, ncol = N)
@@ -57,7 +59,7 @@ predict <- function(x, ahead, ci_level = 0.05) {
   ### predict data
   data_prediction <- matrix(NA, nrow = ahead, ncol = 3)
   props <- sort(c(ci_level, 0.5, 1 - ci_level))
-  if (!x$data$controls$hierarchy) {
+  if (!object$data$controls$hierarchy) {
     if (sdds[[1]]$name == "t") {
       for (i in 1:ahead) {
         data_prediction[i, ] <- sapply(props, function(x) {
