@@ -5,7 +5,7 @@ devtools::load_all()
 #install.packages("../fHMM_1.0.0.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
 
 ### download data -----------------------------------------------------------
-download_data(symbol = "^GDAXI", file = tempfile())
+download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date(),file = tempfile())
 
 ### simulated HMM -----------------------------------------------------------
 seed = 1
@@ -41,7 +41,7 @@ controls = list(
                 data_column = "Close",
                 logreturns  = TRUE,
                 from        = "2015-01-01"),
-  fit    = list("runs" = 10)
+  fit    = list("runs" = 14)
 )
 controls %<>% set_controls
 data = prepare_data(controls)
@@ -56,7 +56,7 @@ model = fit_model(data, ncluster = 7, seed = seed) %>%
 summary(model)
 model %>% plot("ll")
 model %>% plot("sdds")
-model %<>% reorder_states(state_order = 3:1)
+model %<>% reorder_states(state_order = c(3,1,2))
 model %>% plot("pr")
 model %>% plot("ts", events = events)
 model %>% predict(ahead = 10)
