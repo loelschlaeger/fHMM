@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 ## Model checking using pseudo-residuals
 
-Analyzing pseudo-residuals allows us to check whether the fitted model describes the data sufficiently well. This cannot be done by standard residual analysis since the observations are explained by different distributions, depending on the active state. To transform all observations on a common scale, we proceed as follows: If $X_t$ has the invertible distribution function $F_{X_t}$, then
+Analyzing pseudo-residuals allows us to check whether the fitted model describes the data well. Since the observations are explained by different distributions (depending on the active state), this cannot be done by analyzing standard residuals. To transform all observations on a common scale, we proceed as follows: If $X_t$ has the invertible distribution function $F_{X_t}$, then
 \begin{align*}
 Z_t=\Phi^{-1}(F_{X_t} (X_t))
 \end{align*}
@@ -31,6 +31,6 @@ is standard normally distributed, where $\Phi$ denotes the cumulative distributi
 
 For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm. Subsequently, we assign each coarse-scale observation its distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.
 
-## How to implement pseudo-residuals in fHMM?
+## Application
 
 ## References
