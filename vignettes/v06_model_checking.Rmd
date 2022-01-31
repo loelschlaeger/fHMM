@@ -1,6 +1,6 @@
 ---
 title: "Model checking"
-author: "Lennart Oelschläger, Timo Adam and Rouven Michels"
+author: "Lennart Oelschläger, Timo Adam, and Rouven Michels"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -27,9 +27,9 @@ Analyzing so-called pseudo-residuals enables us to check whether a fitted HMM de
 \begin{align*}
 Z_t=\Phi^{-1}(F_{X_t} (X_t))
 \end{align*}
-is standard normally distributed, where $\Phi$ denotes the cumulative distribution function of the standard normal distribution. The observations, $(X_t)_t$, are modeled well if the pseudo-residuals, $(Z_t)_t$, are approximately standard normally distributed, which is typically assessed using quantile-quantile plots or statistical tests such as the Jarque-Bera test \citep{zuc16}. 
+is standard normally distributed, where $\Phi$ denotes the cumulative distribution function of the standard normal distribution. The observations, $(X_t)_t$, are modeled well if the pseudo-residuals, $(Z_t)_t$, are approximately standard normally distributed, which is typically assessed using quantile-quantile plots or statistical tests such as the Jarque-Bera test @zuc16. 
 
-For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm (see Section \ref{sec2:3}). Subsequently, we assign each coarse-scale observation its associated distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.
+For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm. Subsequently, we assign each coarse-scale observation its associated distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.
 
 ## How to implement pseudo-residuals in fHMM?
 
