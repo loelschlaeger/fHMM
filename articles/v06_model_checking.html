@@ -81,9 +81,9 @@
 <script src="v06_model_checking_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <main id="main"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Model checking</h1>
-                        <h4 data-toc-skip class="author">Lennart Oelschläger, Timo Adam and Rouven Michels</h4>
+                        <h4 data-toc-skip class="author">Lennart Oelschläger, Timo Adam, and Rouven Michels</h4>
             
-            <h4 data-toc-skip class="date">2022-01-30</h4>
+            <h4 data-toc-skip class="date">2022-01-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/loelschlaeger/fHMM/blob/HEAD/vignettes/v06_model_checking.Rmd" class="external-link"><code>vignettes/v06_model_checking.Rmd</code></a></small>
       <div class="d-none name"><code>v06_model_checking.Rmd</code></div>
@@ -100,8 +100,8 @@ Purpose: definition and calculation of pseudo-residuals, application in fHMM
 </h2>
 <p>Analyzing so-called pseudo-residuals enables us to check whether a fitted HMM describes the data sufficiently well. This cannot be done by standard residual analysis since the observations are explained by different distributions, depending on the active state. Therefore, all observations have to be transformed on a common scale, which can be achieved in the following way: If <span class="math inline">\(X_t\)</span> has the invertible distribution function <span class="math inline">\(F_{X_t}\)</span>, then <span class="math display">\[\begin{align*}
 Z_t=\Phi^{-1}(F_{X_t} (X_t))
-\end{align*}\]</span> is standard normally distributed, where <span class="math inline">\(\Phi\)</span> denotes the cumulative distribution function of the standard normal distribution. The observations, <span class="math inline">\((X_t)_t\)</span>, are modeled well if the pseudo-residuals, <span class="math inline">\((Z_t)_t\)</span>, are approximately standard normally distributed, which is typically assessed using quantile-quantile plots or statistical tests such as the Jarque-Bera test .</p>
-<p>For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm (see Section ). Subsequently, we assign each coarse-scale observation its associated distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.</p>
+\end{align*}\]</span> is standard normally distributed, where <span class="math inline">\(\Phi\)</span> denotes the cumulative distribution function of the standard normal distribution. The observations, <span class="math inline">\((X_t)_t\)</span>, are modeled well if the pseudo-residuals, <span class="math inline">\((Z_t)_t\)</span>, are approximately standard normally distributed, which is typically assessed using quantile-quantile plots or statistical tests such as the Jarque-Bera test <span class="citation">@zuc16</span>.</p>
+<p>For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm. Subsequently, we assign each coarse-scale observation its associated distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.</p>
 </div>
 <div class="section level2">
 <h2 id="how-to-implement-pseudo-residuals-in-fhmm">How to implement pseudo-residuals in fHMM?<a class="anchor" aria-label="anchor" href="#how-to-implement-pseudo-residuals-in-fhmm"></a>
