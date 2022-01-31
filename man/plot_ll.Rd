@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_ll.R
 \name{plot_ll}
 \alias{plot_ll}
-\title{Visualization of log-likelihood values.}
+\title{Visualization of log-likelihood values}
 \usage{
 plot_ll(lls)
 }
@@ -10,7 +10,7 @@ plot_ll(lls)
 \item{lls}{A numeric vector of log-likelihood values.}
 }
 \value{
-No return value.
+No return value. Draws a plot to the current device.
 }
 \description{
 This function plots the log-likelihood values of the different estimation runs.

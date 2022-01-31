@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_sdds.R
 \name{plot_sdds}
 \alias{plot_sdds}
-\title{Visualization of estimated state-dependent distributions.}
+\title{Visualization of estimated state-dependent distributions}
 \usage{
 plot_sdds(est, true = NULL, controls, colors)
 }

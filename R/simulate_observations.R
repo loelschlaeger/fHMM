@@ -1,6 +1,8 @@
-#' Simulate state-dependent observations.
+#' Simulate state-dependent observations
+#' 
 #' @description
 #' This function simulates state-dependent observations.
+#' 
 #' @param markov_chain
 #' A numeric vector of states of a Markov chain.
 #' @param sdd
@@ -17,12 +19,15 @@
 #' @param total_length
 #' An integer, the total length of the output vector. Must be greater or equal
 #' than \code{length(markov_chain)}.
+#' 
 #' @return
 #' A numeric vector of length \code{total_length}, where the first
 #' \code{length(markov_chain)} elements are numeric values and the last
 #' \code{total_length - length(markov_chain)} elements are \code{NA}.
+#' 
 #' @keywords
 #' internal
+#' 
 #' @importFrom stats rt rgamma
 
 simulate_observations <- function(markov_chain, sdd, mus, sigmas, dfs = NULL,

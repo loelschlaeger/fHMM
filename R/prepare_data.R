@@ -1,12 +1,15 @@
 #' Prepare data for the fHMM package.
+#' 
 #' @description
 #' This function simulates or reads financial data for the fHMM package.
+#' 
 #' @param controls
 #' An object of class \code{fHMM_controls}.
 #' @param true_parameters
 #' An object of class \code{fHMM_parameters}, used as simulation parameters.
 #' @param seed
 #' Set a seed for the data simulation.
+#' 
 #' @return
 #' An object of class \code{fHMM_data}, which is a list containing the following
 #' elements:
@@ -25,6 +28,11 @@
 #'  \item the input \code{controls},
 #'  \item the \code{true_parameters}.
 #' }
+#' 
+#' @examples
+#' controls <- set_controls()
+#' prepare_data(controls)
+#' 
 #' @export
 
 prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
@@ -61,3 +69,12 @@ prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
   class(data) <- "fHMM_data"
   return(data)
 }
+
+#' @noRd
+#' @export
+
+print.fHMM_data <- function(x, ...) {
+  cat("fHMM", ifelse(x$controls$simulated, "simulated", "empirical"), "data\n")
+  return(invisible(x))
+}
+

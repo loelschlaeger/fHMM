@@ -35,3 +35,8 @@ to log-returns if \code{simulated = FALSE},
 \description{
 This function simulates or reads financial data for the fHMM package.
 }
+\examples{
+controls <- set_controls()
+prepare_data(controls)
+
+}

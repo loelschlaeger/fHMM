@@ -1,12 +1,17 @@
 #' Create labels for estimated parameters.
+#' 
 #' @description
 #' This function creates labels for estimated parameters.
+#' 
 #' @param controls
 #' An object of class \code{fHMM_controls}.
+#' 
 #' @param expected_length
 #' The expected output length.
+#' 
 #' @return
 #' A character vector of parameter labels.
+#' 
 #' @keywords
 #' internal
 

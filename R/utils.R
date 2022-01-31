@@ -1,24 +1,32 @@
-#' Check date format "YYYY-MM-DD".
+#' Check date format "YYYY-MM-DD"
+#' 
 #' @description
 #' This function checks if the input \code{date} has the format "YYYY-MM-DD".
+#' 
 #' @param date
 #' A character, specifying a date in format "YYYY-MM-DD".
+#' 
 #' @return
 #' \code{as.Date(date)} if \code{date} has the format "YYYY-MM-DD".
 #' Otherwise, the function throws an error.
+#' 
 #' @keywords
 #' utils
 
 check_date <- function(date) {
   date <- try(as.Date(date), silent = TRUE)
   if (class(date) == "try-error" || any(is.na(as.Date(date, format = "%Y-%m-%d")))) {
-    stop("C7")
+    stop("Date not in required format 'YYYY-MM-DD'.")
   }
   return(date)
 }
 
-#' Check if \code{x} is a ((non)-negative) ((non-)positive) (integer) numeric
-#' (vector).
+#' Check for integers
+#' 
+#' @description 
+#' This function checks if \code{x} is a ((non)-negative) ((non-)positive) 
+#' (integer) numeric (vector).
+#' 
 #' @param x
 #' An R object.
 #' @param int
@@ -31,10 +39,16 @@ check_date <- function(date) {
 #' A boolean, if \code{TRUE} checks if \code{x} is positive.
 #' @param non_pos
 #' A boolean, if \code{TRUE} checks if \code{x} is non-positive.
+#' 
 #' @return
 #' A boolean.
+#' 
 #' @keywords
 #' utils
+#' 
+#' @examples 
+#' fHMM:::is_number(1, int = TRUE)
+#' fHMM:::is_number(pi, int = TRUE)
 
 is_number <- function(x, int = FALSE, neg = FALSE, non_neg = FALSE, pos = FALSE,
                       non_pos = FALSE) {
@@ -81,13 +95,23 @@ is_number <- function(x, int = FALSE, neg = FALSE, non_neg = FALSE, pos = FALSE,
   return(out)
 }
 
-#' Check if \code{x} is a transition probability matrix.
+#' Check for tpm
+#' 
+#' @description 
+#' This function checks if \code{x} is a tpm (transition probability matrix).
+#' 
 #' @param x
 #' A matrix.
+#' 
 #' @return
 #' A boolean.
+#' 
 #' @keywords
 #' utils
+#' 
+#' @examples
+#' fHMM:::is_tpm(diag(2))
+#' fHMM:::is_tpm(matrix(1,2,2))
 
 is_tpm <- function(x) {
   if (nrow(x) != ncol(x) ||
@@ -99,19 +123,29 @@ is_tpm <- function(x) {
   }
 }
 
-#' Match positions of two numeric vectors "as good as possible".
+#' Best-possible match of two numeric vectors
+#' 
 #' @description
-#' This function matches the positions of two numeric vectors.
+#' This function matches the positions of two numeric vectors as good as possible.
+#' 
 #' @param x
 #' A numeric vector.
 #' @param y
 #' Another numeric vector of the same length as \code{x}.
+#' 
 #' @return
 #' An integer vector of length \code{length(x)} with the positions of \code{y}
 #' in \code{x}.
+#' 
 #' @keywords
 #' utils
+#' 
 #' @importFrom stats dist
+#' 
+#' @examples 
+#' x <- c(-1,0,1)
+#' y <- c(0.1,2,-1.2)
+#' fHMM:::match_all(x = x, y = y)
 
 match_all <- function(x, y) {
   stopifnot(length(x) == length(y))

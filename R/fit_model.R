@@ -1,18 +1,22 @@
-#' Model fitting for the fHMM package.
+#' Model fitting
+#' 
 #' @description
 #' This function fits an (hierarchical) HMM for the fHMM package.
+#' 
 #' @param data
 #' An object of class \code{fHMM_data}.
+#' 
 #' @param seed
 #' Set a seed for the sampling of initial values.
+#' 
 #' @param ncluster
 #' Set the number of clusters for parallelization.
+#' 
 #' @return
-#' An object of class \code{fHMM_model}, which is a list of
-#' \itemize{
-#'   \item ...
-#' }
+#' An object of class \code{fHMM_model}.
+#' 
 #' @export
+#' 
 #' @importFrom stats sd nlm
 #' @importFrom foreach %dopar%
 
@@ -235,3 +239,15 @@ fit_model <- function(data, ncluster = 1, seed = NULL) {
   class(out) <- "fHMM_model"
   return(out)
 }
+
+#' @noRd
+#' @export
+
+print.fHMM_model <- function(x, ...) {
+  cat("fHMM fitted model:\n")
+  cat("* total estimation time:", x$estimation_time, units(x$estimation_time),"\n")
+  cat("* accepted runs:", sum(!is.na(x$lls)), "of", length(x$lls), "\n")
+  cat("* log-likelihood:", x$ll, "\n")
+  return(invisible(x))
+}
+

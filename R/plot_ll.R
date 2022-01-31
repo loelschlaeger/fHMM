@@ -1,12 +1,17 @@
-#' Visualization of log-likelihood values.
+#' Visualization of log-likelihood values
+#' 
 #' @description
 #' This function plots the log-likelihood values of the different estimation runs.
+#' 
 #' @param lls
 #' A numeric vector of log-likelihood values.
+#' 
 #' @return
-#' No return value.
+#' No return value. Draws a plot to the current device.
+#' 
 #' @keywords
 #' internal
+#' 
 #' @importFrom graphics axis points
 
 plot_ll <- function(lls) {

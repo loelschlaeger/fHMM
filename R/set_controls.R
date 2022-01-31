@@ -395,3 +395,22 @@ set_controls <- function(controls = NULL) {
   class(controls) <- "fHMM_controls"
   return(controls)
 }
+
+#' @export
+#' @noRd
+
+print.fHMM_controls <- function(x, ...) {
+  cat("fHMM controls:\n")
+  cat("* hierarchy:", x[["hierarchy"]], "\n")
+  cat("* data type:", ifelse(x[["simulated"]], "simulated", "empirical"), "\n")
+  cat("* number of states:", x[["states"]], "\n")
+  cat("* sdds: ")
+  print(x[["sdds"]])
+  cat("\n")
+  cat(
+    "* number of runs:", x[["fit"]][["runs"]],
+    ifelse(x[["fit"]][["at_true"]], "(initialised at true values)", ""), "\n"
+  )
+  return(invisible(x))
+}
+

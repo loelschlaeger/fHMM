@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{check_date}
 \alias{check_date}
-\title{Check date format "YYYY-MM-DD".}
+\title{Check date format "YYYY-MM-DD"}
 \usage{
 check_date(date)
 }

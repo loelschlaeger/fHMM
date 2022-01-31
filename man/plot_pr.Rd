@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_residuals.R
 \name{plot_pr}
 \alias{plot_pr}
-\title{Visualize pseudo residuals.}
+\title{Visualize pseudo residuals}
 \usage{
 plot_pr(residuals, hierarchy)
 }

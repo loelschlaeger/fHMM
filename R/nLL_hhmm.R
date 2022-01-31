@@ -1,16 +1,21 @@
 #' Negative log-likelihood function of an HHMM
+#' 
 #' @description
 #' This function computes the negative log-likelihood of an HHMM.
+#' 
 #' @param parUncon
 #' An object of class \code{parUncon}.
 #' @param observations
 #' The matrix of the simulated or empirical data used for estimation.
 #' @param controls
 #' An object of class \code{fHMM_controls}.
+#' 
 #' @return
 #' The negative log-likelihood value.
+#' 
 #' @keywords
 #' internal
+#' 
 #' @importFrom stats dt dgamma
 
 nLL_hhmm <- function(parUncon, observations, controls) {

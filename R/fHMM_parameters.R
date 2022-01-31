@@ -246,3 +246,11 @@ fHMM_parameters <- function(controls,
   class(out) <- "fHMM_parameters"
   return(out)
 }
+
+#' @noRd
+#' @export
+
+print.fHMM_parameters <- function(x, ...) {
+  cat("fHMM parameters\n")
+}
+

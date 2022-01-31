@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_model.R
 \name{fit_model}
 \alias{fit_model}
-\title{Model fitting for the fHMM package.}
+\title{Model fitting}
 \usage{
 fit_model(data, ncluster = 1, seed = NULL)
 }
@@ -14,10 +14,7 @@ fit_model(data, ncluster = 1, seed = NULL)
 \item{seed}{Set a seed for the sampling of initial values.}
 }
 \value{
-An object of class \code{fHMM_model}, which is a list of
-\itemize{
-\item ...
-}
+An object of class \code{fHMM_model}.
 }
 \description{
 This function fits an (hierarchical) HMM for the fHMM package.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_observations.R
 \name{simulate_observations}
 \alias{simulate_observations}
-\title{Simulate state-dependent observations.}
+\title{Simulate state-dependent observations}
 \usage{
 simulate_observations(
   markov_chain,

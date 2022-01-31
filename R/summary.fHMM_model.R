@@ -1,13 +1,3 @@
-#' Summary method for an object of class \code{fHMM_model}.
-#' @description
-#' This function is the summary method for an object of class \code{fHMM_model}.
-#' @param object
-#' An object of class \code{fHMM_model}.
-#' @inheritParams compute_ci
-#' @param ...
-#' Ignored.
-#' @return
-#' An object of class \code{summary.fHMM_model}.
 #' @noRd
 #' @export
 
@@ -106,3 +96,26 @@ summary.fHMM_model <- function(object, ci_level = 0.05, ...) {
   class(out) <- "summary.fHMM_model"
   return(out)
 }
+
+#' @noRd
+#' @export
+
+print.summary.fHMM_model <- function(x, digits = 4, ...) {
+  cat("Summary of fHMM model\n\n")
+  print(x$model_info)
+  cat("\nState-dependent distributions:\n")
+  print(x$sdds)
+  cat("\n")
+  cat("\nEstimates:\n")
+  print(x$estimates_table, digits = digits)
+  if (!is.null(x$decoding_table)) {
+    cat("\nStates:\n")
+    print(x$decoding_table, digits = digits)
+  }
+  if (!is.null(x$res_summary)) {
+    cat("\nResiduals:\n")
+    print(x$res_summary, digits = digits)
+  }
+  return(invisible(x))
+}
+

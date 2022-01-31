@@ -1,4 +1,4 @@
-#' Visualize pseudo residuals.
+#' Visualize pseudo residuals
 #' 
 #' @description
 #' This function visualizes the pseudo residuals.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_ts.R
 \name{plot_ts}
 \alias{plot_ts}
-\title{Visualize time series.}
+\title{Visualize time series}
 \usage{
 plot_ts(data, decoding, colors, events)
 }

@@ -86,3 +86,19 @@ fHMM_sdds <- function(sdds) {
   class(out) <- "fHMM_sdds"
   return(out)
 }
+
+#' @noRd
+#' @export
+
+print.fHMM_sdds <- function(x, ...) {
+  for (sdd in x) {
+    cat(sdd$name)
+    cat("(")
+    cat(paste(names(sdd$pars), unlist(sapply(sdd$pars, paste, collapse = "|")),
+              collapse = ", ", sep = " = "
+    ))
+    cat(")")
+    cat(" ")
+  }
+  return(invisible(x))
+}

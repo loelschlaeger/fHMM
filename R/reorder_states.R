@@ -1,7 +1,9 @@
-#' Reordering of estimated states.
+#' Reordering of estimated states
+#' 
 #' @description
-#' This function reorders the estimated states, which is useful for a comparison
+#' This function reorders the estimated states, which can be useful for a comparison
 #' to true parameters or the interpretation of states.
+#' 
 #' @param x
 #' An object of class \code{fHMM_model}.
 #' @param state_order
@@ -24,8 +26,14 @@
 #'         \code{state_order = matrix(c(2,1,2,1,1,2),2,3)} swaps the
 #'         coarse-scale states and the fine-scale states of coarse-scale state 2.
 #' }
+#' 
 #' @return
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{fHMM_model}, in which states are reordered.
+#' 
+#' @examples 
+#' data(dax_model)
+#' reorder_states(dax_model, state_order = 3:1)
+#' 
 #' @export
 
 reorder_states <- function(x, state_order) {

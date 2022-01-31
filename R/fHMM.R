@@ -4,9 +4,13 @@
 #' the (hierarchical) hidden Markov model.
 #'
 #' @docType package
+#' 
 #' @name fHMM
+#' 
 #' @useDynLib fHMM
+#' 
 #' @importFrom Rcpp evalCpp
+#' 
 #' @keywords 
 #' internal
 NULL

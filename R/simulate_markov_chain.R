@@ -1,8 +1,10 @@
-#' Simulate a Markov chain.
+#' Simulate a Markov chain
+#' 
 #' @description
 #' This function simulates a Markov chain.
+#' 
 #' @param Gamma
-#' A transition probability matrix.
+#' A tpm (transition probability matrix).
 #' @param T
 #' The length of the Markov chain.
 #' @param delta
@@ -13,10 +15,18 @@
 #' @param total_length
 #' An integer, the total length of the output vector. Must be greater or equal
 #' than \code{T}.
+#' 
 #' @return
 #' A numeric vector of length \code{T} with states.
+#' 
 #' @keywords
 #' utils
+#' 
+#' @examples
+#' Gamma <- matrix(c(0.5,0.3,0.5,0.7),2,2)
+#' T <- 10
+#' simulate_markov_chain(Gamma = Gamma, T = T)
+#' 
 #' @export
 
 simulate_markov_chain <- function(Gamma, T, delta = Gamma2delta(Gamma),

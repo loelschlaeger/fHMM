@@ -1,19 +1,29 @@
 #' Prediction
+#' 
 #' @description
-#' This function...
+#' This function predicts the next \code{ahead} states and data points based on
+#' an \code{fHMM_model}.
+#' 
 #' @param object
 #' An object of class \code{fHMM_model}.
 #' @param ahead
-#' A positive integer.
+#' A positive integer, the forecast horizon.
 #' @inheritParams compute_ci
 #' @param ...
 #' Ignored.
+#' 
 #' @return
-#' An object of class \code{fHMM_model}.
+#' An data frame of state probabilities and data point estimates along with
+#' conficence intervals.
+#' 
+#' @examples 
+#' data(dax_model)
+#' predict(dax_model)
+#' 
 #' @export
 #' @importFrom stats qt qgamma
 
-predict.fHMM_model <- function(object, ahead, ci_level = 0.05, ...) {
+predict.fHMM_model <- function(object, ahead = 5, ci_level = 0.05, ...) {
 
   ### check input
   if (class(object) != "fHMM_model") {
@@ -108,3 +118,12 @@ predict.fHMM_model <- function(object, ahead, ci_level = 0.05, ...) {
   class(prediction) <- "fHMM_predict"
   return(prediction)
 }
+
+#' @noRd
+#' @export
+
+print.fHMM_predict <- function(x, ...) {
+  print(cbind(x$states, x$data))
+  return(invisible(x))
+}
+

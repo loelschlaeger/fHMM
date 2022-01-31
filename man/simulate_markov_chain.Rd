@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_markov_chain.R
 \name{simulate_markov_chain}
 \alias{simulate_markov_chain}
-\title{Simulate a Markov chain.}
+\title{Simulate a Markov chain}
 \usage{
 simulate_markov_chain(
   Gamma,
@@ -13,7 +13,7 @@ simulate_markov_chain(
 )
 }
 \arguments{
-\item{Gamma}{A transition probability matrix.}
+\item{Gamma}{A tpm (transition probability matrix).}
 
 \item{T}{The length of the Markov chain.}
 
@@ -30,5 +30,11 @@ A numeric vector of length \code{T} with states.
 }
 \description{
 This function simulates a Markov chain.
+}
+\examples{
+Gamma <- matrix(c(0.5,0.3,0.5,0.7),2,2)
+T <- 10
+simulate_markov_chain(Gamma = Gamma, T = T)
+
 }
 \keyword{utils}

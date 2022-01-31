@@ -1,6 +1,8 @@
-#' Visualization of estimated state-dependent distributions.
+#' Visualization of estimated state-dependent distributions
+#' 
 #' @description
 #' This function plots the estimated state-dependent distributions.
+#' 
 #' @param est
 #' An object of class \code{fHMM_parameters} with estimated parameters.
 #' @param true
@@ -10,10 +12,13 @@
 #' An object of class \code{fHMM_controls}.
 #' @param colors
 #' An object of class \code{fHMM_colors}.
+#' 
 #' @return
 #' No return value. Draws a plot to the current device.
+#' 
 #' @keywords
 #' internal
+#' 
 #' @importFrom graphics par lines legend layout
 #' @importFrom stats dt dgamma 
 

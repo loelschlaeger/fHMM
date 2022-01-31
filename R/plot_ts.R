@@ -1,4 +1,4 @@
-#' Visualize time series.
+#' Visualize time series
 #' 
 #' @description
 #' This function visualizes the data time series.
