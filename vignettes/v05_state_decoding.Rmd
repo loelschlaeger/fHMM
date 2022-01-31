@@ -3,6 +3,7 @@ title: "State decoding"
 author: "Lennart Oelschläger, Timo Adam and Rouven Michels"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+bibliography: ref.bib
 vignette: >
   %\VignetteIndexEntry{State decoding}
   %\VignetteEngine{knitr::rmarkdown}
@@ -22,5 +23,16 @@ knitr::opts_chunk$set(
 ```
 
 ## Viterbi
+
+For financial markets, it is of special interest to infer the underlying (hidden) states in order to gain insight about the actual market situation. Decoding a full time series $S_1, \ldots, S_T$ is called $\textbf{global decoding}$. Hereby, we aim to find the most likely trajectory of hidden states under the estimated model. 
+Global decoding can be accomplished by using the so-called Viterbi algorithm which is a recursive scheme enabling to find the global maximum without being confronted with huge computational costs. To this end, we follow @zuc16 and define
+$$\zeta_{1i} = Pr(S_1 = i, X_1 = x_1) = \delta_i p_i(x_1)$$ 
+for $i = 1, \ldots, N$ and for the following $t = 2, \ldots, T$
+$$\zeta_{ti} = \operatorname*{max}_{s_1, \ldots, s_{t-1}} Pr(S_{t-1} = s_{t-1}, S_t = i, X_t = x_t).$$ 
+Then, the trajectory of most likely states $i_1, \ldots, i_T$ can be calculated recursively from
+$$i_T = \operatorname*{argmax}_{i = 1, \ldots, N} \zeta_{Ti}$$ and for the following $t = T-1, \ldots, 1$ from
+$$i_t = \operatorname*{argmax}_{i = 1, \ldots, N} (\zeta_{ti} \gamma_{i, i_{t+1}}).$$
+
+
 
 ## Application
