@@ -33,6 +33,9 @@ Then, the trajectory of most likely states $i_1, \ldots, i_T$ can be calculated 
 $$i_T = \operatorname*{argmax}_{i = 1, \ldots, N} \zeta_{Ti}$$ and for the following $t = T-1, \ldots, 1$ from
 $$i_t = \operatorname*{argmax}_{i = 1, \ldots, N} (\zeta_{ti} \gamma_{i, i_{t+1}}).$$
 
+Tranfering the state decoding to HHMMs is straightforward: at first the coarse-scale state process must be decoded. Afterwards, by using this information the fine-scale state process can be decoded (see @ada19).
+
+
 
 
 ## Application
