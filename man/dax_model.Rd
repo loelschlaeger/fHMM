@@ -12,7 +12,8 @@ data(dax_model)
 }
 \description{
 A pre-computed \code{fHMM_model} on closing prices of the DAX from 2000 to 2021
-for demonstration purpose.
+with three hidden states and state-dependent t-distributions for demonstration
+purpose.
 }
 \details{
 The model was derived via specifying

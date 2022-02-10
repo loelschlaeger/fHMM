@@ -132,8 +132,7 @@ set_controls <- function(controls = NULL) {
       redundant_controls <- setdiff(names(controls), all_controls)
       if (length(redundant_controls) > 0) {
         warning(
-          "Element(s) ", paste(redundant_controls, collapse = ", "),
-          " in 'controls' ignored."
+          "Element(s) ", paste(redundant_controls, collapse = ", "), " in 'controls' ignored."
         )
         controls[redundant_controls] <- NULL
       }
@@ -141,8 +140,7 @@ set_controls <- function(controls = NULL) {
         redundant_controls <- setdiff(names(controls[["data"]]), data_controls)
         if (length(redundant_controls) > 0) {
           warning(
-            "Element(s) ", paste(redundant_controls, collapse = ", "),
-            " in 'controls$data' ignored."
+            "Element(s) ", paste(redundant_controls, collapse = ", "), " in 'controls$data' ignored."
           )
           controls[["data"]][redundant_controls] <- NULL
         }
@@ -151,8 +149,7 @@ set_controls <- function(controls = NULL) {
         redundant_controls <- setdiff(names(controls[["fit"]]), fit_controls)
         if (length(redundant_controls) > 0) {
           warning(
-            "Element(s) ", paste(redundant_controls, collapse = ", "),
-            " in 'controls$fit' ignored."
+            "Element(s) ", paste(redundant_controls, collapse = ", "), " in 'controls$fit' ignored."
           )
           controls[["fit"]][redundant_controls] <- NULL
         }
@@ -413,4 +410,3 @@ print.fHMM_controls <- function(x, ...) {
   )
   return(invisible(x))
 }
-

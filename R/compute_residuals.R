@@ -1,25 +1,32 @@
 #' Computing (pseudo-) residuals
-#' 
+#'
 #' @description
 #' This function computes (pseudo-) residuals of an \code{fHMM_model} object.
-#' 
+#'
 #' @param x
 #' An object of class \code{fHMM_model}.
-#' 
+#' @param verbose
+#' Set to \code{TRUE} to print progress messages.
+#'
 #' @return
 #' An object of class \code{fHMM_model} with residuals included.
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' data(dax_model)
 #' compute_residuals(dax_model)
-#' 
 #' @importFrom stats pt pgamma qnorm
 
-compute_residuals <- function(x) {
+compute_residuals <- function(x, verbose = TRUE) {
 
-  ### check if decoding is available
+  ### check input
+  if (class(x) != "fHMM_model") {
+    stop("'x' must be of class 'fHMM_model'.")
+  }
+  if (!is.logical(verbose) || length(verbose) != 1) {
+    stop("'verbose' must be either TRUE or FALSE.")
+  }
   if (is.null(x$decoding)) {
     warning("Cannot compute residuals without decoding, please call 'decode_states()' first.")
     return(x)
@@ -78,7 +85,7 @@ compute_residuals <- function(x) {
   }
 
   ### save residuals in 'x' and return 'x'
-  message("Computed residuals")
+  if (verbose) message("Computed residuals")
   class(residuals) <- "fHMM_residuals"
   x$residuals <- residuals
   return(x)

@@ -16,4 +16,7 @@ Otherwise, the function throws an error.
 \description{
 This function checks if the input \code{date} has the format "YYYY-MM-DD".
 }
+\examples{
+fHMM:::check_date(date = "2000-01-01")
+}
 \keyword{utils}

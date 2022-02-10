@@ -1,24 +1,36 @@
 #' Decoding the underlying hidden state sequence
-#' 
+#'
 #' @description
-#' This function decodes the (most likely) underlying hidden state sequence by 
-#' applying the Viterbi algorithm <https://en.wikipedia.org/wiki/Viterbi_algorithm>.
-#' 
+#' This function decodes the (most likely) underlying hidden state sequence by
+#' applying the Viterbi algorithm.
+#'
+#' @references
+#' <https://en.wikipedia.org/wiki/Viterbi_algorithm>
+#'
 #' @param x
 #' An object of class \code{fHMM_model}.
-#' 
+#' @param verbose
+#' Set to \code{TRUE} to print progress messages.
+#'
 #' @return
 #' An object of class \code{fHMM_model} with decoded state sequence included.
-#' 
+#'
 #' @export
-#' 
-#' @examples 
+#'
+#' @examples
 #' data(dax_model)
 #' decode_states(dax_model)
-#' 
 #' @importFrom stats dt dgamma
 
-decode_states <- function(x) {
+decode_states <- function(x, verbose = TRUE) {
+
+  ### check input
+  if (class(x) != "fHMM_model") {
+    stop("'x' must be of class 'fHMM_model'.")
+  }
+  if (!is.logical(verbose) || length(verbose) != 1) {
+    stop("'verbose' must be either TRUE or FALSE.")
+  }
 
   ### definition of the Viterbi algorithm for state decoding
   viterbi <- function(observations, nstates, Gamma, mus, sigmas, dfs, sdd) {
@@ -93,7 +105,7 @@ decode_states <- function(x) {
   }
 
   ### save decoding in 'x' and return 'x'
-  message("Decoded states")
+  if (verbose) message("Decoded states")
   x$decoding <- decoding
   return(x)
 }

@@ -4,20 +4,25 @@
 \alias{decode_states}
 \title{Decoding the underlying hidden state sequence}
 \usage{
-decode_states(x)
+decode_states(x, verbose = TRUE)
 }
 \arguments{
 \item{x}{An object of class \code{fHMM_model}.}
+
+\item{verbose}{Set to \code{TRUE} to print progress messages.}
 }
 \value{
 An object of class \code{fHMM_model} with decoded state sequence included.
 }
 \description{
 This function decodes the (most likely) underlying hidden state sequence by
-applying the Viterbi algorithm \url{https://en.wikipedia.org/wiki/Viterbi_algorithm}.
+applying the Viterbi algorithm.
 }
 \examples{
 data(dax_model)
 decode_states(dax_model)
 
+}
+\references{
+\url{https://en.wikipedia.org/wiki/Viterbi_algorithm}
 }

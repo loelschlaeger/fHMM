@@ -26,4 +26,4 @@ events = list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
 fHMM_events(events)
 
 }
-\keyword{s3}
+\keyword{constructor}

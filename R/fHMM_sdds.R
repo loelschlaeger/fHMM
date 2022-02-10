@@ -1,12 +1,12 @@
 #' Defining state-dependent distributions
-#' 
+#'
 #' @description
-#' This function defines state-dependent distributions.
-#' 
+#' This function defines state-dependent distributions for the fHMM package.
+#'
 #' @param sdds
 #' A character or a character vector of length two that can be specified for
-#' \code{"sdds"} in \code{link{set_controls}}.
-#' 
+#' \code{"sdds"} in \code{\link{set_controls}}.
+#'
 #' @return
 #' A list of length \code{length(sdds)}. Each element is a list, containing
 #' \itemize{
@@ -14,14 +14,13 @@
 #'   \item and a list \code{"pars"} of its parameters.
 #' }
 #' Unknown parameters are set to \code{NULL}.
-#' 
+#'
 #' @keywords
-#' s3
-#' 
-#' @examples 
+#' constructor
+#'
+#' @examples
 #' sdds <- c("t(sigma = 0.1, df = Inf)", "gamma")
 #' fHMM:::fHMM_sdds(sdds)
-
 fHMM_sdds <- function(sdds) {
   out <- list()
   for (sdd in sdds) {
@@ -95,7 +94,7 @@ print.fHMM_sdds <- function(x, ...) {
     cat(sdd$name)
     cat("(")
     cat(paste(names(sdd$pars), unlist(sapply(sdd$pars, paste, collapse = "|")),
-              collapse = ", ", sep = " = "
+      collapse = ", ", sep = " = "
     ))
     cat(")")
     cat(" ")

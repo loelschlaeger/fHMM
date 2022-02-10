@@ -4,7 +4,7 @@
 \alias{fit_model}
 \title{Model fitting}
 \usage{
-fit_model(data, ncluster = 1, seed = NULL)
+fit_model(data, ncluster = 1, seed = NULL, verbose = TRUE)
 }
 \arguments{
 \item{data}{An object of class \code{fHMM_data}.}
@@ -12,10 +12,16 @@ fit_model(data, ncluster = 1, seed = NULL)
 \item{ncluster}{Set the number of clusters for parallelization.}
 
 \item{seed}{Set a seed for the sampling of initial values.}
+
+\item{verbose}{Set to \code{TRUE} to print progress messages.}
 }
 \value{
 An object of class \code{fHMM_model}.
 }
 \description{
-This function fits an (hierarchical) HMM for the fHMM package.
+This function fits a HMM to \code{data} via maximum likelihood estimation.
+}
+\details{
+The function is parallelized only if \code{ncluster > 1}. If you experience
+problems on your OS, try to set \code{ncluster <- 1}.
 }

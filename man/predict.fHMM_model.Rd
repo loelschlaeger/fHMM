@@ -4,24 +4,25 @@
 \alias{predict.fHMM_model}
 \title{Prediction}
 \usage{
-\method{predict}{fHMM_model}(object, ahead = 5, ci_level = 0.05, ...)
+\method{predict}{fHMM_model}(object, ahead = 5, alpha = 0.05, ...)
 }
 \arguments{
 \item{object}{An object of class \code{fHMM_model}.}
 
 \item{ahead}{A positive integer, the forecast horizon.}
 
-\item{ci_level}{The confidence level, a numeric between 0 and 1.}
+\item{alpha}{The alpha level, a numeric between 0 and 1. Per default, \code{alpha = 0.05},
+which computes a 95\% confidence interval.}
 
 \item{...}{Ignored.}
 }
 \value{
 An data frame of state probabilities and data point estimates along with
-conficence intervals.
+confidence intervals.
 }
 \description{
 This function predicts the next \code{ahead} states and data points based on
-an \code{fHMM_model}.
+an \code{fHMM_model} object.
 }
 \examples{
 data(dax_model)

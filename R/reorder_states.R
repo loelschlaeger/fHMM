@@ -1,9 +1,9 @@
 #' Reordering of estimated states
-#' 
+#'
 #' @description
 #' This function reorders the estimated states, which can be useful for a comparison
 #' to true parameters or the interpretation of states.
-#' 
+#'
 #' @param x
 #' An object of class \code{fHMM_model}.
 #' @param state_order
@@ -26,14 +26,13 @@
 #'         \code{state_order = matrix(c(2,1,2,1,1,2),2,3)} swaps the
 #'         coarse-scale states and the fine-scale states of coarse-scale state 2.
 #' }
-#' 
+#'
 #' @return
 #' An object of class \code{fHMM_model}, in which states are reordered.
-#' 
-#' @examples 
+#'
+#' @examples
 #' data(dax_model)
 #' reorder_states(dax_model, state_order = 3:1)
-#' 
 #' @export
 
 reorder_states <- function(x, state_order) {
@@ -46,7 +45,7 @@ reorder_states <- function(x, state_order) {
     if (!(is.numeric(state_order) &&
       length(state_order) == x$data$controls$states &&
       all(state_order %in% 1:x$data$controls$states))) {
-      stop("'state_order' missspecified>")
+      stop("'state_order' is missspecified.")
     }
     state_order <- as.matrix(state_order)
   } else {
@@ -54,7 +53,7 @@ reorder_states <- function(x, state_order) {
       all(dim(state_order) == x$data$controls$states + c(0, 1)) &&
       all(state_order[1, ] %in% 1:x$data$controls$states[1]) &&
       all(state_order[-1, ] %in% 1:x$data$controls$states[2]))) {
-      stop("'state_order' missspecified>")
+      stop("'state_order' is missspecified.")
     }
   }
 
@@ -88,10 +87,10 @@ reorder_states <- function(x, state_order) {
 
   ### redo decoding and residual computation
   if (!is.null(x$decoding)) {
-    x <- suppressMessages(decode_states(x))
+    x <- decode_states(x, verbose = FALSE)
   }
   if (!is.null(x$residuals)) {
-    x <- suppressMessages(compute_residuals(x))
+    x <- compute_residuals(x, verbose = FALSE)
   }
 
   ### return reorderd 'fHMM_model'

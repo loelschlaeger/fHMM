@@ -1,13 +1,14 @@
 #' DAX model
 #'
-#' @description 
+#' @description
 #' A pre-computed \code{fHMM_model} on closing prices of the DAX from 2000 to 2021
-#' for demonstration purpose.
-#' 
+#' with three hidden states and state-dependent t-distributions for demonstration
+#' purpose.
+#'
 #' @usage data(dax_model)
-#' 
+#'
 #' @details
-#' The model was derived via specifying 
+#' The model was derived via specifying
 #' \preformatted{
 #' controls = list(
 #'   states = 3,
@@ -24,7 +25,7 @@
 #' Set `file = "extdata/dax.csv"` to reproduce this code.
 #'
 #' @format An object of class \code{fHMM_model}.
-#' 
-#' @keywords 
+#'
+#' @keywords
 #' model
 "dax_model"

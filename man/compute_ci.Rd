@@ -4,12 +4,13 @@
 \alias{compute_ci}
 \title{Computing confidence intervals}
 \usage{
-compute_ci(x, ci_level = 0.05)
+compute_ci(x, alpha = 0.05)
 }
 \arguments{
 \item{x}{An object of class \code{fHMM_model}.}
 
-\item{ci_level}{The confidence level, a numeric between 0 and 1.}
+\item{alpha}{The alpha level, a numeric between 0 and 1. Per default, \code{alpha = 0.05},
+which computes a 95\% confidence interval.}
 }
 \value{
 A list containing the following elements:
@@ -21,11 +22,11 @@ A list containing the following elements:
 }
 \description{
 This function computes confidence intervals for the estimates of an
-\code{fHMM_model} object.
+\code{fHMM_model} object using the inverse Fisher information.
 }
 \examples{
 data(dax_model)
-fHMM:::compute_ci(dax_model, ci_level = 0.10)
+fHMM:::compute_ci(x = dax_model, alpha = 0.05)
 
 }
 \keyword{internal}

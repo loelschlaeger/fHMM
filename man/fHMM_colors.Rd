@@ -9,7 +9,7 @@ fHMM_colors(controls, colors = NULL)
 \arguments{
 \item{controls}{An object of class \code{fHMM_controls}.}
 
-\item{colors}{Either \code{NULL} or a a character vector of color names or hexadecimal RGB
+\item{colors}{Either \code{NULL} or a character vector of color names or hexadecimal RGB
 triplets.}
 }
 \value{
@@ -32,4 +32,4 @@ controls <- set_controls()
 fHMM_colors(controls, colors = c("red","blue"))
 
 }
-\keyword{s3}
+\keyword{constructor}

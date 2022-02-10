@@ -1,9 +1,9 @@
 #' Prediction
-#' 
+#'
 #' @description
 #' This function predicts the next \code{ahead} states and data points based on
-#' an \code{fHMM_model}.
-#' 
+#' an \code{fHMM_model} object.
+#'
 #' @param object
 #' An object of class \code{fHMM_model}.
 #' @param ahead
@@ -11,19 +11,18 @@
 #' @inheritParams compute_ci
 #' @param ...
 #' Ignored.
-#' 
+#'
 #' @return
 #' An data frame of state probabilities and data point estimates along with
-#' conficence intervals.
-#' 
-#' @examples 
+#' confidence intervals.
+#'
+#' @examples
 #' data(dax_model)
 #' predict(dax_model)
-#' 
 #' @export
 #' @importFrom stats qt qgamma
 
-predict.fHMM_model <- function(object, ahead = 5, ci_level = 0.05, ...) {
+predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
 
   ### check input
   if (class(object) != "fHMM_model") {
@@ -32,8 +31,8 @@ predict.fHMM_model <- function(object, ahead = 5, ci_level = 0.05, ...) {
   if (!(length(ahead) == 1 && is_number(ahead, int = TRUE, pos = TRUE))) {
     stop("'ahead' must be a positive integer")
   }
-  if (!(length(ci_level) == 1 && is_number(ci_level, pos = TRUE) && ci_level <= 1)) {
-    stop("'ci_level' must be a numeric between 0 and 1.")
+  if (!(length(alpha) == 1 && is_number(alpha, pos = TRUE) && alpha <= 1)) {
+    stop("'alpha' must be a numeric between 0 and 1.")
   }
 
   ### extract parameters
@@ -68,7 +67,7 @@ predict.fHMM_model <- function(object, ahead = 5, ci_level = 0.05, ...) {
 
   ### predict data
   data_prediction <- matrix(NA, nrow = ahead, ncol = 3)
-  props <- sort(c(ci_level, 0.5, 1 - ci_level))
+  props <- sort(c(alpha, 0.5, 1 - alpha))
   if (!object$data$controls$hierarchy) {
     if (sdds[[1]]$name == "t") {
       for (i in 1:ahead) {
@@ -126,4 +125,3 @@ print.fHMM_predict <- function(x, ...) {
   print(cbind(x$states, x$data))
   return(invisible(x))
 }
-

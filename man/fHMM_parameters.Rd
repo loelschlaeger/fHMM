@@ -65,4 +65,4 @@ controls <- set_controls()
 fHMM_parameters(controls)
 
 }
-\keyword{s3}
+\keyword{constructor}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_data.R
 \name{prepare_data}
 \alias{prepare_data}
-\title{Prepare data for the fHMM package.}
+\title{Prepare data for the fHMM package}
 \usage{
 prepare_data(controls, true_parameters = NULL, seed = NULL)
 }
