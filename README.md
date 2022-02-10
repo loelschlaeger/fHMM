@@ -13,8 +13,12 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs
 [![codecov](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg?token=OYU22T74DV)](https://codecov.io/gh/loelschlaeger/fHMM)
 <!-- badges: end -->
 
-The goal of fHMM is to detect bearish and bullish markets in financial
-time series applying (hierarchical) hidden Markov models.
+With fHMM you can detect bearish and bullish markets in financial time
+series by applying hidden Markov models. The model and the package
+functionality [is documented in detail on the package
+website](https://loelschlaeger.de/fHMM/articles/).
+[Below](example-fitting-an-hmm-to-the-dax), you can find a simple
+application of the model to the German stock index DAX.
 
 ## Installation
 
@@ -42,7 +46,7 @@ library(fHMM)
 library(magrittr)
 ```
 
-We fit a 2-state HMM with state-dependent t-distributions to the DAX
+Let’s fit a 2-state HMM with state-dependent t-distributions to the DAX
 log-returns from 2010 to 2020. The states can be interpreted as proxies
 for bearish and bullish markets.
 
@@ -54,7 +58,7 @@ path <- paste0(tempdir(),"/dax.csv")
 download_data(symbol = "^GDAXI", file = path, verbose = FALSE)
 ```
 
-We first need to define the model by setting the `controls`:
+We first need to define the model by setting `controls`:
 
 ``` r
 controls <- list(
@@ -88,7 +92,7 @@ summary(data)
 #> * log returns: TRUE
 ```
 
-We now fit the model and subsequentially decode the hidden states:
+We now fit the model and subsequently decode the hidden states:
 
 ``` r
 set.seed(1)
@@ -124,8 +128,8 @@ summary(model)
 #> 2208  583
 ```
 
-Let’s visualize the estimated state-dependent distributions and the
-decoded time series:
+Having estimated the model, we can visualize the state-dependent
+distributions and the decoded time series:
 
 ``` r
 model %>% plot("sdds")
