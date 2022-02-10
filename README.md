@@ -16,9 +16,9 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs
 With fHMM you can detect bearish and bullish markets in financial time
 series by applying *Hidden Markov Models (HMMs)*. The model and the
 package functionality [is documented in detail
-here](https://loelschlaeger.de/fHMM/articles/).
-[Below](example-fitting-an-hmm-to-the-dax), you can find a first
-application to the German stock index DAX.
+here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a
+first application to the German stock index
+[DAX](https://en.wikipedia.org/wiki/DAX).
 
 ## Installation
 
@@ -50,7 +50,7 @@ path <- paste0(tempdir(),"/dax.csv")
 download_data(symbol = "^GDAXI", file = path, verbose = FALSE)
 ```
 
-We first need to define the model by setting `controls`:
+We first need to define the model by setting some `controls`:
 
 ``` r
 controls <- list(
@@ -116,7 +116,8 @@ summary(model)
 ```
 
 Having estimated the model, we can visualize the state-dependent
-distributions and the decoded time series:
+distributions and the decoded time series to interpret bearish and
+bullish markets:
 
 ``` r
 plot(model, plot_type = c("sdds","ts"))
