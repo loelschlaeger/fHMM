@@ -1,7 +1,7 @@
 # residual computation works
 
     Code
-      xx
+      x
     Output
       fHMM fitted model:
       * total estimation time: 7 mins 
@@ -11,7 +11,7 @@
 ---
 
     Code
-      unclass(xx)
+      unclass(x)
     Output
       $data
       fHMM empirical data
