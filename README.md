@@ -66,7 +66,7 @@ controls <- list(
 controls <- set_controls(controls)
 ```
 
-The function `prepare_data` prepares the data for estimation:
+The function `prepare_data()` prepares the data for estimation:
 
 ``` r
 data <- prepare_data(controls)
