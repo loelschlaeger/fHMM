@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![codecov](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg?token=OYU22T74DV)](https://codecov.io/gh/loelschlaeger/fHMM)
 <!-- badges: end -->
 
-With fHMM you can detect bearish and bullish markets in financial time series by applying hidden Markov models. The model and the package functionality [is documented in detail on the package website](https://loelschlaeger.de/fHMM/articles/). [Below](example-fitting-an-hmm-to-the-dax), you can find a simple application of the model to the German stock index DAX.
+With fHMM you can detect bearish and bullish markets in financial time series by applying *Hidden Markov Models (HMMs)*. The model and the package functionality [is documented in detail here](https://loelschlaeger.de/fHMM/articles/). [Below](example-fitting-an-hmm-to-the-dax), you can find a first application to the German stock index DAX.
 
 ## Installation
 
@@ -32,21 +32,13 @@ You can install the released version of fHMM from [CRAN](https://CRAN.R-project.
 install.packages("fHMM")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
-
-```{r, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("loelschlaeger/fHMM")
-```
-
 ## Example: Fitting an HMM to the DAX
 
 ```{r load}
 library(fHMM)
-library(magrittr)
 ```
 
-Let's fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2010 to 2020. The states can be interpreted as proxies for bearish and bullish markets.
+We fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2010 to 2020. The states can be interpreted as proxies for bearish and bullish markets.
 
 The package has a build-in function to download the data from [Yahoo Finance](https://finance.yahoo.com/):
 
@@ -68,7 +60,7 @@ controls <- list(
                 from        = "2010-01-01",
                 to          = "2020-12-31")
 )
-(controls %<>% set_controls)
+controls <- set_controls(controls)
 ```
 
 The function `prepare_data` prepares the data for estimation:
@@ -82,15 +74,16 @@ We now fit the model and subsequently decode the hidden states:
 
 ```{r fit}
 set.seed(1)
-model <- fit_model(data, ncluster = 7) %>% decode_states 
+model <- fit_model(data, ncluster = 7)
+model <- decode_states(model)
 summary(model)
 ```
 
 Having estimated the model, we can visualize the state-dependent distributions and the decoded time series:
 
 ```{r plots}
-model %>% plot("sdds")
-model %>% plot("ts")
+plot(model, plot_type = c("sdds","ts"))
 ```
+
 
 
