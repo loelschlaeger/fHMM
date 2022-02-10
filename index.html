@@ -85,7 +85,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>With fHMM you can detect bearish and bullish markets in financial time series by applying <em>Hidden Markov Models (HMMs)</em>. The model and the package functionality <a href="https://loelschlaeger.de/fHMM/articles/" class="external-link">is documented in detail here</a>. <a href="example-fitting-an-hmm-to-the-dax">Below</a>, you can find a first application to the German stock index DAX.</p>
+<p>With fHMM you can detect bearish and bullish markets in financial time series by applying <em>Hidden Markov Models (HMMs)</em>. The model and the package functionality <a href="https://loelschlaeger.de/fHMM/articles/" class="external-link">is documented in detail here</a>. Below, you can find a first application to the German stock index <a href="https://en.wikipedia.org/wiki/DAX" class="external-link">DAX</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -106,7 +106,7 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"/dax.csv"</span><span class="op">)</span>
 <span class="fu"><a href="reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, file <span class="op">=</span> <span class="va">path</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p>We first need to define the model by setting <code>controls</code>:</p>
+<p>We first need to define the model by setting some <code>controls</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   states <span class="op">=</span> <span class="fl">2</span>,
@@ -162,7 +162,7 @@
 <span class="co">#&gt; decoded</span>
 <span class="co">#&gt;    1    2 </span>
 <span class="co">#&gt; 2208  583</span></code></pre></div>
-<p>Having estimated the model, we can visualize the state-dependent distributions and the decoded time series:</p>
+<p>Having estimated the model, we can visualize the state-dependent distributions and the decoded time series to interpret bearish and bullish markets:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, plot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sdds"</span>,<span class="st">"ts"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-plots-1.png" width="100%"><img src="reference/figures/README-plots-2.png" width="100%"></p>
