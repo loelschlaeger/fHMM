@@ -14,8 +14,8 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs
 <!-- badges: end -->
 
 With fHMM you can detect bearish and bullish markets in financial time
-series by applying *Hidden Markov Models (HMMs)*. The model and the
-package functionality [is documented in detail
+series by applying *Hidden Markov Models (HMMs)*. The functionality and
+the model [is documented in detail
 here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a
 first application to the German stock index
 [DAX](https://en.wikipedia.org/wiki/DAX).
