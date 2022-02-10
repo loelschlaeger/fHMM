@@ -20,5 +20,4 @@ This function computes (pseudo-) residuals of an \code{fHMM_model} object.
 \examples{
 data(dax_model)
 compute_residuals(dax_model)
-
 }

@@ -27,5 +27,4 @@ an \code{fHMM_model} object.
 \examples{
 data(dax_model)
 predict(dax_model)
-
 }

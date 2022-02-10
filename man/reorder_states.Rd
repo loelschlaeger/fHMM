@@ -39,5 +39,4 @@ to true parameters or the interpretation of states.
 \examples{
 data(dax_model)
 reorder_states(dax_model, state_order = 3:1)
-
 }

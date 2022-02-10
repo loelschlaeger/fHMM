@@ -24,5 +24,4 @@ This function compares multiple \code{fHMM_model} with respect to
 \examples{
 data(dax_model)
 compare_models(dax_model)
-
 }

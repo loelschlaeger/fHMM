@@ -19,6 +19,5 @@ This function creates labels for the estimated HMM parameters.
 }
 \examples{
 fHMM:::parameter_labels(set_controls(), 8)
-
 }
 \keyword{internal}

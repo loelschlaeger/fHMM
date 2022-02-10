@@ -17,6 +17,6 @@ This function checks if \code{x} is a tpm (transition probability matrix).
 }
 \examples{
 fHMM:::is_tpm(diag(2))
-fHMM:::is_tpm(matrix(1,2,2))
+fHMM:::is_tpm(matrix(1, 2, 2))
 }
 \keyword{utils}

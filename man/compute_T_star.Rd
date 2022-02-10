@@ -25,9 +25,8 @@ This function computes lengths of fine-scale chunks.
 }
 \examples{
 ### weekly fine-scale chunk sizes for 10 coarse-scale observations
-horizon <- c(10,NA)
+horizon <- c(10, NA)
 period <- "w"
 fHMM:::compute_T_star(horizon, period)
-
 }
 \keyword{internal}

@@ -32,7 +32,7 @@ A numeric vector of length \code{T} with states.
 This function simulates a Markov chain.
 }
 \examples{
-Gamma <- matrix(c(0.5,0.3,0.5,0.7),2,2)
+Gamma <- matrix(c(0.5, 0.3, 0.5, 0.7), 2, 2)
 T <- 10
 fHMM:::simulate_markov_chain(Gamma = Gamma, T = T)
 }

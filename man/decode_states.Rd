@@ -21,7 +21,6 @@ applying the Viterbi algorithm.
 \examples{
 data(dax_model)
 decode_states(dax_model)
-
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Viterbi_algorithm}
