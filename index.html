@@ -85,7 +85,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The goal of fHMM is to detect bearish and bullish markets in financial time series applying (hierarchical) hidden Markov models.</p>
+<p>With fHMM you can detect bearish and bullish markets in financial time series by applying hidden Markov models. The model and the package functionality <a href="https://loelschlaeger.de/fHMM/articles/" class="external-link">is documented in detail on the package website</a>. <a href="example-fitting-an-hmm-to-the-dax">Below</a>, you can find a simple application of the model to the German stock index DAX.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -106,12 +106,12 @@
 <span class="co">#&gt; See https://loelschlaeger.de/fHMM for help.</span>
 <span class="co">#&gt; Type 'citation("fHMM")' for citing this R package.</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></code></pre></div>
-<p>We fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2010 to 2020. The states can be interpreted as proxies for bearish and bullish markets.</p>
+<p>Let’s fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2010 to 2020. The states can be interpreted as proxies for bearish and bullish markets.</p>
 <p>The package has a build-in function to download the data from <a href="https://finance.yahoo.com/" class="external-link">Yahoo Finance</a>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"/dax.csv"</span><span class="op">)</span>
 <span class="fu"><a href="reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, file <span class="op">=</span> <span class="va">path</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p>We first need to define the model by setting the <code>controls</code>:</p>
+<p>We first need to define the model by setting <code>controls</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   states <span class="op">=</span> <span class="fl">2</span>,
@@ -139,7 +139,7 @@
 <span class="co">#&gt; * data source: dax.csv </span>
 <span class="co">#&gt; * date column: Date </span>
 <span class="co">#&gt; * log returns: TRUE</span></code></pre></div>
-<p>We now fit the model and subsequentially decode the hidden states:</p>
+<p>We now fit the model and subsequently decode the hidden states:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">data</span>, ncluster <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">decode_states</span> 
@@ -172,7 +172,7 @@
 <span class="co">#&gt; decoded</span>
 <span class="co">#&gt;    1    2 </span>
 <span class="co">#&gt; 2208  583</span></code></pre></div>
-<p>Let’s visualize the estimated state-dependent distributions and the decoded time series:</p>
+<p>Having estimated the model, we can visualize the state-dependent distributions and the decoded time series:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="st">"sdds"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-plots-1.png" width="100%"></p>
