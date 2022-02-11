@@ -646,7 +646,7 @@ Gamma2gammasCon <- function(Gamma, shift = 1e-3) {
   return(gammasCon)
 }
 
-#' This function un-constraines the non-diagonal matrix elements of a transition
+#' This function un-constrains the non-diagonal matrix elements of a transition
 #' probability matrix \code{Gamma}.
 #' @inheritParams Gamma2gammasCon
 #' @return

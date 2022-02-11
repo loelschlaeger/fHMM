@@ -2,7 +2,7 @@ Package: fHMM
 Type: Package
 Title: Fitting Hidden Markov Models to Financial Data
 Version: 1.0.0
-Date: 2021-06-16
+Date: 2022-02-20
 Authors@R: c(
     person("Lennart", "Oelschl\U00E4ger", 
            email = "lennart.oelschlaeger@uni-bielefeld.de", 
@@ -15,7 +15,8 @@ Authors@R: c(
            role = "aut"))
 Description: Fitting (hierarchical) hidden Markov models to financial data
     via maximum likelihood estimation. For a reference on the model see
-    <https://journals.sagepub.com/doi/10.1177/1471082X211034048>.
+    <doi:10.1177/1471082X211034048>.
+Language: en-US
 URL: https://loelschlaeger.github.io/fHMM/
 BugReports: https://github.com/loelschlaeger/fHMM/issues
 License: GPL-3
@@ -26,10 +27,7 @@ Imports:
     MASS,
     Rcpp,
     progress,
-    foreach,
-    magrittr,
-    crayon,
-    plotrix
+    foreach
 LinkingTo:
     Rcpp,
     RcppArmadillo
