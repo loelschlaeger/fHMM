@@ -54,6 +54,9 @@
     <a class="dropdown-item" href="../articles/v08_prediction.html">Prediction</a>
   </div>
 </li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -101,7 +104,7 @@ Purpose: explain fHMM controls
 <div class="section level2">
 <h2 id="the-set_controls-function">The <code>set_controls</code> function<a class="anchor" aria-label="anchor" href="#the-set_controls-function"></a>
 </h2>
-<p>The fHMM philosophie is to start by setting all model and estimation specification, which is done by specifying a named list of settings and passing it to the <code><a href="../reference/set_controls.html">set_controls()</a></code> function. The function checks the specifications and returns an <code>fHMM_controls</code> object which stores all specifications and thereby provides required information for other fHMM functionalities.</p>
+<p>The fHMM philosophy is to start by setting all model and estimation specification, which is done by specifying a named list of settings and passing it to the <code><a href="../reference/set_controls.html">set_controls()</a></code> function. The function checks the specifications and returns an <code>fHMM_controls</code> object which stores all specifications and thereby provides required information for other fHMM functionalities.</p>
 </div>
 <div class="section level2">
 <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
@@ -112,7 +115,7 @@ Purpose: explain fHMM controls
 <span class="co">#&gt; Download successful.</span>
 <span class="co">#&gt; * symbol: ^GDAXI </span>
 <span class="co">#&gt; * from: 1987-12-30 </span>
-<span class="co">#&gt; * to: 2022-02-10 </span>
+<span class="co">#&gt; * to: 2022-02-11 </span>
 <span class="co">#&gt; * path: /Users/runner/work/fHMM/fHMM/vignettes/dax.csv</span></code></pre></div>
 <div class="section level3">
 <h3 id="hmms-for-empirical-data">HMMs for empirical data<a class="anchor" aria-label="anchor" href="#hmms-for-empirical-data"></a>
@@ -140,7 +143,7 @@ Purpose: explain fHMM controls
 <div class="section level3">
 <h3 id="simulated-hmm-data">Simulated HMM data<a class="anchor" aria-label="anchor" href="#simulated-hmm-data"></a>
 </h3>
-<p>The following specifies a 2-state HMM with state-dependent Gamma distributions, where the expectiation values for state 1 and 2 are fixed to -1 and 1, respectively. The model will be fitted to <code>horizon = 500</code> simulated data points from this specification.</p>
+<p>The following specifies a 2-state HMM with state-dependent Gamma distributions, where the expectation values for state 1 and 2 are fixed to -1 and 1, respectively. The model will be fitted to <code>horizon = 500</code> simulated data points from this specification.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">controls</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   states  <span class="op">=</span> <span class="fl">2</span>,
