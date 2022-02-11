@@ -109,14 +109,24 @@ Purpose: definition of Viterbi algorithm, application in fHMM
 
 <p>Analyzing so-called pseudo-residuals enables us to check whether a fitted HMM describes the data sufficiently well. This cannot be done by standard residual analysis since the observations are explained by different distributions, depending on the active state. Therefore, all observations have to be transformed on a common scale, which can be achieved in the following way: If <span class="math inline">\(X_t\)</span> has the invertible distribution function <span class="math inline">\(F_{X_t}\)</span>, then <span class="math inline">\(Z_t=\Phi^{-1}(F_{X_t} (X_t))\)</span> is standard normally distributed, where <span class="math inline">\(\Phi\)</span> denotes the cumulative distribution function of the standard normal distribution. The observations, <span class="math inline">\((X_t)_t\)</span>, are modeled well if the pseudo-residuals, <span class="math inline">\((Z_t)_t\)</span>, are approximately standard normally distributed .</p>
 <p>For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm (see Section ). Subsequently, we assign each coarse-scale observation its associated distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.</p>
+<p>For financial markets, it is of special interest to infer the underlying (hidden) states in order to gain insight about the actual market situation. Decoding a full time series <span class="math inline">\(S_1, \ldots, S_T\)</span> is called <span class="math inline">\(\textbf{global decoding}\)</span>. Hereby, we aim to find the most likely trajectory of hidden states under the estimated model. Global decoding can be accomplished by using the so-called Viterbi algorithm which is a recursive scheme enabling to find the global maximum without being confronted with huge computational costs. To this end, we follow <span class="citation">Zucchini, MacDonald, and Langrock (2016)</span> and define <span class="math display">\[\zeta_{1i} = Pr(S_1 = i, X_1 = x_1) = \delta_i p_i(x_1)\]</span> for <span class="math inline">\(i = 1, \ldots, N\)</span> and for the following <span class="math inline">\(t = 2, \ldots, T\)</span> <span class="math display">\[\zeta_{ti} = \operatorname*{max}_{s_1, \ldots, s_{t-1}} Pr(S_{t-1} = s_{t-1}, S_t = i, X_t = x_t).\]</span> Then, the trajectory of most likely states <span class="math inline">\(i_1, \ldots, i_T\)</span> can be calculated recursively from <span class="math display">\[i_T = \operatorname*{argmax}_{i = 1, \ldots, N} \zeta_{Ti}\]</span> and for the following <span class="math inline">\(t = T-1, \ldots, 1\)</span> from <span class="math display">\[i_t = \operatorname*{argmax}_{i = 1, \ldots, N} (\zeta_{ti} \gamma_{i, i_{t+1}}).\]</span></p>
+<p>Tranfering the state decoding to HHMMs is straightforward: at first the coarse-scale state process must be decoded. Afterwards, by using this information the fine-scale state process can be decoded (see <span class="citation">Adam et al. (2019)</span>).</p>
 </div>
 <div class="section level2">
 <h2 id="application">Application<a class="anchor" aria-label="anchor" href="#application"></a>
 </h2>
 </div>
-<div class="section level2">
+<div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
+<div id="refs" class="references">
+<div id="ref-ada19">
+<p>Adam, T., C. A. Griffiths, V. Leos-Barajas, E. N. Meese, C. G. Lowe, P. G. Blackwell, D. Righton, and R. Langrock. 2019. “Joint Modelling of Multi-Scale Animal Movement Data Using Hierarchical Hidden Markov Models.” <em>Methods in Ecology and Evolution</em> 10 (9): 1536–50. <a href="https://doi.org/10.1111/2041-210X.13241" class="external-link">https://doi.org/10.1111/2041-210X.13241</a>.</p>
+</div>
+<div id="ref-zuc16">
+<p>Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. “Hidden Markov Models for Time Series: An Introduction Using R, 2nd Edition.” <em>Chapman and Hall/CRC</em>.</p>
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
