@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_data.R
 \name{read_data}
 \alias{read_data}
-\title{Read data for the fHMM package.}
+\title{Read data for the fHMM package}
 \usage{
 read_data(controls)
 }

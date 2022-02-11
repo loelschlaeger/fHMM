@@ -12,7 +12,7 @@ seed = 1
 controls = list(
   states  = 2,
   sdds    = "gamma",
-  horizon = 500,
+  horizon = 1000,
   fit     = list("runs" = 100)
 )
 controls %<>% set_controls

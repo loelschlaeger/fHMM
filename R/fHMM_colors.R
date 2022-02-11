@@ -1,18 +1,18 @@
 #' Setting color scheme for visualizations in the fHMM package
-#' 
+#'
 #' @description
 #' This function defines a color scheme for visualizations in the fHMM package.
-#' 
+#'
 #' @param controls
 #' An object of class \code{fHMM_controls}.
 #' @param colors
-#' Either \code{NULL} or a a character vector of color names or hexadecimal RGB
+#' Either \code{NULL} or a character vector of color names or hexadecimal RGB
 #' triplets.
-#' 
+#'
 #' @return
 #' An object of class \code{fHMM_colors}, which is:
 #' \itemize{
-#'   \item for \code{controls$hierarchy == FALSE} a vector of length 
+#'   \item for \code{controls$hierarchy == FALSE} a vector of length
 #'         \code{controls$states} of color codes,
 #'   \item for \code{controls$hierarchy == TRUE} a list of
 #'         \itemize{
@@ -20,16 +20,15 @@
 #'           \item a matrix of dimensions \code{controls$states} of color codes.
 #'         }
 #' }
-#' 
+#'
 #' @export
-#' 
+#'
 #' @keywords
-#' s3
-#' 
+#' constructor
+#'
 #' @examples
 #' controls <- set_controls()
-#' fHMM_colors(controls, colors = c("red","blue"))
-#' 
+#' fHMM_colors(controls, colors = c("red", "blue"))
 #' @importFrom grDevices col2rgb colorRampPalette adjustcolor
 
 fHMM_colors <- function(controls, colors = NULL) {
@@ -68,7 +67,7 @@ fHMM_colors <- function(controls, colors = NULL) {
     for (s in seq_len(controls[["states"]][1])) {
       out[s, -1] <- col_alpha(var_col(out[s, 1], controls[["states"]][2]))
     }
-    out <- list("cs" = out[,1], fs = out[,-1])
+    out <- list("cs" = out[, 1], fs = out[, -1])
   }
   class(out) <- "fHMM_colors"
   return(out)

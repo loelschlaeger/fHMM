@@ -30,7 +30,7 @@ library(fHMM)
 
 ## The `set_controls` function 
 
-The fHMM philosophie is to start by setting all model and estimation specification, which is done by specifying a named list of settings and passing it to the `set_controls()` function. The function checks the specifications and returns an `fHMM_controls` object which stores all specifications and thereby provides required information for other fHMM functionalities.
+The fHMM philosophy is to start by setting all model and estimation specification, which is done by specifying a named list of settings and passing it to the `set_controls()` function. The function checks the specifications and returns an `fHMM_controls` object which stores all specifications and thereby provides required information for other fHMM functionalities.
 
 ## Examples
 
@@ -60,7 +60,7 @@ set_controls(controls)
 
 ### Simulated HMM data
 
-The following specifies a 2-state HMM with state-dependent Gamma distributions, where the expectiation values for state 1 and 2 are fixed to -1 and 1, respectively. The model will be fitted to `horizon = 500` simulated data points from this specification. 
+The following specifies a 2-state HMM with state-dependent Gamma distributions, where the expectation values for state 1 and 2 are fixed to -1 and 1, respectively. The model will be fitted to `horizon = 500` simulated data points from this specification. 
 
 ```{r, set controls sim hmm}
 controls = list(

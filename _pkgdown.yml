@@ -43,10 +43,10 @@ reference:
   desc: The following pre-computed models are included in the package.
   contents:
   - has_keyword("model")
-- title: S3 classes
+- title: Constructor functions
   desc: These functions construct the S3 classes of fHMM.
   contents:
-  - has_keyword("s3")
+  - has_keyword("constructor")
 - title: Small utilities
   desc: These functions may be useful beyond fHMM.
   contents:

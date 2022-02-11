@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{match_all}
 \alias{match_all}
-\title{Match positions of two numeric vectors "as good as possible".}
+\title{Best-possible match of two numeric vectors}
 \usage{
 match_all(x, y)
 }
@@ -16,6 +16,11 @@ An integer vector of length \code{length(x)} with the positions of \code{y}
 in \code{x}.
 }
 \description{
-This function matches the positions of two numeric vectors.
+This function matches the positions of two numeric vectors as good as possible.
+}
+\examples{
+x <- c(-1, 0, 1)
+y <- c(0.1, 2, -1.2)
+fHMM:::match_all(x = x, y = y)
 }
 \keyword{utils}

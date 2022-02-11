@@ -13,3 +13,4 @@ sandbox.R
 jss/
 ^README\.Rmd$
 ^codecov\.yml$
+docs/

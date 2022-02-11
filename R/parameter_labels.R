@@ -1,12 +1,19 @@
-#' Create labels for estimated parameters.
+#' Create labels for estimated parameters
+#'
 #' @description
-#' This function creates labels for estimated parameters.
+#' This function creates labels for the estimated HMM parameters.
+#'
 #' @param controls
 #' An object of class \code{fHMM_controls}.
+#'
 #' @param expected_length
 #' The expected output length.
+#'
 #' @return
 #' A character vector of parameter labels.
+#'
+#' @examples
+#' fHMM:::parameter_labels(set_controls(), 8)
 #' @keywords
 #' internal
 

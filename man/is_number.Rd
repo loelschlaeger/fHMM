@@ -2,8 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{is_number}
 \alias{is_number}
-\title{Check if \code{x} is a ((non)-negative) ((non-)positive) (integer) numeric
-(vector).}
+\title{Check for integers}
 \usage{
 is_number(
   x,
@@ -31,7 +30,11 @@ is_number(
 A boolean.
 }
 \description{
-Check if \code{x} is a ((non)-negative) ((non-)positive) (integer) numeric
-(vector).
+This function checks if \code{x} is a ((non)-negative) ((non-)positive)
+(integer) numeric (vector).
+}
+\examples{
+fHMM:::is_number(1, int = TRUE)
+fHMM:::is_number(pi, int = TRUE)
 }
 \keyword{utils}

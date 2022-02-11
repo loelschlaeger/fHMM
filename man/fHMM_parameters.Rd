@@ -63,6 +63,5 @@ See the vignettes for more information on how to specify parameters.
 \examples{
 controls <- set_controls()
 fHMM_parameters(controls)
-
 }
-\keyword{s3}
+\keyword{constructor}

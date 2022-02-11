@@ -1,6 +1,8 @@
-#' Read data for the fHMM package.
+#' Read data for the fHMM package
+#'
 #' @description
 #' This function reads financial data for the fHMM package.
+#'
 #' @inheritParams prepare_data
 #' @return
 #' A list containing the following elements:
@@ -17,6 +19,7 @@
 #' }
 #' @keywords
 #' internal
+#'
 #' @importFrom utils read.csv head
 
 read_data <- function(controls) {

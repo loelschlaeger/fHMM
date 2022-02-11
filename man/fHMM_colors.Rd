@@ -9,7 +9,7 @@ fHMM_colors(controls, colors = NULL)
 \arguments{
 \item{controls}{An object of class \code{fHMM_controls}.}
 
-\item{colors}{Either \code{NULL} or a a character vector of color names or hexadecimal RGB
+\item{colors}{Either \code{NULL} or a character vector of color names or hexadecimal RGB
 triplets.}
 }
 \value{
@@ -29,7 +29,6 @@ This function defines a color scheme for visualizations in the fHMM package.
 }
 \examples{
 controls <- set_controls()
-fHMM_colors(controls, colors = c("red","blue"))
-
+fHMM_colors(controls, colors = c("red", "blue"))
 }
-\keyword{s3}
+\keyword{constructor}

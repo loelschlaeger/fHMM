@@ -20,10 +20,13 @@ An object of class \code{fHMM_events}.
 This function checks the input \code{events}.
 }
 \examples{
-events = list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
-  labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers",
-             "First COVID-19 case Germany"))
+events <- list(
+  dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
+  labels = c(
+    "9/11 terrorist attack", "Bankruptcy Lehman Brothers",
+    "First COVID-19 case Germany"
+  )
+)
 fHMM_events(events)
-
 }
-\keyword{s3}
+\keyword{constructor}

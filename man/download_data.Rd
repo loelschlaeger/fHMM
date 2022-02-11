@@ -52,5 +52,4 @@ download_data(
   symbol = "^GDAXI", from = "2000-01-03",
   file = paste0(tempfile(), ".csv")
 )
-
 }

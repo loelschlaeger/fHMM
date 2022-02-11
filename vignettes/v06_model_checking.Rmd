@@ -35,4 +35,6 @@ For HHMMs, we first decode the coarse-scale state process using the Viterbi algo
 
 ## Application
 
+Show how to use JB-test for pr.
+
 ## References

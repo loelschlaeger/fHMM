@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![codecov](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg?token=OYU22T74DV)](https://codecov.io/gh/loelschlaeger/fHMM)
 <!-- badges: end -->
 
-The goal of fHMM is to detect bearish and bullish markets in financial time series applying (hierarchical) hidden Markov models.
+With fHMM you can detect bearish and bullish markets in financial time series by applying *Hidden Markov Models (HMMs)*. The functionality and the model [is documented in detail here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a first application to the German stock index [DAX](https://en.wikipedia.org/wiki/DAX).
 
 ## Installation
 
@@ -32,18 +32,10 @@ You can install the released version of fHMM from [CRAN](https://CRAN.R-project.
 install.packages("fHMM")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
-
-```{r, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("loelschlaeger/fHMM")
-```
-
 ## Example: Fitting an HMM to the DAX
 
 ```{r load}
 library(fHMM)
-library(magrittr)
 ```
 
 We fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2010 to 2020. The states can be interpreted as proxies for bearish and bullish markets.
@@ -55,7 +47,7 @@ path <- paste0(tempdir(),"/dax.csv")
 download_data(symbol = "^GDAXI", file = path, verbose = FALSE)
 ```
 
-We first need to define the model by setting the `controls`:
+We first need to define the model by setting some `controls`:
 
 ```{r controls}
 controls <- list(
@@ -68,29 +60,30 @@ controls <- list(
                 from        = "2010-01-01",
                 to          = "2020-12-31")
 )
-(controls %<>% set_controls)
+controls <- set_controls(controls)
 ```
 
-The function `prepare_data` prepares the data for estimation:
+The function `prepare_data()` prepares the data for estimation:
 
 ```{r data}
 data <- prepare_data(controls)
 summary(data)
 ```
 
-We now fit the model and subsequentially decode the hidden states:
+We now fit the model and subsequently decode the hidden states:
 
 ```{r fit}
 set.seed(1)
-model <- fit_model(data, ncluster = 7) %>% decode_states 
+model <- fit_model(data, ncluster = 7)
+model <- decode_states(model)
 summary(model)
 ```
 
-Let's visualize the estimated state-dependent distributions and the decoded time series:
+Having estimated the model, we can visualize the state-dependent distributions and the decoded time series to interpret bearish and bullish markets:
 
 ```{r plots}
-model %>% plot("sdds")
-model %>% plot("ts")
+plot(model, plot_type = c("sdds","ts"))
 ```
+
 
 

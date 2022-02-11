@@ -1,9 +1,9 @@
 #' Downloading financial data
-#' 
+#'
 #' @description
 #' This function downloads stock data from <https://finance.yahoo.com> and saves
 #' it as a .csv-file.
-#' 
+#'
 #' @details
 #' The downloaded data is a .csv-file with the following columns:
 #' \itemize{
@@ -15,7 +15,7 @@
 #'   \item \code{Adj.Close}: Close price adjusted for dividends and splits.
 #'   \item \code{Volume}: Trade volume.
 #' }
-#' 
+#'
 #' @param symbol
 #' A character, the stock's symbol. It must match the identifier on
 #' <https://finance.yahoo.com>.
@@ -30,34 +30,46 @@
 #' in the current working directory with the name "\code{symbol}.csv".
 #' @param verbose
 #' If \code{TRUE} returns information about download success.
-#' 
+#'
 #' @return
 #' No return value.
-#' 
+#'
 #' @examples
 #' ### download 21st century DAX data
 #' download_data(
 #'   symbol = "^GDAXI", from = "2000-01-03",
 #'   file = paste0(tempfile(), ".csv")
 #' )
-#' 
 #' @export
-#' 
+#'
 #' @importFrom utils download.file read.csv head tail
 
 download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
                           file = paste0(symbol, ".csv"), verbose = TRUE) {
+
+  ### check input
+  if (!is.character(symbol) || length(symbol) != 1) {
+    stop("'symbol' must be a single character.")
+  }
+  from <- check_date(from)
+  to <- check_date(to)
+  if (!is.character(file) || length(file) != 1) {
+    stop("'file' must be a single character.")
+  }
+  if (!is.logical(verbose) || length(verbose) != 1) {
+    stop("'verbose' must be either TRUE or FALSE.")
+  }
 
   ### check 'from' and 'to'
   from <- as.Date(from)
   to <- as.Date(to)
   min_date <- as.Date("1902-01-01")
   if (from < min_date) {
-    warning("D1")
+    warning("'from' is set to lower bound of '1902-01-01'.")
     from <- min_date
   }
   if (to < from) {
-    stop("D2")
+    stop("'to' must not be earlier than 'from'.")
   }
 
   ### function to create finance.yahoo.com-URL
@@ -90,7 +102,7 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
 
   ### check 'download_try'
   if (inherits(download_try, "try-error")) {
-    stop("D3")
+    stop("'symbol' is unknown on finance.yahoo.com, please check spelling.")
   } else if (verbose) {
     ### print summary of new data
     data <- utils::read.csv(file = file, header = TRUE, sep = ",", na.strings = "null")

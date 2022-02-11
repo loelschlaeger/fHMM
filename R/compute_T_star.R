@@ -1,8 +1,8 @@
 #' Computing lengths of fine-scale chunks
-#' 
+#'
 #' @description
-#' This helper-function computes the lengths of fine-scale chunks.
-#' 
+#' This function computes lengths of fine-scale chunks.
+#'
 #' @param horizon
 #' The element \code{controls$horizon}, i.e. an integer vector of length 2,
 #' where the second entry can be \code{NA}.
@@ -13,13 +13,18 @@
 #' A vector of dates of empirical fine-scale data.
 #' @param seed
 #' Set a seed for the simulation of flexible chunk lengths.
-#' 
+#'
 #' @return
 #' A vector of fine-scale chunk sizes.
-#' 
+#'
+#' @examples
+#' ### weekly fine-scale chunk sizes for 10 coarse-scale observations
+#' horizon <- c(10, NA)
+#' period <- "w"
+#' fHMM:::compute_T_star(horizon, period)
 #' @keywords
 #' internal
-#' 
+#'
 #' @importFrom stats dbinom
 
 compute_T_star <- function(horizon, period, dates = NULL, seed = NULL) {

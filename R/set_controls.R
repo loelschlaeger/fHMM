@@ -132,8 +132,7 @@ set_controls <- function(controls = NULL) {
       redundant_controls <- setdiff(names(controls), all_controls)
       if (length(redundant_controls) > 0) {
         warning(
-          "Element(s) ", paste(redundant_controls, collapse = ", "),
-          " in 'controls' ignored."
+          "Element(s) ", paste(redundant_controls, collapse = ", "), " in 'controls' ignored."
         )
         controls[redundant_controls] <- NULL
       }
@@ -141,8 +140,7 @@ set_controls <- function(controls = NULL) {
         redundant_controls <- setdiff(names(controls[["data"]]), data_controls)
         if (length(redundant_controls) > 0) {
           warning(
-            "Element(s) ", paste(redundant_controls, collapse = ", "),
-            " in 'controls$data' ignored."
+            "Element(s) ", paste(redundant_controls, collapse = ", "), " in 'controls$data' ignored."
           )
           controls[["data"]][redundant_controls] <- NULL
         }
@@ -151,8 +149,7 @@ set_controls <- function(controls = NULL) {
         redundant_controls <- setdiff(names(controls[["fit"]]), fit_controls)
         if (length(redundant_controls) > 0) {
           warning(
-            "Element(s) ", paste(redundant_controls, collapse = ", "),
-            " in 'controls$fit' ignored."
+            "Element(s) ", paste(redundant_controls, collapse = ", "), " in 'controls$fit' ignored."
           )
           controls[["fit"]][redundant_controls] <- NULL
         }
@@ -394,4 +391,22 @@ set_controls <- function(controls = NULL) {
   ### return controls
   class(controls) <- "fHMM_controls"
   return(controls)
+}
+
+#' @export
+#' @noRd
+
+print.fHMM_controls <- function(x, ...) {
+  cat("fHMM controls:\n")
+  cat("* hierarchy:", x[["hierarchy"]], "\n")
+  cat("* data type:", ifelse(x[["simulated"]], "simulated", "empirical"), "\n")
+  cat("* number of states:", x[["states"]], "\n")
+  cat("* sdds: ")
+  print(x[["sdds"]])
+  cat("\n")
+  cat(
+    "* number of runs:", x[["fit"]][["runs"]],
+    ifelse(x[["fit"]][["at_true"]], "(initialised at true values)", ""), "\n"
+  )
+  return(invisible(x))
 }

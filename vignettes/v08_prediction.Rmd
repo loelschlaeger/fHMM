@@ -23,6 +23,6 @@ knitr::opts_chunk$set(
 
 ## How to predict?
 
-Cite book of Roland.
+Cite book of Roland. Hold expectations low.
 
 ## Application

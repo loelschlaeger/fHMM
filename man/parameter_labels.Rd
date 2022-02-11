@@ -2,7 +2,7 @@
 % Please edit documentation in R/parameter_labels.R
 \name{parameter_labels}
 \alias{parameter_labels}
-\title{Create labels for estimated parameters.}
+\title{Create labels for estimated parameters}
 \usage{
 parameter_labels(controls, expected_length)
 }
@@ -15,6 +15,9 @@ parameter_labels(controls, expected_length)
 A character vector of parameter labels.
 }
 \description{
-This function creates labels for estimated parameters.
+This function creates labels for the estimated HMM parameters.
+}
+\examples{
+fHMM:::parameter_labels(set_controls(), 8)
 }
 \keyword{internal}

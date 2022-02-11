@@ -1,26 +1,6 @@
 # parameter transformations for HMM work
 
     Code
-      parUncon
-    Output
-      [1] -1.0333857 -0.8848287 -0.3665067  0.6334933 -2.2386336 -0.4998790  0.6629896
-      [8]  2.8297122
-      attr(,"class")
-      [1] "parUncon"
-
----
-
-    Code
-      parCon
-    Output
-      [1]  0.2624282  0.2921782 -0.3665067  0.6334933  0.1066041  0.6066041  1.9405852
-      [8] 16.9405852
-      attr(,"class")
-      [1] "parCon"
-
----
-
-    Code
       par2
     Output
       fHMM parameters

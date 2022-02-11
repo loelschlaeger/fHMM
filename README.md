@@ -13,8 +13,12 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs
 [![codecov](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg?token=OYU22T74DV)](https://codecov.io/gh/loelschlaeger/fHMM)
 <!-- badges: end -->
 
-The goal of fHMM is to detect bearish and bullish markets in financial
-time series applying (hierarchical) hidden Markov models.
+With fHMM you can detect bearish and bullish markets in financial time
+series by applying *Hidden Markov Models (HMMs)*. The functionality and
+the model [is documented in detail
+here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a
+first application to the German stock index
+[DAX](https://en.wikipedia.org/wiki/DAX).
 
 ## Installation
 
@@ -25,13 +29,6 @@ You can install the released version of fHMM from
 install.packages("fHMM")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
-
-``` r
-# install.packages("devtools")
-devtools::install_github("loelschlaeger/fHMM")
-```
-
 ## Example: Fitting an HMM to the DAX
 
 ``` r
@@ -39,7 +36,6 @@ library(fHMM)
 #> Thanks for using fHMM version 1.0.0!
 #> See https://loelschlaeger.de/fHMM for help.
 #> Type 'citation("fHMM")' for citing this R package.
-library(magrittr)
 ```
 
 We fit a 2-state HMM with state-dependent t-distributions to the DAX
@@ -54,7 +50,7 @@ path <- paste0(tempdir(),"/dax.csv")
 download_data(symbol = "^GDAXI", file = path, verbose = FALSE)
 ```
 
-We first need to define the model by setting the `controls`:
+We first need to define the model by setting some `controls`:
 
 ``` r
 controls <- list(
@@ -67,16 +63,10 @@ controls <- list(
                 from        = "2010-01-01",
                 to          = "2020-12-31")
 )
-(controls %<>% set_controls)
-#> fHMM controls:
-#> * hierarchy: FALSE 
-#> * data type: empirical 
-#> * number of states: 2 
-#> * sdds: t() 
-#> * number of runs: 100
+controls <- set_controls(controls)
 ```
 
-The function `prepare_data` prepares the data for estimation:
+The function `prepare_data()` prepares the data for estimation:
 
 ``` r
 data <- prepare_data(controls)
@@ -88,15 +78,16 @@ summary(data)
 #> * log returns: TRUE
 ```
 
-We now fit the model and subsequentially decode the hidden states:
+We now fit the model and subsequently decode the hidden states:
 
 ``` r
 set.seed(1)
-model <- fit_model(data, ncluster = 7) %>% decode_states 
+model <- fit_model(data, ncluster = 7)
 #> Checking start values
 #> Maximizing likelihood
 #> Computing Hessian
 #> Fitting completed
+model <- decode_states(model)
 #> Decoded states
 summary(model)
 #> Summary of fHMM model
@@ -108,15 +99,15 @@ summary(model)
 #> t() 
 #> 
 #> Estimates:
-#>                   lb   estimate         ub
-#> Gamma_2.1  0.0313615  0.0319495  0.0325481
-#> Gamma_1.2  0.0107352  0.0109757  0.0112215
-#> mu_1       0.0009344  0.0009467  0.0009591
-#> mu_2      -0.0010204 -0.0009720 -0.0009235
-#> sigma_1    0.0072680  0.0072860  0.0073039
-#> sigma_2    0.0168010  0.0168710  0.0169412
-#> df_1       5.3519409  5.3999003  5.4482894
-#> df_2       6.5553795  6.6527687  6.7516048
+#>                   lb   estimate        ub
+#> Gamma_2.1  0.0177990  0.0319495 5.670e-02
+#> Gamma_1.2  0.0054805  0.0109757 2.186e-02
+#> mu_1       0.0005605  0.0009467 1.333e-03
+#> mu_2      -0.0024864 -0.0009720 5.425e-04
+#> sigma_1    0.0067460  0.0072860 7.869e-03
+#> sigma_2    0.0148162  0.0168710 1.921e-02
+#> df_1       4.0858880  5.3999003 7.136e+00
+#> df_2       4.1958554  6.6527687 1.055e+01
 #> 
 #> States:
 #> decoded
@@ -124,17 +115,12 @@ summary(model)
 #> 2208  583
 ```
 
-Let’s visualize the estimated state-dependent distributions and the
-decoded time series:
+Having estimated the model, we can visualize the state-dependent
+distributions and the decoded time series to interpret bearish and
+bullish markets:
 
 ``` r
-model %>% plot("sdds")
+plot(model, plot_type = c("sdds","ts"))
 ```
 
-<img src="man/figures/README-plots-1.png" width="100%" />
-
-``` r
-model %>% plot("ts")
-```
-
-<img src="man/figures/README-plots-2.png" width="100%" />
+<img src="man/figures/README-plots-1.png" width="100%" /><img src="man/figures/README-plots-2.png" width="100%" />

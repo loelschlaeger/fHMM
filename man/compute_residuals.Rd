@@ -4,10 +4,12 @@
 \alias{compute_residuals}
 \title{Computing (pseudo-) residuals}
 \usage{
-compute_residuals(x)
+compute_residuals(x, verbose = TRUE)
 }
 \arguments{
 \item{x}{An object of class \code{fHMM_model}.}
+
+\item{verbose}{Set to \code{TRUE} to print progress messages.}
 }
 \value{
 An object of class \code{fHMM_model} with residuals included.
@@ -18,5 +20,4 @@ This function computes (pseudo-) residuals of an \code{fHMM_model} object.
 \examples{
 data(dax_model)
 compute_residuals(dax_model)
-
 }

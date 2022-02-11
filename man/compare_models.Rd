@@ -17,12 +17,11 @@ This function compares multiple \code{fHMM_model} with respect to
 \itemize{
 \item the number of model parameters,
 \item the log-likelihood value,
-\item the AIC,
-\item the BIC.
+\item the AIC value,
+\item the BIC value.
 }
 }
 \examples{
 data(dax_model)
 compare_models(dax_model)
-
 }

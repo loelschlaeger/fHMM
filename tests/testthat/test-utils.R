@@ -1,9 +1,8 @@
 test_that("checks of format 'YYYY-MM-DD' for dates work", {
-  error_code <- "C7"
   expect_equal(check_date(date = "2000-01-01"), as.Date("2000-01-01"))
-  expect_error(check_date(date = "2000-02-30"), error_code)
-  expect_error(check_date(date = "2000-13-01"), error_code)
-  expect_error(check_date(date = "01.01.2021"), error_code)
+  expect_error(check_date(date = "2000-02-30"))
+  expect_error(check_date(date = "2000-13-01"))
+  expect_error(check_date(date = "01.01.2021"))
 })
 
 
@@ -21,4 +20,9 @@ test_that("check for tpm works", {
 
 test_that("brute force matching works", {
   expect_equal(match_all(1:9, 9:1), 9:1)
+})
+
+test_that("simulation of Markov chain works", {
+  Gamma <- rbind(c(0.8, 0.2), c(0.1, 0.9))
+  expect_snapshot(simulate_markov_chain(Gamma = Gamma, T = 100, seed = 1))
 })
