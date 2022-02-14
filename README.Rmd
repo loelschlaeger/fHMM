@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# fHMM <img src="man/figures/sticker.png" align="right" alt="" width="120" />
+# fHMM <img src="man/figures/logo.svg" align="right" alt="" width="120" />
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/loelschlaeger/fHMM/workflows/R-CMD-check/badge.svg)](https://github.com/loelschlaeger/fHMM/actions)

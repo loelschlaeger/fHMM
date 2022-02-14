@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# fHMM <img src="man/figures/sticker.png" align="right" alt="" width="120" />
+# fHMM <img src="man/figures/logo.svg" align="right" alt="" width="120" />
 
 <!-- badges: start -->
 
@@ -84,7 +84,9 @@ We now fit the model and subsequently decode the hidden states:
 set.seed(1)
 model <- fit_model(data, ncluster = 7)
 #> Checking start values
+#> Warning: ignoring unrecognized snow option(s): progress
 #> Maximizing likelihood
+#> Warning: ignoring unrecognized snow option(s): progress
 #> Computing Hessian
 #> Fitting completed
 model <- decode_states(model)
