@@ -55,10 +55,9 @@
     <a class="dropdown-item" href="../articles/v02_controls.html">Controls</a>
     <a class="dropdown-item" href="../articles/v03_data_management.html">Data management</a>
     <a class="dropdown-item" href="../articles/v04_model_estimation.html">Model estimation</a>
-    <a class="dropdown-item" href="../articles/v05_state_decoding.html">State decoding</a>
+    <a class="dropdown-item" href="../articles/v05_state_decoding_and_prediction.html">State decoding and prediction</a>
     <a class="dropdown-item" href="../articles/v06_model_checking.html">Model checking</a>
     <a class="dropdown-item" href="../articles/v07_model_selection.html">Model selection</a>
-    <a class="dropdown-item" href="../articles/v08_prediction.html">Prediction</a>
   </div>
 </li>
 <li class="nav-item">
@@ -88,9 +87,7 @@
 <script src="fHMM_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <main id="main"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Introduction</h1>
-                        <h4 data-toc-skip class="author">Lennart Oelschläger, Timo Adam, and Rouven Michels</h4>
             
-            <h4 data-toc-skip class="date">2022-02-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/loelschlaeger/fHMM/blob/HEAD/vignettes/fHMM.Rmd" class="external-link"><code>vignettes/fHMM.Rmd</code></a></small>
       <div class="d-none name"><code>fHMM.Rmd</code></div>
@@ -102,30 +99,29 @@
 Assignee: Timo
 Purpose: motivation of HMMs for financial data and hierarchical structure, overview package and vignettes, overview literature, explain debugging function and link to GitHub issue page
 -->
-<p>Welcome to fHMM, a package for modeling financial time series with hidden Markov models (HMMs). This introductory vignette <a href="#motivation">motivates the approach</a>, gives an <a href="#package-and-vignettes-overview">overview</a> of the package functionality and the vignettes, informs about <a href="#debugging">debugging</a> options, and <a href="#placement-in-the-literature">places the approach in the existing literature</a>.</p>
+<p>Welcome to {fHMM}, an R package for modeling financial time series data with hidden Markov models (HMMs). This introduction <a href="#motivation">motivates the approach</a>, gives an <a href="#package-and-vignettes-overview">overview</a> of the package functionality and the included vignettes, and <a href="#placement-in-the-literature">places the approach in the existing literature</a>.</p>
 <div class="section level2">
 <h2 id="motivation">Motivation<a class="anchor" aria-label="anchor" href="#motivation"></a>
 </h2>
 <p>Earning money with stock trading is simple: one only needs to buy and sell stocks at the right moment. In general, stock traders seek to invest at the beginning of upward trends (hereon termed as bullish markets) and repel their stocks just in time before the prices fall again (hereon termed as bearish markets). As stock prices depend on a variety of environmental factors <span class="citation">(Humpe and Macmillan <a href="#ref-hum09" role="doc-biblioref">2009</a>; Cohen, Diether, and Malloy <a href="#ref-coh13" role="doc-biblioref">2013</a>)</span>, chance certainly plays a fundamental role in hitting those exact moments. However, investigating market behavior can lead to a better understanding of how trends alternate and thereby increases the chance of making profitable investment decisions.</p>
-<p>The fHMM package aims at contributing to those investigations by applying HMMs to detect bearish and bullish markets in financial time series. It also implemented the hierarchical extension presented in <span class="citation">(Oelschläger and Adam <a href="#ref-oel21" role="doc-biblioref">2021</a>)</span>, which improves the model’s capability for distinguishing between short- and long-term trends and allows to interpret market dynamics at multiple time scales.</p>
+<p>The {fHMM} package aims at contributing to those investigations by applying HMMs to detect bearish and bullish markets in financial time series. It also implemented the hierarchical extension presented in <span class="citation">(Oelschläger and Adam <a href="#ref-oel21" role="doc-biblioref">2021</a>)</span>, which improves the model’s capability for distinguishing between short- and long-term trends and allows to interpret market dynamics at multiple time scales.</p>
 </div>
 <div class="section level2">
 <h2 id="package-and-vignettes-overview">Package and vignettes overview<a class="anchor" aria-label="anchor" href="#package-and-vignettes-overview"></a>
 </h2>
-<p>The functionality of the fHMM package can be classified into functions for data preparation, model estimation, and model evaluation. The flowchart below visualizes their dependencies.</p>
+<p>The functionality of the {fHMM} package can be classified into functions for data preparation, model estimation, and model evaluation. The following flowchart visualizes their dependencies:</p>
 <div class="figure">
-<img src="flowchart.png" style="width:80.0%" alt=""><p class="caption">A flowchart of the fHMM package. Functions are displayed as boxed and classes as circles.</p>
+<img src="flowchart.png" style="width:80.0%" alt=""><p class="caption">A flowchart of the {fHMM} package: Functions are boxed and classes displayed as circles.</p>
 </div>
 <p>The tasks <em>data preparation</em>, <em>model estimation</em>, and <em>model evaluation</em> as well as their corresponding functions and classes are explained in detail in separate vignettes:</p>
 <ul>
 <li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v01_model_definition.html" class="external-link"><em>Model definition</em></a> defines the HMM and its hierarchical extension.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v02_controls.html" class="external-link"><em>Controls</em></a> introduces the <code><a href="../reference/set_controls.html">set_controls()</a></code> function which is used for model and estimation specifications. It creates an <code>fHMM_controls</code> object that can be fed into the <code><a href="../reference/prepare_data.html">prepare_data()</a></code> function in the next step.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v03_data_management.html" class="external-link"><em>Data management</em></a> explains how to prepare or simulate data in fHMM. The goal for the data preparation task in the fHMM package is to create an <code>fHMM_data</code> object via the <code><a href="../reference/prepare_data.html">prepare_data()</a></code> function that can be fed into the estimation routine in the next step. Furthermore, the function <code><a href="../reference/download_data.html">download_data()</a></code> is introduced that can download financial data directly from <a href="https://finance.yahoo.com" class="external-link uri">https://finance.yahoo.com</a>.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v04_model_estimation.html" class="external-link"><em>Model estimation</em></a> defines the likelihood function and explain the task of its numerical maximization. Subsequently, the <code><a href="../reference/fit_model.html">fit_model()</a></code> function is introduced that receives an <code>fHMM_data</code>, fits an HMM (specified by <code>fHMM_controls</code>) and returns an <code>fHMM_model</code> object, for which the package provides <code>plot</code>, <code>print</code>, and <code>summary</code> methods.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v05_state_decoding.html" class="external-link"><em>State decoding</em></a> defines the Viterbi algorithm that is used for decoding the most likely underlying state sequence. It furthermore introduces its implementation in fHMM via the <code>decode_state()</code> function. The <code><a href="../reference/reorder_states.html">reorder_states()</a></code> function can be used for state relabeling after the decoding.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v06_model_checking.html" class="external-link"><em>Model checking</em></a> explains the task of checking a fitted model via computing (pseudo-) residuals, which is implemented via the <code><a href="../reference/compute_residuals.html">compute_residuals()</a></code> function.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v07_model_selection.html" class="external-link"><em>Model selection</em></a> discusses the task of selecting the (in some sense) best model among a set of competing models. The fHMM package provides a convenient <code><a href="../reference/compare_models.html">compare_models()</a></code> function that receives an arbitrary number of <code>fHMM_model</code>-objects and returns comparison statistics.</p></li>
-<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v08_prediction.html" class="external-link"><em>Prediction</em></a> discusses how the package can be used for market forecasting via the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v02_controls.html" class="external-link"><em>Controls</em></a> introduces the <code><a href="../reference/set_controls.html">set_controls()</a></code> function which is used for model specifications.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v03_data_management.html" class="external-link"><em>Data management</em></a> explains how to prepare or simulate data and introduces the <code><a href="../reference/download_data.html">download_data()</a></code> function that can download financial data directly from <a href="https://finance.yahoo.com" class="external-link uri">https://finance.yahoo.com</a>.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v04_model_estimation.html" class="external-link"><em>Model estimation</em></a> defines the likelihood function and explains the task of its numerical maximization via the <code><a href="../reference/fit_model.html">fit_model()</a></code> function.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v05_state_decoding_prediction.html" class="external-link"><em>State decoding and prediction</em></a> introduces the Viterbi algorithm that is used for decoding the most likely underlying state sequence, its implementation, and the <code><a href="../reference/predict.fHMM_model.html">predict.fHMM_model()</a></code> function.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v06_model_checking.html" class="external-link"><em>Model checking</em></a> explains the task of checking a fitted model via computing (pseudo-) residuals, which is implemented in the <code><a href="../reference/compute_residuals.html">compute_residuals()</a></code> function.</p></li>
+<li><p>The vignette <a href="http://loelschlaeger.de/fHMM/articles/v07_model_selection.html" class="external-link"><em>Model selection</em></a> discusses the task of selecting the (in some sense) best model among a set of competing models via the <code><a href="../reference/compare_models.html">compare_models()</a></code> function.</p></li>
 </ul>
 </div>
 <div class="section level2">
