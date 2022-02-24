@@ -7,11 +7,10 @@ articles:
   v02_controls: v02_controls.html
   v03_data_management: v03_data_management.html
   v04_model_estimation: v04_model_estimation.html
-  v05_state_decoding: v05_state_decoding.html
+  v05_state_decoding_and_prediction: v05_state_decoding_and_prediction.html
   v06_model_checking: v06_model_checking.html
   v07_model_selection: v07_model_selection.html
-  v08_prediction: v08_prediction.html
-last_built: 2022-02-21T13:15Z
+last_built: 2022-02-24T15:26Z
 urls:
   reference: https://loelschlaeger.github.io/fHMM/reference
   article: https://loelschlaeger.github.io/fHMM/articles
