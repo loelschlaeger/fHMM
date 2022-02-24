@@ -1,7 +1,7 @@
-#' Setting and checking parameters for the fHMM package
+#' Setting and checking parameters
 #'
 #' @description
-#' This function sets and checks parameters for the fHMM package.
+#' This function sets and checks parameters for the {fHMM} package.
 #'
 #' @details
 #' See the vignettes for more information on how to specify parameters.

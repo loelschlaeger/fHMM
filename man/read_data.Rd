@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_data.R
 \name{read_data}
 \alias{read_data}
-\title{Read data for the fHMM package}
+\title{Read data}
 \usage{
 read_data(controls)
 }
@@ -24,6 +24,6 @@ to log-returns,
 }
 }
 \description{
-This function reads financial data for the fHMM package.
+This function reads financial data for the {fHMM} package.
 }
 \keyword{internal}

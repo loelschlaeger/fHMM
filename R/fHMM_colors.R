@@ -1,7 +1,7 @@
-#' Setting color scheme for visualizations in the fHMM package
+#' Setting color scheme for visualizations
 #'
 #' @description
-#' This function defines a color scheme for visualizations in the fHMM package.
+#' This function defines a color scheme for visualizations in the {fHMM} package.
 #'
 #' @param controls
 #' An object of class \code{fHMM_controls}.

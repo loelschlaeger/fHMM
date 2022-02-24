@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_data.R
 \name{prepare_data}
 \alias{prepare_data}
-\title{Prepare data for the fHMM package}
+\title{Prepare data}
 \usage{
 prepare_data(controls, true_parameters = NULL, seed = NULL)
 }
@@ -33,7 +33,7 @@ to log-returns if \code{simulated = FALSE},
 }
 }
 \description{
-This function simulates or reads financial data for the fHMM package.
+This function simulates or reads financial data for the {fHMM} package.
 }
 \examples{
 controls <- set_controls()

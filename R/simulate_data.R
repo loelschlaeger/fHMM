@@ -1,7 +1,7 @@
-#' Simulate data for the fHMM package
+#' Simulate data
 #'
 #' @description
-#' This function simulates data for the fHMM package.
+#' This function simulates data for the {fHMM} package.
 #'
 #' @inheritParams prepare_data
 #'
