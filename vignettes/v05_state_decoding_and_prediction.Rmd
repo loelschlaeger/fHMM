@@ -1,11 +1,9 @@
 ---
-title: "State decoding"
-author: "Lennart Oelschläger, Timo Adam and Rouven Michels"
-date: "`r Sys.Date()`"
+title: "State decoding and prediction"
 output: rmarkdown::html_vignette
 bibliography: ref.bib
 vignette: >
-  %\VignetteIndexEntry{State decoding}
+  %\VignetteIndexEntry{State decoding and prediction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
