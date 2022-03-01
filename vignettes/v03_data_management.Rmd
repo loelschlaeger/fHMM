@@ -50,7 +50,6 @@ controls <- list(
 )
 controls <- set_controls(controls)
 data <- prepare_data(controls)
-class(data)
 summary(data)
 ```
 
