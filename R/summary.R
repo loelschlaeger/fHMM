@@ -212,4 +212,3 @@ coef.fHMM_model <- function(object, alpha = 0.05, ...) {
   )
   return(estimates_table)
 }
-
