@@ -87,7 +87,7 @@ summary(data)
 #> * log returns: TRUE
 ```
 
-We now fit the model and subsequently decode the hidden states:
+We fit the model and subsequently decode the hidden states:
 
 ``` r
 set.seed(1)
