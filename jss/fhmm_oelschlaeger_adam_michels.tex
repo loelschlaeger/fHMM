@@ -87,8 +87,6 @@ Hierarchical HMMs.
 
 Outline of the paper.
 
-
-
 %% -- Manuscript ---------------------------------------------------------------
 
 %% - In principle "as usual" again.
@@ -103,6 +101,21 @@ Outline of the paper.
 %%   (\verb|[t!]|), centered (\verb|\centering|), with a caption below the table,
 %%   column headers and captions in sentence style, and if possible avoiding
 %%   vertical lines.
+%% - Virtually all JSS manuscripts list source code along with the generated
+%%   output. The style files provide dedicated environments for this.
+%% - In R, the environments {Sinput} and {Soutput} - as produced by Sweave() or
+%%   or knitr using the render_sweave() hook - are used (without the need to
+%%   load Sweave.sty).
+%% - Equivalently, {CodeInput} and {CodeOutput} can be used.
+%% - The code input should use "the usual" command prompt in the respective
+%%   software system.
+%% - For R code, the prompt "R> " should be used with "+  " as the
+%%   continuation prompt.
+%% - Comments within the code chunks should be avoided - these should be made
+%%   within the regular LaTeX text.
+%% - Please make sure that all code is properly spaced, e.g., using
+%%   \code{y = a + b * x} and \emph{not} \code{y=a+b*x}.
+%% - JSS prefers when the second line of code is indented by two spaces.
 
 \section{Model definition} \label{sec:model_definition}
 
@@ -111,6 +124,14 @@ Content ...
 \section{Controls} \label{sec:controls}
 
 Content ...
+
+%
+\begin{Schunk}
+\begin{Sinput}
+R> x = 1 
+\end{Sinput}
+\end{Schunk}
+%
 
 \section{Data management} \label{sec:data_management}
 
@@ -131,35 +152,6 @@ Content ...
 \section{Model selection} \label{sec:model_selection}
 
 Content ...
-
-
-%% -- Illustrations ------------------------------------------------------------
-
-%% - Virtually all JSS manuscripts list source code along with the generated
-%%   output. The style files provide dedicated environments for this.
-%% - In R, the environments {Sinput} and {Soutput} - as produced by Sweave() or
-%%   or knitr using the render_sweave() hook - are used (without the need to
-%%   load Sweave.sty).
-%% - Equivalently, {CodeInput} and {CodeOutput} can be used.
-%% - The code input should use "the usual" command prompt in the respective
-%%   software system.
-%% - For R code, the prompt "R> " should be used with "+  " as the
-%%   continuation prompt.
-%% - Comments within the code chunks should be avoided - these should be made
-%%   within the regular LaTeX text.
-%% - Please make sure that all code is properly spaced, e.g., using
-%%   \code{y = a + b * x} and \emph{not} \code{y=a+b*x}.
-%% - JSS prefers when the second line of code is indented by two spaces.
-
-\section{Illustrations} \label{sec:illustrations}
-
-%
-\begin{Schunk}
-\begin{Sinput}
-> x = 1 
-\end{Sinput}
-\end{Schunk}
-%
 
 
 %% -- Summary/conclusions/discussion -------------------------------------------
