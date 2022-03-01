@@ -35,6 +35,7 @@ reference:
 - title: Model evaluation
   desc: Use these functions to evaluate your model.
   contents:
+  - coef.fHMM_model
   - compare_models
   - compute_residuals
   - plot.fHMM_model
@@ -44,11 +45,11 @@ reference:
   contents:
   - has_keyword("model")
 - title: Constructor functions
-  desc: These functions construct the S3 classes of fHMM.
+  desc: These functions construct the S3 classes of {fHMM}.
   contents:
   - has_keyword("constructor")
 - title: Small utilities
-  desc: These functions may be useful beyond fHMM.
+  desc: These functions may be useful beyond {fHMM}.
   contents:
   - has_keyword("utils")
 - title: internal
