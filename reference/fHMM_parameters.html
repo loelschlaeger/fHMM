@@ -95,17 +95,17 @@
 <dd><p>A vector of degrees of freedom of length <code>controls$states[1]</code>.
 Only relevant if sdd is a t-distribution.</p></dd>
 <dt>Gammas_star</dt>
-<dd><p>A list of length <code>controls$states[1]</code> of tpm's. Each tpm must be of
-dimension <code>controls$states[2]</code>.</p></dd>
+<dd><p>A list of length <code>controls$states[1]</code> of (fine-scale) tpm's. Each tpm
+must be of dimension <code>controls$states[2]</code>.</p></dd>
 <dt>mus_star</dt>
-<dd><p>A list of length <code>controls$states[1]</code> of vectors of expectations.
-Each vector must be of length <code>controls$states[2]</code>.</p></dd>
+<dd><p>A list of length <code>controls$states[1]</code> of vectors of (fine-scale)
+expectations. Each vector must be of length <code>controls$states[2]</code>.</p></dd>
 <dt>sigmas_star</dt>
 <dd><p>A list of length <code>controls$states[1]</code> of vectors of standard deviations.
 Each vector must be of length <code>controls$states[2]</code>.</p></dd>
 <dt>dfs_star</dt>
-<dd><p>A list of length <code>controls$states[1]</code> of vectors of degrees of freedom.
-Each vector must be of length <code>controls$states[2]</code>.
+<dd><p>A list of length <code>controls$states[1]</code> of vectors of (fine-scale) degrees
+of freedom. Each vector must be of length <code>controls$states[2]</code>.
 Only relevant if sdd is a t-distribution.</p></dd>
 <dt>seed</dt>
 <dd><p>Set a seed for the sampling of parameters.</p></dd>
@@ -122,7 +122,7 @@ scaling.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>See the vignettes for more information on how to specify parameters.</p>
+    <p>See the vignette on the model definition for more details.</p>
     </div>
 
     <div class="section level2">

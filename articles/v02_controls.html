@@ -108,18 +108,18 @@ Purpose: explain fHMM controls
 <div class="section level2">
 <h2 id="the-set_controls-function">The <code>set_controls</code> function<a class="anchor" aria-label="anchor" href="#the-set_controls-function"></a>
 </h2>
-<p>The {fHMM} philosophy is to start the modeling process by setting all data, model, and estimation specifications. This is done by specifying a named list of controls and passing it to the <code><a href="../reference/set_controls.html">set_controls()</a></code> function. The function checks the specifications and returns an <code>fHMM_controls</code> object which stores all specifications and thereby provides required information for other {fHMM} functionalities.</p>
+<p>The {fHMM} philosophy is to start the modeling process by setting all data, model, and estimation specifications. This is done by defining a named list of controls and passing it to the <code><a href="../reference/set_controls.html">set_controls()</a></code> function. The function checks the specifications and returns an <code>fHMM_controls</code> object which stores all specifications and thereby provides required information for other {fHMM} functionalities.</p>
 </div>
 <div class="section level2">
 <h2 id="example-specifications">Example specifications<a class="anchor" aria-label="anchor" href="#example-specifications"></a>
 </h2>
-<p>For demonstration, we look at some example specifications using data from the Deutscher Aktienindex DAX<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;The &lt;code&gt;&lt;a href="../reference/download_data.html"&gt;download_data()&lt;/a&gt;&lt;/code&gt; function is explained in the vignette on data management.&lt;/p&gt;'><sup>2</sup></a>:</p>
+<p>For demonstration, we list example specifications using data from the Deutscher Aktienindex DAX<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;The &lt;code&gt;&lt;a href="../reference/download_data.html"&gt;download_data()&lt;/a&gt;&lt;/code&gt; function is explained in the vignette on data management.&lt;/p&gt;'><sup>2</sup></a>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, file <span class="op">=</span> <span class="st">"dax.csv"</span>, from <span class="op">=</span> <span class="st">"2010-01-01"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, file <span class="op">=</span> <span class="st">"dax.csv"</span><span class="op">)</span>
 <span class="co">#&gt; Download successful.</span>
 <span class="co">#&gt; * symbol: ^GDAXI </span>
-<span class="co">#&gt; * from: 2010-01-04 </span>
-<span class="co">#&gt; * to: 2022-02-24 </span>
+<span class="co">#&gt; * from: 1987-12-30 </span>
+<span class="co">#&gt; * to: 2022-03-01 </span>
 <span class="co">#&gt; * path: /Users/runner/work/fHMM/fHMM/vignettes/dax.csv</span></code></pre></div>
 <div class="section level3">
 <h3 id="hmms-for-empirical-data">HMMs for empirical data<a class="anchor" aria-label="anchor" href="#hmms-for-empirical-data"></a>
@@ -146,7 +146,7 @@ Purpose: explain fHMM controls
 <div class="section level3">
 <h3 id="simulated-hmm-data">Simulated HMM data<a class="anchor" aria-label="anchor" href="#simulated-hmm-data"></a>
 </h3>
-<p>The following specifies a 2-state HMM with state-dependent Gamma distributions, where the expectation values for state 1 and 2 are fixed to -1 and 1, respectively. The model will be fitted to 500 data points (<code>horizon = 500</code>), which will be simulated from this model specification.</p>
+<p>The following specifies a 2-state HMM with state-dependent Gamma distributions, where the expectation values for state 1 and 2 are fixed to -1 and 1, respectively. The model will be fitted to 500 data points (<code>horizon = 500</code>), that are going to be simulated from this model specification.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">controls</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   states  <span class="op">=</span> <span class="fl">2</span>,
@@ -169,7 +169,7 @@ Purpose: explain fHMM controls
 <code class="sourceCode R"><span class="va">controls</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   hierarchy <span class="op">=</span> <span class="cn">TRUE</span>,
   horizon   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">10</span><span class="op">)</span>,
-  sdds      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t(df = 1)"</span>, <span class="st">"t(df = 1)"</span><span class="op">)</span>,
+  sdds      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t(df = 1)"</span>, <span class="st">"t(df = Inf)"</span><span class="op">)</span>,
   period    <span class="op">=</span> <span class="st">"m"</span>
 <span class="op">)</span>
 <span class="fu"><a href="../reference/set_controls.html">set_controls</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span>
@@ -177,7 +177,7 @@ Purpose: explain fHMM controls
 <span class="co">#&gt; * hierarchy: TRUE </span>
 <span class="co">#&gt; * data type: simulated </span>
 <span class="co">#&gt; * number of states: 2 2 </span>
-<span class="co">#&gt; * sdds: t(df = 1) t(df = 1) </span>
+<span class="co">#&gt; * sdds: t(df = 1) t(df = Inf) </span>
 <span class="co">#&gt; * number of runs: 100</span></code></pre></div>
 <p>The help page of the <code><a href="../reference/set_controls.html">set_controls()</a></code> function provides an overview of all possible specifications.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
