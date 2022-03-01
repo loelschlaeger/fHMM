@@ -73,7 +73,7 @@ print.summary.fHMM_data <- function(x, ...) {
 #' @noRd
 #' @export
 
-summary.fHMM_model <- function(object, ci_level = 0.05, ...) {
+summary.fHMM_model <- function(object, alpha = 0.05, ...) {
 
   ### model information
   simulated <- object$data$controls$simulated
@@ -92,15 +92,7 @@ summary.fHMM_model <- function(object, ci_level = 0.05, ...) {
   sdds <- parUncon2par(object$estimate, object$data$controls)$sdds
 
   ### parameter estimates
-  ci <- compute_ci(object, ci_level)
-  estimates_table <- data.frame(lapply(ci, as.vector))
-  if (simulated) {
-    true <- par2parCon(object$data$true_parameters, object$data$controls)
-    estimates_table <- cbind(estimates_table, true = as.vector(true))
-  }
-  rownames(estimates_table) <- parameter_labels(
-    controls = object$data$controls, expected_length = nrow(estimates_table)
-  )
+  estimates_table <- coef.fHMM_model(object, alpha)
 
   ### states
   if (!is.null(object$decoding)) {
@@ -190,3 +182,34 @@ print.summary.fHMM_model <- function(x, digits = 4, ...) {
   }
   return(invisible(x))
 }
+
+#' Model coefficients
+#'
+#' @description
+#' This function returns the estimated model coefficients and an \code{alpha}
+#' confidence interval.
+#'
+#' @param object
+#' An object of class \code{fHMM_model}.
+#' @param ...
+#' Ignored.
+#' @inheritParams compute_ci
+#'
+#' @return
+#' A data frame.
+#'
+#' @export
+
+coef.fHMM_model <- function(object, alpha = 0.05, ...) {
+  ci <- compute_ci(object, alpha)
+  estimates_table <- data.frame(lapply(ci, as.vector))
+  if (object$data$controls$simulated) {
+    true <- par2parCon(object$data$true_parameters, object$data$controls)
+    estimates_table <- cbind(estimates_table, true = as.vector(true))
+  }
+  rownames(estimates_table) <- parameter_labels(
+    controls = object$data$controls, expected_length = nrow(estimates_table)
+  )
+  return(estimates_table)
+}
+
