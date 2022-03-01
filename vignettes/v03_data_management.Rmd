@@ -1,7 +1,5 @@
 ---
 title: "Data management"
-author: "Lennart Oelschläger, Timo Adam and Rouven Michels"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Data management}
@@ -18,13 +16,13 @@ Purpose: handling of empirical and simulated financial data in fHMM
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.dim = c(8,6),
+  fig.dim = c(10,6),
   out.width = "80%",
   fig.align = 'center'
 )
 ```
 
-This vignette explains how to prepare or simulate data in fHMM for estimation. The vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the fHMM `r utils::packageVersion("fHMM")` package.
+This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the {fHMM} `r utils::packageVersion("fHMM")` package.] explains how to prepare or simulate data in {fHMM} for estimation.
 
 ```{r load fHMM}
 library(fHMM)
@@ -32,17 +30,17 @@ library(fHMM)
 
 ## Empirical data
 
-Empirical data for modeling must be in csv-format and its path must be specified in `set_controls()`, see [the vignette on specifying the controls](http://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from https://finance.yahoo.com/ in a suitable format.] The fHMM package contains two datasets of the DAX and the VW stock for demonstration purpose that can be accessed as follows:
+Empirical data must be provided as a comma-separated values (CSV) file and its path must be specified in `set_controls()`, see [the vignette on specifying the controls](http://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from https://finance.yahoo.com/ in csv-format.] The {fHMM} package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
 
 ```{r, head dax}
 system.file("extdata", "dax.csv", package = "fHMM")
 system.file("extdata", "vw.csv", package = "fHMM")
 ``` 
 
-The `prepare_data()` function prepares the data based on the `data` controls specifications and returns an `fHMM_data` object that can be passed to the `fit_model()` function.
+The `prepare_data()` function prepares the data based on the `data` controls specifications and returns an `fHMM_data` object that can be passed to the `fit_model()` function for model fitting.
 
 ```{r, prepare_data example}
-controls = list(
+controls <- list(
   states = 3,
   sdds   = "t",
   data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
@@ -58,7 +56,7 @@ summary(data)
 
 ## Download stock data
 
-You can download daily stock prices listed on https://finance.yahoo.com/ via
+Daily stock prices listed on https://finance.yahoo.com/ can be downloaded directly via
 
 ```{r, eval = FALSE} 
 download_data(symbol, from, to, file)
@@ -66,7 +64,7 @@ download_data(symbol, from, to, file)
 
 where
 
-- `symbol` is the stock's symbol that has to match the official symbol on <https://finance.yahoo.com>,
+- `symbol` is the stock's symbol that has to match the official symbol on <https://finance.yahoo.com>,^[For example, `"^GDAXI"` is the symbol of the DAX and `"^GSPC"` the one of the S\&P 500.]
 
 - `from` and `to` define the time interval (in format `"YYYY-MM-DD"`),
 
@@ -82,10 +80,10 @@ downloads the 21st century daily data of the DAX into the current working direct
 
 ## Highlighting events
 
-Historical events can be highlighted in empirical data time series by specifying a named list `events` with elements `dates` (a vector of dates) and `names` (a vector of names for the events) and passing it to the plot method, for example:
+Historical events can be highlighted by specifying a named list `events` with elements `dates` (a vector of dates) and `labels` (a vector of labels for the events) and passing it to the plot method, for example:
 
 ```{r, events}
-events = fHMM_events(
+events <- fHMM_events(
   list(
     dates = c("2001-09-11","2008-09-15","2020-01-27"),
     labels = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
@@ -97,4 +95,4 @@ plot(data, events = events)
 
 ## Simulated data
 
-If the `data` parameter in the model's `controls` is unspecified, the model is fitted to simulated data from the model specification. This is handy for testing the functionality or conducting simulation experiments. Model parameters can be specified by defining an `fHMM_parameters`-object via the `fHMM_parameters()` function. 
+If the `data` parameter in the model's `controls` is unspecified, the model is fitted to simulated data from the model specification. This can be useful for testing the functionality or conducting simulation experiments. True model parameters can be specified by defining an `fHMM_parameters`-object via the `fHMM_parameters()` function and passing it to `prepare_data()`.

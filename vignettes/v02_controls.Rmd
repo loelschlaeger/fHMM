@@ -28,14 +28,14 @@ library(fHMM)
 
 ## The `set_controls` function 
 
-The {fHMM} philosophy is to start the modeling process by setting all data, model, and estimation specifications. This is done by specifying a named list of controls and passing it to the `set_controls()` function. The function checks the specifications and returns an `fHMM_controls` object which stores all specifications and thereby provides required information for other {fHMM} functionalities.
+The {fHMM} philosophy is to start the modeling process by setting all data, model, and estimation specifications. This is done by defining a named list of controls and passing it to the `set_controls()` function. The function checks the specifications and returns an `fHMM_controls` object which stores all specifications and thereby provides required information for other {fHMM} functionalities.
 
 ## Example specifications
 
-For demonstration, we look at some example specifications using data from the Deutscher Aktienindex DAX^[The `download_data()` function is explained in the vignette on data management.]:
+For demonstration, we list example specifications using data from the Deutscher Aktienindex DAX^[The `download_data()` function is explained in the vignette on data management.]:
 
 ```{r, cache = TRUE}
-download_data(symbol = "^GDAXI", file = "dax.csv", from = "2010-01-01")
+download_data(symbol = "^GDAXI", file = "dax.csv")
 ```
 
 ### HMMs for empirical data
@@ -57,7 +57,7 @@ set_controls(controls)
 
 ### Simulated HMM data
 
-The following specifies a 2-state HMM with state-dependent Gamma distributions, where the expectation values for state 1 and 2 are fixed to -1 and 1, respectively. The model will be fitted to 500 data points (`horizon = 500`), which will be simulated from this model specification.
+The following specifies a 2-state HMM with state-dependent Gamma distributions, where the expectation values for state 1 and 2 are fixed to -1 and 1, respectively. The model will be fitted to 500 data points (`horizon = 500`), that are going to be simulated from this model specification.
 
 ```{r, set controls sim hmm}
 controls = list(
@@ -76,7 +76,7 @@ Specifying hierarchical HMMs is analogously, except that new parameters can be s
 controls = list(
   hierarchy = TRUE,
   horizon   = c(100, 10),
-  sdds      = c("t(df = 1)", "t(df = 1)"),
+  sdds      = c("t(df = 1)", "t(df = Inf)"),
   period    = "m"
 )
 set_controls(controls)
