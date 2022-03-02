@@ -16,7 +16,7 @@
 %% need no \usepackage{Sweave}
 \SweaveOpts{engine=R, eps=FALSE, keep.source = TRUE}
 <<preliminaries, echo=FALSE, results=hide>>=
-options(prompt = "> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
+options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
 library("fHMM")
 @
 
@@ -39,14 +39,14 @@ library("fHMM")
 
 %% - \Abstract{} almost as usual
 \Abstract{
-\pkg{fHMM} is an \proglang{R} package for modelling financial time series data using hidden Markov models.
+\pkg{fHMM} is an \proglang{R} package for modeling financial time series data using hidden Markov models.
 }
 
 %% - \Keywords{} with LaTeX markup, at least one required
 %% - \Plainkeywords{} without LaTeX markup (if necessary)
 %% - Should be comma-separated and in sentence case.
-\Keywords{decoding market behavior, hidden Markov models, state-space models, temporal resolution, time series modeling, \proglang{R}}
-\Plainkeywords{decoding market behavior, hidden Markov models, state-space models, temporal resolution, time series modeling, R}
+\Keywords{decoding market behavior, hidden Markov models, time series modeling, \proglang{R}}
+\Plainkeywords{decoding market behavior, hidden Markov models, time series modeling, R}
 
 %% - \Address{} of at least one author
 %% - May contain multiple affiliations for each author
@@ -91,8 +91,6 @@ Hierarchical HMMs.
 
 Outline of the paper.
 
-
-
 %% -- Manuscript ---------------------------------------------------------------
 
 %% - In principle "as usual" again.
@@ -107,13 +105,6 @@ Outline of the paper.
 %%   (\verb|[t!]|), centered (\verb|\centering|), with a caption below the table,
 %%   column headers and captions in sentence style, and if possible avoiding
 %%   vertical lines.
-
-\section{The method} \label{sec:method}
-
-Content ...
-
-%% -- Illustrations ------------------------------------------------------------
-
 %% - Virtually all JSS manuscripts list source code along with the generated
 %%   output. The style files provide dedicated environments for this.
 %% - In R, the environments {Sinput} and {Soutput} - as produced by Sweave() or
@@ -130,13 +121,39 @@ Content ...
 %%   \code{y = a + b * x} and \emph{not} \code{y=a+b*x}.
 %% - JSS prefers when the second line of code is indented by two spaces.
 
-\section{Illustrations} \label{sec:illustrations}
+\section{Model definition} \label{sec:model_definition}
+
+Content ...
+
+\section{Controls} \label{sec:controls}
+
+Content ...
 
 %
 <<some estimated model>>=
 x = 1 
 @
 %
+
+\section{Data management} \label{sec:data_management}
+
+Content ...
+
+\section{Model estimation} \label{sec:model_estimation}
+
+Content ...
+
+\section{State decoding and prediciton} \label{sec:state_decoding_and_prediction}
+
+Content ...
+
+\section{Model checking} \label{sec:model_checking}
+
+Content ...
+
+\section{Model selection} \label{sec:model_selection}
+
+Content ...
 
 
 %% -- Summary/conclusions/discussion -------------------------------------------

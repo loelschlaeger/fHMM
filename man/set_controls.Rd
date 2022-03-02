@@ -2,7 +2,7 @@
 % Please edit documentation in R/set_controls.R
 \name{set_controls}
 \alias{set_controls}
-\title{Set and check controls for the fHMM package.}
+\title{Set and check controls}
 \usage{
 set_controls(controls = NULL)
 }
@@ -102,7 +102,7 @@ A positive numeric value, passed on to \code{\link[stats]{nlm}}.
 An object of class \code{fHMM_controls}.
 }
 \description{
-This function sets and checks the specification of controls for the fHMM
+This function sets and checks the specification of controls for the {fHMM}
 package.
 }
 \details{
@@ -123,4 +123,5 @@ controls <- list(
   hierarchy = TRUE
 )
 set_controls(controls)
+
 }

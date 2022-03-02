@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_data.R
 \name{simulate_data}
 \alias{simulate_data}
-\title{Simulate data for the fHMM package}
+\title{Simulate data}
 \usage{
 simulate_data(controls, true_parameters, seed = NULL)
 }
@@ -23,6 +23,6 @@ A list containing the following elements:
 }
 }
 \description{
-This function simulates data for the fHMM package.
+This function simulates data for the {fHMM} package.
 }
 \keyword{internal}

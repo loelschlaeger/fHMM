@@ -1,10 +1,10 @@
-#' Setting and checking parameters for the fHMM package
+#' Setting and checking parameters
 #'
 #' @description
-#' This function sets and checks parameters for the fHMM package.
+#' This function sets and checks parameters for the {fHMM} package.
 #'
 #' @details
-#' See the vignettes for more information on how to specify parameters.
+#' See the vignette on the model definition for more details.
 #'
 #' @param controls
 #' An object of class \code{fHMM_controls}.
@@ -18,17 +18,17 @@
 #' A vector of degrees of freedom of length \code{controls$states[1]}.
 #' Only relevant if sdd is a t-distribution.
 #' @param Gammas_star
-#' A list of length \code{controls$states[1]} of tpm's. Each tpm must be of
-#' dimension \code{controls$states[2]}.
+#' A list of length \code{controls$states[1]} of (fine-scale) tpm's. Each tpm 
+#' must be of dimension \code{controls$states[2]}.
 #' @param mus_star
-#' A list of length \code{controls$states[1]} of vectors of expectations.
-#' Each vector must be of length \code{controls$states[2]}.
+#' A list of length \code{controls$states[1]} of vectors of (fine-scale)
+#' expectations. Each vector must be of length \code{controls$states[2]}.
 #' @param sigmas_star
 #' A list of length \code{controls$states[1]} of vectors of standard deviations.
 #' Each vector must be of length \code{controls$states[2]}.
 #' @param dfs_star
-#' A list of length \code{controls$states[1]} of vectors of degrees of freedom.
-#' Each vector must be of length \code{controls$states[2]}.
+#' A list of length \code{controls$states[1]} of vectors of (fine-scale) degrees 
+#' of freedom. Each vector must be of length \code{controls$states[2]}.
 #' Only relevant if sdd is a t-distribution.
 #' @param seed
 #' Set a seed for the sampling of parameters.

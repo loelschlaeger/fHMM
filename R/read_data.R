@@ -1,7 +1,7 @@
-#' Read data for the fHMM package
+#' Read data
 #'
 #' @description
-#' This function reads financial data for the fHMM package.
+#' This function reads financial data for the {fHMM} package.
 #'
 #' @inheritParams prepare_data
 #' @return

@@ -1,9 +1,12 @@
-#' Set and check controls for the fHMM package.
+#' Set and check controls
+#' 
 #' @description
-#' This function sets and checks the specification of controls for the fHMM
+#' This function sets and checks the specification of controls for the {fHMM}
 #' package.
+#' 
 #' @details
 #' See the vignettes for more information on how to specify \code{controls}.
+#' 
 #' @param controls
 #' A list of controls.
 #' Either none, all, or selected parameters can be specified.
@@ -95,8 +98,10 @@
 #'     A positive numeric value, passed on to \code{\link[stats]{nlm}}.
 #'   }
 #' }
+#' 
 #' @return
 #' An object of class \code{fHMM_controls}.
+#' 
 #' @examples
 #' ### HMM controls
 #' controls <- list(
@@ -112,6 +117,7 @@
 #'   hierarchy = TRUE
 #' )
 #' set_controls(controls)
+#' 
 #' @export
 #' @importFrom utils read.csv
 

@@ -9,11 +9,14 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "80%",
+  fig.width = 16,
+  fig.height = 9,
+  fig.align = "center"
 )
 ```
 
-# fHMM <img src="man/figures/sticker.png" align="right" alt="" width="120" />
+# fHMM <img src="man/figures/logo.svg" align="right" alt="" width="120" />
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/loelschlaeger/fHMM/workflows/R-CMD-check/badge.svg)](https://github.com/loelschlaeger/fHMM/actions)
@@ -22,15 +25,19 @@ knitr::opts_chunk$set(
 [![codecov](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg?token=OYU22T74DV)](https://codecov.io/gh/loelschlaeger/fHMM)
 <!-- badges: end -->
 
-With fHMM you can detect bearish and bullish markets in financial time series by applying *Hidden Markov Models (HMMs)*. The functionality and the model [is documented in detail here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a first application to the German stock index [DAX](https://en.wikipedia.org/wiki/DAX).
+With {fHMM} you can detect bearish and bullish markets in financial time series by applying *Hidden Markov Models (HMMs)*. The functionality and the model [is documented in detail here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a first application to the German stock index [DAX](https://en.wikipedia.org/wiki/DAX).
 
 ## Installation
 
-You can install the released version of fHMM from [CRAN](https://CRAN.R-project.org) with:
+You can install the released version of {fHMM} from [CRAN](https://CRAN.R-project.org) with:
 
 ```{r, eval = FALSE}
 install.packages("fHMM")
 ```
+
+## Contributing
+
+We welcome contributions! Please submit [bug reports](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=bug&template=bug.md) and [feature requests](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=future&template=suggestion.md) as issues and extensions as pull request from a branch created from main.
 
 ## Example: Fitting an HMM to the DAX
 
@@ -38,7 +45,7 @@ install.packages("fHMM")
 library(fHMM)
 ```
 
-We fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2010 to 2020. The states can be interpreted as proxies for bearish and bullish markets.
+We fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2020. The states can be interpreted as proxies for bearish and bullish markets.
 
 The package has a build-in function to download the data from [Yahoo Finance](https://finance.yahoo.com/):
 
@@ -57,7 +64,7 @@ controls <- list(
                 date_column = "Date",
                 data_column = "Close",
                 logreturns  = TRUE,
-                from        = "2010-01-01",
+                from        = "2000-01-01",
                 to          = "2020-12-31")
 )
 controls <- set_controls(controls)
@@ -70,7 +77,7 @@ data <- prepare_data(controls)
 summary(data)
 ```
 
-We now fit the model and subsequently decode the hidden states:
+We fit the model and subsequently decode the hidden states:
 
 ```{r fit}
 set.seed(1)
@@ -82,8 +89,9 @@ summary(model)
 Having estimated the model, we can visualize the state-dependent distributions and the decoded time series to interpret bearish and bullish markets:
 
 ```{r plots}
-plot(model, plot_type = c("sdds","ts"))
+events <- fHMM_events(
+  list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
+       labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers", "First COVID-19 case Germany"))
+)
+plot(model, plot_type = c("sdds","ts"), events = events)
 ```
-
-
-

@@ -1,7 +1,7 @@
 #' Defining state-dependent distributions
 #'
 #' @description
-#' This function defines state-dependent distributions for the fHMM package.
+#' This function defines state-dependent distributions for the {fHMM} package.
 #'
 #' @param sdds
 #' A character or a character vector of length two that can be specified for

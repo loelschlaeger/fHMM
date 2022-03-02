@@ -19,7 +19,7 @@ A list of length \code{length(sdds)}. Each element is a list, containing
 Unknown parameters are set to \code{NULL}.
 }
 \description{
-This function defines state-dependent distributions for the fHMM package.
+This function defines state-dependent distributions for the {fHMM} package.
 }
 \examples{
 sdds <- c("t(sigma = 0.1, df = Inf)", "gamma")

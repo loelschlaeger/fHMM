@@ -1,5 +1,10 @@
 # fHMM 1.0.0
 
+* Enhanced the package by S3 classes.
+* Added more `controls` specifications.
+* Included a prediction function.
+* Improved documentations.
+
 # fHMM 0.3.0
 
 * Added vignettes.
