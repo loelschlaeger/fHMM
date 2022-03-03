@@ -82,7 +82,7 @@ downloads the 21st century daily data of the DAX into the current working direct
 Historical events can be highlighted by specifying a named list `events` with elements `dates` (a vector of dates) and `labels` (a vector of labels for the events) and passing it to the plot method, for example:
 
 ```{r, events}
-events <- fHMM_events(
+events <- fHMM:::fHMM_events(
   list(
     dates = c("2001-09-11","2008-09-15","2020-01-27"),
     labels = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")

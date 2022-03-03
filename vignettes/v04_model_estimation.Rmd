@@ -104,11 +104,7 @@ The `data` object can be directly passed to the `fit_model()` function that nume
 model <- fit_model(data, seed = 1, verbose = FALSE)
 ```
 
-Calling the `summary()` method provides an overview of the model fit:^[Calling `coef(model)` returns a data frame of the estimated model coefficients.]
-
-```{r summary fit}
-summary(model)
-```
+Calling the `summary(model)` method provides an overview of the model fit, whereas `coef(model)` returns a data frame of the estimated model coefficients.
 
 The estimated state-dependent distributions can be plotted as follows:
 

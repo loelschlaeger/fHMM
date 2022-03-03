@@ -2,7 +2,7 @@
 % Please edit documentation in R/fHMM_parameters.R
 \name{fHMM_parameters}
 \alias{fHMM_parameters}
-\title{Setting and checking parameters}
+\title{Setting and checking model parameters}
 \usage{
 fHMM_parameters(
   controls,
@@ -55,7 +55,7 @@ scaling.}
 An object of class \code{fHMM_parameters}.
 }
 \description{
-This function sets and checks parameters for the {fHMM} package.
+This function sets and checks model parameters for the {fHMM} package.
 }
 \details{
 See the vignette on the model definition for more details.

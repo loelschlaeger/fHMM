@@ -8,7 +8,7 @@ devtools::load_all()
 download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date(),file = tempfile())
 
 ### simulated HMM -----------------------------------------------------------
-seed = 1
+seed <- 1
 controls = list(
   states  = 2,
   sdds    = "gamma",
@@ -16,10 +16,10 @@ controls = list(
   fit     = list("runs" = 100)
 )
 controls %<>% set_controls
-data = prepare_data(controls, seed = seed)
+data <- prepare_data(controls, seed = seed)
 data %>% summary
 data %>% plot
-model = fit_model(data, ncluster = 7, seed = seed) %>%
+model <- fit_model(data, ncluster = 7, seed = seed) %>%
   decode_states %>%
   compute_residuals
 summary(model)
@@ -32,7 +32,7 @@ model %>% plot("ts")
 model %>% predict(ahead = 10)
 
 ### empirical HMM -----------------------------------------------------------
-seed = 1
+seed <- 1
 controls = list(
   states = 3,
   sdds   = "t",
@@ -44,13 +44,13 @@ controls = list(
   fit    = list("runs" = 14)
 )
 controls %<>% set_controls
-data = prepare_data(controls)
+data <- prepare_data(controls)
 summary(data)
-events = list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
-              labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers",
-                         "First COVID-19 case Germany")) %>% fHMM_events
+events <- list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
+               labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers",
+                          "First COVID-19 case Germany")) %>% fHMM_events
 plot(data, events)
-model = fit_model(data, ncluster = 7, seed = seed) %>%
+model <- fit_model(data, ncluster = 7, seed = seed) %>%
   decode_states %>%
   compute_residuals
 summary(model)
@@ -62,8 +62,8 @@ model %>% plot("ts", events = events)
 model %>% predict(ahead = 10)
 
 ### simulated HHMM ----------------------------------------------------------
-seed = 1
-controls = list(
+seed <- 1
+controls <- list(
   hierarchy = TRUE,
   states    = c(2,2),
   sdds      = c("t(sigma = 0.1, df = Inf)", 
@@ -72,10 +72,10 @@ controls = list(
   fit       = list("runs" = 7)
 )
 controls %<>% set_controls
-data = prepare_data(controls, seed = seed)
+data <- prepare_data(controls, seed = seed)
 summary(data)
 plot(data)
-model = fit_model(data, ncluster = 7) %>% 
+model <- fit_model(data, ncluster = 7) %>% 
   decode_states %>%
   compute_residuals 
 summary(model)
@@ -88,25 +88,22 @@ model %>% plot("ts")
 model %>% predict(ahead = 10)
 
 ### empirical HHMM ----------------------------------------------------------
-seed = 1
-controls = list(
+seed <- 1
+controls <- list(
   hierarchy = TRUE,
-  horizon   = c(100, NA),
-  sdds      = c("t(df = 1, mu = 0)", "t(df = 1, mu = 0)"),
+  states    = c(2,2),
+  sdds      = c("t(df = 1)", "t(df = 1)"),
   period    = "m",
-  data      = list(file = c("inst/extdata/dax.csv","inst/extdata/vw.csv"),
-                   from = "2015-01-01",
+  data      = list(file = c("inst/extdata/dax.csv", "inst/extdata/vw.csv"),
+                   from = "2010-01-01",
                    to = "2020-01-01",
                    logreturns = c(TRUE,TRUE)),
-  fit       = list("runs" = 7)
+  fit       = list("runs" = 100)
 )
-controls = set_controls(controls)
-data = prepare_data(controls)
-events = list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
-              labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers",
-                         "First COVID-19 case Germany")) %>% fHMM_events
-plot(data, events = events)
-model = fit_model(data, ncluster = 7, seed = seed) %>% 
+controls <- set_controls(controls)
+data <- prepare_data(controls)
+plot(data)
+model <- fit_model(data, ncluster = 7, seed = seed) %>% 
   decode_states %>%
   compute_residuals
 summary(model)

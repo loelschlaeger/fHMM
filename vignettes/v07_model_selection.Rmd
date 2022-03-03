@@ -26,9 +26,11 @@ knitr::opts_chunk$set(
 library(fHMM)
 ```
 
-## Model selection using information criteria
+Model selection involves the choice of a family for the state-dependent distribution and the selection of the number of states. This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the {fHMM} `r utils::packageVersion("fHMM")` package.] introduces model selection in {fHMM}.
 
-Model selection involves the choice of a family for the state-dependent distribution and the selection of the number of states. This can be achieved using information criteria, such as the Akaike information criterion (AIC) or the Bayesian information criterion (BIC), both of which aim at finding a compromise between model fit and model complexity.
+## Information criteria
+
+Common model selection tools are information criteria, such as the Akaike information criterion (AIC) or the Bayesian information criterion (BIC), both of which aim at finding a compromise between model fit and model complexity.
 
 The AIC is defined as
 \begin{align*}

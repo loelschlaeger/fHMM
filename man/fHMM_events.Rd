@@ -27,6 +27,4 @@ events <- list(
     "First COVID-19 case Germany"
   )
 )
-fHMM_events(events)
 }
-\keyword{constructor}
