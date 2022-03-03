@@ -15,12 +15,10 @@
 #' }
 #' Unknown parameters are set to \code{NULL}.
 #'
-#' @keywords
-#' constructor
-#'
 #' @examples
 #' sdds <- c("t(sigma = 0.1, df = Inf)", "gamma")
 #' fHMM:::fHMM_sdds(sdds)
+
 fHMM_sdds <- function(sdds) {
   out <- list()
   for (sdd in sdds) {

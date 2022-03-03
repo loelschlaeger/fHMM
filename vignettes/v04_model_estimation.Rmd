@@ -101,7 +101,7 @@ data <- prepare_data(controls)
 The `data` object can be passed to the `fit_model()` function that numerically maximizes the model's (log-) likelihood function `runs = 100` times.^[For convenience, the `controls` object is saved in `data`.] This task can be parallelized by setting the `ncluster` argument.
 
 ```{r fit, cache=TRUE}
-model <- fit_model(data, ncluster = 7, seed = 1, verbose = FALSE)
+model <- fit_model(data, seed = 1, verbose = FALSE)
 ```
 
 Calling the `summary()` method provides an overview of the model fit:^[Calling `coef(model)` only returns a data frame of the estimated model coefficients.]

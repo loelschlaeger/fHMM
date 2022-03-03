@@ -1,7 +1,7 @@
-#' Setting and checking parameters
+#' Setting and checking model parameters
 #'
 #' @description
-#' This function sets and checks parameters for the {fHMM} package.
+#' This function sets and checks model parameters for the {fHMM} package.
 #'
 #' @details
 #' See the vignette on the model definition for more details.
@@ -47,8 +47,6 @@
 #' @examples
 #' controls <- set_controls()
 #' fHMM_parameters(controls)
-#' @keywords
-#' constructor
 #'
 #' @importFrom stats runif qunif runif
 

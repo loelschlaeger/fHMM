@@ -63,5 +63,5 @@ See the vignette on the model definition for more details.
 \examples{
 controls <- set_controls()
 fHMM_parameters(controls)
+
 }
-\keyword{constructor}

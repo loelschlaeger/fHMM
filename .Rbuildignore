@@ -14,3 +14,5 @@ jss/
 ^README\.Rmd$
 ^codecov\.yml$
 docs/
+vignettes/figs/
+^vignettes/.*cache
