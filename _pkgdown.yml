@@ -40,6 +40,8 @@ reference:
   - compare_models
   - compute_residuals
   - plot.fHMM_model
+  - fHMM_colors
+  - fHMM_events
   - predict.fHMM_model
 - title: Models
   desc: The following pre-computed models are included in the package.

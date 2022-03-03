@@ -21,7 +21,6 @@
 #'     "First COVID-19 case Germany"
 #'   )
 #' )
-#' fHMM:::fHMM_events(events)
 
 fHMM_events <- function(events) {
   if (class(events) == "fHMM_events") {

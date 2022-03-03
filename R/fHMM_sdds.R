@@ -18,6 +18,9 @@
 #' @examples
 #' sdds <- c("t(sigma = 0.1, df = Inf)", "gamma")
 #' fHMM:::fHMM_sdds(sdds)
+#' 
+#' @keywords 
+#' internal
 
 fHMM_sdds <- function(sdds) {
   out <- list()
