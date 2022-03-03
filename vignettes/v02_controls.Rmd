@@ -32,7 +32,7 @@ The {fHMM} philosophy is to start the modeling process by setting all data, mode
 
 ## Example specifications
 
-For demonstration, we list example specifications using data from the Deutscher Aktienindex DAX^[The `download_data()` function is explained in the vignette on data management.]:
+For demonstration, we list example specifications using data from the Deutscher Aktienindex DAX^[The `download_data()` function is explained in the vignette on data management.] [@jan92]:
 
 ```{r, cache = TRUE}
 download_data(symbol = "^GDAXI", file = "dax.csv")

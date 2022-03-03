@@ -28,7 +28,7 @@ library(fHMM)
 
 This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the {fHMM} `r utils::packageVersion("fHMM")` package.] introduces the Viterbi algorithm for state decoding. The decoded state sequence in combination with the estimated model parameters can be used for forecasting.
 
-## State decoding usig the Viterbi algorithm
+## State decoding using the Viterbi algorithm
 
 For financial markets, it is of special interest to infer the underlying (hidden) states in order to gain insight about the actual market situation. Decoding a full time series $S_1, \ldots, S_T$ is called *global decoding*. Hereby, we aim to find the most likely trajectory of hidden states under the estimated model. 
 Global decoding can be accomplished by using the so-called Viterbi algorithm which is a recursive scheme enabling to find the global maximum without being confronted with huge computational costs. To this end, we follow @zuc16 and define
@@ -40,11 +40,11 @@ $$i_T = \operatorname*{argmax}_{i = 1, \ldots, N} \zeta_{Ti}$$ and for the follo
 $$i_t = \operatorname*{argmax}_{i = 1, \ldots, N} (\zeta_{ti} \gamma_{i, i_{t+1}}).$$
 Transferring the state decoding to HHMMs is straightforward: at first the coarse-scale state process must be decoded. Afterwards, by using this information the fine-scale state process can be decoded, see @ada19.
 
-## Application
+## The `decode_states()` function
 
 We revisit the DAX application of the vignette on model estimation, where we fitted the following model:
 
-```{r data preparation, cache=TRUE}
+```{r dax model, cache=TRUE}
 controls <- list(
   states = 3,
   sdds   = "t",
@@ -59,6 +59,33 @@ controls <- list(
 controls <- set_controls(controls)
 data <- prepare_data(controls)
 model <- fit_model(data, seed = 1, verbose = FALSE)
+```
+
+The underlying states can be decoded via the `decode_states()` function:
+
+```{r, decode states}
+model <- decode_states(model)
+```
+
+We now can visualize the decoded time series:
+
+```{r, decoded ts}
+plot(model)
+```
+
+Mind that the model is invariant to permutations of the state labels. Therefore, {fHMM} provides the option to switch labels after decoding via the `reorder_states()` function. Reordering the states can be useful for a comparison to true parameters or the interpretation of states. In this particular case, we may want to reverse the state order such that the green state 1 corresponds to bullish and state 3 to bearish markets.
+
+```{r, reorder}
+model <- reorder_states(model, state_order = 3:1)
+plot(model)
+```
+
+## Prediction
+
+Having decoded the underlying states, it is possible to compute the state probabilities of next observations. Based on these probabilities and in combination with the estimated state-dependent distributions, next observations can be predicted, compare @zuc16:
+
+```{r, predict}
+predict(model, ahead = 10)
 ```
 
 ## References

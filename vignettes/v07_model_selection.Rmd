@@ -1,7 +1,5 @@
 ---
 title: "Model selection"
-author: "Lennart Oelschläger, Timo Adam, and Rouven Michels"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Model selection}
@@ -19,8 +17,13 @@ Purpose: definition of model selection criteria, problems in using them, using t
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.dim = c(10,6),
+  out.width = "80%",
+  fig.align = 'center',
+  fig.path = 'figs/'
 )
+library(fHMM)
 ```
 
 ## Model selection using information criteria
@@ -33,14 +36,58 @@ The AIC is defined as
 \end{align*}
 where $p$ denotes the number of parameters, while the BIC is defined as
 \begin{align*}
-\text{BIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + \log(T T^*) p,
+\text{BIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + \log(T) p,
 \end{align*}
-where $T T^*$ is the number of observations.
+where $T$ is the number of observations.
 
 ## Challenges associated with model selection
 
 In practice, however, information criteria often favor overly complex models. Real data typically exhibit more structure than can actually be captured by the model. This can be the case if the true state-dependent distributions are too complex to be fully modeled by some (rather simple) parametric distribution, or if certain temporal patterns are neglected in the model formulation. Additional states may be able to capture this structure, which can lead to an increased goodness of fit that outweighs the higher model complexity. However, as models with too many states are difficult to interpret and are therefore often not desired, information criteria should be considered as a rough guidance rather than as a deterministic decision rule. For an in-depth discussion of pitfalls, practical challenges, and pragmatic solutions regarding model selection, see @poh17.
 
-## Application
+## The `compare_models()` function
+
+The {fHMM} package provides a convenient tool for comparing different models via the `compare_models()` function. For illustration, we fit two competing models to the DAX data, one with 2 states and normal state-dependent distributions, and the other with 3 states and t-distributions.
+
+```{r dax model 1, cache=TRUE}
+controls <- list(
+  states = 2,
+  sdds   = "t(df = Inf)",
+  data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
+                date_column = "Date",
+                data_column = "Close",
+                from        = "2000-01-01",
+                to          = "2022-01-01",
+                logreturns  = TRUE),
+  fit    = list("runs" = 100)
+)
+controls <- set_controls(controls)
+data <- prepare_data(controls)
+model1 <- fit_model(data, seed = 1, verbose = FALSE)
+```
+
+```{r dax model 2, cache=TRUE}
+controls <- list(
+  states = 3,
+  sdds   = "t",
+  data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
+                date_column = "Date",
+                data_column = "Close",
+                from        = "2000-01-01",
+                to          = "2022-01-01",
+                logreturns  = TRUE),
+  fit    = list("runs" = 100)
+)
+controls <- set_controls(controls)
+data <- prepare_data(controls)
+model2 <- fit_model(data, seed = 1, verbose = FALSE)
+```
+
+The models (aribtrarly many) can be directly passed to the `compare_models()` function that returns an overview of the model selection criteria:
+
+```{r compare}
+compare_models(model1, model2)
+```
+
+Here, the more complex `model2` is clearly preferred.
 
 ## References

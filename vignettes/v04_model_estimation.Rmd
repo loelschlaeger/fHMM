@@ -98,19 +98,25 @@ controls <- set_controls(controls)
 data <- prepare_data(controls)
 ```
 
-The `data` object can be passed to the `fit_model()` function that numerically maximizes the model's (log-) likelihood function `runs = 100` times.^[For convenience, the `controls` object is saved in `data`.] This task can be parallelized by setting the `ncluster` argument.
+The `data` object can be directly passed to the `fit_model()` function that numerically maximizes the model's (log-) likelihood function `runs = 100` times.^[For convenience, the `controls` object is saved in `data`.] This task can be parallelized by setting the `ncluster` argument.^[If you avoid any problems with clustering on your OS, use `ncluster = 1` which avoids any dependency on packages that provide clustering.]
 
 ```{r fit, cache=TRUE}
 model <- fit_model(data, seed = 1, verbose = FALSE)
 ```
 
-Calling the `summary()` method provides an overview of the model fit:^[Calling `coef(model)` only returns a data frame of the estimated model coefficients.]
+Calling the `summary()` method provides an overview of the model fit:^[Calling `coef(model)` returns a data frame of the estimated model coefficients.]
 
 ```{r summary fit}
 summary(model)
 ```
 
-As mentioned above, the HMM likelihood function is prone to local optima. This effect can be visualized by plotting the log-likelihood value in the different optimization runs:
+The estimated state-dependent distributions can be plotted as follows:
+
+```{r plot sdds}
+plot(model, plot_type = "sdds")
+```
+
+As mentioned above, the HMM likelihood function is prone to local optima. This effect can be visualized by plotting the log-likelihood value in the different optimization runs, where the best run is marked in red:
 
 ```{r plot lls}
 plot(model, plot_type = "ll")
