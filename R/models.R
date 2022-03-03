@@ -33,10 +33,10 @@
 #' DAX/VW HHMM
 #'
 #' @description
-#' A pre-computed HHMM with monthly averaged closing prices of the 
+#' A pre-computed HHMM with monthly averaged closing prices of the
 #' DAX from 2000 to 2021 on the coarse scale, VW stock data on the fine scale,
-#' two hidden fine-scale and coarse-scale states, respectively, and 
-#' state-dependent t-distributions with degrees of freedom fixed to 1 for 
+#' two hidden fine-scale and coarse-scale states, respectively, and
+#' state-dependent t-distributions with degrees of freedom fixed to 1 for
 #' demonstration purpose.
 #'
 #' @usage data(dax_vw_model)
