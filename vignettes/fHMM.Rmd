@@ -45,7 +45,7 @@ The tasks *data preparation*, *model estimation*, and *model evaluation* as well
 
 - The vignette [*Model estimation*](http://loelschlaeger.de/fHMM/articles/v04_model_estimation.html) defines the likelihood function and explains the task of its numerical maximization via the `fit_model()` function.
 
-- The vignette [*State decoding and prediction*](http://loelschlaeger.de/fHMM/articles/v05_state_decoding_prediction.html) introduces the Viterbi algorithm that is used for decoding the most likely underlying state sequence and forecasting. 
+- The vignette [*State decoding and prediction*](http://loelschlaeger.de/fHMM/articles/v05_state_decoding_and_prediction.html) introduces the Viterbi algorithm that is used for decoding the most likely underlying state sequence and forecasting. 
 
 - The vignette [*Model checking*](http://loelschlaeger.de/fHMM/articles/v06_model_checking.html) explains the task of checking a fitted model via computing (pseudo-) residuals, which is implemented in the `compute_residuals()` function.
 
