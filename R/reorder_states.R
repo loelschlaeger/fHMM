@@ -1,8 +1,8 @@
 #' Reordering of estimated states
 #'
 #' @description
-#' This function reorders the estimated states, which can be useful for a comparison
-#' to true parameters or the interpretation of states.
+#' This function reorders the estimated states, which can be useful for a 
+#' comparison to true parameters or the interpretation of states.
 #'
 #' @param x
 #' An object of class \code{fHMM_model}.
