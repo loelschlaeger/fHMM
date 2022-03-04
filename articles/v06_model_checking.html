@@ -87,9 +87,7 @@
 <script src="v06_model_checking_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <main id="main"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Model checking</h1>
-                        <h4 data-toc-skip class="author">Lennart Oelschläger, Timo Adam, and Rouven Michels</h4>
             
-            <h4 data-toc-skip class="date">2022-03-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/loelschlaeger/fHMM/blob/HEAD/vignettes/v06_model_checking.Rmd" class="external-link"><code>vignettes/v06_model_checking.Rmd</code></a></small>
       <div class="d-none name"><code>v06_model_checking.Rmd</code></div>
@@ -101,28 +99,58 @@
 Assignee: Timo (theory part), Lennart (application part)
 Purpose: definition and calculation of pseudo-residuals, application in fHMM
 -->
+<p>This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;This vignette was build using R 4.1.2 with the {fHMM} 1.0.0 package.&lt;/p&gt;"><sup>1</sup></a> discusss model checking in {fHMM}.</p>
 <div class="section level2">
 <h2 id="model-checking-using-pseudo-residuals">Model checking using pseudo-residuals<a class="anchor" aria-label="anchor" href="#model-checking-using-pseudo-residuals"></a>
 </h2>
-<p>Analyzing pseudo-residuals allows us to check whether the fitted model describes the data well. Since the observations are explained by different distributions (depending on the active state), this cannot be done by analyzing standard residuals. To transform all observations on a common scale, we proceed as follows: If <span class="math inline">\(X_t\)</span> has the invertible distribution function <span class="math inline">\(F_{X_t}\)</span>, then <span class="math display">\[\begin{align*}
+<p>Analyzing pseudo-residuals allows us to check whether the fitted model describes the data well. Since the observations are explained by different distributions (depending on the active state), this cannot be done by analyzing standard residuals. To transform all observations on a common scale, we proceed as follows: If <span class="math inline">\(X_t\)</span> has the invertible distribution function <span class="math inline">\(F_{X_t}\)</span>, then</p>
+<p><span class="math display">\[\begin{align*}
 Z_t=\Phi^{-1}(F_{X_t} (X_t))
-\end{align*}\]</span> is standard normally distributed, where <span class="math inline">\(\Phi\)</span> denotes the cumulative distribution function of the standard normal distribution. The observations, <span class="math inline">\((X_t)_t\)</span>, are modeled well if the pseudo-residuals, <span class="math inline">\((Z_t)_t\)</span>, are approximately standard normally distributed, which can be visually assessed using quantile-quantile plots or further investigated using statistical tests such as the Jarque-Bera test <span class="citation">(Zucchini, MacDonald, and Langrock <a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span>.</p>
+\end{align*}\]</span></p>
+<p>is standard normally distributed, where <span class="math inline">\(\Phi\)</span> denotes the cumulative distribution function of the standard normal distribution. The observations, <span class="math inline">\((X_t)_t\)</span>, are modeled well if the so-called pseudo-residuals, <span class="math inline">\((Z_t)_t\)</span>, are approximately standard normally distributed, which can be visually assessed using quantile-quantile plots or further investigated using statistical tests such as the Jarque-Bera test <span class="citation">(Zucchini, MacDonald, and Langrock <a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span>.</p>
 <p>For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm. Subsequently, we assign each coarse-scale observation its distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.</p>
 </div>
 <div class="section level2">
-<h2 id="application">Application<a class="anchor" aria-label="anchor" href="#application"></a>
+<h2 id="implementation-in-fhmm">Implementation in {fHMM}<a class="anchor" aria-label="anchor" href="#implementation-in-fhmm"></a>
 </h2>
-<p>Show how to use JB-test for pr.</p>
+<p>In {fHMM}, pseudo-residuals can be computed via the <code><a href="../reference/compute_residuals.html">compute_residuals()</a></code> function, provided that the states have been decoded beforehand.</p>
+<p>We revisit the DAX example:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dax_model</span><span class="op">)</span></code></pre></div>
+<p>The following line computes the residuals and saves them into the <code>model</code> object:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dax_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_residuals.html">compute_residuals</a></span><span class="op">(</span><span class="va">dax_model</span><span class="op">)</span>
+<span class="co">#&gt; Computed residuals</span></code></pre></div>
+<p>The residuals can be visualized as follows:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dax_model</span>, plot_type <span class="op">=</span> <span class="st">"pr"</span><span class="op">)</span></code></pre></div>
+<p><img src="v06_model_checking_files/figure-html/plot%20res-1.png" width="80%" style="display: block; margin: auto;"></p>
+<p>For additional normality tests, the residuals can be extracted from the <code>model</code> object. The following lines exemplary perform a <a href="https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test" class="external-link">Jarque–Bera test</a> <span class="citation">(Jarque and Bera <a href="#ref-jar87" role="doc-biblioref">1987</a>)</span>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">dax_model</span><span class="op">$</span><span class="va">residuals</span>
+<span class="fu">tseries</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/jarque.bera.test.html" class="external-link">jarque.bera.test</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span>
+<span class="co">#&gt; Registered S3 method overwritten by 'quantmod':</span>
+<span class="co">#&gt;   method            from</span>
+<span class="co">#&gt;   as.zoo.data.frame zoo</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Jarque Bera Test</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; data:  res</span>
+<span class="co">#&gt; X-squared = 2.6558, df = 2, p-value = 0.265</span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references">
+<div id="ref-jar87">
+<p>Jarque, C. M., and A. K. Bera. 1987. “A Test for Normality of Observations and Regression Residuals.” <em>International Statistical Review / Revue Internationale de Statistique</em> 55: 163–72. <a href="https://doi.org/10.2307/1403192" class="external-link">https://doi.org/10.2307/1403192</a>.</p>
+</div>
 <div id="ref-zuc16">
 <p>Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. “Hidden Markov Models for Time Series: An Introduction Using R, 2nd Edition.” <em>Chapman and Hall/CRC</em>.</p>
 </div>
 </div>
 </div>
+
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>

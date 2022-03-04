@@ -126,8 +126,6 @@ Purpose: handling of empirical and simulated financial data in fHMM
 <span class="op">)</span>
 <span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_controls.html">set_controls</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span>
 <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data.html">prepare_data</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
-<span class="co">#&gt; [1] "fHMM_data"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
 <span class="co">#&gt; Summary of fHMM empirical data</span>
 <span class="co">#&gt; * number of observations: 8778 </span>
@@ -153,7 +151,7 @@ Purpose: handling of empirical and simulated financial data in fHMM
 <span class="co">#&gt; Download successful.</span>
 <span class="co">#&gt; * symbol: ^GDAXI </span>
 <span class="co">#&gt; * from: 2000-01-03 </span>
-<span class="co">#&gt; * to: 2022-03-01 </span>
+<span class="co">#&gt; * to: 2022-03-04 </span>
 <span class="co">#&gt; * path: /Users/runner/work/fHMM/fHMM/vignettes/^GDAXI.csv</span></code></pre></div>
 <p>downloads the 21st century daily data of the DAX into the current working directory.</p>
 </div>
@@ -162,7 +160,7 @@ Purpose: handling of empirical and simulated financial data in fHMM
 </h2>
 <p>Historical events can be highlighted by specifying a named list <code>events</code> with elements <code>dates</code> (a vector of dates) and <code>labels</code> (a vector of labels for the events) and passing it to the plot method, for example:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fHMM_events.html">fHMM_events</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu">fHMM</span><span class="fu">:::</span><span class="fu"><a href="../reference/fHMM_events.html">fHMM_events</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
     dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2001-09-11"</span>,<span class="st">"2008-09-15"</span>,<span class="st">"2020-01-27"</span><span class="op">)</span>,
     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9/11 terrorist attack"</span>,<span class="st">"Bankruptcy of Lehman Brothers"</span>,<span class="st">"First COVID-19 case in Germany"</span><span class="op">)</span>
