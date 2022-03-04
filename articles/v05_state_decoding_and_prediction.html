@@ -118,7 +118,7 @@ Purpose: definition of Viterbi algorithm, application in fHMM
 <p>We now can visualize the decoded time series:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dax_model</span><span class="op">)</span></code></pre></div>
-<p><img src="figs/decoded%20ts-1.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="v05_state_decoding_and_prediction_files/figure-html/decoded%20ts-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>Mind that the model is invariant to permutations of the state labels. Therefore, {fHMM} provides the option to switch labels after decoding via the <code><a href="../reference/reorder_states.html">reorder_states()</a></code> function.</p>
 </div>
 <div class="section level2">
