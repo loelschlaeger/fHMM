@@ -197,11 +197,11 @@ Purpose: definition of likelihood, maximization of likelihood, challenges in the
 <p>The estimated state-dependent distributions can be plotted as follows:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dax_model</span>, plot_type <span class="op">=</span> <span class="st">"sdds"</span><span class="op">)</span></code></pre></div>
-<p><img src="figs/plot%20sdds-1.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="v04_model_estimation_files/figure-html/plot%20sdds-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>As mentioned above, the HMM likelihood function is prone to local optima. This effect can be visualized by plotting the log-likelihood value in the different optimization runs, where the best run is marked in red:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dax_model</span>, plot_type <span class="op">=</span> <span class="st">"ll"</span><span class="op">)</span></code></pre></div>
-<p><img src="figs/plot%20lls-1.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="v04_model_estimation_files/figure-html/plot%20lls-1.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
