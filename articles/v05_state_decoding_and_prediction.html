@@ -99,26 +99,45 @@
 Assignee: Rouven (theory part), Lennart (application part)
 Purpose: definition of Viterbi algorithm, application in fHMM
 -->
+<p>This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;This vignette was build using R 4.1.2 with the {fHMM} 1.0.0 package.&lt;/p&gt;"><sup>1</sup></a> introduces the Viterbi algorithm for state decoding. The decoded state sequence in combination with the estimated model parameters can be used for forecasting.</p>
 <div class="section level2">
-<h2 id="state-decoding-usig-the-viterbi-algorithm">State decoding usig the Viterbi algorithm<a class="anchor" aria-label="anchor" href="#state-decoding-usig-the-viterbi-algorithm"></a>
+<h2 id="state-decoding-using-the-viterbi-algorithm">State decoding using the Viterbi algorithm<a class="anchor" aria-label="anchor" href="#state-decoding-using-the-viterbi-algorithm"></a>
 </h2>
-<p>In practice, the primary interest often lies in decoding the hidden states. The term <span class="math inline">\(\argmax_{S_1,\dots,S_T} f(S_1,\dots,S_T\mid X_1,\dots,X_T)\)</span> represents the most-likely underlying state sequence <span class="math inline">\((S_t)_t\)</span> of an HMM given the data <span class="math inline">\((X_t)_t\)</span>, which is equivalent to the expression <span class="math inline">\(\argmax_{S_1,\dots,S_T} f(S_1,\dots,S_T, X_1,\dots,X_T)\)</span>. This can be computed using the Viterbi algorithm (see ), which is based on the variables <span class="math display">\[\begin{align*}
-\xi_{i,t} &amp;= \max_{S_1,\dots,S_{t-1}} f(S_1,\dots,S_{t-1},S_t=i,X_1,\dots,X_t),
-\end{align*}\]</span> <span class="math inline">\(t=1,\dots,T\)</span> and <span class="math inline">\(i=1,\dots,N\)</span>, which can be calculated recursively via <span class="math display">\[\begin{align*}
-\xi_{i,1} = \delta_i f^{(i)}(X_1) \quad \text{and} \quad \xi_{i,t} = \max_j \left(  \xi_{j,t-1}\gamma_{ji}  \right)f^{(i)}(X_t).
-\end{align*}\]</span> Obtaining the most-likely state sequence <span class="math inline">\((\hat{S}_t)_t\)</span> is feasible using these variables, starting at the end of the time horizon and going backwards in time:<br><span class="math display">\[\begin{align*}
-\hat{S}_T = \argmax_i \xi_{i,T}  \quad \text{and} \quad \hat{S}_t = \argmax_i \xi_{i,t}\gamma_{i\hat{S}_{t+1}},~t=T-1,\dots,1.
-\end{align*}\]</span> As for the likelihood function, we need to prevent numerical conflicts. Therefore, we again apply a logarithmic transformation, see Algorithm <span class="math inline">\(\ref{alg:viterbi}\)</span> in the appendix, where <span class="math inline">\(\kappa_{i,t}=\log [ \xi_{i,t} ]\)</span>.</p>
-<p>State decoding in HHMMs is straightforward by first decoding the coarse-scale state process and then, using this information, to decode the fine-scale state process afterwards (see ).</p>
-
-<p>Analyzing so-called pseudo-residuals enables us to check whether a fitted HMM describes the data sufficiently well. This cannot be done by standard residual analysis since the observations are explained by different distributions, depending on the active state. Therefore, all observations have to be transformed on a common scale, which can be achieved in the following way: If <span class="math inline">\(X_t\)</span> has the invertible distribution function <span class="math inline">\(F_{X_t}\)</span>, then <span class="math inline">\(Z_t=\Phi^{-1}(F_{X_t} (X_t))\)</span> is standard normally distributed, where <span class="math inline">\(\Phi\)</span> denotes the cumulative distribution function of the standard normal distribution. The observations, <span class="math inline">\((X_t)_t\)</span>, are modeled well if the pseudo-residuals, <span class="math inline">\((Z_t)_t\)</span>, are approximately standard normally distributed .</p>
-<p>For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm (see Section ). Subsequently, we assign each coarse-scale observation its associated distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.</p>
-<p>For financial markets, it is of special interest to infer the underlying (hidden) states in order to gain insight about the actual market situation. Decoding a full time series <span class="math inline">\(S_1, \ldots, S_T\)</span> is called <span class="math inline">\(\textbf{global decoding}\)</span>. Hereby, we aim to find the most likely trajectory of hidden states under the estimated model. Global decoding can be accomplished by using the so-called Viterbi algorithm which is a recursive scheme enabling to find the global maximum without being confronted with huge computational costs. To this end, we follow <span class="citation">Zucchini, MacDonald, and Langrock (2016)</span> and define <span class="math display">\[\zeta_{1i} = Pr(S_1 = i, X_1 = x_1) = \delta_i p_i(x_1)\]</span> for <span class="math inline">\(i = 1, \ldots, N\)</span> and for the following <span class="math inline">\(t = 2, \ldots, T\)</span> <span class="math display">\[\zeta_{ti} = \operatorname*{max}_{s_1, \ldots, s_{t-1}} Pr(S_{t-1} = s_{t-1}, S_t = i, X_t = x_t).\]</span> Then, the trajectory of most likely states <span class="math inline">\(i_1, \ldots, i_T\)</span> can be calculated recursively from <span class="math display">\[i_T = \operatorname*{argmax}_{i = 1, \ldots, N} \zeta_{Ti}\]</span> and for the following <span class="math inline">\(t = T-1, \ldots, 1\)</span> from <span class="math display">\[i_t = \operatorname*{argmax}_{i = 1, \ldots, N} (\zeta_{ti} \gamma_{i, i_{t+1}}).\]</span></p>
-<p>Tranfering the state decoding to HHMMs is straightforward: at first the coarse-scale state process must be decoded. Afterwards, by using this information the fine-scale state process can be decoded (see <span class="citation">Adam et al. (2019)</span>).</p>
+<p>For financial markets, it is of special interest to infer the underlying (hidden) states in order to gain insight about the actual market situation. Decoding a full time series <span class="math inline">\(S_1, \ldots, S_T\)</span> is called <em>global decoding</em>. Hereby, we aim to find the most likely trajectory of hidden states under the estimated model. Global decoding can be accomplished by using the so-called Viterbi algorithm which is a recursive scheme enabling to find the global maximum without being confronted with huge computational costs. To this end, we follow <span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span> and define <span class="math display">\[\zeta_{1i} = Pr(S_1 = i, X_1 = x_1) = \delta_i p_i(x_1)\]</span> for <span class="math inline">\(i = 1, \ldots, N\)</span> and for the following <span class="math inline">\(t = 2, \ldots, T\)</span> <span class="math display">\[\zeta_{ti} = \operatorname*{max}_{s_1, \ldots, s_{t-1}} Pr(S_{t-1} = s_{t-1}, S_t = i, X_t = x_t).\]</span> Then, the trajectory of most likely states <span class="math inline">\(i_1, \ldots, i_T\)</span> can be calculated recursively from <span class="math display">\[i_T = \operatorname*{argmax}_{i = 1, \ldots, N} \zeta_{Ti}\]</span> and for the following <span class="math inline">\(t = T-1, \ldots, 1\)</span> from <span class="math display">\[i_t = \operatorname*{argmax}_{i = 1, \ldots, N} (\zeta_{ti} \gamma_{i, i_{t+1}}).\]</span> Transferring the state decoding to HHMMs is straightforward: at first the coarse-scale state process must be decoded. Afterwards, by using this information the fine-scale state process can be decoded, see <span class="citation">Adam et al. (<a href="#ref-ada19" role="doc-biblioref">2019</a>)</span>.</p>
 </div>
 <div class="section level2">
-<h2 id="application">Application<a class="anchor" aria-label="anchor" href="#application"></a>
+<h2 id="the-decode_states-function">The <code>decode_states()</code> function<a class="anchor" aria-label="anchor" href="#the-decode_states-function"></a>
 </h2>
+<p>We revisit the DAX model of the vignette on model estimation:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dax_model</span><span class="op">)</span></code></pre></div>
+<p>The underlying states can be decoded via the <code><a href="../reference/decode_states.html">decode_states()</a></code> function:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dax_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">dax_model</span><span class="op">)</span>
+<span class="co">#&gt; Decoded states</span></code></pre></div>
+<p>We now can visualize the decoded time series:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dax_model</span><span class="op">)</span></code></pre></div>
+<p><img src="figs/decoded%20ts-1.png" width="80%" style="display: block; margin: auto;"></p>
+<p>Mind that the model is invariant to permutations of the state labels. Therefore, {fHMM} provides the option to switch labels after decoding via the <code><a href="../reference/reorder_states.html">reorder_states()</a></code> function.</p>
+</div>
+<div class="section level2">
+<h2 id="prediction">Prediction<a class="anchor" aria-label="anchor" href="#prediction"></a>
+</h2>
+<p>Having decoded the underlying states, it is possible to compute the state probabilities of next observations. Based on these probabilities and in combination with the estimated state-dependent distributions, next observations can be predicted, compare <span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">dax_model</span>, ahead <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="co">#&gt;       state_1   state_2     state_3          lb      estimate         ub</span>
+<span class="co">#&gt; 1  0.02170081 0.9731535 0.005145659 -0.02190377 -2.260912e-04 0.02145158</span>
+<span class="co">#&gt; 2  0.04224595 0.9476904 0.010063634 -0.02178845 -2.018461e-04 0.02138476</span>
+<span class="co">#&gt; 3  0.06169596 0.9235390 0.014765007 -0.02168046 -1.789581e-04 0.02132255</span>
+<span class="co">#&gt; 4  0.08010821 0.9006315 0.019260295 -0.02157939 -1.573549e-04 0.02126468</span>
+<span class="co">#&gt; 5  0.09753712 0.8789034 0.023559485 -0.02148485 -1.369681e-04 0.02121091</span>
+<span class="co">#&gt; 6  0.11403424 0.8582937 0.027672059 -0.02139648 -1.177326e-04 0.02116101</span>
+<span class="co">#&gt; 7  0.12964845 0.8387445 0.031607018 -0.02131393 -9.958705e-05 0.02111476</span>
+<span class="co">#&gt; 8  0.14442608 0.8202010 0.035372911 -0.02123689 -8.247306e-05 0.02107194</span>
+<span class="co">#&gt; 9  0.15841104 0.8026111 0.038977855 -0.02116504 -6.633542e-05 0.02103237</span>
+<span class="co">#&gt; 10 0.17164498 0.7859255 0.042429556 -0.02109809 -5.112181e-05 0.02099584</span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -132,6 +151,7 @@ Purpose: definition of Viterbi algorithm, application in fHMM
 </div>
 </div>
 </div>
+
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
