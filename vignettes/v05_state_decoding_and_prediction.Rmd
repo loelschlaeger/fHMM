@@ -42,50 +42,32 @@ Transferring the state decoding to HHMMs is straightforward: at first the coarse
 
 ## The `decode_states()` function
 
-We revisit the DAX application of the vignette on model estimation, where we fitted the following model:
+We revisit the DAX model of the vignette on model estimation:
 
-```{r dax model, cache=TRUE}
-controls <- list(
-  states = 3,
-  sdds   = "t",
-  data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
-                date_column = "Date",
-                data_column = "Close",
-                from        = "2000-01-01",
-                to          = "2022-01-01",
-                logreturns  = TRUE),
-  fit    = list("runs" = 100)
-)
-controls <- set_controls(controls)
-data <- prepare_data(controls)
-model <- fit_model(data, seed = 1, verbose = FALSE)
+```{r dax model}
+data(dax_model)
 ```
 
 The underlying states can be decoded via the `decode_states()` function:
 
 ```{r, decode states}
-model <- decode_states(model)
+dax_model <- decode_states(dax_model)
 ```
 
 We now can visualize the decoded time series:
 
 ```{r, decoded ts}
-plot(model)
+plot(dax_model)
 ```
 
-Mind that the model is invariant to permutations of the state labels. Therefore, {fHMM} provides the option to switch labels after decoding via the `reorder_states()` function. Reordering the states can be useful for a comparison to true parameters or the interpretation of states. In this particular case, we may want to reverse the state order such that the green state 1 corresponds to bullish and state 3 to bearish markets.
-
-```{r, reorder}
-model <- reorder_states(model, state_order = 3:1)
-plot(model)
-```
+Mind that the model is invariant to permutations of the state labels. Therefore, {fHMM} provides the option to switch labels after decoding via the `reorder_states()` function.
 
 ## Prediction
 
 Having decoded the underlying states, it is possible to compute the state probabilities of next observations. Based on these probabilities and in combination with the estimated state-dependent distributions, next observations can be predicted, compare @zuc16:
 
 ```{r, predict}
-predict(model, ahead = 10)
+predict(dax_model, ahead = 10)
 ```
 
 ## References

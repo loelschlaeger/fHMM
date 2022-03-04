@@ -82,7 +82,7 @@ As the likelihood is maximized with respect to a relatively large number of para
 
 For illustration, we fit a 3-state HMM with state-dependent t-distributions to the DAX data that we prepared in the previous vignette on data management:
 
-```{r data preparation, cache=TRUE}
+```{r data preparation}
 controls <- list(
   states = 3,
   sdds   = "t",
@@ -90,7 +90,7 @@ controls <- list(
                 date_column = "Date",
                 data_column = "Close",
                 from        = "2000-01-01",
-                to          = "2022-01-01",
+                to          = "2021-12-31",
                 logreturns  = TRUE),
   fit    = list("runs" = 100)
 )
@@ -100,22 +100,32 @@ data <- prepare_data(controls)
 
 The `data` object can be directly passed to the `fit_model()` function that numerically maximizes the model's (log-) likelihood function `runs = 100` times.^[For convenience, the `controls` object is saved in `data`.] This task can be parallelized by setting the `ncluster` argument.^[If you avoid any problems with clustering on your OS, use `ncluster = 1` which avoids any dependency on packages that provide clustering.]
 
-```{r fit, cache=TRUE}
-model <- fit_model(data, seed = 1, verbose = FALSE)
+```{r fit, eval=FALSE}
+dax_model <- fit_model(data, seed = 1, verbose = FALSE)
 ```
 
-Calling the `summary(model)` method provides an overview of the model fit, whereas `coef(model)` returns a data frame of the estimated model coefficients.
+The estimated model is saved in the {fHMM} package and can be accessed as follows:
+
+```{r access model}
+data(dax_model)
+```
+
+Calling the `summary()` method provides an overview of the model fit, whereas `coef()` returns a data frame of the estimated model coefficients:
+
+```{r summarize model}
+summary(dax_model)
+```
 
 The estimated state-dependent distributions can be plotted as follows:
 
 ```{r plot sdds}
-plot(model, plot_type = "sdds")
+plot(dax_model, plot_type = "sdds")
 ```
 
 As mentioned above, the HMM likelihood function is prone to local optima. This effect can be visualized by plotting the log-likelihood value in the different optimization runs, where the best run is marked in red:
 
 ```{r plot lls}
-plot(model, plot_type = "ll")
+plot(dax_model, plot_type = "ll")
 ```
 
 ## References

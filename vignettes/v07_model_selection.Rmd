@@ -20,8 +20,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.dim = c(10,6),
   out.width = "80%",
-  fig.align = 'center',
-  fig.path = 'figs/'
+  fig.align = 'center'
 )
 library(fHMM)
 ```
@@ -48,48 +47,11 @@ In practice, however, information criteria often favor overly complex models. Re
 
 ## The `compare_models()` function
 
-The {fHMM} package provides a convenient tool for comparing different models via the `compare_models()` function. For illustration, we fit two competing models to the DAX data, one with 2 states and normal state-dependent distributions, and the other with 3 states and t-distributions.
-
-```{r dax model 1, cache=TRUE}
-controls <- list(
-  states = 2,
-  sdds   = "t(df = Inf)",
-  data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
-                date_column = "Date",
-                data_column = "Close",
-                from        = "2000-01-01",
-                to          = "2022-01-01",
-                logreturns  = TRUE),
-  fit    = list("runs" = 100)
-)
-controls <- set_controls(controls)
-data <- prepare_data(controls)
-model1 <- fit_model(data, seed = 1, verbose = FALSE)
-```
-
-```{r dax model 2, cache=TRUE}
-controls <- list(
-  states = 3,
-  sdds   = "t",
-  data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
-                date_column = "Date",
-                data_column = "Close",
-                from        = "2000-01-01",
-                to          = "2022-01-01",
-                logreturns  = TRUE),
-  fit    = list("runs" = 100)
-)
-controls <- set_controls(controls)
-data <- prepare_data(controls)
-model2 <- fit_model(data, seed = 1, verbose = FALSE)
-```
-
-The models (aribtrarly many) can be directly passed to the `compare_models()` function that returns an overview of the model selection criteria:
+The {fHMM} package provides a convenient tool for comparing different models via the `compare_models()` function. The models (arbitrarily many) can be directly passed to the `compare_models()` function that returns an overview of the model selection criteria:
 
 ```{r compare}
-compare_models(model1, model2)
+data(dax_model)
+compare_models(dax_model)
 ```
-
-Here, the more complex `model2` is clearly preferred.
 
 ## References

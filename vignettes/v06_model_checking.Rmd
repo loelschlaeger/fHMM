@@ -20,8 +20,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.dim = c(10,6),
   out.width = "80%",
-  fig.align = 'center',
-  fig.path = 'figs/'
+  fig.align = 'center'
 )
 library(fHMM)
 ```
@@ -46,40 +45,26 @@ In {fHMM}, pseudo-residuals can be computed via the `compute_residuals()` functi
 
 We revisit the DAX example:
 
-```{r dax model, cache=TRUE}
-controls <- list(
-  states = 3,
-  sdds   = "t",
-  data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
-                date_column = "Date",
-                data_column = "Close",
-                from        = "2000-01-01",
-                to          = "2022-01-01",
-                logreturns  = TRUE),
-  fit    = list("runs" = 100)
-)
-controls <- set_controls(controls)
-data <- prepare_data(controls)
-model <- fit_model(data, seed = 1, verbose = FALSE)
-model <- decode_states(model)
+```{r dax model}
+data(dax_model)
 ```
 
 The following line computes the residuals and saves them into the `model` object:
 
 ```{r res}
-model <- compute_residuals(model)
+dax_model <- compute_residuals(dax_model)
 ```
 
 The residuals can be visualized as follows:
 
 ```{r plot res}
-plot(model, plot_type = "pr")
+plot(dax_model, plot_type = "pr")
 ```
 
 For additional normality tests, the residuals can be extracted from the `model` object. The following lines exemplary perform a [Jarque–Bera test](https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test) [@jar87]:
 
 ```{r}
-res <- model$residuals
+res <- dax_model$residuals
 tseries::jarque.bera.test(res)
 ```
 
