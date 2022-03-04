@@ -7,7 +7,7 @@
 #'
 #' @name fHMM
 #'
-#' @useDynLib fHMM
+#' @useDynLib fHMM, .registration=TRUE
 #'
 #' @importFrom Rcpp evalCpp
 #'
