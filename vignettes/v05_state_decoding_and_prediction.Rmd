@@ -20,8 +20,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.dim = c(10,6),
   out.width = "80%",
-  fig.align = 'center',
-  fig.path = 'figs/'
+  fig.align = 'center'
 )
 library(fHMM)
 ```
