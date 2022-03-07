@@ -79,7 +79,7 @@ library("fHMM")
 %%   "generalized linear models" below).
 
 \section{Introduction}
-\label{sec:intro}
+\label{sec:intro} %% Timo 
 
 Basic idea.
 
@@ -121,11 +121,11 @@ Outline of the paper.
 %%   \code{y = a + b * x} and \emph{not} \code{y=a+b*x}.
 %% - JSS prefers when the second line of code is indented by two spaces.
 
-\section{Model definition} \label{sec:model_definition}
+\section{Model definition} \label{sec:model_definition} %% Rouven
 
 Content ...
 
-\section{Controls} \label{sec:controls}
+\section{Controls} \label{sec:controls} %% Lennart
 
 Content ...
 
@@ -135,23 +135,23 @@ x = 1
 @
 %
 
-\section{Data management} \label{sec:data_management}
+\section{Data management} \label{sec:data_management} %% Lennart
 
 Content ...
 
-\section{Model estimation} \label{sec:model_estimation}
+\section{Model estimation} \label{sec:model_estimation} %% Timo + Lennart
 
 Content ...
 
-\section{State decoding and prediciton} \label{sec:state_decoding_and_prediction}
+\section{State decoding and prediciton} \label{sec:state_decoding_and_prediction} %% Rouven + Lennart
 
 Content ...
 
-\section{Model checking} \label{sec:model_checking}
+\section{Model checking} \label{sec:model_checking} %% Timo + Lennart
 
 Content ...
 
-\section{Model selection} \label{sec:model_selection}
+\section{Model selection} \label{sec:model_selection} %% Timo + Lennart
 
 Content ...
 
