@@ -105,20 +105,20 @@ Purpose: definition of model selection criteria, problems in using them, using t
 </h2>
 <p>Common model selection tools are information criteria, such as the Akaike information criterion (AIC) or the Bayesian information criterion (BIC), both of which aim at finding a compromise between model fit and model complexity.</p>
 <p>The AIC is defined as <span class="math display">\[\begin{align*}
-\text{AIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + 2 p,
+\text{AIC} = - 2 \log (\mathcal{L}^\text{(H)HMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + 2 p,
 \end{align*}\]</span> where <span class="math inline">\(p\)</span> denotes the number of parameters, while the BIC is defined as <span class="math display">\[\begin{align*}
-\text{BIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + \log(T) p,
+\text{BIC} = - 2 \log (\mathcal{L}^\text{(H)HMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + \log(T) p,
 \end{align*}\]</span> where <span class="math inline">\(T\)</span> is the number of observations.</p>
 </div>
 <div class="section level2">
 <h2 id="challenges-associated-with-model-selection">Challenges associated with model selection<a class="anchor" aria-label="anchor" href="#challenges-associated-with-model-selection"></a>
 </h2>
-<p>In practice, however, information criteria often favor overly complex models. Real data typically exhibit more structure than can actually be captured by the model. This can be the case if the true state-dependent distributions are too complex to be fully modeled by some (rather simple) parametric distribution, or if certain temporal patterns are neglected in the model formulation. Additional states may be able to capture this structure, which can lead to an increased goodness of fit that outweighs the higher model complexity. However, as models with too many states are difficult to interpret and are therefore often not desired, information criteria should be considered as a rough guidance rather than as a deterministic decision rule. For an in-depth discussion of pitfalls, practical challenges, and pragmatic solutions regarding model selection, see <span class="citation">Pohle et al. (<a href="#ref-poh17" role="doc-biblioref">2017</a>)</span>.</p>
+<p>In practice, however, information criteria often favor overly complex models. Real data typically exhibit more structure than can actually be captured by the model. This can be the case if the true state-dependent distributions are too complex to be fully modeled by some (rather simple) parametric distribution, or if certain temporal patterns are neglected in the model formulation. Additional states may be able to capture this structure, which can lead to an increased goodness of fit that outweighs the higher model complexity. However, as models with too many states are difficult to interpret and are therefore often not desired, information criteria should be treaten with some caution and only considered as a rough guidance. For an in-depth discussion of pitfalls, practical challenges, and pragmatic solutions regarding model selection, see <span class="citation">Pohle et al. (<a href="#ref-poh17" role="doc-biblioref">2017</a>)</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="the-compare_models-function">The <code>compare_models()</code> function<a class="anchor" aria-label="anchor" href="#the-compare_models-function"></a>
 </h2>
-<p>The {fHMM} package provides a convenient tool for comparing different models via the <code><a href="../reference/compare_models.html">compare_models()</a></code> function. The models (arbitrarily many) can be directly passed to the <code><a href="../reference/compare_models.html">compare_models()</a></code> function that returns an overview of the model selection criteria:</p>
+<p>The {fHMM} package provides a convenient tool for comparing different models via the <code><a href="../reference/compare_models.html">compare_models()</a></code> function. The models (arbitrarily many) can be directly passed to the <code><a href="../reference/compare_models.html">compare_models()</a></code> function that returns an overview of the above model selection criteria:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dax_model</span><span class="op">)</span>
 <span class="fu"><a href="../reference/compare_models.html">compare_models</a></span><span class="op">(</span><span class="va">dax_model</span><span class="op">)</span>
