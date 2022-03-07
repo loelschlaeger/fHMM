@@ -33,21 +33,21 @@ Common model selection tools are information criteria, such as the Akaike inform
 
 The AIC is defined as
 \begin{align*}
-\text{AIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + 2 p,
+\text{AIC} = - 2 \log (\mathcal{L}^\text{(H)HMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + 2 p,
 \end{align*}
 where $p$ denotes the number of parameters, while the BIC is defined as
 \begin{align*}
-\text{BIC} = - 2 \log (\mathcal{L}^\text{HHMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + \log(T) p,
+\text{BIC} = - 2 \log (\mathcal{L}^\text{(H)HMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + \log(T) p,
 \end{align*}
 where $T$ is the number of observations.
 
 ## Challenges associated with model selection
 
-In practice, however, information criteria often favor overly complex models. Real data typically exhibit more structure than can actually be captured by the model. This can be the case if the true state-dependent distributions are too complex to be fully modeled by some (rather simple) parametric distribution, or if certain temporal patterns are neglected in the model formulation. Additional states may be able to capture this structure, which can lead to an increased goodness of fit that outweighs the higher model complexity. However, as models with too many states are difficult to interpret and are therefore often not desired, information criteria should be considered as a rough guidance rather than as a deterministic decision rule. For an in-depth discussion of pitfalls, practical challenges, and pragmatic solutions regarding model selection, see @poh17.
+In practice, however, information criteria often favor overly complex models. Real data typically exhibit more structure than can actually be captured by the model. This can be the case if the true state-dependent distributions are too complex to be fully modeled by some (rather simple) parametric distribution, or if certain temporal patterns are neglected in the model formulation. Additional states may be able to capture this structure, which can lead to an increased goodness of fit that outweighs the higher model complexity. However, as models with too many states are difficult to interpret and are therefore often not desired, information criteria should be treaten with some caution and only considered as a rough guidance. For an in-depth discussion of pitfalls, practical challenges, and pragmatic solutions regarding model selection, see @poh17.
 
 ## The `compare_models()` function
 
-The {fHMM} package provides a convenient tool for comparing different models via the `compare_models()` function. The models (arbitrarily many) can be directly passed to the `compare_models()` function that returns an overview of the model selection criteria:
+The {fHMM} package provides a convenient tool for comparing different models via the `compare_models()` function. The models (arbitrarily many) can be directly passed to the `compare_models()` function that returns an overview of the above model selection criteria:
 
 ```{r compare}
 data(dax_model)
