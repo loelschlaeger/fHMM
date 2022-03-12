@@ -2,7 +2,7 @@
 #'
 #' @description
 #' A pre-computed HMM on closing prices of the DAX from 2000 to 2021
-#' with two hidden states and normal state-dependent distributions for 
+#' with two hidden states and normal state-dependent distributions for
 #' demonstration purpose.
 #'
 #' @usage data(dax_model_2n)
@@ -34,9 +34,9 @@
 #'
 #' @description
 #' A pre-computed HMM on closing prices of the DAX from 2000 to 2021
-#' with three hidden states and state-dependent t-distributions for 
+#' with three hidden states and state-dependent t-distributions for
 #' demonstration purpose.
-#' 
+#'
 #' @usage data(dax_model_3t)
 #'
 #' @details
