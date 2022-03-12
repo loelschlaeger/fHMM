@@ -16,3 +16,5 @@ jss/
 docs/
 vignettes/figs/
 ^vignettes/.*cache
+^CRAN-RELEASE$
+^cran-comments\.md$

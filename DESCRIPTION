@@ -5,7 +5,7 @@ Version: 1.0.0
 Date: 2022-03-03
 Authors@R: c(
     person("Lennart", "Oelschl\U00E4ger", 
-           email = "lennart.oelschlaeger@uni-bielefeld.de", 
+           email = "oelschlaeger.lennart@gmail.com", 
            role = c("aut", "cre")),
     person("Timo", "Adam", 
            email = "ta59@st-andrews.ac.uk", 
