@@ -9,11 +9,6 @@ bibliography: ref.bib
 link-citations: true
 ---
 
-<!-- 
-Assignee: Timo (theory part), Lennart (application part)
-Purpose: definition and calculation of pseudo-residuals, application in fHMM
---> 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -46,25 +41,25 @@ In {fHMM}, pseudo-residuals can be computed via the `compute_residuals()` functi
 We revisit the DAX example:
 
 ```{r dax model}
-data(dax_model)
+data(dax_model_3t)
 ```
 
 The following line computes the residuals and saves them into the `model` object:
 
 ```{r res}
-dax_model <- compute_residuals(dax_model)
+dax_model_3t <- compute_residuals(dax_model_3t)
 ```
 
 The residuals can be visualized as follows:
 
 ```{r plot res}
-plot(dax_model, plot_type = "pr")
+plot(dax_model_3t, plot_type = "pr")
 ```
 
 For additional normality tests, the residuals can be extracted from the `model` object. The following lines exemplary perform a [Jarque–Bera test](https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test) [@jar87]:
 
 ```{r}
-res <- dax_model$residuals
+res <- dax_model_3t$residuals
 tseries::jarque.bera.test(res)
 ```
 

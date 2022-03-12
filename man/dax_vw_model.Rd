@@ -3,7 +3,7 @@
 \docType{data}
 \name{dax_vw_model}
 \alias{dax_vw_model}
-\title{DAX/VW HHMM}
+\title{DAX/VW hierarchical HMM}
 \format{
 An object of class \code{fHMM_model}.
 }

@@ -9,11 +9,6 @@ bibliography: ref.bib
 link-citations: true
 ---
 
-<!-- 
-Assignee: Timo (theory part), Lennart (application part)
-Purpose: definition of model selection criteria, problems in using them, using them in fHMM
---> 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -47,11 +42,12 @@ In practice, however, information criteria often favor overly complex models. Re
 
 ## The `compare_models()` function
 
-The {fHMM} package provides a convenient tool for comparing different models via the `compare_models()` function. The models (arbitrarily many) can be directly passed to the `compare_models()` function that returns an overview of the above model selection criteria:
+The {fHMM} package provides a convenient tool for comparing different models via the `compare_models()` function. The models (arbitrarily many) can be directly passed to the `compare_models()` function that returns an overview of the above model selection criteria. Below, we compare a 2-state HMM with normal state-dependent distributions with a 3-state HMM with state-dependent t-distributions for the DAX data, where the more complex model is clearly prefered:
 
 ```{r compare}
-data(dax_model)
-compare_models(dax_model)
+data(dax_model_2n)
+data(dax_model_3t)
+compare_models(dax_model_2n, dax_model_3t)
 ```
 
 ## References

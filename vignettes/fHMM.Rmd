@@ -9,11 +9,6 @@ bibliography: ref.bib
 link-citations: true
 ---
 
-<!-- 
-Assignee: Timo
-Purpose: motivation of HMMs for financial data and hierarchical structure, overview package and vignettes, overview literature
---> 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,

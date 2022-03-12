@@ -19,8 +19,8 @@ This function decodes the (most likely) underlying hidden state sequence by
 applying the Viterbi algorithm.
 }
 \examples{
-data(dax_model)
-decode_states(dax_model)
+data(dax_model_3t)
+decode_states(dax_model_3t)
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Viterbi_algorithm}

@@ -5,7 +5,8 @@ devtools::load_all()
 #install.packages("../fHMM_1.0.0.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
 
 ### download data -----------------------------------------------------------
-download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date(),file = tempfile())
+download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date(),
+              file = tempfile())
 
 ### simulated HMM -----------------------------------------------------------
 seed <- 1

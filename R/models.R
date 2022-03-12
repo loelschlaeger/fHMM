@@ -1,16 +1,48 @@
-#' DAX HMM
+#' DAX 2-state HMM
 #'
 #' @description
 #' A pre-computed HMM on closing prices of the DAX from 2000 to 2021
-#' with three hidden states and state-dependent t-distributions for demonstration
-#' purpose.
+#' with two hidden states and normal state-dependent distributions for 
+#' demonstration purpose.
 #'
-#' @usage data(dax_model)
+#' @usage data(dax_model_2n)
 #'
 #' @details
 #' The model was derived via specifying
 #' \preformatted{
-#' controls = list(
+#' controls <- list(
+#'   states = 2,
+#'   sdds   = "t(df = Inf)",
+#'   data   = list(file        = "inst/extdata/dax.csv",
+#'                 date_column = "Date",
+#'                 data_column = "Close",
+#'                 logreturns  = TRUE,
+#'                 from        = "2000-01-03",
+#'                 to          = "2021-12-31"),
+#'   fit    = list("runs" = 100)
+#'   )
+#' }
+#' Set `file = "extdata/dax.csv"` to reproduce this code.
+#'
+#' @format An object of class \code{fHMM_model}.
+#'
+#' @keywords
+#' model
+"dax_model_2n"
+
+#' DAX 3-state HMM
+#'
+#' @description
+#' A pre-computed HMM on closing prices of the DAX from 2000 to 2021
+#' with three hidden states and state-dependent t-distributions for 
+#' demonstration purpose.
+#' 
+#' @usage data(dax_model_3t)
+#'
+#' @details
+#' The model was derived via specifying
+#' \preformatted{
+#' controls <- list(
 #'   states = 3,
 #'   sdds   = "t",
 #'   data   = list(file        = "inst/extdata/dax.csv",
@@ -28,9 +60,9 @@
 #'
 #' @keywords
 #' model
-"dax_model"
+"dax_model_3t"
 
-#' DAX/VW HHMM
+#' DAX/VW hierarchical HMM
 #'
 #' @description
 #' A pre-computed HHMM with monthly averaged closing prices of the

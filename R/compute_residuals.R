@@ -14,8 +14,8 @@
 #' @export
 #'
 #' @examples
-#' data(dax_model)
-#' compute_residuals(dax_model)
+#' data(dax_model_3t)
+#' compute_residuals(dax_model_3t)
 #' @importFrom stats pt pgamma qnorm
 
 compute_residuals <- function(x, verbose = TRUE) {

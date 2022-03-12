@@ -37,6 +37,6 @@ This function reorders the estimated states, which can be useful for a
 comparison to true parameters or the interpretation of states.
 }
 \examples{
-data(dax_model)
-reorder_states(dax_model, state_order = 3:1)
+data(dax_model_3t)
+reorder_states(dax_model_3t, state_order = 3:1)
 }

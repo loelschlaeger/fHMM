@@ -17,8 +17,8 @@
 #' confidence intervals.
 #'
 #' @examples
-#' data(dax_model)
-#' predict(dax_model)
+#' data(dax_model_3t)
+#' predict(dax_model_3t)
 #' @export
 #' @importFrom stats qt qgamma
 

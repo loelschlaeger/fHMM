@@ -17,7 +17,7 @@ Description: Fitting (hierarchical) hidden Markov models to financial data
     via maximum likelihood estimation. For a reference on the model see
     <doi:10.1177/1471082X211034048>.
 Language: en-US
-URL: https://loelschlaeger.github.io/fHMM/
+URL: https://loelschlaeger.de/fHMM/
 BugReports: https://github.com/loelschlaeger/fHMM/issues
 License: GPL-3
 Encoding: UTF-8

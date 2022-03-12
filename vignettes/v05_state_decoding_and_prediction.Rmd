@@ -9,11 +9,6 @@ bibliography: ref.bib
 link-citations: true
 ---
 
-<!-- 
-Assignee: Rouven (theory part), Lennart (application part)
-Purpose: definition of Viterbi algorithm, application in fHMM
---> 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -44,29 +39,33 @@ Transferring the state decoding to HHMMs is straightforward: at first the coarse
 We revisit the DAX model of the vignette on model estimation:
 
 ```{r dax model}
-data(dax_model)
+data(dax_model_3t)
 ```
 
 The underlying states can be decoded via the `decode_states()` function:
 
 ```{r, decode states}
-dax_model <- decode_states(dax_model)
+dax_model_3t <- decode_states(dax_model_3t)
 ```
 
 We now can visualize the decoded time series:
 
 ```{r, decoded ts}
-plot(dax_model)
+plot(dax_model_3t)
 ```
 
-Mind that the model is invariant to permutations of the state labels. Therefore, {fHMM} provides the option to switch labels after decoding via the `reorder_states()` function.
+Mind that the model is invariant to permutations of the state labels. Therefore, {fHMM} provides the option to switch labels after decoding via the `reorder_states()` function, for example:
+
+```{r, reorder}
+dax_model_3t <- reorder_states(dax_model_3t, 3:1)
+```
 
 ## Prediction
 
 Having decoded the underlying states, it is possible to compute the state probabilities of next observations. Based on these probabilities and in combination with the estimated state-dependent distributions, next observations can be predicted, compare @zuc16:
 
 ```{r, predict}
-predict(dax_model, ahead = 10)
+predict(dax_model_3t, ahead = 10)
 ```
 
 ## References

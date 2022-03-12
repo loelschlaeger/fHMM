@@ -31,8 +31,8 @@
 #' An object of class \code{fHMM_model}, in which states are reordered.
 #'
 #' @examples
-#' data(dax_model)
-#' reorder_states(dax_model, state_order = 3:1)
+#' data(dax_model_3t)
+#' reorder_states(dax_model_3t, state_order = 3:1)
 #' @export
 
 reorder_states <- function(x, state_order) {

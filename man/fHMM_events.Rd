@@ -27,4 +27,5 @@ events <- list(
     "First COVID-19 case Germany"
   )
 )
+
 }

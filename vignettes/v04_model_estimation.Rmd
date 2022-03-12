@@ -9,11 +9,6 @@ bibliography: ref.bib
 link-citations: true
 ---
 
-<!-- 
-Assignee: Timo (theory part), Lennart (application part)
-Purpose: definition of likelihood, maximization of likelihood, challenges in the maximization, application in fHMM
---> 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -100,31 +95,31 @@ data <- prepare_data(controls)
 The `data` object can be directly passed to the `fit_model()` function that numerically maximizes the model's (log-) likelihood function `runs = 100` times.^[For convenience, the `controls` object is saved in `data`.] This task can be parallelized by setting the `ncluster` argument.^[If you avoid any problems with clustering on your OS, use `ncluster = 1` which avoids any dependency on packages that provide clustering.]
 
 ```{r fit, eval=FALSE}
-dax_model <- fit_model(data, seed = 1, verbose = FALSE)
+dax_model_3t <- fit_model(data, seed = 1, verbose = FALSE)
 ```
 
 The estimated model is saved in the {fHMM} package and can be accessed as follows:
 
 ```{r access model}
-data(dax_model)
+data(dax_model_3t)
 ```
 
 Calling the `summary()` method provides an overview of the model fit, whereas `coef()` returns a data frame of the estimated model coefficients:
 
 ```{r summarize model}
-summary(dax_model)
+summary(dax_model_3t)
 ```
 
 The estimated state-dependent distributions can be plotted as follows:
 
 ```{r plot sdds}
-plot(dax_model, plot_type = "sdds")
+plot(dax_model_3t, plot_type = "sdds")
 ```
 
 As mentioned above, the HMM likelihood function is prone to local optima. This effect can be visualized by plotting the log-likelihood value in the different optimization runs, where the best run is marked in red:
 
 ```{r plot lls}
-plot(dax_model, plot_type = "ll")
+plot(dax_model_3t, plot_type = "ll")
 ```
 
 ## References

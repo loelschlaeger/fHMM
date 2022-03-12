@@ -23,8 +23,8 @@
 #' internal
 #'
 #' @examples
-#' data(dax_model)
-#' fHMM:::compute_ci(x = dax_model, alpha = 0.05)
+#' data(dax_model_3t)
+#' fHMM:::compute_ci(x = dax_model_3t, alpha = 0.05)
 #' @importFrom stats qnorm
 
 compute_ci <- function(x, alpha = 0.05) {
