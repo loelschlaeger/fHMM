@@ -95,11 +95,7 @@
 
     
     
-<!-- 
-Assignee: Timo (theory part), Lennart (application part)
-Purpose: definition of model selection criteria, problems in using them, using them in fHMM
--->
-<p>Model selection involves the choice of a family for the state-dependent distribution and the selection of the number of states. This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;This vignette was build using R 4.1.2 with the {fHMM} 1.0.0 package.&lt;/p&gt;"><sup>1</sup></a> introduces model selection in {fHMM}.</p>
+<p>Model selection involves the choice of a family for the state-dependent distribution and the selection of the number of states. This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;This vignette was build using R 4.1.3 with the {fHMM} 1.0.0 package.&lt;/p&gt;"><sup>1</sup></a> introduces model selection in {fHMM}.</p>
 <div class="section level2">
 <h2 id="information-criteria">Information criteria<a class="anchor" aria-label="anchor" href="#information-criteria"></a>
 </h2>
@@ -118,12 +114,14 @@ Purpose: definition of model selection criteria, problems in using them, using t
 <div class="section level2">
 <h2 id="the-compare_models-function">The <code>compare_models()</code> function<a class="anchor" aria-label="anchor" href="#the-compare_models-function"></a>
 </h2>
-<p>The {fHMM} package provides a convenient tool for comparing different models via the <code><a href="../reference/compare_models.html">compare_models()</a></code> function. The models (arbitrarily many) can be directly passed to the <code><a href="../reference/compare_models.html">compare_models()</a></code> function that returns an overview of the above model selection criteria:</p>
+<p>The {fHMM} package provides a convenient tool for comparing different models via the <code><a href="../reference/compare_models.html">compare_models()</a></code> function. The models (arbitrarily many) can be directly passed to the <code><a href="../reference/compare_models.html">compare_models()</a></code> function that returns an overview of the above model selection criteria. Below, we compare a 2-state HMM with normal state-dependent distributions with a 3-state HMM with state-dependent t-distributions for the DAX data, where the more complex model is clearly prefered:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dax_model</span><span class="op">)</span>
-<span class="fu"><a href="../reference/compare_models.html">compare_models</a></span><span class="op">(</span><span class="va">dax_model</span><span class="op">)</span>
-<span class="co">#&gt;           parameters log-likelihood       AIC       BIC</span>
-<span class="co">#&gt; dax_model         15       16913.33 -33796.65 -33697.13</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dax_model_2n</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span>
+<span class="fu"><a href="../reference/compare_models.html">compare_models</a></span><span class="op">(</span><span class="va">dax_model_2n</span>, <span class="va">dax_model_3t</span><span class="op">)</span>
+<span class="co">#&gt;              parameters log-likelihood       AIC       BIC</span>
+<span class="co">#&gt; dax_model_2n          6       16681.98 -33351.96 -33312.15</span>
+<span class="co">#&gt; dax_model_3t         15       16913.33 -33796.65 -33697.13</span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
