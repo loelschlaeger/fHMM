@@ -27,5 +27,6 @@ events <- list(
     "First COVID-19 case Germany"
   )
 )
+events <- fHMM_events(events)
 
 }

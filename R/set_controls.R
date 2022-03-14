@@ -122,7 +122,7 @@
 #' @importFrom utils read.csv
 
 set_controls <- function(controls = NULL) {
-  if (class(controls) != "fHMM_controls") {
+  if (!inherits(controls,"fHMM_controls")) {
     ### initialize controls
     if (is.null(controls)) {
       controls <- list()
@@ -380,7 +380,7 @@ set_controls <- function(controls = NULL) {
         stop("File '", controls[["data"]][["file"]][i], "' not found.")
       }
       read_try <- try(utils::read.csv(file = controls[["data"]][["file"]][i]), silent = TRUE)
-      if (class(read_try) == "try-error") {
+      if (inherits(read_try,"try-error")) {
         stop("Unable to read '", controls[["data"]][["file"]][i], "'.")
       }
       if (!is.na(controls[["data"]][["date_column"]][i])) {

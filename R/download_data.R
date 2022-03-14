@@ -1,8 +1,8 @@
 #' Downloading financial data
 #'
 #' @description
-#' This function downloads stock data from <https://finance.yahoo.com> and saves
-#' it as a .csv-file.
+#' This function downloads stock data from <https://www.yahoo.com/finance> and 
+#' saves it as a .csv-file.
 #'
 #' @details
 #' The downloaded data is a .csv-file with the following columns:

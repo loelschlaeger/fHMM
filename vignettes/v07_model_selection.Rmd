@@ -42,7 +42,7 @@ In practice, however, information criteria often favor overly complex models. Re
 
 ## The `compare_models()` function
 
-The {fHMM} package provides a convenient tool for comparing different models via the `compare_models()` function. The models (arbitrarily many) can be directly passed to the `compare_models()` function that returns an overview of the above model selection criteria. Below, we compare a 2-state HMM with normal state-dependent distributions with a 3-state HMM with state-dependent t-distributions for the DAX data, where the more complex model is clearly prefered:
+The {fHMM} package provides a convenient tool for comparing different models via the `compare_models()` function. The models (arbitrarily many) can be directly passed to the `compare_models()` function that returns an overview of the above model selection criteria. Below, we compare a 2-state HMM with normal state-dependent distributions with a 3-state HMM with state-dependent t-distributions for the DAX data, where the more complex model is clearly preferred:
 
 ```{r compare}
 data(dax_model_2n)

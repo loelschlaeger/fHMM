@@ -21,11 +21,12 @@
 #'     "First COVID-19 case Germany"
 #'   )
 #' )
+#' events <- fHMM_events(events)
 #' 
 #' @export
 
 fHMM_events <- function(events) {
-  if (class(events) == "fHMM_events") {
+  if (inherits(events, "fHMM_events")) {
     warning("This element already is of class 'fHMM_events'.")
   } else {
     if (class(events) != "list") {

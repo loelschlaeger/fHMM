@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/loelschlaeger/fHMM/workflows/R-CMD-check/badge.svg)](https://github.com/loelschlaeger/fHMM/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
-[![codecov](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg?token=OYU22T74DV)](https://codecov.io/gh/loelschlaeger/fHMM)
+[![codecov](https://app.codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg?token=OYU22T74DV)](https://app.codecov.io/gh/loelschlaeger/fHMM)
 <!-- badges: end -->
 
 With {fHMM} you can detect bearish and bullish markets in financial time series by applying *Hidden Markov Models (HMMs)*. The functionality and the model [is documented in detail here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a first application to the German stock index [DAX](https://en.wikipedia.org/wiki/DAX).
