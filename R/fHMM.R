@@ -1,6 +1,6 @@
 #' fHMM: An R package for fitting hidden Markov models to financial data
 #'
-#' This package provides tools for and modeling financial data via
+#' This package provides tools for modeling financial data via
 #' the (hierarchical) hidden Markov model.
 #'
 #' @docType package
