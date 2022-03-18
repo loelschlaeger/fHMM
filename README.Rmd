@@ -9,20 +9,20 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "80%",
-  fig.width = 16,
-  fig.height = 9,
+  out.width = "75%",
   fig.align = "center"
 )
+set.seed(1)
+library(fHMM)
 ```
 
-# fHMM <img src="man/figures/logo.svg" align="right" alt="" width="120" />
+# {fHMM}: Fitting HMMs to financial time series <img src="man/figures/logo.svg" align="right" alt="" width="120" />
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/loelschlaeger/fHMM/workflows/R-CMD-check/badge.svg)](https://github.com/loelschlaeger/fHMM/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version-last-release/fHMM)](https://www.r-pkg.org/badges/version-last-release/fHMM)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)
-[![codecov](https://app.codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg?token=OYU22T74DV)](https://app.codecov.io/gh/loelschlaeger/fHMM)
+[![codecov](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg)](https://app.codecov.io/gh/loelschlaeger/fHMM)
 <!-- badges: end -->
 
 With {fHMM} you can detect bearish and bullish markets in financial time series by applying *Hidden Markov Models (HMMs)*. The functionality and the model [is documented in detail here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a first application to the German stock index [DAX](https://en.wikipedia.org/wiki/DAX).
@@ -40,10 +40,6 @@ install.packages("fHMM")
 We welcome contributions! Please submit [bug reports](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=bug&template=bug.md) and [feature requests](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=future&template=suggestion.md) as issues and extensions as pull request from a branch created from main.
 
 ## Example: Fitting an HMM to the DAX
-
-```{r load}
-library(fHMM)
-```
 
 We fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2020. The states can be interpreted as proxies for bearish and bullish markets.
 
@@ -80,7 +76,6 @@ summary(data)
 We fit the model and subsequently decode the hidden states:
 
 ```{r fit}
-set.seed(1)
 model <- fit_model(data, ncluster = 7)
 model <- decode_states(model)
 summary(model)
@@ -88,7 +83,7 @@ summary(model)
 
 Having estimated the model, we can visualize the state-dependent distributions and the decoded time series to interpret bearish and bullish markets:
 
-```{r plots}
+```{r plots, fig.dim = c(10,6)}
 events <- fHMM_events(
   list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
        labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers", "First COVID-19 case Germany"))
