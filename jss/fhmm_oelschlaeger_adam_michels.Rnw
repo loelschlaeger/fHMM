@@ -39,7 +39,7 @@ library("fHMM")
 
 %% - \Abstract{} almost as usual
 \Abstract{
-\pkg{fHMM} is an \proglang{R} package for modeling financial time series data using hidden Markov models.
+Hidden Markov models constitute a popular class of statistical models for modeling time series that are driven by hidden states. In finance, these hidden states can be thought of as market regimes: while... In this paper, we introduce the \proglang{R} package \pkg{fHMM} for modeling financial time series using hidden Markov models. It includes...
 }
 
 %% - \Keywords{} with LaTeX markup, at least one required
