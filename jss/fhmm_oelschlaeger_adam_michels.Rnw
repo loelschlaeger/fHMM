@@ -86,11 +86,9 @@ Hidden Markov models constitute a popular class of statistical models for time s
 
 However, investigating market behavior can lead to a better understanding of how trends alternate and thereby increases the chance of making profitable investment decisions. 
 
-Over the last decades, various HMM-type models have emerged as popular tools for modeling financial time series that are subject to state-switching over time \cite{sch97}, \cite{dia09}, \cite{ang12}, \cite{dea17}. \cite{ryd98}, \cite{bul06}, and \cite{nys15a}, e.g., used HMMs to derive stylized facts of stock returns, while \cite{has05} and \cite{nys17} demonstrated that HMMs can prove useful for economic forecasting. More recently, \cite{lih17} applied HMMs to the Standard and Poor's 500, where HMMs were used to identify different levels of market volatility, aiming at providing evidence for the conjecture that returns exhibit negative correlation with volatility. Another application to the S\&P 500 can be found in \cite{ngu18}, where HMMs were used to predict monthly closing prices to derive an optimal trading strategy, which was shown to outperform the conventional buy-and-hold strategy. Further applications, which involve HMM-type models for asset allocation and portfolio optimization, can be found in \cite{ang02}, \cite{bul11}, \cite{nys15a}, and \cite{nys18}, to name but a few examples. All these applications demonstrate that HMMs constitute a versatile class of time series models that naturally accounts for the dynamics typically exhibited by financial time series.
+Over the last decades, hidden Markov models (HMMs) have emerged as a popular tool for modeling financial time series that are subject to state-switching over time \cite{sch97}, \cite{dia09}, \cite{ang12}, \cite{dea17}. \cite{ryd98}, \cite{bul06}, and \cite{nys15a}, e.g., used HMMs to derive stylized facts of stock returns, while \cite{has05} and \cite{nys17} demonstrated that HMMs can prove useful for economic forecasting. More recently, \cite{lih17} applied HMMs to the Standard and Poor's 500, where HMMs were used to identify different levels of market volatility, aiming at providing evidence for the conjecture that returns exhibit negative correlation with volatility. Another application to the S\&P 500 can be found in \cite{ngu18}, where HMMs were used to predict monthly closing prices to derive an optimal trading strategy, which was shown to outperform the conventional buy-and-hold strategy. Further applications, which involve HMM-type models for asset allocation and portfolio optimization, can be found in \cite{ang02}, \cite{bul11}, \cite{nys15a}, and \cite{nys18}, to name but a few examples. All these applications demonstrate that HMMs constitute a versatile class of time series models that naturally accounts for the dynamics typically exhibited by financial time series.
 
-The \pkg{fHMM} package aims at contributing to those investigations by applying HMMs to detect bearish and bullish markets in financial time series. It also implements the hierarchical model extension presented in \cite{oel21}, which improves the model's capability of distinguishing between short- and long-term trends and allows us to interpret market dynamics at multiple time scales.
-
-The functionality of the \pkg{fHMM} package can be classified into functions for data preparation, model estimation, and model evaluation, see Figure \ref{fig:flowchart}. The following flowchart visualizes their dependencies:
+The \pkg{fHMM} package aims at contributing to those investigations by applying HMMs to detect bearish and bullish markets in financial time series. It also implements the hierarchical model extension presented in \cite{oel21}, which improves the model's capability of distinguishing between short- and long-term trends and allows us to interpret market dynamics at multiple time scales. The functionality of the \pkg{fHMM} package can be classified into functions for data preparation, model estimation, and model evaluation, see Figure \ref{fig:flowchart}. The following flowchart visualizes their dependencies:
 
 \begin{figure}
   \centering
@@ -98,6 +96,8 @@ The functionality of the \pkg{fHMM} package can be classified into functions for
   \caption{Flowchart of the package functionality.}
   \label{fig:flowchart}
 \end{figure}
+
+This paper is structured as follows: in Section 2, ... In Section 3, ...
 
 %% -- Manuscript ---------------------------------------------------------------
 
