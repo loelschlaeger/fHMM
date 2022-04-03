@@ -27,7 +27,7 @@ library("fHMM")
 %% - \Plainauthor{} without affiliations
 %% - Separate authors by \And or \AND (in \author) or by comma (in \Plainauthor).
 %% - \AND starts a new line, \And does not.
-\author{Lennart Oelschl\"ager \\Bielefeld University \And Timo Adam \\University of St. Andrews\And Rouven Michels \\Bielefeld University}
+\author{Lennart Oelschl\"ager \\Bielefeld University \And Timo Adam \\University of St Andrews\And Rouven Michels \\Bielefeld University}
 \Plainauthor{Lennart Oelschl\"ager, Timo Adam, Rouven Michels}
 
 %% - \title{} in title case
@@ -82,12 +82,16 @@ Hidden Markov models constitute a popular class of statistical models for time s
 \section{Introduction}
 \label{sec:intro} %% Timo 
 
-%% Earning money with stock trading is simple: one only needs to buy and sell stocks at the right moment. In general, stock traders seek to invest at the beginning of upward trends (hereon termed as bullish markets) and repel their stocks just in time before the prices fall again (hereon termed as bearish markets). As stock prices depend on a variety of environmental factors \cite{hum09}, \cite{coh13}, chance certainly plays a fundamental role in hitting those exact moments. 
+%% Earning money with stock trading is simple: one only needs to buy and sell stocks at the right moment. In general, stock traders seek to invest at the beginning of upward trends (hereon termed as bullish markets) and repel their stocks just in time before the prices fall again (hereon termed as bearish markets). As stock prices depend on a variety of environmental factors \cite{hum09}, \cite{coh13}, chance certainly plays a fundamental role in hitting those exact moments. However, investigating market behavior can lead to a better understanding of how trends alternate and thereby increases the chance of making profitable investment decisions. 
 
-However, investigating market behavior can lead to a better understanding of how trends alternate and thereby increases the chance of making profitable investment decisions. 
+%% Intro to HMMs
+In recent years, hidden Markov models (HMMs) have emerged as a popular tool for modeling time series that are subject to state-switching over time \cite{zuc16}. In finance, these hidden states can often be linked to market regimes such as bearish and bullish markets or recessions and periods of economics growths, to name but a few examples.
 
-Over the last decades, hidden Markov models (HMMs) have emerged as a popular tool for modeling financial time series that are subject to state-switching over time \cite{sch97}, \cite{dia09}, \cite{ang12}, \cite{dea17}. \cite{ryd98}, \cite{bul06}, and \cite{nys15a}, e.g., used HMMs to derive stylized facts of stock returns, while \cite{has05} and \cite{nys17} demonstrated that HMMs can prove useful for economic forecasting. More recently, \cite{lih17} applied HMMs to the Standard and Poor's 500, where HMMs were used to identify different levels of market volatility, aiming at providing evidence for the conjecture that returns exhibit negative correlation with volatility. Another application to the S\&P 500 can be found in \cite{ngu18}, where HMMs were used to predict monthly closing prices to derive an optimal trading strategy, which was shown to outperform the conventional buy-and-hold strategy. Further applications, which involve HMM-type models for asset allocation and portfolio optimization, can be found in \cite{ang02}, \cite{bul11}, \cite{nys15a}, and \cite{nys18}, to name but a few examples. All these applications demonstrate that HMMs constitute a versatile class of time series models that naturally accounts for the dynamics typically exhibited by financial time series.
+%% Literature review
+Over the last decades, they have been applied to model business cycles, to derive stylized facts of stock returns \cite{bul06, nys15a}, and to model energy prices conditional on market states \cite{lan18, ada22}, to name but a few examples.
+More recently, \cite{lih17} applied HMMs to the Standard and Poor's 500, where HMMs were used to identify different levels of market volatility, aiming at providing evidence for the conjecture that returns exhibit negative correlation with volatility. Another application to the S\&P 500 can be found in \cite{ngu18}, where HMMs were used to predict monthly closing prices to derive an optimal trading strategy, which was shown to outperform the conventional buy-and-hold strategy. Further applications, which involve HMM-type models for asset allocation and portfolio optimization, can be found in \cite{bul11}, \cite{nys15a}, and \cite{nys18}, to name but a few examples. All these applications demonstrate that HMMs constitute a versatile class of time series models that naturally accounts for the state-switching patterns that are often found in financial time series.
 
+%% Intro to the package
 The \pkg{fHMM} package aims at contributing to those investigations by applying HMMs to detect bearish and bullish markets in financial time series. It also implements the hierarchical model extension presented in \cite{oel21}, which improves the model's capability of distinguishing between short- and long-term trends and allows us to interpret market dynamics at multiple time scales. The functionality of the \pkg{fHMM} package can be classified into functions for data preparation, model estimation, and model evaluation, see Figure \ref{fig:flowchart}. The following flowchart visualizes their dependencies:
 
 \begin{figure}
@@ -97,6 +101,7 @@ The \pkg{fHMM} package aims at contributing to those investigations by applying 
   \label{fig:flowchart}
 \end{figure}
 
+%% Outline of the paper
 This paper is structured as follows: in Section 2, ... In Section 3, ...
 
 %% -- Manuscript ---------------------------------------------------------------
