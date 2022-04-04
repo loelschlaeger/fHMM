@@ -1,7 +1,7 @@
-#' Setting and checking parameters
+#' Setting and checking model parameters
 #'
 #' @description
-#' This function sets and checks parameters for the {fHMM} package.
+#' This function sets and checks model parameters for the {fHMM} package.
 #'
 #' @details
 #' See the vignette on the model definition for more details.
@@ -47,8 +47,6 @@
 #' @examples
 #' controls <- set_controls()
 #' fHMM_parameters(controls)
-#' @keywords
-#' constructor
 #'
 #' @importFrom stats runif qunif runif
 
@@ -64,7 +62,7 @@ fHMM_parameters <- function(controls,
   }
 
   ### check 'controls' and 'scale_par'
-  if (class(controls) != "fHMM_controls") {
+  if (!inherits(controls, "fHMM_controls")) {
     stop("'controls' is not of class 'fHMM_controls'.")
   }
   if (!(length(scale_par) == 2 && all(is_number(scale_par, pos = TRUE)))) {
@@ -746,7 +744,7 @@ gammasUncon2gammasCon <- function(gammasUncon, dim) {
 Gamma2delta <- function(Gamma) {
   dim <- dim(Gamma)[1]
   delta_try <- try(solve(t(diag(dim) - Gamma + 1), rep(1, dim)), silent = TRUE)
-  if (class(delta_try) == "try-error") {
+  if (inherits(delta_try, "try-error")) {
     delta <- rep(1 / dim, dim)
     warning("F.1")
   } else {

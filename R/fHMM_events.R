@@ -13,8 +13,6 @@
 #' @return
 #' An object of class \code{fHMM_events}.
 #'
-#' @export
-#'
 #' @examples
 #' events <- list(
 #'   dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
@@ -23,12 +21,12 @@
 #'     "First COVID-19 case Germany"
 #'   )
 #' )
-#' fHMM_events(events)
-#' @keywords
-#' constructor
+#' events <- fHMM_events(events)
+#' 
+#' @export
 
 fHMM_events <- function(events) {
-  if (class(events) == "fHMM_events") {
+  if (inherits(events, "fHMM_events")) {
     warning("This element already is of class 'fHMM_events'.")
   } else {
     if (class(events) != "list") {

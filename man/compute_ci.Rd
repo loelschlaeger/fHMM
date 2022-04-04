@@ -25,7 +25,7 @@ This function computes confidence intervals for the estimates of an
 \code{fHMM_model} object using the inverse Fisher information.
 }
 \examples{
-data(dax_model)
-fHMM:::compute_ci(x = dax_model, alpha = 0.05)
+data(dax_model_3t)
+fHMM:::compute_ci(x = dax_model_3t, alpha = 0.05)
 }
 \keyword{internal}

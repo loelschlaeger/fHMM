@@ -33,10 +33,10 @@ coarse-scale states and the fine-scale states of coarse-scale state 2.
 An object of class \code{fHMM_model}, in which states are reordered.
 }
 \description{
-This function reorders the estimated states, which can be useful for a comparison
-to true parameters or the interpretation of states.
+This function reorders the estimated states, which can be useful for a
+comparison to true parameters or the interpretation of states.
 }
 \examples{
-data(dax_model)
-reorder_states(dax_model, state_order = 3:1)
+data(dax_model_3t)
+reorder_states(dax_model_3t, state_order = 3:1)
 }

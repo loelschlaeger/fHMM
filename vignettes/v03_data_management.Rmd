@@ -7,11 +7,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-<!-- 
-Assignee: Lennart
-Purpose: handling of empirical and simulated financial data in fHMM
---> 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -30,7 +25,7 @@ library(fHMM)
 
 ## Empirical data
 
-Empirical data must be provided as a comma-separated values (CSV) file and its path must be specified in `set_controls()`, see [the vignette on specifying the controls](http://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from https://finance.yahoo.com/ in csv-format.] The {fHMM} package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
+Empirical data must be provided as a comma-separated values (CSV) file and its path must be specified in `set_controls()`, see [the vignette on specifying the controls](http://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from https://www.yahoo.com/finance in csv-format.] The {fHMM} package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
 
 ```{r, head dax}
 system.file("extdata", "dax.csv", package = "fHMM")
@@ -82,7 +77,7 @@ downloads the 21st century daily data of the DAX into the current working direct
 Historical events can be highlighted by specifying a named list `events` with elements `dates` (a vector of dates) and `labels` (a vector of labels for the events) and passing it to the plot method, for example:
 
 ```{r, events}
-events <- fHMM_events(
+events <- fHMM:::fHMM_events(
   list(
     dates = c("2001-09-11","2008-09-15","2020-01-27"),
     labels = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")

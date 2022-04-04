@@ -29,6 +29,5 @@ This function defines a color scheme for visualizations in the {fHMM} package.
 }
 \examples{
 controls <- set_controls()
-fHMM_colors(controls, colors = c("red", "blue"))
+fHMM:::fHMM_colors(controls, colors = c("red", "blue"))
 }
-\keyword{constructor}

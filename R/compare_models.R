@@ -16,8 +16,8 @@
 #' A data frame with models in rows and comparison criteria in columns.
 #'
 #' @examples
-#' data(dax_model)
-#' compare_models(dax_model)
+#' data(dax_model_3t)
+#' compare_models(dax_model_3t)
 #' @export
 
 compare_models <- function(...) {

@@ -1,8 +1,8 @@
 #' Reordering of estimated states
 #'
 #' @description
-#' This function reorders the estimated states, which can be useful for a comparison
-#' to true parameters or the interpretation of states.
+#' This function reorders the estimated states, which can be useful for a 
+#' comparison to true parameters or the interpretation of states.
 #'
 #' @param x
 #' An object of class \code{fHMM_model}.
@@ -31,8 +31,8 @@
 #' An object of class \code{fHMM_model}, in which states are reordered.
 #'
 #' @examples
-#' data(dax_model)
-#' reorder_states(dax_model, state_order = 3:1)
+#' data(dax_model_3t)
+#' reorder_states(dax_model_3t, state_order = 3:1)
 #' @export
 
 reorder_states <- function(x, state_order) {

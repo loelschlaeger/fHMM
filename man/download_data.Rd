@@ -31,8 +31,8 @@ in the current working directory with the name "\code{symbol}.csv".}
 No return value.
 }
 \description{
-This function downloads stock data from \url{https://finance.yahoo.com} and saves
-it as a .csv-file.
+This function downloads stock data from \url{https://www.yahoo.com/finance} and
+saves it as a .csv-file.
 }
 \details{
 The downloaded data is a .csv-file with the following columns:

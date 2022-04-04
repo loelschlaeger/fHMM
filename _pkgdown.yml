@@ -25,29 +25,28 @@ reference:
   - set_controls
   - download_data
   - prepare_data
+  - fHMM_parameters
   - plot.fHMM_data
 - title: Model estimation
-  desc: Use these function for model estimation.
+  desc: Use these function for model estimation and state decoding.
   contents:
   - fit_model
   - decode_states
   - reorder_states
 - title: Model evaluation
-  desc: Use these functions to evaluate your model.
+  desc: Use these functions to evaluate a fitted model.
   contents:
   - coef.fHMM_model
   - compare_models
   - compute_residuals
   - plot.fHMM_model
+  - fHMM_colors
+  - fHMM_events
   - predict.fHMM_model
 - title: Models
   desc: The following pre-computed models are included in the package.
   contents:
   - has_keyword("model")
-- title: Constructor functions
-  desc: These functions construct the S3 classes of {fHMM}.
-  contents:
-  - has_keyword("constructor")
 - title: Small utilities
   desc: These functions may be useful beyond {fHMM}.
   contents:

@@ -1,7 +1,5 @@
 ---
 title: "Model checking"
-author: "Lennart Oelschläger, Timo Adam, and Rouven Michels"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Model checking}
@@ -11,30 +9,58 @@ bibliography: ref.bib
 link-citations: true
 ---
 
-<!-- 
-Assignee: Timo (theory part), Lennart (application part)
-Purpose: definition and calculation of pseudo-residuals, application in fHMM
---> 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.dim = c(10,6),
+  out.width = "80%",
+  fig.align = 'center'
 )
+library(fHMM)
 ```
+
+This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the {fHMM} `r utils::packageVersion("fHMM")` package.] discusss model checking in {fHMM}.
 
 ## Model checking using pseudo-residuals
 
 Analyzing pseudo-residuals allows us to check whether the fitted model describes the data well. Since the observations are explained by different distributions (depending on the active state), this cannot be done by analyzing standard residuals. To transform all observations on a common scale, we proceed as follows: If $X_t$ has the invertible distribution function $F_{X_t}$, then
+
 \begin{align*}
 Z_t=\Phi^{-1}(F_{X_t} (X_t))
 \end{align*}
-is standard normally distributed, where $\Phi$ denotes the cumulative distribution function of the standard normal distribution. The observations, $(X_t)_t$, are modeled well if the pseudo-residuals, $(Z_t)_t$, are approximately standard normally distributed, which can be visually assessed using quantile-quantile plots or further investigated using statistical tests such as the Jarque-Bera test [@zuc16]. 
+
+is standard normally distributed, where $\Phi$ denotes the cumulative distribution function of the standard normal distribution. The observations, $(X_t)_t$, are modeled well if the so-called pseudo-residuals, $(Z_t)_t$, are approximately standard normally distributed, which can be visually assessed using quantile-quantile plots or further investigated using statistical tests such as the Jarque-Bera test [@zuc16]. 
 
 For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm. Subsequently, we assign each coarse-scale observation its distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.
 
-## Application
+## Implementation in {fHMM}
 
-Show how to use JB-test for pr.
+In {fHMM}, pseudo-residuals can be computed via the `compute_residuals()` function, provided that the states have been decoded beforehand.
+
+We revisit the DAX example:
+
+```{r dax model}
+data(dax_model_3t)
+```
+
+The following line computes the residuals and saves them into the `model` object:
+
+```{r res}
+dax_model_3t <- compute_residuals(dax_model_3t)
+```
+
+The residuals can be visualized as follows:
+
+```{r plot res}
+plot(dax_model_3t, plot_type = "pr")
+```
+
+For additional normality tests, the residuals can be extracted from the `model` object. The following lines exemplary perform a [Jarque–Bera test](https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test) [@jar87]:
+
+```{r}
+res <- dax_model_3t$residuals
+tseries::jarque.bera.test(res)
+```
 
 ## References

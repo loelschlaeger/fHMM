@@ -25,6 +25,6 @@ This function predicts the next \code{ahead} states and data points based on
 an \code{fHMM_model} object.
 }
 \examples{
-data(dax_model)
-predict(dax_model)
+data(dax_model_3t)
+predict(dax_model_3t)
 }

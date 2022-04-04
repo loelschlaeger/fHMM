@@ -24,5 +24,6 @@ This function defines state-dependent distributions for the {fHMM} package.
 \examples{
 sdds <- c("t(sigma = 0.1, df = Inf)", "gamma")
 fHMM:::fHMM_sdds(sdds)
+
 }
-\keyword{constructor}
+\keyword{internal}

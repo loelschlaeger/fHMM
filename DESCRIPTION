@@ -2,10 +2,10 @@ Package: fHMM
 Type: Package
 Title: Fitting Hidden Markov Models to Financial Data
 Version: 1.0.0
-Date: 2022-02-20
+Date: 2022-03-03
 Authors@R: c(
     person("Lennart", "Oelschl\U00E4ger", 
-           email = "lennart.oelschlaeger@uni-bielefeld.de", 
+           email = "oelschlaeger.lennart@gmail.com", 
            role = c("aut", "cre")),
     person("Timo", "Adam", 
            email = "ta59@st-andrews.ac.uk", 
@@ -14,10 +14,12 @@ Authors@R: c(
            email = "r.michels@uni-bielefeld.de", 
            role = "aut"))
 Description: Fitting (hierarchical) hidden Markov models to financial data
-    via maximum likelihood estimation. For a reference on the model see
-    <doi:10.1177/1471082X211034048>.
+    via maximum likelihood estimation. See Oelschläger, L. and Adam, T.
+    "Detecting bearish and bullish markets in financial time series using 
+    hierarchical hidden Markov models" (2021, Statistical Modelling) for a 
+    reference.
 Language: en-US
-URL: https://loelschlaeger.github.io/fHMM/
+URL: https://loelschlaeger.de/fHMM/
 BugReports: https://github.com/loelschlaeger/fHMM/issues
 License: GPL-3
 Encoding: UTF-8
@@ -38,7 +40,8 @@ Suggests:
     knitr,
     testthat (>= 3.0.0),
     covr,
-    printr
+    printr,
+    tseries
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
