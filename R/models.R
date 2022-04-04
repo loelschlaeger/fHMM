@@ -79,7 +79,7 @@
 #'   states    = c(2,2),
 #'   sdds      = c("t(df = 1)", "t(df = 1)"),
 #'   period    = "m",
-#'   data      = list(file = c(system.file("extdata", "dax.csv", package = "fHMM"), 
+#'   data      = list(file = c(system.file("extdata", "dax.csv", package = "fHMM"),
 #'                             system.file("extdata", "vw.csv", package = "fHMM")),
 #'                    from = "2015-01-01",
 #'                    to = "2020-01-01",
