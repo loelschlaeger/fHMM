@@ -289,7 +289,10 @@ R> controls <- list(
 +    data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
 +                  date_column = "Date",
 +                  data_column = "Close",
-+                  logreturns  = TRUE)
++                  from        = "2000-01-01",
++                  to          = "2021-12-31",
++                  logreturns  = TRUE),
++    fit    = list(runs        = 100)
 +  )
 R> controls <- set_controls(controls)
 R> data <- prepare_data(controls)
@@ -310,7 +313,7 @@ R> summary(data)
 \end{Sinput}
 \begin{Soutput}
 Summary of fHMM empirical data
-* number of observations: 8778 
+* number of observations: 5626 
 * data source: dax.csv 
 * date column: Date 
 * log returns: TRUE 
@@ -433,7 +436,7 @@ When numerically maximizing the likelihood using some Newton-Raphson-type method
 
 As the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one. To avoid this problem, it is recommended to run the maximization multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood (see \cite{zuc16} and \cite{oel21} for details).
 
-For illustration, we fit a 3-state HMM with state-dependent t-distributions to the DAX data that we prepared in the previous section on data management:
+For illustration, we fit a 3-state HMM with state-dependent t-distributions to the DAX data. We use the same specification as in the previous section:
 
 %
 \begin{Schunk}
@@ -455,9 +458,15 @@ R> data <- prepare_data(controls)
 \end{Schunk}
 %
 
-The \class{data} object can be directly passed to the \fct{fit\_model} function that numerically maximizes the model's (log-) likelihood function \code{runs = 100} times. For convenience, the \class{controls} object is saved in \class{data}. This task can be parallelized by setting the \code{ncluster} argument. If you avoid any problems with clustering on your OS, use \code{ncluster = 1} which avoids any dependency on packages that provide clustering.
+The \class{data} object can be directly passed to the \fct{fit\_model} function that numerically maximizes the model's (log-) likelihood function \code{runs = 100} times. For convenience, the \class{controls} object is saved in \class{data} and does not need to be submitted to \fct{fit\_model}. The numerical maximization runs can be parallelized by setting the \code{ncluster} argument. Setting \code{ncluster = 1} avoids any dependency on packages that provide clustering.
 
-\code{dax\_model\_3t <- fit\_model(data, seed = 1, verbose = FALSE)}
+%
+\begin{Schunk}
+\begin{Sinput}
+R> dax_model_3t <- fit_model(data, seed = 1, verbose = FALSE)
+\end{Sinput}
+\end{Schunk}
+%
 
 The estimated model is saved in the \pkg{fHMM} package and can be accessed as follows:
 
@@ -469,48 +478,30 @@ R> data(dax_model_3t)
 \end{Schunk}
 %
 
-Calling the \fct{summary} method provides an overview of the model fit, whereas \fct{coef} returns a data frame of the estimated model coefficients:
+The \fct{coef} method returns a data frame of the estimated model coefficients:
 
 %
 \begin{Schunk}
 \begin{Sinput}
-R> summary(dax_model_3t)
+R> coef(dax_model_3t)
 \end{Sinput}
 \begin{Soutput}
-Summary of fHMM model
-
-  simulated hierarchy       LL       AIC       BIC
-1     FALSE     FALSE 16913.33 -33796.65 -33697.13
-
-State-dependent distributions:
-t() 
-
-Estimates:
-                  lb   estimate        ub
-Gamma_2.1  2.790e-03  5.146e-03 9.429e-03
-Gamma_3.1         NA  1.500e-69        NA
-Gamma_1.2         NA  1.740e-02        NA
-Gamma_3.2         NA  2.641e-02        NA
-Gamma_1.3         NA  1.972e-64        NA
-Gamma_2.3  1.394e-02  2.170e-02 3.357e-02
-mu_1      -3.726e-03 -1.674e-03 3.784e-04
-mu_2      -7.969e-04 -2.518e-04 2.933e-04
-mu_3       9.610e-04  1.269e-03 1.576e-03
-sigma_1    2.330e-02  2.563e-02 2.819e-02
-sigma_2    1.269e-02  1.324e-02 1.381e-02
-sigma_3    5.332e-03  5.774e-03 6.253e-03
-df_1       5.501e+00  1.064e+01 2.059e+01
-df_2       4.958e+75  4.958e+75 4.958e+75
-df_3       3.964e+00  5.272e+00 7.012e+00
-
-States:
-decoded
-   1    2    3 
- 695 2753 2177 
-
-Residuals:
-     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
--3.523766 -0.659750  0.010357 -0.002317  0.673963  3.919070 
+                     lb      estimate           ub
+Gamma_2.1  2.790298e-03  5.145659e-03 9.428763e-03
+Gamma_3.1            NA  1.499800e-69           NA
+Gamma_1.2            NA  1.740120e-02           NA
+Gamma_3.2            NA  2.640840e-02           NA
+Gamma_1.3            NA  1.972455e-64           NA
+Gamma_2.3  1.393931e-02  2.170081e-02 3.356866e-02
+mu_1      -3.725797e-03 -1.673721e-03 3.783550e-04
+mu_2      -7.968519e-04 -2.517697e-04 2.933126e-04
+mu_3       9.609845e-04  1.268698e-03 1.576411e-03
+sigma_1    2.329705e-02  2.562672e-02 2.818935e-02
+sigma_2    1.269102e-02  1.323830e-02 1.380917e-02
+sigma_3    5.332188e-03  5.774416e-03 6.253320e-03
+df_1       5.501359e+00  1.064328e+01 2.059118e+01
+df_2       4.957714e+75  4.957714e+75 4.957714e+75
+df_3       3.964123e+00  5.272141e+00 7.011757e+00
 \end{Soutput}
 \end{Schunk}
 %
@@ -536,6 +527,19 @@ R> plot(dax_model_3t, plot_type = "ll")
 \end{Schunk}
 \includegraphics{fhmm_oelschlaeger_adam_michels-ll}
 %
+
+The package also includes an hierarchical HMM with the following specification:
+
+%
+\begin{Schunk}
+\begin{Sinput}
+R> data(dax_vw_model)
+R> plot(dax_vw_model, plot_type = "sdds")
+\end{Sinput}
+\end{Schunk}
+\includegraphics{fhmm_oelschlaeger_adam_michels-hhmm_model}
+%
+
 
 \section{State decoding and prediciton} \label{sec:state_decoding_and_prediction} %% Rouven + Lennart
 
@@ -624,6 +628,9 @@ R> predict(dax_model_3t, ahead = 10)
 \end{Soutput}
 \end{Schunk}
 %
+
+
+
 
 \section{Model checking} \label{sec:model_checking} %% Timo + Lennart
 
@@ -723,9 +730,9 @@ dax_model_3t         15       16913.33 -33796.65 -33697.13
 
 %% -- Summary/conclusions/discussion -------------------------------------------
 
-\section{Summary and discussion} \label{sec:summary}
+\section{Conclusions} \label{sec:conclusion}
 
-Content ...
+The \pkg{fHMM} package intends to make the estimation of hidden Markov models for financial data available to practitioners in a user-friendly way. It contains functionality for data management, model fitting, state decoding, model checking, model selection, and methods for visualization. The hierarchical model extension is included for modeling trends on two temporal resolutions. 
 
 %% -- Optional special unnumbered sections -------------------------------------
 
@@ -733,13 +740,12 @@ Content ...
 
 The results in this paper were obtained using
 \proglang{R}~4.1.2 with the
-\pkg{fHMM}~1.0.0.9000 package. \proglang{R} itself
+\pkg{fHMM}~1.0.0 package. \proglang{R} itself
 and all packages used are available from the Comprehensive
 \proglang{R} Archive Network (CRAN) at \url{https://CRAN.R-project.org/}.
 
 
-\section*{Acknowledgments}
-Content ...
+% \section*{Acknowledgments}
 
 %% -- Bibliography -------------------------------------------------------------
 %% - References need to be provided in a .bib BibTeX database.

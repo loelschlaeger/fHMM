@@ -256,7 +256,10 @@ controls <- list(
   data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
                 date_column = "Date",
                 data_column = "Close",
-                logreturns  = TRUE)
+                from        = "2000-01-01",
+                to          = "2021-12-31",
+                logreturns  = TRUE),
+  fit    = list(runs        = 100)
 )
 controls <- set_controls(controls)
 data <- prepare_data(controls)
@@ -374,7 +377,7 @@ When numerically maximizing the likelihood using some Newton-Raphson-type method
 
 As the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one. To avoid this problem, it is recommended to run the maximization multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood (see \cite{zuc16} and \cite{oel21} for details).
 
-For illustration, we fit a 3-state HMM with state-dependent t-distributions to the DAX data that we prepared in the previous section on data management:
+For illustration, we fit a 3-state HMM with state-dependent t-distributions to the DAX data. We use the same specification as in the previous section:
 
 %
 <<data preparation>>=
@@ -394,9 +397,13 @@ data <- prepare_data(controls)
 @
 %
 
-The \class{data} object can be directly passed to the \fct{fit\_model} function that numerically maximizes the model's (log-) likelihood function \code{runs = 100} times. For convenience, the \class{controls} object is saved in \class{data}. This task can be parallelized by setting the \code{ncluster} argument. If you avoid any problems with clustering on your OS, use \code{ncluster = 1} which avoids any dependency on packages that provide clustering.
+The \class{data} object can be directly passed to the \fct{fit\_model} function that numerically maximizes the model's (log-) likelihood function \code{runs = 100} times. For convenience, the \class{controls} object is saved in \class{data} and does not need to be submitted to \fct{fit\_model}. The numerical maximization runs can be parallelized by setting the \code{ncluster} argument. Setting \code{ncluster = 1} avoids any dependency on packages that provide clustering.
 
-\code{dax\_model\_3t <- fit\_model(data, seed = 1, verbose = FALSE)}
+%
+<<model estimation, eval=FALSE>>=
+dax_model_3t <- fit_model(data, seed = 1, verbose = FALSE)
+@
+%
 
 The estimated model is saved in the \pkg{fHMM} package and can be accessed as follows:
 
@@ -406,11 +413,11 @@ data(dax_model_3t)
 @
 %
 
-Calling the \fct{summary} method provides an overview of the model fit, whereas \fct{coef} returns a data frame of the estimated model coefficients:
+The \fct{coef} method returns a data frame of the estimated model coefficients:
 
 %
-<<summarize model>>=
-summary(dax_model_3t)
+<<model coefficients>>=
+coef(dax_model_3t)
 @
 %
 
@@ -429,6 +436,16 @@ As mentioned above, the HMM likelihood function is prone to local optima. This e
 plot(dax_model_3t, plot_type = "ll")
 @
 %
+
+The package also includes an hierarchical HMM with the following specification:
+
+%
+<<hhmm_model, fig=TRUE, width = 9>>=
+data(dax_vw_model)
+plot(dax_vw_model, plot_type = "sdds")
+@
+%
+
 
 \section{State decoding and prediciton} \label{sec:state_decoding_and_prediction} %% Rouven + Lennart
 
@@ -482,6 +499,9 @@ Having decoded the underlying states, it is possible to compute the state probab
 predict(dax_model_3t, ahead = 10)
 @
 %
+
+
+
 
 \section{Model checking} \label{sec:model_checking} %% Timo + Lennart
 
@@ -559,9 +579,9 @@ compare_models(dax_model_2n, dax_model_3t)
 
 %% -- Summary/conclusions/discussion -------------------------------------------
 
-\section{Summary and discussion} \label{sec:summary}
+\section{Conclusions} \label{sec:conclusion}
 
-Content ...
+The \pkg{fHMM} package intends to make the estimation of hidden Markov models for financial data available to practitioners in a user-friendly way. It contains functionality for data management, model fitting, state decoding, model checking, model selection, and methods for visualization. The hierarchical model extension is included for modeling trends on two temporal resolutions. 
 
 %% -- Optional special unnumbered sections -------------------------------------
 
@@ -574,8 +594,7 @@ and all packages used are available from the Comprehensive
 \proglang{R} Archive Network (CRAN) at \url{https://CRAN.R-project.org/}.
 
 
-\section*{Acknowledgments}
-Content ...
+% \section*{Acknowledgments}
 
 %% -- Bibliography -------------------------------------------------------------
 %% - References need to be provided in a .bib BibTeX database.
