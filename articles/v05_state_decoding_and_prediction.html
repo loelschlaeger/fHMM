@@ -125,17 +125,17 @@
 <p>Having decoded the underlying states, it is possible to compute the state probabilities of next observations. Based on these probabilities and in combination with the estimated state-dependent distributions, next observations can be predicted, compare <span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">dax_model_3t</span>, ahead <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="co">#&gt;       state_1   state_2     state_3          lb      estimate         ub</span>
-<span class="co">#&gt; 1  0.02170081 0.9731535 0.005145659 -0.02190377 -2.260912e-04 0.02145158</span>
-<span class="co">#&gt; 2  0.04224595 0.9476904 0.010063634 -0.02178845 -2.018461e-04 0.02138476</span>
-<span class="co">#&gt; 3  0.06169596 0.9235390 0.014765007 -0.02168046 -1.789581e-04 0.02132255</span>
-<span class="co">#&gt; 4  0.08010821 0.9006315 0.019260295 -0.02157939 -1.573549e-04 0.02126468</span>
-<span class="co">#&gt; 5  0.09753712 0.8789034 0.023559485 -0.02148485 -1.369681e-04 0.02121091</span>
-<span class="co">#&gt; 6  0.11403424 0.8582937 0.027672059 -0.02139648 -1.177326e-04 0.02116101</span>
-<span class="co">#&gt; 7  0.12964845 0.8387445 0.031607018 -0.02131393 -9.958705e-05 0.02111476</span>
-<span class="co">#&gt; 8  0.14442608 0.8202010 0.035372911 -0.02123689 -8.247306e-05 0.02107194</span>
-<span class="co">#&gt; 9  0.15841104 0.8026111 0.038977855 -0.02116504 -6.633542e-05 0.02103237</span>
-<span class="co">#&gt; 10 0.17164498 0.7859255 0.042429556 -0.02109809 -5.112181e-05 0.02099584</span></code></pre></div>
+<span class="co">#&gt;    state_1 state_2 state_3       lb estimate      ub</span>
+<span class="co">#&gt; 1  0.02170 0.97315 0.00515 -0.02190 -0.00023 0.02145</span>
+<span class="co">#&gt; 2  0.04225 0.94769 0.01006 -0.02179 -0.00020 0.02138</span>
+<span class="co">#&gt; 3  0.06170 0.92354 0.01477 -0.02168 -0.00018 0.02132</span>
+<span class="co">#&gt; 4  0.08011 0.90063 0.01926 -0.02158 -0.00016 0.02126</span>
+<span class="co">#&gt; 5  0.09754 0.87890 0.02356 -0.02148 -0.00014 0.02121</span>
+<span class="co">#&gt; 6  0.11403 0.85829 0.02767 -0.02140 -0.00012 0.02116</span>
+<span class="co">#&gt; 7  0.12965 0.83874 0.03161 -0.02131 -0.00010 0.02111</span>
+<span class="co">#&gt; 8  0.14443 0.82020 0.03537 -0.02124 -0.00008 0.02107</span>
+<span class="co">#&gt; 9  0.15841 0.80261 0.03898 -0.02117 -0.00007 0.02103</span>
+<span class="co">#&gt; 10 0.17164 0.78593 0.04243 -0.02110 -0.00005 0.02100</span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
