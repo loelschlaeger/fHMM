@@ -2,6 +2,7 @@
 
 * In the vignette 'Controls', in the section about example specifications for `controls`, corrected `sdds = "gamma(mu = -1|1)"` to `sdds = "gamma(mu = 0.5|2)"` because mean of the Gamma distribution must be positive.
 * Added `digits` argument to `print.fHMM_predict()`.
+* Fixed bug in `reorder_states()` that allowed for misspecification of `state_order`.
 
 # fHMM 1.0.0
 
