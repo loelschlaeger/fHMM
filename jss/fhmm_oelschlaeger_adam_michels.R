@@ -8,58 +8,53 @@ library("fHMM")
 
 
 ###################################################
-### code chunk number 2: data download
+### code chunk number 2: set controls emp hmm
 ###################################################
-download_data(symbol = "^GDAXI", file = "dax.csv")
-
-
-###################################################
-### code chunk number 3: set controls emp hmm
-###################################################
-controls = list(
+controls <- list(
   states = 3,
   sdds   = "t",
   data   = list(file        = "dax.csv",
                 date_column = "Date",
                 data_column = "Close",
-                logreturns  = TRUE),
-  fit    = list(runs        = 50)
+                logreturns  = TRUE)
 )
-set_controls(controls)
+controls <- set_controls(controls)
+class(controls)
 
 
 ###################################################
-### code chunk number 4: set controls sim hmm
+### code chunk number 3: set controls sim hmm
 ###################################################
-controls = list(
+controls <- list(
   states  = 2,
   sdds    = "gamma(mu = -1|1)",
-  horizon = 500
+  horizon = 500,
+  fit     = list(runs = 50)
 )
 set_controls(controls)
 
 
 ###################################################
-### code chunk number 5: set controls hhmm
+### code chunk number 4: set controls hhmm
 ###################################################
-controls = list(
+controls <- list(
   hierarchy = TRUE,
-  horizon   = c(100, 10),
+  states    = c(3, 2),
   sdds      = c("t(df = 1)", "t(df = Inf)"),
-  period    = "m"
+  horizon   = c(100, 10)
 )
 set_controls(controls)
 
 
 ###################################################
-### code chunk number 6: get data
+### code chunk number 5: get data
 ###################################################
 system.file("extdata", "dax.csv", package = "fHMM")
 system.file("extdata", "vw.csv", package = "fHMM")
 
 
 ###################################################
-### code chunk number 7: prepare_data example
+### code chunk number 6: prepare_data example
 ###################################################
 controls <- list(
   states = 3,
@@ -75,13 +70,13 @@ summary(data)
 
 
 ###################################################
-### code chunk number 8: download dax example
+### code chunk number 7: download dax example
 ###################################################
 download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date())
 
 
 ###################################################
-### code chunk number 9: ts
+### code chunk number 8: ts
 ###################################################
 events <- fHMM_events(
   list(
@@ -95,7 +90,7 @@ plot(data, events = events)
 
 
 ###################################################
-### code chunk number 10: data preparation
+### code chunk number 9: data preparation
 ###################################################
 controls <- list(
   states = 3,
@@ -113,86 +108,86 @@ data <- prepare_data(controls)
 
 
 ###################################################
-### code chunk number 11: access model
+### code chunk number 10: access model
 ###################################################
 data(dax_model_3t)
 
 
 ###################################################
-### code chunk number 12: summarize model
+### code chunk number 11: summarize model
 ###################################################
 summary(dax_model_3t)
 
 
 ###################################################
-### code chunk number 13: sdds
+### code chunk number 12: sdds
 ###################################################
 plot(dax_model_3t, plot_type = "sdds")
 
 
 ###################################################
-### code chunk number 14: ll
+### code chunk number 13: ll
 ###################################################
 plot(dax_model_3t, plot_type = "ll")
 
 
 ###################################################
-### code chunk number 15: load dax model
+### code chunk number 14: load dax model
 ###################################################
 data(dax_model_3t)
 
 
 ###################################################
-### code chunk number 16: dax decode states
+### code chunk number 15: dax decode states
 ###################################################
 dax_model_3t <- decode_states(dax_model_3t)
 
 
 ###################################################
-### code chunk number 17: dec_ts
+### code chunk number 16: dec_ts
 ###################################################
 plot(dax_model_3t)
 
 
 ###################################################
-### code chunk number 18: reorder states
+### code chunk number 17: reorder states
 ###################################################
 dax_model_3t <- reorder_states(dax_model_3t, 3:1)
 
 
 ###################################################
-### code chunk number 19: predict
+### code chunk number 18: predict
 ###################################################
 predict(dax_model_3t, ahead = 10)
 
 
 ###################################################
-### code chunk number 20: load dax data
+### code chunk number 19: load dax data
 ###################################################
 data(dax_model_3t)
 
 
 ###################################################
-### code chunk number 21: compute residuals
+### code chunk number 20: compute residuals
 ###################################################
 dax_model_3t <- compute_residuals(dax_model_3t)
 
 
 ###################################################
-### code chunk number 22: residuals
+### code chunk number 21: residuals
 ###################################################
 plot(dax_model_3t, plot_type = "pr")
 
 
 ###################################################
-### code chunk number 23: jb test
+### code chunk number 22: jb test
 ###################################################
 res <- dax_model_3t$residuals
 tseries::jarque.bera.test(res)
 
 
 ###################################################
-### code chunk number 24: compare models
+### code chunk number 23: compare models
 ###################################################
 data(dax_model_2n)
 data(dax_model_3t)
