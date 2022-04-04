@@ -87,7 +87,7 @@ Over the last decades, HMMs have been applied to various financial problems, inc
 More recently, \cite{lih17} used HMMs to identify different volatility levels in the Standard and Poor's 500 index, aiming at providing evidence for the conjecture that returns exhibit negative correlation with volatility. \cite{ngu18}, to give another example, used HMMs to predict monthly closing prices to derive an optimal trading strategy, which was shown to outperform the conventional buy-and-hold strategy. Further financial applications include HMMs for asset allocation and portfolio optimization \citep{bul11, nys15a, nys18}. All these examples demonstrate that HMMs constitute a versatile class of time series models that naturally accounts for the state-switching patterns that are often found in financial time series.
 
 %% Intro to the package
-The \pkg{fHMM} package aims at making HMMs accessible to users interested in modeling financial time series. Its functionality can be classified into functions for data preparation, model estimation, and model evaluation, which is illustrated in Figure \ref{fig:flowchart}. Functions for data preparation include an interface to Yahoo Finance... The model is estimated in a maximum likelihood framework, where the likelihood is evaluated using the forward algorithm, which is implemented in C++. Functions for model evaluation include... It also implements hierarchical HMMs; an extension of basic HMMs proposed in \cite{oel21} that improves the model's capability of distinguishing between short- and long-term trends and allows us to model data collected at different time scales. interpret market dynamics at multiple time scales. 
+The \pkg{fHMM} package \cite{oel22} aims at making HMMs accessible to users interested in modeling financial time series. Its functionality can be classified into functions for data preparation, model estimation, and model evaluation, which is illustrated in Figure \ref{fig:flowchart}. Functions for data preparation include an interface to Yahoo Finance for downloading stock data. The model is estimated in a maximum likelihood framework, where the likelihood is evaluated using the forward algorithm, which is implemented in C++ and parallelized for fast computation. Functions for model evaluation include... It also implements hierarchical HMMs; an extension of basic HMMs proposed in \cite{oel21} that improves the model's capability of distinguishing between short- and long-term trends and allows us to model data collected at different time scales. interpret market dynamics at multiple time scales. 
 
 \begin{figure}
   \centering
@@ -487,21 +487,21 @@ R> coef(dax_model_3t)
 \end{Sinput}
 \begin{Soutput}
                      lb      estimate           ub
-Gamma_2.1  2.790298e-03  5.145659e-03 9.428763e-03
-Gamma_3.1            NA  1.499800e-69           NA
-Gamma_1.2            NA  1.740120e-02           NA
-Gamma_3.2            NA  2.640840e-02           NA
-Gamma_1.3            NA  1.972455e-64           NA
-Gamma_2.3  1.393931e-02  2.170081e-02 3.356866e-02
-mu_1      -3.725797e-03 -1.673721e-03 3.783550e-04
-mu_2      -7.968519e-04 -2.517697e-04 2.933126e-04
-mu_3       9.609845e-04  1.268698e-03 1.576411e-03
-sigma_1    2.329705e-02  2.562672e-02 2.818935e-02
-sigma_2    1.269102e-02  1.323830e-02 1.380917e-02
-sigma_3    5.332188e-03  5.774416e-03 6.253320e-03
-df_1       5.501359e+00  1.064328e+01 2.059118e+01
-df_2       4.957714e+75  4.957714e+75 4.957714e+75
-df_3       3.964123e+00  5.272141e+00 7.011757e+00
+Gamma_2.1  1.393745e-02  2.170056e-02 3.357222e-02
+Gamma_3.1  1.710420e-06  1.696596e-06 1.671225e-06
+Gamma_1.2  1.659146e-02  2.641008e-02 4.179228e-02
+Gamma_3.2  9.359401e-03  1.740175e-02 3.213059e-02
+Gamma_1.3  1.258535e-08  1.246159e-08 1.226657e-08
+Gamma_2.3  2.789877e-03  5.145960e-03 9.431251e-03
+mu_1       9.610235e-04  1.268712e-03 1.576400e-03
+mu_2      -7.955275e-04 -2.517499e-04 2.920278e-04
+mu_3      -3.723796e-03 -1.673649e-03 3.764982e-04
+sigma_1    5.332119e-03  5.774343e-03 6.253244e-03
+sigma_2    1.269075e-02  1.323801e-02 1.380887e-02
+sigma_3    2.329677e-02  2.562622e-02 2.818860e-02
+df_1       3.964154e+00  5.272157e+00 7.011747e+00
+df_2       7.592272e+04  7.592547e+04 7.592821e+04
+df_3       5.501298e+00  1.064107e+01 2.058285e+01
 \end{Soutput}
 \end{Schunk}
 %
@@ -603,28 +603,17 @@ Having decoded the underlying states, it is possible to compute the state probab
 R> predict(dax_model_3t, ahead = 10)
 \end{Sinput}
 \begin{Soutput}
-      state_1   state_2     state_3          lb
-1  0.02170081 0.9731535 0.005145659 -0.02190377
-2  0.04224595 0.9476904 0.010063634 -0.02178845
-3  0.06169596 0.9235390 0.014765007 -0.02168046
-4  0.08010821 0.9006315 0.019260295 -0.02157939
-5  0.09753712 0.8789034 0.023559485 -0.02148485
-6  0.11403424 0.8582937 0.027672059 -0.02139648
-7  0.12964845 0.8387445 0.031607018 -0.02131393
-8  0.14442608 0.8202010 0.035372911 -0.02123689
-9  0.15841104 0.8026111 0.038977855 -0.02116504
-10 0.17164498 0.7859255 0.042429556 -0.02109809
-        estimate         ub
-1  -2.260912e-04 0.02145158
-2  -2.018461e-04 0.02138476
-3  -1.789581e-04 0.02132255
-4  -1.573549e-04 0.02126468
-5  -1.369681e-04 0.02121091
-6  -1.177326e-04 0.02116101
-7  -9.958705e-05 0.02111476
-8  -8.247306e-05 0.02107194
-9  -6.633542e-05 0.02103237
-10 -5.112181e-05 0.02099584
+   state_1 state_2 state_3       lb estimate      ub
+1  0.00515 0.97315 0.02170 -0.02190 -0.00023 0.02145
+2  0.01006 0.94769 0.04225 -0.02179 -0.00020 0.02138
+3  0.01477 0.92354 0.06170 -0.02168 -0.00018 0.02132
+4  0.01926 0.90063 0.08011 -0.02158 -0.00016 0.02126
+5  0.02356 0.87890 0.09754 -0.02148 -0.00014 0.02121
+6  0.02767 0.85829 0.11403 -0.02140 -0.00012 0.02116
+7  0.03161 0.83874 0.12965 -0.02131 -0.00010 0.02111
+8  0.03537 0.82020 0.14442 -0.02124 -0.00008 0.02107
+9  0.03898 0.80261 0.15841 -0.02116 -0.00007 0.02103
+10 0.04243 0.78593 0.17164 -0.02110 -0.00005 0.02100
 \end{Soutput}
 \end{Schunk}
 %
@@ -689,7 +678,7 @@ R> tseries::jarque.bera.test(res)
 	Jarque Bera Test
 
 data:  res
-X-squared = 2.6558, df = 2, p-value = 0.265
+X-squared = 2.6542, df = 2, p-value = 0.2652
 \end{Soutput}
 \end{Schunk}
 %
@@ -740,7 +729,7 @@ The \pkg{fHMM} package intends to make the estimation of hidden Markov models fo
 
 The results in this paper were obtained using
 \proglang{R}~4.1.2 with the
-\pkg{fHMM}~1.0.0 package. \proglang{R} itself
+\pkg{fHMM}~1.0.0.9000 package. \proglang{R} itself
 and all packages used are available from the Comprehensive
 \proglang{R} Archive Network (CRAN) at \url{https://CRAN.R-project.org/}.
 
