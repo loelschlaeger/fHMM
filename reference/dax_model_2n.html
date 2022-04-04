@@ -84,14 +84,15 @@ demonstration purpose.</p>
     <p>The model was derived via specifying</p><div class="sourceCode"><pre><code><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   states <span class="op">=</span> <span class="fl">2</span>,
   sdds   <span class="op">=</span> <span class="st">"t(df = Inf)"</span>,
-  data   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>file        <span class="op">=</span> <span class="st">"inst/extdata/dax.csv"</span>,
+  data   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>file        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dax.csv"</span>, package <span class="op">=</span> <span class="st">"fHMM"</span><span class="op">)</span>,
                 date_column <span class="op">=</span> <span class="st">"Date"</span>,
                 data_column <span class="op">=</span> <span class="st">"Close"</span>,
                 logreturns  <span class="op">=</span> <span class="cn">TRUE</span>,
                 from        <span class="op">=</span> <span class="st">"2000-01-03"</span>,
                 to          <span class="op">=</span> <span class="st">"2021-12-31"</span><span class="op">)</span>,
   fit    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"runs"</span> <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-  <span class="op">)</span></code></pre></div><p>Set <code>file = "extdata/dax.csv"</code> to reproduce this code.</p>
+  <span class="op">)</span></code></pre></div>
+
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
