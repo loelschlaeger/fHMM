@@ -121,7 +121,7 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
 #' @noRd
 #' @export
 
-print.fHMM_predict <- function(x, ...) {
-  print(cbind(x$states, x$data))
+print.fHMM_predict <- function(x, digits = 5, ...) {
+  print(round(cbind(x$states, x$data), digits = digits))
   return(invisible(x))
 }

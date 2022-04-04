@@ -1,6 +1,7 @@
 # fHMM 1.0.0.9000
 
 * In the vignette 'Controls', in the section about example specifications for `controls`, corrected `sdds = "gamma(mu = -1|1)"` to `sdds = "gamma(mu = 0.5|2)"` because mean of the Gamma distribution must be positive.
+* Added `digits` argument to `print.fHMM_predict()`.
 
 # fHMM 1.0.0
 
