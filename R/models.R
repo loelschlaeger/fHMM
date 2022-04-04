@@ -13,7 +13,7 @@
 #' controls <- list(
 #'   states = 2,
 #'   sdds   = "t(df = Inf)",
-#'   data   = list(file        = "inst/extdata/dax.csv",
+#'   data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
 #'                 date_column = "Date",
 #'                 data_column = "Close",
 #'                 logreturns  = TRUE,
@@ -22,7 +22,6 @@
 #'   fit    = list("runs" = 100)
 #'   )
 #' }
-#' Set `file = "extdata/dax.csv"` to reproduce this code.
 #'
 #' @format An object of class \code{fHMM_model}.
 #'
@@ -45,7 +44,7 @@
 #' controls <- list(
 #'   states = 3,
 #'   sdds   = "t",
-#'   data   = list(file        = "inst/extdata/dax.csv",
+#'   data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
 #'                 date_column = "Date",
 #'                 data_column = "Close",
 #'                 logreturns  = TRUE,
@@ -54,7 +53,6 @@
 #'   fit    = list("runs" = 100)
 #'   )
 #' }
-#' Set `file = "extdata/dax.csv"` to reproduce this code.
 #'
 #' @format An object of class \code{fHMM_model}.
 #'
@@ -81,14 +79,14 @@
 #'   states    = c(2,2),
 #'   sdds      = c("t(df = 1)", "t(df = 1)"),
 #'   period    = "m",
-#'   data      = list(file = c("inst/extdata/dax.csv", "inst/extdata/vw.csv"),
+#'   data      = list(file = c(system.file("extdata", "dax.csv", package = "fHMM"), 
+#'                             system.file("extdata", "vw.csv", package = "fHMM")),
 #'                    from = "2015-01-01",
 #'                    to = "2020-01-01",
 #'                    logreturns = c(TRUE,TRUE)),
 #'   fit       = list("runs" = 100)
 #' )
 #' }
-#' Set `file = c("extdata/dax.csv", "extdata/vw.csv")` to reproduce this code.
 #'
 #' @format An object of class \code{fHMM_model}.
 #'

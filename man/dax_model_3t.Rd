@@ -21,7 +21,7 @@ The model was derived via specifying
 controls <- list(
   states = 3,
   sdds   = "t",
-  data   = list(file        = "inst/extdata/dax.csv",
+  data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
                 date_column = "Date",
                 data_column = "Close",
                 logreturns  = TRUE,
@@ -30,6 +30,5 @@ controls <- list(
   fit    = list("runs" = 100)
   )
 }
-Set \code{file = "extdata/dax.csv"} to reproduce this code.
 }
 \keyword{model}
