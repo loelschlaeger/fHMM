@@ -163,16 +163,16 @@ fHMM_parameters <- function(controls,
   }
   if (controls[["sdds"]][[1]]$name == "t") {
     if (!all(is_number(mus)) || length(mus) != M) {
-      stop("'mu' must be a numeric vector of length 'controls$states[1]'.")
+      stop("'mus' must be a numeric vector of length 'controls$states[1]'.")
     }
   }
   if (controls[["sdds"]][[1]]$name == "gamma") {
     if (!all(is_number(mus, pos = TRUE)) || length(mus) != M) {
-      stop("'mu' must be a positive numeric vector of length 'controls$states[1]'.")
+      stop("'mus' must be a positive numeric vector of length 'controls$states[1]'.")
     }
   }
   if (!all(is_number(sigmas, pos = TRUE)) || length(sigmas) != M) {
-    stop("'sigma' must be a positive numeric vector of length 'controls$states[1]'.")
+    stop("'sigmas' must be a positive numeric vector of length 'controls$states[1]'.")
   }
   if (controls[["sdds"]][[1]]$name == "t") {
     if (!all(is_number(dfs, pos = TRUE)) || length(dfs) != M) {
