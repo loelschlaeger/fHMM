@@ -66,7 +66,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fit_model</span><span class="op">(</span><span class="va">data</span>, ncluster <span class="op">=</span> <span class="fl">1</span>, seed <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fit_model</span><span class="op">(</span><span class="va">data</span>, ncluster <span class="op">=</span> <span class="fl">1</span>, seed <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, init <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,6 +79,12 @@
 <dd><p>Set a seed for the sampling of initial values.</p></dd>
 <dt>verbose</dt>
 <dd><p>Set to <code>TRUE</code> to print progress messages.</p></dd>
+<dt>init</dt>
+<dd><p>Optionally an object of class <code>parUncon</code> for initialization. This can
+for example be the estimate of a previously fitted model <code>model</code>, i.e.
+the element <code>model$estimate</code>. The initial values are computed via
+<code>replicate(n, jitter(init, amount = 1), simplify = FALSE)</code>,
+where <code>n &lt;- data$controls$fit$runs</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
