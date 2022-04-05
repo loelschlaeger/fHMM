@@ -16,8 +16,8 @@
 #' @param verbose
 #' Set to \code{TRUE} to print progress messages.
 #' @param init
-#' Optionally an object of class \code{parUncon} for initialization. This can  
-#' for example be the estimate of a previously fitted model \code{model}, i.e. 
+#' Optionally an object of class \code{parUncon} for initialization. This can
+#' for example be the estimate of a previously fitted model \code{model}, i.e.
 #' the element \code{model$estimate}. The initial values are computed via
 #' \code{replicate(n, jitter(init, amount = 1), simplify = FALSE)},
 #' where \code{n <- data$controls$fit$runs}.
@@ -49,7 +49,7 @@ fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE, init = NU
   }
 
   ### generate start values
-  if(!is.null(init)){
+  if (!is.null(init)) {
     start_values <- replicate(data$controls$fit$runs, jitter(init), simplify = FALSE)
   } else {
     start_values <- list()
