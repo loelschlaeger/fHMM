@@ -103,7 +103,7 @@ The \pkg{fHMM} package \citep{oel22} aims at making HMMs accessible to users wit
 \end{figure}
 
 %% Outline of the paper
-This paper is structured as follows: in Section 2, we introduce HMMs. In Sections 3--8, we go through a typical workflow, where we explain how to specify the model, how to prepare, download, and simulate data, how to fit the model, how to decode the hidden states, how to use a fitted model for forecasting, how to check the goodness of fit, and how to do model selection. In Section 9, we conclude with...
+This paper is structured as follows: in Section 2, we introduce HMMs, focusing on their dependence structure and model assumptions. In Sections 3--8, we go through a typical workflow, where we explain how to specify the model, how to prepare, download, and simulate data, how to fit the model, how to decode the hidden states, how to use a fitted model for forecasting, how to check the goodness of fit, and how to do model selection. In Section 9, we conclude with...
 
 %% -- Manuscript ---------------------------------------------------------------
 
