@@ -15,6 +15,12 @@
 #' Set the number of clusters for parallelization.
 #' @param verbose
 #' Set to \code{TRUE} to print progress messages.
+#' @param init
+#' Optionally an object of class \code{parUncon} for initialization. This can  
+#' for example be the estimate of a previously fitted model \code{model}, i.e. 
+#' the element \code{model$estimate}. The initial values are computed via
+#' \code{replicate(n, jitter(init, amount = 1), simplify = FALSE)},
+#' where \code{n <- data$controls$fit$runs}.
 #'
 #' @return
 #' An object of class \code{fHMM_model}.
@@ -24,7 +30,7 @@
 #' @importFrom stats sd nlm
 #' @importFrom foreach %dopar%
 
-fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE) {
+fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE, init = NULL) {
 
   ### check inputs
   if (class(data) != "fHMM_data") {
@@ -43,24 +49,28 @@ fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE) {
   }
 
   ### generate start values
-  start_values <- list()
-  if (data[["controls"]][["fit"]][["origin"]]) {
-    start_values[[1]] <- par2parUncon(data[["true_parameters"]], data[["controls"]])
+  if(!is.null(init)){
+    start_values <- replicate(data$controls$fit$runs, jitter(init), simplify = FALSE)
   } else {
-    ### compute parameter scales based on the method of moments
-    scale_par <- c(1, 1)
-    if (!data[["controls"]][["hierarchy"]]) {
-      scale_par[1] <- mean(c(mean(data[["data"]], na.rm = "TRUE"), stats::sd(data[["data"]], na.rm = "TRUE")))
+    start_values <- list()
+    if (data[["controls"]][["fit"]][["origin"]]) {
+      start_values[[1]] <- par2parUncon(data[["true_parameters"]], data[["controls"]])
     } else {
-      scale_par[1] <- mean(c(mean(data[["data"]][, 1], na.rm = "TRUE"), stats::sd(data[["data"]][, 1], na.rm = "TRUE")))
-      scale_par[2] <- mean(c(mean(data[["data"]][, -1], na.rm = "TRUE"), stats::sd(data[["data"]][, -1], na.rm = "TRUE")))
-    }
-    scale_par <- abs(scale_par)
-    for (run in 1:data[["controls"]][["fit"]][["runs"]]) {
-      start_values[[run]] <- par2parUncon(
-        fHMM_parameters(controls = data[["controls"]], scale_par = scale_par),
-        data[["controls"]]
-      )
+      ### compute parameter scales based on the method of moments
+      scale_par <- c(1, 1)
+      if (!data[["controls"]][["hierarchy"]]) {
+        scale_par[1] <- mean(c(mean(data[["data"]], na.rm = "TRUE"), stats::sd(data[["data"]], na.rm = "TRUE")))
+      } else {
+        scale_par[1] <- mean(c(mean(data[["data"]][, 1], na.rm = "TRUE"), stats::sd(data[["data"]][, 1], na.rm = "TRUE")))
+        scale_par[2] <- mean(c(mean(data[["data"]][, -1], na.rm = "TRUE"), stats::sd(data[["data"]][, -1], na.rm = "TRUE")))
+      }
+      scale_par <- abs(scale_par)
+      for (run in 1:data[["controls"]][["fit"]][["runs"]]) {
+        start_values[[run]] <- par2parUncon(
+          fHMM_parameters(controls = data[["controls"]], scale_par = scale_par),
+          data[["controls"]]
+        )
+      }
     }
   }
 
