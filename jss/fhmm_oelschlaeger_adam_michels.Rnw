@@ -58,13 +58,17 @@ In this paper, we introduce the \proglang{R} package \pkg{fHMM} that provides va
   Lennart Oelschl\"ager\\
   Department of Business Administration and Economics\\
   Bielefeld University\\
-  Postfach 10 01 31\\
+  Postfach 10 01 31, Germany\\
   E-mail: \email{lennart.oelschlaeger@uni-bielefeld.de}\\
   Timo Adam \\
+  School of Mathematics and Statistics\\
+  University of St Andrews\\
+  The Observatory, Buchanan Gardens, St Andrews KY16 9LZ, UK\\
+  E-mail: \email{ta59@st-andrews.ac.uk}\\
   Rouven Michels \\
   Department of Business Administration and Economics\\
   Bielefeld University\\
-  Postfach 10 01 31\\
+  Postfach 10 01 31, Germany\\
   E-mail: \email{r.michels@uni-bielefeld.de}
 }
 
