@@ -104,7 +104,7 @@
 <div class="section level2">
 <h2 id="empirical-data">Empirical data<a class="anchor" aria-label="anchor" href="#empirical-data"></a>
 </h2>
-<p>Empirical data must be provided as a comma-separated values (CSV) file and its path must be specified in <code><a href="../reference/set_controls.html">set_controls()</a></code>, see <a href="http://loelschlaeger.de/fHMM/articles/v02_controls.html" class="external-link">the vignette on specifying the controls</a> for details.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;The &lt;code&gt;&lt;a href="../reference/download_data.html"&gt;download_data()&lt;/a&gt;&lt;/code&gt; function explained below provides a convenient tool for downloading stock data from &lt;a href="https://www.yahoo.com/finance" class="external-link uri"&gt;https://www.yahoo.com/finance&lt;/a&gt; in csv-format.&lt;/p&gt;'><sup>2</sup></a> The {fHMM} package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:</p>
+<p>Empirical data must be provided as a comma-separated values (CSV) file and its path must be specified in <code><a href="../reference/set_controls.html">set_controls()</a></code>, see <a href="http://loelschlaeger.de/fHMM/articles/v02_controls.html" class="external-link">the vignette on specifying the controls</a> for details.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;The &lt;code&gt;&lt;a href="../reference/download_data.html"&gt;download_data()&lt;/a&gt;&lt;/code&gt; function explained below provides a convenient tool for downloading stock data from &lt;a href="https://finance.yahoo.com" class="external-link uri"&gt;https://finance.yahoo.com&lt;/a&gt; in csv-format.&lt;/p&gt;'><sup>2</sup></a> The {fHMM} package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dax.csv"</span>, package <span class="op">=</span> <span class="st">"fHMM"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "/Users/runner/work/_temp/Library/fHMM/extdata/dax.csv"</span>
@@ -132,7 +132,7 @@
 <div class="section level2">
 <h2 id="download-stock-data">Download stock data<a class="anchor" aria-label="anchor" href="#download-stock-data"></a>
 </h2>
-<p>Daily stock prices listed on <a href="https://finance.yahoo.com/" class="external-link uri">https://finance.yahoo.com/</a> can be downloaded directly via</p>
+<p>Daily stock prices listed on <a href="https://finance.yahoo.com" class="external-link uri">https://finance.yahoo.com</a> can be downloaded directly via</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/download_data.html">download_data</a></span><span class="op">(</span><span class="va">symbol</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">file</span><span class="op">)</span></code></pre></div>
 <p>where</p>
