@@ -17,7 +17,7 @@
 #' fHMM:::check_date(date = "2000-01-01")
 check_date <- function(date) {
   date <- try(as.Date(date), silent = TRUE)
-  if (class(date) == "try-error" || any(is.na(as.Date(date, format = "%Y-%m-%d")))) {
+  if (inherits(date,"try-error") || any(is.na(as.Date(date, format = "%Y-%m-%d")))) {
     stop("Date not in required format 'YYYY-MM-DD'.")
   }
   return(date)

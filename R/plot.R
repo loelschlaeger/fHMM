@@ -18,11 +18,11 @@
 plot.fHMM_data <- function(x, events = NULL, ...) {
 
   ### check input
-  if (!class(x) == "fHMM_data") {
+  if (!inherits(x,"fHMM_data")) {
     stop("'x' is not of class 'fHMM_data'.")
   }
   if (!is.null(events)) {
-    if (!class(events) == "fHMM_events") {
+    if (!inherits(events,"fHMM_events")) {
       stop("'events' is not of class 'fHMM_events'.")
     }
     if (x$controls$simulated) {
@@ -67,7 +67,7 @@ plot.fHMM_data <- function(x, events = NULL, ...) {
 plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, ...) {
 
   ### check input
-  if (!class(x) == "fHMM_model") {
+  if (!inherits(x,"fHMM_model")) {
     stop("'x' is not of class 'fHMM_model'.")
   }
   plot_type <- intersect(plot_type, c("ll", "sdds", "pr", "ts"))
