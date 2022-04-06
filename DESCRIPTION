@@ -15,7 +15,7 @@ Authors@R: c(
            email = "ta59@st-andrews.ac.uk"),
     person(given = "Rouven", 
            family = "Michels",
-           role = "aut"
+           role = "aut",
            email = "r.michels@uni-bielefeld.de"))
 Description: Fitting (hierarchical) hidden Markov models to financial data
     via maximum likelihood estimation. See Oelschläger, L. and Adam, T.
