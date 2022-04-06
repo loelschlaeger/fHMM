@@ -98,7 +98,7 @@ Over the last decades, HMMs have been used in various financial applications, in
 More recently, \cite{lih17} used HMMs to model volatility in the Standard and Poor's 500 index, aiming at providing evidence for the conjecture that returns exhibit negative correlation with volatility. \cite{ngu18}, to give another example, used HMMs to predict monthly closing prices to derive an optimal trading strategy, which was shown to outperform the conventional buy-and-hold strategy, whereas \cite{bul11, nys15a, nys18} have shown that HMMs prove useful for asset allocation and portfolio optimization. All these examples demonstrate that HMMs constitute a versatile class of statistical models for time series that naturally accounts for the state-switching patterns often found in financial data.
 
 %% other packages about HMMs, how fHMM differs from them
-R-packages: general-purpose: deepmixS4 \citep{vis10}, ... Special-puropose: animal movement modeling: moveHMM \citep{mic16}, momentuHMM \citep{mcc18}. Hidden semi-Markov models: hsmm \citep{bul10}, countHMM \citep{ada19b}.
+R-packages: general-purpose: \pkg{deepmixS4} \citep{vis10}, \pkg{msm} \citep{jac11}, ... Special-puropose: animal movement modeling: \pkg{moveHMM} \citep{mic16}, \pkg{momentuHMM} \citep{mcc18}. Hidden semi-Markov models: \pkg{hsmm} \citep{bul10}, \pkg{countHMM} \citep{ada19b}.
 
 %% Intro to the package
 The \pkg{fHMM} package \citep{oel22} aims at making HMMs accessible to users with an interest in financial time series. Its functionality can be classified into functions for data preparation, model estimation, and model evaluation, which is illustrated in the flowchart displayed in Figure \ref{fig:flowchart}. Functions for data preparation include an interface to Yahoo Finance that allows users to download real stock market data. The model is estimated in a maximum likelihood framework, where the likelihood is evaluated using the forward algorithm, which is implemented in C++ and parallelized for fast and efficient computation. Functions for model evaluation include... It also implements hierarchical HMMs; an extension of basic HMMs proposed in \cite{oel21} that improves the model's capability of distinguishing between short- and long-term trends and allows us to model data collected at different time scales, such as monthly trade volumes and daily stock returns \citep{ada20}. 
@@ -279,7 +279,7 @@ Download successful.
 * symbol: ^GDAXI 
 * from: 2000-01-03 
 * to: 2022-04-06 
-* path: C:\Users\timo\Desktop\OpenPopulationSCRWithRandomEffects\fHMM\jss\^GDAXI.csv
+* path: /Users/timoadam/JSS/jss/^GDAXI.csv
 \end{Soutput}
 \end{Schunk}
 %
@@ -762,7 +762,7 @@ The \pkg{fHMM} package intends to make the estimation of hidden Markov models fo
 \section*{Computational details}
 
 The results presented in this paper were obtained using
-\proglang{R}~4.0.2 with the
+\proglang{R}~4.1.1 with the
 \pkg{fHMM}~1.0.0 package. \proglang{R} itself
 and all packages used are available from the Comprehensive
 \proglang{R} Archive Network (CRAN) at \url{https://CRAN.R-project.org/}.
