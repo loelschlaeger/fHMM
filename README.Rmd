@@ -35,6 +35,13 @@ You can install the released version of {fHMM} from [CRAN](https://CRAN.R-projec
 install.packages("fHMM")
 ```
 
+And the development version from [GitHub](https://github.com/) with:
+
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("loelschlaeger/fHMM")
+```
+
 ## Contributing
 
 We welcome contributions! Please submit [bug reports](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=bug&template=bug.md) and [feature requests](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=future&template=suggestion.md) as issues and extensions as pull request from a branch created from main.
@@ -83,7 +90,7 @@ summary(model)
 
 Having estimated the model, we can visualize the state-dependent distributions and the decoded time series to interpret bearish and bullish markets:
 
-```{r plots, fig.dim = c(10,6)}
+```{r plots, fig.dim = c(10,6), fig.align='center'}
 events <- fHMM_events(
   list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
        labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers", "First COVID-19 case Germany"))
