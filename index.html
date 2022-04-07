@@ -118,7 +118,7 @@
 <h2 id="example-fitting-an-hmm-to-the-dax">Example: Fitting an HMM to the DAX<a class="anchor" aria-label="anchor" href="#example-fitting-an-hmm-to-the-dax"></a>
 </h2>
 <p>We fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2020. The states can be interpreted as proxies for bearish and bullish markets.</p>
-<p>The package has a build-in function to download the data from <a href="https://finance.yahoo.com/" class="external-link">Yahoo Finance</a>:</p>
+<p>The package has a build-in function to download the data from <a href="https://finance.yahoo.com" class="external-link">Yahoo Finance</a>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"/dax.csv"</span><span class="op">)</span>
 <span class="fu"><a href="reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, file <span class="op">=</span> <span class="va">path</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
