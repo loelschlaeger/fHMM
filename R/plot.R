@@ -76,7 +76,7 @@ plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, .
       warning("cannot display events")
       events <- NULL
     }
-    if (!inherits(events,"fHMM_events")) {
+    if (!inherits(events, "fHMM_events")) {
       stop("'events' is not of class 'fHMM_events'.")
     }
   }
@@ -171,7 +171,7 @@ plot_ll <- function(lls) {
 plot_pr <- function(residuals, hierarchy) {
 
   ### check input
-  stopifnot(inherits(residuals,"fHMM_residuals"))
+  stopifnot(inherits(residuals, "fHMM_residuals"))
 
   ### reset of 'par' settings
   oldpar <- par(no.readonly = TRUE)
@@ -267,10 +267,10 @@ plot_pr <- function(residuals, hierarchy) {
 plot_sdds <- function(est, true = NULL, controls, colors) {
 
   ### check input
-  stopifnot(inherits(est,"fHMM_parameters"))
-  stopifnot(is.null(true) || inherits(true,"fHMM_parameters"))
-  stopifnot(inherits(controls,"fHMM_controls"))
-  stopifnot(inherits(colors,"fHMM_colors"))
+  stopifnot(inherits(est, "fHMM_parameters"))
+  stopifnot(is.null(true) || inherits(true, "fHMM_parameters"))
+  stopifnot(inherits(controls, "fHMM_controls"))
+  stopifnot(inherits(colors, "fHMM_colors"))
 
   ### reset of 'par' settings
   oldpar <- graphics::par(no.readonly = TRUE)
