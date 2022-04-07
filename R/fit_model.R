@@ -33,7 +33,7 @@
 fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE, init = NULL) {
 
   ### check inputs
-  if (class(data) != "fHMM_data") {
+  if (!inherits(data,"fHMM_data")) {
     stop("'data' is not of class 'fHMM_data'.")
   }
   if (!is_number(ncluster, int = TRUE, pos = TRUE)) {
@@ -166,7 +166,8 @@ fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE, init = NU
       } else {
         mod <- NA
       }
-      if (!identical(mod, NA) && class(mod) != "try-error" && mod[["code"]] %in% data[["controls"]][["fit"]][["accept"]]) {
+      if (!identical(mod, NA) && !inherits(mod,"try-error") && 
+          mod[["code"]] %in% data[["controls"]][["fit"]][["accept"]]) {
         mods[[run]] <- mod
       } else {
         mods[[run]] <- NA
@@ -201,7 +202,7 @@ fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE, init = NU
           )
         })
         if (verbose) pb$tick()
-        if (class(mod) != "try-error" &&
+        if (!inherits(mod,"try-error") &&
           mod[["code"]] %in% data[["controls"]][["fit"]][["accept"]]) {
           mod
         } else {

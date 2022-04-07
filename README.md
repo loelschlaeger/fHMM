@@ -52,7 +52,7 @@ log-returns from 2000 to 2020. The states can be interpreted as proxies
 for bearish and bullish markets.
 
 The package has a build-in function to download the data from [Yahoo
-Finance](https://finance.yahoo.com/):
+Finance](https://finance.yahoo.com):
 
 ``` r
 path <- paste0(tempdir(),"/dax.csv")

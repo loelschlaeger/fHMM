@@ -20,7 +20,7 @@
 parameter_labels <- function(controls, expected_length) {
 
   ### check input
-  if (class(controls) != "fHMM_controls") {
+  if (!inherits(controls,"fHMM_controls")) {
     stop("'controls' is not of class 'fHMM_controls'.")
   }
   if (!is_number(expected_length, pos = TRUE)) {

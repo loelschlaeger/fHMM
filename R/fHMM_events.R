@@ -29,7 +29,7 @@ fHMM_events <- function(events) {
   if (inherits(events, "fHMM_events")) {
     warning("This element already is of class 'fHMM_events'.")
   } else {
-    if (class(events) != "list") {
+    if (!inherits(events,"list")) {
       stop("'events' must be a list.")
     }
     if (length(events) != 2) {

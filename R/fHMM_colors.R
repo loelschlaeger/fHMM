@@ -29,7 +29,7 @@
 fHMM_colors <- function(controls, colors = NULL) {
 
   ### check inputs
-  if (!class(controls) == "fHMM_controls") {
+  if (!inherits(controls,"fHMM_controls")) {
     stop("'controls' must be of class 'fHMM_controls'.")
   }
   if (is.null(colors)) {

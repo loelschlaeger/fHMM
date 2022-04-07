@@ -38,7 +38,7 @@
 reorder_states <- function(x, state_order) {
 
   ### check inputs
-  if (class(x) != "fHMM_model") {
+  if (!inherits(x,"fHMM_model")) {
     stop("'x' is not of class 'fHMM_model'.")
   }
   if (!x$data$controls$hierarchy) {

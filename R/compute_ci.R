@@ -30,7 +30,7 @@
 compute_ci <- function(x, alpha = 0.05) {
 
   ### check inputs
-  if (class(x) != "fHMM_model") {
+  if (!inherits(x,"fHMM_model")) {
     stop("'x' must be of class 'fHMM_model'.")
   }
   if (!is.numeric(alpha) || length(alpha) != 1 || alpha <= 0 || alpha >= 1) {
