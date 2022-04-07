@@ -50,7 +50,7 @@ We welcome contributions! Please submit [bug reports](https://github.com/loelsch
 
 We fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2020. The states can be interpreted as proxies for bearish and bullish markets.
 
-The package has a build-in function to download the data from [Yahoo Finance](https://finance.yahoo.com):
+The package has a build-in function to download the data from [Yahoo Finance](https://finance.yahoo.com/):
 
 ```{r data download}
 path <- paste0(tempdir(),"/dax.csv")
