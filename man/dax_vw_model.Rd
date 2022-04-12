@@ -29,8 +29,7 @@ controls <- list(
                             system.file("extdata", "vw.csv", package = "fHMM")),
                    from = "2015-01-01",
                    to = "2020-01-01",
-                   logreturns = c(TRUE,TRUE)),
-  fit       = list("runs" = 100)
+                   logreturns = c(TRUE,TRUE))
 )
 }
 }
