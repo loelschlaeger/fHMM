@@ -112,7 +112,7 @@
 #' )
 #' controls <- set_controls(controls)
 #' pars <- fHMM_parameters(
-#'   controls = controls, Gamma = matrix(c(0.9,0.2,0.1,0.8), nrow = 2), 
+#'   controls = controls, Gamma = matrix(c(0.9,0.2,0.1,0.8), nrow = 2),
 #'   sigmas = c(0.5,1)
 #' )
 #' data <- prepare_data(controls, true_parameters = pars, seed = 1)
