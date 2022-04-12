@@ -83,8 +83,7 @@
 #'                             system.file("extdata", "vw.csv", package = "fHMM")),
 #'                    from = "2015-01-01",
 #'                    to = "2020-01-01",
-#'                    logreturns = c(TRUE,TRUE)),
-#'   fit       = list("runs" = 100)
+#'                    logreturns = c(TRUE,TRUE))
 #' )
 #' }
 #'
@@ -93,3 +92,35 @@
 #' @keywords
 #' model
 "dax_vw_model"
+
+#' Simulated 2-state HMM
+#'
+#' @description
+#' A pre-computed 2-state HMM with state-dependent gamma distributions with means
+#' fixed to \code{0.5} and \code{2} on \code{500} simulated observations.
+#'
+#' @usage data(sim_model_2gamma)
+#'
+#' @details
+#' The model was estimated via:
+#' \preformatted{
+#' controls <- list(
+#'   states  = 2,
+#'   sdds    = "gamma(mu = 1|2)",
+#'   horizon = 200,
+#'   fit     = list(runs = 50)
+#' )
+#' controls <- set_controls(controls)
+#' pars <- fHMM_parameters(
+#'   controls = controls, Gamma = matrix(c(0.9,0.2,0.1,0.8), nrow = 2), 
+#'   sigmas = c(0.5,1)
+#' )
+#' data <- prepare_data(controls, true_parameters = pars, seed = 1)
+#' sim_model_2gamma <- fit_model(data, seed = 1, verbose = FALSE)
+#' }
+#'
+#' @format An object of class \code{fHMM_model}.
+#'
+#' @keywords
+#' model
+"sim_model_2gamma"
