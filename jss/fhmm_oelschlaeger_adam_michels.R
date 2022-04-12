@@ -8,9 +8,9 @@ library("fHMM")
 
 
 ###################################################
-### code chunk number 2: set controls emp hmm
+### code chunk number 2: example 1 dax define controls
 ###################################################
-controls <- list(
+contr_dax <- list(
   states = 3,
   sdds   = "t",
   data   = list(file        = "dax.csv",
@@ -18,74 +18,67 @@ controls <- list(
                 data_column = "Close",
                 logreturns  = TRUE)
 )
-controls <- set_controls(controls)
-class(controls)
 
 
 ###################################################
-### code chunk number 3: set controls sim hmm
+### code chunk number 3: example 1 dax set controls
 ###################################################
-controls <- list(
+contr_dax <- set_controls(contr_dax)
+class(contr_dax)
+
+
+###################################################
+### code chunk number 4: example 2 simulation define controls
+###################################################
+contr_sim <- list(
   states  = 2,
-  sdds    = "gamma(mu = 0.5|2)",
-  horizon = 500,
+  sdds    = "gamma(mu = 1|2)",
+  horizon = 200,
   fit     = list(runs = 50)
 )
-set_controls(controls)
 
 
 ###################################################
-### code chunk number 4: set controls hhmm
+### code chunk number 5: example 2 simulation print controls
 ###################################################
-controls <- list(
+(contr_sim <- set_controls(contr_sim))
+
+
+###################################################
+### code chunk number 6: example 3 hhmm set controls
+###################################################
+contr_hhmm <- list(
   hierarchy = TRUE,
-  states    = c(3, 2),
-  sdds      = c("t(df = 1)", "t(df = Inf)"),
-  horizon   = c(100, 10)
+  states    = c(2,2),
+  sdds      = c("t(df = 1)", "t(df = 1)"),
+  period    = "m",
+  data      = list(file = c(system.file("extdata", "dax.csv", package = "fHMM"),
+                            system.file("extdata", "vw.csv", package = "fHMM")),
+                   date_column = c("Date","Date"),
+                   data_column = c("Close","Close"),
+                   from = "2015-01-01",
+                   to = "2020-01-01",
+                   logreturns = c(TRUE,TRUE),
+                   merge = function(x) mean(x))
 )
-set_controls(controls)
+contr_hhmm <- set_controls(contr_hhmm)
 
 
 ###################################################
-### code chunk number 5: download dax example
+### code chunk number 7: download dax example (eval = FALSE)
 ###################################################
-download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date())
+## download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date())
 
 
 ###################################################
-### code chunk number 6: get data
+### code chunk number 8: example 1 dax prepare data
 ###################################################
-system.file("extdata", "dax.csv", package = "fHMM")
-system.file("extdata", "vw.csv", package = "fHMM")
+data_dax <- prepare_data(contr_dax)
+summary(data_dax)
 
 
 ###################################################
-### code chunk number 7: prepare_data example
-###################################################
-controls <- list(
-  states = 3,
-  sdds   = "t",
-  data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
-                date_column = "Date",
-                data_column = "Close",
-                from        = "2000-01-01",
-                to          = "2021-12-31",
-                logreturns  = TRUE),
-  fit    = list(runs        = 100)
-)
-controls <- set_controls(controls)
-data <- prepare_data(controls)
-class(data)
-
-
-###################################################
-### code chunk number 8: fHMM_data summary
-###################################################
-summary(data)
-
-
-###################################################
-### code chunk number 9: ts
+### code chunk number 9: dax-ts
 ###################################################
 events <- fHMM_events(
   list(
@@ -94,40 +87,28 @@ events <- fHMM_events(
                "First COVID-19 case in Germany")
     )
   )
-plot(data, events = events)
+plot(data_dax, events = events)
 
 
 ###################################################
-### code chunk number 10: revisited controls example
-###################################################
-controls <- list(
-  states  = 2,
-  sdds    = "gamma(mu = 0.5|2)",
-  horizon = 500,
-  fit     = list(runs = 50)
-)
-controls <- set_controls(controls)
-
-
-###################################################
-### code chunk number 11: fHMM_parameters example
+### code chunk number 10: example 2 sim prepare data
 ###################################################
 pars <- fHMM_parameters(
-  controls = controls, Gamma = matrix(c(0.9,0.2,0.1,0.8), nrow = 2), 
+  controls = contr_sim, 
+  Gamma = matrix(c(0.9,0.2,0.1,0.8), nrow = 2), 
   sigmas = c(0.1,0.5)
 )
-class(pars)
+data_sim <- prepare_data(contr_sim, true_parameters = pars, seed = 1)
 
 
 ###################################################
-### code chunk number 12: simdata
+### code chunk number 11: example 3 hhmm prepare data
 ###################################################
-data <- prepare_data(controls, true_parameters = pars, seed = 1)
-plot(data)
+data_hhmm <- prepare_data(contr_hhmm)
 
 
 ###################################################
-### code chunk number 13: data preparation
+### code chunk number 12: data preparation
 ###################################################
 controls <- list(
   states = 3,
@@ -145,99 +126,99 @@ data <- prepare_data(controls)
 
 
 ###################################################
-### code chunk number 14: model estimation (eval = FALSE)
+### code chunk number 13: model estimation (eval = FALSE)
 ###################################################
 ## dax_model_3t <- fit_model(data, seed = 1, verbose = FALSE)
 
 
 ###################################################
-### code chunk number 15: access model
+### code chunk number 14: access model
 ###################################################
 data(dax_model_3t)
 
 
 ###################################################
-### code chunk number 16: model coefficients
+### code chunk number 15: model coefficients
 ###################################################
 coef(dax_model_3t)
 
 
 ###################################################
-### code chunk number 17: sdds
+### code chunk number 16: sdds
 ###################################################
 plot(dax_model_3t, plot_type = "sdds")
 
 
 ###################################################
-### code chunk number 18: ll
+### code chunk number 17: ll
 ###################################################
 plot(dax_model_3t, plot_type = "ll")
 
 
 ###################################################
-### code chunk number 19: hhmm_model
+### code chunk number 18: hhmm_model
 ###################################################
 data(dax_vw_model)
 plot(dax_vw_model, plot_type = "sdds")
 
 
 ###################################################
-### code chunk number 20: load dax model
+### code chunk number 19: load dax model
 ###################################################
 data(dax_model_3t)
 
 
 ###################################################
-### code chunk number 21: dax decode states
+### code chunk number 20: dax decode states
 ###################################################
 dax_model_3t <- decode_states(dax_model_3t)
 
 
 ###################################################
-### code chunk number 22: dec_ts
+### code chunk number 21: dec_ts
 ###################################################
 plot(dax_model_3t)
 
 
 ###################################################
-### code chunk number 23: reorder states
+### code chunk number 22: reorder states
 ###################################################
 dax_model_3t <- reorder_states(dax_model_3t, 3:1)
 
 
 ###################################################
-### code chunk number 24: predict
+### code chunk number 23: predict
 ###################################################
 predict(dax_model_3t, ahead = 10)
 
 
 ###################################################
-### code chunk number 25: load dax data
+### code chunk number 24: load dax data
 ###################################################
 data(dax_model_3t)
 
 
 ###################################################
-### code chunk number 26: compute residuals
+### code chunk number 25: compute residuals
 ###################################################
 dax_model_3t <- compute_residuals(dax_model_3t)
 
 
 ###################################################
-### code chunk number 27: residuals
+### code chunk number 26: residuals
 ###################################################
 plot(dax_model_3t, plot_type = "pr")
 
 
 ###################################################
-### code chunk number 28: jb test
+### code chunk number 27: jb test
 ###################################################
 res <- dax_model_3t$residuals
 tseries::jarque.bera.test(res)
 
 
 ###################################################
-### code chunk number 29: compare models
+### code chunk number 28: compare models
 ###################################################
 data(dax_model_2n)
 data(dax_model_3t)
