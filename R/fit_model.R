@@ -29,7 +29,7 @@
 #' @importFrom stats sd nlm
 #' @importFrom foreach %dopar%
 
-fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE, 
+fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE,
                       init = NULL) {
 
   ### check inputs
