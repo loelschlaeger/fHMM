@@ -25,7 +25,7 @@ library(fHMM)
 
 ## Empirical data
 
-Empirical data must be provided as a comma-separated values (CSV) file and its path must be specified in `set_controls()`, see [the vignette on specifying the controls](http://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from https://www.yahoo.com/finance in csv-format.] The {fHMM} package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
+Empirical data must be provided as a comma-separated values (CSV) file and its path must be specified in `set_controls()`, see [the vignette on specifying the controls](http://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from <https://finance.yahoo.com/> in csv-format.] The {fHMM} package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
 
 ```{r, head dax}
 system.file("extdata", "dax.csv", package = "fHMM")
@@ -50,7 +50,7 @@ summary(data)
 
 ## Download stock data
 
-Daily stock prices listed on https://finance.yahoo.com/ can be downloaded directly via
+Daily stock prices listed on https://finance.yahoo.com can be downloaded directly via
 
 ```{r, eval = FALSE} 
 download_data(symbol, from, to, file)

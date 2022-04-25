@@ -38,7 +38,7 @@ download_data(symbol = "^GDAXI", file = "dax.csv")
 The following lines of code specify a 3-state HMM with state-dependent t-distributions on the data in the file dax.csv. The dates are provided in the column called Date and the data in the column called Close. The `logreturns = TRUE` line transforms the index data to log-returns. The `runs = 50` line sets the number of numerical optimization runs to 50.
 
 ```{r, set controls emp hmm}
-controls = list(
+controls <- list(
   states = 3,
   sdds   = "t",
   data   = list(file        = "dax.csv",
@@ -52,12 +52,12 @@ set_controls(controls)
 
 ### Simulated HMM data
 
-The following specifies a 2-state HMM with state-dependent Gamma distributions, where the expectation values for state 1 and 2 are fixed to -1 and 1, respectively. The model will be fitted to 500 data points (`horizon = 500`), that are going to be simulated from this model specification.
+The following specifies a 2-state HMM with state-dependent Gamma distributions, where the expectation values for state 1 and 2 are fixed to 0.5 and 2, respectively. The model will be fitted to 500 data points (`horizon = 500`), that are going to be simulated from this model specification.
 
 ```{r, set controls sim hmm}
-controls = list(
+controls <- list(
   states  = 2,
-  sdds    = "gamma(mu = -1|1)",
+  sdds    = "gamma(mu = 0.5|2)",
   horizon = 500
 )
 set_controls(controls)
@@ -68,7 +68,7 @@ set_controls(controls)
 Specifying hierarchical HMMs is analogously, except that new parameters can be specified (for example `period`, see below) and some parameters now can be specified for both hierarchies.
 
 ```{r, set controls hhmm}
-controls = list(
+controls <- list(
   hierarchy = TRUE,
   horizon   = c(100, 10),
   sdds      = c("t(df = 1)", "t(df = Inf)"),

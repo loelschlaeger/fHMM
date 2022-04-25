@@ -25,13 +25,12 @@ controls <- list(
   states    = c(2,2),
   sdds      = c("t(df = 1)", "t(df = 1)"),
   period    = "m",
-  data      = list(file = c("inst/extdata/dax.csv", "inst/extdata/vw.csv"),
+  data      = list(file = c(system.file("extdata", "dax.csv", package = "fHMM"),
+                            system.file("extdata", "vw.csv", package = "fHMM")),
                    from = "2015-01-01",
                    to = "2020-01-01",
-                   logreturns = c(TRUE,TRUE)),
-  fit       = list("runs" = 100)
+                   logreturns = c(TRUE,TRUE))
 )
 }
-Set \code{file = c("extdata/dax.csv", "extdata/vw.csv")} to reproduce this code.
 }
 \keyword{model}

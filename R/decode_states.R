@@ -25,7 +25,7 @@
 decode_states <- function(x, verbose = TRUE) {
 
   ### check input
-  if (class(x) != "fHMM_model") {
+  if (!inherits(x,"fHMM_model")) {
     stop("'x' must be of class 'fHMM_model'.")
   }
   if (!is.logical(verbose) || length(verbose) != 1) {

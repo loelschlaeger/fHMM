@@ -30,7 +30,7 @@ compare_models <- function(...) {
 
   ### check if models are of class "fHMM_model"
   for (i in seq_len(length(models))) {
-    if (class(models[[i]]) != "fHMM_model") {
+    if (!inherits(models[[i]],"fHMM_model")) {
       stop(paste0("Model '", model_names[i], "' is not of class 'fHMM_model'."))
     }
   }

@@ -4,7 +4,7 @@
 \alias{fit_model}
 \title{Model fitting}
 \usage{
-fit_model(data, ncluster = 1, seed = NULL, verbose = TRUE)
+fit_model(data, ncluster = 1, seed = NULL, verbose = TRUE, init = NULL)
 }
 \arguments{
 \item{data}{An object of class \code{fHMM_data}.}
@@ -14,6 +14,12 @@ fit_model(data, ncluster = 1, seed = NULL, verbose = TRUE)
 \item{seed}{Set a seed for the sampling of initial values.}
 
 \item{verbose}{Set to \code{TRUE} to print progress messages.}
+
+\item{init}{Optionally an object of class \code{parUncon} for initialization. This can
+for example be the estimate of a previously fitted model \code{model}, i.e.
+the element \code{model$estimate}. The initial values are computed via
+\code{replicate(n, jitter(init, amount = 1), simplify = FALSE)},
+where \code{n <- data$controls$fit$runs}.}
 }
 \value{
 An object of class \code{fHMM_model}.

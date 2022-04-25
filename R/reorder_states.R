@@ -38,7 +38,7 @@
 reorder_states <- function(x, state_order) {
 
   ### check inputs
-  if (class(x) != "fHMM_model") {
+  if (!inherits(x,"fHMM_model")) {
     stop("'x' is not of class 'fHMM_model'.")
   }
   if (!x$data$controls$hierarchy) {
@@ -52,7 +52,9 @@ reorder_states <- function(x, state_order) {
     if (!(is.numeric(state_order) && is.matrix(state_order) &&
       all(dim(state_order) == x$data$controls$states + c(0, 1)) &&
       all(state_order[1, ] %in% 1:x$data$controls$states[1]) &&
-      all(state_order[-1, ] %in% 1:x$data$controls$states[2]))) {
+      all(sapply(1:x$data$controls$states[2], 
+                 function(col) 1:x$data$controls$states[2] %in% state_order[col,-1])))
+      ) {
       stop("'state_order' is missspecified.")
     }
   }

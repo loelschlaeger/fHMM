@@ -1,18 +1,22 @@
 Package: fHMM
 Type: Package
 Title: Fitting Hidden Markov Models to Financial Data
-Version: 1.0.0
-Date: 2022-03-03
+Version: 1.0.1
+Date: 2022-04-06
 Authors@R: c(
-    person("Lennart", "Oelschl\U00E4ger", 
-           email = "oelschlaeger.lennart@gmail.com", 
-           role = c("aut", "cre")),
-    person("Timo", "Adam", 
-           email = "ta59@st-andrews.ac.uk", 
-           role = "aut"),
-    person("Rouven", "Michels", 
-           email = "r.michels@uni-bielefeld.de", 
-           role = "aut"))
+    person(given = "Lennart",
+           family = "Oelschl\U00E4ger",
+           role = c("aut", "cre"),
+           email = "oelschlaeger.lennart@gmail.com",
+           comment = c(ORCID = "0000-0001-5421-9313")),
+    person(given = "Timo", 
+           family = "Adam", 
+           role = "aut",
+           email = "ta59@st-andrews.ac.uk"),
+    person(given = "Rouven", 
+           family = "Michels",
+           role = "aut",
+           email = "r.michels@uni-bielefeld.de"))
 Description: Fitting (hierarchical) hidden Markov models to financial data
     via maximum likelihood estimation. See Oelschläger, L. and Adam, T.
     "Detecting bearish and bullish markets in financial time series using 

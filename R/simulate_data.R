@@ -22,10 +22,10 @@
 simulate_data <- function(controls, true_parameters, seed = NULL) {
 
   ### check inputs
-  if (class(controls) != "fHMM_controls") {
+  if (!inherits(controls, "fHMM_controls")) {
     stop("'controls' is not of class 'fHMM_controls'.")
   }
-  if (class(true_parameters) != "fHMM_parameters") {
+  if (!inherits(true_parameters, "fHMM_parameters")) {
     stop("'true_parameters' is not of class 'fHMM_parameters'.")
   }
   if (!controls$simulated) {

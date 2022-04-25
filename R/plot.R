@@ -18,11 +18,11 @@
 plot.fHMM_data <- function(x, events = NULL, ...) {
 
   ### check input
-  if (!class(x) == "fHMM_data") {
+  if (!inherits(x, "fHMM_data")) {
     stop("'x' is not of class 'fHMM_data'.")
   }
   if (!is.null(events)) {
-    if (!class(events) == "fHMM_events") {
+    if (!inherits(events, "fHMM_events")) {
       stop("'events' is not of class 'fHMM_events'.")
     }
     if (x$controls$simulated) {
@@ -67,7 +67,7 @@ plot.fHMM_data <- function(x, events = NULL, ...) {
 plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, ...) {
 
   ### check input
-  if (!class(x) == "fHMM_model") {
+  if (!inherits(x, "fHMM_model")) {
     stop("'x' is not of class 'fHMM_model'.")
   }
   plot_type <- intersect(plot_type, c("ll", "sdds", "pr", "ts"))
@@ -76,7 +76,7 @@ plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, .
       warning("cannot display events")
       events <- NULL
     }
-    if (class(events) != "fHMM_events") {
+    if (!inherits(events, "fHMM_events")) {
       stop("'events' is not of class 'fHMM_events'.")
     }
   }
@@ -171,7 +171,7 @@ plot_ll <- function(lls) {
 plot_pr <- function(residuals, hierarchy) {
 
   ### check input
-  stopifnot(class(residuals) == "fHMM_residuals")
+  stopifnot(inherits(residuals, "fHMM_residuals"))
 
   ### reset of 'par' settings
   oldpar <- par(no.readonly = TRUE)
@@ -267,10 +267,10 @@ plot_pr <- function(residuals, hierarchy) {
 plot_sdds <- function(est, true = NULL, controls, colors) {
 
   ### check input
-  stopifnot(class(est) == "fHMM_parameters")
-  stopifnot(is.null(true) || class(true) == "fHMM_parameters")
-  stopifnot(class(controls) == "fHMM_controls")
-  stopifnot(class(colors) == "fHMM_colors")
+  stopifnot(inherits(est, "fHMM_parameters"))
+  stopifnot(is.null(true) || inherits(true, "fHMM_parameters"))
+  stopifnot(inherits(controls, "fHMM_controls"))
+  stopifnot(inherits(colors, "fHMM_colors"))
 
   ### reset of 'par' settings
   oldpar <- graphics::par(no.readonly = TRUE)

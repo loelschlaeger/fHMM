@@ -1,7 +1,7 @@
 #' Downloading financial data
 #'
 #' @description
-#' This function downloads stock data from <https://www.yahoo.com/finance> and 
+#' This function downloads stock data from <https://finance.yahoo.com/> and 
 #' saves it as a .csv-file.
 #'
 #' @details
@@ -18,7 +18,7 @@
 #'
 #' @param symbol
 #' A character, the stock's symbol. It must match the identifier on
-#' <https://finance.yahoo.com>.
+#' <https://finance.yahoo.com/>.
 #' @param from
 #' A date in format "YYYY-MM-DD", setting the lower data bound. Must not be
 #' earlier than \code{"1902-01-01"}.
@@ -102,7 +102,7 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
 
   ### check 'download_try'
   if (inherits(download_try, "try-error")) {
-    stop("'symbol' is unknown on finance.yahoo.com, please check spelling.")
+    stop("'symbol' is unknown on https://finance.yahoo.com/, please check spelling.")
   } else if (verbose) {
     ### print summary of new data
     data <- utils::read.csv(file = file, header = TRUE, sep = ",", na.strings = "null")

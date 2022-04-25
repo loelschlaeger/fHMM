@@ -275,7 +275,7 @@ set_controls <- function(controls = NULL) {
     controls[["period"]] <- NA
     controls[["data"]][["merge"]] <- NA
   }
-  if (class(controls[["sdds"]]) != "fHMM_sdds") {
+  if (!inherits(controls[["sdds"]],"fHMM_sdds")) {
     if (!is.character(controls[["sdds"]]) ||
       length(controls[["sdds"]]) != ifelse(controls[["hierarchy"]], 2, 1)) {
       stop(
@@ -310,7 +310,7 @@ set_controls <- function(controls = NULL) {
         stop("The control 'merge' in 'data' must be of class 'function'.")
       }
       try_merge <- try(controls[["data"]][["merge"]](-10:10), silent = TRUE)
-      if (class(try_merge) == "try-error" || !is.numeric(try_merge) || length(try_merge) != 1) {
+      if (inherits(try_merge,"try-error") || !is.numeric(try_merge) || length(try_merge) != 1) {
         stop("The controls 'merge' in 'data' must merge a numeric vector into a single numeric value.")
       }
     } else {

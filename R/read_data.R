@@ -25,7 +25,7 @@
 read_data <- function(controls) {
 
   ### check inputs
-  if (class(controls) != "fHMM_controls") {
+  if (!inherits(controls, "fHMM_controls")) {
     stop("'controls' is not of class 'fHMM_controls'.")
   }
   if (controls$simulated) {

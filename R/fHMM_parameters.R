@@ -163,16 +163,16 @@ fHMM_parameters <- function(controls,
   }
   if (controls[["sdds"]][[1]]$name == "t") {
     if (!all(is_number(mus)) || length(mus) != M) {
-      stop("'mu' must be a numeric vector of length 'controls$states[1]'.")
+      stop("'mus' must be a numeric vector of length 'controls$states[1]'.")
     }
   }
   if (controls[["sdds"]][[1]]$name == "gamma") {
     if (!all(is_number(mus, pos = TRUE)) || length(mus) != M) {
-      stop("'mu' must be a positive numeric vector of length 'controls$states[1]'.")
+      stop("'mus' must be a positive numeric vector of length 'controls$states[1]'.")
     }
   }
   if (!all(is_number(sigmas, pos = TRUE)) || length(sigmas) != M) {
-    stop("'sigma' must be a positive numeric vector of length 'controls$states[1]'.")
+    stop("'sigmas' must be a positive numeric vector of length 'controls$states[1]'.")
   }
   if (controls[["sdds"]][[1]]$name == "t") {
     if (!all(is_number(dfs, pos = TRUE)) || length(dfs) != M) {
@@ -257,8 +257,8 @@ print.fHMM_parameters <- function(x, ...) {
 #' internal
 
 par2parUncon <- function(par, controls) {
-  stopifnot(class(par) == "fHMM_parameters")
-  stopifnot(class(controls) == "fHMM_controls")
+  stopifnot(inherits(par,"fHMM_parameters"))
+  stopifnot(inherits(controls,"fHMM_controls"))
   parUncon <- Gamma2gammasUncon(par[["Gamma"]])
   if (is.null(controls$sdds[[1]]$pars$mu)) {
     parUncon <- c(
@@ -330,8 +330,8 @@ par2parUncon <- function(par, controls) {
 #' internal
 
 parUncon2parCon <- function(parUncon, controls) {
-  stopifnot(class(parUncon) == "parUncon")
-  stopifnot(class(controls) == "fHMM_controls")
+  stopifnot(inherits(parUncon,"parUncon"))
+  stopifnot(inherits(controls,"fHMM_controls"))
   M <- controls[["states"]][1]
   parCon <- gammasUncon2gammasCon(parUncon[1:((M - 1) * M)], M)
   parUncon <- parUncon[-(1:((M - 1) * M))]
@@ -411,8 +411,8 @@ parUncon2parCon <- function(parUncon, controls) {
 #' internal
 
 parCon2par <- function(parCon, controls) {
-  stopifnot(class(parCon) == "parCon")
-  stopifnot(class(controls) == "fHMM_controls")
+  stopifnot(inherits(parCon,"parCon"))
+  stopifnot(inherits(controls,"fHMM_controls"))
   M <- controls[["states"]][1]
   Gamma <- gammasCon2Gamma(parCon[1:((M - 1) * M)], M)
   parCon <- parCon[-(1:((M - 1) * M))]
@@ -499,8 +499,8 @@ parCon2par <- function(parCon, controls) {
 #' internal
 
 par2parCon <- function(par, controls) {
-  stopifnot(class(par) == "fHMM_parameters")
-  stopifnot(class(controls) == "fHMM_controls")
+  stopifnot(inherits(par,"fHMM_parameters"))
+  stopifnot(inherits(controls,"fHMM_controls"))
   return(parUncon2parCon(par2parUncon(par, controls), controls))
 }
 
@@ -516,8 +516,8 @@ par2parCon <- function(par, controls) {
 #' internal
 
 parCon2parUncon <- function(parCon, controls) {
-  stopifnot(class(parCon) == "parCon")
-  stopifnot(class(controls) == "fHMM_controls")
+  stopifnot(inherits(parCon,"parCon"))
+  stopifnot(inherits(controls,"fHMM_controls"))
   return(par2parUncon(parCon2par(parCon, controls), controls))
 }
 
@@ -533,8 +533,8 @@ parCon2parUncon <- function(parCon, controls) {
 #' internal
 
 parUncon2par <- function(parUncon, controls) {
-  stopifnot(class(parUncon) == "parUncon")
-  stopifnot(class(controls) == "fHMM_controls")
+  stopifnot(inherits(parUncon,"parUncon"))
+  stopifnot(inherits(controls,"fHMM_controls"))
   return(parCon2par(parUncon2parCon(parUncon, controls), controls))
 }
 

@@ -14,7 +14,7 @@ download_data(
 }
 \arguments{
 \item{symbol}{A character, the stock's symbol. It must match the identifier on
-\url{https://finance.yahoo.com}.}
+\url{https://finance.yahoo.com/}.}
 
 \item{from}{A date in format "YYYY-MM-DD", setting the lower data bound. Must not be
 earlier than \code{"1902-01-01"}.}
@@ -31,7 +31,7 @@ in the current working directory with the name "\code{symbol}.csv".}
 No return value.
 }
 \description{
-This function downloads stock data from \url{https://www.yahoo.com/finance} and
+This function downloads stock data from \url{https://finance.yahoo.com/} and
 saves it as a .csv-file.
 }
 \details{
