@@ -34,8 +34,7 @@
 \Shorttitle{fHMM}
 
 \Abstract{
-Hidden Markov models constitute a versatile class of statistical models for time series that are driven by hidden states. In finance, the hidden states can often be linked to market regimes such as bearish and bullish markets or recessions and periods of economics growths. Hidden Markov models allow us to...
-In this paper, we introduce the \proglang{R} package \pkg{fHMM} that provides various tools for applying hidden Markov models to financial time series. Its key features include...
+Hidden Markov models constitute a versatile class of statistical models for time series that are driven by hidden states. In finance, the hidden states can often be linked to market regimes such as bearish and bullish markets or recessions and periods of economics growths. Hidden Markov models allow us to classify the states in terms of state distributions and transition probabilities. In this paper, we introduce the \proglang{R} package \pkg{fHMM} that provides various tools for applying hidden Markov models to financial time series. Its key features include fitting hidden Markov models and their hierarchical extension to empirical time series, conducting simulation experiments, decoding the underlying state sequence, model checking, model selection, and prediction. Our aim is to provide \proglang{R} users access to this model class for their financial applications.
 }
 
 %% - \Keywords{} with LaTeX markup, at least one required
@@ -91,23 +90,22 @@ In this paper, we introduce the \proglang{R} package \pkg{fHMM} that provides va
 In recent years, hidden Markov models (HMMs) have emerged as a popular tool for modeling time series that are subject to state-switching over time \citep{zuc16}. In their basic form, HMMs comprise an observed state-dependent process that is driven by a hidden state process, the latter of which is typically modeled using a discrete-time, finite-state Markov chain. In financial applications, the states of the underlying Markov chain can often be linked to market regimes such as bearish and bullish markets or recessions and periods of economics growths: when the market is in a calm state, then the observations follow some distribution, whereas when the market is in a nervous state, then the observations follow a different distribution. By their dependence structure, HMMs naturally account for such disparate patterns and thus allow us to infer hidden market regimes and their underlying dynamics from time series.
 
 %% Literature review
-Over the last decades, HMMs have been used in various financial applications, including the modeling business cycles \citep{kim98, gre00}, the derivation of stylized facts of stock returns \citep{bul06, nys15a}, and the modeling of energy prices conditional on market regimes \citep{lan18, ada22}, to name but a few examples.
-More recently, \cite{lih17} used HMMs to model volatility in the Standard and Poor's 500 index, aiming at providing evidence for the conjecture that returns exhibit negative correlation with volatility. \cite{ngu18}, to give another example, used HMMs to predict monthly closing prices to derive an optimal trading strategy, which was shown to outperform the conventional buy-and-hold strategy, whereas \cite{bul11, nys15a, nys18} have shown that HMMs prove useful for asset allocation and portfolio optimization. All these examples demonstrate that HMMs constitute a versatile class of statistical models for time series that naturally accounts for the state-switching patterns often found in financial data.
+Over the last decades, HMMs have been used in various financial applications, including modeling business cycles \citep{kim98, gre00}, the derivation of stylized facts of stock returns \citep{bul06, nys15a}, and the modeling of energy prices conditional on market regimes \citep{lan18, ada22}, to name but a few examples. More recently, \cite{lih17} used HMMs to model volatility in the Standard and Poor's 500 index, aiming at providing evidence for the conjecture that returns exhibit negative correlation with volatility. \cite{ngu18}, to give another example, used HMMs to predict monthly closing prices to derive an optimal trading strategy, which was shown to outperform the conventional buy-and-hold strategy, whereas \cite{bul11, nys15a, nys18} have shown that HMMs prove useful for asset allocation and portfolio optimization. All these examples demonstrate that HMMs constitute a versatile class of statistical models for time series that naturally accounts for the state-switching patterns often found in financial data.
 
 %% Software overview
-R-packages: general-purpose: \pkg{hmm} \citep{him10}, \pkg{depmixS4} \citep{vis10}, \pkg{msm} \citep{jac11}, ... Special-puropose: animal movement modeling: \pkg{moveHMM} \citep{mic16}, \pkg{momentuHMM} \citep{mcc18}. Hidden semi-Markov models: \pkg{hsmm} \citep{bul10}, \pkg{mhsmm} \citep{oco11}. Count data: \pkg{hmm.discnp} \citep{tur14}, \pkg{countHMM} \citep{ada19b}. Hidden Markov models have also been implemented in Python, most notably in the \pkg{hmmlearn} package \citep{leb22}.
+HMMs have already been implemented in \proglang{R}, for example in the packages \pkg{hmm} \citep{him10}, \pkg{depmixS4} \citep{vis10}, and \pkg{msm} \citep{jac11}. Additionally, special-purpose packages are available, for example \pkg{moveHMM} \citep{mic16} and \pkg{momentuHMM} \citep{mcc18} for animal movement modeling;  \pkg{hsmm} \citep{bul10} and \pkg{mhsmm} \citep{oco11} for hidden semi-Markov models; \pkg{hmm.discnp} \citep{tur14} and \pkg{countHMM} \citep{ada19b} for count data. The \pkg{hmmlearn} package \citep{leb22} is an implementation in \proglang{Python}.
 
 %% Intro to the package
-The \pkg{fHMM} package \citep{oel22} aims at making HMMs accessible to users with an interest in financial time series. Its functionality can be classified into functions for data preparation, model estimation, and model evaluation, which is illustrated in the flowchart displayed in Figure \ref{fig:flowchart}. Functions for data preparation include an interface to Yahoo Finance that allows users to download real stock market data. The model is estimated in a maximum likelihood framework, where the likelihood is evaluated using the forward algorithm, which is implemented in C++ and parallelized for fast and efficient computation. Functions for model evaluation include... It also implements hierarchical HMMs; an extension of basic HMMs proposed in \cite{oel21} that improves the model's capability of distinguishing between short- and long-term trends and allows us to model data collected at different time scales, such as monthly trade volumes and daily stock returns \citep{ada20}. 
-
+We present the \proglang{R} package \pkg{fHMM} \citep{oel22}, aiming to complement the above mentioned collection by making HMMs accessible to \proglang{R} users with a special interest in financial time series. Its functionality can be classified into functions for data preparation, model estimation, and model evaluation, which is illustrated in the flowchart displayed in Figure \ref{fig:flowchart}. 
 \begin{figure}[t!]
-  \includegraphics[scale = 0.4]{flowchart.png}
+  \includegraphics{flowchart.png}
   \caption{Flowchart of the package functionality.}
   \label{fig:flowchart}
 \end{figure}
+Functions for data preparation include an interface to Yahoo Finance (finance.yahoo.com) that allows users to download real stock market data. The model is estimated in a maximum likelihood framework, where the likelihood is evaluated using the forward algorithm, which is implemented in C++ and parallelized for fast and efficient computation. Functions for model evaluation include pseudo-residual analysis and computation of model selection criteria. The package also implements hierarchical HMMs; an extension of basic HMMs proposed in \cite{oel21} that improves the model's capability of distinguishing between short- and long-term trends and allows us to model data collected at different time scales, such as monthly trade volumes and daily stock returns \citep{ada20}. 
 
 %% Outline of the paper
-This paper is structured as follows: in Section 2, we introduce HMMs, focusing on their dependence structure and model assumptions. In Sections 3--8, we go through a typical workflow, where we explain how to specify the model, how to prepare, download, and simulate data, how to fit the model, how to decode the hidden states, how to use a fitted model for forecasting, how to check the goodness of fit, and how to do model selection. In Section 9, we conclude with...
+This paper is structured as follows: in Section 2, we introduce HMMs, focusing on their dependence structure and model assumptions. In Sections 3--8, we go through a typical workflow, where we explain how to specify the model, how to prepare, download, and simulate data, how to fit the model, how to decode the hidden states, how to use a fitted model for forecasting, how to check the goodness of fit, and how to do model selection. These steps are treated both theoretically and illustrated with a simulation example and applications to index data from the Deutscher Aktienindex and stock data from the Volkswagen Group. Section 9 concludes and gives an outlook of anticipated package extensions.
 
 %% -- Manuscript ---------------------------------------------------------------
 
@@ -141,43 +139,32 @@ This paper is structured as follows: in Section 2, we introduce HMMs, focusing o
 
 \section{Model definition} \label{sec:model_definition} %% Rouven
 
-Hidden Markov models (HMMs) are a modeling framework for time series data where a sequence of observation is assumed to depend on a latent state process. The peculiarity is that, instead of the observation process, the state process cannot be directly observed. However, the latent states comprise information about the environment the model is applied on. 
-
-The connection between hidden state process and observed state-dependent process arises by the following: Let $N$ be the number of possible states. We assume that for each point in time $t = 1, \ldots, T$, an underlying process $(S_t)_{t = 1, \ldots, T}$ is in one of those $N$ states. Then, depending on the active state $S_t \in \{ 1, \ldots, N \}$, the observation $X_t$ from the state-dependent process $(X_t)_{t = 1, \ldots, T}$ is assumed to be generated by the corresponding distribution of the $N$ distributions $f^{(1)},\dots,f^{(N)}.$
-
-Furthermore, we assume $(S_t)_t$ to be Markovian, i.e.\ we assume that the actual state only depends on the previous state. Henceforth, we can identify the process by its initial distribution $\delta$ and its transition probability matrix (t.p.m.) $\Gamma$. Moreover, by construction, we force the process $(X_t)_{t = 1, \ldots, T}$ to satisfy the conditional independence assumption, i.e.\ the actual observation $X_t$ depends on the current state $S_t$, but does not depend on previous observations or states at all.
+Hidden Markov models (HMMs) are a modeling framework for time series data where a sequence of observation is assumed to depend on a latent state process. The peculiarity is that, instead of the observation process, the state process cannot be directly observed. However, the latent states comprise information about the environment the model is applied on. Hidden state process and observed state-dependent process are connected as follows: We assume that for each point in time $t = 1, \ldots, T$, an underlying process $(S_t)_{t = 1, \ldots, T}$ is in one of $N$ possible states. Then, depending on the active state $S_t \in \{ 1, \ldots, N \}$, the observation $X_t$ from the state-dependent process $(X_t)_{t = 1, \ldots, T}$ is assumed to be generated by the corresponding state-dependent distribution $f^{(S_t)}$. We assume $(S_t)_t$ to be Markovian, i.e.\ the active state only depends on the previous state. Henceforth, the state process is identified by its initial distribution $\delta$ and its transition probability matrix (t.p.m.) $\Gamma$. By construction, $(X_t)_{t = 1, \ldots, T}$ satisfies the conditional independence assumption, i.e.\ the actual observation $X_t$ depends on the current state $S_t$, but is independent from previous observations or states.
 
 Referring to financial data, the different states can serve as proxies for the actual market situation, e.g. calm or nervous. Even though these moods cannot be observed directly, price changes or trading volumes (which can be assumed to depend on the current mood of the market) are observable. Thereby, using an underlying Markov process, we can detect which mood is active at any point in time and how the different moods alternate. Depending on the current mood, a price change is generated by a different distribution. These distributions characterize the moods in terms of expected return and volatility. For example, we can model price changes at time point $t$ to be generated by different normal distributions whose mean and volatility depend on $S_t$.
 
 Following \cite{zuc16}, we assume that the initial distribution $\delta$ equals the stationary distribution $\pi$, where $\pi = \pi \Gamma$, i.e.\ the stationary and henceforth the initial distribution is determined by $\Gamma$. If the Markov process is irreducible, it has a unique distribution, which solves $\pi = \pi \Gamma$. If additionally the Markov process is aperiodic, its state distribution converges to the stationary distribution, see \cite{nor97}. Irreducibility and aperiodicity are usually satisfied assumptions in reality. This is reasonable from a practical point of view: On the one hand, the hidden state process has been evolving for some time before we start to observe it and hence can be assumed to be stationary. On the other hand, setting $\delta=\pi$ reduces the number of parameters that need to be estimated, which is convenient from a computational perspective.
 
-The hierarchical hidden Markov model (HHMM) is a flexible extension of the HMM  that can jointly model data observed on two different time scales \citep{oel21}. The two time series, one on a coarser and one on a finer scale, differ in the number of observations, e.g. monthly observations on the coarser scale and daily or weekly observations on the finer scale. Following the concept of HMMs, we can model both state-dependent time series jointly. First, we treat the time series on the coarser scale as stemming from an ordinary HMM, which we refer to as the coarse-scale HMM: At each time point $t$ of the coarse-scale time space $\{1,\dots,T\}$, an underlying process $(S_t)_t$ selects one state from the coarse-scale state space $\{1,\dots,N\}$. We call $(S_t)_t$ the hidden coarse-scale state process. Depending on which state is active at $t$, one of $N$ distributions $f^{(1)},\dots,f^{(N)}$ realizes the observation $X_t$. The process $(X_t)_t$ is called the observed coarse-scale state-dependent process. The processes $(S_t)_t$ and $(X_t)_t$ have the same properties as before, namely $(S_t)_t$ is a first-order Markov process and $(X_t)_t$ satisfies the conditional independence assumption. The dependence structure is visualized in Figure \ref{fig:hmm}.
+The hierarchical hidden Markov model (HHMM) is a flexible extension of the HMM  that can jointly model data observed on two different time scales \citep{oel21}. The two time series, one on a coarser and one on a finer scale, differ in the number of observations, e.g. monthly observations on the coarser scale and daily or weekly observations on the finer scale. Following the concept of HMMs, we can model both state-dependent time series jointly. First, we treat the time series on the coarser scale as stemming from an ordinary HMM, which we refer to as the coarse-scale HMM: At each time point $t$ of the coarse-scale time space $\{1,\dots,T\}$, an underlying process $(S_t)_t$ selects one state from the coarse-scale state space $\{1,\dots,N\}$. We call $(S_t)_t$ the hidden coarse-scale state process. Depending on which state is active at $t$, one of $N$ distributions $f^{(1)},\dots,f^{(N)}$ realizes the observation $X_t$. The process $(X_t)_t$ is called the observed coarse-scale state-dependent process. The processes $(S_t)_t$ and $(X_t)_t$ have the same properties as before, namely $(S_t)_t$ is a first-order Markov process and $(X_t)_t$ satisfies the conditional independence assumption. This dependence structure is visualized in the upper part of Figure \ref{fig:hhmm}.
+
+Subsequently, we segment the observations of the fine-scale time series into $T$ distinct chunks, each of which contains all data points that correspond to the $t$-th coarse-scale time point. Assuming that we have $T^*$ fine-scale observations on every coarse-scale time point, we face $T$ chunks comprising of $T^*$ fine-scale observations each. The hierarchical structure now evinces itself as we model each of the chunks by one of $N$ possible fine-scale HMMs. Each of the fine-scale HMMs has its own t.p.m.\ $\Gamma^{*(i)}$, initial distribution $\delta^{*(i)}$, stationary distribution $\pi^{*(i)}$, and state-dependent distributions $f^{*(i,1)},\dots,f^{*(i,N^*)}$. Which fine-scale HMM is selected to explain the $t$-th chunk of fine-scale observations depends on the hidden coarse-scale state $S_t$. The $i$-th fine-scale HMM explaining the $t$-th chunk of fine-scale observations consists of the following two stochastic processes: At each time point $t^*$ of the fine-scale time space $\{1,\dots,T^*\}$, the process $(S^*_{t,t^*})_{t^*}$ selects one state from the fine-scale state space $\{1,\dots,N^*\}$. Depending on which state is active at $t^*$, one of $N^*$ distributions $f^{*(i,1)},\dots,f^{*(i,N^*)}$ realizes the observation $X^*_{t,t^*}$. 
+
+The fine-scale processes $(S^*_{1,t^*})_{t^*},\dots,(S^*_{T,t^*})_{t^*}$ and $(X^*_{1,t^*})_{t^*},\dots,(X^*_{T,t^*})_{t^*}$ satisfy the Markov property and the conditional independence assumption, respectively, as well. Furthermore, it is assumed that the fine-scale HMM explaining $(X^*_{t,t^*})_{t^*}$ only depends on $S_t$. Figure \ref{fig:hhmm} visualizes the hierarchical dependence structure.
 
 \begin{figure}
   \centering
-  \includegraphics[scale = 0.4]{hmm.png}
-  \caption{Dependence structure of an HMM.}
-  \label{fig:hmm}
-\end{figure}
-
-Subsequently, we segment the observations of the fine-scale time series into $T$ distinct chunks, each of which contains all data points that correspond to the $t$-th coarse-scale time point. Assuming that we have $T^*$ fine-scale observations on every coarse-scale time point, we face $T$ chunks comprising of $T^*$ fine-scale observations each. 
-
-The hierarchical structure now evinces itself as we model each of the chunks by one of $N$ possible fine-scale HMMs. Each of the fine-scale HMMs has its own t.p.m.\ $\Gamma^{*(i)}$, initial distribution $\delta^{*(i)}$, stationary distribution $\pi^{*(i)}$, and state-dependent distributions $f^{*(i,1)},\dots,f^{*(i,N^*)}$. Which fine-scale HMM is selected to explain the $t$-th chunk of fine-scale observations depends on the hidden coarse-scale state $S_t$. The $i$-th fine-scale HMM explaining the $t$-th chunk of fine-scale observations consists of the following two stochastic processes: At each time point $t^*$ of the fine-scale time space $\{1,\dots,T^*\}$, the process $(S^*_{t,t^*})_{t^*}$ selects one state from the fine-scale state space $\{1,\dots,N^*\}$. We call $(S^*_{t,t^*})_{t^*}$ the hidden fine-scale state process. Depending on which state is active at $t^*$, one of $N^*$ distributions $f^{*(i,1)},\dots,f^{*(i,N^*)}$ realizes the observation $X^*_{t,t^*}$. The process $(X^*_{t,t^*})_{t^*}$ is called the observed fine-scale state-dependent process. 
-
-The fine-scale processes $(S^*_{1,t^*})_{t^*},\dots,(S^*_{T,t^*})_{t^*}$ and $(X^*_{1,t^*})_{t^*},\dots,(X^*_{T,t^*})_{t^*}$ satisfy the Markov property and the conditional independence assumption, respectively, as well. Furthermore, it is assumed that the fine-scale HMM explaining $(X^*_{t,t^*})_{t^*}$ only depends on $S_t$. This hierarchical structure is visualized in Figure \ref{fig:hhmm}.
-
-\begin{figure}
-  \centering
-  \includegraphics[scale = 0.6]{hhmm.png}
+  \includegraphics{hhmm.png}
   \caption{Dependence structure of an HHMM.}
   \label{fig:hhmm}
 \end{figure}
 
 \section{Model specification} \label{sec:model_specification} %% Lennart
 
-Model specification in the \pkg{fHMM} package is done by specifying a named list of controls and passing it to the \fct{set\_controls} function. This usually constitutes the first step when using the package. The function checks the specifications and returns an \class{fHMM\_controls} object which stores all settings and thereby provides required information for other \pkg{fHMM} functionalities. In the following, we demonstrate three example specifications that should help the user to tailor an HMM to their need. The examples are continued in the following sections. All possible specifications are documented in detail on the function's help page, which can be accessed from the \proglang{R} console via \code{help(set_controls, package = "fHMM")}.
+Model specification in the \pkg{fHMM} package is done by specifying a named list of controls and passing it to the \fct{set\_controls} function. This usually constitutes the first step when using the package, see Figure \ref{fig:flowchart}. The function checks the specifications and returns an \class{fHMM\_controls} object which stores all settings and thereby provides required information for other \pkg{fHMM} functionalities. In the following, we demonstrate three example specifications that should help the user to tailor an HMM to their need. The examples are continued in the following sections. All possible specifications are documented in detail on the function's help page, which can be accessed from the \proglang{R} console via \code{help(set_controls, package = "fHMM")}.
 
-\paragraph{Example 1: DAX} Say that we want to fit a 3-state HMM to the closing prices of the Deutscher Aktienindex DAX \cite{jan92}. Assume that the required data is available in our working directory as file \code{"dax.csv"}. Such a data set can be obtained directly from Yahoo Finance (finance.yahoo.com) via the convenience function \fct{download\_data}, which is explained in the next section on data management. Consider the following specifications:
+\paragraph{Example 1: DAX} We fit a 3-state HMM to the closing prices of the Deutscher Aktienindex DAX \citep{jan92}. Assume that the required data is available in the working directory as file \code{"dax.csv"}. Such data can be obtained directly from Yahoo Finance via the convenience function \fct{download\_data}, see the next section.
+
+The following lines set the number \code{states = 3} of hidden states. Any number greater or equal 2 is possible. Next, \code{sdds = "t"} specifies state-dependent t-distributions, which is the common choice for modeling log-returns \citep{pla08}. Alternatively, \code{sdds = "gamma"} specifies Gamma distributions, which is useful to model trading volumes as in \cite{ada20}. The \code{data} entry sets the path to the data file (\code{file = "dax.csv"}), the file's column that contains the dates (\code{date_column = "Date"}) and the data (\code{date_column = "Close"}). The command \code{logreturns = TRUE} transforms the data to log-returns.
 
 %
 \begin{Schunk}
@@ -194,7 +181,7 @@ R> contr_dax <- list(
 \end{Schunk}
 %
 
-These lines first set the number \code{states = 3} of hidden states. Any number greater or equal 2 is possible. Next, \code{sdds = "t"} specifies state-dependent t-distributions, which is the common choice for modeling log-returns \citep{pla08}. Alternatively, \code{sdds = "gamma"} specifies Gamma distributions, which is useful to model trading volumes as in \cite{ada20}. The \code{data} entry sets the path to the file (\code{file = "dax.csv"}), the file's column that contains the dates (\code{date_column = "Date"}) and the data (\code{date_column = "Close"}). The command \code{logreturns = TRUE} transforms the data to log-returns. Passing the list to the \fct{set\_controls} function returns an object of class \class{fHMM\_controls}, which contains the specifications and default settings.
+Passing this list to the \fct{set\_controls} function returns an object of class \class{fHMM\_controls}, which contains the specifications and default settings.
 
 %
 \begin{Schunk}
@@ -208,7 +195,7 @@ R> class(contr_dax)
 \end{Schunk}
 %
 
-\paragraph{Example 2: Simulation} If the \code{data} element is not set, data will be simulated from the model specification. Simulation typically serves to assess the properties of estimation algorithms either for research or in a bootstrap like fashion, as seen for example in \citep{oel21}. The following lines specify a 2-state HMM with state-dependent Gamma distributions, where the expectation values for state 1 and 2 are fixed to \code{1} and \code{2}, respectively. The model will be fitted to 200 data points (\code{horizon = 200}) simulated from this specification based on \code{runs = 50} randomly initialized numerical optimization of the model's log-likelihood function:
+\paragraph{Example 2: Simulation} If the \code{data} element is not set, data will be simulated from the model specification. Simulation typically serves to assess the properties of estimation algorithms either for research or in a bootstrap like fashion, as seen for example in \cite{oel21}. The following lines specify a 2-state HMM with state-dependent Gamma distributions, where the expectation values for state 1 and 2 are fixed to \code{1} and \code{2}, respectively. The model will be fitted to 200 data points (\code{horizon = 200}) simulated from this specification based on \code{runs = 50} randomly initialized numerical optimization runs of the model's log-likelihood function:
 
 %
 \begin{Schunk}
@@ -241,7 +228,7 @@ fHMM controls:
 \end{Schunk}
 %
 
-\paragraph{Example 3: Hierarchy} To specify an hierarchical HMM, add \code{hierarchy = TRUE} to the controls. The following lines show an example specification for the DAX and the Volkswagen stock:
+\paragraph{Example 3: Hierarchy} An hierarchical HMM can be specified by adding \code{hierarchy = TRUE} to the controls. The following is a specification for the DAX on the fine scale and the Volkswagen stock on the coarse scale (both data sets are contained in the package): 
 
 %
 \begin{Schunk}
@@ -265,19 +252,19 @@ R> contr_hhmm <- set_controls(contr_hhmm)
 \end{Schunk}
 %
 
-The line \code{states = c(2, 2)} specifies \code{2} coarse-scale and \code{2} fine-scale states, respectively. State-dependent t-distributions are used, where the degrees of freedom are fixed to \code{1} on both scales. We note here that setting \code{df = Inf} would result in a normal distribution. Via \code{period = "m"} we specify a monthly fine-scale time horizon. Alternatives are \code{"w"}, \code{"q"}, and \code{"y"} for weekly, quarterly, and yearly periods, respectively. We use closing prices of the DAX on the coarse-scale and the Volkswagen stock on the fine-scale layer, both data sets are contained in the \pkg{fHMM} package. The observation period is restricted to five years via \code{from = "2015-01-01"} and \code{to = "2020-01-01"}. With \code{logreturns = c(TRUE,TRUE)} we ensure that both layers are transformed to log-returns. If the coarse-scale data has a finer temporal resolution than defined by \code{period}, the data can be merged by specifying a function via the \code{merge} argument. In this example, the file \code{"dax.vw"} contains daily closing prices. Because we specified \code{merge = function(x) mean(x)}, the monthly average closing prices are used as coarse-scale observations.
+The line \code{states = c(2, 2)} specifies \code{2} coarse-scale and \code{2} fine-scale states, respectively. State-dependent t-distributions are used, where the degrees of freedom are fixed to \code{1} on both scales (setting \code{df = Inf} is possible and would result in a normal distribution). Via \code{period = "m"} we specify a monthly fine-scale time horizon. Alternatives are \code{"w"}, \code{"q"}, and \code{"y"} for weekly, quarterly, and yearly periods, respectively. The observation period is restricted to five years via \code{from = "2015-01-01"} and \code{to = "2020-01-01"}. With \code{logreturns = c(TRUE,TRUE)} we ensure that both layers are transformed to log-returns. If the coarse-scale data has a finer temporal resolution than defined by \code{period}, the data can be merged by specifying a function via the \code{merge} argument. In this example, the file \code{"dax.vw"} contains daily closing prices. Because we specified \code{merge = function(x) mean(x)}, the monthly average closing prices are used as coarse-scale observations.
 
 \section{Data management} \label{sec:data_management} %% Lennart
 
-Empirical data for modeling must be provided as a comma-separated values (CSV) file and its path must be specified in \fct{set\_controls}, see the previous section. We recommend to use the data provided by Yahoo Finance. The \pkg{fHMM} package includes the convenience function \fct{download\_data} for downloading daily stock data directly from the website in the required format. The function call is \code{download\_data(symbol, from, to, file)}, where
+Empirical data for modeling must be provided as a comma-separated values (CSV) file and its path must be specified in \fct{set\_controls}, see the previous section. We recommend to use financial data provided by Yahoo Finance. The \pkg{fHMM} package includes the convenience function \fct{download\_data} for downloading daily stock data directly from the website in the required format. The function call is \code{download\_data(symbol, from, to, file)}, where
 
 - \code{symbol} is the stock's symbol that has to match the official symbol on Yahoo Finance,
 
-- \code{from} and \code{to} define the time interval (in format \code{"YYYY-MM-DD"}),
+- \code{from} and \code{to} define the desired time interval (in format \code{"YYYY-MM-DD"}),
 
 - \code{file} is the name of the saved file. Per default, it is saved in the current working directory under the name \code{<symbol>.csv}.
 
-For example, the call
+For example, the 21st century daily data of the DAX can be downloaded via:
 
 %
 \begin{Schunk}
@@ -287,13 +274,11 @@ R> download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date())
 \end{Schunk}
 %
 
-downloads the 21st century daily data of the DAX into the current working directory.
-
 The \fct{prepare\_data} function prepares the data based on the \class{fHMM\_controls} specifications and returns an \class{fHMM\_data} object. This object can then be passed to the \fct{fit\_model} function for model fitting, see the next section.
 
 \paragraph{Example 1: DAX (cont.)}
 
-The following line applies the \fct{prepare\_data} function to control specification for the 3-state HMM DAX model from the previous section. The output object can be fed into the \fct{summary} method for a quick data overview:
+In the following, the \fct{prepare\_data} function is applied to the control specification for the 3-state HMM DAX model from the previous section. The output object can be fed into the \fct{summary} method for a data overview:
 
 %
 \begin{Schunk}
@@ -311,7 +296,7 @@ Summary of fHMM empirical data
 \end{Schunk}
 %
 
-Additionally, the data can be visualized via the \fct{plot} method. To facilate interpretation, historical events can be highlighted by specifying a named list \code{events} with elements \code{dates} (a vector of dates) and \code{labels} (a vector of labels for the events) and passing it to the plot method, for example:
+Additionally, the data can be visualized via the \fct{plot} method. To facilitate interpretation, historical events with a potential influence on the time series can be highlighted as follows:
 
 %
 \begin{Schunk}
@@ -360,9 +345,7 @@ R> data_hhmm <- prepare_data(contr_hhmm)
 
 \section{Model estimation} \label{sec:model_estimation} %% Timo + Lennart
 
-The \pkg{fHMM} package fits a hidden Markov model via the maximum-likelihood method, i.e.\ by numerically maximizing the likelihood function. Deriving the likelihood function of an hidden Markov model is part of the hierarchical case, hence the following only discusses the general case.
-
-An HHMM can be treated as an HMM with two conditionally independent data streams; the coarse-scale observations on the one hand and the corresponding chunk of fine-scale observations connected to a fine-scale HMM on the other hand. To derive the likelihood of an HHMM, we start by computing the likelihood of each chunk of fine-scale observations being generated by each fine-scale HMM. 
+The \pkg{fHMM} package estimates the hidden Markov model via the maximum-likelihood method, i.e.\ by numerically maximizing the likelihood function. Deriving the likelihood function of an HMM is part of the hierarchical case, hence the following only discusses the general case. A hierarchical HMM can be treated as an HMM with two conditionally independent data streams; the coarse-scale observations on the one hand and the corresponding chunk of fine-scale observations connected to a fine-scale HMM on the other hand. To derive the likelihood of an HHMM, we start by computing the likelihood of each chunk of fine-scale observations being generated by each fine-scale HMM. 
 
 To fit the $i$-th fine-scale HMM, with model parameters $\theta^{*(i)}=(\delta^{*(i)}, \Gamma^{*(i)},(f^{*(i,k)})_k)$ to the $t$-th chunk of fine-scale observations, which is denoted by $(X_{t,t^*})_{t^*}$, we consider the fine-scale forward probabilities 
 \begin{align*}
@@ -394,7 +377,7 @@ The coarse-scale forward probabilities can be calculated similarly by applying t
 
 To account for parameter constraints associated with the transition probabilities (and potentially the parameters of the state-dependent distributions), we use parameter transformations. To ensure that the entries of the t.p.m.s fulfill non-negativity and the unity condition, we estimate unconstrained values $(\eta_{ij})_{i\neq j}$ for the non-diagonal entries of $\Gamma$ and derive the probabilities using the multinomial logit link
 \begin{align*}
-\gamma_{ij}=\frac{\exp[\eta_{ij}]}{1+\sum_{k\neq i}\exp[\eta_{ik}]},~i\neq j
+\gamma_{ij}=\frac{\exp(\eta_{ij})}{1+\sum_{k\neq i}\exp(\eta_{ik})},~i\neq j
 \end{align*}
 rather than estimating the probabilities $(\gamma_{ij})_{i,j}$ directly. The diagonal entries result from the unity condition as
 \begin{align*}
@@ -402,38 +385,14 @@ rather than estimating the probabilities $(\gamma_{ij})_{i,j}$ directly. The dia
 \end{align*}
 Furthermore, variances are strictly positive, which can be achieved by applying an exponential transformation to the unconstrained estimator.
 
-When numerically maximizing the likelihood using some Newton-Raphson-type method, we often face numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way (see \cite{zuc16} and \cite{oel21} for details).
+Two more technical difficulties arise when numerically maximizing the likelihood using some Newton-Raphson-type method. First, we often face numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way. Second, as the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one. To avoid this problem, it is recommended to run the maximization multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood. We refer to \cite{zuc16} and \cite{oel21} for details. For efficient initialization, \pkg{fHMM} uses the first and second data moments as a basis for the initial guesses.
 
-As the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one. To avoid this problem, it is recommended to run the maximization multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood (see \cite{zuc16} and \cite{oel21} for details). %% Comment how we initialize (method of moments)
-
-For illustration, we fit a 3-state HMM with state-dependent t-distributions to the DAX data. We use the same specification as in the previous section:
+\paragraph{Example 1: DAX (cont.)} In section \ref{sec:data_management}, we defined the \class{fHMM\_data} object \code{data\_dax}. This object can be directly passed to the \fct{fit\_model} function that numerically maximizes the model's (log-) likelihood function. Optionally, the numerical maximization runs can be parallelized by setting the function's \code{ncluster} argument.
 
 %
 \begin{Schunk}
 \begin{Sinput}
-R> controls <- list(
-+    states = 3,
-+    sdds   = "t",
-+    data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
-+                  date_column = "Date",
-+                  data_column = "Close",
-+                  from        = "2000-01-01",
-+                  to          = "2021-12-31",
-+                  logreturns  = TRUE),
-+    fit    = list("runs" = 100)
-+  )
-R> controls <- set_controls(controls)
-R> data <- prepare_data(controls)
-\end{Sinput}
-\end{Schunk}
-%
-
-The \class{data} object can be directly passed to the \fct{fit\_model} function that numerically maximizes the model's (log-) likelihood function \code{runs = 100} times. For convenience, the \class{controls} object is saved in \class{data} and does not need to be submitted to \fct{fit\_model}. The numerical maximization runs can be parallelized by setting the \code{ncluster} argument. Setting \code{ncluster = 1} avoids any dependency on packages that provide clustering.
-
-%
-\begin{Schunk}
-\begin{Sinput}
-R> dax_model_3t <- fit_model(data, seed = 1, verbose = FALSE)
+R> dax_model_3t <- fit_model(data_dax, ncluster = 4, seed = 1, verbose = FALSE)
 \end{Sinput}
 \end{Schunk}
 %
@@ -476,7 +435,7 @@ df_3       5.501298e+00  1.064107e+01 2.058285e+01
 \end{Schunk}
 %
 
-The estimated state-dependent distributions can be plotted as follows:
+The estimated state-dependent distributions can be plotted:
 
 %
 \begin{Schunk}
@@ -484,7 +443,7 @@ The estimated state-dependent distributions can be plotted as follows:
 R> plot(dax_model_3t, plot_type = "sdds")
 \end{Sinput}
 \end{Schunk}
-\includegraphics{fhmm_oelschlaeger_adam_michels-sdds}
+\includegraphics{fhmm_oelschlaeger_adam_michels-dax-sdds}
 %
 
 As mentioned above, the HMM likelihood function is prone to local optima. This effect can be visualized by plotting the log-likelihood value in the different optimization runs, where the best run is marked in red:
@@ -495,15 +454,57 @@ As mentioned above, the HMM likelihood function is prone to local optima. This e
 R> plot(dax_model_3t, plot_type = "ll")
 \end{Sinput}
 \end{Schunk}
-\includegraphics{fhmm_oelschlaeger_adam_michels-ll}
+\includegraphics{fhmm_oelschlaeger_adam_michels-dax-ll}
 %
 
-The package also includes an hierarchical HMM with the following specification:
+\paragraph{Example 2: Simulation (cont.)} Fitting an HMM to the simulated data is analogue via the \fct{fit\_model} function. The model is also saved in \pkg{fHMM}. The \fct{summary} method gives an overview of the estimated model, where we can compare the estimates to the true model coefficients:
+
+%
+\begin{Schunk}
+\begin{Sinput}
+R> data(sim_model_2gamma)
+R> summary(sim_model_2gamma)
+\end{Sinput}
+\begin{Soutput}
+Summary of fHMM model
+
+  simulated hierarchy        LL      AIC      BIC
+1      TRUE     FALSE -192.9676 393.9353 407.1286
+
+State-dependent distributions:
+gamma(mu = 1|2) 
+
+Estimates:
+               lb estimate     ub true
+Gamma_2.1 0.06475  0.17804 0.4039  0.2
+Gamma_1.2 0.03052  0.07781 0.1844  0.1
+sigma_1   0.44079  0.49962 0.5663  0.5
+sigma_2   0.70108  0.92279 1.2146  1.0
+\end{Soutput}
+\end{Schunk}
+%
+
+\paragraph{Example 3: Hierarchy (cont.)}
+
+%
+\begin{Schunk}
+\begin{Sinput}
+R> dax_vw_model <- fit_model(data_hhmm, ncluster = 1, seed = 1, verbose = FALSE)
+\end{Sinput}
+\end{Schunk}
+%
 
 %
 \begin{Schunk}
 \begin{Sinput}
 R> data(dax_vw_model)
+\end{Sinput}
+\end{Schunk}
+%
+
+%
+\begin{Schunk}
+\begin{Sinput}
 R> plot(dax_vw_model, plot_type = "sdds")
 \end{Sinput}
 \end{Schunk}
@@ -696,6 +697,7 @@ The \pkg{fHMM} package intends to make the estimation of hidden Markov models fo
 
 %% Limitations and future plans
 %% Continuous time and states, only two hierarchies
+%% No need to specify number of states in advance
 
 %% -- Optional special unnumbered sections -------------------------------------
 

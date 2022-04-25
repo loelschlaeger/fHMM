@@ -108,117 +108,117 @@ data_hhmm <- prepare_data(contr_hhmm)
 
 
 ###################################################
-### code chunk number 12: data preparation
+### code chunk number 12: example 1 dax fit model (eval = FALSE)
 ###################################################
-controls <- list(
-  states = 3,
-  sdds   = "t",
-  data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
-                date_column = "Date",
-                data_column = "Close",
-                from        = "2000-01-01",
-                to          = "2021-12-31",
-                logreturns  = TRUE),
-  fit    = list("runs" = 100)
-)
-controls <- set_controls(controls)
-data <- prepare_data(controls)
+## dax_model_3t <- fit_model(data_dax, ncluster = 4, seed = 1, verbose = FALSE)
 
 
 ###################################################
-### code chunk number 13: model estimation (eval = FALSE)
-###################################################
-## dax_model_3t <- fit_model(data, seed = 1, verbose = FALSE)
-
-
-###################################################
-### code chunk number 14: access model
+### code chunk number 13: example 1 dax access model
 ###################################################
 data(dax_model_3t)
 
 
 ###################################################
-### code chunk number 15: model coefficients
+### code chunk number 14: example 1 dax model coefficients
 ###################################################
 coef(dax_model_3t)
 
 
 ###################################################
-### code chunk number 16: sdds
+### code chunk number 15: dax-sdds
 ###################################################
 plot(dax_model_3t, plot_type = "sdds")
 
 
 ###################################################
-### code chunk number 17: ll
+### code chunk number 16: dax-ll
 ###################################################
 plot(dax_model_3t, plot_type = "ll")
 
 
 ###################################################
-### code chunk number 18: hhmm_model
+### code chunk number 17: example 2 sim summary
+###################################################
+data(sim_model_2gamma)
+summary(sim_model_2gamma)
+
+
+###################################################
+### code chunk number 18: example 3 hhmm fit model (eval = FALSE)
+###################################################
+## dax_vw_model <- fit_model(data_hhmm, ncluster = 1, seed = 1, verbose = FALSE)
+
+
+###################################################
+### code chunk number 19: example 3 sim access model
 ###################################################
 data(dax_vw_model)
+
+
+###################################################
+### code chunk number 20: hhmm_model
+###################################################
 plot(dax_vw_model, plot_type = "sdds")
 
 
 ###################################################
-### code chunk number 19: load dax model
+### code chunk number 21: load dax model
 ###################################################
 data(dax_model_3t)
 
 
 ###################################################
-### code chunk number 20: dax decode states
+### code chunk number 22: dax decode states
 ###################################################
 dax_model_3t <- decode_states(dax_model_3t)
 
 
 ###################################################
-### code chunk number 21: dec_ts
+### code chunk number 23: dec_ts
 ###################################################
 plot(dax_model_3t)
 
 
 ###################################################
-### code chunk number 22: reorder states
+### code chunk number 24: reorder states
 ###################################################
 dax_model_3t <- reorder_states(dax_model_3t, 3:1)
 
 
 ###################################################
-### code chunk number 23: predict
+### code chunk number 25: predict
 ###################################################
 predict(dax_model_3t, ahead = 10)
 
 
 ###################################################
-### code chunk number 24: load dax data
+### code chunk number 26: load dax data
 ###################################################
 data(dax_model_3t)
 
 
 ###################################################
-### code chunk number 25: compute residuals
+### code chunk number 27: compute residuals
 ###################################################
 dax_model_3t <- compute_residuals(dax_model_3t)
 
 
 ###################################################
-### code chunk number 26: residuals
+### code chunk number 28: residuals
 ###################################################
 plot(dax_model_3t, plot_type = "pr")
 
 
 ###################################################
-### code chunk number 27: jb test
+### code chunk number 29: jb test
 ###################################################
 res <- dax_model_3t$residuals
 tseries::jarque.bera.test(res)
 
 
 ###################################################
-### code chunk number 28: compare models
+### code chunk number 30: compare models
 ###################################################
 data(dax_model_2n)
 data(dax_model_3t)
