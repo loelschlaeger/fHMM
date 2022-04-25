@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,6 +59,11 @@
       <small>Source: <a href="https://github.com/loelschlaeger/fHMM/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.1.9000" id="fhmm-1019000">fHMM 1.0.1.9000<a class="anchor" aria-label="anchor" href="#fhmm-1019000"></a></h2>
+<ul><li>Fixed bug in <code><a href="../reference/reorder_states.html">reorder_states()</a></code> that did not order the fine-scale parameter sets when the coarse-scale order was changes.</li>
+<li>Fixed bug in <code><a href="../reference/parameter_labels.html">parameter_labels()</a></code> that returned the wrong order of parameter labels.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.1" id="fhmm-101">fHMM 1.0.1<a class="anchor" aria-label="anchor" href="#fhmm-101"></a></h2><p class="text-muted">CRAN release: 2022-04-07</p>
 <ul><li>In the vignette ‘Controls’, in the section about example specifications for <code>controls</code>, corrected <code>sdds = "gamma(mu = -1|1)"</code> to <code>sdds = "gamma(mu = 0.5|2)"</code> because mean of the Gamma distribution must be positive.</li>
