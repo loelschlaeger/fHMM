@@ -39,13 +39,13 @@ reorder_states <- function(x, state_order) {
 
   ### check inputs
   if (!inherits(x,"fHMM_model")) {
-    stop("'x' is not of class 'fHMM_model'.")
+    stop("'x' is not of class 'fHMM_model'.", call. = FALSE)
   }
   if (!x$data$controls$hierarchy) {
     if (!(is.numeric(state_order) &&
       length(state_order) == x$data$controls$states &&
       all(state_order %in% 1:x$data$controls$states))) {
-      stop("'state_order' is missspecified.")
+      stop("'state_order' is missspecified, please check the documentation.", call. = FALSE)
     }
     state_order <- as.matrix(state_order)
   } else {
@@ -55,7 +55,7 @@ reorder_states <- function(x, state_order) {
       all(sapply(1:x$data$controls$states[2], 
                  function(col) 1:x$data$controls$states[2] %in% state_order[col,-1])))
       ) {
-      stop("'state_order' is missspecified.")
+      stop("'state_order' is missspecified, please check the documentation.", call. = FALSE)
     }
   }
 
@@ -69,6 +69,12 @@ reorder_states <- function(x, state_order) {
     par$dfs <- as.vector(permut %*% par$dfs)
   }
   if (x$data$controls$hierarchy) {
+    par$Gammas_star <- par$Gammas_star[state_order[, 1]]
+    par$mus_star <- par$mus_star[state_order[, 1]]
+    par$sigmas_star <- par$sigmas_star[state_order[, 1]]
+    if (x$data$controls$sdds[[1]]$name == "t") {
+      par$dfs_star <- par$dfs_star[state_order[, 1]]
+    }
     for (s in state_order[, 1]) {
       permut <- diag(x$data$controls$states[2])[state_order[which(state_order[, 1] == s), -1], ]
       par$Gammas_star[[s]] <- permut %*% par$Gammas_star[[s]] %*% t(permut)
