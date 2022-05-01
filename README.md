@@ -13,9 +13,9 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/fHMM)](https://cranlogs
 [![codecov](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg)](https://app.codecov.io/gh/loelschlaeger/fHMM)
 <!-- badges: end -->
 
-With {fHMM} you can detect bearish and bullish markets in financial time
-series by applying *Hidden Markov Models (HMMs)*. The functionality and
-the model [is documented in detail
+With {fHMM} you can detect and characterize financial market regimes in
+financial time series by applying hidden Markov Models (HMMs). The
+functionality and the model [is documented in detail
 here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a
 first application to the German stock index
 [DAX](https://en.wikipedia.org/wiki/DAX).
@@ -42,8 +42,7 @@ We welcome contributions! Please submit [bug
 reports](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=bug&template=bug.md)
 and [feature
 requests](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=future&template=suggestion.md)
-as issues and extensions as pull request from a branch created from
-main.
+as issues and extensions as pull request from a branch forked from main.
 
 ## Example: Fitting an HMM to the DAX
 
@@ -124,8 +123,7 @@ summary(model)
 ```
 
 Having estimated the model, we can visualize the state-dependent
-distributions and the decoded time series to interpret bearish and
-bullish markets:
+distributions and the decoded time series:
 
 ``` r
 events <- fHMM_events(

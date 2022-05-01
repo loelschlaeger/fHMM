@@ -2,7 +2,7 @@
 rm(list = ls())
 library(magrittr)
 devtools::load_all()
-#install.packages("../fHMM_1.0.1.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
+#install.packages("../fHMM_1.0.2.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
 
 ### download data -----------------------------------------------------------
 download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date(),
