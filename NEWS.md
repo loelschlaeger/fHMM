@@ -1,7 +1,8 @@
-# fHMM 1.0.1.9000
+# fHMM 1.0.2
 
-* Fixed bug in `reorder_states()` that did not order the fine-scale parameter sets when the coarse-scale order was changes.
+* Fixed bug in `reorder_states()` that did not order the fine-scale parameter sets when the coarse-scale order was changed.
 * Fixed bug in `parameter_labels()` that returned the wrong order of parameter labels.
+* Changed plot type of simulated data to lines.
 
 # fHMM 1.0.1
 

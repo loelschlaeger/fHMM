@@ -28,6 +28,5 @@ An object of class \code{fHMM_model}.
 This function fits a HMM to \code{data} via maximum likelihood estimation.
 }
 \details{
-The function is parallelized only if \code{ncluster > 1}. If you experience
-problems on your OS, try to set \code{ncluster <- 1}.
+The function is parallelized only if \code{ncluster > 1}.
 }
