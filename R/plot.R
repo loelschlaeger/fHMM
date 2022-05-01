@@ -518,8 +518,8 @@ plot_ts <- function(data, decoding, colors, events) {
   if (!controls[["hierarchy"]]) {
     ymin <- min(data[["data"]])
     ymax <- max(data[["data"]])
-    if(ymin > 0 && ymax < 10) {
-      ymin = 0 
+    if (ymin > 0 && ymax < 10) {
+      ymin <- 0
     }
     plot(x_values, data[["data"]],
       type = "l", col = "lightgrey",
