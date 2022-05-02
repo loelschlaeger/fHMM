@@ -45,7 +45,8 @@ Suggests:
     testthat (>= 3.0.0),
     covr,
     printr,
-    tseries
+    tseries,
+    spelling
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
