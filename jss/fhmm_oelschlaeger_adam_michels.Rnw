@@ -38,7 +38,10 @@ library("fHMM")
 \Shorttitle{fHMM}
 
 \Abstract{
-Hidden Markov models constitute a versatile class of statistical models for time series that are driven by hidden states. In finance, the hidden states can often be linked to market regimes such as bearish and bullish markets or recessions and periods of economics growths. Hidden Markov models allow for classification of the states in terms of state distributions and transition probabilities. In this paper, we introduce the \proglang{R} package \pkg{fHMM} that provides various tools for applying hidden Markov models to financial time series. Its key features include fitting hidden Markov models and their hierarchical extension to empirical time series, conducting simulation experiments, decoding the underlying state sequence, model checking, model selection, and prediction. Our aim is to provide \proglang{R} users access to this model class for their financial applications.
+%% Intro to HMMs
+Hidden Markov models constitute a versatile class of statistical models for time series that are driven by hidden states. In financial applications, the hidden states can often be linked to market regimes such as bearish and bullish markets or recessions and periods of economics growth, respectively. When the market is in a nervous state, to give an example, corresponding stock returns often follow some distribution with relatively high variance, whereas calm periods are commonly characterized by another distribution with relatively smaller variance. Hidden Markov models can be used to explicitly model the state-dependent distributions of the observations and the transitions between states, and thus help to draw a comprehensive picture of market behavior.
+%% Intro to the package
+In this paper, we introduce the \proglang{R} package \pkg{fHMM}, which provides various tools for applying hidden Markov models to financial data. Its key features include tools for fitting hidden Markov models and their hierarchical extension to empirical data, for conducting simulation experiments, and for decoding the underlying state sequence. In addition, functions for model checking, model selection, and state prediction are provided. Our aim is to provide \proglang{R} users access to this model class for their financial applications.
 }
 
 %% - \Keywords{} with LaTeX markup, at least one required
