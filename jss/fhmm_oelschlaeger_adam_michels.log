@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.8)  3 MAY 2022 16:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.8)  4 MAY 2022 18:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -510,7 +510,7 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 72.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \vbox (badness 1783) has occurred while \output is active []
+Underfull \vbox (badness 3209) has occurred while \output is active []
 
 [1
 
@@ -722,7 +722,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 711.
 Here is how much of TeX's memory you used:
  8072 strings out of 493014
  117636 string characters out of 6133351
- 200124 words of memory out of 5000000
+ 200204 words of memory out of 5000000
  11357 multiletter control sequences out of 15000+600000
  98697 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -753,7 +753,7 @@ exlive/2016/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2016
 e1/public/lm/lmtt9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/l
 m/lmtto10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/zapfchan/uzcm
 i8a.pfb>
-Output written on fhmm_oelschlaeger_adam_michels.pdf (21 pages, 2264100 bytes).
+Output written on fhmm_oelschlaeger_adam_michels.pdf (21 pages, 2264048 bytes).
 
 PDF statistics:
  513 PDF objects out of 1000 (max. 8388607)
