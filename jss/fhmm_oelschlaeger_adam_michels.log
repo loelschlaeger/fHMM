@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.8)  5 MAY 2022 14:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.8)  5 MAY 2022 19:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -395,7 +395,8 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 635.
 \mathdisplay@stack=\toks20
 LaTeX Info: Redefining \[ on input line 2739.
 LaTeX Info: Redefining \] on input line 2740.
-) (./fhmm_oelschlaeger_adam_michels.aux)
+)
+No file fhmm_oelschlaeger_adam_michels.aux.
 \openout1 = `fhmm_oelschlaeger_adam_michels.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 73.
@@ -459,11 +460,10 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 73.
 LaTeX Info: Redefining \pageref on input line 73.
 LaTeX Info: Redefining \nameref on input line 73.
-(./fhmm_oelschlaeger_adam_michels.out) (./fhmm_oelschlaeger_adam_michels.out)
 \@outlinefile=\write4
 \openout4 = `fhmm_oelschlaeger_adam_michels.out'.
 
-<jsslogo.jpg, id=40, 540.0175pt x 393.47pt>
+<jsslogo.jpg, id=4, 540.0175pt x 393.47pt>
 File: jsslogo.jpg Graphic file (type jpg)
 <use jsslogo.jpg>
 Package pdftex.def Info: jsslogo.jpg used on input line 73.
@@ -509,14 +509,133 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Try loading font information for U+msb on input line 73.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
+)
+
+Package natbib Warning: Citation `zuc16' on page 1 undefined on input line 94.
+
+[1
 
 {/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./jsslo
-go.jpg>] <flowchart.png, id=110, 1756.5625pt x 1907.125pt>
+go.jpg>]
+
+Package natbib Warning: Citation `kim98' on page 2 undefined on input line 97.
+
+
+Package natbib Warning: Citation `gre00' on page 2 undefined on input line 97.
+
+
+Package natbib Warning: Citation `bul06' on page 2 undefined on input line 97.
+
+
+Package natbib Warning: Citation `nys15a' on page 2 undefined on input line 97.
+
+
+
+Package natbib Warning: Citation `lan18' on page 2 undefined on input line 97.
+
+
+Package natbib Warning: Citation `ada19c' on page 2 undefined on input line 97.
+
+
+
+Package natbib Warning: Citation `ada22' on page 2 undefined on input line 97.
+
+
+Package natbib Warning: Citation `lih17' on page 2 undefined on input line 97.
+
+
+Package natbib Warning: Citation `ngu18' on page 2 undefined on input line 97.
+
+
+Package natbib Warning: Citation `bul11' on page 2 undefined on input line 97.
+
+
+Package natbib Warning: Citation `nys15a' on page 2 undefined on input line 97.
+
+
+
+Package natbib Warning: Citation `nys18' on page 2 undefined on input line 97.
+
+
+Package natbib Warning: Citation `r21' on page 2 undefined on input line 100.
+
+
+Package natbib Warning: Citation `him10' on page 2 undefined on input line 100.
+
+
+
+Package natbib Warning: Citation `vis10' on page 2 undefined on input line 100.
+
+
+
+Package natbib Warning: Citation `jac11' on page 2 undefined on input line 100.
+
+
+
+Package natbib Warning: Citation `mic16' on page 2 undefined on input line 100.
+
+
+
+Package natbib Warning: Citation `mcc18' on page 2 undefined on input line 100.
+
+
+
+Package natbib Warning: Citation `bul10' on page 2 undefined on input line 100.
+
+
+
+Package natbib Warning: Citation `oco11' on page 2 undefined on input line 100.
+
+
+
+Package natbib Warning: Citation `tur14' on page 2 undefined on input line 100.
+
+
+
+Package natbib Warning: Citation `ada19b' on page 2 undefined on input line 100
+.
+
+
+Package natbib Warning: Citation `bar17' on page 2 undefined on input line 100.
+
+
+
+Package natbib Warning: Citation `leb22' on page 2 undefined on input line 100.
+
+
+
+Package natbib Warning: Citation `oel22' on page 2 undefined on input line 103.
+
+
+
+LaTeX Warning: Reference `fig:flowchart' on page 2 undefined on input line 103.
+
+
+<flowchart.png, id=21, 1756.5625pt x 1907.125pt>
 File: flowchart.png Graphic file (type png)
 <use flowchart.png>
 Package pdftex.def Info: flowchart.png used on input line 105.
 (pdftex.def)             Requested size: 354.12434pt x 384.47379pt.
+
+Package natbib Warning: Citation `oel21' on page 2 undefined on input line 109.
+
+
+
+Package natbib Warning: Citation `ada20' on page 2 undefined on input line 109.
+
+
+
+LaTeX Warning: Reference `sec:model_definition' on page 2 undefined on input li
+ne 112.
+
+
+LaTeX Warning: Reference `sec:model_specification' on page 2 undefined on input
+ line 112.
+
+
+LaTeX Warning: Reference `sec:conclusion' on page 2 undefined on input line 112
+.
+
 
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/lmr/m/n/10.95 2 []
@@ -528,223 +647,102 @@ Overfull \hbox (5.47499pt too wide) has occurred while \output is active
  []
 
 [3 <./flowchart.png>]
+
+Package natbib Warning: Citation `zuc16' on page 4 undefined on input line 150.
+
+
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <9> on input line 150.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 150.
 
+Package natbib Warning: Citation `nor97' on page 4 undefined on input line 150.
+
+
+
+Package natbib Warning: Citation `oel21' on page 4 undefined on input line 152.
+
+
+
+LaTeX Warning: Reference `fig:hhmm' on page 4 undefined on input line 152.
+
+
+LaTeX Warning: Reference `fig:hhmm' on page 4 undefined on input line 154.
+
+
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/lmr/m/n/10.95 4 []
  []
 
-[4] <hhmm.png, id=185, 835.78917pt x 508.90125pt>
+[4] <hhmm.png, id=56, 835.78917pt x 508.90125pt>
 File: hhmm.png Graphic file (type png)
 <use hhmm.png>
-Package pdftex.def Info: hhmm.png used on input line 160.
+Package pdftex.def Info: hhmm.png used on input line 158.
 (pdftex.def)             Requested size: 354.12434pt x 215.61624pt.
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 167.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 165.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
+
+LaTeX Warning: Reference `fig:flowchart' on page 5 undefined on input line 165.
+
+
+
+Package natbib Warning: Citation `jan92' on page 5 undefined on input line 167.
+
+
+
+LaTeX Warning: Reference `sec:data_management' on page 5 undefined on input lin
+e 167.
+
+
+Package natbib Warning: Citation `pla08' on page 5 undefined on input line 169.
+
+
+
+Package natbib Warning: Citation `ada20' on page 5 undefined on input line 169.
+
+
+
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [] \T1/lmr/m/n/10.95 5
  []
 
 [5 <./hhmm.png>]
+
+Package natbib Warning: Citation `oel19' on page 6 undefined on input line 200.
+
+
+
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/lmr/m/n/10.95 6 []
  []
 
 [6]
+
+LaTeX Warning: Reference `sec:model_estimation' on page 7 undefined on input li
+ne 270.
+
+
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [] \T1/lmr/m/n/10.95 7
  []
 
-[7] <fhmm_oelschlaeger_adam_michels-dax-ts.pdf, id=223, 650.43pt x 433.62pt>
-File: fhmm_oelschlaeger_adam_michels-dax-ts.pdf Graphic file (type pdf)
-<use fhmm_oelschlaeger_adam_michels-dax-ts.pdf>
-Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-dax-ts.pdf used on inpu
-t line 305.
-(pdftex.def)             Requested size: 354.12434pt x 236.08995pt.
-
-Overfull \hbox (5.47499pt too wide) has occurred while \output is active
-\T1/lmr/m/n/10.95 8 []
- []
-
-[8] <fhmm_oelschlaeger_adam_michels-sim-data-ts.pdf, id=230, 867.24pt x 433.62p
-t>
-File: fhmm_oelschlaeger_adam_michels-sim-data-ts.pdf Graphic file (type pdf)
-<use fhmm_oelschlaeger_adam_michels-sim-data-ts.pdf>
-Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-sim-data-ts.pdf used on
- input line 333.
-(pdftex.def)             Requested size: 354.12434pt x 177.06415pt.
-
-Overfull \hbox (5.47499pt too wide) has occurred while \output is active
-[] \T1/lmr/m/n/10.95 9
- []
-
-[9 <./fhmm_oelschlaeger_adam_michels-dax-ts.pdf>]
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-\T1/lmr/m/n/10.95 10 []
- []
-
-[10 <./fhmm_oelschlaeger_adam_michels-sim-data-ts.pdf>]
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-[] \T1/lmr/m/n/10.95 11
- []
-
-[11] <fhmm_oelschlaeger_adam_michels-dax-sdds.pdf, id=265, 650.43pt x 433.62pt>
-File: fhmm_oelschlaeger_adam_michels-dax-sdds.pdf Graphic file (type pdf)
-<use fhmm_oelschlaeger_adam_michels-dax-sdds.pdf>
-Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-dax-sdds.pdf used on in
-put line 450.
-(pdftex.def)             Requested size: 354.12434pt x 236.08995pt.
-
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-\T1/lmr/m/n/10.95 12 []
- []
-
-[12] <fhmm_oelschlaeger_adam_michels-dax-ll.pdf, id=270, 650.43pt x 433.62pt>
-File: fhmm_oelschlaeger_adam_michels-dax-ll.pdf Graphic file (type pdf)
-<use fhmm_oelschlaeger_adam_michels-dax-ll.pdf>
-Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-dax-ll.pdf used on inpu
-t line 461.
-(pdftex.def)             Requested size: 354.12434pt x 236.08995pt.
-
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-[] \T1/lmr/m/n/10.95 13
- []
-
-[13 <./fhmm_oelschlaeger_adam_michels-dax-sdds.pdf> <./fhmm_oelschlaeger_adam_m
-ichels-dax-ll.pdf>] <fhmm_oelschlaeger_adam_michels-hhmm-sdds.pdf, id=290, 722.
-7pt x 433.62pt>
-File: fhmm_oelschlaeger_adam_michels-hhmm-sdds.pdf Graphic file (type pdf)
-<use fhmm_oelschlaeger_adam_michels-hhmm-sdds.pdf>
-Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-hhmm-sdds.pdf used on i
-nput line 512.
-(pdftex.def)             Requested size: 354.12434pt x 212.47566pt.
-
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-\T1/lmr/m/n/10.95 14 []
- []
-
-[14 <./fhmm_oelschlaeger_adam_michels-hhmm-sdds.pdf>] <fhmm_oelschlaeger_adam_m
-ichels-dax-dec-ts.pdf, id=314, 1084.05pt x 722.7pt>
-File: fhmm_oelschlaeger_adam_michels-dax-dec-ts.pdf Graphic file (type pdf)
-<use fhmm_oelschlaeger_adam_michels-dax-dec-ts.pdf>
-Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-dax-dec-ts.pdf used on 
-input line 564.
-(pdftex.def)             Requested size: 354.12434pt x 236.0767pt.
-
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-[] \T1/lmr/m/n/10.95 15
- []
-
-[15]
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-\T1/lmr/m/n/10.95 16 []
- []
-
-[16 <./fhmm_oelschlaeger_adam_michels-dax-dec-ts.pdf>] <fhmm_oelschlaeger_adam_
-michels-dax-res.pdf, id=343, 650.43pt x 433.62pt>
-File: fhmm_oelschlaeger_adam_michels-dax-res.pdf Graphic file (type pdf)
-<use fhmm_oelschlaeger_adam_michels-dax-res.pdf>
-Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-dax-res.pdf used on inp
-ut line 616.
-(pdftex.def)             Requested size: 354.12434pt x 236.08995pt.
-
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-[] \T1/lmr/m/n/10.95 17
- []
-
-[17 <./fhmm_oelschlaeger_adam_michels-dax-res.pdf>]
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-\T1/lmr/m/n/10.95 18 []
- []
-
-[18] (./fhmm_oelschlaeger_adam_michels.bbl
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-[] \T1/lmr/m/n/10.95 19
- []
-
-[19]
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-\T1/lmr/m/n/10.95 20 []
- []
-
-[20])
-Underfull \hbox (badness 10000) in paragraph at lines 710--710
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 710--710
-
- []
-
-LaTeX Font Info:    Font shape `T1/pzc/m/n' in size <13> not available
-(Font)              Font shape `T1/pzc/mb/it' tried instead on input line 710.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 710.
-
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-[] \T1/lmr/m/n/10.95 21
- []
-
-[21]
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-\T1/lmr/m/n/10.95 22 []
- []
-
-[22]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 710.
-(./fhmm_oelschlaeger_adam_michels.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 710.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 710.
-Package rerunfilecheck Info: File `fhmm_oelschlaeger_adam_michels.out' has not 
-changed.
-(rerunfilecheck)             Checksum: 49B6B793D6F9EE0B854A75C7759EDCF0;636.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 710.
- ) 
+[7])
+Runaway argument?
+! File ended while scanning use of \FancyVerbGetLine.
+<inserted text> 
+                \par 
+<*> fhmm_oelschlaeger_adam_michels.tex
+                                       
 Here is how much of TeX's memory you used:
- 8088 strings out of 493014
- 117809 string characters out of 6133351
- 199490 words of memory out of 5000000
- 11369 multiletter control sequences out of 15000+600000
- 98697 words of font info for 71 fonts, out of 8000000 for 9000
+ 7826 strings out of 493014
+ 113018 string characters out of 6133351
+ 198022 words of memory out of 5000000
+ 11200 multiletter control sequences out of 15000+600000
+ 96266 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,10n,34p,1502b,472s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/
-texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2016/t
-exmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2016/texmf-dist/
-fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2016/texmf-dist/fonts/enc/
-dvips/lm/lm-mathit.enc}{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base
-/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmb10.pfb></u
-sr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/t
-exlive/2016/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/201
-6/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2016/texmf-di
-st/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/t
-ype1/public/lm/lmmi6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public
-/lm/lmmi8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmmi9.p
-fb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/lo
-cal/texlive/2016/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/
-2016/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2016/texmf-d
-ist/fonts/type1/public/lm/lmr9.pfb></usr/local/texlive/2016/texmf-dist/fonts/ty
-pe1/public/lm/lmri10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public
-/lm/lmro10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmss10
-.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></u
-sr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/t
-exlive/2016/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2016
-/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2016/texmf-dist
-/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2016/texmf-dist/fonts/typ
-e1/public/lm/lmtt9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/l
-m/lmtto10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/zapfchan/uzcm
-i8a.pfb>
-Output written on fhmm_oelschlaeger_adam_michels.pdf (22 pages, 2267460 bytes).
+ 36i,9n,34p,1502b,325s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-PDF statistics:
- 528 PDF objects out of 1000 (max. 8388607)
- 458 compressed objects within 5 object streams
- 96 named destinations out of 1000 (max. 500000)
- 123 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+!  ==> Fatal error occurred, no output PDF file produced!
