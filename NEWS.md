@@ -1,3 +1,9 @@
+# fHMM 1.0.2
+
+* Fixed bug in `reorder_states()` that did not order the fine-scale parameter sets when the coarse-scale order was changed.
+* Fixed bug in `parameter_labels()` that returned the wrong order of parameter labels.
+* Changed plot type of simulated data to lines.
+
 # fHMM 1.0.1
 
 * In the vignette 'Controls', in the section about example specifications for `controls`, corrected `sdds = "gamma(mu = -1|1)"` to `sdds = "gamma(mu = 0.5|2)"` because mean of the Gamma distribution must be positive.

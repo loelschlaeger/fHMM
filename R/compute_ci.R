@@ -31,10 +31,10 @@ compute_ci <- function(x, alpha = 0.05) {
 
   ### check inputs
   if (!inherits(x,"fHMM_model")) {
-    stop("'x' must be of class 'fHMM_model'.")
+    stop("'x' must be of class 'fHMM_model'.", call. = FALSE)
   }
   if (!is.numeric(alpha) || length(alpha) != 1 || alpha <= 0 || alpha >= 1) {
-    stop("'alpha' must be a numeric between 0 and 1.")
+    stop("'alpha' must be a numeric between 0 and 1.", call. = FALSE)
   }
 
   ### compute confidence intervals using the inverse Hessian approach
@@ -55,7 +55,10 @@ compute_ci <- function(x, alpha = 0.05) {
     parUncon2parCon, x$data$controls
   )
   if (any(is.na(out))) {
-    warning("Some confidence intervals could not be computed. The corresponding estimates may lie close to the boundaries of their parameter space, the confidence intervals may be unreliable and are therefore replaced by NA.")
+    warning(paste("Some confidence intervals could not be computed.",
+    "The corresponding estimates may lie close to the boundaries of their parameter space,",
+    "the confidence intervals may be unreliable and are therefore replaced by NA."),
+    call. = FALSE)
   }
   names(out) <- c("lb", "estimate", "ub")
   return(out)

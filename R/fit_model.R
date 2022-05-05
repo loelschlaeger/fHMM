@@ -4,8 +4,7 @@
 #' This function fits a HMM to \code{data} via maximum likelihood estimation.
 #'
 #' @details
-#' The function is parallelized only if \code{ncluster > 1}. If you experience
-#' problems on your OS, try to set \code{ncluster <- 1}.
+#' The function is parallelized only if \code{ncluster > 1}.
 #'
 #' @param data
 #' An object of class \code{fHMM_data}.
@@ -30,7 +29,8 @@
 #' @importFrom stats sd nlm
 #' @importFrom foreach %dopar%
 
-fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE, init = NULL) {
+fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE,
+                      init = NULL) {
 
   ### check inputs
   if (!inherits(data, "fHMM_data")) {

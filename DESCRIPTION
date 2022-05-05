@@ -1,8 +1,8 @@
 Package: fHMM
 Type: Package
 Title: Fitting Hidden Markov Models to Financial Data
-Version: 1.0.1
-Date: 2022-04-06
+Version: 1.0.2
+Date: 2022-05-01
 Authors@R: c(
     person(given = "Lennart",
            family = "Oelschl\U00E4ger",
@@ -45,7 +45,8 @@ Suggests:
     testthat (>= 3.0.0),
     covr,
     printr,
-    tseries
+    tseries,
+    spelling
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr

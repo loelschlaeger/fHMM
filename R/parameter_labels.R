@@ -43,10 +43,8 @@ parameter_labels <- function(controls, expected_length) {
   if (controls[["hierarchy"]]) {
     for (i in 1:controls$states[1]) {
       labels <- c(labels, paste0("Gamma*", i, "_", tpm_labels(controls$states[2])))
-    }
-    for (par in c("mu", "sigma", if (controls[["sdds"]][[2]]$name == "t") "df")) {
-      if (is.null(controls[["sdds"]][[2]]$pars[[par]])) {
-        for (i in 1:controls$states[1]) {
+      for (par in c("mu", "sigma", if (controls[["sdds"]][[2]]$name == "t") "df")) {
+        if (is.null(controls[["sdds"]][[2]]$pars[[par]])) {
           labels <- c(labels, paste0(par, "*", i, "_", 1:controls$states[2]))
         }
       }
