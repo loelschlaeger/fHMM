@@ -555,7 +555,7 @@ R> table(dax_model_3t$decoding)
 \end{Schunk}
 %
 
-The decoded time series can then be visualized via the \fct{plot} method:\footnote{Mind that the model is invariant to permutations of the state labels. \pkg{fHMM} provides the option to switch labels after decoding via the \fct{reorder\_states} function. For example \code{reorder\_states(dax\_model\_3t, 3:1)} reverses the order.}
+The decoded time series can then be visualized using the \fct{plot} method:\footnote{Notice that the model is invariant to permutations of the state labels. The \pkg{fHMM} package provides the option to switch labels after state decoding via the \fct{reorder\_states} function. For example, \code{reorder\_states(dax\_model\_3t, 3:1)} reverses the order.}
 
 %
 \begin{Schunk}
@@ -566,7 +566,7 @@ R> plot(dax_model_3t)
 \includegraphics{fhmm_oelschlaeger_adam_michels-dax-dec-ts}
 %
 
-Having decoded the underlying states, we use the estimated transition probabilities to compute the state probabilities of next observations. Based on these probabilities and in combination with the estimated state-dependent distributions, upcoming observations can be predicted, compare \cite{zuc16}:
+After decoded the underlying states, we use the estimated transition probabilities to compute the state probabilities of the subsequent observations. Based on these probabilities and in combination with the estimated state-dependent distributions, the subsequent observations can be predicted, compare \cite{zuc16}:
 
 %
 \begin{Schunk}
@@ -589,11 +589,11 @@ R> predict(dax_model_3t, ahead = 10)
 \end{Schunk}
 %
 
-Columns 1 to 3 contain state probabilities for the next \code{ahead = 10} trading days. The values in columns 4 to 6 (the bounds of the 95\%-confidence intervals and the point predictions) are log-returns, which obviously can be transformed to index values or relative returns.
+Columns 1 to 3 show the state probabilities for the next \code{ahead = 10} trading days. The values in columns 4 to 6 (the bounds of the 95\%-confidence intervals and the point predictions) are log-returns, which obviously can be transformed to index values or relative returns.
 
 \section{Model checking} \label{sec:model_checking} %% Timo + Lennart
 
-Checking whether a fitted model describes the data well is an essential part of any modeling process. In the HMM setting, this is typically done by analyzing so-called pseudo-residuals \citep{zuc16}. Since the observations are explained by different distributions (depending on the active state), they have to be transformed on a common scale as follows: If observation $X_t$ has the invertible distribution function $F_{X_t}$, then $Z_t=\Phi^{-1}(F_{X_t} (X_t))$ is standard normally distributed, where $\Phi$ denotes the cumulative distribution function of the standard normal distribution. The observations are modeled well if the pseudo-residuals $(Z_t)_t$ are approximately standard normally distributed and exhibit no autocorrelation. In the hierarchical case, we would first decode the coarse-scale state process using the Viterbi algorithm. Subsequently, we assign each coarse-scale observation its distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.
+Checking whether a fitted model describes the data well is an essential part of any modeling process. In the HMM setting, this is typically done by analyzing the so-called pseudo-residuals \citep{zuc16}. Since the observations are modeled by different distributions (depending on the active state), they have to be transformed on a common scale, which can be done as follows: If the observation $X_t$ has the invertible distribution function $F_{X_t}$, then $Z_t=\Phi^{-1}(F_{X_t} (X_t))$ is standard normally distributed, where $\Phi$ denotes the cumulative distribution function of the standard normal distribution. The observations are modeled well if the pseudo-residuals $(Z_t)_t$ are approximately standard normally distributed and exhibit no autocorrelation. In the hierarchical case, we first decode the coarse-scale state process using the Viterbi algorithm. Subsequently, we assign each coarse-scale observation its distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.
 
 \paragraph{Example 1: DAX (cont.).}
 
@@ -618,7 +618,7 @@ R> plot(dax_model_3t, plot_type = "pr")
 \includegraphics{fhmm_oelschlaeger_adam_michels-dax-res}
 %
 
-Alternatively, the residuals can be extracted from the model object for normality tests, for example a Jarque-Bera test \citep{jar87}:\footnote{Here, the test is unable to reject its null hypothesis that the data is normally distributed.}
+Alternatively, the residuals can be extracted from the model object for normality tests, for example a Jarque-Bera test \citep{jar87}:\footnote{Here, the test is unable to reject the null hypothesis that the data is normally distributed.}
 
 %
 \begin{Schunk}
@@ -639,12 +639,12 @@ X-squared = 2.6542, df = 2, p-value = 0.2652
 
 Model selection involves the choice of a family for the state-dependent distributions and the selection of the number of states. Common model selection tools are information criteria, such as the Akaike information criterion (AIC) \citep{aka74} or the Bayesian information criterion (BIC) \citep{sch78}. They are defined as
 \begin{align*}
-\text{AIC} &= - 2 \log \mathcal{L}^\text{(H)HMM} + 2 p \\
-\text{BIC} &= - 2 \log \mathcal{L}^\text{(H)HMM} + \log(T) p
+\text{AIC} &= - 2 \log \mathcal{L}^\text{(H)HMM} + 2 p; \\
+\text{BIC} &= - 2 \log \mathcal{L}^\text{(H)HMM} + \log(T) p,
 \end{align*}
-where $p$ denotes the number of parameters and $T$ the number of observations. Both criteria aim at finding a compromise between model fit and model complexity, where a model with a lower value is preferred. For an in-depth discussion of pitfalls, practical challenges, and pragmatic solutions regarding model selection, see \cite{poh17}. The \pkg{fHMM} package provides the \fct{compare\_models} function that takes (arbitrarily many) \class{fHMM\_model} objects as input and returns a matrix of the number of parameters, the log-likelihood value, the AIC, and the BIC. 
+where $p$ denotes the number of parameters and $T$ is the number of observations. Both criteria aim at finding a compromise between model fit and model complexity, where a model with a lower value is to be preferred. For an in-depth discussion of pitfalls, practical challenges, and pragmatic solutions regarding model selection, see \cite{poh17}. The \pkg{fHMM} package provides the \fct{compare\_models} function that takes (arbitrarily many) \class{fHMM\_model} objects as input and returns a matrix of the number of parameters, the log-likelihood value, the AIC, and the BIC. 
 
-\paragraph{Example 1: DAX (cont.).} We compare our 3-state HMM DAX model with state-dependent t-distributions to an HMM with 2 states and normal state-dependent distributions. The competing model was estimated on the same data and can be accessed as object \code{dax_model_2n} from the package. AIC and BIC clearly prefer the more complex model:
+\paragraph{Example 1: DAX (cont.).} We compare our 3-state HMM DAX model with state-dependent t-distributions to an HMM with 2 states and normal state-dependent distributions. The competing model was estimated using the same data and can be accessed as object \code{dax_model_2n} from the package. In this example, both AIC and BIC clearly prefer the more complex model:
 
 %
 \begin{Schunk}
