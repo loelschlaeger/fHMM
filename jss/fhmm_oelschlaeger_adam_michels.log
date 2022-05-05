@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.8)  5 MAY 2022 12:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.8)  5 MAY 2022 12:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -659,12 +659,6 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
  []
 
 [17 <./fhmm_oelschlaeger_adam_michels-dax-res.pdf>]
-Overfull \hbox (3.5225pt too wide) in paragraph at lines 647--648
- []\T1/lmr/bx/n/10.95 Example 1: DAX (cont.)[] \T1/lmr/m/n/10.95 We com-pare ou
-r 3-state HMM DAX model with state-dependent
- []
-
-
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 \T1/lmr/m/n/10.95 18 []
  []
@@ -746,7 +740,7 @@ exlive/2016/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2016
 e1/public/lm/lmtt9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/l
 m/lmtto10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/zapfchan/uzcm
 i8a.pfb>
-Output written on fhmm_oelschlaeger_adam_michels.pdf (22 pages, 2267045 bytes).
+Output written on fhmm_oelschlaeger_adam_michels.pdf (22 pages, 2267160 bytes).
 
 PDF statistics:
  528 PDF objects out of 1000 (max. 8388607)
