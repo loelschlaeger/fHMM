@@ -199,7 +199,7 @@ R> class(contr_dax)
 \end{Schunk}
 %
 
-\paragraph{Example 2: Simulation.} If the \code{data} entry is not set, data will be simulated according to the model specification. Simulation typically serves to assess the properties of estimation algorithms either for research or in a bootstrap-like fashion, as seen for example in \cite{oel19}. The following lines specify a 2-state HMM with state-dependent Gamma distributions, where the expectation values for state 1 and 2 are fixed to \code{1} and \code{2}, respectively. The model will be fitted to 200 data points (\code{horizon = 200}) simulated according to this specification based on \code{runs = 50} randomly initialized numerical optimization runs of the model's likelihood function. Printing the \class{fHMM\_controls} object summarizes the specification:
+\paragraph{Example 2: Simulation.} If the \code{data} entry is not specified, data will be simulated according to the model specification. Simulation typically serves to assess the properties of estimation algorithms either for research or in a bootstrap-like fashion, as can be seen for example in \cite{oel19}. The following code chunk specifies a 2-state HMM with state-dependent Gamma distributions, where the expected values for state 1 and 2 are fixed to \code{1} and \code{2}, respectively. The model is fitted to 200 data points (\code{horizon = 200}) simulated according to this specification based on \code{runs = 50} randomly initialized numerical optimization runs of the model's likelihood function. Printing the \class{fHMM\_controls} object summarizes the model specification:
 
 %
 \begin{Schunk}
@@ -247,19 +247,19 @@ R> contr_hhmm <- set_controls(contr_hhmm)
 \end{Schunk}
 %
 
-The line \code{states = c(2, 2)} specifies \code{2} coarse-scale and \code{2} fine-scale states, respectively. State-dependent t-distributions are used, where the degrees of freedom are fixed to \code{1} on both scales (setting \code{df = Inf} is possible and would result in a normal distribution). Via \code{period = "m"} we specify a monthly fine-scale time horizon. Alternatives are \code{"w"}, \code{"q"}, and \code{"y"} for weekly, quarterly, and yearly periods, respectively. The observation period is restricted to five years via \code{from = "2015-01-01"} and \code{to = "2020-01-01"}. With \code{logreturns = c(TRUE,TRUE)} we ensure that both layers are transformed to log-returns. If the coarse-scale data has a finer temporal resolution than defined by \code{period}, the data can be merged by specifying a function via the \code{merge} argument. In this example, the file \code{"dax.vw"} contains daily closing prices. Because we specified \code{merge = function(x) mean(x)}, the monthly average closing prices are used as coarse-scale observations.
+The line \code{states = c(2, 2)} specifies \code{2} coarse-scale and \code{2} fine-scale states, respectively. State-dependent t-distributions are used, where the degrees of freedom are fixed to \code{1} on both scales (setting \code{df = Inf} is possible and would result in state-dependent normal distributions). Via \code{period = "m"}, we specify a monthly fine-scale time horizon. Alternatives are \code{"w"}, \code{"q"}, and \code{"y"} for weekly, quarterly, and yearly periods, respectively. The observation period is restricted to five years via \code{from = "2015-01-01"} and \code{to = "2020-01-01"}. With \code{logreturns = c(TRUE,TRUE)}, we ensure that the data on both scales are transformed to log-returns. If the coarse-scale data has a finer temporal resolution than defined by \code{period}, the data can be merged by specifying a function via the \code{merge} argument. In this example, the file \code{"dax.vw"} contains daily closing prices. Since we specified \code{merge = function(x) mean(x)}, the monthly average closing prices are used as coarse-scale observations.
 
 \section{Data management} \label{sec:data_management} %% Lennart
 
-Empirical data for modeling must be provided as a comma-separated values (.csv) file and its path must be specified in \fct{set\_controls}, see the previous section. The package includes the convenience function \fct{download\_data} for downloading daily stock data directly from Yahoo Finance in the required format. The function call is \code{download\_data(symbol, from, to, file)}, where
+Empirical data for modeling must be provided as a comma-separated values (.csv) file and its path must be specified in \fct{set\_controls}, see the previous section. The package includes the convenience function \fct{download\_data} for downloading daily stock market data directly from Yahoo Finance in the required format. The function call is \code{download\_data(symbol, from, to, file)}, where
 
 - \code{symbol} is the stock's symbol that has to match the official symbol on Yahoo Finance,
 
-- \code{from} and \code{to} define the desired time interval (in format \code{"YYYY-MM-DD"}),
+- \code{from} and \code{to} define the desired time interval (in the format \code{"YYYY-MM-DD"}),
 
 - \code{file} is the name of the saved file. Per default, it is saved in the current working directory under the name \code{<symbol>.csv}.
 
-For example, the 21st century data of the DAX can be downloaded via:
+For example, the 21st century data of the DAX can be downloaded via the following line:
 
 %
 \begin{Schunk}
@@ -269,9 +269,7 @@ R> download_data(symbol = "^GDAXI", from = "2001-01-01", to = Sys.Date())
 \end{Schunk}
 %
 
-\paragraph{Example 1: DAX (cont.).}
-
-Recall the control specification for the 3-state HMM DAX model from the previous section. The \fct{prepare\_data} function prepares the data based on the specifications and returns an \class{fHMM\_data} object. This object can then be passed to the \fct{fit\_model} function for model fitting in the next step, see Section \ref{sec:model_estimation}. The \fct{summary} method provides a data overview.
+\paragraph{Example 1: DAX (cont.).} Recall the control specification for the 3-state HMM DAX model from the previous section. The \fct{prepare\_data} function prepares the data based on the specifications and returns an \class{fHMM\_data} object. This object can then be passed to the \fct{fit\_model} function for model fitting in the next step, see Section \ref{sec:model_estimation}. The \fct{summary} method provides a data overview.
 
 %
 \begin{Schunk}
