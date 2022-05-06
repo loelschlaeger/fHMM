@@ -42,15 +42,14 @@ contr_sim <- list(
 ###################################################
 ### code chunk number 5: example 3 hhmm controls
 ###################################################
+file <- c(system.file("extdata", "dax.csv", package = "fHMM"),
+          system.file("extdata", "vw.csv", package = "fHMM"))
 contr_hhmm <- list(
   hierarchy = TRUE,
   states    = c(2,2),
   sdds      = c("t(df = 1)", "t(df = 1)"),
   period    = "m",
-  data      = list(file = c(system.file("extdata", "dax.csv", 
-                            package = "fHMM"),
-                            system.file("extdata", "vw.csv", 
-                            package = "fHMM")),
+  data      = list(file = file,
                    date_column = c("Date","Date"),
                    data_column = c("Close","Close"),
                    from = "2015-01-01",
@@ -129,31 +128,26 @@ coef(dax_model_3t, alpha = 0.05)
 
 
 ###################################################
-### code chunk number 15: dax-sdds
+### code chunk number 15: dax-sdds-ll
 ###################################################
-plot(dax_model_3t, plot_type = "sdds")
+par(mfrow = c(1,2))
+plot(dax_model_3t, plot_type = c("ll","sdds"))
 
 
 ###################################################
-### code chunk number 16: dax-ll
-###################################################
-plot(dax_model_3t, plot_type = "ll")
-
-
-###################################################
-### code chunk number 17: example 2 sim access model
+### code chunk number 16: example 2 sim access model
 ###################################################
 data(sim_model_2gamma, package = "fHMM")
 
 
 ###################################################
-### code chunk number 18: example 2 sim summary
+### code chunk number 17: example 2 sim summary
 ###################################################
 summary(sim_model_2gamma)
 
 
 ###################################################
-### code chunk number 19: hhmm-sdds
+### code chunk number 18: hhmm-sdds
 ###################################################
 # dax_vw_model <- fit_model(data_hhmm)
 data(dax_vw_model, package = "fHMM")
@@ -161,50 +155,50 @@ plot(dax_vw_model, plot_type = "sdds")
 
 
 ###################################################
-### code chunk number 20: example 1 dax decode states
+### code chunk number 19: example 1 dax decode states
 ###################################################
 dax_model_3t <- decode_states(dax_model_3t)
 
 
 ###################################################
-### code chunk number 21: example 1 dax state sequence
+### code chunk number 20: example 1 dax state sequence
 ###################################################
 table(dax_model_3t$decoding)
 
 
 ###################################################
-### code chunk number 22: dax-dec-ts
+### code chunk number 21: dax-dec-ts
 ###################################################
 plot(dax_model_3t)
 
 
 ###################################################
-### code chunk number 23: example 1 dax prediction
+### code chunk number 22: example 1 dax prediction
 ###################################################
-predict(dax_model_3t, ahead = 10)
+predict(dax_model_3t, ahead = 5)
 
 
 ###################################################
-### code chunk number 24: example 1 dax compute residuals
+### code chunk number 23: example 1 dax compute residuals
 ###################################################
 dax_model_3t <- compute_residuals(dax_model_3t)
 
 
 ###################################################
-### code chunk number 25: dax-res
+### code chunk number 24: dax-res
 ###################################################
 plot(dax_model_3t, plot_type = "pr")
 
 
 ###################################################
-### code chunk number 26: example 1 dax jb test
+### code chunk number 25: example 1 dax jb test
 ###################################################
 res <- dax_model_3t$residuals
 tseries::jarque.bera.test(res)
 
 
 ###################################################
-### code chunk number 27: example 1 dax compare models
+### code chunk number 26: example 1 dax compare models
 ###################################################
 data(dax_model_2n, package = "fHMM")
 compare_models(dax_model_2n, dax_model_3t)
