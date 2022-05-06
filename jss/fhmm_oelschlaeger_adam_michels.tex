@@ -36,15 +36,15 @@
 
 \Abstract{
 %% Intro to HMMs
-Hidden Markov models constitute a versatile class of statistical models for time series that are driven by hidden states. In financial applications, the hidden states can often be linked to market regimes such as bearish and bullish markets or recessions and periods of economics growth. To give an example, when the market is in a nervous state, corresponding stock returns often follow some distribution with relatively high variance, whereas calm periods are often characterized by another distribution with relatively smaller variance. Hidden Markov models can be used to explicitly model the distributions of the observations conditional on the hidden states and the transitions between states, and thus help us to draw a comprehensive picture of market behavior.
+Hidden Markov models constitute a versatile class of statistical models for time series that are driven by hidden states. In financial applications, the hidden states can often be linked to market regimes such as bearish and bullish markets or recessions and periods of economics growth. To give an example, when the market is in a nervous state, corresponding stock returns often follow some distribution with relatively high variance, whereas calm periods are often characterized by a different distribution with relatively smaller variance. Hidden Markov models can be used to explicitly model the distribution of the observations conditional on the hidden states and the transitions between states, and thus help us to draw a comprehensive picture of market behavior.
 %% Intro to the package
-In this paper, we introduce the \proglang{R} package \pkg{fHMM}, which provides various tools for applying hidden Markov models to financial time series. It provides functions for fitting hidden Markov models to empirical data, conducting simulation experiments, and decoding the underlying state sequence. Furthermore, functions for model checking, model selection, and state prediction are provided. In addition to basic hidden Markov models, hierarchical hidden Markov models are implemented. Its aim is to give \proglang{R} users interested in financial applications access to hidden Markov models and their extensions.
+While various implementations of hidden Markov models are available, an \proglang{R} package that is tailored to financial applications is still lacking. In this paper, we introduce the \proglang{R} package \pkg{fHMM}, which provides various tools for applying hidden Markov models to financial time series. It contains functions for fitting hidden Markov models to data, conducting simulation experiments, and decoding the underlying state sequence. Furthermore, functions for model checking, model selection, and state prediction are provided. In addition to basic hidden Markov models, hierarchical hidden Markov models are implemented, which can be used to jointly model multiple data streams that were observed at different temporal resolutions. The aim of the \pkg{fHMM} package is to give \proglang{R} users with an interest in financial applications access to hidden Markov models and their extensions.
 }
 
 %% - \Keywords{} with LaTeX markup, at least one required
 %% - \Plainkeywords{} without LaTeX markup (if necessary)
 %% - Should be comma-separated and in sentence case.
-\Keywords{hidden Markov models, regime switching, financial time series, decoding market behavior, \proglang{R}}
+\Keywords{hidden Markov models, hierarchical hidden Markov models, regime switching, financial time series, decoding market behavior, \proglang{R}}
 \Plainkeywords{hidden Markov models, regime switching, financial time series, decoding market behavior, R}
 
 %% - \Address{} of at least one author
@@ -106,10 +106,10 @@ In this paper, we introduce the \proglang{R} package \pkg{fHMM} \citep{oel22}, w
   \caption{Package flowchart. The main functions are visualized using rectangles, while objects are illustrated as ovals.}
   \label{fig:flowchart}
 \end{figure}
-Functions for data preparation include a convenient interface to Yahoo Finance (https://www.finance.yahoo.com) that allows users to download stock market data. The model is estimated in a maximum likelihood framework, where the likelihood is evaluated using the forward algorithm, which is implemented in \proglang{C++} and parallelized for fast and efficient computation. Functions for model evaluation include pseudo-residual analyses and the computation of model selection criteria. The package also implements hierarchical HMMs (HHMMs); an extension of basic HMMs proposed in \cite{oel21} that improves the model's capability of distinguishing between short- and long-term trends and allows us to jointly model data streams collected at different time scales, such as monthly trade volumes and daily stock returns \citep{ada20}. 
+Functions for data preparation include a convenient interface to Yahoo Finance (https://www.finance.yahoo.com) that allows users to download stock market data. The model is estimated in a maximum likelihood framework, where the likelihood is evaluated using the forward algorithm, which is implemented in \proglang{C++} and parallelized for fast and efficient computation. Functions for model evaluation include pseudo-residual analyses and the computation of model selection criteria. In addition to basic HMMs, the package also implements hierarchical HMMs (HHMMs); an extension proposed in \cite{oel21} that improves the model's capability of distinguishing between short- and long-term trends and allows us to jointly model data streams collected at different time scales, such as monthly trade volumes and daily stock returns \citep{ada20}. 
 
 %% Outline of the paper
-The paper is structured as follows: in Section \ref{sec:model_definition}, we introduce HMMs and HHMMs, focusing on their dependence structure and model assumptions. In Sections \ref{sec:model_specification}--\ref{sec:model_selection}, we illustrate a typical workflow using the \pkg{fHMM} package, where we explain how to specify the model, how to download, prepare, and simulate data, how to fit the model, how to decode the hidden states, how to use a fitted model for state forecasting, how to check the goodness of fit, and how to perform model selection. Each section begins with some theoretical background, which is followed by illustrating examples using simulated data, stock index data from the Deutscher Aktienindex (DAX), and stock market data from the Volkswagen Group (VW). Each of these sections is complemented by code chunks, which cannot only be used to replicate the examples given but also serve as a starting point for \proglang{R} users interested in financial time series who want to apply HMMs to their own data. Section \ref{sec:conclusion} concludes and gives an outlook of anticipated, future package extensions.
+The paper is structured as follows: In Section \ref{sec:model_definition}, we introduce HMMs and HHMMs, where we focus on their dependence structure and the underlying model assumptions. In Sections \ref{sec:model_specification}--\ref{sec:model_selection}, we illustrate a typical workflow using the \pkg{fHMM} package, where we explain how to specify the model, how to download, prepare, and simulate data, how to fit the model, how to decode the hidden states, how to use a fitted model for state forecasting, how to check the goodness of fit, and how to perform model selection. Each section begins with some theoretical background, which is followed by illustrating examples using stock market data from the Deutscher Aktienindex (DAX) and the Volkswagen Group (VW) as well as simulated data. Each of these sections is complemented by code chunks, which cannot only be used to replicate the examples given in this paper but also serve as a starting point for \proglang{R} users with an interest in financial time series who want to apply HMMs to their own data. Section \ref{sec:conclusion} concludes and gives an outlook of anticipated, future package extensions.
 
 %% -- Manuscript ---------------------------------------------------------------
 
@@ -231,8 +231,10 @@ R> contr_hhmm <- list(
 +    states    = c(2,2),
 +    sdds      = c("t(df = 1)", "t(df = 1)"),
 +    period    = "m",
-+    data      = list(file = c(system.file("extdata", "dax.csv", package = "fHMM"),
-+                              system.file("extdata", "vw.csv", package = "fHMM")),
++    data      = list(file = c(system.file("extdata", "dax.csv", 
++                              package = "fHMM"),
++                              system.file("extdata", "vw.csv", 
++                              package = "fHMM")),
 +                     date_column = c("Date","Date"),
 +                     data_column = c("Close","Close"),
 +                     from = "2015-01-01",
