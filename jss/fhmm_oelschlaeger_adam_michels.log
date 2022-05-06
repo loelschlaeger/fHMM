@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.8)  6 MAY 2022 13:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.8)  6 MAY 2022 13:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -537,7 +537,7 @@ Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/lmr/m/n/10.95 4 []
  []
 
-[4] <hhmm.png, id=192, 835.78917pt x 508.90125pt>
+[4] <hhmm.png, id=191, 835.78917pt x 508.90125pt>
 File: hhmm.png Graphic file (type png)
 <use hhmm.png>
 Package pdftex.def Info: hhmm.png used on input line 158.
@@ -561,7 +561,7 @@ Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [] \T1/lmr/m/n/10.95 7
  []
 
-[7] <fhmm_oelschlaeger_adam_michels-dax-ts.pdf, id=229, 650.43pt x 433.62pt>
+[7] <fhmm_oelschlaeger_adam_michels-dax-ts.pdf, id=228, 650.43pt x 433.62pt>
 File: fhmm_oelschlaeger_adam_michels-dax-ts.pdf Graphic file (type pdf)
 <use fhmm_oelschlaeger_adam_michels-dax-ts.pdf>
 Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-dax-ts.pdf used on inpu
@@ -572,7 +572,7 @@ Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/lmr/m/n/10.95 8 []
  []
 
-[8] <fhmm_oelschlaeger_adam_michels-sim-data-ts.pdf, id=236, 867.24pt x 433.62p
+[8] <fhmm_oelschlaeger_adam_michels-sim-data-ts.pdf, id=235, 867.24pt x 433.62p
 t>
 File: fhmm_oelschlaeger_adam_michels-sim-data-ts.pdf Graphic file (type pdf)
 <use fhmm_oelschlaeger_adam_michels-sim-data-ts.pdf>
@@ -594,7 +594,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [] \T1/lmr/m/n/10.95 11
  []
 
-[11] <fhmm_oelschlaeger_adam_michels-dax-sdds.pdf, id=271, 650.43pt x 433.62pt>
+[11] <fhmm_oelschlaeger_adam_michels-dax-sdds.pdf, id=270, 650.43pt x 433.62pt>
 File: fhmm_oelschlaeger_adam_michels-dax-sdds.pdf Graphic file (type pdf)
 <use fhmm_oelschlaeger_adam_michels-dax-sdds.pdf>
 Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-dax-sdds.pdf used on in
@@ -605,7 +605,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 \T1/lmr/m/n/10.95 12 []
  []
 
-[12] <fhmm_oelschlaeger_adam_michels-dax-ll.pdf, id=276, 650.43pt x 433.62pt>
+[12] <fhmm_oelschlaeger_adam_michels-dax-ll.pdf, id=275, 650.43pt x 433.62pt>
 File: fhmm_oelschlaeger_adam_michels-dax-ll.pdf Graphic file (type pdf)
 <use fhmm_oelschlaeger_adam_michels-dax-ll.pdf>
 Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-dax-ll.pdf used on inpu
@@ -617,7 +617,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
  []
 
 [13 <./fhmm_oelschlaeger_adam_michels-dax-sdds.pdf> <./fhmm_oelschlaeger_adam_m
-ichels-dax-ll.pdf>] <fhmm_oelschlaeger_adam_michels-hhmm-sdds.pdf, id=296, 722.
+ichels-dax-ll.pdf>] <fhmm_oelschlaeger_adam_michels-hhmm-sdds.pdf, id=295, 722.
 7pt x 433.62pt>
 File: fhmm_oelschlaeger_adam_michels-hhmm-sdds.pdf Graphic file (type pdf)
 <use fhmm_oelschlaeger_adam_michels-hhmm-sdds.pdf>
@@ -630,7 +630,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
  []
 
 [14 <./fhmm_oelschlaeger_adam_michels-hhmm-sdds.pdf>] <fhmm_oelschlaeger_adam_m
-ichels-dax-dec-ts.pdf, id=320, 1084.05pt x 722.7pt>
+ichels-dax-dec-ts.pdf, id=319, 1084.05pt x 722.7pt>
 File: fhmm_oelschlaeger_adam_michels-dax-dec-ts.pdf Graphic file (type pdf)
 <use fhmm_oelschlaeger_adam_michels-dax-dec-ts.pdf>
 Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-dax-dec-ts.pdf used on 
@@ -647,7 +647,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
  []
 
 [16 <./fhmm_oelschlaeger_adam_michels-dax-dec-ts.pdf>] <fhmm_oelschlaeger_adam_
-michels-dax-res.pdf, id=349, 650.43pt x 433.62pt>
+michels-dax-res.pdf, id=348, 650.43pt x 433.62pt>
 File: fhmm_oelschlaeger_adam_michels-dax-res.pdf Graphic file (type pdf)
 <use fhmm_oelschlaeger_adam_michels-dax-res.pdf>
 Package pdftex.def Info: fhmm_oelschlaeger_adam_michels-dax-res.pdf used on inp
@@ -659,12 +659,6 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
  []
 
 [17 <./fhmm_oelschlaeger_adam_michels-dax-res.pdf>]
-Overfull \hbox (19.49289pt too wide) in paragraph at lines 641--642
- []\T1/lmr/bx/n/10.95 Example 1: DAX (cont.).[] \T1/lmr/m/n/10.95 We com-pare o
-ur 3-state HMM with state-dependent t-distributions
- []
-
-
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 \T1/lmr/m/n/10.95 18 []
  []
@@ -715,7 +709,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 706.
 Here is how much of TeX's memory you used:
  8088 strings out of 493014
  117809 string characters out of 6133351
- 199855 words of memory out of 5000000
+ 199862 words of memory out of 5000000
  11369 multiletter control sequences out of 15000+600000
  98697 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -746,11 +740,11 @@ exlive/2016/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2016
 e1/public/lm/lmtt9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/l
 m/lmtto10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/zapfchan/uzcm
 i8a.pfb>
-Output written on fhmm_oelschlaeger_adam_michels.pdf (22 pages, 2268345 bytes).
+Output written on fhmm_oelschlaeger_adam_michels.pdf (22 pages, 2268210 bytes).
 
 PDF statistics:
- 533 PDF objects out of 1000 (max. 8388607)
- 463 compressed objects within 5 object streams
+ 532 PDF objects out of 1000 (max. 8388607)
+ 462 compressed objects within 5 object streams
  96 named destinations out of 1000 (max. 500000)
  123 words of extra memory for PDF output out of 10000 (max. 10000000)
 
