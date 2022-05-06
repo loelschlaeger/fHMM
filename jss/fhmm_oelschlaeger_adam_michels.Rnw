@@ -508,9 +508,9 @@ Model selection involves the choice of a family for the state-dependent distribu
 \text{AIC} &= - 2 \log \mathcal{L}^\text{(H)HMM} + 2 p; \\
 \text{BIC} &= - 2 \log \mathcal{L}^\text{(H)HMM} + \log(T) p,
 \end{align*}
-where $p$ denotes the number of parameters and $T$ is the number of observations. Both criteria aim at finding a compromise between model fit and model complexity, where a model with a lower value is to be preferred. For an in-depth discussion of pitfalls, practical challenges, and pragmatic solutions regarding model selection, see \cite{poh17}. The \pkg{fHMM} package provides the \fct{compare\_models} function that takes (arbitrarily many) \class{fHMM\_model} objects as input and returns a matrix of the number of parameters, the log-likelihood value, the AIC, and the BIC. 
+where $p$ denotes the number of model parameters and $T$ is the number of observations. Both criteria aim at finding a compromise between model fit and model complexity, where a model with a lower value is to be preferred. For an in-depth discussion of pitfalls, practical challenges, and pragmatic solutions regarding model selection, we refer to \cite{poh17}. The \pkg{fHMM} package provides the \fct{compare\_models} function that takes (arbitrarily many) \class{fHMM\_model} objects as input and returns a matrix of the number of parameters, the log-likelihood value, the AIC, and the BIC. 
 
-\paragraph{Example 1: DAX (cont.).} We compare our 3-state HMM DAX model with state-dependent t-distributions to an HMM with 2 states and normal state-dependent distributions. The competing model was estimated using the same data and can be accessed as object \code{dax_model_2n} from the package. In this example, both AIC and BIC clearly prefer the more complex model:
+\paragraph{Example 1: DAX (cont.).} We compare our 3-state HMM with state-dependent t-distributions fitted to the Dax data to an HMM with 2 states and normal state-dependent distributions. The competing model was estimated using the same data and can be accessed as object \code{dax_model_2n}. In this example, both AIC and BIC clearly prefer the more complex model:
 
 %
 <<example 1 dax compare models>>=
