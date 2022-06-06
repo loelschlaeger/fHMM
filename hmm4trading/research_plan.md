@@ -1,0 +1,3 @@
+- Can we find a trading strategy based on HMMs that outperforms buy-and-hold?
+- Can we make it more sophisticated with HHMMs?
+- How to change the estimation framework to deal with stream data? Bayes framework?

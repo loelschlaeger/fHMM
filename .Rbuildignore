@@ -11,6 +11,7 @@ LICENSE
 make_sticker.R
 sandbox.R
 jss/
+hmm4trading/
 ^README\.Rmd$
 ^codecov\.yml$
 docs/
