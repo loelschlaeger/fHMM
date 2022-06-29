@@ -102,11 +102,11 @@
 </h2>
 <p>You can install the released version of {fHMM} from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"fHMM"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"fHMM"</span><span class="op">)</span></span></code></pre></div>
 <p>And the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"loelschlaeger/fHMM"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"loelschlaeger/fHMM"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
@@ -119,70 +119,70 @@
 <p>We fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2020. The states can be interpreted as proxies for bearish and bullish markets.</p>
 <p>The package has a build-in function to download the data from <a href="https://finance.yahoo.com/" class="external-link">Yahoo Finance</a>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"/dax.csv"</span><span class="op">)</span>
-<span class="fu"><a href="reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, file <span class="op">=</span> <span class="va">path</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"/dax.csv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, file <span class="op">=</span> <span class="va">path</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>We first need to define the model by setting some <code>controls</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  states <span class="op">=</span> <span class="fl">2</span>,
-  sdds   <span class="op">=</span> <span class="st">"t"</span>,
-  data   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>file        <span class="op">=</span> <span class="va">path</span>,
-                date_column <span class="op">=</span> <span class="st">"Date"</span>,
-                data_column <span class="op">=</span> <span class="st">"Close"</span>,
-                logreturns  <span class="op">=</span> <span class="cn">TRUE</span>,
-                from        <span class="op">=</span> <span class="st">"2000-01-01"</span>,
-                to          <span class="op">=</span> <span class="st">"2020-12-31"</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_controls.html">set_controls</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  states <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  sdds   <span class="op">=</span> <span class="st">"t"</span>,</span>
+<span>  data   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>file        <span class="op">=</span> <span class="va">path</span>,</span>
+<span>                date_column <span class="op">=</span> <span class="st">"Date"</span>,</span>
+<span>                data_column <span class="op">=</span> <span class="st">"Close"</span>,</span>
+<span>                logreturns  <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                from        <span class="op">=</span> <span class="st">"2000-01-01"</span>,</span>
+<span>                to          <span class="op">=</span> <span class="st">"2020-12-31"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_controls.html">set_controls</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span></span></code></pre></div>
 <p>The function <code><a href="reference/prepare_data.html">prepare_data()</a></code> prepares the data for estimation:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prepare_data.html">prepare_data</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
-<span class="co">#&gt; Summary of fHMM empirical data</span>
-<span class="co">#&gt; * number of observations: 5371 </span>
-<span class="co">#&gt; * data source: dax.csv </span>
-<span class="co">#&gt; * date column: Date </span>
-<span class="co">#&gt; * log returns: TRUE</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prepare_data.html">prepare_data</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Summary of fHMM empirical data</span></span>
+<span><span class="co">#&gt; * number of observations: 5371 </span></span>
+<span><span class="co">#&gt; * data source: dax.csv </span></span>
+<span><span class="co">#&gt; * date column: Date </span></span>
+<span><span class="co">#&gt; * log returns: TRUE</span></span></code></pre></div>
 <p>We fit the model and subsequently decode the hidden states:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">data</span>, ncluster <span class="op">=</span> <span class="fl">7</span><span class="op">)</span>
-<span class="co">#&gt; Checking start values</span>
-<span class="co">#&gt; Maximizing likelihood</span>
-<span class="co">#&gt; Computing Hessian</span>
-<span class="co">#&gt; Fitting completed</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>
-<span class="co">#&gt; Decoded states</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>
-<span class="co">#&gt; Summary of fHMM model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   simulated hierarchy       LL      AIC       BIC</span>
-<span class="co">#&gt; 1     FALSE     FALSE 15920.25 -31824.5 -31771.79</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; State-dependent distributions:</span>
-<span class="co">#&gt; t() </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimates:</span>
-<span class="co">#&gt;                   lb   estimate         ub</span>
-<span class="co">#&gt; Gamma_2.1  0.0113550  0.0179502  2.827e-02</span>
-<span class="co">#&gt; Gamma_1.2  0.0056213  0.0089654  1.427e-02</span>
-<span class="co">#&gt; mu_1       0.0005939  0.0009008  1.208e-03</span>
-<span class="co">#&gt; mu_2      -0.0020763 -0.0010611 -4.585e-05</span>
-<span class="co">#&gt; sigma_1    0.0073792  0.0078062  8.258e-03</span>
-<span class="co">#&gt; sigma_2    0.0170391  0.0184230  1.992e-02</span>
-<span class="co">#&gt; df_1       5.0194906  6.4223618  8.217e+00</span>
-<span class="co">#&gt; df_2       4.9532404  6.6609735  8.957e+00</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; States:</span>
-<span class="co">#&gt; decoded</span>
-<span class="co">#&gt;    1    2 </span>
-<span class="co">#&gt; 3645 1726</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">data</span>, ncluster <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Checking start values</span></span>
+<span><span class="co">#&gt; Maximizing likelihood</span></span>
+<span><span class="co">#&gt; Computing Hessian</span></span>
+<span><span class="co">#&gt; Fitting completed</span></span>
+<span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Decoded states</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Summary of fHMM model</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   simulated hierarchy       LL      AIC       BIC</span></span>
+<span><span class="co">#&gt; 1     FALSE     FALSE 15920.25 -31824.5 -31771.79</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; State-dependent distributions:</span></span>
+<span><span class="co">#&gt; t() </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Estimates:</span></span>
+<span><span class="co">#&gt;                   lb   estimate         ub</span></span>
+<span><span class="co">#&gt; Gamma_2.1  0.0113550  0.0179502  2.827e-02</span></span>
+<span><span class="co">#&gt; Gamma_1.2  0.0056213  0.0089654  1.427e-02</span></span>
+<span><span class="co">#&gt; mu_1       0.0005939  0.0009008  1.208e-03</span></span>
+<span><span class="co">#&gt; mu_2      -0.0020763 -0.0010611 -4.585e-05</span></span>
+<span><span class="co">#&gt; sigma_1    0.0073792  0.0078062  8.258e-03</span></span>
+<span><span class="co">#&gt; sigma_2    0.0170391  0.0184230  1.992e-02</span></span>
+<span><span class="co">#&gt; df_1       5.0194906  6.4223618  8.217e+00</span></span>
+<span><span class="co">#&gt; df_2       4.9532404  6.6609735  8.957e+00</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; States:</span></span>
+<span><span class="co">#&gt; decoded</span></span>
+<span><span class="co">#&gt;    1    2 </span></span>
+<span><span class="co">#&gt; 3645 1726</span></span></code></pre></div>
 <p>Having estimated the model, we can visualize the state-dependent distributions and the decoded time series:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fHMM_events.html">fHMM_events</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2001-09-11"</span>, <span class="st">"2008-09-15"</span>, <span class="st">"2020-01-27"</span><span class="op">)</span>,
-       labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9/11 terrorist attack"</span>, <span class="st">"Bankruptcy Lehman Brothers"</span>, <span class="st">"First COVID-19 case Germany"</span><span class="op">)</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, plot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sdds"</span>,<span class="st">"ts"</span><span class="op">)</span>, events <span class="op">=</span> <span class="va">events</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fHMM_events.html">fHMM_events</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2001-09-11"</span>, <span class="st">"2008-09-15"</span>, <span class="st">"2020-01-27"</span><span class="op">)</span>,</span>
+<span>       labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9/11 terrorist attack"</span>, <span class="st">"Bankruptcy Lehman Brothers"</span>, <span class="st">"First COVID-19 case Germany"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, plot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sdds"</span>,<span class="st">"ts"</span><span class="op">)</span>, events <span class="op">=</span> <span class="va">events</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plots-1.png" width="75%" style="display: block; margin: auto;"><img src="reference/figures/README-plots-2.png" width="75%" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -243,7 +243,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer>

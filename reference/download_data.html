@@ -69,13 +69,13 @@ saves it as a .csv-file.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">download_data</span><span class="op">(</span>
-  <span class="va">symbol</span>,
-  from <span class="op">=</span> <span class="st">"1902-01-01"</span>,
-  to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,
-  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">symbol</span>, <span class="st">".csv"</span><span class="op">)</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_data</span><span class="op">(</span></span>
+<span>  <span class="va">symbol</span>,</span>
+<span>  from <span class="op">=</span> <span class="st">"1902-01-01"</span>,</span>
+<span>  to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">symbol</span>, <span class="st">".csv"</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -83,21 +83,32 @@ saves it as a .csv-file.</p>
     <dl><dt>symbol</dt>
 <dd><p>A character, the stock's symbol. It must match the identifier on
 <a href="https://finance.yahoo.com/" class="external-link">https://finance.yahoo.com/</a>.</p></dd>
+
+
 <dt>from</dt>
 <dd><p>A date in format "YYYY-MM-DD", setting the lower data bound. Must not be
 earlier than <code>"1902-01-01"</code>.</p></dd>
+
+
 <dt>to</dt>
 <dd><p>A date in format "YYYY-MM-DD", setting the upper data bound. Default is the
 current date <code>Sys.date()</code>.</p></dd>
+
+
 <dt>file</dt>
 <dd><p>The name of the file where the .csv-file is saved. Per default, it is saved
 in the current working directory with the name "<code>symbol</code>.csv".</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>If <code>TRUE</code> returns information about download success.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>No return value.</p>
+    
+
+<p>No return value.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -112,16 +123,16 @@ in the current working directory with the name "<code>symbol</code>.csv".</p></d
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">### download 21st century DAX data</span></span>
-<span class="r-in"><span class="fu">download_data</span><span class="op">(</span></span>
-<span class="r-in">  symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, from <span class="op">=</span> <span class="st">"2000-01-03"</span>,</span>
-<span class="r-in">  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">### download 21st century DAX data</span></span></span>
+<span class="r-in"><span><span class="fu">download_data</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, from <span class="op">=</span> <span class="st">"2000-01-03"</span>,</span></span>
+<span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Download successful.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * symbol: ^GDAXI </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * from: 2000-01-03 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * to: 2022-06-06 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * path: /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpIcaHIw/file6dc78940c7d.csv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> * to: 2022-06-29 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> * path: /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpMj207G/file1190f232ba5.csv</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -133,7 +144,7 @@ in the current working directory with the name "<code>symbol</code>.csv".</p></d
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>
