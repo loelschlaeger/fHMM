@@ -66,41 +66,52 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">simulate_markov_chain</span><span class="op">(</span>
-  <span class="va">Gamma</span>,
-  <span class="cn">T</span>,
-  delta <span class="op">=</span> <span class="fu"><a href="Gamma2delta.html">Gamma2delta</a></span><span class="op">(</span><span class="va">Gamma</span><span class="op">)</span>,
-  seed <span class="op">=</span> <span class="cn">NULL</span>,
-  total_length <span class="op">=</span> <span class="cn">T</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">simulate_markov_chain</span><span class="op">(</span></span>
+<span>  <span class="va">Gamma</span>,</span>
+<span>  <span class="cn">T</span>,</span>
+<span>  delta <span class="op">=</span> <span class="fu"><a href="Gamma2delta.html">Gamma2delta</a></span><span class="op">(</span><span class="va">Gamma</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  total_length <span class="op">=</span> <span class="cn">T</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>Gamma</dt>
 <dd><p>A tpm (transition probability matrix).</p></dd>
+
+
 <dt>T</dt>
 <dd><p>The length of the Markov chain.</p></dd>
+
+
 <dt>delta</dt>
 <dd><p>A probability vector, the initial distribution. If not specified, <code>delta</code>
 is set to the stationary distribution vector.</p></dd>
+
+
 <dt>seed</dt>
 <dd><p>Set a seed.</p></dd>
+
+
 <dt>total_length</dt>
 <dd><p>An integer, the total length of the output vector. Must be greater or equal
 than <code>T</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A numeric vector of length <code>T</code> with states.</p>
+    
+
+<p>A numeric vector of length <code>T</code> with states.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">Gamma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.7</span><span class="op">)</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="cn">T</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
-<span class="r-in"><span class="fu">fHMM</span><span class="fu">:::</span><span class="fu">simulate_markov_chain</span><span class="op">(</span>Gamma <span class="op">=</span> <span class="va">Gamma</span>, T <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 2 2 1 1 1 1 1 1 2 2</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">Gamma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.7</span><span class="op">)</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="cn">T</span> <span class="op">&lt;-</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span><span class="fu">fHMM</span><span class="fu">:::</span><span class="fu">simulate_markov_chain</span><span class="op">(</span>Gamma <span class="op">=</span> <span class="va">Gamma</span>, T <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1 2 1 1 2 2 2 2 2 2</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -112,7 +123,7 @@ than <code>T</code>.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

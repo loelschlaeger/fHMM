@@ -69,13 +69,15 @@ comparison to true parameters or the interpretation of states.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">reorder_states</span><span class="op">(</span><span class="va">x</span>, <span class="va">state_order</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reorder_states</span><span class="op">(</span><span class="va">x</span>, <span class="va">state_order</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>An object of class <code>fHMM_model</code>.</p></dd>
+
+
 <dt>state_order</dt>
 <dd><p>A vector or a matrix which determines the new ordering.</p><ul><li><p>If <code>x$data$controls$hierarchy = FALSE</code>, <code>state_order</code> must
 be a vector of length <code>x$data$controls$states</code> with integer
@@ -94,16 +96,19 @@ HHMM with 2 coarse-scale and 2 fine-scale states, specifying
 <code>state_order = matrix(c(2,1,2,1,1,2),2,3)</code> swaps the
 coarse-scale states and the fine-scale states of coarse-scale state 2.</p></li>
 </ul></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of class <code>fHMM_model</code>, in which states are reordered.</p>
+    
+
+<p>An object of class <code>fHMM_model</code>, in which states are reordered.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">reorder_states</span><span class="op">(</span><span class="va">dax_model_3t</span>, state_order <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">reorder_states</span><span class="op">(</span><span class="va">dax_model_3t</span>, state_order <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fHMM fitted model:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * total estimation time: 7 mins </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * accepted runs: 21 of 100 </span>
@@ -119,7 +124,7 @@ coarse-scale states and the fine-scale states of coarse-scale state 2.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>
