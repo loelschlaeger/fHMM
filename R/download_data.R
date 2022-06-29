@@ -53,8 +53,8 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
   }
   from <- check_date(from)
   to <- check_date(to)
-  if (!is.character(file) || length(file) != 1) {
-    stop("'file' must be a single character.")
+  if (!is.character(file) || length(file) != 1 || nchar(file) == 0) {
+    stop("'file' is invalid.")
   }
   if (!is.logical(verbose) || length(verbose) != 1) {
     stop("'verbose' must be either TRUE or FALSE.")
