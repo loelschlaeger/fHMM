@@ -18,8 +18,9 @@
 #' @export
 #'
 #' @examples
-#' data(dax_model_3t)
+#' data("dax_model_3t")
 #' decode_states(dax_model_3t)
+#' 
 #' @importFrom stats dt dgamma
 
 decode_states <- function(x, verbose = TRUE) {

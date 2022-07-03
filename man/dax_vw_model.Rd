@@ -8,7 +8,7 @@
 An object of class \code{fHMM_model}.
 }
 \usage{
-data(dax_vw_model)
+data("dax_vw_model")
 }
 \description{
 A pre-computed HHMM with monthly averaged closing prices of the

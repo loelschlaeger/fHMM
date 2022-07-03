@@ -484,12 +484,11 @@ plot(dax_model_3t, plot_type = "pr")
 @
 %
 
-Alternatively, the residuals can be extracted from the model object for normality tests, for example a Jarque-Bera test \citep{jar87}:\footnote{Here, the test is unable to reject the null hypothesis that the data is normally distributed.}
+Alternatively, the residuals can be extracted from the model object via the \fct{residuals} method for normality tests, for example a Jarque-Bera test \citep{jar87}:\footnote{Here, the test is unable to reject the null hypothesis that the data is normally distributed.}
 
 %
 <<example 1 dax jb test>>=
-res <- dax_model_3t$residuals
-tseries::jarque.bera.test(res)
+tseries::jarque.bera.test(residuals(dax_model_3t))
 @
 %
 

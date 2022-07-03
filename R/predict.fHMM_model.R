@@ -17,8 +17,9 @@
 #' confidence intervals.
 #'
 #' @examples
-#' data(dax_model_3t)
+#' data("dax_model_3t")
 #' predict(dax_model_3t)
+#' 
 #' @export
 #' @importFrom stats qt qgamma
 
@@ -26,13 +27,13 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
 
   ### check input
   if (!inherits(object,"fHMM_model")) {
-    stop("'object' must be of class 'fHMM_model'.")
+    stop("'object' must be of class 'fHMM_model'.", call. = FALSE)
   }
   if (!(length(ahead) == 1 && is_number(ahead, int = TRUE, pos = TRUE))) {
-    stop("'ahead' must be a positive integer")
+    stop("'ahead' must be a positive integer.", call. = FALSE)
   }
   if (!(length(alpha) == 1 && is_number(alpha, pos = TRUE) && alpha <= 1)) {
-    stop("'alpha' must be a numeric between 0 and 1.")
+    stop("'alpha' must be a numeric between 0 and 1.", call. = FALSE)
   }
 
   ### extract parameters

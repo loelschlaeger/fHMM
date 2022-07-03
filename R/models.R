@@ -5,7 +5,7 @@
 #' with two hidden states and normal state-dependent distributions for
 #' demonstration purpose.
 #'
-#' @usage data(dax_model_2n)
+#' @usage data("dax_model_2n")
 #'
 #' @details
 #' The model was derived via specifying
@@ -36,7 +36,7 @@
 #' with three hidden states and state-dependent t-distributions for
 #' demonstration purpose.
 #'
-#' @usage data(dax_model_3t)
+#' @usage data("dax_model_3t")
 #'
 #' @details
 #' The model was derived via specifying
@@ -69,7 +69,7 @@
 #' state-dependent t-distributions with degrees of freedom fixed to 1 for
 #' demonstration purpose.
 #'
-#' @usage data(dax_vw_model)
+#' @usage data("dax_vw_model")
 #'
 #' @details
 #' The model was derived via specifying
@@ -99,7 +99,7 @@
 #' A pre-computed 2-state HMM with state-dependent gamma distributions with means
 #' fixed to \code{0.5} and \code{2} on \code{500} simulated observations.
 #'
-#' @usage data(sim_model_2gamma)
+#' @usage data("sim_model_2gamma")
 #'
 #' @details
 #' The model was estimated via:

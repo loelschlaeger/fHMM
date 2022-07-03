@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
   out.width = "80%",
   fig.align = 'center'
 )
-library(fHMM)
+library("fHMM")
 ```
 
 This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the {fHMM} `r utils::packageVersion("fHMM")` package.] discusss model checking in {fHMM}.
@@ -56,11 +56,10 @@ The residuals can be visualized as follows:
 plot(dax_model_3t, plot_type = "pr")
 ```
 
-For additional normality tests, the residuals can be extracted from the `model` object. The following lines exemplary perform a [Jarque–Bera test](https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test) [@jar87]:
+For additional normality tests, the residuals can be extracted from the `model` object via the `residuals()` method. The following lines exemplary perform a [Jarque–Bera test](https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test) [@jar87]:
 
 ```{r}
-res <- dax_model_3t$residuals
-tseries::jarque.bera.test(res)
+tseries::jarque.bera.test(residuals(dax_model_3t))
 ```
 
 ## References

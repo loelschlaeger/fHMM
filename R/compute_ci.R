@@ -23,7 +23,7 @@
 #' internal
 #'
 #' @examples
-#' data(dax_model_3t)
+#' data("dax_model_3t")
 #' fHMM:::compute_ci(x = dax_model_3t, alpha = 0.05)
 #' @importFrom stats qnorm
 

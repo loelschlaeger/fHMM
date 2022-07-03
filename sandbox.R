@@ -1,6 +1,6 @@
 ### load code ---------------------------------------------------------------
 rm(list = ls())
-library(magrittr)
+library("magrittr")
 devtools::load_all()
 #install.packages("../fHMM_1.0.2.tar.gz", repos = NULL, type = "source", INSTALL_opts = c('--no-lock'))
 

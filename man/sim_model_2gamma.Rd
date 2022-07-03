@@ -8,7 +8,7 @@
 An object of class \code{fHMM_model}.
 }
 \usage{
-data(sim_model_2gamma)
+data("sim_model_2gamma")
 }
 \description{
 A pre-computed 2-state HMM with state-dependent gamma distributions with means

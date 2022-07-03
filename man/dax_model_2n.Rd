@@ -8,7 +8,7 @@
 An object of class \code{fHMM_model}.
 }
 \usage{
-data(dax_model_2n)
+data("dax_model_2n")
 }
 \description{
 A pre-computed HMM on closing prices of the DAX from 2000 to 2021

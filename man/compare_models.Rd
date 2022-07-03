@@ -22,6 +22,6 @@ This function compares multiple \code{fHMM_model} with respect to
 }
 }
 \examples{
-data(dax_model_3t)
+data("dax_model_3t")
 compare_models(dax_model_3t)
 }
