@@ -43,6 +43,12 @@ reference:
   - fHMM_colors
   - fHMM_events
   - predict.fHMM_model
+  - AIC
+  - BIC
+  - logLik
+  - nobs
+  - npar
+  - residuals.fHMM_model
 - title: Models
   desc: The following pre-computed models are included in the package.
   contents:
