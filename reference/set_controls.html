@@ -12,7 +12,7 @@ package."><meta property="og:image" content="https://loelschlaeger.github.io/fHM
     
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,7 +95,8 @@ To fix different values of one parameter for different states, separate by
 A numeric, specifying the length of the time horizon. The first entry
 of <code>horizon</code> is ignored if <code>data</code> is specified.</p></li>
 <li><p><code>period</code> (<code>"m"</code>):
-Only relevant if <code>hierarchy = TRUE</code> and <code>horizon[2] = NA</code>.
+Only relevant if <code>hierarchy = TRUE</code> and
+<code>horizon[2] = NA_integer_</code>.
 In this case, it specifies a flexible, periodic fine-scale time horizon
 and can be one of</p><ul><li><p><code>"w"</code> for a week,</p></li>
 <li><p><code>"m"</code> for a month,</p></li>
@@ -109,17 +110,18 @@ have a column named <code>date_column</code> (with dates) and
 <code>data_column</code> (with financial data).</p></li>
 <li><p><code>date_column</code> <code>(*)</code> (<code>"Date"</code>):
 A character, the name of the column in <code>file</code> with dates. Can be
-<code>NA</code> in which case consecutive integers are used as time points.</p></li>
+<code>NA_character_</code> in which case consecutive integers are used as time
+points.</p></li>
 <li><p><code>data_column</code> <code>(*)</code> (<code>"Close"</code>):
 A character, the name of the column in <code>file</code> with financial data.</p></li>
-<li><p><code>from</code> (<code>NA</code>):
+<li><p><code>from</code> (<code>NA_character_</code>):
 A character of the format <code>"YYYY-MM-DD"</code>, setting a lower data
-limit. No lower limit if <code>from = NA</code>. Ignored if
+limit. No lower limit if <code>from = NA_character_</code>. Ignored if
 <code>controls$data$date_column</code> is <code>NA</code>.</p></li>
-<li><p><code>to</code> (<code>NA</code>):
+<li><p><code>to</code> (<code>NA_character_</code>):
 A character of the format <code>"YYYY-MM-DD"</code>, setting an upper data
-limit. No upper limit if <code>from = NA</code>. Ignored if
-<code>controls$data$date_column</code> is <code>NA</code>.</p></li>
+limit. No upper limit if <code>from = NA_character_</code>. Ignored if
+<code>controls$data$date_column</code> is <code>NA_character_</code>.</p></li>
 <li><p><code>logreturns</code> <code>(*)</code> (<code>FALSE</code>):
 A boolean, if <code>TRUE</code> the data is transformed to log-returns.</p></li>
 <li><p><code>merge</code> (<code>function(x) mean(x)</code>):

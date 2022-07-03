@@ -43,6 +43,12 @@
     <loc>https://loelschlaeger.github.io/fHMM/news/index.html</loc>
   </url>
   <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/AIC.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/BIC.html</loc>
+  </url>
+  <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/Gamma2delta.html</loc>
   </url>
   <url>
@@ -130,6 +136,9 @@
     <loc>https://loelschlaeger.github.io/fHMM/reference/is_tpm.html</loc>
   </url>
   <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/logLik.html</loc>
+  </url>
+  <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/match_all.html</loc>
   </url>
   <url>
@@ -143,6 +152,12 @@
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/nLL_hmm.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/nobs.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/npar.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/par2parCon.html</loc>
@@ -194,6 +209,9 @@
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/reorder_states.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/residuals.fHMM_model.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/sample_tpm.html</loc>
