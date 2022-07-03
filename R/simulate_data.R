@@ -11,7 +11,7 @@
 #'  \item the matrix of \code{time_points},
 #'  \item the matrix of the simulated \code{markov_chain},
 #'  \item the matrix of the simulated \code{data},
-#'  \item the vector of fine-scale chunk sizes \code{T_star} if 
+#'  \item the vector of fine-scale chunk sizes \code{T_star} if
 #'        \code{controls$hierarchy = TRUE}.
 #' }
 #'
@@ -28,7 +28,8 @@ simulate_data <- function(controls, true_parameters, seed = NULL) {
   }
   if (!inherits(true_parameters, "fHMM_parameters")) {
     stop("'true_parameters' is not of class 'fHMM_parameters'.",
-         call. = FALSE)
+      call. = FALSE
+    )
   }
   if (!controls$simulated) {
     stop("'controls$simulated' is not 'TRUE'.", call. = FALSE)
@@ -147,14 +148,14 @@ simulate_data <- function(controls, true_parameters, seed = NULL) {
 #'
 #' @importFrom stats rt rgamma
 
-simulate_observations <- function(
-    markov_chain, sdd, mus, sigmas, dfs = NULL, seed = NULL, 
-    total_length = length(markov_chain)) {
+simulate_observations <- function(markov_chain, sdd, mus, sigmas, dfs = NULL, seed = NULL,
+                                  total_length = length(markov_chain)) {
 
   ### check inputs
   if (!all(is_number(markov_chain, int = TRUE, pos = TRUE))) {
     stop("'markov_chain' must be a numberic vector of Markov chain states.",
-         call. = FALSE)
+      call. = FALSE
+    )
   }
   if (!(length(sdd) == 1 && sdd %in% c("t", "gamma", "lnorm"))) {
     stop("'sdd' must be one of 't' or 'gamma'.", call. = FALSE)
@@ -179,14 +180,16 @@ simulate_observations <- function(
     if (!(all(is_number(dfs, pos = TRUE)) && length(dfs) == length(mus))) {
       stop(paste(
         "'dfs' must be a positive number vector of length equal to",
-        "'mus' and 'sigmas'."), call. = FALSE)
+        "'mus' and 'sigmas'."
+      ), call. = FALSE)
     }
   }
-  if (!is_number(total_length) || length(total_length) != 1 || 
-      total_length < length(markov_chain)) {
+  if (!is_number(total_length) || length(total_length) != 1 ||
+    total_length < length(markov_chain)) {
     stop(paste(
-      "'total_length' must be an integer greater or equal than", 
-      "'length(markov_chain)'."), call. = FALSE)
+      "'total_length' must be an integer greater or equal than",
+      "'length(markov_chain)'."
+    ), call. = FALSE)
   }
 
   ### set seed
@@ -203,8 +206,10 @@ simulate_observations <- function(
       observations[t] <- stats::rt(1, dfs[s]) * sigmas[s] + mus[s]
     }
     if (sdd == "gamma") {
-      observations[t] <- stats::rgamma(1, shape = mus[s]^2 / sigmas[s]^2, 
-                                       scale = sigmas[s]^2 / mus[s])
+      observations[t] <- stats::rgamma(1,
+        shape = mus[s]^2 / sigmas[s]^2,
+        scale = sigmas[s]^2 / mus[s]
+      )
     }
     if (sdd == "lnorm") {
       observations[t] <- stats::rlnorm(1, meanlog = mus[s], sdlog = sigmas[s])

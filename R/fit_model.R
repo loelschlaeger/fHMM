@@ -374,8 +374,8 @@ nLL_hhmm <- function(parUncon, observations, controls) {
   class(controls_split) <- "fHMM_controls"
   for (m in seq_len(M)) {
     if (controls[["sdds"]][[1]]$name == "t") {
-      allprobs[m, ] <- 1 / sigmas[m] * stats::dt((observations_cs - mus[m]) / 
-                                                   sigmas[m], dfs[m])
+      allprobs[m, ] <- 1 / sigmas[m] * stats::dt((observations_cs - mus[m]) /
+        sigmas[m], dfs[m])
     }
     if (controls[["sdds"]][[1]]$name == "gamma") {
       allprobs[m, ] <- stats::dgamma(observations_cs,
