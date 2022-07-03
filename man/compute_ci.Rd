@@ -27,5 +27,6 @@ This function computes confidence intervals for the estimates of an
 \examples{
 data("dax_model_3t")
 fHMM:::compute_ci(x = dax_model_3t, alpha = 0.05)
+
 }
 \keyword{internal}

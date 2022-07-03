@@ -50,7 +50,7 @@ compare_models <- function(...) {
 
   ### create output matrix
   criteria <- c("parameters", "log-likelihood", "AIC", "BIC")
-  output <- matrix(NA, nrow = length(models), ncol = length(criteria))
+  output <- matrix(NA_real_, nrow = length(models), ncol = length(criteria))
   rownames(output) <- model_names
   colnames(output) <- criteria
   for (i in seq_len(length(models))) {
@@ -62,5 +62,5 @@ compare_models <- function(...) {
   }
 
   ### return output
-  return(round(output, 2))
+  return(output)
 }

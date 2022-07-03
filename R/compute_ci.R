@@ -25,6 +25,7 @@
 #' @examples
 #' data("dax_model_3t")
 #' fHMM:::compute_ci(x = dax_model_3t, alpha = 0.05)
+#'
 #' @importFrom stats qnorm
 
 compute_ci <- function(x, alpha = 0.05) {
@@ -38,26 +39,28 @@ compute_ci <- function(x, alpha = 0.05) {
   }
 
   ### compute confidence intervals using the inverse Hessian approach
-  x$hessian[which(x$hessian %in% c(Inf, -Inf, NA, NaN))] <- 0
+  x$hessian[!is.finite(x$hessian)] <- 0
   inv_fisher <- MASS::ginv(x$hessian)
   sds <- suppressWarnings(sqrt(diag(inv_fisher)))
   z_alpha <- stats::qnorm(p = 1 - alpha / 2)
   lower_limit <- x$estimate - z_alpha * sds
   upper_limit <- x$estimate + z_alpha * sds
 
-  ### if negative variance, replace by NA
-  lower_limit[diag(inv_fisher) < 0] <- NA
-  upper_limit[diag(inv_fisher) < 0] <- NA
+  ### if negative variance, replace by NA_real_
+  lower_limit[diag(inv_fisher) < 0] <- NA_real_
+  upper_limit[diag(inv_fisher) < 0] <- NA_real_
 
   ### create and return output
   out <- lapply(
     list(lower_limit, x$estimate, upper_limit),
     parUncon2parCon, x$data$controls
   )
-  if (any(is.na(out))) {
-    warning(paste("Some confidence intervals could not be computed.",
-    "The corresponding estimates may lie close to the boundaries of their parameter space,",
-    "the confidence intervals may be unreliable and are therefore replaced by NA."),
+  if (anyNA(out)) {
+    warning(paste(
+      "Some confidence intervals could not be computed.",
+      "The corresponding estimates may lie close to the boundaries of their",
+      "parameter space, the confidence intervals may be unreliable and are",
+      "therefore replaced by 'NA_real_'."),
     call. = FALSE)
   }
   names(out) <- c("lb", "estimate", "ub")

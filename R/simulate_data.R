@@ -49,10 +49,14 @@ simulate_data <- function(controls, true_parameters, seed = NULL) {
     )
     time_points <- 1:controls[["horizon"]][1]
   } else {
-    T_star <- compute_T_star(horizon = controls[["horizon"]], period = controls[["period"]])
-    markov_chain <- matrix(NA, nrow = controls[["horizon"]][1], ncol = max(T_star) + 1)
-    data <- matrix(NA, nrow = controls[["horizon"]][1], ncol = max(T_star) + 1)
-    time_points <- matrix(NA, nrow = controls[["horizon"]][1], ncol = max(T_star) + 1)
+    T_star <- compute_T_star(horizon = controls[["horizon"]], 
+                             period = controls[["period"]])
+    markov_chain <- matrix(NA_real_, nrow = controls[["horizon"]][1], 
+                           ncol = max(T_star) + 1)
+    data <- matrix(NA_real_, nrow = controls[["horizon"]][1], 
+                   ncol = max(T_star) + 1)
+    time_points <- matrix(NA_real_, nrow = controls[["horizon"]][1], 
+                          ncol = max(T_star) + 1)
     markov_chain[, 1] <- simulate_markov_chain(
       Gamma = true_parameters$Gamma,
       T = controls[["horizon"]][1],
@@ -84,7 +88,8 @@ simulate_data <- function(controls, true_parameters, seed = NULL) {
         seed = seed + t,
         total_length = max(T_star)
       )
-      time_points[t, -1] <- c(time_points[t, 1] - 1 + (1:T_star[t]), rep(NA, max(T_star) - T_star[t]))
+      time_points[t, -1] <- c(time_points[t, 1] - 1 + (1:T_star[t]), 
+                              rep(NA_integer_, max(T_star) - T_star[t]))
     }
   }
 
@@ -123,7 +128,7 @@ simulate_data <- function(controls, true_parameters, seed = NULL) {
 #' @return
 #' A numeric vector of length \code{total_length}, where the first
 #' \code{length(markov_chain)} elements are numeric values and the last
-#' \code{total_length - length(markov_chain)} elements are \code{NA}.
+#' \code{total_length - length(markov_chain)} elements are \code{NA_real_}.
 #'
 #' @keywords
 #' internal
@@ -184,7 +189,7 @@ simulate_observations <- function(markov_chain, sdd, mus, sigmas, dfs = NULL,
   }
 
   ### append NA's
-  observations <- c(observations, rep(NA, total_length - T))
+  observations <- c(observations, rep(NA_real_, total_length - T))
 
   ### return observations
   return(observations)

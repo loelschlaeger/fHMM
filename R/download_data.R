@@ -56,7 +56,7 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
   if (!is.character(file) || length(file) != 1 || nchar(file) == 0) {
     stop("'file' is invalid.")
   }
-  if (!is.logical(verbose) || length(verbose) != 1) {
+  if (!isTRUE(verbose) && !isFALSE(verbose)) {
     stop("'verbose' must be either TRUE or FALSE.")
   }
 

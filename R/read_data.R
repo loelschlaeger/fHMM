@@ -149,17 +149,17 @@ read_data <- function(controls) {
 
   ### build 'data' and 'time_series' matrix
   if (controls[["hierarchy"]]) {
-    data <- matrix(NA, nrow = T, ncol = max(T_star) + 1)
-    time_series <- matrix(NA, nrow = T, ncol = max(T_star) + 1)
+    data <- matrix(NA_real_, nrow = T, ncol = max(T_star) + 1)
+    time_series <- matrix(NA_real_, nrow = T, ncol = max(T_star) + 1)
     col_name <- if (controls[["data"]][["logreturns"]][2]) "logreturns" else data_column[2]
     for (t in seq_len(T)) {
       data[t, -1] <- c(
         data_raw[[2]][[col_name]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])],
-        rep(NA, max(T_star) - T_star[t])
+        rep(NA_real_, max(T_star) - T_star[t])
       )
       time_series[t, -1] <- c(
         data_raw[[2]][[data_column[2]]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])],
-        rep(NA, max(T_star) - T_star[t])
+        rep(NA_real_, max(T_star) - T_star[t])
       )
     }
     col_name <- if (controls[["data"]][["logreturns"]][1]) "logreturns" else data_column[1]
@@ -178,11 +178,11 @@ read_data <- function(controls) {
   if (!all(is.na(date_column))) {
     time_points <- NA
     if (controls[["hierarchy"]]) {
-      dates <- matrix(NA, nrow = T, ncol = max(T_star) + 1)
+      dates <- matrix(NA_real_, nrow = T, ncol = max(T_star) + 1)
       for (t in seq_len(T)) {
         dates[t, -1] <- c(
           data_raw[[2]][[date_column[2]]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])],
-          rep(NA, max(T_star) - T_star[t])
+          rep(NA_real_, max(T_star) - T_star[t])
         )
       }
       dates[, 1] <- dates[, 2]
@@ -192,10 +192,11 @@ read_data <- function(controls) {
   } else {
     dates <- NA
     if (controls[["hierarchy"]]) {
-      time_points <- matrix(NA, nrow = T, ncol = max(T_star) + 1)
+      time_points <- matrix(NA_real_, nrow = T, ncol = max(T_star) + 1)
       time_points[, 1] <- utils::head(c(1, cumsum(T_star) + 1), -1)
       for (t in seq_len(T)) {
-        time_points[t, -1] <- c(time_points[t, 1] - 1 + (1:T_star[t]), rep(NA, max(T_star) - T_star[t]))
+        time_points[t, -1] <- c(time_points[t, 1] - 1 + (1:T_star[t]), 
+                                rep(NA_real_, max(T_star) - T_star[t]))
       }
     } else {
       time_points <- 1:length(data)

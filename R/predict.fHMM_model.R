@@ -43,7 +43,7 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
   sdds <- object$data$controls$sdds
 
   ### predict states
-  state_prediction <- matrix(NA, nrow = ahead, ncol = M)
+  state_prediction <- matrix(NA_real_, nrow = ahead, ncol = M)
   last_state <- tail(if (object$data$controls$hierarchy) object$decoding[, 1] else object$decoding, n = 1)
   state_prob <- replace(numeric(M), last_state, 1)
   for (i in 1:ahead) {
@@ -55,7 +55,7 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
   if (object$data$controls$hierarchy) {
     for (s in 1:M) {
       state_prob <- rep(1 / N, N)
-      fs_state_prediction <- matrix(NA, nrow = ahead, ncol = N)
+      fs_state_prediction <- matrix(NA_real_, nrow = ahead, ncol = N)
       for (i in 1:ahead) {
         state_prob <- state_prob %*% par$Gammas_star[[s]]
         fs_state_prediction[i, ] <- state_prediction[i, s] * state_prob
@@ -67,7 +67,7 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
   }
 
   ### predict data
-  data_prediction <- matrix(NA, nrow = ahead, ncol = 3)
+  data_prediction <- matrix(NA_real_, nrow = ahead, ncol = 3)
   props <- sort(c(alpha, 0.5, 1 - alpha))
   if (!object$data$controls$hierarchy) {
     if (sdds[[1]]$name == "t") {

@@ -58,7 +58,7 @@ fHMM_colors <- function(controls, colors = NULL) {
   if (!controls[["hierarchy"]]) {
     out <- col_alpha(base_col(controls[["states"]][1]))
   } else {
-    out <- matrix(NA,
+    out <- matrix(NA_character_,
       nrow = controls[["states"]][1],
       ncol = controls[["states"]][2] + 1
     )

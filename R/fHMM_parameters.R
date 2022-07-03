@@ -655,7 +655,7 @@ Gamma2gammasCon <- function(Gamma, shift = 1e-3) {
 Gamma2gammasUncon <- function(Gamma) {
   diag(Gamma) <- 0
   Gamma <- log(Gamma / (1 - rowSums(Gamma)))
-  diag(Gamma) <- NA
+  diag(Gamma) <- NA_real_
   return(Gamma[!is.na(Gamma)])
 }
 

@@ -30,7 +30,8 @@
 #'   A numeric, specifying the length of the time horizon. The first entry
 #'   of \code{horizon} is ignored if \code{data} is specified.
 #'   \item \code{period} (\code{"m"}):
-#'   Only relevant if \code{hierarchy = TRUE} and \code{horizon[2] = NA}.
+#'   Only relevant if \code{hierarchy = TRUE} and 
+#'   \code{horizon[2] = NA_integer_}.
 #'   In this case, it specifies a flexible, periodic fine-scale time horizon
 #'   and can be one of
 #'   \itemize{
@@ -48,17 +49,18 @@
 #'     \code{data_column} (with financial data).
 #'     \item \code{date_column} \code{(*)} (\code{"Date"}):
 #'     A character, the name of the column in \code{file} with dates. Can be
-#'     \code{NA} in which case consecutive integers are used as time points.
+#'     \code{NA_character_} in which case consecutive integers are used as time 
+#'     points.
 #'     \item \code{data_column} \code{(*)} (\code{"Close"}):
 #'     A character, the name of the column in \code{file} with financial data.
-#'     \item \code{from} (\code{NA}):
+#'     \item \code{from} (\code{NA_character_}):
 #'     A character of the format \code{"YYYY-MM-DD"}, setting a lower data
-#'     limit. No lower limit if \code{from = NA}. Ignored if
+#'     limit. No lower limit if \code{from = NA_character_}. Ignored if
 #'     \code{controls$data$date_column} is \code{NA}.
-#'     \item \code{to} (\code{NA}):
+#'     \item \code{to} (\code{NA_character_}):
 #'     A character of the format \code{"YYYY-MM-DD"}, setting an upper data
-#'     limit. No upper limit if \code{from = NA}. Ignored if
-#'     \code{controls$data$date_column} is \code{NA}.
+#'     limit. No upper limit if \code{from = NA_character_}. Ignored if
+#'     \code{controls$data$date_column} is \code{NA_character_}.
 #'     \item \code{logreturns} \code{(*)} (\code{FALSE}):
 #'     A boolean, if \code{TRUE} the data is transformed to log-returns.
 #'     \item \code{merge} (\code{function(x) mean(x)}):
@@ -138,7 +140,8 @@ set_controls <- function(controls = NULL) {
       redundant_controls <- setdiff(names(controls), all_controls)
       if (length(redundant_controls) > 0) {
         warning(
-          "Element(s) ", paste(redundant_controls, collapse = ", "), " in 'controls' ignored."
+          "Element(s) ", paste(redundant_controls, collapse = ", "), 
+          " in 'controls' ignored.", call. = FALSE
         )
         controls[redundant_controls] <- NULL
       }
@@ -146,7 +149,8 @@ set_controls <- function(controls = NULL) {
         redundant_controls <- setdiff(names(controls[["data"]]), data_controls)
         if (length(redundant_controls) > 0) {
           warning(
-            "Element(s) ", paste(redundant_controls, collapse = ", "), " in 'controls$data' ignored."
+            "Element(s) ", paste(redundant_controls, collapse = ", "), 
+            " in 'controls$data' ignored.", call. = FALSE
           )
           controls[["data"]][redundant_controls] <- NULL
         }
@@ -155,7 +159,8 @@ set_controls <- function(controls = NULL) {
         redundant_controls <- setdiff(names(controls[["fit"]]), fit_controls)
         if (length(redundant_controls) > 0) {
           warning(
-            "Element(s) ", paste(redundant_controls, collapse = ", "), " in 'controls$fit' ignored."
+            "Element(s) ", paste(redundant_controls, collapse = ", "), 
+            " in 'controls$fit' ignored.", call. = FALSE
           )
           controls[["fit"]][redundant_controls] <- NULL
         }
@@ -183,7 +188,11 @@ set_controls <- function(controls = NULL) {
     controls[["data"]] <- NA
   } else {
     if (!"file" %in% names(controls[["data"]])) {
-      controls[["data"]][["file"]] <- if (controls[["hierarchy"]]) c(NA, NA) else NA
+      controls[["data"]][["file"]] <- if (controls[["hierarchy"]]) {
+        c(NA_character_, NA_character_) 
+      } else {
+        NA_character_
+      }
     }
     if (!"date_column" %in% names(controls[["data"]])) {
       controls[["data"]][["date_column"]] <- if (controls[["hierarchy"]]) c("Date", "Date") else "Date"
@@ -192,10 +201,10 @@ set_controls <- function(controls = NULL) {
       controls[["data"]][["data_column"]] <- if (controls[["hierarchy"]]) c("Close", "Close") else "Close"
     }
     if (!"from" %in% names(controls[["data"]])) {
-      controls[["data"]][["from"]] <- NA
+      controls[["data"]][["from"]] <- NA_character_
     }
     if (!"to" %in% names(controls[["data"]])) {
-      controls[["data"]][["to"]] <- NA
+      controls[["data"]][["to"]] <- NA_character_
     }
     if (!"logreturns" %in% names(controls[["data"]])) {
       controls[["data"]][["logreturns"]] <- if (controls[["hierarchy"]]) c(FALSE, FALSE) else FALSE
@@ -236,40 +245,45 @@ set_controls <- function(controls = NULL) {
   }
 
   ### check single controls
-  if (!is.logical(controls[["hierarchy"]])) {
-    stop("The control 'hierarchy' must be a boolean.")
+  if (!isTRUE(controls[["hierarchy"]]) && !isFALSE(controls[["hierarchy"]])) {
+    stop("The control 'hierarchy' must be a boolean.", call. = FALSE)
   }
   if (controls[["hierarchy"]]) {
     ### controls with hierarchy
     if (!(all(is_number(controls[["states"]], int = TRUE)) &&
       length(controls[["states"]]) == 2 && all(controls[["states"]] >= 2))) {
-      stop("The control 'states' must be a vector of length 2 containing integers greater or equal 2.")
+      stop("The control 'states' must be a vector of length 2 containing integers greater or equal 2.",
+           call. = FALSE)
     }
     if (!controls[["simulated"]]) {
-      controls[["horizon"]][1] <- NA
+      controls[["horizon"]][1] <- NA_integer_
     }
     if (!(length(controls[["horizon"]]) == 2 && all(is_number(controls[["horizon"]][!is.na(controls[["horizon"]])], int = TRUE, pos = TRUE)))) {
-      stop("The control 'horizon' must be an integer vector of length 2.")
+      stop("The control 'horizon' must be an integer vector of length 2.",
+           call. = FALSE)
     }
     if (!is.na(controls[["horizon"]][2])) {
       controls[["period"]] <- NA
     }
     if (!is.na(controls[["period"]])) {
       if (!controls[["period"]] %in% c("w", "m", "q", "y")) {
-        stop("The control 'period' must be eiter NA or one of 'w', 'm', 'q', 'y'.")
+        stop("The control 'period' must be eiter 'NA' or one of 'w', 'm', 'q', 'y'.",
+             call. = FALSE)
       }
     }
   } else {
     ### controls without hierarchy
     if (!(is_number(controls[["states"]], int = TRUE) &&
       length(controls[["states"]]) == 1 && all(controls[["states"]] >= 2))) {
-      stop("The control 'states' must be an integer greater or equal 2.")
+      stop("The control 'states' must be an integer greater or equal 2.",
+           call. = FALSE)
     }
     if (!controls[["simulated"]]) {
       controls[["horizon"]] <- NA
     } else {
       if (!(length(controls[["horizon"]]) == 1 && is_number(controls[["horizon"]], int = TRUE, pos = TRUE))) {
-        stop("The control 'horizon' must be an integer.")
+        stop("The control 'horizon' must be an integer.",
+             call. = FALSE)
       }
     }
     controls[["period"]] <- NA
@@ -281,7 +295,8 @@ set_controls <- function(controls = NULL) {
       stop(
         "The control 'sdds' must be a character ",
         if (controls[["hierarchy"]]) "vector ", "of length ",
-        ifelse(controls[["hierarchy"]], 2, 1), "."
+        ifelse(controls[["hierarchy"]], 2, 1), ".",
+        call. = FALSE
       )
     }
     controls[["sdds"]] <- fHMM_sdds(sdds = controls[["sdds"]])
@@ -294,44 +309,54 @@ set_controls <- function(controls = NULL) {
     if (controls[["hierarchy"]]) {
       ### controls with hierarchy
       if (!(is.character(controls[["data"]][["file"]]) && length(controls[["data"]][["file"]]) == 2)) {
-        stop("The control 'file' in 'data' must be a character vector of length two.")
+        stop("The control 'file' in 'data' must be a character vector of length two.",
+             call. = FALSE)
       }
       if (!(all(is.na(controls[["data"]][["date_column"]])) || (all(!is.na(controls[["data"]][["date_column"]])) && all(is.character(controls[["data"]][["date_column"]]))) &&
         length(controls[["data"]][["date_column"]]) == 2)) {
-        stop("The control 'date_column' in 'data' must be a vector with two characters or two NA's.")
+        stop("The control 'date_column' in 'data' must be a vector with two characters or two NA's.",
+             call. = FALSE)
       }
       if (!(all(!is.na(controls[["data"]][["data_column"]])) && is.character(controls[["data"]][["data_column"]]) && length(controls[["data"]][["data_column"]]) == 2)) {
-        stop("The control 'data_column' in 'data' must be a character vector of length two.")
+        stop("The control 'data_column' in 'data' must be a character vector of length two.",
+             call. = FALSE)
       }
       if (!(is.logical(controls[["data"]][["logreturns"]]) && length(controls[["data"]][["logreturns"]]) == 2)) {
-        stop("The control 'logreturns' in 'data' must be a boolean vector of length two.")
+        stop("The control 'logreturns' in 'data' must be a boolean vector of length two.",
+             call. = FALSE)
       }
       if (!is.function(controls[["data"]][["merge"]])) {
-        stop("The control 'merge' in 'data' must be of class 'function'.")
+        stop("The control 'merge' in 'data' must be of class 'function'.",
+             call. = FALSE)
       }
       try_merge <- try(controls[["data"]][["merge"]](-10:10), silent = TRUE)
       if (inherits(try_merge,"try-error") || !is.numeric(try_merge) || length(try_merge) != 1) {
-        stop("The controls 'merge' in 'data' must merge a numeric vector into a single numeric value.")
+        stop("The controls 'merge' in 'data' must merge a numeric vector into a single numeric value.",
+             call. = FALSE)
       }
     } else {
       ### controls without hierarchy
       if (!(is.character(controls[["data"]][["file"]])) && length(controls[["data"]][["file"]]) == 1) {
-        stop("The control 'file' in 'data' must be a character.")
+        stop("The control 'file' in 'data' must be a character.",
+             call. = FALSE)
       }
       if (!((is.character(controls[["data"]][["date_column"]]) || is.na(controls[["data"]][["date_column"]])) && length(controls[["data"]][["date_column"]]) == 1)) {
-        stop("The control 'date_column' in 'data' must be a character or NA.")
+        stop("The control 'date_column' in 'data' must be a character or NA.",
+             call. = FALSE)
       }
       if (!(is.character(controls[["data"]][["data_column"]])) && length(controls[["data"]][["data_column"]]) == 1) {
-        stop("The control 'data_column' in 'data' must be a character or NA.")
+        stop("The control 'data_column' in 'data' must be a character or NA.",
+             call. = FALSE)
       }
       if (!(is.logical(controls[["data"]][["logreturns"]])) && length(controls[["data"]][["logreturns"]]) == 1) {
-        stop("The control 'logreturns' in 'data' must be a boolean.")
+        stop("The control 'logreturns' in 'data' must be a boolean.",
+             call. = FALSE)
       }
       controls[["data"]][["merge"]] <- NA
     }
     if (all(is.na(controls[["data"]][["date_column"]]))) {
-      controls[["data"]][["from"]] <- NA
-      controls[["data"]][["to"]] <- NA
+      controls[["data"]][["from"]] <- NA_character_
+      controls[["data"]][["to"]] <- NA_character_
     }
     if (!is.na(controls[["data"]][["from"]])) {
       controls[["data"]][["from"]] <- check_date(controls[["data"]][["from"]])
@@ -343,32 +368,40 @@ set_controls <- function(controls = NULL) {
 
   ### check 'fit' controls
   if (!is_number(controls[["fit"]][["runs"]], int = TRUE, pos = TRUE)) {
-    stop("The control 'runs' in 'fit' must be an integer.")
+    stop("The control 'runs' in 'fit' must be an integer.", 
+         call. = FALSE)
   }
-  if (!is.logical(controls[["fit"]][["origin"]])) {
-    stop("The control 'origin' in 'fit' must be a boolean.")
+  if (!isTRUE(controls[["fit"]][["origin"]]) && 
+      !isFALSE(controls[["fit"]][["origin"]])) {
+    stop("The control 'origin' in 'fit' must be a boolean.",
+         call. = FALSE)
   }
   if (controls[["fit"]][["origin"]]) {
     controls[["fit"]][["runs"]] <- 1
     controls[["fit"]][["accept"]] <- 1:5
   }
   if (!all(controls[["fit"]][["accept"]] %in% 1:5)) {
-    stop("The control 'accept' in 'fit' must be vector of integers from 1 to 5.")
+    stop("The control 'accept' in 'fit' must be vector of integers from 1 to 5.",
+         call. = FALSE)
   }
   if (any(controls[["fit"]][["accept"]] == "all")) {
     controls[["fit"]][["accept"]] <- 1:5
   }
   if (!(length(controls[["fit"]][["gradtol"]]) == 1 && is_number(controls[["fit"]][["gradtol"]], pos = TRUE))) {
-    stop("The control 'gradtol' in 'fit' must be positive numeric value.")
+    stop("The control 'gradtol' in 'fit' must be positive numeric value.",
+         call. = FALSE)
   }
   if (!(length(controls[["fit"]][["iterlim"]]) == 1 && is_number(controls[["fit"]][["iterlim"]], int = TRUE, pos = TRUE))) {
-    stop("The control 'iterlim' in 'fit' must be a positive integer.")
+    stop("The control 'iterlim' in 'fit' must be a positive integer.",
+         call. = FALSE)
   }
   if (!(length(controls[["fit"]][["print.level"]]) == 1 && controls[["fit"]][["print.level"]] %in% 0:2)) {
-    stop("The control 'print.level' in 'fit' must be one of 0, 1, and 2.")
+    stop("The control 'print.level' in 'fit' must be one of 0, 1, and 2.",
+         call. = FALSE)
   }
   if (!(length(controls[["fit"]][["steptol"]]) == 1 && is_number(controls[["fit"]][["steptol"]], pos = TRUE))) {
-    stop("The control 'steptol' in 'fit' must be positive numeric value.")
+    stop("The control 'steptol' in 'fit' must be positive numeric value.",
+         call. = FALSE)
   }
 
   ### check if data paths and column names are correct
@@ -377,19 +410,25 @@ set_controls <- function(controls = NULL) {
     for (i in indices) {
       controls[["data"]][["file"]][i] <- suppressWarnings(normalizePath(controls[["data"]][["file"]][i]))
       if (!file.exists(controls[["data"]][["file"]][i])) {
-        stop("File '", controls[["data"]][["file"]][i], "' not found.")
+        stop("File '", controls[["data"]][["file"]][i], "' not found.",
+             call. = FALSE)
       }
       read_try <- try(utils::read.csv(file = controls[["data"]][["file"]][i]), silent = TRUE)
       if (inherits(read_try,"try-error")) {
-        stop("Unable to read '", controls[["data"]][["file"]][i], "'.")
+        stop("Unable to read '", controls[["data"]][["file"]][i], "'.",
+             call. = FALSE)
       }
       if (!is.na(controls[["data"]][["date_column"]][i])) {
         if (!controls[["data"]][["date_column"]][i] %in% colnames(read_try)) {
-          stop("Column '", controls[["data"]][["date_column"]][i], "' not found in '", controls[["data"]][["file"]][i], "'.")
+          stop("Column '", controls[["data"]][["date_column"]][i], "' not found in '", 
+               controls[["data"]][["file"]][i], "'.",
+               call. = FALSE)
         }
       }
       if (!controls[["data"]][["data_column"]][i] %in% colnames(read_try)) {
-        stop("Column '", controls[["data"]][["data_column"]][i], "' not found in '", controls[["data"]][["file"]][i], "'.")
+        stop("Column '", controls[["data"]][["data_column"]][i], 
+             "' not found in '", controls[["data"]][["file"]][i], "'.",
+             call. = FALSE)
       }
     }
   }

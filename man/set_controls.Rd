@@ -29,7 +29,8 @@ To fix different values of one parameter for different states, separate by
 A numeric, specifying the length of the time horizon. The first entry
 of \code{horizon} is ignored if \code{data} is specified.
 \item \code{period} (\code{"m"}):
-Only relevant if \code{hierarchy = TRUE} and \code{horizon[2] = NA}.
+Only relevant if \code{hierarchy = TRUE} and
+\code{horizon[2] = NA_integer_}.
 In this case, it specifies a flexible, periodic fine-scale time horizon
 and can be one of
 \itemize{
@@ -47,17 +48,18 @@ have a column named \code{date_column} (with dates) and
 \code{data_column} (with financial data).
 \item \code{date_column} \code{(*)} (\code{"Date"}):
 A character, the name of the column in \code{file} with dates. Can be
-\code{NA} in which case consecutive integers are used as time points.
+\code{NA_character_} in which case consecutive integers are used as time
+points.
 \item \code{data_column} \code{(*)} (\code{"Close"}):
 A character, the name of the column in \code{file} with financial data.
-\item \code{from} (\code{NA}):
+\item \code{from} (\code{NA_character_}):
 A character of the format \code{"YYYY-MM-DD"}, setting a lower data
-limit. No lower limit if \code{from = NA}. Ignored if
+limit. No lower limit if \code{from = NA_character_}. Ignored if
 \code{controls$data$date_column} is \code{NA}.
-\item \code{to} (\code{NA}):
+\item \code{to} (\code{NA_character_}):
 A character of the format \code{"YYYY-MM-DD"}, setting an upper data
-limit. No upper limit if \code{from = NA}. Ignored if
-\code{controls$data$date_column} is \code{NA}.
+limit. No upper limit if \code{from = NA_character_}. Ignored if
+\code{controls$data$date_column} is \code{NA_character_}.
 \item \code{logreturns} \code{(*)} (\code{FALSE}):
 A boolean, if \code{TRUE} the data is transformed to log-returns.
 \item \code{merge} (\code{function(x) mean(x)}):

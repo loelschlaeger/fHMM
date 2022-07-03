@@ -24,20 +24,22 @@ compute_residuals <- function(x, verbose = TRUE) {
 
   ### check input
   if (!inherits(x,"fHMM_model")) {
-    stop("'x' must be of class 'fHMM_model'.")
+    stop("'x' must be of class 'fHMM_model'.", call. = FALSE)
   }
-  if (!is.logical(verbose) || length(verbose) != 1) {
-    stop("'verbose' must be either TRUE or FALSE.")
+  if (!isTRUE(verbose) && !isFALSE(verbose)) {
+    stop("'verbose' must be either TRUE or FALSE.", call. = FALSE)
   }
   if (is.null(x$decoding)) {
-    warning("Cannot compute residuals without decoding, please call 'decode_states()' first.")
+    warning(paste(
+      "Cannot compute residuals without decoding.",
+      "Please call 'decode_states()' first."), immediate. = TRUE)
     return(x)
   }
 
   ### function that computes the residuals
   cr <- function(data, mus, sigmas, dfs, sdd_name, decoding) {
     stopifnot(length(data) == length(decoding))
-    out <- rep(NA, length(data))
+    out <- rep(NA_real_, length(data))
     for (t in seq_along(data)) {
       if (sdd_name == "t") {
         Fxt <- stats::pt(
@@ -66,7 +68,8 @@ compute_residuals <- function(x, verbose = TRUE) {
       decoding = x$decoding
     )
   } else {
-    residuals <- matrix(NA, nrow = nrow(x$data$data), ncol = ncol(x$data$data))
+    residuals <- matrix(NA_real_, nrow = nrow(x$data$data), 
+                        ncol = ncol(x$data$data))
     residuals[, 1] <- cr(
       data = x$data$data[, 1], mus = par$mus,
       sigmas = par$sigmas, dfs = par$dfs,
@@ -87,7 +90,8 @@ compute_residuals <- function(x, verbose = TRUE) {
   }
 
   ### save residuals in 'x' and return 'x'
-  if (verbose) message("Computed residuals")
+  if (verbose) 
+    message("Computed residuals")
   class(residuals) <- "fHMM_residuals"
   x$residuals <- residuals
   return(x)

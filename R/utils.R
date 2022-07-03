@@ -19,7 +19,7 @@
 
 check_date <- function(date) {
   date <- try(as.Date(date), silent = TRUE)
-  if (inherits(date,"try-error") || any(is.na(as.Date(date, format = "%Y-%m-%d")))) {
+  if (inherits(date,"try-error") || anyNA(as.Date(date, format = "%Y-%m-%d"))) {
     stop("Date not in required format 'YYYY-MM-DD'.")
   }
   return(date)
@@ -162,8 +162,8 @@ match_all <- function(x, y) {
           if (!is.na(x[i_x]) && !is.na(y[i_y])) {
             if (isTRUE(all.equal(x[i_x], y[i_y], d))) {
               matches[i_y] <- i_x
-              x[i_x] <- NA
-              y[i_y] <- NA
+              x[i_x] <- NA_integer_
+              y[i_y] <- NA_integer_
             }
           }
         }
@@ -259,7 +259,7 @@ simulate_markov_chain <- function(Gamma, T, delta = Gamma2delta(Gamma),
   }
 
   ### append NA's
-  markov_chain <- c(markov_chain, rep(NA, total_length - T))
+  markov_chain <- c(markov_chain, rep(NA_integer_, total_length - T))
 
   ### return Markov chain
   return(markov_chain)

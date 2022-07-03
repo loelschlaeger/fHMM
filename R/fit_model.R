@@ -39,7 +39,7 @@ fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE,
   if (!is_number(ncluster, int = TRUE, pos = TRUE)) {
     stop("'ncluster' must be a positive integer.")
   }
-  if (!is.logical(verbose) || length(verbose) != 1) {
+  if (!isTRUE(verbose) && !isFALSE(verbose)) {
     stop("'verbose' must be either TRUE or FALSE.")
   }
 
@@ -86,7 +86,7 @@ fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE,
     )
     pb$message("Checking start values")
   }
-  ll_at_start_values <- rep(NA, data[["controls"]][["fit"]][["runs"]])
+  ll_at_start_values <- rep(NA_real_, data[["controls"]][["fit"]][["runs"]])
   if (ncluster == 1) {
     for (run in 1:data[["controls"]][["fit"]][["runs"]]) {
       if (verbose) pb$tick(0)
@@ -117,7 +117,7 @@ fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE,
       if (!(is.na(ll) || is.nan(ll) || abs(ll) > 1e100)) {
         ll
       } else {
-        NA
+        NA_real_
       }
     }
     parallel::stopCluster(cluster)
@@ -304,7 +304,7 @@ nLL_hmm <- function(parUncon, observations, controls) {
   mus <- par[["mus"]]
   sigmas <- par[["sigmas"]]
   dfs <- par[["dfs"]]
-  allprobs <- matrix(NA, nstates, T)
+  allprobs <- matrix(NA_real_, nstates, T)
   for (i in 1:nstates) {
     if (sdd == "t") {
       allprobs[i, ] <- 1 / sigmas[i] * stats::dt(

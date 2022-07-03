@@ -34,7 +34,7 @@ than \code{length(markov_chain)}.}
 \value{
 A numeric vector of length \code{total_length}, where the first
 \code{length(markov_chain)} elements are numeric values and the last
-\code{total_length - length(markov_chain)} elements are \code{NA}.
+\code{total_length - length(markov_chain)} elements are \code{NA_real_}.
 }
 \description{
 This function simulates state-dependent observations.
