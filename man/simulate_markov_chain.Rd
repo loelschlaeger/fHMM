@@ -36,4 +36,5 @@ Gamma <- matrix(c(0.5, 0.3, 0.5, 0.7), 2, 2)
 T <- 10
 fHMM:::simulate_markov_chain(Gamma = Gamma, T = T)
 }
+\keyword{internal}
 \keyword{utils}

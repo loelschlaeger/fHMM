@@ -24,6 +24,10 @@
 #' @examples
 #' controls <- set_controls()
 #' fHMM:::fHMM_colors(controls, colors = c("red", "blue"))
+#' 
+#' @keywords 
+#' internal
+#' 
 #' @importFrom grDevices col2rgb colorRampPalette adjustcolor
 
 fHMM_colors <- function(controls, colors = NULL) {

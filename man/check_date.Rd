@@ -2,21 +2,23 @@
 % Please edit documentation in R/utils.R
 \name{check_date}
 \alias{check_date}
-\title{Check date format "YYYY-MM-DD"}
+\title{Check date format \code{"YYYY-MM-DD"}}
 \usage{
 check_date(date)
 }
 \arguments{
-\item{date}{A character, specifying a date in format "YYYY-MM-DD".}
+\item{date}{A character, specifying a date in format \code{"YYYY-MM-DD"}.}
 }
 \value{
-\code{as.Date(date)} if \code{date} has the format "YYYY-MM-DD".
+\code{as.Date(date)} if \code{date} has the format \code{"YYYY-MM-DD"}.
 Otherwise, the function throws an error.
 }
 \description{
-This function checks if the input \code{date} has the format "YYYY-MM-DD".
+This function checks if the input \code{date} has the format
+\code{"YYYY-MM-DD"}.
 }
 \examples{
 fHMM:::check_date(date = "2000-01-01")
 }
+\keyword{internal}
 \keyword{utils}

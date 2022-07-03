@@ -19,4 +19,5 @@ that fulfills the properties of a transition probability matrix.
 \examples{
 fHMM:::sample_tpm(dim = 3)
 }
+\keyword{internal}
 \keyword{utils}

@@ -19,4 +19,5 @@ This function checks if \code{x} is a tpm (transition probability matrix).
 fHMM:::is_tpm(diag(2))
 fHMM:::is_tpm(matrix(1, 2, 2))
 }
+\keyword{internal}
 \keyword{utils}

@@ -37,4 +37,5 @@ This function checks if \code{x} is a ((non)-negative) ((non-)positive)
 fHMM:::is_number(1, int = TRUE)
 fHMM:::is_number(pi, int = TRUE)
 }
+\keyword{internal}
 \keyword{utils}

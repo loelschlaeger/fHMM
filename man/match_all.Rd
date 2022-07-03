@@ -23,4 +23,5 @@ x <- c(-1, 0, 1)
 y <- c(0.1, 2, -1.2)
 fHMM:::match_all(x = x, y = y)
 }
+\keyword{internal}
 \keyword{utils}
