@@ -118,7 +118,7 @@ data_hhmm <- prepare_data(contr_hhmm)
 ###################################################
 ### code chunk number 13: example 1 dax access model
 ###################################################
-data(dax_model_3t, package = "fHMM")
+data("dax_model_3t", package = "fHMM")
 
 
 ###################################################
@@ -137,7 +137,7 @@ plot(dax_model_3t, plot_type = c("ll","sdds"))
 ###################################################
 ### code chunk number 16: example 2 sim access model
 ###################################################
-data(sim_model_2gamma, package = "fHMM")
+data("sim_model_2gamma", package = "fHMM")
 
 
 ###################################################
@@ -150,7 +150,7 @@ summary(sim_model_2gamma)
 ### code chunk number 18: hhmm-sdds
 ###################################################
 # dax_vw_model <- fit_model(data_hhmm)
-data(dax_vw_model, package = "fHMM")
+data("dax_vw_model", package = "fHMM")
 plot(dax_vw_model, plot_type = "sdds")
 
 
@@ -200,7 +200,7 @@ tseries::jarque.bera.test(res)
 ###################################################
 ### code chunk number 26: example 1 dax compare models
 ###################################################
-data(dax_model_2n, package = "fHMM")
+data("dax_model_2n", package = "fHMM")
 compare_models(dax_model_2n, dax_model_3t)
 
 
