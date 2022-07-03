@@ -1,3 +1,7 @@
+# fHMM 1.0.3
+
+* We added the following methods for an `fHMM_model` object: `AIC()`, `BIC()`, `logLik()`, `nobs()`, `npar()`, `residuals()`.
+
 # fHMM 1.0.2
 
 * Fixed bug in `reorder_states()` that did not order the fine-scale parameter sets when the coarse-scale order was changed.
