@@ -53,7 +53,8 @@ summary.fHMM_data <- function(object, ...) {
 #' @export
 
 print.summary.fHMM_data <- function(x, ...) {
-  cat("Summary of fHMM", ifelse(x$simulated, "simulated", "empirical"), "data\n")
+  cat("Summary of fHMM", ifelse(x$simulated, "simulated", "empirical"), 
+      "data\n")
   cat("* number of observations:", x$data_size, "\n")
   if (x$hierarchy) {
     cat("* fine-scale dimension:", x$fs_dim, "\n")
@@ -69,7 +70,6 @@ print.summary.fHMM_data <- function(x, ...) {
   return(invisible(x))
 }
 
-
 #' @noRd
 #' @export
 
@@ -78,11 +78,11 @@ summary.fHMM_model <- function(object, alpha = 0.05, ...) {
   ### model information
   simulated <- object$data$controls$simulated
   hierarchy <- object$data$controls$hierarchy
-  no_par <- length(object$estimate)
-  data_size <- length(as.vector(object$data$data))
-  ll <- object$ll
-  aic <- -2 * ll + 2 * no_par
-  bic <- -2 * ll + no_par * log(data_size)
+  no_par <- npar(object)
+  data_size <- nobs(object)
+  ll <- logLik(object)
+  aic <- AIC(object)
+  bic <- BIC(object)
   model_info <- data.frame(
     simulated, hierarchy,
     "LL" = ll, "AIC" = aic, "BIC" = bic
@@ -196,7 +196,7 @@ print.summary.fHMM_model <- function(x, digits = 4, ...) {
 #' @inheritParams compute_ci
 #'
 #' @return
-#' A data frame.
+#' A \code{data.frame}.
 #'
 #' @export
 
@@ -211,4 +211,214 @@ coef.fHMM_model <- function(object, alpha = 0.05, ...) {
     controls = object$data$controls, expected_length = nrow(estimates_table)
   )
   return(estimates_table)
+}
+
+#' Akaike's Information Criterion
+#'
+#' @description
+#' This function calculates Akaike's Information Criterion (AIC) for an
+#' \code{fHMM_model} object.
+#'
+#' @details
+#' The AIC is computed as
+#' \deqn{-2 \cdot \text{LL} + k \cdot \text{npar},}
+#' where \eqn{\text{LL}} is the model's log-likelihood value at the estimated
+#' parameters, \eqn{k} is the penalty per parameter (\eqn{k = 2} for the
+#' classical AIC), and \eqn{npar} is the number of parameters in the fitted 
+#' model.
+#' The AIC quantifies the trade-off between over- and under-fitting, where
+#' smaller values are preferred.
+#'
+#' @param object
+#' An object of class \code{fHMM_model}.
+#'
+#' @param ...
+#' Optionally more objects of class \code{fHMM_model}.
+#'
+#' @param k
+#' A numeric, the penalty per parameter. The default is \code{k = 2} for the
+#' classical AIC.
+#'
+#' @return
+#' Either a numeric value (if just one object is provided) or a numeric vector.
+#'
+#' @examples
+#' data("dax_model_3t", package = "fHMM")
+#' AIC(dax_model_3t)
+#'
+#' @export
+
+AIC <- function(object, ..., k) {
+  UseMethod("AIC")
+}
+
+#' @export
+#' @rdname AIC
+
+AIC.fHMM_model <- function(object, ..., k = 2) {
+  models <- list(...)
+  if(length(models) == 0){
+    models <- list(object)
+  } else {
+    models <- c(list(object), models)
+  }
+  ll <- sapply(models, logLik.fHMM_model)
+  npar <- sapply(models, npar)
+  aic <- mapply(function(ll, npar) -2 * ll + 2 * npar, ll, npar)
+  return(aic)
+}
+
+#' Bayesian Information Criterion
+#'
+#' @description
+#' This function calculates the Bayesian Information Criterion (BIC) or
+#' Schwarz Information Criterion for an \code{fHMM_model} object.
+#'
+#' @details
+#' The BIC is computed as
+#' \deqn{-2 \cdot \text{LL} + \text{npar} \cdot \ln{\text{nobs}},}
+#' where \eqn{\text{LL}} is the model's log-likelihood value at the estimated
+#' parameters, \eqn{npar} is the number of parameters in the fitted model,
+#' and \eqn{\text{nobs}} is the number of data points. The BIC quantifies the
+#' trade-off between over- and under-fitting, where smaller values are 
+#' preferred.
+#'
+#' @param object
+#' An object of class \code{fHMM_model}.
+#'
+#' @param ...
+#' Optionally more objects of class \code{fHMM_model}.
+#'
+#' @return
+#' Either a numeric value (if just one object is provided) or a numeric vector.
+#'
+#' @examples
+#' data("dax_model_3t", package = "fHMM")
+#' BIC(dax_model_3t)
+#'
+#' @export
+
+BIC <- function(object, ...) {
+  UseMethod("BIC")
+}
+
+#' @export
+#' @rdname BIC
+
+BIC.fHMM_model <- function(object, ...) {
+  models <- list(...)
+  if(length(models) == 0){
+    models <- list(object)
+  } else {
+    models <- c(list(object), models)
+  }
+  ll <- sapply(models, logLik)
+  npar <- sapply(models, npar)
+  nobs <- sapply(models, nobs)
+  bic <- mapply(function(ll, npar, nobs) -2 * ll + npar * log(nobs), ll, npar, 
+                nobs)
+  return(bic)
+}
+
+#' Number of observations
+#'
+#' @description
+#' This function extracts the number of observations from an \code{fHMM_model}
+#' object.
+#'
+#' @param object
+#' An object of class \code{fHMM_model}.
+#'
+#' @param ...
+#' Ignored.
+#'
+#' @return
+#' An integer.
+#'
+#' @examples
+#' data("dax_model_3t", package = "fHMM")
+#' nobs(dax_model_3t)
+#'
+#' @export
+
+nobs <- function(object, ...) {
+  UseMethod("nobs")
+}
+
+#' @export
+#' @rdname nobs
+
+nobs.fHMM_model <- function(object, ...) {
+  return(length(as.vector(object$data$data)))
+}
+
+#' Log-likelihood value
+#'
+#' @description
+#' This function computes the log-likelihood value of an \code{fHMM_model}
+#' object.
+#'
+#' @param object
+#' An object of class \code{fHMM_model}.
+#' @param ...
+#' Ignored.
+#'
+#' @return
+#' A numeric.
+#'
+#' @export
+#'
+#' @examples
+#' data("dax_model_3t", package = "fHMM")
+#' logLik(dax_model_3t)
+
+logLik <- function(object, ...) {
+  UseMethod("logLik")
+}
+
+#' @export
+#' @rdname logLik
+
+logLik.fHMM_model <- function(object, ...) {
+  return(object$ll)
+}
+
+#' Number of model parameters
+#'
+#' @description
+#' This function extracts the number of model parameters of an \code{fHMM_model}
+#' object.
+#'
+#' @param object
+#' An object of class \code{fHMM_model}.
+#'
+#' @param ...
+#' Optionally more objects of class \code{fHMM_model}.
+#'
+#' @return
+#' Either a numeric value (if just one object is provided) or a numeric vector.
+#'
+#' @examples
+#' data("dax_model_3t", package = "fHMM")
+#' data("dax_model_2n", package = "fHMM")
+#' npar(dax_model_3t, dax_model_2n)
+#'
+#' @export
+
+npar <- function(object, ...) {
+  UseMethod("npar")
+}
+
+#' @export
+#' @rdname npar
+
+npar.fHMM_model <- function(object, ...) {
+  models <- list(...)
+  if(length(models) == 0){
+    models <- list(object)
+  } else {
+    models <- c(list(object), models)
+  }
+  npar <- sapply(models, function(x) length(x$estimate))
+  return(npar)
 }

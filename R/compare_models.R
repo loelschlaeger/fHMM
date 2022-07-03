@@ -31,7 +31,8 @@ compare_models <- function(...) {
   ### check if models are of class "fHMM_model"
   for (i in seq_len(length(models))) {
     if (!inherits(models[[i]],"fHMM_model")) {
-      stop(paste0("Model '", model_names[i], "' is not of class 'fHMM_model'."))
+      stop(paste0("Model '", model_names[i], "' is not of class 'fHMM_model'.",
+                  call. = FALSE))
     }
   }
 
@@ -41,7 +42,8 @@ compare_models <- function(...) {
     for (j in 1:i) {
       data_j <- as.numeric(unlist(models[[j]]$data$data))
       if (!identical(data_i, data_j)) {
-        warning(paste0("Models '", model_names[i], "' and '", model_names[j], "' are not estimated on the same data, be cautious comparing them."))
+        warning(paste0("Models '", model_names[i], "' and '", model_names[j], 
+                       "' are not estimated on the same data, be cautious comparing them."))
       }
     }
   }

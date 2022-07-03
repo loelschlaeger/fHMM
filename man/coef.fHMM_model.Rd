@@ -15,7 +15,7 @@ Per default, \code{alpha = 0.05}, which computes a 95\% confidence interval.}
 \item{...}{Ignored.}
 }
 \value{
-A data frame.
+A \code{data.frame}.
 }
 \description{
 This function returns the estimated model coefficients and an \code{alpha}
