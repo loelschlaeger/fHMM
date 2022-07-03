@@ -220,7 +220,8 @@ A list of controls. Either none, all, or selected parameters can be specified. U
 </li>
 <li>
 <p>
-<code>sdds</code> <code>(*)</code> (<code>“t(df = Inf)”</code>): Specifying the state-dependent distribution, one of the <code>“t”</code> (the t-distribution) or <code>“gamma”</code> (the gamma distribution). To fix one or more parameter values, write e.g. <code>“t(df = Inf)”</code> or <code>“gamma(mu = 0, sigma = 1)”</code>, respectively. To fix different values of one parameter for different states, separate by “|”, e.g. <code>“t(mu = -1|1)”</code>.
+<code>sdds</code> <code>(*)</code> (<code>“t(df = Inf)”</code>): Specifying the state-dependent distribution, one of <code>“t”</code>, or <code>“gamma”</code> (the gamma distribution), or <code>“lnorm”</code> (the log-normal distribution). You can fix the parameters (mean <code>mu</code>, standard deviation<br>
+codesigma, degrees of freedom <code>df</code>) of these distributions, e.g. <code>“t(df = Inf)”</code> or <code>“gamma(mu = 0, sigma = 1)”</code>, respectively. To fix different values of one parameter for different states, separate by “|”, e.g. <code>“t(mu = -1|1)”</code>.
 </p>
 </li>
 <li>
