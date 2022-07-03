@@ -195,8 +195,10 @@ read_data <- function(controls) {
       time_points <- matrix(NA_real_, nrow = T, ncol = max(T_star) + 1)
       time_points[, 1] <- utils::head(c(1, cumsum(T_star) + 1), -1)
       for (t in seq_len(T)) {
-        time_points[t, -1] <- c(time_points[t, 1] - 1 + (1:T_star[t]), 
-                                rep(NA_real_, max(T_star) - T_star[t]))
+        time_points[t, -1] <- c(
+          time_points[t, 1] - 1 + (1:T_star[t]),
+          rep(NA_real_, max(T_star) - T_star[t])
+        )
       }
     } else {
       time_points <- 1:length(data)
