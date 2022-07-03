@@ -9,14 +9,11 @@
 #'
 #' @return
 #' A list of length \code{length(sdds)}. Each element is a list, containing
-#' \itemize{
-#'   \item the \code{"name"} of the distribution
-#'   \item and a list \code{"pars"} of its parameters.
-#' }
-#' Unknown parameters are set to \code{NULL}.
+#' the \code{"name"} of the distribution and a list \code{"pars"} of its 
+#' parameters. Unknown parameters are set to \code{NULL}.
 #'
 #' @examples
-#' sdds <- c("t(sigma = 0.1, df = Inf)", "gamma")
+#' sdds <- c("t(sigma = 0.1, df = Inf)", "gamma", "lnorm(mu = 1)")
 #' fHMM:::fHMM_sdds(sdds)
 #' 
 #' @keywords 
@@ -28,8 +25,10 @@ fHMM_sdds <- function(sdds) {
     sdd_tws <- gsub(" ", "", sdd)
     sdd_tws_split <- unlist(strsplit(sdd_tws, split = "[()]"))
     distr <- sdd_tws_split[1]
-    if (!distr %in% c("t", "gamma")) {
-      stop("'distr' must be one of 't' or 'gamma'.")
+    if (!distr %in% c("t", "gamma", "lnorm")) {
+      stop(paste(
+        "Currently, only the t- ('t'), Gamma- ('gamma'), and log-normal",
+        "('lnorm') distribution are implemented."), call. = FALSE)
     }
     if (is.na(sdd_tws_split[2])) {
       pars <- NULL
@@ -47,21 +46,21 @@ fHMM_sdds <- function(sdds) {
       function(x) as.numeric(unlist(strsplit(x[2], split = "|", fixed = TRUE)))
     )
     names(pars) <- names
-    if (distr == "t") {
+    if (distr %in% c("t","lnorm")) {
       pars[!names(pars) %in% c("mu", "sigma", "df")] <- NULL
     }
     if (distr == "gamma") {
       pars[!names(pars) %in% c("mu", "sigma", "df")] <- NULL
     }
     if (!is.null(pars$mu)) {
-      if (distr == "t") {
+      if (distr %in% c("t","lnorm")) {
         if (!any(is_number(pars$mu))) {
-          stop("'mu' must be a numeric.")
+          stop("'mu' must be a numeric.", call. = FALSE)
         }
       }
       if (distr == "gamma") {
         if (!any(is_number(pars$mu, pos = TRUE))) {
-          stop("'mu' must be a positive numeric.")
+          stop("'mu' must be a positive numeric.", call. = FALSE)
         }
       }
     } else {
@@ -69,14 +68,14 @@ fHMM_sdds <- function(sdds) {
     }
     if (!is.null(pars$sigma)) {
       if (!any(is_number(pars$sigma, pos = TRUE))) {
-        stop("'sigma' must be a positive numeric.")
+        stop("'sigma' must be a positive numeric.", call. = FALSE)
       }
     } else {
       pars$sigma <- NULL
     }
     if (!is.null(pars$df)) {
       if (!any(is_number(pars$df, pos = TRUE))) {
-        stop("'df' must be a positive numeric.")
+        stop("'df' must be a positive numeric.", call. = FALSE)
       }
     } else if (distr == "t") {
       pars$df <- NULL

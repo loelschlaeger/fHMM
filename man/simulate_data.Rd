@@ -19,7 +19,8 @@ A list containing the following elements:
 \item the matrix of \code{time_points},
 \item the matrix of the simulated \code{markov_chain},
 \item the matrix of the simulated \code{data},
-\item the vector of fine-scale chunk sizes \code{T_star} if \code{controls$hierarchy = TRUE}.
+\item the vector of fine-scale chunk sizes \code{T_star} if
+\code{controls$hierarchy = TRUE}.
 }
 }
 \description{

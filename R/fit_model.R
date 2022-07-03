@@ -319,6 +319,13 @@ nLL_hmm <- function(parUncon, observations, controls) {
         scale = sigmas[i]^2 / mus[i]
       )
     }
+    if (sdd == "lnorm") {
+      allprobs[i, ] <- stats::dlnorm(
+        x = observations,
+        meanlog = mus[i],
+        sdlog = sigmas[i]
+      )
+    }
   }
   return(-LL_HMM_Rcpp(allprobs, Gamma, delta, nstates, T))
 }
@@ -367,12 +374,19 @@ nLL_hhmm <- function(parUncon, observations, controls) {
   class(controls_split) <- "fHMM_controls"
   for (m in seq_len(M)) {
     if (controls[["sdds"]][[1]]$name == "t") {
-      allprobs[m, ] <- 1 / sigmas[m] * stats::dt((observations_cs - mus[m]) / sigmas[m], dfs[m])
+      allprobs[m, ] <- 1 / sigmas[m] * stats::dt((observations_cs - mus[m]) / 
+                                                   sigmas[m], dfs[m])
     }
     if (controls[["sdds"]][[1]]$name == "gamma") {
       allprobs[m, ] <- stats::dgamma(observations_cs,
         shape = mus[m]^2 / sigmas[m]^2,
         scale = sigmas[m]^2 / mus[m]
+      )
+    }
+    if (controls[["sdds"]][[1]]$name == "lnorm") {
+      allprobs[m, ] <- stats::dlnorm(observations_cs,
+        meanlog = mus[m],
+        sdlog = sigmas[m]
       )
     }
     par_m <- list(

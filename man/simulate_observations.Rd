@@ -17,8 +17,8 @@ simulate_observations(
 \arguments{
 \item{markov_chain}{A numeric vector of states of a Markov chain.}
 
-\item{sdd}{The name of the state-dependent distribution, one of \code{"t"} and
-\code{"gamma"}.}
+\item{sdd}{The name of the state-dependent distribution, one of \code{"t"},
+\code{"gamma"}, and \code{"lnorm"}.}
 
 \item{mus}{A vector of expected values.}
 

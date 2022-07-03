@@ -280,10 +280,10 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
   density <- function(name, x, sigma, mu, df) {
     if (name == "t") {
       (1 / sigma) * stats::dt(x = (x - mu) / sigma, df = df)
+    } else if (name == "lnorm") {
+      stats::dlnorm(x = x, meanlog = mu, sdlog = sigma)
     } else if (name == "gamma") {
       stats::dgamma(x = x, shape = mu^2 / sigma^2, scale = sigma^2 / mu)
-    } else {
-      stop()
     }
   }
 

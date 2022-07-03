@@ -32,7 +32,7 @@ compute_residuals <- function(x, verbose = TRUE) {
   if (is.null(x$decoding)) {
     warning(paste(
       "Cannot compute residuals without decoding.",
-      "Please call 'decode_states()' first."), immediate. = TRUE)
+      "Please call 'decode_states()' first."), immediate. = TRUE, call. = FALSE)
     return(x)
   }
 
@@ -52,6 +52,13 @@ compute_residuals <- function(x, verbose = TRUE) {
           q = data[t],
           shape = mus[decoding[t]]^2 / sigmas[decoding[t]]^2,
           scale = sigmas[decoding[t]]^2 / mus[decoding[t]]
+        )
+      }
+      if (sdd_name == "lnorm") {
+        Fxt <- stats::plnorm(
+          q = data[t],
+          meanlog = mus[decoding[t]],
+          sdlog = sigmas[decoding[t]]
         )
       }
       out[t] <- stats::qnorm(Fxt)

@@ -12,17 +12,14 @@ fHMM_sdds(sdds)
 }
 \value{
 A list of length \code{length(sdds)}. Each element is a list, containing
-\itemize{
-\item the \code{"name"} of the distribution
-\item and a list \code{"pars"} of its parameters.
-}
-Unknown parameters are set to \code{NULL}.
+the \code{"name"} of the distribution and a list \code{"pars"} of its
+parameters. Unknown parameters are set to \code{NULL}.
 }
 \description{
 This function defines state-dependent distributions for the {fHMM} package.
 }
 \examples{
-sdds <- c("t(sigma = 0.1, df = Inf)", "gamma")
+sdds <- c("t(sigma = 0.1, df = Inf)", "gamma", "lnorm(mu = 1)")
 fHMM:::fHMM_sdds(sdds)
 
 }

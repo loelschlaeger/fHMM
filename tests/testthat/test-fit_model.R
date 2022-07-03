@@ -29,3 +29,17 @@ test_that("HHMM fitting works", {
   model <- fit_model(data, ncluster = 1, seed = seed, verbose = FALSE)
   expect_snapshot(model)
 })
+
+test_that("log-normal sdds works", {
+  seed <- 1
+  controls <- list(
+    states  = 2,
+    sdds    = "lnorm(mu = 1|3)",
+    horizon = 1000,
+    fit     = list("runs" = 100)
+  )
+  controls <- set_controls(controls)
+  data <- prepare_data(controls, seed = seed)
+  model <- fit_model(data, ncluster = 1, seed = seed, verbose = FALSE)
+  expect_snapshot(model)
+})

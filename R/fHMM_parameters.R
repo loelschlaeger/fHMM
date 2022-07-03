@@ -63,10 +63,11 @@ fHMM_parameters <- function(controls,
 
   ### check 'controls' and 'scale_par'
   if (!inherits(controls, "fHMM_controls")) {
-    stop("'controls' is not of class 'fHMM_controls'.")
+    stop("'controls' is not of class 'fHMM_controls'.", call. = FALSE)
   }
   if (!(length(scale_par) == 2 && all(is_number(scale_par, pos = TRUE)))) {
-    stop("'scale_par' must be a positive numeric vector of length 2.")
+    stop("'scale_par' must be a positive numeric vector of length 2.",
+         call. = FALSE)
   }
 
   ### extract number of states
@@ -78,7 +79,7 @@ fHMM_parameters <- function(controls,
     Gamma <- sample_tpm(M)
   }
   if (is.null(mus)) {
-    if (controls[["sdds"]][[1]]$name == "t") {
+    if (controls[["sdds"]][[1]]$name %in% c("t","lnorm")) {
       mus <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), -1, 1) * scale_par[1]
     }
     if (controls[["sdds"]][[1]]$name == "gamma") {
@@ -105,7 +106,7 @@ fHMM_parameters <- function(controls,
     if (is.null(mus_star)) {
       mus_star <- list()
       for (i in 1:M) {
-        if (controls[["sdds"]][[2]]$name == "t") {
+        if (controls[["sdds"]][[2]]$name %in% c("t","lnorm")) {
           mus_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), -1, 1) * scale_par[2]
         }
         if (controls[["sdds"]][[2]]$name == "gamma") {
@@ -161,7 +162,7 @@ fHMM_parameters <- function(controls,
   if (!is_tpm(Gamma) || nrow(Gamma) != M) {
     stop("'Gamma' must be a tpm of dimension 'controls$states[1]'.")
   }
-  if (controls[["sdds"]][[1]]$name == "t") {
+  if (controls[["sdds"]][[1]]$name %in% c("t","lnorm")) {
     if (!all(is_number(mus)) || length(mus) != M) {
       stop("'mus' must be a numeric vector of length 'controls$states[1]'.")
     }
@@ -192,7 +193,7 @@ fHMM_parameters <- function(controls,
       stop("'mus_star' must be a list of length 'controls$states[1]'.")
     }
     for (i in 1:M) {
-      if (controls[["sdds"]][[2]]$name == "t") {
+      if (controls[["sdds"]][[2]]$name %in% c("t","lnorm")) {
         if (!all(is_number(mus_star[[i]])) || length(mus_star[[i]]) != N) {
           stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.")
         }
@@ -746,7 +747,6 @@ Gamma2delta <- function(Gamma) {
   delta_try <- try(solve(t(diag(dim) - Gamma + 1), rep(1, dim)), silent = TRUE)
   if (inherits(delta_try, "try-error")) {
     delta <- rep(1 / dim, dim)
-    warning("F.1")
   } else {
     delta <- delta_try
   }

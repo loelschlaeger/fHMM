@@ -19,9 +19,11 @@ A boolean, set to \code{TRUE} for an hierarchical HMM.
 \item \code{states} \code{(*)} (\code{2}):
 The number of states of the underlying Markov chain.
 \item \code{sdds} \code{(*)} (\code{"t(df = Inf)"}):
-Specifying the state-dependent distribution, one of the \code{"t"} (the
-t-distribution) or \code{"gamma"} (the gamma distribution).
-To fix one or more parameter values, write e.g.
+Specifying the state-dependent distribution, one of \code{"t"}, or
+\code{"gamma"} (the gamma distribution), or \code{"lnorm"} (the log-normal
+distribution).
+You can fix the parameters (mean \code{mu}, standard deviation \
+code{sigma}, degrees of freedom \code{df}) of these distributions, e.g.
 \code{"t(df = Inf)"} or \code{"gamma(mu = 0, sigma = 1)"}, respectively.
 To fix different values of one parameter for different states, separate by
 "|", e.g. \code{"t(mu = -1|1)"}.

@@ -12,7 +12,7 @@ download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date(),
 seed <- 1
 controls = list(
   states  = 2,
-  sdds    = "gamma",
+  sdds    = "lnorm(mu = 0|3)",
   horizon = 1000,
   fit     = list("runs" = 100)
 )

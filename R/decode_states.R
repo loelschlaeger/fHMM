@@ -51,6 +51,10 @@ decode_states <- function(x, verbose = TRUE) {
           scale = sigmas[n]^2 / mus[n]
         )
       }
+      if (sdd == "lnorm") {
+        allprobs[n, ] <- stats::dlnorm(observations, meanlog = mus[n], 
+                                       sdlog = sigmas[n])                            
+      }
     }
     xi <- matrix(0, nstates, T)
     for (n in seq_len(nstates)) {

@@ -38,7 +38,7 @@ prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
 
   ### check inputs
   if (!inherits(controls,"fHMM_controls")) {
-    stop("'controls' is not of class 'fHMM_controls'.")
+    stop("'controls' is not of class 'fHMM_controls'.", call. = FALSE)
   }
 
   ### process data
@@ -47,9 +47,11 @@ prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
       true_parameters <- fHMM_parameters(controls, seed = seed)
     }
     if (!inherits(true_parameters,"fHMM_parameters")) {
-      stop("'true_parameters' is not of class 'fHMM_parameters'.")
+      stop("'true_parameters' is not of class 'fHMM_parameters'.", 
+           call. = FALSE)
     }
-    data <- simulate_data(controls = controls, true_parameters = true_parameters, seed = seed)
+    data <- simulate_data(controls = controls, 
+                          true_parameters = true_parameters, seed = seed)
   } else {
     data <- read_data(controls)
   }

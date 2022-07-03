@@ -78,6 +78,14 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
         })
       }
     }
+    if (sdds[[1]]$name == "lnorm") {
+      for (i in 1:ahead) {
+        data_prediction[i, ] <- sapply(props, function(x) {
+          state_prediction[i, ] %*%
+            stats::qlnorm(p = x, meanlog = par$mus, sdlog = par$sigmas)
+        })
+      }
+    }
     if (sdds[[1]]$name == "gamma") {
       for (i in 1:ahead) {
         data_prediction[i, ] <- sapply(props, function(x) {
@@ -94,7 +102,17 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
       for (i in 1:ahead) {
         data_prediction[i, ] <- sapply(props, function(x) {
           state_prediction[i, -(1:M)] %*%
-            (stats::qt(p = x, df = unlist(par$dfs_star)) * unlist(par$sigmas_star) + unlist(par$mus_star))
+            (stats::qt(p = x, df = unlist(par$dfs_star)) * 
+               unlist(par$sigmas_star) + unlist(par$mus_star))
+        })
+      }
+    }
+    if (sdds[[2]]$name == "lnorm") {
+      for (i in 1:ahead) {
+        data_prediction[i, ] <- sapply(props, function(x) {
+          state_prediction[i, -(1:M)] %*%
+            stats::qlnorm(p = x, meanlog = pars$mus_star, 
+                          sdlog = pars$sigmas_star)
         })
       }
     }
