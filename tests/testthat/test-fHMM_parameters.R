@@ -117,5 +117,4 @@ test_that("Gamma transformations work", {
   expect_equal(gammasUncon, gammasCon2gammasUncon(Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim = dim)), dim = dim))
   delta <- Gamma2delta(Gamma)
   expect_equal(delta, as.numeric(delta %*% Gamma))
-  expect_warning(Gamma2delta(diag(3)))
 })
