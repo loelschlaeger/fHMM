@@ -119,7 +119,7 @@ data_hhmm <- prepare_data(contr_hhmm)
 ### code chunk number 12: example 1 dax fit model 
 ###################################################
 if(refit) {
-  dax_model_3t <- fit_model(data_dax, seed = 1)
+  dax_model_3t <- fit_model(data_dax, seed = 42)
 }
 
 
