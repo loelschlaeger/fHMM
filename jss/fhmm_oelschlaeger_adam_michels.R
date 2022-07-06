@@ -193,8 +193,7 @@ plot(dax_model_3t, plot_type = "pr")
 ###################################################
 ### code chunk number 25: example 1 dax jb test
 ###################################################
-res <- dax_model_3t$residuals
-tseries::jarque.bera.test(res)
+tseries::jarque.bera.test(residuals(dax_model_3t))
 
 
 ###################################################
