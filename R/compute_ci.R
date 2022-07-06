@@ -39,7 +39,13 @@ compute_ci <- function(x, alpha = 0.05) {
   }
 
   ### compute confidence intervals using the inverse Hessian approach
-  x$hessian[!is.finite(x$hessian)] <- 0
+  if(any(!is.finite(x$hessian))) {
+    x$hessian[!is.finite(x$hessian)] <- 0
+    warning(paste(
+      "The Hessian matrix contains non-finite values.",
+      "For confidence interval computation, they were replaced by zeros."),
+      immediate. = TRUE, call. = FALSE)
+  }
   inv_fisher <- MASS::ginv(x$hessian)
   sds <- suppressWarnings(sqrt(diag(inv_fisher)))
   z_alpha <- stats::qnorm(p = 1 - alpha / 2)
