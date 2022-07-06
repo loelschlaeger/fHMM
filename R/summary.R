@@ -213,47 +213,8 @@ coef.fHMM_model <- function(object, alpha = 0.05, ...) {
   return(estimates_table)
 }
 
-#' Akaike's Information Criterion
-#'
-#' @description
-#' This function calculates Akaike's Information Criterion (AIC) for an
-#' \code{fHMM_model} object.
-#'
-#' @details
-#' The AIC is computed as
-#' \deqn{-2 \cdot \text{LL} + k \cdot \text{npar},}
-#' where \eqn{\text{LL}} is the model's log-likelihood value at the estimated
-#' parameters, \eqn{k} is the penalty per parameter (\eqn{k = 2} for the
-#' classical AIC), and \eqn{npar} is the number of parameters in the fitted 
-#' model.
-#' The AIC quantifies the trade-off between over- and under-fitting, where
-#' smaller values are preferred.
-#'
-#' @param object
-#' An object of class \code{fHMM_model}.
-#'
-#' @param ...
-#' Optionally more objects of class \code{fHMM_model}.
-#'
-#' @param k
-#' A numeric, the penalty per parameter. The default is \code{k = 2} for the
-#' classical AIC.
-#'
-#' @return
-#' Either a numeric value (if just one object is provided) or a numeric vector.
-#'
-#' @examples
-#' data("dax_model_3t", package = "fHMM")
-#' AIC(dax_model_3t)
-#'
-#' @export
-
-AIC <- function(object, ..., k) {
-  UseMethod("AIC")
-}
-
-#' @export
-#' @rdname AIC
+#' @exportS3Method 
+#' @importFrom stats AIC
 
 AIC.fHMM_model <- function(object, ..., k = 2) {
   models <- list(...)
@@ -268,42 +229,8 @@ AIC.fHMM_model <- function(object, ..., k = 2) {
   return(aic)
 }
 
-#' Bayesian Information Criterion
-#'
-#' @description
-#' This function calculates the Bayesian Information Criterion (BIC) or
-#' Schwarz Information Criterion for an \code{fHMM_model} object.
-#'
-#' @details
-#' The BIC is computed as
-#' \deqn{-2 \cdot \text{LL} + \text{npar} \cdot \ln{\text{nobs}},}
-#' where \eqn{\text{LL}} is the model's log-likelihood value at the estimated
-#' parameters, \eqn{npar} is the number of parameters in the fitted model,
-#' and \eqn{\text{nobs}} is the number of data points. The BIC quantifies the
-#' trade-off between over- and under-fitting, where smaller values are 
-#' preferred.
-#'
-#' @param object
-#' An object of class \code{fHMM_model}.
-#'
-#' @param ...
-#' Optionally more objects of class \code{fHMM_model}.
-#'
-#' @return
-#' Either a numeric value (if just one object is provided) or a numeric vector.
-#'
-#' @examples
-#' data("dax_model_3t", package = "fHMM")
-#' BIC(dax_model_3t)
-#'
-#' @export
-
-BIC <- function(object, ...) {
-  UseMethod("BIC")
-}
-
-#' @export
-#' @rdname BIC
+#' @exportS3Method 
+#' @importFrom stats BIC
 
 BIC.fHMM_model <- function(object, ...) {
   models <- list(...)
@@ -320,64 +247,15 @@ BIC.fHMM_model <- function(object, ...) {
   return(bic)
 }
 
-#' Number of observations
-#'
-#' @description
-#' This function extracts the number of observations from an \code{fHMM_model}
-#' object.
-#'
-#' @param object
-#' An object of class \code{fHMM_model}.
-#'
-#' @param ...
-#' Ignored.
-#'
-#' @return
-#' An integer.
-#'
-#' @examples
-#' data("dax_model_3t", package = "fHMM")
-#' nobs(dax_model_3t)
-#'
-#' @export
-
-nobs <- function(object, ...) {
-  UseMethod("nobs")
-}
-
-#' @export
-#' @rdname nobs
+#' @exportS3Method 
+#' @importFrom stats nobs
 
 nobs.fHMM_model <- function(object, ...) {
   return(length(as.vector(object$data$data)))
 }
 
-#' Log-likelihood value
-#'
-#' @description
-#' This function computes the log-likelihood value of an \code{fHMM_model}
-#' object.
-#'
-#' @param object
-#' An object of class \code{fHMM_model}.
-#' @param ...
-#' Ignored.
-#'
-#' @return
-#' A numeric.
-#'
-#' @export
-#'
-#' @examples
-#' data("dax_model_3t", package = "fHMM")
-#' logLik(dax_model_3t)
-
-logLik <- function(object, ...) {
-  UseMethod("logLik")
-}
-
-#' @export
-#' @rdname logLik
+#' @exportS3Method 
+#' @importFrom stats logLik
 
 logLik.fHMM_model <- function(object, ...) {
   return(object$ll)

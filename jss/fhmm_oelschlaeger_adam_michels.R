@@ -1,5 +1,11 @@
 ### R code from vignette source 'fhmm_oelschlaeger_adam_michels.Rnw'
 
+
+### Set this flag to 'TRUE' to refit everything, or to 'FALSE' to re-use
+### already available results of long computations.
+refit <- FALSE
+
+
 ###################################################
 ### code chunk number 1: preliminaries
 ###################################################
@@ -13,7 +19,7 @@ library("fHMM")
 contr_dax <- list(
   states = 3,
   sdds   = "t",
-  data   = list(file        = "dax.csv",
+  data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
                 date_column = "Date",
                 data_column = "Close",
                 logreturns  = TRUE)
@@ -61,9 +67,9 @@ contr_hhmm <- set_controls(contr_hhmm)
 
 
 ###################################################
-### code chunk number 6: download dax example (eval = FALSE)
+### code chunk number 6: download dax example
 ###################################################
-## download_data(symbol = "^GDAXI", from = "2001-01-01", to = Sys.Date())
+download_data(symbol = "^GDAXI", from = "2001-01-01", to = Sys.Date())
 
 
 ###################################################
@@ -110,9 +116,11 @@ data_hhmm <- prepare_data(contr_hhmm)
 
 
 ###################################################
-### code chunk number 12: example 1 dax fit model (eval = FALSE)
+### code chunk number 12: example 1 dax fit model 
 ###################################################
-## dax_model_3t <- fit_model(data_dax)
+if(refit) {
+  dax_model_3t <- fit_model(data_dax)
+}
 
 
 ###################################################
@@ -149,7 +157,9 @@ summary(sim_model_2gamma)
 ###################################################
 ### code chunk number 18: hhmm-sdds
 ###################################################
-# dax_vw_model <- fit_model(data_hhmm)
+if(refit) {
+  dax_vw_model <- fit_model(data_hhmm)
+}
 data("dax_vw_model", package = "fHMM")
 plot(dax_vw_model, plot_type = "sdds")
 
@@ -193,8 +203,7 @@ plot(dax_model_3t, plot_type = "pr")
 ###################################################
 ### code chunk number 25: example 1 dax jb test
 ###################################################
-res <- dax_model_3t$residuals
-tseries::jarque.bera.test(res)
+tseries::jarque.bera.test(residuals(dax_model_3t))
 
 
 ###################################################
