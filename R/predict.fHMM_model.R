@@ -111,8 +111,8 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
       for (i in 1:ahead) {
         data_prediction[i, ] <- sapply(props, function(x) {
           state_prediction[i, -(1:M)] %*%
-            stats::qlnorm(p = x, meanlog = pars$mus_star, 
-                          sdlog = pars$sigmas_star)
+            stats::qlnorm(p = x, meanlog = par$mus_star, 
+                          sdlog = par$sigmas_star)
         })
       }
     }

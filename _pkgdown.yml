@@ -37,6 +37,7 @@ reference:
   desc: Use these functions to evaluate a fitted model.
   contents:
   - coef.fHMM_model
+  - npar
   - compare_models
   - compute_residuals
   - plot.fHMM_model
