@@ -145,7 +145,11 @@ plot(dax_model_3t, plot_type = c("ll","sdds"))
 ###################################################
 ### code chunk number 16: example 2 sim access model
 ###################################################
-data("sim_model_2gamma", package = "fHMM")
+if(refit) {
+  sim_model_2gamma <- fit_model(data_sim, seed = 1, verbose = FALSE)
+} else {
+  data("sim_model_2gamma", package = "fHMM")
+}
 
 
 ###################################################
