@@ -1,4 +1,4 @@
-#' Downloading financial data
+#' Download financial data from Finance Yahoo
 #'
 #' @description
 #' This function downloads stock data from <https://finance.yahoo.com/> and 
@@ -49,15 +49,15 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
 
   ### check input
   if (!is.character(symbol) || length(symbol) != 1) {
-    stop("'symbol' must be a single character.")
+    stop("'symbol' must be a single character.", call. = FALSE)
   }
   from <- check_date(from)
   to <- check_date(to)
   if (!is.character(file) || length(file) != 1 || nchar(file) == 0) {
-    stop("'file' is invalid.")
+    stop("'file' is invalid.", call. = FALSE)
   }
-  if (!isTRUE(verbose) && !isFALSE(verbose)) {
-    stop("'verbose' must be either TRUE or FALSE.")
+  if (length(verbose) != 1 || (!isTRUE(verbose) && !isFALSE(verbose))) {
+    stop("'verbose' must be either TRUE or FALSE.", call. = FALSE)
   }
 
   ### check 'from' and 'to'
@@ -65,11 +65,11 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
   to <- as.Date(to)
   min_date <- as.Date("1902-01-01")
   if (from < min_date) {
-    warning("'from' is set to lower bound of '1902-01-01'.")
+    warning("'from' is set to lower bound of '1902-01-01'.", call. = FALSE)
     from <- min_date
   }
   if (to < from) {
-    stop("'to' must not be earlier than 'from'.")
+    stop("'to' must not be earlier than 'from'.", call. = FALSE)
   }
 
   ### function to create finance.yahoo.com-URL
@@ -102,7 +102,7 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
 
   ### check 'download_try'
   if (inherits(download_try, "try-error")) {
-    stop("'symbol' is unknown on https://finance.yahoo.com/, please check spelling.")
+    stop("Download failed. Either 'symbol' is unknown or there is no data for the specified time interval.", call. = FALSE)
   } else if (verbose) {
     ### print summary of new data
     data <- utils::read.csv(file = file, header = TRUE, sep = ",", na.strings = "null")
