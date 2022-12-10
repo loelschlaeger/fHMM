@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,10 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit_model</span><span class="op">(</span><span class="va">data</span>, ncluster <span class="op">=</span> <span class="fl">1</span>, seed <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, init <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit_model</span><span class="op">(</span><span class="va">data</span>, ncluster <span class="op">=</span> <span class="fl">1</span>, seed <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, init <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for fHMM_model</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -76,11 +79,13 @@
 
 
 <dt>ncluster</dt>
-<dd><p>Set the number of clusters for parallelization.</p></dd>
+<dd><p>Set the number of clusters for parallelization.
+By default, <code>ncluster = 1</code>.</p></dd>
 
 
 <dt>seed</dt>
-<dd><p>Set a seed for the sampling of initial values.</p></dd>
+<dd><p>Set a seed for the sampling of initial values.
+No seed by default.</p></dd>
 
 
 <dt>verbose</dt>
@@ -93,6 +98,14 @@ for example be the estimate of a previously fitted model <code>model</code>, i.e
 the element <code>model$estimate</code>. The initial values are computed via
 <code>replicate(n, jitter(init, amount = 1), simplify = FALSE)</code>,
 where <code>n &lt;- data$controls$fit$runs</code>.</p></dd>
+
+
+<dt>x</dt>
+<dd><p>An object of class <code>fHMM_model</code>.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Currently not used.</p></dd>
 
 </dl></div>
     <div class="section level2">
