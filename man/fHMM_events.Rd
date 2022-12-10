@@ -2,16 +2,25 @@
 % Please edit documentation in R/fHMM_events.R
 \name{fHMM_events}
 \alias{fHMM_events}
+\alias{print.fHMM_events}
 \title{Checking events}
 \usage{
 fHMM_events(events)
+
+\method{print}{fHMM_events}(x, ...)
 }
 \arguments{
 \item{events}{A list of two elements.
-The first element is named \code{"dates"} and contains characters in format
-"YYYY-MM-DD".
-The second element is named \code{"labels"} and is a character vector of the
-same length as \code{"dates"}.}
+\itemize{
+\item The first element is named \code{"dates"} and contains a \code{character}
+vector in format \code{"YYYY-MM-DD"}.
+\item The second element is named \code{"labels"} and is a \code{character}
+vector of the same length as \code{"dates"}.
+}}
+
+\item{x}{An object of class \code{fHMM_events}.}
+
+\item{...}{Currently not used.}
 }
 \value{
 An object of class \code{fHMM_events}.

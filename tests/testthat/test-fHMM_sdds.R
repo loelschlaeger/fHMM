@@ -1,4 +1,7 @@
 test_that("splitting pars parameters from a ssd works", {
+  sink(tempfile())
+  expect_s3_class(print(fHMM_sdds(sdds = "t")), "fHMM_sdds")
+  sink()
   expect_equal(
     unclass(fHMM_sdds(sdds = "t")),
     list(list(name = "t", pars = list()))
@@ -40,4 +43,5 @@ test_that("splitting pars parameters from a ssd works", {
   expect_error(fHMM_sdds(sdds = "norm"))
   expect_error(fHMM_sdds(sdds = "t(sigma = 0)"))
   expect_error(fHMM_sdds(sdds = "t(df = -1)"))
+  expect_error(fHMM_sdds(sdds = "gamma(mu = -1)"))
 })

@@ -5,10 +5,10 @@
 #'
 #' @param events
 #' A list of two elements.
-#' The first element is named \code{"dates"} and contains characters in format
-#' "YYYY-MM-DD".
-#' The second element is named \code{"labels"} and is a character vector of the
-#' same length as \code{"dates"}.
+#' * The first element is named \code{"dates"} and contains a \code{character}
+#'   vector in format \code{"YYYY-MM-DD"}.
+#' * The second element is named \code{"labels"} and is a \code{character} 
+#'   vector of the same length as \code{"dates"}.
 #'
 #' @return
 #' An object of class \code{fHMM_events}.
@@ -27,16 +27,17 @@
 
 fHMM_events <- function(events) {
   if (inherits(events, "fHMM_events")) {
-    warning("This element already is of class 'fHMM_events'.")
+    warning("This element already is of class 'fHMM_events'.", call. = FALSE)
   } else {
     if (!inherits(events,"list")) {
-      stop("'events' must be a list.")
+      stop("'events' must be a list.", call. = FALSE)
     }
     if (length(events) != 2) {
-      stop("'events' must be a list of two elements.")
+      stop("'events' must be a list of two elements.", call. = FALSE)
     }
     if (!identical(names(events), c("dates", "labels"))) {
-      stop("'events' must be a list containing the elements 'dates' and 'labels'.")
+      stop("'events' must be a list containing the elements 'dates' and 'labels'.",
+           call. = FALSE)
     }
     events$dates <- check_date(events$dates)
     class(events) <- "fHMM_events"
@@ -44,19 +45,14 @@ fHMM_events <- function(events) {
   return(events)
 }
 
-#' Print method for \code{fHMM_events}.
-#' @description
-#' This function is the print method for an object of class \code{fHMM_events}.
 #' @param x
 #' An object of class \code{fHMM_events}.
 #' @param ...
-#' Ignored.
-#' @return
-#' Returns \code{x} invisibly.
-#' @export
-#' @noRd
+#' Currently not used.
+#' @exportS3Method 
+#' @rdname fHMM_events
 
 print.fHMM_events <- function(x, ...) {
   print(data.frame("dates" = x$dates, "labels" = x$labels))
-  return(invisible(x))
+  invisible(x)
 }

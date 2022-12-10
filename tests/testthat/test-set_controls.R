@@ -5,15 +5,15 @@ test_that("checks of controls for simulated HMM work", {
     horizon = 400,
     fit     = list("runs" = 50)
   )
-  expect_snapshot(set_controls(controls))
-  expect_snapshot(unlist(set_controls(controls)))
+  controls <- set_controls(controls)
+  expect_s3_class(controls, "fHMM_controls")
 })
 
 test_that("checks of controls for empirical HMM work", {
   skip_if_offline()
   file <- paste0(tempdir(), "/dax.csv")
   sink(tempfile())
-  download_data(symbol = "^GDAXI", file = file)
+  download_data(symbol = "^GDAXI", file = file, verbose = FALSE)
   sink()
   controls <- list(
     states = 2,
@@ -61,7 +61,7 @@ test_that("checks of controls for empirical HHMM work", {
   skip_if_offline()
   file <- paste0(tempdir(), "/dax.csv")
   sink(tempfile())
-  download_data(symbol = "^GDAXI", file = file)
+  download_data(symbol = "^GDAXI", file = file, verbose = FALSE)
   sink()
   controls <- list(
     hierarchy = TRUE,

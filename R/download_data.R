@@ -2,10 +2,10 @@
 #'
 #' @description
 #' This function downloads stock data from <https://finance.yahoo.com/> and 
-#' saves it as a .csv-file.
+#' saves it as a \code{.csv}-file.
 #'
 #' @details
-#' The downloaded data is a .csv-file with the following columns:
+#' The downloaded data is a \code{.csv}-file with the following columns:
 #' \itemize{
 #'   \item \code{Date}: The date.
 #'   \item \code{Open}: Opening price.
@@ -17,17 +17,18 @@
 #' }
 #'
 #' @param symbol
-#' A character, the stock's symbol. It must match the identifier on
+#' A \code{character}, the stock's symbol. It must match the identifier on
 #' <https://finance.yahoo.com/>.
 #' @param from
-#' A date in format "YYYY-MM-DD", setting the lower data bound. Must not be
-#' earlier than \code{"1902-01-01"}.
+#' A \code{character}, a date in format "YYYY-MM-DD", setting the lower data 
+#' bound. Must not be earlier than \code{"1902-01-01"}.
 #' @param to
-#' A date in format "YYYY-MM-DD", setting the upper data bound. Default is the
-#' current date \code{Sys.date()}.
+#' A \code{character}, a date in format "YYYY-MM-DD", setting the upper data 
+#' bound. Default is the current date \code{Sys.date()}.
 #' @param file
-#' The name of the file where the .csv-file is saved. Per default, it is saved
-#' in the current working directory with the name "\code{symbol}.csv".
+#' A \code{character}, the name of the file where the \code{.csv}-file is saved. 
+#' Per default, it is saved in the current working directory with the name 
+#' "\code{symbol}.csv".
 #' @param verbose
 #' If \code{TRUE} returns information about download success.
 #'
@@ -40,6 +41,7 @@
 #'   symbol = "^GDAXI", from = "2000-01-03",
 #'   file = paste0(tempfile(), ".csv")
 #' )
+#' 
 #' @export
 #'
 #' @importFrom utils download.file read.csv head tail
@@ -106,10 +108,12 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
   } else if (verbose) {
     ### print summary of new data
     data <- utils::read.csv(file = file, header = TRUE, sep = ",", na.strings = "null")
-    cat("Download successful.\n")
-    cat("* symbol:", symbol, "\n")
-    cat("* from:", utils::head(data$Date, n = 1), "\n")
-    cat("* to:", utils::tail(data$Date, n = 1), "\n")
-    cat("* path:", normalizePath(file))
+    message(
+      "Download successful.\n",
+      "* symbol:", symbol, "\n",
+      "* from:", utils::head(data$Date, n = 1), "\n",
+      "* to:", utils::tail(data$Date, n = 1), "\n",
+      "* path:", normalizePath(file)
+    )
   }
 }

@@ -2,6 +2,7 @@
 % Please edit documentation in R/fHMM_parameters.R
 \name{fHMM_parameters}
 \alias{fHMM_parameters}
+\alias{print.fHMM_parameters}
 \title{Setting and checking model parameters}
 \usage{
 fHMM_parameters(
@@ -17,39 +18,52 @@ fHMM_parameters(
   seed = NULL,
   scale_par = c(1, 1)
 )
+
+\method{print}{fHMM_parameters}(x, ...)
 }
 \arguments{
 \item{controls}{An object of class \code{fHMM_controls}.}
 
-\item{Gamma}{A tpm (transition probability matrix) of dimension \code{controls$states[1]}.}
+\item{Gamma}{A \code{matrix}, a tpm (transition probability matrix) of dimension
+\code{controls$states[1]}.}
 
-\item{mus}{A vector of expectations of length \code{controls$states[1]}.}
+\item{mus}{A \code{numeric} vector of expectations of length \code{controls$states[1]}.}
 
-\item{sigmas}{A vector of standard deviations of length \code{controls$states[1]}.}
+\item{sigmas}{A \code{numeric} vector of standard deviations of length
+\code{controls$states[1]}.}
 
-\item{dfs}{A vector of degrees of freedom of length \code{controls$states[1]}.
-Only relevant if sdd is a t-distribution.}
+\item{dfs}{A \code{numeric} vector of degrees of freedom of length
+\code{controls$states[1]}.
+Only relevant in case of a state-dependent t-distribution.}
 
-\item{Gammas_star}{A list of length \code{controls$states[1]} of (fine-scale) tpm's. Each tpm
-must be of dimension \code{controls$states[2]}.}
+\item{Gammas_star}{A \code{list} of length \code{controls$states[1]} of (fine-scale) tpm's.
+Each tpm must be of dimension \code{controls$states[2]}.}
 
-\item{mus_star}{A list of length \code{controls$states[1]} of vectors of (fine-scale)
-expectations. Each vector must be of length \code{controls$states[2]}.}
-
-\item{sigmas_star}{A list of length \code{controls$states[1]} of vectors of standard deviations.
+\item{mus_star}{A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors
+of (fine-scale) expectations.
 Each vector must be of length \code{controls$states[2]}.}
 
-\item{dfs_star}{A list of length \code{controls$states[1]} of vectors of (fine-scale) degrees
-of freedom. Each vector must be of length \code{controls$states[2]}.
-Only relevant if sdd is a t-distribution.}
+\item{sigmas_star}{A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors
+of standard deviations.
+Each vector must be of length \code{controls$states[2]}.}
 
-\item{seed}{Set a seed for the sampling of parameters.}
+\item{dfs_star}{A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors
+of (fine-scale) degrees of freedom.
+Each vector must be of length \code{controls$states[2]}.
+Only relevant in case of a state-dependent t-distribution.}
 
-\item{scale_par}{A positive numeric vector of length two, containing scales for sampled
+\item{seed}{Set a seed for the sampling of parameters.
+No seed per default.}
+
+\item{scale_par}{A positive \code{numeric} vector of length two, containing scales for sampled
 expectations and standard deviations. The first entry is the scale for
 \code{mus} and \code{sigmas}, the second entry is the scale for
 \code{mus_star} and \code{sigmas_star}. Set an entry to \code{1} for no
 scaling.}
+
+\item{x}{An object of class \code{fHMM_parameters}.}
+
+\item{...}{Currently not used.}
 }
 \value{
 An object of class \code{fHMM_parameters}.

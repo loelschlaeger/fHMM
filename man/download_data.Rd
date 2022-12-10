@@ -13,17 +13,18 @@ download_data(
 )
 }
 \arguments{
-\item{symbol}{A character, the stock's symbol. It must match the identifier on
+\item{symbol}{A \code{character}, the stock's symbol. It must match the identifier on
 \url{https://finance.yahoo.com/}.}
 
-\item{from}{A date in format "YYYY-MM-DD", setting the lower data bound. Must not be
-earlier than \code{"1902-01-01"}.}
+\item{from}{A \code{character}, a date in format "YYYY-MM-DD", setting the lower data
+bound. Must not be earlier than \code{"1902-01-01"}.}
 
-\item{to}{A date in format "YYYY-MM-DD", setting the upper data bound. Default is the
-current date \code{Sys.date()}.}
+\item{to}{A \code{character}, a date in format "YYYY-MM-DD", setting the upper data
+bound. Default is the current date \code{Sys.date()}.}
 
-\item{file}{The name of the file where the .csv-file is saved. Per default, it is saved
-in the current working directory with the name "\code{symbol}.csv".}
+\item{file}{A \code{character}, the name of the file where the \code{.csv}-file is saved.
+Per default, it is saved in the current working directory with the name
+"\code{symbol}.csv".}
 
 \item{verbose}{If \code{TRUE} returns information about download success.}
 }
@@ -32,10 +33,10 @@ No return value.
 }
 \description{
 This function downloads stock data from \url{https://finance.yahoo.com/} and
-saves it as a .csv-file.
+saves it as a \code{.csv}-file.
 }
 \details{
-The downloaded data is a .csv-file with the following columns:
+The downloaded data is a \code{.csv}-file with the following columns:
 \itemize{
 \item \code{Date}: The date.
 \item \code{Open}: Opening price.
@@ -52,4 +53,5 @@ download_data(
   symbol = "^GDAXI", from = "2000-01-03",
   file = paste0(tempfile(), ".csv")
 )
+
 }

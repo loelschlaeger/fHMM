@@ -7,26 +7,32 @@
 compute_T_star(horizon, period, dates = NULL, seed = NULL)
 }
 \arguments{
-\item{horizon}{The element \code{controls$horizon}, i.e. an integer vector of length 2,
+\item{horizon}{The element \code{controls$horizon}, i.e., an integer vector of length 2,
 where the second entry can be \code{NA_integer_}.}
 
 \item{period}{The element \code{controls$period}, i.e. one of \code{"w"},
 \code{"m"}, code{"q"}, or \code{"y"}.}
 
-\item{dates}{A vector of dates of empirical fine-scale data.}
+\item{dates}{A \code{character} vector of dates of empirical fine-scale data (if any).
+By default, \code{dates = NULL}.}
 
-\item{seed}{Set a seed for the simulation of flexible chunk lengths.}
+\item{seed}{Set a seed for the simulation of flexible chunk lengths.
+By default, \code{seed = NULL} (i.e., no seed).}
 }
 \value{
-A vector of fine-scale chunk sizes.
+An \code{integer} vector of fine-scale chunk sizes.
 }
 \description{
-This function computes lengths of fine-scale chunks.
+This helper function computes lengths of fine-scale chunks in the
+hierarchical case.
 }
 \examples{
+\dontrun{
 ### weekly fine-scale chunk sizes for 10 coarse-scale observations
 horizon <- c(10, NA_integer_)
 period <- "w"
-fHMM:::compute_T_star(horizon, period)
+compute_T_star(horizon, period)
+}
+
 }
 \keyword{internal}

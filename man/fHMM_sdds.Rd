@@ -2,25 +2,37 @@
 % Please edit documentation in R/fHMM_sdds.R
 \name{fHMM_sdds}
 \alias{fHMM_sdds}
+\alias{print.fHMM_sdds}
 \title{Defining state-dependent distributions}
 \usage{
 fHMM_sdds(sdds)
+
+\method{print}{fHMM_sdds}(x, ...)
 }
 \arguments{
-\item{sdds}{A character or a character vector of length two that can be specified for
+\item{sdds}{A \code{character} (vector) of length two that can be specified for
 \code{"sdds"} in \code{\link{set_controls}}.}
+
+\item{...}{Currently not used.}
 }
 \value{
-A list of length \code{length(sdds)}. Each element is a list, containing
-the \code{"name"} of the distribution and a list \code{"pars"} of its
-parameters. Unknown parameters are set to \code{NULL}.
+A \code{list} of length \code{length(sdds)}.
+Each element again is a \code{list}, containing
+\itemize{
+\item the \code{"name"} of the distribution
+\item and a list \code{"pars"} of its parameters, where unknown parameters are
+set to \code{NULL}.
+}
 }
 \description{
-This function defines state-dependent distributions for the {fHMM} package.
+This helper function defines state-dependent distributions for the {fHMM}
+package.
 }
 \examples{
+\dontrun{
 sdds <- c("t(sigma = 0.1, df = Inf)", "gamma", "lnorm(mu = 1)")
-fHMM:::fHMM_sdds(sdds)
+fHMM_sdds(sdds)
+}
 
 }
 \keyword{internal}

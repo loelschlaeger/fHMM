@@ -6,7 +6,7 @@
 #' @param x
 #' An object of class \code{fHMM_model}.
 #' @param verbose
-#' Set to \code{TRUE} to print progress messages.
+#' Set to \code{TRUE} (default) to print progress messages.
 #'
 #' @return
 #' An object of class \code{fHMM_model} with residuals included.
@@ -16,7 +16,8 @@
 #' @examples
 #' data("dax_model_3t")
 #' compute_residuals(dax_model_3t)
-#' residuals(dax_model_3t)
+#' res <- residuals(dax_model_3t)
+#' summary(res)
 #' 
 #' @importFrom stats pt pgamma qnorm
 
@@ -30,9 +31,13 @@ compute_residuals <- function(x, verbose = TRUE) {
     stop("'verbose' must be either TRUE or FALSE.", call. = FALSE)
   }
   if (is.null(x$decoding)) {
-    warning(paste(
-      "Cannot compute residuals without decoding.",
-      "Please call 'decode_states()' first."), immediate. = TRUE, call. = FALSE)
+    warning(
+      paste(
+        "Cannot compute residuals without decoding.",
+        "Please call 'decode_states()' first."
+      ), 
+      immediate. = TRUE, call. = FALSE
+    )
     return(x)
   }
 
@@ -97,8 +102,9 @@ compute_residuals <- function(x, verbose = TRUE) {
   }
 
   ### save residuals in 'x' and return 'x'
-  if (verbose) 
+  if (verbose) {
     message("Computed residuals")
+  }
   class(residuals) <- "fHMM_residuals"
   x$residuals <- residuals
   return(x)

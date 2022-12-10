@@ -9,11 +9,11 @@ compute_ci(x, alpha = 0.05)
 \arguments{
 \item{x}{An object of class \code{fHMM_model}.}
 
-\item{alpha}{The alpha level for the confidence interval, a numeric between 0 and 1.
-Per default, \code{alpha = 0.05}, which computes a 95\% confidence interval.}
+\item{alpha}{A \code{numeric} between 0 and 1, the alpha level for the confidence interval.
+By default, \code{alpha = 0.05}, which computes a 95\% confidence interval.}
 }
 \value{
-A list containing the following elements:
+A \code{list} containing the following elements:
 \itemize{
 \item \code{lb}: lower bound of confidence
 \item \code{estimate}: point estimate
@@ -25,8 +25,10 @@ This function computes confidence intervals for the estimates of an
 \code{fHMM_model} object using the inverse Fisher information.
 }
 \examples{
+\dontrun{
 data("dax_model_3t")
-fHMM:::compute_ci(x = dax_model_3t, alpha = 0.05)
+compute_ci(x = dax_model_3t, alpha = 0.05)
+}
 
 }
 \keyword{internal}

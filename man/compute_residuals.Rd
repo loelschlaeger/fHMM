@@ -9,7 +9,7 @@ compute_residuals(x, verbose = TRUE)
 \arguments{
 \item{x}{An object of class \code{fHMM_model}.}
 
-\item{verbose}{Set to \code{TRUE} to print progress messages.}
+\item{verbose}{Set to \code{TRUE} (default) to print progress messages.}
 }
 \value{
 An object of class \code{fHMM_model} with residuals included.
@@ -20,6 +20,7 @@ This function computes (pseudo-) residuals of an \code{fHMM_model} object.
 \examples{
 data("dax_model_3t")
 compute_residuals(dax_model_3t)
-residuals(dax_model_3t)
+res <- residuals(dax_model_3t)
+summary(res)
 
 }

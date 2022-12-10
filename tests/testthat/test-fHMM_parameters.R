@@ -1,59 +1,88 @@
+test_that("input checks for parameter transformations work", {
+  expect_error(fHMM_parameters("not_a_controls_object"))
+  controls <- set_controls()
+  expect_error(fHMM_parameters(controls, scale = c(-1,0)))
+  expect_error(fHMM_parameters(controls, Gamma = matrix(1:4,2,2)))
+  expect_error(fHMM_parameters(controls, mus = c("1", "2")))
+  expect_error(fHMM_parameters(controls, sigmas = c(-1, -2)))
+  controls <- set_controls(list(sdds = "t"))
+  expect_error(fHMM_parameters(controls, dfs = c(-1, -2)))
+  controls <- set_controls(list(sdds = "gamma"))
+  expect_error(fHMM_parameters(controls, mus = c(-1, -2)))
+  ### hierarchical case
+  controls <- set_controls(list(hierarchy = TRUE))
+  expect_error(fHMM_parameters(controls, Gammas_star = matrix(1:4,2,2)))
+  expect_error(fHMM_parameters(controls, Gammas_star = list(matrix(1:4,2,2), matrix(1:4,2,2))))
+  expect_error(fHMM_parameters(controls, mus_star = c("1", "2")))
+  expect_error(fHMM_parameters(controls, mus_star = list(c(1, 2), c("1", "2"))))
+  expect_error(fHMM_parameters(controls, sigmas_star = c(-1, -2)))
+  expect_error(fHMM_parameters(controls, sigmas_star = list(c(-1, -2), c(-2, -2))))
+  controls <- set_controls(list(hierarchy = TRUE, sdds = c("t","t")))
+  expect_error(fHMM_parameters(controls, dfs_star = c(-1, -2)))
+  expect_error(fHMM_parameters(controls, dfs_star = list(c(1, 1), c(1,-1))))
+  controls <- set_controls(list(hierarchy = TRUE, sdds = c("gamma", "gamma")))
+  expect_error(fHMM_parameters(controls, mus_star = list(c(1, 1), c(1,-1))))
+  
+})
+
+test_that("parameter printing works", {
+  sink(tempfile())
+  expect_s3_class(print(fHMM_parameters(set_controls())), "fHMM_parameters")
+  sink()
+})
+
 test_that("parameter transformations for HMM work", {
   ### no fixed parameters
   controls <- set_controls()
-  par <- fHMM_parameters(controls)
+  par <- fHMM_parameters(controls, seed = 1)
   parUncon <- par2parUncon(par, controls)
   parCon <- parUncon2parCon(parUncon, controls)
   par2 <- parCon2par(parCon, controls)
-  expect_snapshot(par2)
   expect_equal(par, par2)
   expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
   ### fixed mu
   controls <- set_controls(list("sdds" = "t(mu = 1)"))
-  par <- fHMM_parameters(controls)
+  par <- fHMM_parameters(controls, seed = 1)
   expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
   ### fixed sigma
   controls <- set_controls(list("sdds" = "gamma(sigma = 1)"))
-  par <- fHMM_parameters(controls)
+  par <- fHMM_parameters(controls, seed = 1)
   expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
   ### fixed df
   controls <- set_controls(list("sdds" = "t(df = Inf)"))
-  par <- fHMM_parameters(controls)
+  par <- fHMM_parameters(controls, seed = 1)
   expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
 })
 
 test_that("parameter transformations for HHMM work", {
   ### no fixed parameters
   controls <- set_controls(list("hierarchy" = TRUE))
-  par <- fHMM_parameters(controls)
+  par <- fHMM_parameters(controls, seed = 1)
   parUncon <- par2parUncon(par, controls)
-  expect_snapshot(parUncon)
   parCon <- parUncon2parCon(parUncon, controls)
-  expect_snapshot(parCon)
   par2 <- parCon2par(parCon, controls)
-  expect_snapshot(par2)
   expect_equal(par, par2)
   expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
   ### fixed mu
   controls <- set_controls(list(
     "hierarchy" = TRUE,
-    "sdds" = c("t(mu = 1)", "t")
+    "sdds" = c("t(mu = 1)", "t(mu = 1)")
   ))
-  par <- fHMM_parameters(controls)
+  par <- fHMM_parameters(controls, seed = 1)
   expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
   ### fixed sigma
   controls <- set_controls(list(
     "hierarchy" = TRUE,
     "sdds" = c("gamma", "gamma(sigma = 1)")
   ))
-  par <- fHMM_parameters(controls)
+  par <- fHMM_parameters(controls, seed = 1)
   expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
   ### fixed df
   controls <- set_controls(list(
     "hierarchy" = TRUE,
-    "sdds" = c("gamma", "t(df = 5)")
+    "sdds" = c("gamma", "t(mu = 1, df = 5)")
   ))
-  par <- fHMM_parameters(controls)
+  par <- fHMM_parameters(controls, seed = 1)
   expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
 })
 
@@ -117,4 +146,5 @@ test_that("Gamma transformations work", {
   expect_equal(gammasUncon, gammasCon2gammasUncon(Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim = dim)), dim = dim))
   delta <- Gamma2delta(Gamma)
   expect_equal(delta, as.numeric(delta %*% Gamma))
+  expect_equal(Gamma2delta(matrix("1",2,2)), c(0.5, 0.5))
 })

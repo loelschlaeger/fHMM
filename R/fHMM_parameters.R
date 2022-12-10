@@ -9,31 +9,38 @@
 #' @param controls
 #' An object of class \code{fHMM_controls}.
 #' @param Gamma
-#' A tpm (transition probability matrix) of dimension \code{controls$states[1]}.
+#' A \code{matrix}, a tpm (transition probability matrix) of dimension 
+#' \code{controls$states[1]}.
 #' @param mus
-#' A vector of expectations of length \code{controls$states[1]}.
+#' A \code{numeric} vector of expectations of length \code{controls$states[1]}.
 #' @param sigmas
-#' A vector of standard deviations of length \code{controls$states[1]}.
+#' A \code{numeric} vector of standard deviations of length 
+#' \code{controls$states[1]}.
 #' @param dfs
-#' A vector of degrees of freedom of length \code{controls$states[1]}.
-#' Only relevant if sdd is a t-distribution.
+#' A \code{numeric} vector of degrees of freedom of length 
+#' \code{controls$states[1]}.
+#' Only relevant in case of a state-dependent t-distribution.
 #' @param Gammas_star
-#' A list of length \code{controls$states[1]} of (fine-scale) tpm's. Each tpm 
-#' must be of dimension \code{controls$states[2]}.
+#' A \code{list} of length \code{controls$states[1]} of (fine-scale) tpm's. 
+#' Each tpm must be of dimension \code{controls$states[2]}.
 #' @param mus_star
-#' A list of length \code{controls$states[1]} of vectors of (fine-scale)
-#' expectations. Each vector must be of length \code{controls$states[2]}.
+#' A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors 
+#' of (fine-scale) expectations. 
+#' Each vector must be of length \code{controls$states[2]}.
 #' @param sigmas_star
-#' A list of length \code{controls$states[1]} of vectors of standard deviations.
+#' A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors 
+#' of standard deviations.
 #' Each vector must be of length \code{controls$states[2]}.
 #' @param dfs_star
-#' A list of length \code{controls$states[1]} of vectors of (fine-scale) degrees 
-#' of freedom. Each vector must be of length \code{controls$states[2]}.
-#' Only relevant if sdd is a t-distribution.
+#' A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors 
+#' of (fine-scale) degrees of freedom. 
+#' Each vector must be of length \code{controls$states[2]}.
+#' Only relevant in case of a state-dependent t-distribution.
 #' @param seed
 #' Set a seed for the sampling of parameters.
+#' No seed per default.
 #' @param scale_par
-#' A positive numeric vector of length two, containing scales for sampled
+#' A positive \code{numeric} vector of length two, containing scales for sampled
 #' expectations and standard deviations. The first entry is the scale for
 #' \code{mus} and \code{sigmas}, the second entry is the scale for
 #' \code{mus_star} and \code{sigmas_star}. Set an entry to \code{1} for no
@@ -160,64 +167,80 @@ fHMM_parameters <- function(controls,
 
   ### check parameters
   if (!is_tpm(Gamma) || nrow(Gamma) != M) {
-    stop("'Gamma' must be a tpm of dimension 'controls$states[1]'.")
+    stop("'Gamma' must be a tpm of dimension 'controls$states[1]'.",
+         call. = FALSE)
   }
   if (controls[["sdds"]][[1]]$name %in% c("t","lnorm")) {
     if (!all(is_number(mus)) || length(mus) != M) {
-      stop("'mus' must be a numeric vector of length 'controls$states[1]'.")
+      stop("'mus' must be a numeric vector of length 'controls$states[1]'.",
+           call. = FALSE)
     }
   }
   if (controls[["sdds"]][[1]]$name == "gamma") {
     if (!all(is_number(mus, pos = TRUE)) || length(mus) != M) {
-      stop("'mus' must be a positive numeric vector of length 'controls$states[1]'.")
+      stop("'mus' must be a positive numeric vector of length 'controls$states[1]'.",
+           call. = FALSE)
     }
   }
   if (!all(is_number(sigmas, pos = TRUE)) || length(sigmas) != M) {
-    stop("'sigmas' must be a positive numeric vector of length 'controls$states[1]'.")
+    stop("'sigmas' must be a positive numeric vector of length 'controls$states[1]'.",
+         call. = FALSE)
   }
   if (controls[["sdds"]][[1]]$name == "t") {
     if (!all(is_number(dfs, pos = TRUE)) || length(dfs) != M) {
-      stop("'dfs' must be a positive numeric vector of length 'controls$states[1]'.")
+      stop("'dfs' must be a positive numeric vector of length 'controls$states[1]'.",
+           call. = FALSE)
     }
   }
   if (controls[["hierarchy"]]) {
     if (!is.list(Gammas_star) || length(Gammas_star) != M) {
-      stop("'Gammas_star' must be a list of length 'controls$states[1]'.")
+      stop("'Gammas_star' must be a list of length 'controls$states[1]'.",
+           call. = FALSE)
     }
     for (i in 1:M) {
       if (!is_tpm(Gammas_star[[i]]) || nrow(Gammas_star[[i]]) != N) {
-        stop("Each element in 'Gammas_star' must be a tpm of dimension 'controls$states[2]'.")
+        stop("Each element in 'Gammas_star' must be a tpm of dimension 'controls$states[2]'.",
+             call. = FALSE)
       }
     }
     if (!is.list(mus_star) || length(mus_star) != M) {
-      stop("'mus_star' must be a list of length 'controls$states[1]'.")
+      stop("'mus_star' must be a list of length 'controls$states[1]'.",
+           call. = FALSE)
     }
     for (i in 1:M) {
       if (controls[["sdds"]][[2]]$name %in% c("t","lnorm")) {
         if (!all(is_number(mus_star[[i]])) || length(mus_star[[i]]) != N) {
-          stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.")
+          stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.",
+               call. = FALSE)
         }
       }
       if (controls[["sdds"]][[2]]$name == "gamma") {
-        if (!all(is_number(mus_star[[i]])) || length(mus_star[[i]]) != N) {
-          stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.")
+        if (!all(is_number(mus_star[[i]], pos = TRUE)) || length(mus_star[[i]]) != N) {
+          stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.",
+               call. = FALSE)
         }
       }
     }
     if (!is.list(sigmas_star) || length(sigmas_star) != M) {
-      stop("'sigmas_star' must be a list of length 'controls$states[1]'.")
+      stop("'sigmas_star' must be a list of length 'controls$states[1]'.",
+           call. = FALSE)
     }
     for (i in 1:M) {
       if (!all(is_number(sigmas_star[[i]], pos = TRUE)) || length(sigmas_star[[i]]) != N) {
-        stop("Each element in 'sigmas_star' must be a positive numeric vector of length 'controls$states[2]'.")
+        stop("Each element in 'sigmas_star' must be a positive numeric vector of length 'controls$states[2]'.",
+             call. = FALSE)
       }
     }
     if (controls[["sdds"]][[2]]$name == "t") {
       if (!is.list(dfs_star) || length(dfs_star) != M) {
-        stop("'dfs_star' must be a list of length 'controls$states[1]'.")
+        stop("'dfs_star' must be a list of length 'controls$states[1]'.",
+             call. = FALSE)
       }
-      if (!all(is_number(dfs_star[[i]], pos = TRUE)) || length(dfs_star[[i]]) != N) {
-        stop("Each element in 'dfs_star' must be a positive numeric vector of length 'controls$states[2]'.")
+      for (i in 1:M) {
+        if (!all(is_number(dfs_star[[i]], pos = TRUE)) || length(dfs_star[[i]]) != N) {
+          stop("Each element in 'dfs_star' must be a positive numeric vector of length 'controls$states[2]'.",
+               call. = FALSE)
+        }
       }
     }
   }
@@ -238,11 +261,16 @@ fHMM_parameters <- function(controls,
   return(out)
 }
 
-#' @noRd
-#' @export
+#' @rdname fHMM_parameters
+#' @param x
+#' An object of class \code{fHMM_parameters}.
+#' @param ...
+#' Currently not used.
+#' @exportS3Method 
 
 print.fHMM_parameters <- function(x, ...) {
   cat("fHMM parameters\n")
+  invisible(x)
 }
 
 #' This function transforms an object of class \code{fHMM_parameters} into
@@ -252,8 +280,8 @@ print.fHMM_parameters <- function(x, ...) {
 #' @param controls
 #' An object of class \code{fHMM_controls}.
 #' @return
-#' An object of class \code{parUncon}, i.e. a vector of unconstrained model
-#' parameters to be estimated.
+#' An object of class \code{parUncon}, i.e. a \code{numeric} vector of 
+#' unconstrained model parameters to be estimated.
 #' @keywords
 #' internal
 
@@ -325,8 +353,8 @@ par2parUncon <- function(par, controls) {
 #' @param controls
 #' An object of class \code{fHMM_controls}.
 #' @return
-#' An object of class \code{parCon}, i.e. a vector of constrained model
-#' parameters to be estimated.
+#' An object of class \code{parCon}, i.e. a \code{numeric} vector of 
+#' constrained model parameters to be estimated.
 #' @keywords
 #' internal
 
@@ -733,9 +761,9 @@ gammasUncon2gammasCon <- function(gammasUncon, dim) {
 #' This function computes the stationary distribution of a transition
 #' probability matrix \code{Gamma}.
 #' @param Gamma
-#' A transition probability matrix.
+#' A transition probability \code{matrix}.
 #' @return
-#' A stationary distribution vector.
+#' A stationary distribution \code{vector}.
 #' @details
 #' If the stationary distribution vector cannot be computed, it is set to the
 #' discrete uniform distribution over the states.

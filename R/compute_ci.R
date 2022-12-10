@@ -8,11 +8,11 @@
 #' An object of class \code{fHMM_model}.
 #'
 #' @param alpha
-#' The alpha level for the confidence interval, a numeric between 0 and 1. 
-#' Per default, \code{alpha = 0.05}, which computes a 95% confidence interval.
+#' A \code{numeric} between 0 and 1, the alpha level for the confidence interval.
+#' By default, \code{alpha = 0.05}, which computes a 95% confidence interval.
 #'
 #' @return
-#' A list containing the following elements:
+#' A \code{list} containing the following elements:
 #' \itemize{
 #'   \item \code{lb}: lower bound of confidence
 #'   \item \code{estimate}: point estimate
@@ -23,8 +23,10 @@
 #' internal
 #'
 #' @examples
+#' \dontrun{
 #' data("dax_model_3t")
-#' fHMM:::compute_ci(x = dax_model_3t, alpha = 0.05)
+#' compute_ci(x = dax_model_3t, alpha = 0.05)
+#' }
 #'
 #' @importFrom stats qnorm
 
@@ -32,10 +34,10 @@ compute_ci <- function(x, alpha = 0.05) {
 
   ### check inputs
   if (!inherits(x,"fHMM_model")) {
-    stop("'x' must be of class 'fHMM_model'.", call. = FALSE)
+    stop("Input 'x' must be an 'fHMM_model' object.", call. = FALSE)
   }
   if (!is.numeric(alpha) || length(alpha) != 1 || alpha <= 0 || alpha >= 1) {
-    stop("'alpha' must be a numeric between 0 and 1.", call. = FALSE)
+    stop("Input 'alpha' must be a numeric between 0 and 1.", call. = FALSE)
   }
 
   ### compute confidence intervals using the inverse Hessian approach
@@ -61,7 +63,7 @@ compute_ci <- function(x, alpha = 0.05) {
     list(lower_limit, x$estimate, upper_limit),
     parUncon2parCon, x$data$controls
   )
-  if (anyNA(out)) {
+  if (anyNA(unlist(out))) {
     warning(paste(
       "Some confidence intervals could not be computed.",
       "The corresponding estimates may lie close to the boundaries of their",

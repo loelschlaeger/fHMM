@@ -1,20 +1,25 @@
 #' Defining state-dependent distributions
 #'
 #' @description
-#' This function defines state-dependent distributions for the {fHMM} package.
+#' This helper function defines state-dependent distributions for the {fHMM} 
+#' package.
 #'
 #' @param sdds
-#' A character or a character vector of length two that can be specified for
+#' A \code{character} (vector) of length two that can be specified for
 #' \code{"sdds"} in \code{\link{set_controls}}.
 #'
 #' @return
-#' A list of length \code{length(sdds)}. Each element is a list, containing
-#' the \code{"name"} of the distribution and a list \code{"pars"} of its 
-#' parameters. Unknown parameters are set to \code{NULL}.
+#' A \code{list} of length \code{length(sdds)}. 
+#' Each element again is a \code{list}, containing
+#' * the \code{"name"} of the distribution 
+#' * and a list \code{"pars"} of its parameters, where unknown parameters are 
+#'   set to \code{NULL}.
 #'
 #' @examples
+#' \dontrun{
 #' sdds <- c("t(sigma = 0.1, df = Inf)", "gamma", "lnorm(mu = 1)")
-#' fHMM:::fHMM_sdds(sdds)
+#' fHMM_sdds(sdds)
+#' }
 #' 
 #' @keywords 
 #' internal
@@ -53,11 +58,6 @@ fHMM_sdds <- function(sdds) {
       pars[!names(pars) %in% c("mu", "sigma", "df")] <- NULL
     }
     if (!is.null(pars$mu)) {
-      if (distr %in% c("t","lnorm")) {
-        if (!any(is_number(pars$mu))) {
-          stop("'mu' must be a numeric.", call. = FALSE)
-        }
-      }
       if (distr == "gamma") {
         if (!any(is_number(pars$mu, pos = TRUE))) {
           stop("'mu' must be a positive numeric.", call. = FALSE)
@@ -86,8 +86,10 @@ fHMM_sdds <- function(sdds) {
   return(out)
 }
 
-#' @noRd
-#' @export
+#' @rdname fHMM_sdds
+#' @param ...
+#' Currently not used.
+#' @exportS3Method 
 
 print.fHMM_sdds <- function(x, ...) {
   for (sdd in x) {

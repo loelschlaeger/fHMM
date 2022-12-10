@@ -8,10 +8,10 @@ probability matrix \code{Gamma}.}
 Gamma2delta(Gamma)
 }
 \arguments{
-\item{Gamma}{A transition probability matrix.}
+\item{Gamma}{A transition probability \code{matrix}.}
 }
 \value{
-A stationary distribution vector.
+A stationary distribution \code{vector}.
 }
 \description{
 This function computes the stationary distribution of a transition

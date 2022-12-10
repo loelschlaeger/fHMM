@@ -1,4 +1,4 @@
-#' DAX 2-state HMM
+#' DAX 2-state HMM with normal distributions
 #'
 #' @description
 #' A pre-computed HMM on closing prices of the DAX from 2000 to 2021
@@ -29,7 +29,7 @@
 #' model
 "dax_model_2n"
 
-#' DAX 3-state HMM
+#' DAX 3-state HMM with t-distributions
 #'
 #' @description
 #' A pre-computed HMM on closing prices of the DAX from 2000 to 2021
@@ -60,7 +60,7 @@
 #' model
 "dax_model_3t"
 
-#' DAX/VW hierarchical HMM
+#' DAX/VW hierarchical HMM with t(1)-distributions 
 #'
 #' @description
 #' A pre-computed HHMM with monthly averaged closing prices of the
@@ -93,7 +93,7 @@
 #' model
 "dax_vw_model"
 
-#' Simulated 2-state HMM
+#' Simulated 2-state HMM with gamma distributions
 #'
 #' @description
 #' A pre-computed 2-state HMM with state-dependent gamma distributions with means
@@ -116,7 +116,7 @@
 #'   sigmas = c(0.5,1)
 #' )
 #' data <- prepare_data(controls, true_parameters = pars, seed = 1)
-#' sim_model_2gamma <- fit_model(data, seed = 1, verbose = FALSE)
+#' sim_model_2gamma <- fit_model(data, seed = 1, verbose = TRUE)
 #' }
 #'
 #' @format An object of class \code{fHMM_model}.
@@ -124,3 +124,31 @@
 #' @keywords
 #' model
 "sim_model_2gamma"
+
+#' Simulated 4-state HMM with log-normal distributions
+#'
+#' @description
+#' A pre-computed 4-state HMM with state-dependent log-normal distributions
+#' on \code{1000} simulated observations.
+#'
+#' @usage data("sim_model_4lnorm")
+#'
+#' @details
+#' The model was estimated via:
+#' \preformatted{
+#' controls <- list(
+#'   states  = 4,
+#'   sdds    = "lnorm",
+#'   horizon = 1000,
+#'   fit     = list(runs = 50)
+#' )
+#' controls <- set_controls(controls)
+#' data <- prepare_data(controls, seed = 1)
+#' sim_model_4lnorm <- fit_model(data, seed = 1, verbose = TRUE)
+#' }
+#'
+#' @format An object of class \code{fHMM_model}.
+#'
+#' @keywords
+#' model
+"sim_model_4lnorm"

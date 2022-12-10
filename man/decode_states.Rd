@@ -16,7 +16,7 @@ An object of class \code{fHMM_model} with decoded state sequence included.
 }
 \description{
 This function decodes the (most likely) underlying hidden state sequence by
-applying the Viterbi algorithm.
+applying the Viterbi algorithm for global decoding.
 }
 \examples{
 data("dax_model_3t")

@@ -21,8 +21,8 @@ distributions,
 
 \item{events}{An object of class \code{fHMM_events}.}
 
-\item{colors}{Either \code{NULL} or a character vector of color names or hexadecimal RGB
-triplets.}
+\item{colors}{Either \code{NULL} (default) or a \code{character} vector of color names or
+hexadecimal RGB triplets.}
 
 \item{...}{Ignored.}
 }

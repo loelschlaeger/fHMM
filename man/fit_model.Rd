@@ -2,16 +2,21 @@
 % Please edit documentation in R/fit_model.R
 \name{fit_model}
 \alias{fit_model}
+\alias{print.fHMM_model}
 \title{Model fitting}
 \usage{
 fit_model(data, ncluster = 1, seed = NULL, verbose = TRUE, init = NULL)
+
+\method{print}{fHMM_model}(x, ...)
 }
 \arguments{
 \item{data}{An object of class \code{fHMM_data}.}
 
-\item{ncluster}{Set the number of clusters for parallelization.}
+\item{ncluster}{Set the number of clusters for parallelization.
+By default, \code{ncluster = 1}.}
 
-\item{seed}{Set a seed for the sampling of initial values.}
+\item{seed}{Set a seed for the sampling of initial values.
+No seed by default.}
 
 \item{verbose}{Set to \code{TRUE} to print progress messages.}
 
@@ -20,6 +25,10 @@ for example be the estimate of a previously fitted model \code{model}, i.e.
 the element \code{model$estimate}. The initial values are computed via
 \code{replicate(n, jitter(init, amount = 1), simplify = FALSE)},
 where \code{n <- data$controls$fit$runs}.}
+
+\item{x}{An object of class \code{fHMM_model}.}
+
+\item{...}{Currently not used.}
 }
 \value{
 An object of class \code{fHMM_model}.

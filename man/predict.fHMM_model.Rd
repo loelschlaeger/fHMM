@@ -11,8 +11,8 @@
 
 \item{ahead}{A positive integer, the forecast horizon.}
 
-\item{alpha}{The alpha level for the confidence interval, a numeric between 0 and 1.
-Per default, \code{alpha = 0.05}, which computes a 95\% confidence interval.}
+\item{alpha}{A \code{numeric} between 0 and 1, the alpha level for the confidence interval.
+By default, \code{alpha = 0.05}, which computes a 95\% confidence interval.}
 
 \item{...}{Ignored.}
 }

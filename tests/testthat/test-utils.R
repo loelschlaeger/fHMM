@@ -24,5 +24,8 @@ test_that("brute force matching works", {
 
 test_that("simulation of Markov chain works", {
   Gamma <- rbind(c(0.8, 0.2), c(0.1, 0.9))
-  expect_snapshot(simulate_markov_chain(Gamma = Gamma, T = 100, seed = 1))
+  expect_equal(
+    simulate_markov_chain(Gamma = Gamma, T = 10, seed = 1),
+    c(2, 2, 2, 1, 1, 2, 1, 1, 1, 1)
+  )
 })

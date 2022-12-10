@@ -2,7 +2,7 @@
 #'
 #' @description
 #' This function decodes the (most likely) underlying hidden state sequence by
-#' applying the Viterbi algorithm.
+#' applying the Viterbi algorithm for global decoding.
 #'
 #' @references
 #' <https://en.wikipedia.org/wiki/Viterbi_algorithm>
@@ -27,10 +27,10 @@ decode_states <- function(x, verbose = TRUE) {
 
   ### check input
   if (!inherits(x,"fHMM_model")) {
-    stop("'x' must be of class 'fHMM_model'.")
+    stop("'x' must be of class 'fHMM_model'.", call. = FALSE)
   }
   if (!isTRUE(verbose) && !isFALSE(verbose)) {
-    stop("'verbose' must be either TRUE or FALSE.")
+    stop("'verbose' must be either TRUE or FALSE.", call. = FALSE)
   }
 
   ### definition of the Viterbi algorithm for state decoding

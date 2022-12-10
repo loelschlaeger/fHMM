@@ -10,8 +10,10 @@
 #' An object of class \code{fHMM_data}.
 #' @param seed
 #' Set a seed for the sampling of initial values.
+#' No seed by default.
 #' @param ncluster
 #' Set the number of clusters for parallelization.
+#' By default, \code{ncluster = 1}.
 #' @param verbose
 #' Set to \code{TRUE} to print progress messages.
 #' @param init
@@ -29,18 +31,22 @@
 #' @importFrom stats sd nlm
 #' @importFrom foreach %dopar%
 
-fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE,
-                      init = NULL) {
+fit_model <- function(
+    data, ncluster = 1, seed = NULL, verbose = TRUE, init = NULL
+  ) {
 
   ### check inputs
   if (!inherits(data, "fHMM_data")) {
-    stop("'data' is not of class 'fHMM_data'.")
+    stop("'data' is not of class 'fHMM_data'.", 
+         call. = FALSE)
   }
   if (!is_number(ncluster, int = TRUE, pos = TRUE)) {
-    stop("'ncluster' must be a positive integer.")
+    stop("'ncluster' must be a positive integer.", 
+         call. = FALSE)
   }
   if (!isTRUE(verbose) && !isFALSE(verbose)) {
-    stop("'verbose' must be either TRUE or FALSE.")
+    stop("'verbose' must be either TRUE or FALSE.", 
+         call. = FALSE)
   }
 
   ### set seed
@@ -124,10 +130,12 @@ fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE,
     ll_at_start_values <- unlist(ll_at_start_values)
   }
   if (sum(is.na(ll_at_start_values)) == data[["controls"]][["fit"]][["runs"]]) {
-    stop("The likelihood function could not be computed at any of the selected start values, try to increase 'runs' in 'controls'.")
+    stop("The likelihood function could not be computed at any of the selected start values, try to increase 'runs' in 'controls'.", 
+         call. = FALSE)
   }
   if (sum(is.na(ll_at_start_values)) > 0.5 * data[["controls"]][["fit"]][["runs"]]) {
-    warning("The likelihood function could not be computed at more than half of the selected start values, try to increase 'runs' in 'controls'.", immediate. = TRUE)
+    warning("The likelihood function could not be computed at more than half of the selected start values, try to increase 'runs' in 'controls'.", 
+            call. = FALSE, immediate. = TRUE)
   }
   runs_seq <- which(!is.na(ll_at_start_values))
 
@@ -219,7 +227,8 @@ fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE,
   ### save and check likelihood values
   lls <- -unlist(sapply(mods, `[`, "minimum"), use.names = FALSE)
   if (all(is.na(lls))) {
-    stop("None of the estimation runs ended successfully, adapt 'accept' or increase 'runs' in 'controls'.")
+    stop("None of the estimation runs ended successfully, adapt 'accept' or increase 'runs' in 'controls'.", 
+         call. = FALSE)
   }
 
   ### compute Hessian
@@ -262,15 +271,19 @@ fit_model <- function(data, ncluster = 1, seed = NULL, verbose = TRUE,
   return(out)
 }
 
-#' @noRd
-#' @export
+#' @rdname fit_model
+#' @param x
+#' An object of class \code{fHMM_model}.
+#' @param ...
+#' Currently not used.
+#' @exportS3Method 
 
 print.fHMM_model <- function(x, ...) {
   cat("fHMM fitted model:\n")
   cat("* total estimation time:", x$estimation_time, units(x$estimation_time), "\n")
   cat("* accepted runs:", sum(!is.na(x$lls)), "of", length(x$lls), "\n")
   cat("* log-likelihood:", x$ll, "\n")
-  return(invisible(x))
+  invisible(x)
 }
 
 #' Negative log-likelihood function of an HMM

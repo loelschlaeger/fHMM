@@ -1,7 +1,8 @@
-#' Comparing multiple \code{fHMM_model}-objects
+#' Comparing multiple \code{fHMM_model} objects
 #'
 #' @description
-#' This function compares multiple \code{fHMM_model} with respect to
+#' This function performs model comparison by comparing multiple 
+#' \code{fHMM_model} objects with respect to
 #' \itemize{
 #'   \item the number of model parameters,
 #'   \item the log-likelihood value,
@@ -13,11 +14,15 @@
 #' A list of one or more objects of class \code{fHMM_model}.
 #'
 #' @return
-#' A data frame with models in rows and comparison criteria in columns.
+#' A \code{data.frame} with models in rows and comparison criteria in columns.
 #'
 #' @examples
+#' ### 3-state HMM with t-distributions is preferred over 2-state HMM with
+#' ### normal distributions for the DAX data based on AIC and BIC
+#' data("dax_model_2n")
 #' data("dax_model_3t")
-#' compare_models(dax_model_3t)
+#' compare_models(dax_model_2n, dax_model_3t)
+#' 
 #' @export
 
 compare_models <- function(...) {
@@ -31,8 +36,10 @@ compare_models <- function(...) {
   ### check if models are of class "fHMM_model"
   for (i in seq_len(length(models))) {
     if (!inherits(models[[i]],"fHMM_model")) {
-      stop(paste0("Model '", model_names[i], "' is not of class 'fHMM_model'.",
-                  call. = FALSE))
+      stop(
+        paste0("Input '", model_names[i], "' is not of class 'fHMM_model'."),
+        call. = FALSE
+      )
     }
   }
 
@@ -42,25 +49,30 @@ compare_models <- function(...) {
     for (j in 1:i) {
       data_j <- as.numeric(unlist(models[[j]]$data$data))
       if (!identical(data_i, data_j)) {
-        warning(paste0("Models '", model_names[i], "' and '", model_names[j], 
-                       "' are not estimated on the same data, be cautious comparing them."))
+        warning(
+          paste0(
+            "Models '", model_names[i], "' and '", model_names[j], 
+            "' are not estimated on the same data, be cautious comparing them."
+          ),
+          call. = FALSE
+        )
       }
     }
   }
 
   ### create output matrix
-  criteria <- c("parameters", "log-likelihood", "AIC", "BIC")
+  criteria <- c("parameters", "loglikelihood", "AIC", "BIC")
   output <- matrix(NA_real_, nrow = length(models), ncol = length(criteria))
   rownames(output) <- model_names
   colnames(output) <- criteria
   for (i in seq_len(length(models))) {
     summary_i <- summary(models[[i]])
     output[i, "parameters"] <- summary_i$no_par
-    output[i, "log-likelihood"] <- summary_i$model_info$LL
+    output[i, "loglikelihood"] <- summary_i$model_info$LL
     output[i, "AIC"] <- summary_i$model_info$AIC
     output[i, "BIC"] <- summary_i$model_info$BIC
   }
 
   ### return output
-  return(output)
+  as.data.frame(output)
 }

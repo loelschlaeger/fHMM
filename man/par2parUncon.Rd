@@ -13,8 +13,8 @@ par2parUncon(par, controls)
 \item{controls}{An object of class \code{fHMM_controls}.}
 }
 \value{
-An object of class \code{parUncon}, i.e. a vector of unconstrained model
-parameters to be estimated.
+An object of class \code{parUncon}, i.e. a \code{numeric} vector of
+unconstrained model parameters to be estimated.
 }
 \description{
 This function transforms an object of class \code{fHMM_parameters} into
