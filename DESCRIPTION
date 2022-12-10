@@ -35,7 +35,8 @@ Imports:
     MASS,
     Rcpp,
     progress,
-    foreach
+    foreach,
+    cli
 LinkingTo:
     Rcpp,
     RcppArmadillo
