@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,7 +78,10 @@
 <span>  dfs_star <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  scale_par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for fHMM_parameters</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -88,53 +91,68 @@
 
 
 <dt>Gamma</dt>
-<dd><p>A tpm (transition probability matrix) of dimension <code>controls$states[1]</code>.</p></dd>
+<dd><p>A <code>matrix</code>, a tpm (transition probability matrix) of dimension
+<code>controls$states[1]</code>.</p></dd>
 
 
 <dt>mus</dt>
-<dd><p>A vector of expectations of length <code>controls$states[1]</code>.</p></dd>
+<dd><p>A <code>numeric</code> vector of expectations of length <code>controls$states[1]</code>.</p></dd>
 
 
 <dt>sigmas</dt>
-<dd><p>A vector of standard deviations of length <code>controls$states[1]</code>.</p></dd>
+<dd><p>A <code>numeric</code> vector of standard deviations of length
+<code>controls$states[1]</code>.</p></dd>
 
 
 <dt>dfs</dt>
-<dd><p>A vector of degrees of freedom of length <code>controls$states[1]</code>.
-Only relevant if sdd is a t-distribution.</p></dd>
+<dd><p>A <code>numeric</code> vector of degrees of freedom of length
+<code>controls$states[1]</code>.
+Only relevant in case of a state-dependent t-distribution.</p></dd>
 
 
 <dt>Gammas_star</dt>
-<dd><p>A list of length <code>controls$states[1]</code> of (fine-scale) tpm's. Each tpm
-must be of dimension <code>controls$states[2]</code>.</p></dd>
+<dd><p>A <code>list</code> of length <code>controls$states[1]</code> of (fine-scale) tpm's.
+Each tpm must be of dimension <code>controls$states[2]</code>.</p></dd>
 
 
 <dt>mus_star</dt>
-<dd><p>A list of length <code>controls$states[1]</code> of vectors of (fine-scale)
-expectations. Each vector must be of length <code>controls$states[2]</code>.</p></dd>
+<dd><p>A <code>list</code> of length <code>controls$states[1]</code> of <code>numeric</code> vectors
+of (fine-scale) expectations.
+Each vector must be of length <code>controls$states[2]</code>.</p></dd>
 
 
 <dt>sigmas_star</dt>
-<dd><p>A list of length <code>controls$states[1]</code> of vectors of standard deviations.
+<dd><p>A <code>list</code> of length <code>controls$states[1]</code> of <code>numeric</code> vectors
+of standard deviations.
 Each vector must be of length <code>controls$states[2]</code>.</p></dd>
 
 
 <dt>dfs_star</dt>
-<dd><p>A list of length <code>controls$states[1]</code> of vectors of (fine-scale) degrees
-of freedom. Each vector must be of length <code>controls$states[2]</code>.
-Only relevant if sdd is a t-distribution.</p></dd>
+<dd><p>A <code>list</code> of length <code>controls$states[1]</code> of <code>numeric</code> vectors
+of (fine-scale) degrees of freedom.
+Each vector must be of length <code>controls$states[2]</code>.
+Only relevant in case of a state-dependent t-distribution.</p></dd>
 
 
 <dt>seed</dt>
-<dd><p>Set a seed for the sampling of parameters.</p></dd>
+<dd><p>Set a seed for the sampling of parameters.
+No seed per default.</p></dd>
 
 
 <dt>scale_par</dt>
-<dd><p>A positive numeric vector of length two, containing scales for sampled
+<dd><p>A positive <code>numeric</code> vector of length two, containing scales for sampled
 expectations and standard deviations. The first entry is the scale for
 <code>mus</code> and <code>sigmas</code>, the second entry is the scale for
 <code>mus_star</code> and <code>sigmas_star</code>. Set an entry to <code>1</code> for no
 scaling.</p></dd>
+
+
+<dt>x</dt>
+<dd><p>An object of class <code>fHMM_parameters</code>.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Currently not used.</p></dd>
 
 </dl></div>
     <div class="section level2">

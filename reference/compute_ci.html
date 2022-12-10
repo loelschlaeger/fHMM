@@ -12,7 +12,7 @@ fHMM_model object using the inverse Fisher information."><meta property="og:imag
     
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,44 +79,25 @@ fHMM_model object using the inverse Fisher information."><meta property="og:imag
 
 
 <dt>alpha</dt>
-<dd><p>The alpha level for the confidence interval, a numeric between 0 and 1.
-Per default, <code>alpha = 0.05</code>, which computes a 95% confidence interval.</p></dd>
+<dd><p>A <code>numeric</code> between 0 and 1, the alpha level for the confidence interval.
+By default, <code>alpha = 0.05</code>, which computes a 95% confidence interval.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A list containing the following elements:</p><ul><li><p><code>lb</code>: lower bound of confidence</p></li>
+<p>A <code>list</code> containing the following elements:</p><ul><li><p><code>lb</code>: lower bound of confidence</p></li>
 <li><p><code>estimate</code>: point estimate</p></li>
 <li><p><code>ub</code>: upper bound of confidence</p></li>
 </ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dax_model_3t"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">fHMM</span><span class="fu">:::</span><span class="fu">compute_ci</span><span class="op">(</span>x <span class="op">=</span> <span class="va">dax_model_3t</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $lb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1.393745e-02  1.710420e-06  1.659146e-02  9.359401e-03  1.258535e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6]  2.789877e-03  9.610235e-04 -7.955275e-04 -3.723796e-03  5.332119e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11]  1.269075e-02  2.329677e-02  3.964154e+00  7.592272e+04  5.501298e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "parCon"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $estimate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  2.170056e-02  1.696596e-06  2.641008e-02  1.740175e-02  1.246159e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6]  5.145960e-03  1.268712e-03 -2.517499e-04 -1.673649e-03  5.774343e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11]  1.323801e-02  2.562622e-02  5.272157e+00  7.592547e+04  1.064107e+01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "parCon"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ub</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 3.357222e-02 1.671225e-06 4.179228e-02 3.213059e-02 1.226657e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] 9.431251e-03 1.576400e-03 2.920278e-04 3.764982e-04 6.253244e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] 1.380887e-02 2.818860e-02 7.011747e+00 7.592821e+04 2.058285e+01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "parCon"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dax_model_3t"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">compute_ci</span><span class="op">(</span>x <span class="op">=</span> <span class="va">dax_model_3t</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
