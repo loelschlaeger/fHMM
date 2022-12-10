@@ -3,7 +3,7 @@
 \docType{data}
 \name{sim_model_2gamma}
 \alias{sim_model_2gamma}
-\title{Simulated 2-state HMM}
+\title{Simulated 2-state HMM with gamma distributions}
 \format{
 An object of class \code{fHMM_model}.
 }
@@ -29,7 +29,7 @@ pars <- fHMM_parameters(
   sigmas = c(0.5,1)
 )
 data <- prepare_data(controls, true_parameters = pars, seed = 1)
-sim_model_2gamma <- fit_model(data, seed = 1, verbose = FALSE)
+sim_model_2gamma <- fit_model(data, seed = 1, verbose = TRUE)
 }
 }
 \keyword{model}

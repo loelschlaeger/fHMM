@@ -3,7 +3,7 @@
 \docType{data}
 \name{dax_model_2n}
 \alias{dax_model_2n}
-\title{DAX 2-state HMM}
+\title{DAX 2-state HMM with normal distributions}
 \format{
 An object of class \code{fHMM_model}.
 }

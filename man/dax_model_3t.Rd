@@ -3,7 +3,7 @@
 \docType{data}
 \name{dax_model_3t}
 \alias{dax_model_3t}
-\title{DAX 3-state HMM}
+\title{DAX 3-state HMM with t-distributions}
 \format{
 An object of class \code{fHMM_model}.
 }
