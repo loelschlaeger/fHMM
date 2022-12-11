@@ -143,7 +143,7 @@ is_tpm <- function(x) {
 #' Another \code{numeric} vector of the same length as \code{x}.
 #'
 #' @return
-#' An \Code{integer} vector of length \code{length(x)} with the positions of \code{y}
+#' An \code{integer} vector of length \code{length(x)} with the positions of \code{y}
 #' in \code{x}.
 #'
 #' @keywords
