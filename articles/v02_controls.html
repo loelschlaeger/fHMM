@@ -220,18 +220,19 @@ Set and check controls
 <h3>
 Arguments
 </h3>
-<table class="table"><tr style="vertical-align: top;">
+<table class="table">
+<tr style="vertical-align: top;">
 <td>
 <code>controls</code>
 </td>
 <td>
 <p>
-A list of controls. Either none, all, or selected parameters can be
-specified. Unspecified parameters are set to default values (the values
-in brackets). If <code>hierarchy = TRUE</code>, parameters with a
-<code>(*)</code> must be a vector of length 2, where the first entry
-corresponds to the coarse-scale and the second entry to the fine-scale
-layer.
+A <code>list</code> of controls. Either none, all, or selected
+parameters can be specified. Unspecified parameters are set to default
+values (the values in brackets). If <code>hierarchy = TRUE</code>,
+parameters with a <code>(*)</code> must be a vector of length 2, where
+the first entry corresponds to the coarse-scale and the second entry to
+the fine-scale layer.
 </p>
 <ul>
 <li>
@@ -438,7 +439,28 @@ passed on to <code>nlm</code>.
 </li>
 </ul>
 </td>
-</tr></table>
+</tr>
+<tr style="vertical-align: top;">
+<td>
+<code>x</code>
+</td>
+<td>
+<p>
+An object of class <code>fHMM_controls</code>.
+</p>
+</td>
+</tr>
+<tr style="vertical-align: top;">
+<td>
+<code>…</code>
+</td>
+<td>
+<p>
+Currently not used.
+</p>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>

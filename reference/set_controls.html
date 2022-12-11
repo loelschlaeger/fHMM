@@ -69,13 +69,16 @@ package.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">set_controls</span><span class="op">(</span>controls <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">set_controls</span><span class="op">(</span>controls <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for fHMM_controls</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>controls</dt>
-<dd><p>A list of controls.
+<dd><p>A <code>list</code> of controls.
 Either none, all, or selected parameters can be specified.
 Unspecified parameters are set to default values (the values in brackets).
 If <code>hierarchy = TRUE</code>, parameters with a <code>(*)</code> must be a vector of
@@ -159,6 +162,14 @@ One of <code>0</code>, <code>1</code>, and <code>2</code>, passed on to
 A positive numeric value, passed on to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p></li>
 </ul></li>
 </ul></dd>
+
+
+<dt>x</dt>
+<dd><p>An object of class <code>fHMM_controls</code>.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Currently not used.</p></dd>
 
 </dl></div>
     <div class="section level2">
