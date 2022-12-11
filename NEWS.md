@@ -1,3 +1,5 @@
+# fHMM 1.0.3.9000
+
 # fHMM 1.0.3
 
 * We added the following methods for an `fHMM_model` object: `AIC()`, `BIC()`, `logLik()`, `nobs()`, `npar()`, `residuals()`.
