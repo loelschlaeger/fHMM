@@ -7,21 +7,23 @@
 match_all(x, y)
 }
 \arguments{
-\item{x}{A numeric vector.}
+\item{x}{A \code{numeric} vector.}
 
-\item{y}{Another numeric vector of the same length as \code{x}.}
+\item{y}{Another \code{numeric} vector of the same length as \code{x}.}
 }
 \value{
-An integer vector of length \code{length(x)} with the positions of \code{y}
+An \Code{integer} vector of length \code{length(x)} with the positions of \code{y}
 in \code{x}.
 }
 \description{
 This function matches the positions of two numeric vectors as good as possible.
 }
 \examples{
+\dontrun{
 x <- c(-1, 0, 1)
 y <- c(0.1, 2, -1.2)
-fHMM:::match_all(x = x, y = y)
+match_all(x = x, y = y)
+}
 }
 \keyword{internal}
 \keyword{utils}

@@ -7,23 +7,25 @@
 #' An object of class \code{fHMM_controls}.
 #' @param true_parameters
 #' An object of class \code{fHMM_parameters}, used as simulation parameters.
+#' By default, \code{true_parameters = NULL}, i.e., sampled true parameters.
 #' @param seed
 #' Set a seed for the data simulation.
+#' No seed per default.
 #'
 #' @return
-#' An object of class \code{fHMM_data}, which is a list containing the following
-#' elements:
+#' An object of class \code{fHMM_data}, which is a \code{list} containing the 
+#' following elements:
 #' \itemize{
-#'  \item The matrix of the \code{dates} if \code{simulated = FALSE} and
+#'  \item The \code{matrix} of the \code{dates} if \code{simulated = FALSE} and
 #'        \code{controls$data$data_column} is specified,
-#'  \item the matrix of the \code{time_points} if \code{simulated = TRUE} or
+#'  \item the \code{matrix} of the \code{time_points} if \code{simulated = TRUE} or
 #'        \code{controls$data$data_column} is not specified,
-#'  \item the matrix of the simulated \code{markov_chain} if
+#'  \item the \code{matrix} of the simulated \code{markov_chain} if
 #'        \code{simulated = TRUE},
-#'  \item the matrix of the simulated or empirical \code{data} used for estimation,
-#'  \item the matrix \code{time_series} of empirical data before the transformation
+#'  \item the \code{matrix} of the simulated or empirical \code{data} used for estimation,
+#'  \item the \code{matrix} \code{time_series} of empirical data before the transformation
 #'        to log-returns if \code{simulated = FALSE},
-#'  \item the vector of fine-scale chunk sizes \code{T_star} if
+#'  \item the \code{vector} of fine-scale chunk sizes \code{T_star} if
 #'        \code{controls$hierarchy = TRUE},
 #'  \item the input \code{controls},
 #'  \item the \code{true_parameters}.
@@ -32,6 +34,7 @@
 #' @examples
 #' controls <- set_controls()
 #' prepare_data(controls)
+#' 
 #' @export
 
 prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
@@ -71,10 +74,90 @@ prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
   return(data)
 }
 
-#' @noRd
-#' @export
+#' @rdname prepare_data
+#' @param x
+#' An object of class \code{fHMM_data}.
+#' @param ...
+#' Currently not used.
+#' @exportS3Method 
 
 print.fHMM_data <- function(x, ...) {
   cat("fHMM", ifelse(x$controls$simulated, "simulated", "empirical"), "data\n")
+  return(invisible(x))
+}
+
+#' @rdname prepare_data
+#' @param object
+#' An object of class \code{fHMM_data}.
+#' @param ...
+#' Currently not used.
+#' @exportS3Method 
+
+summary.fHMM_data <- function(object, ...) {
+  
+  ### meta data
+  simulated <- object$controls[["simulated"]]
+  hierarchy <- object$controls[["hierarchy"]]
+  
+  ### data dimensionality
+  data_size <- if (!hierarchy) {
+    length(object[["data"]])
+  } else {
+    c(
+      length(object[["data"]][, 1]),
+      length(object[["data"]][, -1][!is.na(object[["data"]][, -1])])
+    )
+  }
+  fs_dim <- if (hierarchy) {
+    if (!is.na(object$controls$horizon[2])) {
+      object$controls$horizon[2]
+    } else {
+      object$controls$period
+    }
+  } else {
+    NULL
+  }
+  
+  ### data origin
+  data_source <- if (simulated) NULL else basename(object$controls$data$file)
+  data_column <- if (simulated) NULL else object$controls$data$date_column
+  
+  ### data transformations
+  log_returns <- if (!simulated) object$controls$data$logreturns else NULL
+  cs_merge <- if (!simulated & hierarchy) object$controls$data$merge else NULL
+  
+  ### build and return summary
+  out <- list(
+    "simulated" = simulated,
+    "hierarchy" = hierarchy,
+    "data_size" = data_size,
+    "fs_dim" = fs_dim,
+    "data_source" = data_source,
+    "data_column" = data_column,
+    "log_returns" = log_returns,
+    "cs_merge" = cs_merge
+  )
+  class(out) <- "summary.fHMM_data"
+  return(out)
+}
+
+#' @noRd
+#' @exportS3Method 
+
+print.summary.fHMM_data <- function(x, ...) {
+  cat("Summary of fHMM", ifelse(x$simulated, "simulated", "empirical"), 
+      "data\n")
+  cat("* number of observations:", x$data_size, "\n")
+  if (x$hierarchy) {
+    cat("* fine-scale dimension:", x$fs_dim, "\n")
+  }
+  if (!x$simulated) {
+    cat("* data source:", x$data_source, "\n")
+    cat("* date column:", x$data_column, "\n")
+    cat("* log returns:", x$log_returns, "\n")
+    if (x$hierarchy) {
+      cat("* coarse-scale merge:", deparse1(x$cs_merge, collapse = ""))
+    }
+  }
   return(invisible(x))
 }

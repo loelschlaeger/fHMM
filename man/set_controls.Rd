@@ -2,12 +2,15 @@
 % Please edit documentation in R/set_controls.R
 \name{set_controls}
 \alias{set_controls}
+\alias{print.fHMM_controls}
 \title{Set and check controls}
 \usage{
 set_controls(controls = NULL)
+
+\method{print}{fHMM_controls}(x, ...)
 }
 \arguments{
-\item{controls}{A list of controls.
+\item{controls}{A \code{list} of controls.
 Either none, all, or selected parameters can be specified.
 Unspecified parameters are set to default values (the values in brackets).
 If \code{hierarchy = TRUE}, parameters with a \code{(*)} must be a vector of
@@ -101,6 +104,10 @@ One of \code{0}, \code{1}, and \code{2}, passed on to
 A positive numeric value, passed on to \code{\link[stats]{nlm}}.
 }
 }}
+
+\item{x}{An object of class \code{fHMM_controls}.}
+
+\item{...}{Currently not used.}
 }
 \value{
 An object of class \code{fHMM_controls}.

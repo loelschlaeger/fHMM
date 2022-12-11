@@ -7,17 +7,19 @@
 sample_tpm(dim)
 }
 \arguments{
-\item{dim}{The matrix dimension.}
+\item{dim}{An \code{integer}, the matrix dimension.}
 }
 \value{
-A transition probability matrix.
+A transition probability \code{matrix}.
 }
 \description{
 This function returns a random, squared matrix of dimension \code{dim}
 that fulfills the properties of a transition probability matrix.
 }
 \examples{
-fHMM:::sample_tpm(dim = 3)
+\dontrun{
+sample_tpm(dim = 3)
+}
 }
 \keyword{internal}
 \keyword{utils}

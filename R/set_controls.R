@@ -8,7 +8,7 @@
 #' See the vignettes for more information on how to specify \code{controls}.
 #' 
 #' @param controls
-#' A list of controls.
+#' A \code{list} of controls.
 #' Either none, all, or selected parameters can be specified.
 #' Unspecified parameters are set to default values (the values in brackets).
 #' If \code{hierarchy = TRUE}, parameters with a \code{(*)} must be a vector of
@@ -443,8 +443,12 @@ set_controls <- function(controls = NULL) {
   return(controls)
 }
 
-#' @export
-#' @noRd
+#' @rdname set_controls
+#' @param x
+#' An object of class \code{fHMM_controls}.
+#' @param ...
+#' Currently not used.
+#' @exportS3Method 
 
 print.fHMM_controls <- function(x, ...) {
   cat("fHMM controls:\n")

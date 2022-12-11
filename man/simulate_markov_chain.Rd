@@ -13,28 +13,30 @@ simulate_markov_chain(
 )
 }
 \arguments{
-\item{Gamma}{A tpm (transition probability matrix).}
+\item{Gamma}{A transition probability \code{matrix} (tpm).}
 
-\item{T}{The length of the Markov chain.}
+\item{T}{AN \code{integer}, the length of the Markov chain.}
 
-\item{delta}{A probability vector, the initial distribution. If not specified, \code{delta}
-is set to the stationary distribution vector.}
+\item{delta}{A \code{numeric} probability vector, the initial distribution.
+If not specified, \code{delta} is set to the stationary distribution vector.}
 
 \item{seed}{Set a seed.}
 
-\item{total_length}{An integer, the total length of the output vector. Must be greater or equal
-than \code{T}.}
+\item{total_length}{An \code{integer}, the total length of the output vector.
+Must be greater or equal than \code{T}.}
 }
 \value{
-A numeric vector of length \code{T} with states.
+A \code{numeric} vector of length \code{T} with states.
 }
 \description{
 This function simulates a Markov chain.
 }
 \examples{
+\dontrun{
 Gamma <- matrix(c(0.5, 0.3, 0.5, 0.7), 2, 2)
 T <- 10
-fHMM:::simulate_markov_chain(Gamma = Gamma, T = T)
+simulate_markov_chain(Gamma = Gamma, T = T)
+}
 }
 \keyword{internal}
 \keyword{utils}

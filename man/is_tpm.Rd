@@ -2,22 +2,24 @@
 % Please edit documentation in R/utils.R
 \name{is_tpm}
 \alias{is_tpm}
-\title{Check for tpm}
+\title{Check for transition probability matrix}
 \usage{
 is_tpm(x)
 }
 \arguments{
-\item{x}{A matrix.}
+\item{x}{A \code{matrix}.}
 }
 \value{
-A boolean.
+A \code{logical}.
 }
 \description{
 This function checks if \code{x} is a tpm (transition probability matrix).
 }
 \examples{
-fHMM:::is_tpm(diag(2))
-fHMM:::is_tpm(matrix(1, 2, 2))
+\dontrun{
+is_tpm(diag(2))
+is_tpm(matrix(1, 2, 2))
+}
 }
 \keyword{internal}
 \keyword{utils}

@@ -2,31 +2,45 @@
 % Please edit documentation in R/prepare_data.R
 \name{prepare_data}
 \alias{prepare_data}
+\alias{print.fHMM_data}
+\alias{summary.fHMM_data}
 \title{Prepare data}
 \usage{
 prepare_data(controls, true_parameters = NULL, seed = NULL)
+
+\method{print}{fHMM_data}(x, ...)
+
+\method{summary}{fHMM_data}(object, ...)
 }
 \arguments{
 \item{controls}{An object of class \code{fHMM_controls}.}
 
-\item{true_parameters}{An object of class \code{fHMM_parameters}, used as simulation parameters.}
+\item{true_parameters}{An object of class \code{fHMM_parameters}, used as simulation parameters.
+By default, \code{true_parameters = NULL}, i.e., sampled true parameters.}
 
-\item{seed}{Set a seed for the data simulation.}
+\item{seed}{Set a seed for the data simulation.
+No seed per default.}
+
+\item{x}{An object of class \code{fHMM_data}.}
+
+\item{...}{Currently not used.}
+
+\item{object}{An object of class \code{fHMM_data}.}
 }
 \value{
-An object of class \code{fHMM_data}, which is a list containing the following
-elements:
+An object of class \code{fHMM_data}, which is a \code{list} containing the
+following elements:
 \itemize{
-\item The matrix of the \code{dates} if \code{simulated = FALSE} and
+\item The \code{matrix} of the \code{dates} if \code{simulated = FALSE} and
 \code{controls$data$data_column} is specified,
-\item the matrix of the \code{time_points} if \code{simulated = TRUE} or
+\item the \code{matrix} of the \code{time_points} if \code{simulated = TRUE} or
 \code{controls$data$data_column} is not specified,
-\item the matrix of the simulated \code{markov_chain} if
+\item the \code{matrix} of the simulated \code{markov_chain} if
 \code{simulated = TRUE},
-\item the matrix of the simulated or empirical \code{data} used for estimation,
-\item the matrix \code{time_series} of empirical data before the transformation
+\item the \code{matrix} of the simulated or empirical \code{data} used for estimation,
+\item the \code{matrix} \code{time_series} of empirical data before the transformation
 to log-returns if \code{simulated = FALSE},
-\item the vector of fine-scale chunk sizes \code{T_star} if
+\item the \code{vector} of fine-scale chunk sizes \code{T_star} if
 \code{controls$hierarchy = TRUE},
 \item the input \code{controls},
 \item the \code{true_parameters}.
@@ -38,4 +52,5 @@ This function simulates or reads financial data for the {fHMM} package.
 \examples{
 controls <- set_controls()
 prepare_data(controls)
+
 }

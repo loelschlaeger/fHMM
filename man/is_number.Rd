@@ -14,28 +14,33 @@ is_number(
 )
 }
 \arguments{
-\item{x}{An R object.}
+\item{x}{Any R object.}
 
-\item{int}{A boolean, if \code{TRUE} checks if \code{x} is an integer.}
+\item{int}{A \code{logical}, if \code{TRUE} checks if \code{x} is an integer.}
 
-\item{neg}{A boolean, if \code{TRUE} checks if \code{x} is negative.}
+\item{neg}{A \code{logical}, if \code{TRUE} checks if \code{x} is negative.}
 
-\item{non_neg}{A boolean, if \code{TRUE} checks if \code{x} is non-negative.}
+\item{non_neg}{A \code{logical}, if \code{TRUE} checks if \code{x} is non-negative.}
 
-\item{pos}{A boolean, if \code{TRUE} checks if \code{x} is positive.}
+\item{pos}{A \code{logical}, if \code{TRUE} checks if \code{x} is positive.}
 
-\item{non_pos}{A boolean, if \code{TRUE} checks if \code{x} is non-positive.}
+\item{non_pos}{A \code{logical}, if \code{TRUE} checks if \code{x} is non-positive.}
 }
 \value{
-A boolean.
+A \code{logical}.
 }
 \description{
 This function checks if \code{x} is a ((non)-negative) ((non-)positive)
 (integer) numeric (vector).
 }
+\details{
+The function is vectorized.
+}
 \examples{
-fHMM:::is_number(1, int = TRUE)
-fHMM:::is_number(pi, int = TRUE)
+\dontrun{
+is_number(1, int = TRUE)
+is_number(pi, int = TRUE)
+}
 }
 \keyword{internal}
 \keyword{utils}
