@@ -84,7 +84,8 @@
 
 
 
-<script src="v05_state_decoding_and_prediction_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>State decoding and prediction</h1>
             
@@ -95,11 +96,35 @@
 
     
     
-<p>This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;This vignette was build using R 4.2.2 with the {fHMM} 1.0.3.9000 package.&lt;/p&gt;"><sup>1</sup></a> introduces the Viterbi algorithm for state decoding. The decoded state sequence in combination with the estimated model parameters can be used for forecasting.</p>
+<p>This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;This vignette was build using R 4.2.2 with the {fHMM}
+1.0.3.9000 package.&lt;/p&gt;"><sup>1</sup></a> introduces the Viterbi algorithm for state
+decoding. The decoded state sequence in combination with the estimated
+model parameters can be used for forecasting.</p>
 <div class="section level2">
 <h2 id="state-decoding-using-the-viterbi-algorithm">State decoding using the Viterbi algorithm<a class="anchor" aria-label="anchor" href="#state-decoding-using-the-viterbi-algorithm"></a>
 </h2>
-<p>For financial markets, it is of special interest to infer the underlying (hidden) states in order to gain insight about the actual market situation. Decoding a full time series <span class="math inline">\(S_1, \ldots, S_T\)</span> is called <em>global decoding</em>. Hereby, we aim to find the most likely trajectory of hidden states under the estimated model. Global decoding can be accomplished by using the so-called Viterbi algorithm which is a recursive scheme enabling to find the global maximum without being confronted with huge computational costs. To this end, we follow <span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span> and define <span class="math display">\[\zeta_{1i} = Pr(S_1 = i, X_1 = x_1) = \delta_i p_i(x_1)\]</span> for <span class="math inline">\(i = 1, \ldots, N\)</span> and for the following <span class="math inline">\(t = 2, \ldots, T\)</span> <span class="math display">\[\zeta_{ti} = \operatorname*{max}_{s_1, \ldots, s_{t-1}} Pr(S_{t-1} = s_{t-1}, S_t = i, X_t = x_t).\]</span> Then, the trajectory of most likely states <span class="math inline">\(i_1, \ldots, i_T\)</span> can be calculated recursively from <span class="math display">\[i_T = \operatorname*{argmax}_{i = 1, \ldots, N} \zeta_{Ti}\]</span> and for the following <span class="math inline">\(t = T-1, \ldots, 1\)</span> from <span class="math display">\[i_t = \operatorname*{argmax}_{i = 1, \ldots, N} (\zeta_{ti} \gamma_{i, i_{t+1}}).\]</span> Transferring the state decoding to HHMMs is straightforward: at first the coarse-scale state process must be decoded. Afterwards, by using this information the fine-scale state process can be decoded, see <span class="citation">Adam et al. (<a href="#ref-ada19" role="doc-biblioref">2019</a>)</span>.</p>
+<p>For financial markets, it is of special interest to infer the
+underlying (hidden) states in order to gain insight about the actual
+market situation. Decoding a full time series <span class="math inline">\(S_1, \ldots, S_T\)</span> is called <em>global
+decoding</em>. Hereby, we aim to find the most likely trajectory of
+hidden states under the estimated model. Global decoding can be
+accomplished by using the so-called Viterbi algorithm which is a
+recursive scheme enabling to find the global maximum without being
+confronted with huge computational costs. To this end, we follow <span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span> and define <span class="math display">\[\zeta_{1i} = Pr(S_1 = i, X_1 = x_1) = \delta_i
+p_i(x_1)\]</span> for <span class="math inline">\(i = 1, \ldots,
+N\)</span> and for the following <span class="math inline">\(t = 2,
+\ldots, T\)</span> <span class="math display">\[\zeta_{ti} =
+\operatorname*{max}_{s_1, \ldots, s_{t-1}} Pr(S_{t-1} = s_{t-1}, S_t =
+i, X_t = x_t).\]</span> Then, the trajectory of most likely states <span class="math inline">\(i_1, \ldots, i_T\)</span> can be calculated
+recursively from <span class="math display">\[i_T =
+\operatorname*{argmax}_{i = 1, \ldots, N} \zeta_{Ti}\]</span> and for
+the following <span class="math inline">\(t = T-1, \ldots, 1\)</span>
+from <span class="math display">\[i_t = \operatorname*{argmax}_{i = 1,
+\ldots, N} (\zeta_{ti} \gamma_{i, i_{t+1}}).\]</span> Transferring the
+state decoding to HHMMs is straightforward: at first the coarse-scale
+state process must be decoded. Afterwards, by using this information the
+fine-scale state process can be decoded, see <span class="citation">Adam
+et al. (<a href="#ref-ada19" role="doc-biblioref">2019</a>)</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="the-decode_states-function">The <code>decode_states()</code> function<a class="anchor" aria-label="anchor" href="#the-decode_states-function"></a>
@@ -107,7 +132,8 @@
 <p>We revisit the DAX model of the vignette on model estimation:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span></span></code></pre></div>
-<p>The underlying states can be decoded via the <code><a href="../reference/decode_states.html">decode_states()</a></code> function:</p>
+<p>The underlying states can be decoded via the
+<code><a href="../reference/decode_states.html">decode_states()</a></code> function:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dax_model_3t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Decoded states</span></span></code></pre></div>
@@ -115,14 +141,19 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v05_state_decoding_and_prediction_files/figure-html/decoded%20ts-1.png" width="80%" style="display: block; margin: auto;"></p>
-<p>Mind that the model is invariant to permutations of the state labels. Therefore, {fHMM} provides the option to switch labels after decoding via the <code><a href="../reference/reorder_states.html">reorder_states()</a></code> function, for example:</p>
+<p>Mind that the model is invariant to permutations of the state labels.
+Therefore, {fHMM} provides the option to switch labels after decoding
+via the <code><a href="../reference/reorder_states.html">reorder_states()</a></code> function, for example:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dax_model_3t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reorder_states.html">reorder_states</a></span><span class="op">(</span><span class="va">dax_model_3t</span>, <span class="fl">3</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="prediction">Prediction<a class="anchor" aria-label="anchor" href="#prediction"></a>
 </h2>
-<p>Having decoded the underlying states, it is possible to compute the state probabilities of next observations. Based on these probabilities and in combination with the estimated state-dependent distributions, next observations can be predicted, compare <span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span>:</p>
+<p>Having decoded the underlying states, it is possible to compute the
+state probabilities of next observations. Based on these probabilities
+and in combination with the estimated state-dependent distributions,
+next observations can be predicted, compare <span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">dax_model_3t</span>, ahead <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    state_1 state_2 state_3       lb estimate      ub</span></span>
@@ -138,14 +169,20 @@
 <span><span class="co">#&gt; 10 0.04243 0.78593 0.17164 -0.02110 -0.00005 0.02100</span></span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references">
-<div id="ref-ada19">
-<p>Adam, T., C. A. Griffiths, V. Leos-Barajas, E. N. Meese, C. G. Lowe, P. G. Blackwell, D. Righton, and R. Langrock. 2019. “Joint Modelling of Multi-Scale Animal Movement Data Using Hierarchical Hidden Markov Models.” <em>Methods in Ecology and Evolution</em> 10 (9): 1536–50.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-ada19" class="csl-entry">
+Adam, T., C. A. Griffiths, V. Leos-Barajas, E. N. Meese, C. G. Lowe, P.
+G. Blackwell, D. Righton, and R. Langrock. 2019. <span>“Joint Modelling
+of Multi-Scale Animal Movement Data Using Hierarchical Hidden Markov
+Models.”</span> <em>Methods in Ecology and Evolution</em> 10 (9):
+1536–50.
 </div>
-<div id="ref-zuc16">
-<p>Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. “Hidden Markov Models for Time Series: An Introduction Using R, 2nd Edition.” <em>Chapman and Hall/CRC</em>.</p>
+<div id="ref-zuc16" class="csl-entry">
+Zucchini, W., I. L. MacDonald, and R. Langrock. 2016. <span>“Hidden
+Markov Models for Time Series: An Introduction Using <span>R</span>, 2nd
+Edition.”</span> <em>Chapman and Hall/CRC</em>.
 </div>
 </div>
 </div>
