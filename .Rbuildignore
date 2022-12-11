@@ -12,8 +12,6 @@ LICENSE
 ^pkgdown$
 make_sticker.R
 sandbox.R
-jss/
-hmm4trading/
 ^README\.Rmd$
 ^codecov\.yml$
 docs/
@@ -21,4 +19,3 @@ vignettes/figs/
 ^vignettes/.*cache
 ^CRAN-RELEASE$
 ^cran-comments\.md$
-^.csv$
