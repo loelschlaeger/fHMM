@@ -81,24 +81,24 @@ package.</p>
 <dd><p>A <code>list</code> of controls.
 Either none, all, or selected parameters can be specified.
 Unspecified parameters are set to default values (the values in brackets).
-If <code>hierarchy = TRUE</code>, parameters with a <code>(*)</code> must be a vector of
-length 2, where the first entry corresponds to the coarse-scale and the
-second entry to the fine-scale layer.</p><ul><li><p><code>hierarchy</code> (<code>FALSE</code>):
-A boolean, set to <code>TRUE</code> for an hierarchical HMM.</p></li>
+If <code>hierarchy = TRUE</code>, parameters with a <code>(*)</code> must be a
+<code>vector</code> of length 2, where the first entry corresponds to the
+coarse-scale and the second entry to the fine-scale layer.</p><ul><li><p><code>hierarchy</code> (<code>FALSE</code>):
+A <code>logical</code>, set to <code>TRUE</code> for an hierarchical HMM.</p></li>
 <li><p><code>states</code> <code>(*)</code> (<code>2</code>):
-The number of states of the underlying Markov chain.</p></li>
+An <code>integer</code>, the number of states of the underlying Markov chain.</p></li>
 <li><p><code>sdds</code> <code>(*)</code> (<code>"t(df = Inf)"</code>):
-Specifying the state-dependent distribution, one of <code>"t"</code>, or
-<code>"gamma"</code> (the gamma distribution), or <code>"lnorm"</code> (the log-normal
-distribution).
-You can fix the parameters (mean <code>mu</code>, standard deviation \
-codesigma, degrees of freedom <code>df</code>) of these distributions, e.g.
+A <code>character</code>, specifying the state-dependent distribution.
+One of <code>"t"</code>, or <code>"gamma"</code> (the gamma distribution), or
+<code>"lnorm"</code> (the log-normal distribution).
+You can fix the parameters (mean <code>mu</code>, standard deviation
+<code>sigma</code>, degrees of freedom <code>df</code>) of these distributions, e.g.
 <code>"t(df = Inf)"</code> or <code>"gamma(mu = 0, sigma = 1)"</code>, respectively.
-To fix different values of one parameter for different states, separate by
+To fix different values of a parameter for different states, separate by
 "|", e.g. <code>"t(mu = -1|1)"</code>.</p></li>
 <li><p><code>horizon</code> <code>(*)</code> (<code>100</code>):
-A numeric, specifying the length of the time horizon. The first entry
-of <code>horizon</code> is ignored if <code>data</code> is specified.</p></li>
+A <code>numeric</code>, specifying the length of the time horizon.
+The first entry of <code>horizon</code> is ignored if <code>data</code> is specified.</p></li>
 <li><p><code>period</code> (<code>"m"</code>):
 Only relevant if <code>hierarchy = TRUE</code> and
 <code>horizon[2] = NA_integer_</code>.
@@ -108,29 +108,29 @@ and can be one of</p><ul><li><p><code>"w"</code> for a week,</p></li>
 <li><p><code>"q"</code> for a quarter,</p></li>
 <li><p><code>"y"</code> for a year.</p></li>
 </ul></li>
-<li><p><code>data</code> (<code>NA</code>): A list of controls specifying the data. If
-<code>data = NA</code>, data gets simulated. Otherwise:</p><ul><li><p><code>file</code> <code>(*)</code>:
-A character, the path to a .csv-file with financial data, which must
+<li><p><code>data</code> (<code>NA</code>): A <code>list</code> of controls specifying the data.
+If <code>data = NA</code>, data gets simulated. Otherwise:</p><ul><li><p><code>file</code> <code>(*)</code>:
+A <code>character</code>, the path to a .csv-file with financial data, which must
 have a column named <code>date_column</code> (with dates) and
 <code>data_column</code> (with financial data).</p></li>
 <li><p><code>date_column</code> <code>(*)</code> (<code>"Date"</code>):
-A character, the name of the column in <code>file</code> with dates. Can be
+A <code>character</code>, the name of the column in <code>file</code> with dates. Can be
 <code>NA_character_</code> in which case consecutive integers are used as time
 points.</p></li>
 <li><p><code>data_column</code> <code>(*)</code> (<code>"Close"</code>):
-A character, the name of the column in <code>file</code> with financial data.</p></li>
+A <code>character</code>, the name of the column in <code>file</code> with financial data.</p></li>
 <li><p><code>from</code> (<code>NA_character_</code>):
-A character of the format <code>"YYYY-MM-DD"</code>, setting a lower data
+A <code>character</code> of the format <code>"YYYY-MM-DD"</code>, setting a lower data
 limit. No lower limit if <code>from = NA_character_</code>. Ignored if
 <code>controls$data$date_column</code> is <code>NA</code>.</p></li>
 <li><p><code>to</code> (<code>NA_character_</code>):
-A character of the format <code>"YYYY-MM-DD"</code>, setting an upper data
+A <code>character</code> of the format <code>"YYYY-MM-DD"</code>, setting an upper data
 limit. No upper limit if <code>from = NA_character_</code>. Ignored if
 <code>controls$data$date_column</code> is <code>NA_character_</code>.</p></li>
 <li><p><code>logreturns</code> <code>(*)</code> (<code>FALSE</code>):
-A boolean, if <code>TRUE</code> the data is transformed to log-returns.</p></li>
+A <code>logical</code>, if <code>TRUE</code> the data is transformed to log-returns.</p></li>
 <li><p><code>merge</code> (<code>function(x) mean(x)</code>):
-Only relevant if <code>hierarchy = TRUE</code>. In this case, a function,
+Only relevant if <code>hierarchy = TRUE</code>. In this case, a <code>function</code>,
 which merges a numeric vector of fine-scale data <code>x</code> into one
 coarse-scale observation. For example,</p><ul><li><p><code>merge = function(x) mean(x)</code> defines the mean of the
 fine-scale data as the coarse-scale observation,</p></li>
@@ -142,24 +142,24 @@ absolute values,</p></li>
 the relative change of the first to the last fine-scale observation.</p></li>
 </ul></li>
 </ul></li>
-<li><p><code>fit</code>: A list of controls specifying the model fitting:</p><ul><li><p><code>runs</code> (<code>100</code>):
-An integer, setting the number of optimization runs.</p></li>
+<li><p><code>fit</code>: A <code>list</code> of controls specifying the model fitting:</p><ul><li><p><code>runs</code> (<code>100</code>):
+An <code>integer</code>, setting the number of optimization runs.</p></li>
 <li><p><code>origin</code> (<code>FALSE</code>):
-A boolean, if <code>TRUE</code> the optimization is initialized at the true
+A <code>logical</code>, if <code>TRUE</code> the optimization is initialized at the true
 parameter values. Only for simulated data. If <code>origin = TRUE</code>, this
 sets <code>run = 1</code> and <code>accept = 1:5</code>.</p></li>
 <li><p><code>accept</code> (<code>1:3</code>):
-An integer (vector), specifying which optimization runs are accepted
+An <code>integer</code> (vector), specifying which optimization runs are accepted
 based on the output code of <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p></li>
 <li><p><code>gradtol</code> (<code>1e-6</code>):
-A positive numeric value, passed on to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p></li>
+A positive <code>numeric</code> value, passed on to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p></li>
 <li><p><code>iterlim</code> (<code>200</code>):
-A positive integer, passed on to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p></li>
+A positive <code>integer</code>, passed on to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p></li>
 <li><p><code>print.level</code> (<code>0</code>):
 One of <code>0</code>, <code>1</code>, and <code>2</code>, passed on to
 <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p></li>
 <li><p><code>steptol</code> (<code>1e-6</code>):
-A positive numeric value, passed on to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p></li>
+A positive <code>numeric</code> value, passed on to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p></li>
 </ul></li>
 </ul></dd>
 

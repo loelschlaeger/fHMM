@@ -80,24 +80,25 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>markov_chain</dt>
-<dd><p>A numeric vector of states of a Markov chain.</p></dd>
+<dd><p>A <code>numeric</code> vector of states of a Markov chain.</p></dd>
 
 
 <dt>sdd</dt>
-<dd><p>The name of the state-dependent distribution, one of <code>"t"</code>,
-<code>"gamma"</code>, and <code>"lnorm"</code>.</p></dd>
+<dd><p>A <code>character</code>, the name of the state-dependent distribution, one of
+<code>"t"</code>, <code>"gamma"</code>, and <code>"lnorm"</code>.</p></dd>
 
 
 <dt>mus</dt>
-<dd><p>A vector of expected values.</p></dd>
+<dd><p>A <code>numeric</code> vector of expected values.</p></dd>
 
 
 <dt>sigmas</dt>
-<dd><p>A vector of standard deviations.</p></dd>
+<dd><p>A <code>numeric</code> vector of standard deviations.</p></dd>
 
 
 <dt>dfs</dt>
-<dd><p>A vector of degrees of freedom (only relevant if <code>sdd = "t"</code>).</p></dd>
+<dd><p>A <code>numeric</code> vector of degrees of freedom.
+Only relevant if <code>sdd = "t"</code>.</p></dd>
 
 
 <dt>seed</dt>
@@ -105,15 +106,15 @@
 
 
 <dt>total_length</dt>
-<dd><p>An integer, the total length of the output vector. Must be greater or equal
-than <code>length(markov_chain)</code>.</p></dd>
+<dd><p>An <code>integer</code>, the total length of the output vector.
+Must be greater or equal than <code>length(markov_chain)</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A numeric vector of length <code>total_length</code>, where the first
+<p>A <code>numeric</code> vector of length <code>total_length</code>, where the first
 <code>length(markov_chain)</code> elements are numeric values and the last
 <code>total_length - length(markov_chain)</code> elements are <code>NA_real_</code>.</p>
     </div>
