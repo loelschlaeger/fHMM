@@ -26,11 +26,13 @@ reference:
   - download_data
   - prepare_data
   - fHMM_parameters
+  - fHMM_data
   - plot.fHMM_data
 - title: Model estimation
   desc: Use these function for model estimation and state decoding.
   contents:
   - fit_model
+  - fHMM_model
   - decode_states
   - reorder_states
 - title: Model evaluation
