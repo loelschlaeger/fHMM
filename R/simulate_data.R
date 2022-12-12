@@ -6,12 +6,12 @@
 #' @inheritParams prepare_data
 #'
 #' @return
-#' A list containing the following elements:
+#' A \code{list} containing the following elements:
 #' \itemize{
-#'  \item the matrix of \code{time_points},
-#'  \item the matrix of the simulated \code{markov_chain},
-#'  \item the matrix of the simulated \code{data},
-#'  \item the vector of fine-scale chunk sizes \code{T_star} if
+#'  \item the \code{matrix} of \code{time_points},
+#'  \item the \code{matrix} of the simulated \code{markov_chain},
+#'  \item the \code{matrix} of the simulated \code{data},
+#'  \item the \code{numeric} vector of fine-scale chunk sizes \code{T_star} if
 #'        \code{controls$hierarchy = TRUE}.
 #' }
 #'
@@ -27,9 +27,7 @@ simulate_data <- function(controls, true_parameters, seed = NULL) {
     stop("'controls' is not of class 'fHMM_controls'.", call. = FALSE)
   }
   if (!inherits(true_parameters, "fHMM_parameters")) {
-    stop("'true_parameters' is not of class 'fHMM_parameters'.",
-      call. = FALSE
-    )
+    stop("'true_parameters' is not of class 'fHMM_parameters'.", call. = FALSE)
   }
   if (!controls$simulated) {
     stop("'controls$simulated' is not 'TRUE'.", call. = FALSE)
@@ -122,24 +120,25 @@ simulate_data <- function(controls, true_parameters, seed = NULL) {
 #' This function simulates state-dependent observations.
 #'
 #' @param markov_chain
-#' A numeric vector of states of a Markov chain.
+#' A \code{numeric} vector of states of a Markov chain.
 #' @param sdd
-#' The name of the state-dependent distribution, one of \code{"t"},
-#' \code{"gamma"}, and \code{"lnorm"}.
+#' A \code{character}, the name of the state-dependent distribution, one of 
+#' \code{"t"}, \code{"gamma"}, and \code{"lnorm"}.
 #' @param mus
-#' A vector of expected values.
+#' A \code{numeric} vector of expected values.
 #' @param sigmas
-#' A vector of standard deviations.
+#' A \code{numeric} vector of standard deviations.
 #' @param dfs
-#' A vector of degrees of freedom (only relevant if \code{sdd = "t"}).
+#' A \code{numeric} vector of degrees of freedom.
+#' Only relevant if \code{sdd = "t"}.
 #' @param seed
 #' Set a seed.
 #' @param total_length
-#' An integer, the total length of the output vector. Must be greater or equal
-#' than \code{length(markov_chain)}.
+#' An \code{integer}, the total length of the output vector.
+#' Must be greater or equal than \code{length(markov_chain)}.
 #'
 #' @return
-#' A numeric vector of length \code{total_length}, where the first
+#' A \code{numeric} vector of length \code{total_length}, where the first
 #' \code{length(markov_chain)} elements are numeric values and the last
 #' \code{total_length - length(markov_chain)} elements are \code{NA_real_}.
 #'
@@ -148,8 +147,10 @@ simulate_data <- function(controls, true_parameters, seed = NULL) {
 #'
 #' @importFrom stats rt rgamma
 
-simulate_observations <- function(markov_chain, sdd, mus, sigmas, dfs = NULL, seed = NULL,
-                                  total_length = length(markov_chain)) {
+simulate_observations <- function(
+    markov_chain, sdd, mus, sigmas, dfs = NULL, seed = NULL,
+    total_length = length(markov_chain)
+  ) {
 
   ### check inputs
   if (!all(is_number(markov_chain, int = TRUE, pos = TRUE))) {

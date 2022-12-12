@@ -16,12 +16,12 @@ By default, \code{true_parameters = NULL}, i.e., sampled true parameters.}
 No seed per default.}
 }
 \value{
-A list containing the following elements:
+A \code{list} containing the following elements:
 \itemize{
-\item the matrix of \code{time_points},
-\item the matrix of the simulated \code{markov_chain},
-\item the matrix of the simulated \code{data},
-\item the vector of fine-scale chunk sizes \code{T_star} if
+\item the \code{matrix} of \code{time_points},
+\item the \code{matrix} of the simulated \code{markov_chain},
+\item the \code{matrix} of the simulated \code{data},
+\item the \code{numeric} vector of fine-scale chunk sizes \code{T_star} if
 \code{controls$hierarchy = TRUE}.
 }
 }

@@ -4,7 +4,7 @@
 #' This function checks the input \code{events}.
 #'
 #' @param events
-#' A list of two elements.
+#' A \code{list} of two elements.
 #' * The first element is named \code{"dates"} and contains a \code{character}
 #'   vector in format \code{"YYYY-MM-DD"}.
 #' * The second element is named \code{"labels"} and is a \code{character} 

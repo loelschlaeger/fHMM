@@ -15,24 +15,25 @@ simulate_observations(
 )
 }
 \arguments{
-\item{markov_chain}{A numeric vector of states of a Markov chain.}
+\item{markov_chain}{A \code{numeric} vector of states of a Markov chain.}
 
-\item{sdd}{The name of the state-dependent distribution, one of \code{"t"},
-\code{"gamma"}, and \code{"lnorm"}.}
+\item{sdd}{A \code{character}, the name of the state-dependent distribution, one of
+\code{"t"}, \code{"gamma"}, and \code{"lnorm"}.}
 
-\item{mus}{A vector of expected values.}
+\item{mus}{A \code{numeric} vector of expected values.}
 
-\item{sigmas}{A vector of standard deviations.}
+\item{sigmas}{A \code{numeric} vector of standard deviations.}
 
-\item{dfs}{A vector of degrees of freedom (only relevant if \code{sdd = "t"}).}
+\item{dfs}{A \code{numeric} vector of degrees of freedom.
+Only relevant if \code{sdd = "t"}.}
 
 \item{seed}{Set a seed.}
 
-\item{total_length}{An integer, the total length of the output vector. Must be greater or equal
-than \code{length(markov_chain)}.}
+\item{total_length}{An \code{integer}, the total length of the output vector.
+Must be greater or equal than \code{length(markov_chain)}.}
 }
 \value{
-A numeric vector of length \code{total_length}, where the first
+A \code{numeric} vector of length \code{total_length}, where the first
 \code{length(markov_chain)} elements are numeric values and the last
 \code{total_length - length(markov_chain)} elements are \code{NA_real_}.
 }

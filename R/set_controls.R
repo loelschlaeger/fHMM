@@ -11,26 +11,26 @@
 #' A \code{list} of controls.
 #' Either none, all, or selected parameters can be specified.
 #' Unspecified parameters are set to default values (the values in brackets).
-#' If \code{hierarchy = TRUE}, parameters with a \code{(*)} must be a vector of
-#' length 2, where the first entry corresponds to the coarse-scale and the
-#' second entry to the fine-scale layer.
+#' If \code{hierarchy = TRUE}, parameters with a \code{(*)} must be a 
+#' \code{vector} of length 2, where the first entry corresponds to the 
+#' coarse-scale and the second entry to the fine-scale layer.
 #' \itemize{
 #'   \item \code{hierarchy} (\code{FALSE}):
-#'   A boolean, set to \code{TRUE} for an hierarchical HMM.
+#'   A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
 #'   \item \code{states} \code{(*)} (\code{2}):
-#'   The number of states of the underlying Markov chain.
+#'   An \code{integer}, the number of states of the underlying Markov chain.
 #'   \item \code{sdds} \code{(*)} (\code{"t(df = Inf)"}):
-#'   Specifying the state-dependent distribution, one of \code{"t"}, or 
-#'   \code{"gamma"} (the gamma distribution), or \code{"lnorm"} (the log-normal
-#'   distribution).
-#'   You can fix the parameters (mean \code{mu}, standard deviation \
-#'   code{sigma}, degrees of freedom \code{df}) of these distributions, e.g.
+#'   A \code{character}, specifying the state-dependent distribution.
+#'   One of \code{"t"}, or \code{"gamma"} (the gamma distribution), or 
+#'   \code{"lnorm"} (the log-normal distribution).
+#'   You can fix the parameters (mean \code{mu}, standard deviation 
+#'   \code{sigma}, degrees of freedom \code{df}) of these distributions, e.g.
 #'   \code{"t(df = Inf)"} or \code{"gamma(mu = 0, sigma = 1)"}, respectively.
-#'   To fix different values of one parameter for different states, separate by
+#'   To fix different values of a parameter for different states, separate by
 #'   "|", e.g. \code{"t(mu = -1|1)"}.
 #'   \item \code{horizon} \code{(*)} (\code{100}):
-#'   A numeric, specifying the length of the time horizon. The first entry
-#'   of \code{horizon} is ignored if \code{data} is specified.
+#'   A \code{numeric}, specifying the length of the time horizon. 
+#'   The first entry of \code{horizon} is ignored if \code{data} is specified.
 #'   \item \code{period} (\code{"m"}):
 #'   Only relevant if \code{hierarchy = TRUE} and 
 #'   \code{horizon[2] = NA_integer_}.
@@ -42,31 +42,31 @@
 #'     \item \code{"q"} for a quarter,
 #'     \item \code{"y"} for a year.
 #'   }
-#'   \item \code{data} (\code{NA}): A list of controls specifying the data. If
-#'   \code{data = NA}, data gets simulated. Otherwise:
+#'   \item \code{data} (\code{NA}): A \code{list} of controls specifying the data. 
+#'   If \code{data = NA}, data gets simulated. Otherwise:
 #'   \itemize{
 #'     \item \code{file} \code{(*)}:
-#'     A character, the path to a .csv-file with financial data, which must
+#'     A \code{character}, the path to a .csv-file with financial data, which must
 #'     have a column named \code{date_column} (with dates) and
 #'     \code{data_column} (with financial data).
 #'     \item \code{date_column} \code{(*)} (\code{"Date"}):
-#'     A character, the name of the column in \code{file} with dates. Can be
+#'     A \code{character}, the name of the column in \code{file} with dates. Can be
 #'     \code{NA_character_} in which case consecutive integers are used as time 
 #'     points.
 #'     \item \code{data_column} \code{(*)} (\code{"Close"}):
-#'     A character, the name of the column in \code{file} with financial data.
+#'     A \code{character}, the name of the column in \code{file} with financial data.
 #'     \item \code{from} (\code{NA_character_}):
-#'     A character of the format \code{"YYYY-MM-DD"}, setting a lower data
+#'     A \code{character} of the format \code{"YYYY-MM-DD"}, setting a lower data
 #'     limit. No lower limit if \code{from = NA_character_}. Ignored if
 #'     \code{controls$data$date_column} is \code{NA}.
 #'     \item \code{to} (\code{NA_character_}):
-#'     A character of the format \code{"YYYY-MM-DD"}, setting an upper data
+#'     A \code{character} of the format \code{"YYYY-MM-DD"}, setting an upper data
 #'     limit. No upper limit if \code{from = NA_character_}. Ignored if
 #'     \code{controls$data$date_column} is \code{NA_character_}.
 #'     \item \code{logreturns} \code{(*)} (\code{FALSE}):
-#'     A boolean, if \code{TRUE} the data is transformed to log-returns.
+#'     A \code{logical}, if \code{TRUE} the data is transformed to log-returns.
 #'     \item \code{merge} (\code{function(x) mean(x)}):
-#'     Only relevant if \code{hierarchy = TRUE}. In this case, a function,
+#'     Only relevant if \code{hierarchy = TRUE}. In this case, a \code{function},
 #'     which merges a numeric vector of fine-scale data \code{x} into one
 #'     coarse-scale observation. For example,
 #'     \itemize{
@@ -80,26 +80,26 @@
 #'       the relative change of the first to the last fine-scale observation.
 #'     }
 #'   }
-#'   \item \code{fit}: A list of controls specifying the model fitting:
+#'   \item \code{fit}: A \code{list} of controls specifying the model fitting:
 #'   \itemize{
 #'     \item \code{runs} (\code{100}):
-#'     An integer, setting the number of optimization runs.
+#'     An \code{integer}, setting the number of optimization runs.
 #'     \item \code{origin} (\code{FALSE}):
-#'     A boolean, if \code{TRUE} the optimization is initialized at the true
+#'     A \code{logical}, if \code{TRUE} the optimization is initialized at the true
 #'     parameter values. Only for simulated data. If \code{origin = TRUE}, this
 #'     sets \code{run = 1} and \code{accept = 1:5}.
 #'     \item \code{accept} (\code{1:3}):
-#'     An integer (vector), specifying which optimization runs are accepted
+#'     An \code{integer} (vector), specifying which optimization runs are accepted
 #'     based on the output code of \code{\link[stats]{nlm}}.
 #'     \item \code{gradtol} (\code{1e-6}):
-#'     A positive numeric value, passed on to \code{\link[stats]{nlm}}.
+#'     A positive \code{numeric} value, passed on to \code{\link[stats]{nlm}}.
 #'     \item \code{iterlim} (\code{200}):
-#'     A positive integer, passed on to \code{\link[stats]{nlm}}.
+#'     A positive \code{integer}, passed on to \code{\link[stats]{nlm}}.
 #'     \item \code{print.level} (\code{0}):
 #'     One of \code{0}, \code{1}, and \code{2}, passed on to
 #'     \code{\link[stats]{nlm}}.
 #'     \item \code{steptol} (\code{1e-6}):
-#'     A positive numeric value, passed on to \code{\link[stats]{nlm}}.
+#'     A positive \code{numeric} value, passed on to \code{\link[stats]{nlm}}.
 #'   }
 #' }
 #' 
@@ -123,6 +123,7 @@
 #' set_controls(controls)
 #' 
 #' @export
+#' 
 #' @importFrom utils read.csv
 
 set_controls <- function(controls = NULL) {
@@ -146,7 +147,9 @@ set_controls <- function(controls = NULL) {
       if (length(redundant_controls) > 0) {
         warning(
           "Element(s) ", paste(redundant_controls, collapse = ", "), 
-          " in 'controls' ignored.", call. = FALSE
+          " in 'controls' ignored.", 
+          "Did you missplled it?",
+          call. = FALSE
         )
         controls[redundant_controls] <- NULL
       }
@@ -155,7 +158,9 @@ set_controls <- function(controls = NULL) {
         if (length(redundant_controls) > 0) {
           warning(
             "Element(s) ", paste(redundant_controls, collapse = ", "), 
-            " in 'controls$data' ignored.", call. = FALSE
+            " in 'controls$data' ignored.", 
+            "Did you missplled it?",
+            call. = FALSE
           )
           controls[["data"]][redundant_controls] <- NULL
         }
@@ -165,7 +170,9 @@ set_controls <- function(controls = NULL) {
         if (length(redundant_controls) > 0) {
           warning(
             "Element(s) ", paste(redundant_controls, collapse = ", "), 
-            " in 'controls$fit' ignored.", call. = FALSE
+            " in 'controls$fit' ignored.", 
+            "Did you missplled it?",
+            call. = FALSE
           )
           controls[["fit"]][redundant_controls] <- NULL
         }

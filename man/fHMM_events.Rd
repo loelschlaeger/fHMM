@@ -10,7 +10,7 @@ fHMM_events(events)
 \method{print}{fHMM_events}(x, ...)
 }
 \arguments{
-\item{events}{A list of two elements.
+\item{events}{A \code{list} of two elements.
 \itemize{
 \item The first element is named \code{"dates"} and contains a \code{character}
 vector in format \code{"YYYY-MM-DD"}.

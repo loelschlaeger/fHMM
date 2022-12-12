@@ -1,3 +1,65 @@
+#' Constructor of an \code{fHMM_data} object
+#'
+#' @description
+#' This function constructs an object of class \code{fHMM_data}, which contains
+#' the financial data for modeling.
+#' 
+#' @param dates
+#' TODO
+#' @param time_points
+#' TODO
+#' @param markov_chain
+#' TODO
+#' @param data
+#' TODO
+#' @param time_series
+#' TODO
+#' @param T_star
+#' TODO
+#' @param controls
+#' TODO
+#' @param true_parameters
+#' TODO
+#' 
+#' @return 
+#' An object of class \code{\link{fHMM_data}}, which is a \code{list} containing 
+#' the following elements:
+#' \itemize{
+#'  \item The \code{matrix} of the \code{dates} if \code{simulated = FALSE} and
+#'        \code{controls$data$data_column} is specified,
+#'  \item the \code{matrix} of the \code{time_points} if \code{simulated = TRUE} 
+#'        or \code{controls$data$data_column} is not specified,
+#'  \item the \code{matrix} of the simulated \code{markov_chain} if
+#'        \code{simulated = TRUE},
+#'  \item the \code{matrix} of the simulated or empirical \code{data} used for 
+#'        estimation,
+#'  \item the \code{matrix} \code{time_series} of empirical data before the 
+#'        transformation to log-returns if \code{simulated = FALSE},
+#'  \item the \code{vector} of fine-scale chunk sizes \code{T_star} if
+#'        \code{controls$hierarchy = TRUE},
+#'  \item the input \code{controls},
+#'  \item the \code{true_parameters}.
+#' }
+
+fHMM_data <- function(
+    dates, time_points, markov_chain, data, time_series, T_star, controls, 
+    true_parameters
+) {
+  structure(
+    list(
+      "dates" = dates,
+      "time_points" = time_points,
+      "markov_chain" = markov_chain,
+      "data" = data,
+      "time_series" = time_series,
+      "T_star" = T_star,
+      "controls" = controls,
+      "true_parameters" = true_parameters
+    ),
+    class = "fHMM_data"
+  )
+}
+
 #' Prepare data
 #'
 #' @description
@@ -13,23 +75,7 @@
 #' No seed per default.
 #'
 #' @return
-#' An object of class \code{fHMM_data}, which is a \code{list} containing the 
-#' following elements:
-#' \itemize{
-#'  \item The \code{matrix} of the \code{dates} if \code{simulated = FALSE} and
-#'        \code{controls$data$data_column} is specified,
-#'  \item the \code{matrix} of the \code{time_points} if \code{simulated = TRUE} or
-#'        \code{controls$data$data_column} is not specified,
-#'  \item the \code{matrix} of the simulated \code{markov_chain} if
-#'        \code{simulated = TRUE},
-#'  \item the \code{matrix} of the simulated or empirical \code{data} used for estimation,
-#'  \item the \code{matrix} \code{time_series} of empirical data before the transformation
-#'        to log-returns if \code{simulated = FALSE},
-#'  \item the \code{vector} of fine-scale chunk sizes \code{T_star} if
-#'        \code{controls$hierarchy = TRUE},
-#'  \item the input \code{controls},
-#'  \item the \code{true_parameters}.
-#' }
+#' An object of class \code{\link{fHMM_data}}.
 #'
 #' @examples
 #' controls <- set_controls()
@@ -53,28 +99,27 @@ prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
       stop("'true_parameters' is not of class 'fHMM_parameters'.", 
            call. = FALSE)
     }
-    data <- simulate_data(controls = controls, 
-                          true_parameters = true_parameters, seed = seed)
+    data <- simulate_data(
+      controls = controls, true_parameters = true_parameters, seed = seed
+    )
   } else {
     data <- read_data(controls)
   }
 
   ### build and return object of class 'fHMM_data'
-  data <- list(
-    "dates" = data$dates,
-    "time_points" = data$time_points,
-    "markov_chain" = data$markov_chain,
-    "data" = data$data,
-    "time_series" = data$time_series,
-    "T_star" = data$T_star,
-    "controls" = controls,
-    "true_parameters" = true_parameters
+  fHMM_data(
+    dates = data$dates,
+    time_points = data$time_points,
+    markov_chain = data$markov_chain,
+    data = data$data,
+    time_series = data$time_series,
+    T_star = data$T_star,
+    controls = controls,
+    true_parameters = true_parameters
   )
-  class(data) <- "fHMM_data"
-  return(data)
 }
 
-#' @rdname prepare_data
+#' @rdname fHMM_data
 #' @param x
 #' An object of class \code{fHMM_data}.
 #' @param ...
@@ -86,7 +131,7 @@ print.fHMM_data <- function(x, ...) {
   return(invisible(x))
 }
 
-#' @rdname prepare_data
+#' @rdname fHMM_data
 #' @param object
 #' An object of class \code{fHMM_data}.
 #' @param ...
