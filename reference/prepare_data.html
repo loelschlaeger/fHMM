@@ -56,7 +56,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Prepare data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/loelschlaeger/fHMM/blob/HEAD/R/prepare_data.R" class="external-link"><code>R/prepare_data.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/loelschlaeger/fHMM/blob/HEAD/R/fHMM_data.R" class="external-link"><code>R/fHMM_data.R</code></a></small>
       <div class="d-none name"><code>prepare_data.Rd</code></div>
     </div>
 
@@ -66,13 +66,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepare_data</span><span class="op">(</span><span class="va">controls</span>, true_parameters <span class="op">=</span> <span class="cn">NULL</span>, seed <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for fHMM_data</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for fHMM_data</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepare_data</span><span class="op">(</span><span class="va">controls</span>, true_parameters <span class="op">=</span> <span class="cn">NULL</span>, seed <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -90,38 +84,13 @@ By default, <code>true_parameters = NULL</code>, i.e., sampled true parameters.<
 <dd><p>Set a seed for the data simulation.
 No seed per default.</p></dd>
 
-
-<dt>x</dt>
-<dd><p>An object of class <code>fHMM_data</code>.</p></dd>
-
-
-<dt>...</dt>
-<dd><p>Currently not used.</p></dd>
-
-
-<dt>object</dt>
-<dd><p>An object of class <code>fHMM_data</code>.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>An object of class <code>fHMM_data</code>, which is a <code>list</code> containing the
-following elements:</p><ul><li><p>The <code>matrix</code> of the <code>dates</code> if <code>simulated = FALSE</code> and
-<code>controls$data$data_column</code> is specified,</p></li>
-<li><p>the <code>matrix</code> of the <code>time_points</code> if <code>simulated = TRUE</code> or
-<code>controls$data$data_column</code> is not specified,</p></li>
-<li><p>the <code>matrix</code> of the simulated <code>markov_chain</code> if
-<code>simulated = TRUE</code>,</p></li>
-<li><p>the <code>matrix</code> of the simulated or empirical <code>data</code> used for estimation,</p></li>
-<li><p>the <code>matrix</code> <code>time_series</code> of empirical data before the transformation
-to log-returns if <code>simulated = FALSE</code>,</p></li>
-<li><p>the <code>vector</code> of fine-scale chunk sizes <code>T_star</code> if
-<code>controls$hierarchy = TRUE</code>,</p></li>
-<li><p>the input <code>controls</code>,</p></li>
-<li><p>the <code>true_parameters</code>.</p></li>
-</ul></div>
+<p>An object of class <code><a href="fHMM_data.html">fHMM_data</a></code>.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
