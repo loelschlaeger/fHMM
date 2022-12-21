@@ -4,6 +4,7 @@
 #' This function reads financial data for the {fHMM} package.
 #'
 #' @inheritParams prepare_data
+#' 
 #' @return
 #' A list containing the following elements:
 #' \itemize{
@@ -17,8 +18,8 @@
 #'  \item the vector of fine-scale chunk sizes \code{T_star} if
 #'        \code{controls$hierarchy = TRUE}.
 #' }
-#' @keywords
-#' internal
+#' 
+#' @keywords internal
 #'
 #' @importFrom utils read.csv head
 
@@ -40,7 +41,6 @@ read_data <- function(controls) {
       header = TRUE, sep = ",", na.strings = "null"
     )
   }
-
 
   ### check columns in data
   date_column <- controls[["data"]][["date_column"]]

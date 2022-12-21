@@ -1,19 +1,23 @@
-#' Set and check controls
+#' Set and validate controls
 #' 
 #' @description
-#' This function sets and checks the specification of controls for the {fHMM}
-#' package.
+#' This function sets and validates the specification of controls for model 
+#' estimation with the \{fHMM\} package.
 #' 
 #' @details
-#' See the vignettes for more information on how to specify \code{controls}.
+#' See the vignettes for more details on how to specify \code{controls}.
 #' 
 #' @param controls
-#' A \code{list} of controls.
+#' A \code{list} of controls, see below.
+#' 
 #' Either none, all, or selected parameters can be specified.
-#' Unspecified parameters are set to default values (the values in brackets).
-#' If \code{hierarchy = TRUE}, parameters with a \code{(*)} must be a 
+#' Unspecified parameters are set to default values 
+#' (see the values in brackets below).
+#' 
+#' If \code{hierarchy = TRUE}, parameters marked with a \code{(*)} must be a 
 #' \code{vector} of length 2, where the first entry corresponds to the 
 #' coarse-scale and the second entry to the fine-scale layer.
+#' 
 #' \itemize{
 #'   \item \code{hierarchy} (\code{FALSE}):
 #'   A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
@@ -45,10 +49,15 @@
 #'   \item \code{data} (\code{NA}): A \code{list} of controls specifying the data. 
 #'   If \code{data = NA}, data gets simulated. Otherwise:
 #'   \itemize{
-#'     \item \code{file} \code{(*)}:
-#'     A \code{character}, the path to a .csv-file with financial data, which must
-#'     have a column named \code{date_column} (with dates) and
-#'     \code{data_column} (with financial data).
+#'     \item \code{file} \code{(*)}: Either:
+#'     \itemize{
+#'       \item A \code{data.frame}, which must have a column named 
+#'             \code{date_column} (with dates) and
+#'             \code{data_column} (with financial data).
+#'       \item A \code{character}, the path to a .csv-file with financial data, 
+#'             which must have a column named \code{date_column} (with dates) 
+#'             and \code{data_column} (with financial data).
+#'     }
 #'     \item \code{date_column} \code{(*)} (\code{"Date"}):
 #'     A \code{character}, the name of the column in \code{file} with dates. Can be
 #'     \code{NA_character_} in which case consecutive integers are used as time 
@@ -58,7 +67,7 @@
 #'     \item \code{from} (\code{NA_character_}):
 #'     A \code{character} of the format \code{"YYYY-MM-DD"}, setting a lower data
 #'     limit. No lower limit if \code{from = NA_character_}. Ignored if
-#'     \code{controls$data$date_column} is \code{NA}.
+#'     \code{controls$data$date_column} is \code{NA_character_}.
 #'     \item \code{to} (\code{NA_character_}):
 #'     A \code{character} of the format \code{"YYYY-MM-DD"}, setting an upper data
 #'     limit. No upper limit if \code{from = NA_character_}. Ignored if
@@ -66,7 +75,8 @@
 #'     \item \code{logreturns} \code{(*)} (\code{FALSE}):
 #'     A \code{logical}, if \code{TRUE} the data is transformed to log-returns.
 #'     \item \code{merge} (\code{function(x) mean(x)}):
-#'     Only relevant if \code{hierarchy = TRUE}. In this case, a \code{function},
+#'     Only relevant if \code{hierarchy = TRUE}. In this case, a \code{function}
+#'     with one argument \code{x},
 #'     which merges a numeric vector of fine-scale data \code{x} into one
 #'     coarse-scale observation. For example,
 #'     \itemize{
@@ -74,7 +84,7 @@
 #'       fine-scale data as the coarse-scale observation,
 #'       \item \code{merge = function(x) mean(abs(x))} for the mean of the
 #'       absolute values,
-#'       \item \code{merge = function(x) (abs(x))} for the sum of of the
+#'       \item \code{merge = function(x) sum(abs(x))} for the sum of of the
 #'       absolute values,
 #'       \item \code{merge = function(x) (tail(x,1)-head(x,1))/head(x,1)} for
 #'       the relative change of the first to the last fine-scale observation.
@@ -107,20 +117,52 @@
 #' An object of class \code{fHMM_controls}.
 #' 
 #' @examples
-#' ### HMM controls
+#' ### HMM controls for simulation
 #' controls <- list(
 #'   states  = 2,
-#'   sdds    = "t(mu = 0, sigma = 1, df = 1)",
-#'   horizon = 400,
+#'   sdds    = "t(mu = 0)",
 #'   fit     = list("runs" = 50)
 #' )
 #' set_controls(controls)
-#'
-#' ### HHMM controls
+#' 
+#' ### HMM controls with empirical data 
+#' data <- data.frame(
+#'   "date" = as.Date("2022-01-01") + 0:364,
+#'   "data"  = abs(c(0, cumsum(rnorm(364,0,sqrt(10/364)))))
+#' )
 #' controls <- list(
-#'   hierarchy = TRUE
+#'   states  = 3,
+#'   sdds    = "lnorm",
+#'   data    = list(
+#'     "file"        = data, 
+#'     "date_column" = "date", 
+#'     "data_column" = "data"
+#'   )
 #' )
 #' set_controls(controls)
+#' 
+#' ### HMM controls with empirical data from .csv-file
+#' controls <- list(
+#'   states  = 4,
+#'   sdds    = "t",
+#'   data    = list(
+#'     "file"        = system.file("extdata", "dax.csv", package = "fHMM"), 
+#'     "date_column" = "Date", 
+#'     "data_column" = "Close",
+#'     "logreturns"  = TRUE
+#'   )
+#' )
+#' set_controls(controls)
+#'
+#' ### HHMM controls for simulation
+#' controls <- list(
+#'   hierarchy = TRUE,
+#'   states    = c(3,2)
+#' )
+#' set_controls(controls)
+#' 
+#' ### HHMM controls with empirical data
+#' TODO (data is list)
 #' 
 #' @export
 #' 
@@ -134,12 +176,9 @@ set_controls <- function(controls = NULL) {
     }
 
     ### define names of all controls
-    all_controls <- c("hierarchy", "states", "sdds", "horizon", "period", 
-                      "data", "fit")
-    data_controls <- c("file", "date_column", "data_column", "from", "to", 
-                       "logreturns", "merge")
-    fit_controls <- c("runs", "origin", "accept", "gradtol", "iterlim", 
-                      "print.level", "steptol")
+    all_controls <- c("hierarchy", "states", "sdds", "horizon", "period", "data", "fit")
+    data_controls <- c("file", "date_column", "data_column", "from", "to", "logreturns", "merge")
+    fit_controls <- c("runs", "origin", "accept", "gradtol", "iterlim", "print.level", "steptol")
 
     ### check redundant controls
     if (!is.null(controls)) {
@@ -148,7 +187,7 @@ set_controls <- function(controls = NULL) {
         warning(
           "Element(s) ", paste(redundant_controls, collapse = ", "), 
           " in 'controls' ignored.", 
-          "Did you missplled it?",
+          " Did you missplled it?",
           call. = FALSE
         )
         controls[redundant_controls] <- NULL
@@ -469,5 +508,5 @@ print.fHMM_controls <- function(x, ...) {
     "* number of runs:", x[["fit"]][["runs"]],
     ifelse(x[["fit"]][["at_true"]], "(initialised at true values)", ""), "\n"
   )
-  return(invisible(x))
+  invisible(x)
 }

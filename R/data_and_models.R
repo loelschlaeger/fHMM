@@ -1,3 +1,35 @@
+#' DAX data
+#' 
+#' @description 
+#' DAX data from ... to ... scraped from ...
+#' TODO
+#' 
+#' @details 
+#' The data was obtained via ... 
+#' TODO
+#' 
+#' @format A \code{data.frame} with the columns:
+#' TODO
+#' 
+#' @keywords data
+"dax"
+
+#' VW data
+#' 
+#' @description 
+#' VW data from ... to ... scraped from ...
+#' TODO
+#' 
+#' @details 
+#' The data was obtained via ...
+#' TODO
+#' 
+#' @format A \code{data.frame} with the columns:
+#' TODO
+#' 
+#' @keywords data
+"vw"
+
 #' DAX 2-state HMM with normal distributions
 #'
 #' @description
@@ -13,20 +45,22 @@
 #' controls <- list(
 #'   states = 2,
 #'   sdds   = "t(df = Inf)",
-#'   data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
-#'                 date_column = "Date",
-#'                 data_column = "Close",
-#'                 logreturns  = TRUE,
-#'                 from        = "2000-01-03",
-#'                 to          = "2021-12-31"),
+#'   data   = list(
+#'     file        = system.file("extdata", "dax.csv", package = "fHMM"),
+#'     date_column = "Date",
+#'     data_column = "Close",
+#'     logreturns  = TRUE,
+#'     from        = "2000-01-03",
+#'     to          = "2021-12-31"
+#'    ),
 #'   fit    = list("runs" = 100)
-#'   )
+#' )
+#' TODO
 #' }
 #'
-#' @format An object of class \code{fHMM_model}.
+#' @format An object of class \code{\link{fHMM_model}}.
 #'
-#' @keywords
-#' model
+#' @keywords model
 "dax_model_2n"
 
 #' DAX 3-state HMM with t-distributions
@@ -44,20 +78,22 @@
 #' controls <- list(
 #'   states = 3,
 #'   sdds   = "t",
-#'   data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
-#'                 date_column = "Date",
-#'                 data_column = "Close",
-#'                 logreturns  = TRUE,
-#'                 from        = "2000-01-03",
-#'                 to          = "2021-12-31"),
+#'   data   = list(
+#'     file        = system.file("extdata", "dax.csv", package = "fHMM"),
+#'     date_column = "Date",
+#'     data_column = "Close",
+#'     logreturns  = TRUE,
+#'     from        = "2000-01-03",
+#'     to          = "2021-12-31"
+#'   ),
 #'   fit    = list("runs" = 100)
-#'   )
+#' )
+#' TODO
 #' }
 #'
-#' @format An object of class \code{fHMM_model}.
+#' @format An object of class \code{\link{fHMM_model}}.
 #'
-#' @keywords
-#' model
+#' @keywords model
 "dax_model_3t"
 
 #' DAX/VW hierarchical HMM with t(1)-distributions 
@@ -79,18 +115,19 @@
 #'   states    = c(2,2),
 #'   sdds      = c("t(df = 1)", "t(df = 1)"),
 #'   period    = "m",
-#'   data      = list(file = c(system.file("extdata", "dax.csv", package = "fHMM"),
-#'                             system.file("extdata", "vw.csv", package = "fHMM")),
-#'                    from = "2015-01-01",
-#'                    to = "2020-01-01",
-#'                    logreturns = c(TRUE,TRUE))
+#'   data      = list(
+#'     file = c(system.file("extdata", "dax.csv", package = "fHMM"),
+#'              system.file("extdata", "vw.csv", package = "fHMM")),
+#'     from = "2015-01-01",
+#'     to = "2020-01-01",
+#'     logreturns = c(TRUE,TRUE))
 #' )
+#' TODO
 #' }
 #'
-#' @format An object of class \code{fHMM_model}.
+#' @format An object of class \code{\link{fHMM_model}}.
 #'
-#' @keywords
-#' model
+#' @keywords model
 "dax_vw_model"
 
 #' Simulated 2-state HMM with gamma distributions
@@ -119,10 +156,9 @@
 #' sim_model_2gamma <- fit_model(data, seed = 1, verbose = TRUE)
 #' }
 #'
-#' @format An object of class \code{fHMM_model}.
+#' @format An object of class \code{\link{fHMM_model}}.
 #'
-#' @keywords
-#' model
+#' @keywords model
 "sim_model_2gamma"
 
 #' Simulated 4-state HMM with log-normal distributions
@@ -147,8 +183,7 @@
 #' sim_model_4lnorm <- fit_model(data, seed = 1, verbose = TRUE)
 #' }
 #'
-#' @format An object of class \code{fHMM_model}.
+#' @format An object of class \code{\link{fHMM_model}}.
 #'
-#' @keywords
-#' model
+#' @keywords model
 "sim_model_4lnorm"
