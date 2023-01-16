@@ -27,11 +27,11 @@ A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
 An \code{integer}, the number of states of the underlying Markov chain.
 \item \code{sdds} \code{(*)} (\code{"t(df = Inf)"}):
 A \code{character}, specifying the state-dependent distribution.
-One of \code{"t"}, or \code{"gamma"} (the gamma distribution), or
-\code{"lnorm"} (the log-normal distribution).
+One of \code{"t"} (the t-distribution), or \code{"gamma"}
+(the gamma distribution), or \code{"lnorm"} (the log-normal distribution).
 You can fix the parameters (mean \code{mu}, standard deviation
-\code{sigma}, degrees of freedom \code{df}) of these distributions, e.g.
-\code{"t(df = Inf)"} or \code{"gamma(mu = 0, sigma = 1)"}, respectively.
+\code{sigma}, degrees of freedom \code{df}) of these distributions via,
+e.g., \code{"t(df = Inf)"} or \code{"gamma(mu = 0, sigma = 1)"}.
 To fix different values of a parameter for different states, separate by
 "|", e.g. \code{"t(mu = -1|1)"}.
 \item \code{horizon} \code{(*)} (\code{100}):
@@ -39,41 +39,46 @@ A \code{numeric}, specifying the length of the time horizon.
 The first entry of \code{horizon} is ignored if \code{data} is specified.
 \item \code{period} (\code{"m"}):
 Only relevant if \code{hierarchy = TRUE} and
-\code{horizon[2] = NA_integer_}.
-In this case, it specifies a flexible, periodic fine-scale time horizon
-and can be one of
+\code{horizon[2] = NA}.
+In this case, a \code{character} which specifies a flexible, periodic
+fine-scale time horizon and can be one of
 \itemize{
 \item \code{"w"} for a week,
 \item \code{"m"} for a month,
 \item \code{"q"} for a quarter,
 \item \code{"y"} for a year.
 }
-\item \code{data} (\code{NA}): A \code{list} of controls specifying the data.
-If \code{data = NA}, data gets simulated. Otherwise:
+\item \code{data} (\code{NA}): A \code{list} of controls specifying the
+data. If \code{data = NA}, data gets simulated (default). Otherwise:
 \itemize{
 \item \code{file} \code{(*)}: Either:
 \itemize{
 \item A \code{data.frame}, which must have a column named
 \code{date_column} (with dates) and
 \code{data_column} (with financial data).
+If \code{hierarchy = TRUE}, this \code{data.frame} is used for
+both the coarse- and the fine-scale layer. To have different
+data sets for theses layers, \code{file} can be a \code{list}
+of two \code{data.frame}.
 \item A \code{character}, the path to a .csv-file with financial data,
 which must have a column named \code{date_column} (with dates)
 and \code{data_column} (with financial data).
 }
 \item \code{date_column} \code{(*)} (\code{"Date"}):
-A \code{character}, the name of the column in \code{file} with dates. Can be
-\code{NA_character_} in which case consecutive integers are used as time
-points.
+A \code{character}, the name of the column in \code{file} with dates.
+Can be \code{NA} in which case consecutive integers are used
+as time points.
 \item \code{data_column} \code{(*)} (\code{"Close"}):
-A \code{character}, the name of the column in \code{file} with financial data.
-\item \code{from} (\code{NA_character_}):
-A \code{character} of the format \code{"YYYY-MM-DD"}, setting a lower data
-limit. No lower limit if \code{from = NA_character_}. Ignored if
-\code{controls$data$date_column} is \code{NA_character_}.
-\item \code{to} (\code{NA_character_}):
-A \code{character} of the format \code{"YYYY-MM-DD"}, setting an upper data
-limit. No upper limit if \code{from = NA_character_}. Ignored if
-\code{controls$data$date_column} is \code{NA_character_}.
+A \code{character}, the name of the column in \code{file} with financial
+data.
+\item \code{from} (\code{NA}):
+A \code{character} of the format \code{"YYYY-MM-DD"}, setting a lower
+data limit. No lower limit if \code{from = NA}. Ignored if
+\code{controls$data$date_column} is \code{NA}.
+\item \code{to} (\code{NA}):
+A \code{character} of the format \code{"YYYY-MM-DD"}, setting an upper
+data limit. No upper limit if \code{from = NA}. Ignored if
+\code{controls$data$date_column} is \code{NA}.
 \item \code{logreturns} \code{(*)} (\code{FALSE}):
 A \code{logical}, if \code{TRUE} the data is transformed to log-returns.
 \item \code{merge} (\code{function(x) mean(x)}):
@@ -95,21 +100,22 @@ the relative change of the first to the last fine-scale observation.
 \item \code{fit}: A \code{list} of controls specifying the model fitting:
 \itemize{
 \item \code{runs} (\code{100}):
-An \code{integer}, setting the number of optimization runs.
+An \code{integer}, setting the number of randomly initialized
+optimization runs from which the best one is selected as the final model.
 \item \code{origin} (\code{FALSE}):
-A \code{logical}, if \code{TRUE} the optimization is initialized at the true
-parameter values. Only for simulated data. If \code{origin = TRUE}, this
-sets \code{run = 1} and \code{accept = 1:5}.
+A \code{logical}, if \code{TRUE} the optimization is initialized at the
+true parameter values. Only for simulated data. If \code{origin = TRUE},
+this sets \code{run = 1} and \code{accept = 1:5}.
 \item \code{accept} (\code{1:3}):
-An \code{integer} (vector), specifying which optimization runs are accepted
-based on the output code of \code{\link[stats]{nlm}}.
+An \code{integer} (vector), specifying which optimization runs are
+accepted based on the output code of \code{\link[stats]{nlm}}.
 \item \code{gradtol} (\code{1e-6}):
 A positive \code{numeric} value, passed on to \code{\link[stats]{nlm}}.
 \item \code{iterlim} (\code{200}):
 A positive \code{integer}, passed on to \code{\link[stats]{nlm}}.
 \item \code{print.level} (\code{0}):
-One of \code{0}, \code{1}, and \code{2}, passed on to
-\code{\link[stats]{nlm}}.
+One of \code{0}, \code{1}, and \code{2} to control the verbosity of the
+optimization, passed on to \code{\link[stats]{nlm}}.
 \item \code{steptol} (\code{1e-6}):
 A positive \code{numeric} value, passed on to \code{\link[stats]{nlm}}.
 }
@@ -139,17 +145,14 @@ controls <- list(
 set_controls(controls)
 
 ### HMM controls with empirical data 
-data <- data.frame(
-  "date" = as.Date("2022-01-01") + 0:364,
-  "data"  = abs(c(0, cumsum(rnorm(364,0,sqrt(10/364)))))
-)
+data <- download_data("^GDAXI", file = NULL)
 controls <- list(
   states  = 3,
   sdds    = "lnorm",
   data    = list(
     "file"        = data, 
-    "date_column" = "date", 
-    "data_column" = "data"
+    "date_column" = "Date", 
+    "data_column" = "Adj.Close"
   )
 )
 set_controls(controls)
@@ -175,6 +178,6 @@ controls <- list(
 set_controls(controls)
 
 ### HHMM controls with empirical data
-TODO (data is list)
+# TODO (data is list)
 
 }

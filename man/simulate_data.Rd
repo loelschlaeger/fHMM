@@ -26,6 +26,6 @@ A \code{list} containing the following elements:
 }
 }
 \description{
-This function simulates data for the {fHMM} package.
+This helper function simulates data for the \{fHMM\} package.
 }
 \keyword{internal}

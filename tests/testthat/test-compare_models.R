@@ -1,6 +1,4 @@
 test_that("model comparison works", {
-  data("dax_model_2n")
-  data("dax_model_3t")
   comparison <- compare_models(dax_model_2n, dax_model_3t)
   expect_s3_class(comparison, "data.frame")
   expect_named(comparison, c("parameters", "loglikelihood", "AIC", "BIC"))
@@ -13,7 +11,6 @@ test_that("model comparison works", {
     )           
   )
   expect_error(compare_models("not_an_fHMM_model"))
-  data("sim_model_2gamma")
   expect_warning(
     compare_models(dax_model_2n, sim_model_2gamma),
     "are not estimated on the same data"

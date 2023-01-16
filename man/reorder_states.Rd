@@ -2,12 +2,12 @@
 % Please edit documentation in R/reorder_states.R
 \name{reorder_states}
 \alias{reorder_states}
-\title{Reordering of estimated states}
+\title{Reorder estimated states}
 \usage{
 reorder_states(x, state_order)
 }
 \arguments{
-\item{x}{An object of class \code{fHMM_model}.}
+\item{x}{An object of class \code{\link{fHMM_model}}.}
 
 \item{state_order}{A vector or a matrix which determines the new ordering.
 \itemize{
@@ -30,14 +30,13 @@ coarse-scale states and the fine-scale states of coarse-scale state 2.
 }}
 }
 \value{
-An object of class \code{fHMM_model}, in which states are reordered.
+An object of class \code{\link{fHMM_model}}, in which states are reordered.
 }
 \description{
 This function reorders the estimated states, which can be useful for a
 comparison to true parameters or the interpretation of states.
 }
 \examples{
-data("dax_model_3t")
 reorder_states(dax_model_3t, state_order = 3:1)
 
 }

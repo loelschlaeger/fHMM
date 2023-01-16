@@ -3,7 +3,7 @@
 \name{fHMM_parameters}
 \alias{fHMM_parameters}
 \alias{print.fHMM_parameters}
-\title{Setting and checking model parameters}
+\title{Set and check model parameters}
 \usage{
 fHMM_parameters(
   controls,
@@ -69,7 +69,7 @@ scaling.}
 An object of class \code{fHMM_parameters}.
 }
 \description{
-This function sets and checks model parameters for the {fHMM} package.
+This function sets and checks model parameters for the \{fHMM\} package.
 }
 \details{
 See the vignette on the model definition for more details.

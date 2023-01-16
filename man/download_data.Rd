@@ -16,27 +16,31 @@ download_data(
 \item{symbol}{A \code{character}, the stock's symbol. It must match the identifier on
 \url{https://finance.yahoo.com/}.}
 
-\item{from}{A \code{character}, a date in format "YYYY-MM-DD", setting the lower data
-bound. Must not be earlier than \code{"1902-01-01"}.}
+\item{from}{A \code{character}, a date in format \code{"YYYY-MM-DD"}, setting the lower
+data bound. Must not be earlier than \code{"1902-01-01"} (default).}
 
-\item{to}{A \code{character}, a date in format "YYYY-MM-DD", setting the upper data
-bound. Default is the current date \code{Sys.date()}.}
+\item{to}{A \code{character}, a date in format \code{"YYYY-MM-DD"}, setting the upper
+data bound. Default is the current date \code{Sys.date()}.}
 
-\item{file}{A \code{character}, the name of the file where the \code{.csv}-file is saved.
-Per default, it is saved in the current working directory with the name
-"\code{symbol}.csv".}
+\item{file}{Either
+\itemize{
+\item \code{NULL} to return the data as a \code{data.frame},
+\item or a \code{character}, the name of the file where the data is saved as a
+\code{.csv}-file.
+By default, the data is saved in the current working directory with the name
+"\code{symbol}.csv".
+}}
 
-\item{verbose}{If \code{TRUE} returns information about download success.}
+\item{verbose}{Set to \code{TRUE} to return information about download success.}
 }
 \value{
-No return value.
+A \code{data.frame} if \code{file = NULL}.
 }
 \description{
-This function downloads stock data from \url{https://finance.yahoo.com/} and
-saves it as a \code{.csv}-file.
+This function downloads stock data from \url{https://finance.yahoo.com/}.
 }
 \details{
-The downloaded data is a \code{.csv}-file with the following columns:
+The downloaded data has the following columns:
 \itemize{
 \item \code{Date}: The date.
 \item \code{Open}: Opening price.
@@ -49,9 +53,7 @@ The downloaded data is a \code{.csv}-file with the following columns:
 }
 \examples{
 ### download 21st century DAX data
-download_data(
-  symbol = "^GDAXI", from = "2000-01-03",
-  file = paste0(tempfile(), ".csv")
-)
+data <- download_data(symbol = "^GDAXI", from = "2000-01-03", file = NULL)
+head(data)
 
 }

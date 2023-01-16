@@ -2,7 +2,7 @@
 % Please edit documentation in R/compute_T_star.R
 \name{compute_T_star}
 \alias{compute_T_star}
-\title{Computing lengths of fine-scale chunks}
+\title{Compute lengths of fine-scale chunks}
 \usage{
 compute_T_star(horizon, period, dates = NULL, seed = NULL)
 }

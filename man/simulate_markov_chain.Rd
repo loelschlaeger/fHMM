@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{simulate_markov_chain}
 \alias{simulate_markov_chain}
-\title{Simulate a Markov chain}
+\title{Simulate Markov chain}
 \usage{
 simulate_markov_chain(
   Gamma,

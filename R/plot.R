@@ -6,7 +6,7 @@
 #' @param x
 #' An object of class \code{fHMM_data}.
 #' @param events
-#' Either \code{NULL} or an object of class \code{fHMM_events}.
+#' Either \code{NULL} or an object of class \code{\link{fHMM_events}}.
 #' @param ...
 #' Ignored.
 #'
@@ -19,15 +19,15 @@ plot.fHMM_data <- function(x, events = NULL, ...) {
 
   ### check input
   if (!inherits(x, "fHMM_data")) {
-    stop("'x' is not of class 'fHMM_data'.")
+    stop("'x' is not of class 'fHMM_data'.", call. = FALSE)
   }
   if (!is.null(events)) {
     if (!inherits(events, "fHMM_events")) {
-      stop("'events' is not of class 'fHMM_events'.")
+      stop("'events' is not of class 'fHMM_events'.", call. = FALSE)
     }
     if (x$controls$simulated) {
       events <- NULL
-      warning("Can't have 'events' for simulated data.")
+      warning("Can't have 'events' for simulated data.", call. = FALSE)
     }
   }
 
@@ -36,13 +36,14 @@ plot.fHMM_data <- function(x, events = NULL, ...) {
 }
 
 
-#' Plot method for an object of class \code{fHMM_model}
+#' Plot method for an object of class \code{\link{fHMM_model}}
 #'
 #' @description
-#' This function is the plot method for an object of class \code{fHMM_model}.
+#' This function is the plot method for an object of class 
+#' \code{\link{fHMM_model}}.
 #'
 #' @param x
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{\link{fHMM_model}}.
 #' @param plot_type
 #' A character (vector), specifying the type of plot and can be one (or more) of
 #' \itemize{
@@ -54,7 +55,7 @@ plot.fHMM_data <- function(x, events = NULL, ...) {
 #'   \item \code{"ts"} for a visualization of the financial time series.
 #' }
 #' @param events
-#' An object of class \code{fHMM_events}.
+#' An object of class \code{\link{fHMM_events}}.
 #' @inheritParams fHMM_colors
 #' @param ...
 #' Ignored.
@@ -68,16 +69,16 @@ plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, .
 
   ### check input
   if (!inherits(x, "fHMM_model")) {
-    stop("'x' is not of class 'fHMM_model'.")
+    stop("'x' is not of class 'fHMM_model'.", call. = FALSE)
   }
   plot_type <- intersect(plot_type, c("ll", "sdds", "pr", "ts"))
   if (!is.null(events)) {
-    if (x$data$controls$simulated) {
-      warning("cannot display events")
-      events <- NULL
-    }
     if (!inherits(events, "fHMM_events")) {
-      stop("'events' is not of class 'fHMM_events'.")
+      stop("'events' is not of class 'fHMM_events'.", call. = FALSE)
+    }
+    if (x$data$controls$simulated) {
+      events <- NULL
+      warning("Can't have 'events' for simulated data.", call. = FALSE)
     }
   }
 
@@ -258,8 +259,7 @@ plot_pr <- function(residuals, hierarchy) {
 #' @return
 #' No return value. Draws a plot to the current device.
 #'
-#' @keywords
-#' internal
+#' @keywords internal
 #'
 #' @importFrom graphics par lines legend layout
 #' @importFrom stats dt dgamma
@@ -404,13 +404,12 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 #' Either \code{NULL} or an object of class \code{fHMM_colors}.
 #' Ignored if \code{decoding = NULL}.
 #' @param events
-#' Either \code{NULL} or an object of class \code{fHMM_events}.
+#' Either \code{NULL} or an object of class \code{\link{fHMM_events}}.
 #'
 #' @return
 #' No return value. Draws a plot to the current device.
 #'
-#' @keywords
-#' internal
+#' @keywords internal
 #'
 #' @importFrom graphics par abline mtext points layout plot.new text
 #' @importFrom grDevices rgb
@@ -582,7 +581,7 @@ plot_ts <- function(data, decoding, colors, events) {
     events[["labels"]] <- events[["labels"]][events[["dates"]] > xmin & events[["dates"]] < xmax]
     events[["dates"]] <- events[["dates"]][events[["dates"]] > xmin & events[["dates"]] < xmax]
     if (length(events[["dates"]]) == 0) {
-      warning("No events fall in the considered time period.")
+      warning("No events fall in the considered time period.", call. = FALSE)
     } else {
       for (l in seq_len(length(events[["dates"]]))) {
         if (events[["dates"]][l] > xmin & events[["dates"]][l] < xmax) {

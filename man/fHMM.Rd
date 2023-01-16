@@ -3,7 +3,7 @@
 \docType{package}
 \name{fHMM}
 \alias{fHMM}
-\title{fHMM: An R package for fitting hidden Markov models to financial data}
+\title{fHMM: Fitting Hidden Markov Models to Financial Data}
 \description{
 This package provides tools for modeling financial data via
 the (hierarchical) hidden Markov model.

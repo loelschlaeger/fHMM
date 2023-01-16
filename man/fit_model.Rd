@@ -10,7 +10,7 @@ fit_model(data, ncluster = 1, seed = NULL, verbose = TRUE, init = NULL)
 \method{print}{fHMM_model}(x, ...)
 }
 \arguments{
-\item{data}{An object of class \code{fHMM_data}.}
+\item{data}{An object of class \code{\link{fHMM_data}}.}
 
 \item{ncluster}{Set the number of clusters for parallelization.
 By default, \code{ncluster = 1}.}
@@ -26,7 +26,7 @@ the element \code{model$estimate}. The initial values are computed via
 \code{replicate(n, jitter(init, amount = 1), simplify = FALSE)},
 where \code{n <- data$controls$fit$runs}.}
 
-\item{x}{An object of class \code{fHMM_model}.}
+\item{x}{An object of class \code{\link{fHMM_model}}.}
 
 \item{...}{Currently not used.}
 }
@@ -34,8 +34,9 @@ where \code{n <- data$controls$fit$runs}.}
 An object of class \code{\link{fHMM_model}}.
 }
 \description{
-This function fits a HMM to \code{data} via maximum likelihood estimation.
+This function fits a HMM to \code{\link{fHMM_data}} via numerical likelihood
+maximization.
 }
 \details{
-The function is parallelized only if \code{ncluster > 1}.
+The function is parallelized if \code{ncluster > 1}.
 }

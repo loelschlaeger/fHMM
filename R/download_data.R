@@ -1,11 +1,10 @@
 #' Download financial data from Finance Yahoo
 #'
 #' @description
-#' This function downloads stock data from <https://finance.yahoo.com/> and 
-#' saves it as a \code{.csv}-file.
+#' This function downloads stock data from <https://finance.yahoo.com/>.
 #'
 #' @details
-#' The downloaded data is a \code{.csv}-file with the following columns:
+#' The downloaded data has the following columns:
 #' \itemize{
 #'   \item \code{Date}: The date.
 #'   \item \code{Open}: Opening price.
@@ -20,34 +19,37 @@
 #' A \code{character}, the stock's symbol. It must match the identifier on
 #' <https://finance.yahoo.com/>.
 #' @param from
-#' A \code{character}, a date in format "YYYY-MM-DD", setting the lower data 
-#' bound. Must not be earlier than \code{"1902-01-01"}.
+#' A \code{character}, a date in format \code{"YYYY-MM-DD"}, setting the lower 
+#' data bound. Must not be earlier than \code{"1902-01-01"} (default).
 #' @param to
-#' A \code{character}, a date in format "YYYY-MM-DD", setting the upper data 
-#' bound. Default is the current date \code{Sys.date()}.
+#' A \code{character}, a date in format \code{"YYYY-MM-DD"}, setting the upper 
+#' data bound. Default is the current date \code{Sys.date()}.
 #' @param file
-#' A \code{character}, the name of the file where the \code{.csv}-file is saved. 
-#' Per default, it is saved in the current working directory with the name 
+#' Either
+#' * \code{NULL} to return the data as a \code{data.frame},
+#' * or a \code{character}, the name of the file where the data is saved as a 
+#'   \code{.csv}-file. 
+#' By default, the data is saved in the current working directory with the name 
 #' "\code{symbol}.csv".
 #' @param verbose
-#' If \code{TRUE} returns information about download success.
+#' Set to \code{TRUE} to return information about download success.
 #'
 #' @return
-#' No return value.
+#' A \code{data.frame} if \code{file = NULL}.
 #'
 #' @examples
 #' ### download 21st century DAX data
-#' download_data(
-#'   symbol = "^GDAXI", from = "2000-01-03",
-#'   file = paste0(tempfile(), ".csv")
-#' )
+#' data <- download_data(symbol = "^GDAXI", from = "2000-01-03", file = NULL)
+#' head(data)
 #' 
 #' @export
 #'
 #' @importFrom utils download.file read.csv head tail
 
-download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
-                          file = paste0(symbol, ".csv"), verbose = TRUE) {
+download_data <- function(
+    symbol, from = "1902-01-01", to = Sys.Date(), file = paste0(symbol, ".csv"), 
+    verbose = TRUE
+  ) {
 
   ### check input
   if (!is.character(symbol) || length(symbol) != 1) {
@@ -55,8 +57,13 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
   }
   from <- check_date(from)
   to <- check_date(to)
-  if (!is.character(file) || length(file) != 1 || nchar(file) == 0) {
-    stop("'file' is invalid.", call. = FALSE)
+  if (is.null(file)) {
+    save_file <- FALSE
+  } else {
+    save_file <- TRUE
+    if (!is.character(file) || length(file) != 1 || nchar(file) == 0) {
+      stop("'file' is invalid.", call. = FALSE)
+    }
   }
   if (length(verbose) != 1 || (!isTRUE(verbose) && !isFALSE(verbose))) {
     stop("'verbose' must be either TRUE or FALSE.", call. = FALSE)
@@ -96,24 +103,34 @@ download_data <- function(symbol, from = "1902-01-01", to = Sys.Date(),
 
   ### try to download data
   data_url <- create_url(symbol, from, to)
+  destfile <- ifelse(save_file, file, tempfile())
   download_try <- suppressWarnings(
-    try(utils::download.file(data_url, destfile = file, quiet = TRUE),
+    try(utils::download.file(data_url, destfile = destfile, quiet = TRUE),
       silent = TRUE
     )
   )
 
   ### check 'download_try'
   if (inherits(download_try, "try-error")) {
-    stop("Download failed. Either 'symbol' is unknown or there is no data for the specified time interval.", call. = FALSE)
-  } else if (verbose) {
-    ### print summary of new data
-    data <- utils::read.csv(file = file, header = TRUE, sep = ",", na.strings = "null")
-    message(
-      "Download successful.\n",
-      "* symbol:", symbol, "\n",
-      "* from:", utils::head(data$Date, n = 1), "\n",
-      "* to:", utils::tail(data$Date, n = 1), "\n",
-      "* path:", normalizePath(file)
+    stop(
+      "Download failed.\n",
+      "Either 'symbol' is unknown or there is no data for the specified time interval.", 
+      call. = FALSE
     )
+  } 
+  data <- utils::read.csv(file = destfile, header = TRUE, sep = ",", na.strings = "null")
+  if (save_file) {
+    if (verbose) {
+      ### print summary of new data
+      message(
+        "Download successful.\n",
+        "* symbol: ", symbol, "\n",
+        "* from: ", utils::head(data$Date, n = 1), "\n",
+        "* to: ", utils::tail(data$Date, n = 1), "\n",
+        "* path: ", normalizePath(destfile)
+      )
+    }
+  } else {
+    return(data)
   }
 }

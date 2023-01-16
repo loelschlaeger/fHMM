@@ -3,7 +3,7 @@
 \name{fHMM_sdds}
 \alias{fHMM_sdds}
 \alias{print.fHMM_sdds}
-\title{Defining state-dependent distributions}
+\title{Define state-dependent distributions}
 \usage{
 fHMM_sdds(sdds)
 
@@ -25,7 +25,7 @@ set to \code{NULL}.
 }
 }
 \description{
-This helper function defines state-dependent distributions for the {fHMM}
+This helper function defines state-dependent distributions for the \{fHMM\}
 package.
 }
 \examples{

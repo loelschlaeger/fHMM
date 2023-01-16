@@ -1,35 +1,34 @@
-#' Constructor of an \code{fHMM_model} object
+#' Constructor of a model object
 #'
 #' @description
-#' This function constructs an object of class \code{fHMM_model}, which contains
-#' details about the fitted (hierarchical) Hidden Markov model.
+#' This function constructs an object of class \code{\link{fHMM_model}}, which 
+#' contains details about the fitted (hierarchical) Hidden Markov model.
 #' 
 #' @param data
-#' TODO
+#' An object of class \code{\link{fHMM_data}}.
 #' @param estimate
-#' TODO
+#' A \code{numeric} vector of unconstrained model estimates.
 #' @param nlm_output
-#' TODO
+#' The output of \code{\link[stats]{nlm}} for the selected optimization run.
 #' @param estimation_time
-#' TODO
+#' A \code{diff.time} object, the total estimation time.
 #' @param ll
-#' TODO
+#' A \code{numeric}, the model log-likelihood.
 #' @param lls
-#' TODO
+#' A \code{numeric} vector, the model log-likelihoods in all optimization runs.
 #' @param gradient
-#' TODO
+#' A \code{numeric} vector, the gradient at the optimum.
 #' @param hessian
-#' TODO
+#' A \code{matrix}, the Hessian at the optimum.
 #' @param decoding
-#' TODO
+#' A \code{numeric} vector, the decoded time series.
 #' 
 #' @return 
-#' An object of class \code{\link{fHMM_model}}, which is a \code{list} containing 
-#' the following elements:
-#' TODO
+#' An object of class \code{\link{fHMM_model}}.
 
 fHMM_model <- function(
-    data, estimate, nlm_output, estimation_time, ll, lls, gradient, hessian, decoding
+    data, estimate, nlm_output, estimation_time, ll, lls, gradient, hessian, 
+    decoding
 ) {
   structure(
     list(
@@ -50,13 +49,14 @@ fHMM_model <- function(
 #' Model fitting
 #'
 #' @description
-#' This function fits a HMM to \code{data} via maximum likelihood estimation.
+#' This function fits a HMM to \code{\link{fHMM_data}} via numerical likelihood 
+#' maximization.
 #'
 #' @details
-#' The function is parallelized only if \code{ncluster > 1}.
+#' The function is parallelized if \code{ncluster > 1}.
 #'
 #' @param data
-#' An object of class \code{fHMM_data}.
+#' An object of class \code{\link{fHMM_data}}.
 #' @param seed
 #' Set a seed for the sampling of initial values.
 #' No seed by default.
@@ -320,7 +320,7 @@ fit_model <- function(
 
 #' @rdname fit_model
 #' @param x
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{\link{fHMM_model}}.
 #' @param ...
 #' Currently not used.
 #' @exportS3Method 
@@ -475,10 +475,10 @@ nLL_hhmm <- function(parUncon, observations, controls) {
 #'
 #' @description
 #' This function extracts the computed (pseudo-) residuals of
-#' an \code{fHMM_model} object.
+#' an \code{\link{fHMM_model}} object.
 #'
 #' @param object
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{\link{fHMM_model}}.
 #' @param ...
 #' Ignored.
 #'
@@ -487,9 +487,9 @@ nLL_hhmm <- function(parUncon, observations, controls) {
 #' residuals for each observation.
 #'
 #' @examples
-#' data("dax_model_3t")
 #' compute_residuals(dax_model_3t)
-#' residuals(dax_model_3t)
+#' res <- residuals(dax_model_3t)
+#' head(res)
 #' 
 #' @export
 
@@ -628,7 +628,7 @@ print.summary.fHMM_model <- function(x, digits = 4, ...) {
 #' confidence interval.
 #'
 #' @param object
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{\link{fHMM_model}}.
 #' @param ...
 #' Ignored.
 #' @inheritParams compute_ci
@@ -636,7 +636,7 @@ print.summary.fHMM_model <- function(x, digits = 4, ...) {
 #' @return
 #' A \code{data.frame}.
 #'
-#' @export
+#' @exportS3Method 
 
 coef.fHMM_model <- function(object, alpha = 0.05, ...) {
   ci <- compute_ci(object, alpha)
@@ -702,21 +702,19 @@ logLik.fHMM_model <- function(object, ...) {
 #' Number of model parameters
 #'
 #' @description
-#' This function extracts the number of model parameters of an \code{fHMM_model}
-#' object.
+#' This function extracts the number of model parameters of an 
+#' \code{\link{fHMM_model}} object.
 #'
 #' @param object
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{\link{fHMM_model}}.
 #'
 #' @param ...
-#' Optionally more objects of class \code{fHMM_model}.
+#' Optionally more objects of class \code{\link{fHMM_model}}.
 #'
 #' @return
 #' Either a numeric value (if just one object is provided) or a numeric vector.
 #'
 #' @examples
-#' data("dax_model_3t", package = "fHMM")
-#' data("dax_model_2n", package = "fHMM")
 #' npar(dax_model_3t, dax_model_2n)
 #'
 #' @export
@@ -738,3 +736,150 @@ npar.fHMM_model <- function(object, ...) {
   npar <- sapply(models, function(x) length(x$estimate))
   return(npar)
 }
+
+#' Prediction
+#'
+#' @description
+#' This function predicts the next \code{ahead} states and data points based on
+#' an \code{\link{fHMM_model}} object.
+#'
+#' @param object
+#' An object of class \code{\link{fHMM_model}}.
+#' @param ahead
+#' A positive \code{integer}, the forecast horizon.
+#' @inheritParams compute_ci
+#' @param ...
+#' Ignored.
+#'
+#' @return
+#' A \code{data.frame} of state probabilities and data point estimates along 
+#' with confidence intervals.
+#'
+#' @examples
+#' predict(dax_model_3t)
+#' 
+#' @export
+#' @importFrom stats qt qgamma
+
+predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
+  
+  ### check input
+  if (!inherits(object,"fHMM_model")) {
+    stop("'object' must be of class 'fHMM_model'.", call. = FALSE)
+  }
+  if (!(length(ahead) == 1 && is_number(ahead, int = TRUE, pos = TRUE))) {
+    stop("'ahead' must be a positive integer.", call. = FALSE)
+  }
+  if (!(length(alpha) == 1 && is_number(alpha, pos = TRUE) && alpha <= 1)) {
+    stop("'alpha' must be a numeric between 0 and 1.", call. = FALSE)
+  }
+  
+  ### extract parameters
+  par <- parUncon2par(object$estimate, object$data$controls)
+  M <- object$data$controls$states[1]
+  N <- object$data$controls$states[2]
+  sdds <- object$data$controls$sdds
+  
+  ### predict states
+  state_prediction <- matrix(NA_real_, nrow = ahead, ncol = M)
+  last_state <- tail(if (object$data$controls$hierarchy) object$decoding[, 1] else object$decoding, n = 1)
+  state_prob <- replace(numeric(M), last_state, 1)
+  for (i in 1:ahead) {
+    state_prob <- state_prob %*% par$Gamma
+    state_prediction[i, ] <- state_prob
+  }
+  rownames(state_prediction) <- 1:ahead
+  colnames(state_prediction) <- paste("state", 1:M, sep = "_")
+  if (object$data$controls$hierarchy) {
+    for (s in 1:M) {
+      state_prob <- rep(1 / N, N)
+      fs_state_prediction <- matrix(NA_real_, nrow = ahead, ncol = N)
+      for (i in 1:ahead) {
+        state_prob <- state_prob %*% par$Gammas_star[[s]]
+        fs_state_prediction[i, ] <- state_prediction[i, s] * state_prob
+      }
+      rownames(fs_state_prediction) <- 1:ahead
+      colnames(fs_state_prediction) <- paste("state", s, 1:M, sep = "_")
+      state_prediction <- cbind(state_prediction, fs_state_prediction)
+    }
+  }
+  
+  ### predict data
+  data_prediction <- matrix(NA_real_, nrow = ahead, ncol = 3)
+  props <- sort(c(alpha, 0.5, 1 - alpha))
+  if (!object$data$controls$hierarchy) {
+    if (sdds[[1]]$name == "t") {
+      for (i in 1:ahead) {
+        data_prediction[i, ] <- sapply(props, function(x) {
+          state_prediction[i, ] %*%
+            (stats::qt(p = x, df = par$dfs) * par$sigmas + par$mus)
+        })
+      }
+    }
+    if (sdds[[1]]$name == "lnorm") {
+      for (i in 1:ahead) {
+        data_prediction[i, ] <- sapply(props, function(x) {
+          state_prediction[i, ] %*%
+            stats::qlnorm(p = x, meanlog = par$mus, sdlog = par$sigmas)
+        })
+      }
+    }
+    if (sdds[[1]]$name == "gamma") {
+      for (i in 1:ahead) {
+        data_prediction[i, ] <- sapply(props, function(x) {
+          state_prediction[i, ] %*%
+            stats::qgamma(
+              p = x, shape = par$mus^2 / par$sigmas^2,
+              scale = par$sigmas^2 / par$mus
+            )
+        })
+      }
+    }
+  } else {
+    if (sdds[[2]]$name == "t") {
+      for (i in 1:ahead) {
+        data_prediction[i, ] <- sapply(props, function(x) {
+          state_prediction[i, -(1:M)] %*%
+            (stats::qt(p = x, df = unlist(par$dfs_star)) * 
+               unlist(par$sigmas_star) + unlist(par$mus_star))
+        })
+      }
+    }
+    if (sdds[[2]]$name == "lnorm") {
+      for (i in 1:ahead) {
+        data_prediction[i, ] <- sapply(props, function(x) {
+          state_prediction[i, -(1:M)] %*%
+            stats::qlnorm(p = x, meanlog = par$mus_star, 
+                          sdlog = par$sigmas_star)
+        })
+      }
+    }
+    if (sdds[[2]]$name == "gamma") {
+      for (i in 1:ahead) {
+        data_prediction[i, ] <- sapply(props, function(x) {
+          state_prediction[i, -(1:M)] %*%
+            stats::qgamma(
+              p = x, shape = unlist(par$mus_star)^2 / unlist(par$sigmas_star)^2,
+              scale = unlist(par$sigmas_star)^2 / unlist(par$mus_star)
+            )
+        })
+      }
+    }
+  }
+  rownames(data_prediction) <- 1:ahead
+  colnames(data_prediction) <- c("lb", "estimate", "ub")
+  
+  ### return 'fHMM_prediction' object
+  prediction <- list("states" = state_prediction, "data" = data_prediction)
+  class(prediction) <- "fHMM_predict"
+  return(prediction)
+}
+
+#' @noRd
+#' @export
+
+print.fHMM_predict <- function(x, digits = 5, ...) {
+  print(round(cbind(x$states, x$data), digits = digits))
+  return(invisible(x))
+}
+

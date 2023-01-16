@@ -1,5 +1,4 @@
 test_that("ci computation works", {
-  data("dax_model_3t")
   expect_error(compute_ci("not_an_fHMM_model"))
   expect_error(compute_ci(dax_model_3t, "not_a_numeric"))
   expect_error(compute_ci(dax_model_3t, -1))

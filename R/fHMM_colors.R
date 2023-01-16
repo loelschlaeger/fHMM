@@ -1,11 +1,12 @@
-#' Setting color scheme for visualizations
+#' Set color scheme for visualizations
 #'
 #' @description
 #' This helper function defines a color scheme for visualizations in the 
-#' {fHMM} package.
+#' \{fHMM\} package.
 #'
 #' @param controls
 #' An object of class \code{fHMM_controls}.
+#' It can be created with \code{\link{set_controls}}.
 #' @param colors
 #' Either \code{NULL} (default) or a \code{character} vector of color names or 
 #' hexadecimal RGB triplets.
@@ -20,7 +21,7 @@
 #'           \item a \code{character} vector of length  \code{controls$states[1]} and
 #'           \item a \code{character} matrix of dimensions \code{controls$states}
 #'         }
-#'         of color codes.
+#'         with color codes.
 #' }
 #'
 #' @examples

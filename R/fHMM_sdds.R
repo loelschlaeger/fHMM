@@ -1,7 +1,7 @@
-#' Defining state-dependent distributions
+#' Define state-dependent distributions
 #'
 #' @description
-#' This helper function defines state-dependent distributions for the {fHMM} 
+#' This helper function defines state-dependent distributions for the \{fHMM\} 
 #' package.
 #'
 #' @param sdds
@@ -21,8 +21,7 @@
 #' fHMM_sdds(sdds)
 #' }
 #' 
-#' @keywords 
-#' internal
+#' @keywords internal
 
 fHMM_sdds <- function(sdds) {
   out <- list()

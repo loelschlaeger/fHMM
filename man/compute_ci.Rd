@@ -2,12 +2,12 @@
 % Please edit documentation in R/compute_ci.R
 \name{compute_ci}
 \alias{compute_ci}
-\title{Computing confidence intervals}
+\title{Compute confidence intervals}
 \usage{
 compute_ci(x, alpha = 0.05)
 }
 \arguments{
-\item{x}{An object of class \code{fHMM_model}.}
+\item{x}{An object of class \code{\link{fHMM_model}}.}
 
 \item{alpha}{A \code{numeric} between 0 and 1, the alpha level for the confidence interval.
 By default, \code{alpha = 0.05}, which computes a 95\% confidence interval.}
@@ -21,12 +21,11 @@ A \code{list} containing the following elements:
 }
 }
 \description{
-This function computes confidence intervals for the estimates of an
-\code{fHMM_model} object using the inverse Fisher information.
+This helper function computes confidence intervals for the estimates of an
+\code{\link{fHMM_model}} object using the inverse Fisher information.
 }
 \examples{
 \dontrun{
-data("dax_model_3t")
 compute_ci(x = dax_model_3t, alpha = 0.05)
 }
 

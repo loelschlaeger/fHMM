@@ -1,4 +1,4 @@
-#' Decoding the underlying hidden state sequence
+#' Decode the underlying hidden state sequence
 #'
 #' @description
 #' This function decodes the (most likely) underlying hidden state sequence by
@@ -8,18 +8,19 @@
 #' <https://en.wikipedia.org/wiki/Viterbi_algorithm>
 #'
 #' @param x
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{\link{fHMM_model}}.
 #' @param verbose
 #' Set to \code{TRUE} to print progress messages.
 #'
 #' @return
-#' An object of class \code{fHMM_model} with decoded state sequence included.
+#' An object of class \code{\link{fHMM_model}} with decoded state sequence 
+#' included.
 #'
 #' @export
 #'
 #' @examples
-#' data("dax_model_3t")
 #' decode_states(dax_model_3t)
+#' plot(dax_model_3t, type = "ts")
 #' 
 #' @importFrom stats dt dgamma
 

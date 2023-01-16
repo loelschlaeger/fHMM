@@ -1,7 +1,7 @@
 #' Simulate data
 #'
 #' @description
-#' This function simulates data for the {fHMM} package.
+#' This helper function simulates data for the \{fHMM\} package.
 #'
 #' @inheritParams prepare_data
 #'
@@ -15,8 +15,7 @@
 #'        \code{controls$hierarchy = TRUE}.
 #' }
 #'
-#' @keywords
-#' internal
+#' @keywords internal
 #'
 #' @importFrom utils head
 

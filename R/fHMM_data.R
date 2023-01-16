@@ -5,24 +5,24 @@
 #' the financial data for modeling.
 #' 
 #' @param dates
-#' TODO
+#' The dates in the empirical case.
 #' @param time_points
-#' TODO
+#' The time points in the simulated case.
 #' @param markov_chain
-#' TODO
+#' The states in the simulated case.
 #' @param data
-#' TODO
+#' The data for modeling.
 #' @param time_series
-#' TODO
+#' The data before transformation.
 #' @param T_star
-#' TODO
+#' The fine-scale chunk sizes.
 #' @param controls
-#' TODO
+#' The \code{fHMM_controls} object.
 #' @param true_parameters
-#' TODO
+#' The \code{fHMM_parameters} object in the simulated case.
 #' 
 #' @return 
-#' An object of class \code{\link{fHMM_data}}, which is a \code{list} containing 
+#' An object of class \code{fHMM_data}, which is a \code{list} containing 
 #' the following elements:
 #' \itemize{
 #'  \item The \code{matrix} of the \code{dates} if \code{simulated = FALSE} and
@@ -164,7 +164,13 @@ summary.fHMM_data <- function(object, ...) {
   }
   
   ### data origin
-  data_source <- if (simulated) NULL else basename(object$controls$data$file)
+  data_source <- if (simulated) {
+    NULL
+  } else if (object$controls$data$data_inside) {
+    "data.frame"
+  } else {
+    basename(object$controls$data$file)
+  }
   data_column <- if (simulated) NULL else object$controls$data$date_column
   
   ### data transformations

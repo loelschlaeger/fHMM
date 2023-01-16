@@ -12,12 +12,15 @@ parameter_labels(controls, expected_length)
 \item{expected_length}{The expected output length.}
 }
 \value{
-A character vector of parameter labels.
+A \code{character} vector of parameter labels.
 }
 \description{
-This function creates labels for the estimated HMM parameters.
+This helper function creates labels for the estimated HMM parameters.
 }
 \examples{
-fHMM:::parameter_labels(set_controls(), 8)
+\dontrun{
+parameter_labels(set_controls(), 8)
+}
+
 }
 \keyword{internal}

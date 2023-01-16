@@ -10,7 +10,7 @@ is_tpm(x)
 \item{x}{A \code{matrix}.}
 }
 \value{
-A \code{logical}.
+Either \code{TRUE} or \code{FALSE}.
 }
 \description{
 This function checks if \code{x} is a tpm (transition probability matrix).

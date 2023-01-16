@@ -9,7 +9,7 @@ test_that("check for number works", {
   expect_false(is_number("1"))
   expect_true(is_number(1))
   expect_false(is_number(1.1, int = TRUE))
-  expect_true(is_number(x = numeric()))
+  expect_false(is_number(x = numeric()))
   expect_equal(is_number(-2:2, neg = TRUE), c(TRUE, TRUE, FALSE, FALSE, FALSE))
   expect_equal(is_number(-2:2, non_neg = TRUE), c(FALSE, FALSE, TRUE, TRUE, TRUE))
   expect_equal(is_number(-2:2, pos = TRUE), c(FALSE, FALSE, FALSE, TRUE, TRUE))

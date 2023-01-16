@@ -10,20 +10,20 @@ read_data(controls)
 \item{controls}{An object of class \code{fHMM_controls}.}
 }
 \value{
-A list containing the following elements:
+A \code{list} containing the following elements:
 \itemize{
-\item the matrix of the \code{dates} if \code{controls$simulated = FALSE}
+\item the \code{matrix} of the \code{dates} if \code{controls$simulated = FALSE}
 and \code{controls$data$data_column} is specified,
-\item the matrix of the \code{time_points} if \code{controls$simulated = TRUE}
+\item the \code{matrix} of the \code{time_points} if \code{controls$simulated = TRUE}
 or \code{controls$data$data_column} is not specified,
-\item the matrix of the empirical \code{data} used for estimation,
-\item the matrix \code{time_series} of empirical data before the transformation
-to log-returns,
-\item the vector of fine-scale chunk sizes \code{T_star} if
+\item the \code{matrix} of the empirical \code{data} used for estimation,
+\item the \code{matrix} named \code{time_series} of empirical data before
+the transformation to log-returns,
+\item the \code{vector} of fine-scale chunk sizes \code{T_star} if
 \code{controls$hierarchy = TRUE}.
 }
 }
 \description{
-This function reads financial data for the {fHMM} package.
+This helper function reads financial data for the \{fHMM\} package.
 }
 \keyword{internal}

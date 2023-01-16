@@ -1,11 +1,11 @@
-#' Reordering of estimated states
+#' Reorder estimated states
 #'
 #' @description
 #' This function reorders the estimated states, which can be useful for a 
 #' comparison to true parameters or the interpretation of states.
 #'
 #' @param x
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{\link{fHMM_model}}.
 #' @param state_order
 #' A vector or a matrix which determines the new ordering.
 #' \itemize{
@@ -28,10 +28,9 @@
 #' }
 #'
 #' @return
-#' An object of class \code{fHMM_model}, in which states are reordered.
+#' An object of class \code{\link{fHMM_model}}, in which states are reordered.
 #'
 #' @examples
-#' data("dax_model_3t")
 #' reorder_states(dax_model_3t, state_order = 3:1)
 #' 
 #' @export

@@ -1,20 +1,20 @@
-#' Computing (pseudo-) residuals
+#' Compute (pseudo-) residuals
 #'
 #' @description
-#' This function computes (pseudo-) residuals of an \code{fHMM_model} object.
+#' This function computes (pseudo-) residuals of an \code{\link{fHMM_model}} 
+#' object.
 #'
 #' @param x
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{\link{fHMM_model}}.
 #' @param verbose
 #' Set to \code{TRUE} (default) to print progress messages.
 #'
 #' @return
-#' An object of class \code{fHMM_model} with residuals included.
+#' An object of class \code{\link{fHMM_model}} with residuals included.
 #'
 #' @export
 #'
 #' @examples
-#' data("dax_model_3t")
 #' compute_residuals(dax_model_3t)
 #' res <- residuals(dax_model_3t)
 #' summary(res)

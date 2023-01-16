@@ -2,23 +2,23 @@
 % Please edit documentation in R/compute_residuals.R
 \name{compute_residuals}
 \alias{compute_residuals}
-\title{Computing (pseudo-) residuals}
+\title{Compute (pseudo-) residuals}
 \usage{
 compute_residuals(x, verbose = TRUE)
 }
 \arguments{
-\item{x}{An object of class \code{fHMM_model}.}
+\item{x}{An object of class \code{\link{fHMM_model}}.}
 
 \item{verbose}{Set to \code{TRUE} (default) to print progress messages.}
 }
 \value{
-An object of class \code{fHMM_model} with residuals included.
+An object of class \code{\link{fHMM_model}} with residuals included.
 }
 \description{
-This function computes (pseudo-) residuals of an \code{fHMM_model} object.
+This function computes (pseudo-) residuals of an \code{\link{fHMM_model}}
+object.
 }
 \examples{
-data("dax_model_3t")
 compute_residuals(dax_model_3t)
 res <- residuals(dax_model_3t)
 summary(res)

@@ -1,21 +1,21 @@
 #' Read data
 #'
 #' @description
-#' This function reads financial data for the {fHMM} package.
+#' This helper function reads financial data for the \{fHMM\} package.
 #'
 #' @inheritParams prepare_data
 #' 
 #' @return
-#' A list containing the following elements:
+#' A \code{list} containing the following elements:
 #' \itemize{
-#'  \item the matrix of the \code{dates} if \code{controls$simulated = FALSE}
+#'  \item the \code{matrix} of the \code{dates} if \code{controls$simulated = FALSE}
 #'        and \code{controls$data$data_column} is specified,
-#'  \item the matrix of the \code{time_points} if \code{controls$simulated = TRUE}
+#'  \item the \code{matrix} of the \code{time_points} if \code{controls$simulated = TRUE}
 #'        or \code{controls$data$data_column} is not specified,
-#'  \item the matrix of the empirical \code{data} used for estimation,
-#'  \item the matrix \code{time_series} of empirical data before the transformation
-#'        to log-returns,
-#'  \item the vector of fine-scale chunk sizes \code{T_star} if
+#'  \item the \code{matrix} of the empirical \code{data} used for estimation,
+#'  \item the \code{matrix} named \code{time_series} of empirical data before 
+#'        the transformation to log-returns,
+#'  \item the \code{vector} of fine-scale chunk sizes \code{T_star} if
 #'        \code{controls$hierarchy = TRUE}.
 #' }
 #' 
@@ -35,11 +35,17 @@ read_data <- function(controls) {
 
   ### read data
   data_raw <- list()
-  for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
-    data_raw[[i]] <- utils::read.csv(
-      file = controls[["data"]][["file"]][i],
-      header = TRUE, sep = ",", na.strings = "null"
-    )
+  if (controls[["data"]][["data_inside"]]) {
+    for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
+      data_raw[[i]] <- controls[["data"]][["file"]][[i]]
+    }
+  } else {
+    for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
+      data_raw[[i]] <- utils::read.csv(
+        file = controls[["data"]][["file"]][i],
+        header = TRUE, sep = ",", na.strings = "null"
+      )
+    }
   }
 
   ### check columns in data

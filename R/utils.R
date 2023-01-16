@@ -11,8 +11,7 @@
 #' \code{as.Date(date)} if \code{date} has the format \code{"YYYY-MM-DD"}.
 #' Otherwise, the function throws an error.
 #'
-#' @keywords
-#' internal utils
+#' @keywords internal utils
 #'
 #' @examples
 #' \dontrun{
@@ -53,8 +52,7 @@ check_date <- function(date) {
 #' @return
 #' A \code{logical}.
 #'
-#' @keywords
-#' internal utils
+#' @keywords internal utils
 #'
 #' @examples
 #' \dontrun{
@@ -66,36 +64,37 @@ is_number <- function(
     x, int = FALSE, neg = FALSE, non_neg = FALSE, pos = FALSE, non_pos = FALSE
   ) {
   if (length(x) == 0) {
-    return(TRUE)
+    return(FALSE)
   }
   out <- rep(TRUE, length(x))
   for (i in 1:length(x)) {
     if (!is.numeric(x[i])) {
       out[i] <- FALSE
-    }
-    if (int) {
-      if (x[i] %% 1 != 0) {
-        out[i] <- FALSE
+    } else {
+      if (int) {
+        if (x[i] %% 1 != 0) {
+          out[i] <- FALSE
+        }
       }
-    }
-    if (neg) {
-      if (!x[i] < 0) {
-        out[i] <- FALSE
+      if (neg) {
+        if (!x[i] < 0) {
+          out[i] <- FALSE
+        }
       }
-    }
-    if (non_neg) {
-      if (!x[i] >= 0) {
-        out[i] <- FALSE
+      if (non_neg) {
+        if (!x[i] >= 0) {
+          out[i] <- FALSE
+        }
       }
-    }
-    if (pos) {
-      if (!x[i] > 0) {
-        out[i] <- FALSE
+      if (pos) {
+        if (!x[i] > 0) {
+          out[i] <- FALSE
+        }
       }
-    }
-    if (non_pos) {
-      if (!x[i] <= 0) {
-        out[i] <- FALSE
+      if (non_pos) {
+        if (!x[i] <= 0) {
+          out[i] <- FALSE
+        }
       }
     }
   }
@@ -111,10 +110,9 @@ is_number <- function(
 #' A \code{matrix}.
 #'
 #' @return
-#' A \code{logical}.
+#' Either \code{TRUE} or \code{FALSE}.
 #'
-#' @keywords
-#' internal utils
+#' @keywords internal utils
 #'
 #' @examples
 #' \dontrun{
@@ -146,8 +144,7 @@ is_tpm <- function(x) {
 #' An \code{integer} vector of length \code{length(x)} with the positions of \code{y}
 #' in \code{x}.
 #'
-#' @keywords
-#' internal utils
+#' @keywords internal utils
 #'
 #' @importFrom stats dist
 #'
@@ -192,8 +189,7 @@ match_all <- function(x, y) {
 #' @return
 #' A transition probability \code{matrix}.
 #'
-#' @keywords
-#' internal utils
+#' @keywords internal utils
 #'
 #' @importFrom stats runif
 #'
@@ -208,7 +204,7 @@ sample_tpm <- function(dim) {
   return(Gamma)
 }
 
-#' Simulate a Markov chain
+#' Simulate Markov chain
 #'
 #' @description
 #' This function simulates a Markov chain.
@@ -229,8 +225,7 @@ sample_tpm <- function(dim) {
 #' @return
 #' A \code{numeric} vector of length \code{T} with states.
 #'
-#' @keywords
-#' internal utils
+#' @keywords internal utils
 #'
 #' @examples
 #' \dontrun{

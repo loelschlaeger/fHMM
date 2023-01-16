@@ -2,25 +2,26 @@
 % Please edit documentation in R/decode_states.R
 \name{decode_states}
 \alias{decode_states}
-\title{Decoding the underlying hidden state sequence}
+\title{Decode the underlying hidden state sequence}
 \usage{
 decode_states(x, verbose = TRUE)
 }
 \arguments{
-\item{x}{An object of class \code{fHMM_model}.}
+\item{x}{An object of class \code{\link{fHMM_model}}.}
 
 \item{verbose}{Set to \code{TRUE} to print progress messages.}
 }
 \value{
-An object of class \code{fHMM_model} with decoded state sequence included.
+An object of class \code{\link{fHMM_model}} with decoded state sequence
+included.
 }
 \description{
 This function decodes the (most likely) underlying hidden state sequence by
 applying the Viterbi algorithm for global decoding.
 }
 \examples{
-data("dax_model_3t")
 decode_states(dax_model_3t)
+plot(dax_model_3t, type = "ts")
 
 }
 \references{

@@ -14,7 +14,7 @@ plot_ts(data, decoding, colors, events)
 \item{colors}{Either \code{NULL} or an object of class \code{fHMM_colors}.
 Ignored if \code{decoding = NULL}.}
 
-\item{events}{Either \code{NULL} or an object of class \code{fHMM_events}.}
+\item{events}{Either \code{NULL} or an object of class \code{\link{fHMM_events}}.}
 }
 \value{
 No return value. Draws a plot to the current device.

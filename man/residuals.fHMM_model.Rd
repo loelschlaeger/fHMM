@@ -7,7 +7,7 @@
 \method{residuals}{fHMM_model}(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{fHMM_model}.}
+\item{object}{An object of class \code{\link{fHMM_model}}.}
 
 \item{...}{Ignored.}
 }
@@ -17,11 +17,11 @@ residuals for each observation.
 }
 \description{
 This function extracts the computed (pseudo-) residuals of
-an \code{fHMM_model} object.
+an \code{\link{fHMM_model}} object.
 }
 \examples{
-data("dax_model_3t")
 compute_residuals(dax_model_3t)
-residuals(dax_model_3t)
+res <- residuals(dax_model_3t)
+head(res)
 
 }

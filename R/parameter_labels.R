@@ -1,7 +1,7 @@
 #' Create labels for estimated parameters
 #'
 #' @description
-#' This function creates labels for the estimated HMM parameters.
+#' This helper function creates labels for the estimated HMM parameters.
 #'
 #' @param controls
 #' An object of class \code{fHMM_controls}.
@@ -10,21 +10,23 @@
 #' The expected output length.
 #'
 #' @return
-#' A character vector of parameter labels.
+#' A \code{character} vector of parameter labels.
 #'
 #' @examples
-#' fHMM:::parameter_labels(set_controls(), 8)
-#' @keywords
-#' internal
+#' \dontrun{
+#' parameter_labels(set_controls(), 8)
+#' }
+#' 
+#' @keywords internal
 
 parameter_labels <- function(controls, expected_length) {
 
   ### check input
   if (!inherits(controls,"fHMM_controls")) {
-    stop("'controls' is not of class 'fHMM_controls'.")
+    stop("'controls' is not of class 'fHMM_controls'.", call. = FALSE)
   }
-  if (!is_number(expected_length, pos = TRUE)) {
-    stop("'expected_length' must be a positive integer.")
+  if (!is_number(expected_length, pos = TRUE, int = TRUE)) {
+    stop("'expected_length' must be a positive integer.", call. = FALSE)
   }
 
   ### helper function for tpm labels
@@ -52,8 +54,6 @@ parameter_labels <- function(controls, expected_length) {
   }
 
   ### check and return parameter labels
-  if (length(labels) != expected_length) {
-    stop("Unexpected number of parameter labels.")
-  }
+  stopifnot(length(labels) == expected_length)
   return(labels)
 }

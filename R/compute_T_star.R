@@ -1,4 +1,4 @@
-#' Computing lengths of fine-scale chunks
+#' Compute lengths of fine-scale chunks
 #'
 #' @description
 #' This helper function computes lengths of fine-scale chunks in the 
@@ -28,8 +28,7 @@
 #' compute_T_star(horizon, period)
 #' }
 #' 
-#' @keywords
-#' internal
+#' @keywords internal
 #'
 #' @importFrom stats dbinom
 

@@ -7,7 +7,7 @@
 \method{coef}{fHMM_model}(object, alpha = 0.05, ...)
 }
 \arguments{
-\item{object}{An object of class \code{fHMM_model}.}
+\item{object}{An object of class \code{\link{fHMM_model}}.}
 
 \item{alpha}{A \code{numeric} between 0 and 1, the alpha level for the confidence interval.
 By default, \code{alpha = 0.05}, which computes a 95\% confidence interval.}

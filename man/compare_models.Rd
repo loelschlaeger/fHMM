@@ -2,19 +2,19 @@
 % Please edit documentation in R/compare_models.R
 \name{compare_models}
 \alias{compare_models}
-\title{Comparing multiple \code{fHMM_model} objects}
+\title{Compare multiple models}
 \usage{
 compare_models(...)
 }
 \arguments{
-\item{...}{A list of one or more objects of class \code{fHMM_model}.}
+\item{...}{A list of one or more objects of class \code{\link{fHMM_model}}.}
 }
 \value{
 A \code{data.frame} with models in rows and comparison criteria in columns.
 }
 \description{
 This function performs model comparison by comparing multiple
-\code{fHMM_model} objects with respect to
+\code{\link{fHMM_model}} objects with respect to
 \itemize{
 \item the number of model parameters,
 \item the log-likelihood value,
@@ -25,8 +25,6 @@ This function performs model comparison by comparing multiple
 \examples{
 ### 3-state HMM with t-distributions is preferred over 2-state HMM with
 ### normal distributions for the DAX data based on AIC and BIC
-data("dax_model_2n")
-data("dax_model_3t")
 compare_models(dax_model_2n, dax_model_3t)
 
 }

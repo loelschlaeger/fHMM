@@ -1,11 +1,11 @@
-#' Computing confidence intervals
+#' Compute confidence intervals
 #'
 #' @description
-#' This function computes confidence intervals for the estimates of an
-#' \code{fHMM_model} object using the inverse Fisher information.
+#' This helper function computes confidence intervals for the estimates of an
+#' \code{\link{fHMM_model}} object using the inverse Fisher information.
 #'
 #' @param x
-#' An object of class \code{fHMM_model}.
+#' An object of class \code{\link{fHMM_model}}.
 #'
 #' @param alpha
 #' A \code{numeric} between 0 and 1, the alpha level for the confidence interval.
@@ -19,12 +19,10 @@
 #'   \item \code{ub}: upper bound of confidence
 #' }
 #'
-#' @keywords
-#' internal
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
-#' data("dax_model_3t")
 #' compute_ci(x = dax_model_3t, alpha = 0.05)
 #' }
 #'

@@ -10,20 +10,18 @@ npar(object, ...)
 \method{npar}{fHMM_model}(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{fHMM_model}.}
+\item{object}{An object of class \code{\link{fHMM_model}}.}
 
-\item{...}{Optionally more objects of class \code{fHMM_model}.}
+\item{...}{Optionally more objects of class \code{\link{fHMM_model}}.}
 }
 \value{
 Either a numeric value (if just one object is provided) or a numeric vector.
 }
 \description{
-This function extracts the number of model parameters of an \code{fHMM_model}
-object.
+This function extracts the number of model parameters of an
+\code{\link{fHMM_model}} object.
 }
 \examples{
-data("dax_model_3t", package = "fHMM")
-data("dax_model_2n", package = "fHMM")
 npar(dax_model_3t, dax_model_2n)
 
 }

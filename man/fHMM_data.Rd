@@ -22,21 +22,21 @@ fHMM_data(
 \method{summary}{fHMM_data}(object, ...)
 }
 \arguments{
-\item{dates}{TODO}
+\item{dates}{The dates in the empirical case.}
 
-\item{time_points}{TODO}
+\item{time_points}{The time points in the simulated case.}
 
-\item{markov_chain}{TODO}
+\item{markov_chain}{The states in the simulated case.}
 
-\item{data}{TODO}
+\item{data}{The data for modeling.}
 
-\item{time_series}{TODO}
+\item{time_series}{The data before transformation.}
 
-\item{T_star}{TODO}
+\item{T_star}{The fine-scale chunk sizes.}
 
-\item{controls}{TODO}
+\item{controls}{The \code{fHMM_controls} object.}
 
-\item{true_parameters}{TODO}
+\item{true_parameters}{The \code{fHMM_parameters} object in the simulated case.}
 
 \item{x}{An object of class \code{fHMM_data}.}
 
@@ -45,7 +45,7 @@ fHMM_data(
 \item{object}{An object of class \code{fHMM_data}.}
 }
 \value{
-An object of class \code{\link{fHMM_data}}, which is a \code{list} containing
+An object of class \code{fHMM_data}, which is a \code{list} containing
 the following elements:
 \itemize{
 \item The \code{matrix} of the \code{dates} if \code{simulated = FALSE} and

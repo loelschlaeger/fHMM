@@ -1,7 +1,7 @@
-#' Setting and checking model parameters
+#' Set and check model parameters
 #'
 #' @description
-#' This function sets and checks model parameters for the {fHMM} package.
+#' This function sets and checks model parameters for the \{fHMM\} package.
 #'
 #' @details
 #' See the vignette on the model definition for more details.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fHMM_model.R
 \name{fHMM_model}
 \alias{fHMM_model}
-\title{Constructor of an \code{fHMM_model} object}
+\title{Constructor of a model object}
 \usage{
 fHMM_model(
   data,
@@ -17,30 +17,28 @@ fHMM_model(
 )
 }
 \arguments{
-\item{data}{TODO}
+\item{data}{An object of class \code{\link{fHMM_data}}.}
 
-\item{estimate}{TODO}
+\item{estimate}{A \code{numeric} vector of unconstrained model estimates.}
 
-\item{nlm_output}{TODO}
+\item{nlm_output}{The output of \code{\link[stats]{nlm}} for the selected optimization run.}
 
-\item{estimation_time}{TODO}
+\item{estimation_time}{A \code{diff.time} object, the total estimation time.}
 
-\item{ll}{TODO}
+\item{ll}{A \code{numeric}, the model log-likelihood.}
 
-\item{lls}{TODO}
+\item{lls}{A \code{numeric} vector, the model log-likelihoods in all optimization runs.}
 
-\item{gradient}{TODO}
+\item{gradient}{A \code{numeric} vector, the gradient at the optimum.}
 
-\item{hessian}{TODO}
+\item{hessian}{A \code{matrix}, the Hessian at the optimum.}
 
-\item{decoding}{TODO}
+\item{decoding}{A \code{numeric} vector, the decoded time series.}
 }
 \value{
-An object of class \code{\link{fHMM_model}}, which is a \code{list} containing
-the following elements:
-TODO
+An object of class \code{\link{fHMM_model}}.
 }
 \description{
-This function constructs an object of class \code{fHMM_model}, which contains
-details about the fitted (hierarchical) Hidden Markov model.
+This function constructs an object of class \code{\link{fHMM_model}}, which
+contains details about the fitted (hierarchical) Hidden Markov model.
 }
