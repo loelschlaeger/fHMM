@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_data.R
 \name{download_data}
 \alias{download_data}
-\title{Download financial data from Finance Yahoo}
+\title{Download financial data from Yahoo Finance}
 \usage{
 download_data(
   symbol,

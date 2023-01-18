@@ -91,7 +91,7 @@ coarse-scale observation. For example,
 fine-scale data as the coarse-scale observation,
 \item \code{merge = function(x) mean(abs(x))} for the mean of the
 absolute values,
-\item \code{merge = function(x) sum(abs(x))} for the sum of of the
+\item \code{merge = function(x) sum(abs(x))} for the sum of the
 absolute values,
 \item \code{merge = function(x) (tail(x,1)-head(x,1))/head(x,1)} for
 the relative change of the first to the last fine-scale observation.
@@ -173,11 +173,22 @@ set_controls(controls)
 ### HHMM controls for simulation
 controls <- list(
   hierarchy = TRUE,
-  states    = c(3,2)
+  states    = c(3, 2)
 )
 set_controls(controls)
 
 ### HHMM controls with empirical data
-# TODO (data is list)
+controls <- list(
+  hierarchy = TRUE,
+  states  = c(3, 2),
+  sdds    = c("t", "t"),
+  data    = list(
+    "file"        = list(dax, vw), 
+    "date_column" = c("Date", "Date"), 
+    "data_column" = c("Close", "Close"),
+    "logreturns"  = c(TRUE, TRUE)
+  )
+)
+set_controls(controls)
 
 }

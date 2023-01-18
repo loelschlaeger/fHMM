@@ -11,27 +11,31 @@ An object of class \code{\link{fHMM_model}}.
 data("dax_model_2n")
 }
 \description{
-A pre-computed HMM on closing prices of the DAX from 2000 to 2021
+A pre-computed HMM on closing prices of the DAX from 2000 to 2022
 with two hidden states and normal state-dependent distributions for
 demonstration purpose.
 }
 \details{
-The model was derived via specifying
+The model was estimated via:
 \preformatted{
 controls <- list(
   states = 2,
   sdds   = "t(df = Inf)",
   data   = list(
-    file        = system.file("extdata", "dax.csv", package = "fHMM"),
+    file        = dax,
     date_column = "Date",
     data_column = "Close",
     logreturns  = TRUE,
     from        = "2000-01-03",
-    to          = "2021-12-31"
-   ),
-  fit    = list("runs" = 100)
+    to          = "2022-31-12"
+  ),
+  fit    = list(runs = 100)
 )
-TODO
+controls <- set_controls(controls)
+dax_data <- prepare_data(controls)
+dax_model_2n <- fit_model(dax_data)
+dax_model_2n <- decode_states(dax_model_2n)
+dax_model_2n <- compute_residuals(dax_model_2n)
 }
 }
 \keyword{model}

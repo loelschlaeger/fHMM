@@ -3,7 +3,7 @@
 \docType{data}
 \name{dax_vw_model}
 \alias{dax_vw_model}
-\title{DAX/VW hierarchical HMM with t(1)-distributions}
+\title{DAX/VW hierarchical HMM with t-distributions}
 \format{
 An object of class \code{\link{fHMM_model}}.
 }
@@ -12,27 +12,29 @@ data("dax_vw_model")
 }
 \description{
 A pre-computed HHMM with monthly averaged closing prices of the
-DAX from 2000 to 2021 on the coarse scale, VW stock data on the fine scale,
-two hidden fine-scale and coarse-scale states, respectively, and
-state-dependent t-distributions with degrees of freedom fixed to 1 for
-demonstration purpose.
+DAX from 2015 to 2022 on the coarse scale, Volkswagen AG stock data on the
+fine scale, two hidden fine-scale and coarse-scale states, respectively, and
+state-dependent t-distributions for demonstration purpose.
 }
 \details{
-The model was derived via specifying
+The model was estimated via:
 \preformatted{
 controls <- list(
   hierarchy = TRUE,
-  states    = c(2,2),
-  sdds      = c("t(df = 1)", "t(df = 1)"),
+  states    = c(2, 2),
+  sdds      = c("t", "t"),
   period    = "m",
   data      = list(
-    file = c(system.file("extdata", "dax.csv", package = "fHMM"),
-             system.file("extdata", "vw.csv", package = "fHMM")),
-    from = "2015-01-01",
-    to = "2020-01-01",
-    logreturns = c(TRUE,TRUE))
+    file       = list(dax, vw),
+    from       = "2015-01-01",
+    to         = "2022-31-12",
+    logreturns = c(TRUE, TRUE))
 )
-TODO
+controls <- set_controls(controls)
+dax_vw_data <- prepare_data(controls)
+dax_vw_model <- fit_model(dax_vw_data)
+dax_vw_model <- decode_states(dax_vw_model)
+dax_vw_model <- compute_residuals(dax_vw_model)
 }
 }
 \keyword{model}

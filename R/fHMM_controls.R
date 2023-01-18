@@ -89,7 +89,7 @@
 #'       fine-scale data as the coarse-scale observation,
 #'       \item \code{merge = function(x) mean(abs(x))} for the mean of the
 #'       absolute values,
-#'       \item \code{merge = function(x) sum(abs(x))} for the sum of of the
+#'       \item \code{merge = function(x) sum(abs(x))} for the sum of the
 #'       absolute values,
 #'       \item \code{merge = function(x) (tail(x,1)-head(x,1))/head(x,1)} for
 #'       the relative change of the first to the last fine-scale observation.
@@ -160,12 +160,23 @@
 #' ### HHMM controls for simulation
 #' controls <- list(
 #'   hierarchy = TRUE,
-#'   states    = c(3,2)
+#'   states    = c(3, 2)
 #' )
 #' set_controls(controls)
 #' 
 #' ### HHMM controls with empirical data
-#' # TODO (data is list)
+#' controls <- list(
+#'   hierarchy = TRUE,
+#'   states  = c(3, 2),
+#'   sdds    = c("t", "t"),
+#'   data    = list(
+#'     "file"        = list(dax, vw), 
+#'     "date_column" = c("Date", "Date"), 
+#'     "data_column" = c("Close", "Close"),
+#'     "logreturns"  = c(TRUE, TRUE)
+#'   )
+#' )
+#' set_controls(controls)
 #' 
 #' @export
 #' 
@@ -241,7 +252,11 @@ set_controls <- function(controls = NULL) {
     controls[["sdds"]] <- if (controls[["hierarchy"]]) c("t", "t") else "t"
   }
   if (!"horizon" %in% names(controls)) {
-    controls[["horizon"]] <- if (controls[["hierarchy"]]) c(100, 30) else 100
+    if (!"period" %in% names(controls)) {
+      controls[["horizon"]] <- if (controls[["hierarchy"]]) c(100, 30) else 100
+    } else {
+      controls[["horizon"]] <- if (controls[["hierarchy"]]) c(NA_integer_, NA_integer_) else NA_integer_
+    }
   }
   if (!"period" %in% names(controls)) {
     controls[["period"]] <- "m"

@@ -1,4 +1,4 @@
-#' Download financial data from Finance Yahoo
+#' Download financial data from Yahoo Finance
 #'
 #' @description
 #' This function downloads stock data from <https://finance.yahoo.com/>.

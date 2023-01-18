@@ -11,27 +11,32 @@ An object of class \code{\link{fHMM_model}}.
 data("dax_model_3t")
 }
 \description{
-A pre-computed HMM on closing prices of the DAX from 2000 to 2021
+A pre-computed HMM on closing prices of the DAX from 2000 to 2022
 with three hidden states and state-dependent t-distributions for
 demonstration purpose.
 }
 \details{
-The model was derived via specifying
+The model was estimated via:
 \preformatted{
 controls <- list(
   states = 3,
   sdds   = "t",
   data   = list(
-    file        = system.file("extdata", "dax.csv", package = "fHMM"),
+    file        = dax,
     date_column = "Date",
     data_column = "Close",
     logreturns  = TRUE,
     from        = "2000-01-03",
-    to          = "2021-12-31"
+    to          = "2022-31-12"
   ),
-  fit    = list("runs" = 100)
+  fit    = list(runs = 100)
 )
-TODO
+controls <- set_controls(controls)
+dax_data <- prepare_data(controls)
+dax_model_3t <- fit_model(dax_data)
+dax_model_3t <- decode_states(dax_model_3t)
+dax_model_3t <- reorder_states(dax_model_3t, c(3,2,1))
+dax_model_3t <- compute_residuals(dax_model_3t)
 }
 }
 \keyword{model}
