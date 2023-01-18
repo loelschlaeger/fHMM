@@ -108,24 +108,25 @@ read_data <- function(controls) {
       data_raw[[1]] <- data_raw[[1]][data_raw[[1]][[date_column[1]]] %in% intersect(data_raw[[1]][[date_column[1]]], data_raw[[2]][[date_column[2]]]), ]
       data_raw[[2]] <- data_raw[[2]][data_raw[[2]][[date_column[2]]] %in% intersect(data_raw[[2]][[date_column[2]]], data_raw[[1]][[date_column[1]]]), ]
     }
+    
+    ### function to find exact or nearest position of 'date' in 'data'
+    find_date <- function(date, data) {
+      incr <- 0
+      while (TRUE) {
+        candidate <- which(data[[date_column[i]]] == as.Date(date) + incr)
+        if (length(candidate) == 1) {
+          return(candidate)
+        }
+        candidate <- which(data[[date_column[i]]] == as.Date(date) - incr)
+        if (length(candidate) == 1) {
+          return(candidate)
+        }
+        incr <- incr + 1
+      }
+    }
 
     ### truncate data based on 'controls$data$from' and 'controls$data$to'
     for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
-      ### find exact or nearest position of 'date' in 'data'
-      find_date <- function(date, data) {
-        incr <- 0
-        while (TRUE) {
-          candidate <- which(data[[date_column[i]]] == as.Date(date) + incr)
-          if (length(candidate) == 1) {
-            return(candidate)
-          }
-          candidate <- which(data[[date_column[i]]] == as.Date(date) - incr)
-          if (length(candidate) == 1) {
-            return(candidate)
-          }
-          incr <- incr + 1
-        }
-      }
       t_max <- controls[["data"]][["to"]]
       if (!is.na(t_max)) {
         data_raw[[i]] <- data_raw[[i]][seq_len(find_date(t_max, data_raw[[i]])), ]
