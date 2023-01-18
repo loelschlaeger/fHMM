@@ -114,10 +114,10 @@ fit_model <- function(
       ### compute parameter scales based on the method of moments
       scale_par <- c(1, 1)
       if (!data[["controls"]][["hierarchy"]]) {
-        scale_par[1] <- mean(c(mean(data[["data"]], na.rm = "TRUE"), stats::sd(data[["data"]], na.rm = "TRUE")))
+        scale_par[1] <- mean(c(mean(data[["data"]], na.rm = TRUE), stats::sd(data[["data"]], na.rm = TRUE)))
       } else {
-        scale_par[1] <- mean(c(mean(data[["data"]][, 1], na.rm = "TRUE"), stats::sd(data[["data"]][, 1], na.rm = "TRUE")))
-        scale_par[2] <- mean(c(mean(data[["data"]][, -1], na.rm = "TRUE"), stats::sd(data[["data"]][, -1], na.rm = "TRUE")))
+        scale_par[1] <- mean(c(mean(data[["data"]][, 1], na.rm = TRUE), stats::sd(data[["data"]][, 1], na.rm = TRUE)))
+        scale_par[2] <- mean(c(mean(data[["data"]][, -1], na.rm = TRUE), stats::sd(data[["data"]][, -1], na.rm = TRUE)))
       }
       scale_par <- abs(scale_par)
       for (run in 1:data[["controls"]][["fit"]][["runs"]]) {
