@@ -198,7 +198,7 @@
 #'
 #' @description
 #' A pre-computed HHMM with monthly averaged closing prices of the
-#' DAX from 2015 to 2022 on the coarse scale, Volkswagen AG stock data on the 
+#' DAX from 2010 to 2022 on the coarse scale, Volkswagen AG stock data on the 
 #' fine scale, two hidden fine-scale and coarse-scale states, respectively, and
 #' state-dependent t-distributions for demonstration purpose.
 #'
@@ -214,7 +214,7 @@
 #'   period    = "m",
 #'   data      = list(
 #'     file       = list(dax, vw),
-#'     from       = "2015-01-01",
+#'     from       = "2010-01-01",
 #'     to         = "2022-31-12",
 #'     logreturns = c(TRUE, TRUE))
 #' )
@@ -233,7 +233,8 @@
 #' Unemployment rate and S&P 500 hierarchical HMM
 #'
 #' @description
-#' A pre-computed HHMM with ... TODO
+#' A pre-computed HHMM with monthly unemployment rate in the US on the coarse 
+#' scale and S&P 500 index data on the fine scale for demonstration purpose.
 #'
 #' @usage data("spx_unemp_model")
 #'
@@ -242,17 +243,17 @@
 #' \preformatted{
 #' controls <- list(
 #'   hierarchy = TRUE,
-#'   states    = c(2, 2),
+#'   states    = c(3, 2),
 #'   sdds      = c("gamma", "t"),
 #'   period    = "m",
 #'   data      = list(
 #'     file       = list(unemp, spx),
 #'     date_column = c("date", "Date"),
 #'     data_column = c("rate", "Close"),
-#'     from       = "2015-01-01",
+#'     from       = "2000-01-01",
 #'     to         = "2022-12-31",
 #'     logreturns = c(FALSE, TRUE)),
-#'   fit = list(runs = 4)
+#'   fit = list(runs = 100)
 #' )
 #' controls <- set_controls(controls)
 #' spx_unemp_data <- prepare_data(controls)
