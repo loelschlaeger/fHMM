@@ -11,24 +11,28 @@ An object of class \code{\link{fHMM_model}}.
 data("spx_unemp_model")
 }
 \description{
-A pre-computed HHMM with ... TODO
+A pre-computed HHMM with monthly unemployment rate in the US on the coarse
+scale and S&P 500 index data on the fine scale for demonstration purpose.
 }
 \details{
 The model was estimated via:
 \preformatted{
 controls <- list(
   hierarchy = TRUE,
-  states    = c(2, 2),
+  states    = c(3, 2),
   sdds      = c("gamma", "t"),
   period    = "m",
   data      = list(
     file       = list(unemp, spx),
     date_column = c("date", "Date"),
     data_column = c("rate", "Close"),
-    from       = "2015-01-01",
+    from       = "2000-01-01",
     to         = "2022-12-31",
-    logreturns = c(FALSE, TRUE)),
-  fit = list(runs = 4)
+    logreturns = c(FALSE, TRUE)
+  ),
+  fit       = list(
+    runs = 200
+  )
 )
 controls <- set_controls(controls)
 spx_unemp_data <- prepare_data(controls)

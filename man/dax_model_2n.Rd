@@ -27,7 +27,7 @@ controls <- list(
     data_column = "Close",
     logreturns  = TRUE,
     from        = "2000-01-03",
-    to          = "2022-31-12"
+    to          = "2022-12-31"
   ),
   fit    = list(runs = 100)
 )

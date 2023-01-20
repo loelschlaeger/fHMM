@@ -140,7 +140,7 @@
 #'     data_column = "Close",
 #'     logreturns  = TRUE,
 #'     from        = "2000-01-03",
-#'     to          = "2022-31-12"
+#'     to          = "2022-12-31"
 #'   ),
 #'   fit    = list(runs = 100)
 #' )
@@ -177,15 +177,15 @@
 #'     data_column = "Close",
 #'     logreturns  = TRUE,
 #'     from        = "2000-01-03",
-#'     to          = "2022-31-12"
+#'     to          = "2022-12-31"
 #'   ),
-#'   fit    = list(runs = 100)
+#'   fit    = list(runs = 200)
 #' )
 #' controls <- set_controls(controls)
 #' dax_data <- prepare_data(controls)
 #' dax_model_3t <- fit_model(dax_data)
 #' dax_model_3t <- decode_states(dax_model_3t)
-#' dax_model_3t <- reorder_states(dax_model_3t, c(3,2,1))
+#' dax_model_3t <- reorder_states(dax_model_3t, c(2, 3, 1))
 #' dax_model_3t <- compute_residuals(dax_model_3t)
 #' }
 #'
@@ -215,8 +215,12 @@
 #'   data      = list(
 #'     file       = list(dax, vw),
 #'     from       = "2010-01-01",
-#'     to         = "2022-31-12",
-#'     logreturns = c(TRUE, TRUE))
+#'     to         = "2022-12-31",
+#'     logreturns = c(TRUE, TRUE)
+#'   ),
+#'   fit       = list(
+#'     runs = 200
+#'   )
 #' )
 #' controls <- set_controls(controls)
 #' dax_vw_data <- prepare_data(controls)
@@ -252,8 +256,11 @@
 #'     data_column = c("rate", "Close"),
 #'     from       = "2000-01-01",
 #'     to         = "2022-12-31",
-#'     logreturns = c(FALSE, TRUE)),
-#'   fit = list(runs = 100)
+#'     logreturns = c(FALSE, TRUE)
+#'   ),
+#'   fit       = list(
+#'     runs = 200
+#'   )
 #' )
 #' controls <- set_controls(controls)
 #' spx_unemp_data <- prepare_data(controls)

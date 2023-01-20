@@ -12,7 +12,7 @@ data("dax_vw_model")
 }
 \description{
 A pre-computed HHMM with monthly averaged closing prices of the
-DAX from 2015 to 2022 on the coarse scale, Volkswagen AG stock data on the
+DAX from 2010 to 2022 on the coarse scale, Volkswagen AG stock data on the
 fine scale, two hidden fine-scale and coarse-scale states, respectively, and
 state-dependent t-distributions for demonstration purpose.
 }
@@ -26,9 +26,13 @@ controls <- list(
   period    = "m",
   data      = list(
     file       = list(dax, vw),
-    from       = "2015-01-01",
-    to         = "2022-31-12",
-    logreturns = c(TRUE, TRUE))
+    from       = "2010-01-01",
+    to         = "2022-12-31",
+    logreturns = c(TRUE, TRUE)
+  ),
+  fit       = list(
+    runs = 200
+  )
 )
 controls <- set_controls(controls)
 dax_vw_data <- prepare_data(controls)
