@@ -70,6 +70,9 @@
     <loc>https://loelschlaeger.github.io/fHMM/reference/compute_residuals.html</loc>
   </url>
   <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/dax.html</loc>
+  </url>
+  <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/dax_model_2n.html</loc>
   </url>
   <url>
@@ -233,5 +236,17 @@
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/simulate_observations.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/spx.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/spx_unemp_model.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/unemp.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/vw.html</loc>
   </url>
 </urlset>
