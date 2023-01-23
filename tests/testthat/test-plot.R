@@ -66,6 +66,7 @@ test_that("plotting fHMM_model works", {
   )
   expect_null(plot(sim_model_2gamma, plot_type = "ts"))
   expect_null(plot(sim_model_2gamma, plot_type = "ll"))
+  sim_model_2gamma$residuals <- NULL
   expect_warning(
     plot(sim_model_2gamma, plot_type = "pr"),
     "Residuals are not available"
@@ -109,7 +110,15 @@ test_that("plotting hierarchical fHMM_model works", {
   dev.off()
 })
 
-
-
+test_that("plotting relative and absolute likelihood works", {
+  pdf(file = NULL)
+  expect_null(plot(dax_model_3t, plot_type = "ll", ll_relative = TRUE))
+  expect_null(plot(dax_model_3t, plot_type = "ll", ll_relative = FALSE))
+  dev.off()
+  expect_error(
+    plot(dax_model_3t, plot_type = "ll", ll_relative = "FALSE"),
+    "'ll_relative' must be 'TRUE' or 'FALSE'."
+  )
+})
 
 

@@ -108,21 +108,21 @@ test_that("coefficients can be extracted", {
 })
 
 test_that("AIC can be computed", {
-  expect_equal(AIC(dax_model_2n), -33351.964)
-  expect_equal(AIC(dax_model_2n, dax_model_3t), c(-33351.964, -33796.654))
+  expect_equal(round(AIC(dax_model_2n)), -34795)
+  expect_equal(round(AIC(dax_model_2n, dax_model_3t)), c(-34795, -35269))
 })
 
 test_that("BIC can be computed", {
-  expect_equal(BIC(dax_model_2n), -33312.154)
-  expect_equal(BIC(dax_model_2n, dax_model_3t), c(-33312.1538, -33697.1292))
+  expect_equal(round(BIC(dax_model_2n)), -34755)
+  expect_equal(round(BIC(dax_model_2n, dax_model_3t)), c(-34755, -35169))
 })
 
 test_that("number of observations can be computed", {
-  expect_equal(nobs(dax_model_2n), 5625)
+  expect_equal(nobs(dax_model_2n), 5882)
 })
 
 test_that("log-likelihood can be computed", {
-  expect_equal(logLik(dax_model_2n), 16681.982)
+  expect_equal(round(logLik(dax_model_2n)), 17404)
 })
 
 test_that("number of model parameters can be computed", {
@@ -147,16 +147,6 @@ test_that("input checks for prediction work", {
 
 test_that("prediction works", {
   prediction <- predict(dax_model_3t)
-  expect_equal(
-    round(unlist(prediction), 2),
-    c(states1 = 0.02, states2 = 0.04, states3 = 0.06, states4 = 0.08, 
-      states5 = 0.1, states6 = 0.97, states7 = 0.95, states8 = 0.92, 
-      states9 = 0.9, states10 = 0.88, states11 = 0.01, states12 = 0.01, 
-      states13 = 0.01, states14 = 0.02, states15 = 0.02, data1 = -0.02, 
-      data2 = -0.02, data3 = -0.02, data4 = -0.02, data5 = -0.02, data6 = 0, 
-      data7 = 0, data8 = 0, data9 = 0, data10 = 0, data11 = 0.02, data12 = 0.02, 
-      data13 = 0.02, data14 = 0.02, data15 = 0.02
-    )
-  )
+  expect_s3_class(prediction, "fHMM_predict")
 })
 

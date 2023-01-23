@@ -26,7 +26,7 @@
       summary(out)
     Output
       Summary of fHMM empirical data
-      * number of observations: 8778 
+      * number of observations: 9012 
       * data source: data.frame 
       * date column: Date 
       * log returns: FALSE 
@@ -44,7 +44,7 @@
       summary(out)
     Output
       Summary of fHMM empirical data
-      * number of observations: 1793 8778 
+      * number of observations: 1839 9012 
       * fine-scale dimension: w 
       * data source: dax.csv dax.csv 
       * date column: Date Date 
@@ -64,7 +64,7 @@
       summary(out)
     Output
       Summary of fHMM empirical data
-      * number of observations: 877 8770 
+      * number of observations: 901 9010 
       * fine-scale dimension: 10 
       * data source: dax.csv dax.csv 
       * date column: Date Date 
