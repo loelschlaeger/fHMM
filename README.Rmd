@@ -21,8 +21,8 @@ set.seed(1)
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/fHMM)](https://CRAN.R-project.org/package=fHMM)
 [![metacran downloads](https://cranlogs.r-pkg.org/badges/last-month/fHMM)](https://cran.r-project.org/package=fHMM)
-[![R-CMD-check](https://github.com/loelschlaeger/fHMM/workflows/R-CMD-check/badge.svg)](https://github.com/loelschlaeger/fHMM/actions)
 [![Codecov test coverage](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg)](https://app.codecov.io/gh/loelschlaeger/fHMM)
+[![R-CMD-check](https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml)
 <!-- badges: end -->
 
 With {fHMM} you can detect and characterize financial market regimes in financial time series by applying hidden Markov Models (HMMs). The functionality and the model [is documented in detail here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a first application to the German stock index [DAX](https://en.wikipedia.org/wiki/DAX).
