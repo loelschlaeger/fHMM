@@ -19,3 +19,4 @@ vignettes/figs/
 ^vignettes/.*cache
 ^CRAN-RELEASE$
 ^cran-comments\.md$
+tmp.R

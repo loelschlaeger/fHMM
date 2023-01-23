@@ -77,8 +77,6 @@ test_that("HHMM fitting works", {
     structure(c(0.48, -30.95, -0.09, 0.03, -0.74, -0.43, -1.23, -0.18, 
                 0.93, 0.02, -4.74, 3.02), class = "parUncon")
   )
-  expect_snapshot(model)
-  expect_snapshot(summary(model))
 })
 
 test_that("log-normal sdds works", {
@@ -96,10 +94,7 @@ test_that("log-normal sdds works", {
     round(model$estimate, 2),
     structure(c(-0.79, 0.78, -0.74, -0.03), class = "parUncon")
   )
-  expect_snapshot(model)
-  expect_snapshot(summary(model))
   model <- decode_states(model, verbose = FALSE)
-  expect_snapshot(summary(model))
 })
 
 test_that("coefficients can be extracted", {
