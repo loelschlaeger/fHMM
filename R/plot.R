@@ -57,6 +57,7 @@ plot.fHMM_data <- function(x, events = NULL, ...) {
 #' @param events
 #' An object of class \code{\link{fHMM_events}}.
 #' @inheritParams fHMM_colors
+#' @inheritParams plot_ll
 #' @param ...
 #' Ignored.
 #'
@@ -65,7 +66,9 @@ plot.fHMM_data <- function(x, events = NULL, ...) {
 #'
 #' @export
 
-plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, ...) {
+plot.fHMM_model <- function(
+    x, plot_type = "ts", events = NULL, colors = NULL, ll_relative = TRUE, ...
+  ) {
 
   ### check input
   if (!inherits(x, "fHMM_model")) {
@@ -87,7 +90,7 @@ plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, .
 
   ### visualizations
   if ("ll" %in% plot_type) {
-    plot_ll(lls = x$lls)
+    plot_ll(lls = x$lls, ll_relative = ll_relative)
   }
   if ("sdds" %in% plot_type) {
     plot_sdds(
@@ -112,42 +115,57 @@ plot.fHMM_model <- function(x, plot_type = "ts", events = NULL, colors = NULL, .
 #' Visualization of log-likelihood values
 #'
 #' @description
-#' This function plots the log-likelihood values of the different estimation runs.
+#' This function plots the log-likelihood values of the different optimization 
+#' runs.
 #'
 #' @param lls
-#' A numeric vector of log-likelihood values.
+#' A \code{numeric} vector of log-likelihood values.
+#' @param ll_relative
+#' A \code{logical}, set to \code{TRUE} (default) to plot the differences from
+#' the best log-likelihood value. Set to \code{FALSE} to plot the absolute 
+#' values.
 #'
 #' @return
 #' No return value. Draws a plot to the current device.
 #'
-#' @keywords
-#' internal
+#' @keywords internal
 #'
 #' @importFrom graphics axis points
 
-plot_ll <- function(lls) {
+plot_ll <- function(lls, ll_relative = TRUE) {
+  if (!isTRUE(ll_relative) && !isFALSE(ll_relative)) {
+    stop("'ll_relative' must be 'TRUE' or 'FALSE'.", call. = FALSE)
+  }
+  max_ll_absolute <- max(lls, na.rm = TRUE)
+  if (ll_relative) {
+    lls <- lls - max_ll_absolute
+  }
+  max_ll <- max(lls, na.rm = TRUE)
+  min_ll <- min(lls, na.rm = TRUE)
+  main <- ifelse(ll_relative, "Relative log-likelihoods", "Log-likelihood values")
   if (length(lls) <= 5) {
     plot(lls,
       xaxt = "n", yaxt = "n", xlab = "Estimation run", ylab = "",
-      main = "Log-likelihoods", pch = 16,
-      ylim = c(floor(min(lls, na.rm = TRUE)), ceiling(max(lls, na.rm = TRUE)))
+      main = main, pch = 16,
+      ylim = c(floor(min_ll), ceiling(max_ll))
     )
     graphics::axis(1, las = 1, at = seq_len(length(lls)), labels = seq_len(length(lls)))
   } else {
     plot(lls,
       yaxt = "n", xlab = "Estimation run", ylab = "",
-      main = "Log-likelihoods", pch = 16,
-      ylim = c(floor(min(lls, na.rm = TRUE)), ceiling(max(lls, na.rm = TRUE)))
+      main = main, pch = 16,
+      ylim = c(floor(min_ll), ceiling(max_ll))
     )
   }
   graphics::points(
     x = which.max(lls), y = lls[which.max(lls)], pch = 16, cex = 1.25,
     col = "red"
   )
-  graphics::axis(2,
-    las = 1, at = unique(round(lls[!is.na(lls)])),
-    labels = unique(round(lls[!is.na(lls)]))
-  )
+  ll_unique_sorted <- unique(sort(round(lls[!is.na(lls)]), decreasing = TRUE))
+  at <- ll_unique_sorted
+  labels <- as.character(c(round(max_ll_absolute), ll_unique_sorted[-1]))
+  graphics::axis(2, las = 1, at = at, labels = labels)
+  abline(h = max_ll, col = "red")
 }
 
 #' Visualize pseudo residuals

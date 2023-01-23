@@ -4,7 +4,14 @@
 \alias{plot.fHMM_model}
 \title{Plot method for an object of class \code{\link{fHMM_model}}}
 \usage{
-\method{plot}{fHMM_model}(x, plot_type = "ts", events = NULL, colors = NULL, ...)
+\method{plot}{fHMM_model}(
+  x,
+  plot_type = "ts",
+  events = NULL,
+  colors = NULL,
+  ll_relative = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class \code{\link{fHMM_model}}.}
@@ -23,6 +30,10 @@ distributions,
 
 \item{colors}{Either \code{NULL} (default) or a \code{character} vector of color names or
 hexadecimal RGB triplets.}
+
+\item{ll_relative}{A \code{logical}, set to \code{TRUE} (default) to plot the differences from
+the best log-likelihood value. Set to \code{FALSE} to plot the absolute
+values.}
 
 \item{...}{Ignored.}
 }
