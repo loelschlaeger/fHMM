@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# {fHMM}: Fitting HMMs to financial time series <img src="man/figures/logo.svg" align="right" alt="" width="120" />
+# {fHMM}: Fitting HMMs to financial time series <a href="https://loelschlaeger.github.io/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -55,8 +55,7 @@ The package has a build-in function to download the data from [Yahoo
 Finance](https://finance.yahoo.com/):
 
 ``` r
-path <- paste0(tempdir(),"/dax.csv")
-download_data(symbol = "^GDAXI", file = path, verbose = FALSE)
+dax <- download_data(symbol = "^GDAXI", file = NULL, verbose = FALSE)
 ```
 
 We first need to define the model by setting some `controls`:
@@ -65,7 +64,7 @@ We first need to define the model by setting some `controls`:
 controls <- list(
   states = 2,
   sdds   = "t",
-  data   = list(file        = path,
+  data   = list(file        = dax,
                 date_column = "Date",
                 data_column = "Close",
                 logreturns  = TRUE,
@@ -82,7 +81,7 @@ data <- prepare_data(controls)
 summary(data)
 #> Summary of fHMM empirical data
 #> * number of observations: 5371 
-#> * data source: dax.csv 
+#> * data source: data.frame 
 #> * date column: Date 
 #> * log returns: TRUE
 ```
@@ -90,7 +89,7 @@ summary(data)
 We fit the model and subsequently decode the hidden states:
 
 ``` r
-model <- fit_model(data, ncluster = 7)
+model <- fit_model(data)
 #> Checking start values
 #> Maximizing likelihood
 #> Computing Hessian

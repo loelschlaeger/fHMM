@@ -12,11 +12,11 @@ knitr::opts_chunk$set(
   out.width = "75%",
   fig.align = "center"
 )
+library("fHMM")
 set.seed(1)
-library(fHMM)
 ```
 
-# {fHMM}: Fitting HMMs to financial time series <img src="man/figures/logo.svg" align="right" alt="" width="120" />
+# {fHMM}: Fitting HMMs to financial time series <a href="https://loelschlaeger.github.io/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/fHMM)](https://CRAN.R-project.org/package=fHMM)
@@ -53,8 +53,7 @@ We fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns
 The package has a build-in function to download the data from [Yahoo Finance](https://finance.yahoo.com/):
 
 ```{r data download}
-path <- paste0(tempdir(),"/dax.csv")
-download_data(symbol = "^GDAXI", file = path, verbose = FALSE)
+dax <- download_data(symbol = "^GDAXI", file = NULL, verbose = FALSE)
 ```
 
 We first need to define the model by setting some `controls`:
@@ -63,7 +62,7 @@ We first need to define the model by setting some `controls`:
 controls <- list(
   states = 2,
   sdds   = "t",
-  data   = list(file        = path,
+  data   = list(file        = dax,
                 date_column = "Date",
                 data_column = "Close",
                 logreturns  = TRUE,
@@ -83,7 +82,7 @@ summary(data)
 We fit the model and subsequently decode the hidden states:
 
 ```{r fit}
-model <- fit_model(data, ncluster = 7)
+model <- fit_model(data)
 model <- decode_states(model)
 summary(model)
 ```
