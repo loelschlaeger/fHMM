@@ -578,10 +578,10 @@ plot_ts <- function(data, decoding, colors, events) {
     axis(1, c(xmin, xmax))
   }
   if (ymin < 0 & 0 < ymax) {
-    axis(2, c(ymin, 0, ymax), labels = sprintf("%.2g", c(ymin, 0, ymax)))
+    axis(2, c(ymin, 0, ymax), labels = signif(c(ymin, 0, ymax), 2))
   }
   if (0 <= ymin || 0 >= ymax) {
-    axis(2, c(ymin, ymax), labels = sprintf("%.2g", c(ymin, ymax)))
+    axis(2, c(ymin, ymax), labels = signif(c(ymin, ymax), 2))
   }
   if (!controls[["hierarchy"]] & !is.null(decoding)) {
     for (s in seq_len(controls[["states"]][1])) {
@@ -656,10 +656,10 @@ plot_ts <- function(data, decoding, colors, events) {
       }
     }
     if (ymin < 0 & 0 < ymax) {
-      axis(4, c(ymin, 0, ymax), labels = sprintf("%.2g", c(ymin, 0, ymax)))
+      axis(4, c(ymin, 0, ymax), labels = signif(c(ymin, 0, ymax), 2))
     }
     if (0 <= ymin || 0 >= ymin) {
-      axis(4, c(ymin, ymax), labels = sprintf("%.2g", c(ymin, ymax)))
+      axis(4, c(ymin, ymax), labels = signif(c(ymin, ymax), 2))
     }
     if (controls[["simulated"]]) {
       mtext("Simulated coarse-scale data", side = 4, line = 3.5, at = mean(c(ymin, ymax)), cex = 1.25, las = 3)
