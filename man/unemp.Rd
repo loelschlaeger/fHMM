@@ -10,6 +10,10 @@ A \code{data.frame} with 24837 rows and the following 2 columns:
 \item \code{date}: The date.
 \item \code{rate}: The unemployment rate.
 }
+The data is also available as \code{.csv} file via:
+\preformatted{
+system.file("extdata", "unemp.csv", package = "fHMM")
+}
 }
 \source{
 OECD (2023), Unemployment rate (indicator).

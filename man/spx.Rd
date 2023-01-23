@@ -36,5 +36,9 @@ spx <- download_data(
   file = NULL          # return data as data.frame
 )
 }
+The data is also available as \code{.csv} file via:
+\preformatted{
+system.file("extdata", "spx.csv", package = "fHMM")
+}
 }
 \keyword{data}
