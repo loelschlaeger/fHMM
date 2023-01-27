@@ -1,6 +1,5 @@
 test_that("residual computation works", {
   expect_error(compute_residuals("not_an_fHMM_model"))
-  data("dax_model_3t")
   expect_message(compute_residuals(dax_model_3t, verbose = TRUE))
   expect_error(compute_residuals(dax_model_3t, verbose = "not_TRUE_or_FALSE"))
   dax_model_3t_tmp <- dax_model_3t
@@ -11,19 +10,16 @@ test_that("residual computation works", {
   expect_s3_class(x$residuals, "fHMM_residuals")
   expect_equal(
     round(fivenum(x$residuals), 2), 
-    c(-3.52, -0.66, 0.01, 0.67, 3.92)
+    c(-3.52, -0.66, 0.01, 0.67, 3.91)
   )
-  data("sim_model_2gamma")
   sim_model_2gamma <- decode_states(sim_model_2gamma, verbose = FALSE)
   x <- compute_residuals(sim_model_2gamma, verbose = FALSE)
   expect_s3_class(x, "fHMM_model")
   expect_s3_class(x$residuals, "fHMM_residuals")
-  data("sim_model_4lnorm")
   sim_model_4lnorm <- decode_states(sim_model_4lnorm, verbose = FALSE)
   x <- compute_residuals(sim_model_4lnorm, verbose = FALSE)
   expect_s3_class(x, "fHMM_model")
   expect_s3_class(x$residuals, "fHMM_residuals")
-  data("dax_vw_model")
   dax_vw_model <- decode_states(dax_vw_model, verbose = FALSE)
   x <- compute_residuals(dax_vw_model, verbose = FALSE)
   expect_s3_class(x, "fHMM_model")

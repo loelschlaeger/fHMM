@@ -35,5 +35,9 @@ vw <- download_data(
   file = NULL          # return data as data.frame
 )
 }
+The data is also available as \code{.csv} file via:
+\preformatted{
+system.file("extdata", "vw.csv", package = "fHMM")
+}
 }
 \keyword{data}

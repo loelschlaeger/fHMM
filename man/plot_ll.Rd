@@ -4,15 +4,20 @@
 \alias{plot_ll}
 \title{Visualization of log-likelihood values}
 \usage{
-plot_ll(lls)
+plot_ll(lls, ll_relative = TRUE)
 }
 \arguments{
-\item{lls}{A numeric vector of log-likelihood values.}
+\item{lls}{A \code{numeric} vector of log-likelihood values.}
+
+\item{ll_relative}{A \code{logical}, set to \code{TRUE} (default) to plot the differences from
+the best log-likelihood value. Set to \code{FALSE} to plot the absolute
+values.}
 }
 \value{
 No return value. Draws a plot to the current device.
 }
 \description{
-This function plots the log-likelihood values of the different estimation runs.
+This function plots the log-likelihood values of the different optimization
+runs.
 }
 \keyword{internal}

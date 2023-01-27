@@ -14,6 +14,10 @@
 #'   file = NULL          # return data as data.frame
 #' )
 #' }
+#' The data is also available as \code{.csv} file via:
+#' \preformatted{
+#' system.file("extdata", "spx.csv", package = "fHMM")
+#' }
 #' 
 #' @format A \code{data.frame} with 23864 rows and the following 7 columns:
 #' \itemize{
@@ -46,6 +50,10 @@
 #'   to = "2022-12-31",   # last observation
 #'   file = NULL          # return data as data.frame
 #' )
+#' }
+#' The data is also available as \code{.csv} file via:
+#' \preformatted{
+#' system.file("extdata", "dax.csv", package = "fHMM")
 #' }
 #' 
 #' @format A \code{data.frame} with 9012 rows and the following 7 columns:
@@ -80,6 +88,10 @@
 #'   file = NULL          # return data as data.frame
 #' )
 #' }
+#' The data is also available as \code{.csv} file via:
+#' \preformatted{
+#' system.file("extdata", "vw.csv", package = "fHMM")
+#' }
 #' 
 #' @format A \code{data.frame} with 6260 rows and the following 7 columns:
 #' \itemize{
@@ -109,6 +121,10 @@
 #' \itemize{
 #'   \item \code{date}: The date.
 #'   \item \code{rate}: The unemployment rate.
+#' }
+#' The data is also available as \code{.csv} file via:
+#' \preformatted{
+#' system.file("extdata", "unemp.csv", package = "fHMM")
 #' }
 #' 
 #' @source 

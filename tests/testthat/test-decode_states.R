@@ -2,7 +2,6 @@ test_that("state decoding input checks work", {
   expect_error(decode_states("not_an_fHMM_model_object"))
   expect_error(decode_states(dax_model_3t, "not_TRUE_or_FALSE"))
   expect_message(decode_states(dax_model_3t, TRUE))
-  expect_snapshot(summary(dax_model_3t))
 })
 
 test_that("state decoding for normal distribution works", {

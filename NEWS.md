@@ -1,5 +1,7 @@
 # fHMM 1.0.3.9000
 
+* The `plot.fHMM_model()` function now has the additional argument `ll_relative` (default is `TRUE`) to plot the relative log-likelihood values when `plot_type = "ll"`.
+
 # fHMM 1.0.3
 
 * We added the following methods for an `fHMM_model` object: `AIC()`, `BIC()`, `logLik()`, `nobs()`, `npar()`, `residuals()`.

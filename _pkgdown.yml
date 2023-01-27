@@ -47,6 +47,10 @@ reference:
   - fHMM_events
   - predict.fHMM_model
   - residuals.fHMM_model
+- title: Data
+  desc: The following data sets are included in the package.
+  contents:
+  - has_keyword("data")
 - title: Models
   desc: The following pre-computed models are included in the package.
   contents:

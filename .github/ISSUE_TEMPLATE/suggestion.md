@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Describe a case for a new feature
+about: Describe a case for a new feature.
 labels: future
 ---
 
