@@ -477,7 +477,7 @@ plot_ts <- function(data, decoding, colors, events) {
     ymin <- -ymax
     plot(xdata, ydata,
       type = "l",
-      xlim = c(xmin, xmax), ylim = c(1.2 * ymin, 1.2 * ymax), col = "lightgrey", xlab = "",
+      xlim = c(xmin, xmax), ylim = c(1.2 * ymin, 1.2 * ymax), col = "black", xlab = "",
       ylab = "", xaxt = "n", yaxt = "n", cex.lab = 2, cex.main = 2
     )
     if (!controls[["hierarchy"]]) {
@@ -539,7 +539,7 @@ plot_ts <- function(data, decoding, colors, events) {
       ymin <- 0
     }
     plot(x_values, data[["data"]],
-      type = "l", col = "lightgrey",
+      type = "l", col = "black",
       xlab = "", ylab = "", xaxt = "n", yaxt = "n",
       xlim = c(xmin, xmax), ylim = c(ymin, ymax * ymax_factor)
     )
@@ -548,7 +548,7 @@ plot_ts <- function(data, decoding, colors, events) {
     ymin <- min(fs_data)
     ymax <- max(fs_data)
     plot(x_values, fs_data,
-      type = "h", col = "lightgrey",
+      type = "h", col = "black",
       xlab = "", ylab = "", xaxt = "n",
       yaxt = "n", xlim = c(xmin, xmax), ylim = c(ymin, ymax * ymax_factor)
     )
@@ -668,4 +668,5 @@ plot_ts <- function(data, decoding, colors, events) {
       mtext("Coarse-scale data", side = 4, line = 3.5, at = mean(c(ymin, ymax)), cex = 1.25, las = 3)
     }
   }
+  title(main = ifelse(is.null(decoding), "Time series", "Decoded time series"))
 }

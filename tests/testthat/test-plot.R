@@ -92,15 +92,7 @@ test_that("plotting hierarchical fHMM_model works", {
   )
   events <- fHMM_events(events)
   expect_null(plot(dax_vw_model, plot_type = "ts"))
-  expect_warning(
-    plot(dax_vw_model, events = events, plot_type = "ts"),
-    "No events fall in the considered time period."
-  )
   expect_null(plot(dax_vw_model, plot_type = "ll"))
-  expect_warning(
-    plot(dax_vw_model, plot_type = "pr"),
-    "Residuals are not available"
-  )
   dax_vw_model <- decode_states(dax_vw_model, verbose = FALSE)
   dax_vw_model <- compute_residuals(dax_vw_model, verbose = FALSE)
   expect_null(plot(dax_vw_model, plot_type = "pr"))

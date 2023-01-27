@@ -30,8 +30,6 @@ pars <- fHMM_parameters(
 )
 data_sim <- prepare_data(controls, true_parameters = pars, seed = 1)
 sim_model_2gamma <- fit_model(data_sim, seed = 1)
-sim_model_2gamma <- decode_states(sim_model_2gamma)
-sim_model_2gamma <- compute_residuals(sim_model_2gamma)
 }
 }
 \keyword{model}

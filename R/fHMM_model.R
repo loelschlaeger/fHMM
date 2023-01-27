@@ -629,6 +629,9 @@ print.summary.fHMM_model <- function(x, digits = 4, ...) {
 #'
 #' @param object
 #' An object of class \code{\link{fHMM_model}}.
+#' @param digits
+#' An \code{integer}, the number of significant digits to be used.
+#' By default, \code{digits = 2}.
 #' @param ...
 #' Ignored.
 #' @inheritParams compute_ci
@@ -638,7 +641,7 @@ print.summary.fHMM_model <- function(x, digits = 4, ...) {
 #'
 #' @exportS3Method 
 
-coef.fHMM_model <- function(object, alpha = 0.05, ...) {
+coef.fHMM_model <- function(object, alpha = 0.05, digits = 2, ...) {
   ci <- compute_ci(object, alpha)
   estimates_table <- data.frame(lapply(ci, as.vector))
   if (object$data$controls$simulated) {

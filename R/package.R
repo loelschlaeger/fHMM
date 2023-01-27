@@ -1,5 +1,6 @@
 #' fHMM: Fitting Hidden Markov Models to Financial Data
 #'
+#' @description 
 #' This package provides tools for modeling financial data via
 #' the (hierarchical) hidden Markov model.
 #'
@@ -21,7 +22,7 @@ NULL
 .onAttach <- function(lib, pkg) {
   msg <- c(
     paste0("Thanks for using {fHMM} version ", utils::packageVersion("fHMM")), "!\n",
-    "With {fHMM}, you can fit hidden Markov models to financial data.\n",
+    "With {fHMM}, you can fit HMMs to financial data.\n",
     "See ", cli::style_hyperlink("https://loelschlaeger.de/fHMM", "https://loelschlaeger.de/fHMM") ," for help.\n",
     "Type 'citation(\"fHMM\")' for citing this R package."
   )

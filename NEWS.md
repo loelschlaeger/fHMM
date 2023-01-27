@@ -2,6 +2,12 @@
 
 * The `plot.fHMM_model()` function now has the additional argument `ll_relative` (default is `TRUE`) to plot the relative log-likelihood values when `plot_type = "ll"`.
 
+* Increased the test coverage.
+
+* Changed color of time series plot from `"lightgray"` to `"black"` for better readability.
+
+* Added a title to the time series plot.
+
 # fHMM 1.0.3
 
 * We added the following methods for an `fHMM_model` object: `AIC()`, `BIC()`, `logLik()`, `nobs()`, `npar()`, `residuals()`.
