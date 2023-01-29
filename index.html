@@ -113,78 +113,93 @@
 <div class="section level2">
 <h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
 </h2>
-<p>We welcome contributions! Please submit <a href="https://github.com/loelschlaeger/fHMM/issues/new?assignees=&amp;labels=bug&amp;template=bug.md" class="external-link">bug reports</a> and <a href="https://github.com/loelschlaeger/fHMM/issues/new?assignees=&amp;labels=future&amp;template=suggestion.md" class="external-link">feature requests</a> as issues and extensions as pull request from a branch forked from main.</p>
+<p>We welcome contributions! Please submit <a href="https://github.com/loelschlaeger/fHMM/issues/new?assignees=&amp;labels=bug&amp;template=bug.md" class="external-link">bug reports</a> and <a href="https://github.com/loelschlaeger/fHMM/issues/new?assignees=&amp;labels=future&amp;template=suggestion.md" class="external-link">feature requests</a> as issues and extensions as merge requests via a branch forked from “master”.</p>
 </div>
 <div class="section level2">
 <h2 id="example-fitting-an-hmm-to-the-dax">Example: Fitting an HMM to the DAX<a class="anchor" aria-label="anchor" href="#example-fitting-an-hmm-to-the-dax"></a>
 </h2>
-<p>We fit a 2-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2020. The states can be interpreted as proxies for bearish and bullish markets.</p>
-<p>The package has a build-in function to download the data from <a href="https://finance.yahoo.com/" class="external-link">Yahoo Finance</a>:</p>
+<p>We fit a 3-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2022. The states can be interpreted as proxies for bearish (green below) and bullish markets (red) and an “in-between” market state (yellow).</p>
+<p>The package has a build-in function to download financial data from <a href="https://finance.yahoo.com/" class="external-link">Yahoo Finance</a>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dax</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, file <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>We first need to define the model by setting some <code>controls</code>:</p>
+<p>We first need to define the model:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  states <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  states <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  sdds   <span class="op">=</span> <span class="st">"t"</span>,</span>
 <span>  data   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>file        <span class="op">=</span> <span class="va">dax</span>,</span>
 <span>                date_column <span class="op">=</span> <span class="st">"Date"</span>,</span>
 <span>                data_column <span class="op">=</span> <span class="st">"Close"</span>,</span>
 <span>                logreturns  <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                from        <span class="op">=</span> <span class="st">"2000-01-01"</span>,</span>
-<span>                to          <span class="op">=</span> <span class="st">"2020-12-31"</span><span class="op">)</span></span>
+<span>                to          <span class="op">=</span> <span class="st">"2022-12-31"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_controls.html">set_controls</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span></span></code></pre></div>
-<p>The function <code><a href="reference/prepare_data.html">prepare_data()</a></code> prepares the data for estimation:</p>
+<p>The function <code><a href="reference/prepare_data.html">prepare_data()</a></code> then prepares the data for estimation:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prepare_data.html">prepare_data</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prepare_data.html">prepare_data</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span></span></code></pre></div>
+<p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method gives an overview:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Summary of fHMM empirical data</span></span>
-<span><span class="co">#&gt; * number of observations: 5371 </span></span>
+<span><span class="co">#&gt; * number of observations: 5882 </span></span>
 <span><span class="co">#&gt; * data source: data.frame </span></span>
 <span><span class="co">#&gt; * date column: Date </span></span>
 <span><span class="co">#&gt; * log returns: TRUE</span></span></code></pre></div>
-<p>We fit the model and subsequently decode the hidden states:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>We fit the model and subsequently decode the hidden states and compute (pseudo-) residuals:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Checking start values</span></span>
-<span><span class="co">#&gt; Maximizing likelihood</span></span>
-<span><span class="co">#&gt; Computing Hessian</span></span>
-<span><span class="co">#&gt; Fitting completed</span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Decoded states</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/compute_residuals.html">compute_residuals</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div>
+<p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method gives an overview of the model fit:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Summary of fHMM model</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   simulated hierarchy       LL      AIC       BIC</span></span>
-<span><span class="co">#&gt; 1     FALSE     FALSE 15920.25 -31824.5 -31771.79</span></span>
+<span><span class="co">#&gt;   simulated hierarchy       LL       AIC       BIC</span></span>
+<span><span class="co">#&gt; 1     FALSE     FALSE 17649.52 -35269.03 -35168.84</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; State-dependent distributions:</span></span>
 <span><span class="co">#&gt; t() </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Estimates:</span></span>
-<span><span class="co">#&gt;                   lb   estimate         ub</span></span>
-<span><span class="co">#&gt; Gamma_2.1  0.0113550  0.0179502  2.827e-02</span></span>
-<span><span class="co">#&gt; Gamma_1.2  0.0056213  0.0089654  1.427e-02</span></span>
-<span><span class="co">#&gt; mu_1       0.0005939  0.0009008  1.208e-03</span></span>
-<span><span class="co">#&gt; mu_2      -0.0020763 -0.0010611 -4.585e-05</span></span>
-<span><span class="co">#&gt; sigma_1    0.0073792  0.0078062  8.258e-03</span></span>
-<span><span class="co">#&gt; sigma_2    0.0170391  0.0184230  1.992e-02</span></span>
-<span><span class="co">#&gt; df_1       5.0194906  6.4223618  8.217e+00</span></span>
-<span><span class="co">#&gt; df_2       4.9532404  6.6609735  8.957e+00</span></span>
+<span><span class="co">#&gt;                   lb   estimate        ub</span></span>
+<span><span class="co">#&gt; Gamma_2.1  1.286e-02  2.007e-02 3.113e-02</span></span>
+<span><span class="co">#&gt; Gamma_3.1  1.208e-06  1.198e-06 1.180e-06</span></span>
+<span><span class="co">#&gt; Gamma_1.2  1.557e-02  2.489e-02 3.959e-02</span></span>
+<span><span class="co">#&gt; Gamma_3.2  1.036e-02  1.877e-02 3.378e-02</span></span>
+<span><span class="co">#&gt; Gamma_1.3  4.119e-07  4.080e-07 4.019e-07</span></span>
+<span><span class="co">#&gt; Gamma_2.3  2.935e-03  5.275e-03 9.422e-03</span></span>
+<span><span class="co">#&gt; mu_1       9.655e-04  1.271e-03 1.576e-03</span></span>
+<span><span class="co">#&gt; mu_2      -8.483e-04 -3.102e-04 2.278e-04</span></span>
+<span><span class="co">#&gt; mu_3      -3.813e-03 -1.760e-03 2.932e-04</span></span>
+<span><span class="co">#&gt; sigma_1    5.417e-03  5.853e-03 6.324e-03</span></span>
+<span><span class="co">#&gt; sigma_2    1.278e-02  1.330e-02 1.384e-02</span></span>
+<span><span class="co">#&gt; sigma_3    2.348e-02  2.579e-02 2.832e-02</span></span>
+<span><span class="co">#&gt; df_1       3.957e+00  5.198e+00 6.828e+00</span></span>
+<span><span class="co">#&gt; df_2       3.870e+08  3.870e+08 3.870e+08</span></span>
+<span><span class="co">#&gt; df_3       5.549e+00  1.078e+01 2.095e+01</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; States:</span></span>
 <span><span class="co">#&gt; decoded</span></span>
-<span><span class="co">#&gt;    1    2 </span></span>
-<span><span class="co">#&gt; 3645 1726</span></span></code></pre></div>
+<span><span class="co">#&gt;    1    2    3 </span></span>
+<span><span class="co">#&gt; 2278 2900  704 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Residuals:</span></span>
+<span><span class="co">#&gt;      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. </span></span>
+<span><span class="co">#&gt; -3.519694 -0.658831  0.009613 -0.002206  0.669598  3.905726</span></span></code></pre></div>
 <p>Having estimated the model, we can visualize the state-dependent distributions and the decoded time series:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fHMM_events.html">fHMM_events</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2001-09-11"</span>, <span class="st">"2008-09-15"</span>, <span class="st">"2020-01-27"</span><span class="op">)</span>,</span>
 <span>       labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9/11 terrorist attack"</span>, <span class="st">"Bankruptcy Lehman Brothers"</span>, <span class="st">"First COVID-19 case Germany"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, plot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sdds"</span>,<span class="st">"ts"</span><span class="op">)</span>, events <span class="op">=</span> <span class="va">events</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-plots-1.png" width="75%" style="display: block; margin: auto;"><img src="reference/figures/README-plots-2.png" width="75%" style="display: block; margin: auto;"></p>
+<p><img src="reference/figures/README-plot_model_fit-1.png" width="75%" style="display: block; margin: auto;"><img src="reference/figures/README-plot_model_fit-2.png" width="75%" style="display: block; margin: auto;"></p>
+<p>The (pseudo-) residuals help to evaluate the model fit:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, plot_type <span class="op">=</span> <span class="st">"pr"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-plot_model_residuals-1.png" width="75%" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -228,8 +243,8 @@
 <ul class="list-unstyled">
 <li><a href="https://CRAN.R-project.org/package=fHMM" class="external-link"><img src="https://www.r-pkg.org/badges/version/fHMM" alt="CRAN status"></a></li>
 <li><a href="https://cran.r-project.org/package=fHMM" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/last-month/fHMM" alt="metacran downloads"></a></li>
-<li><a href="https://github.com/loelschlaeger/fHMM/actions" class="external-link"><img src="https://github.com/loelschlaeger/fHMM/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/loelschlaeger/fHMM" class="external-link"><img src="https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml" class="external-link"><img src="https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
