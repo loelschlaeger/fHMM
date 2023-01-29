@@ -4,13 +4,16 @@
 \alias{coef.fHMM_model}
 \title{Model coefficients}
 \usage{
-\method{coef}{fHMM_model}(object, alpha = 0.05, ...)
+\method{coef}{fHMM_model}(object, alpha = 0.05, digits = 2, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link{fHMM_model}}.}
 
 \item{alpha}{A \code{numeric} between 0 and 1, the alpha level for the confidence interval.
 By default, \code{alpha = 0.05}, which computes a 95\% confidence interval.}
+
+\item{digits}{An \code{integer}, the number of significant digits to be used.
+By default, \code{digits = 2}.}
 
 \item{...}{Ignored.}
 }
