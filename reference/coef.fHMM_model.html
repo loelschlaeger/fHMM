@@ -70,7 +70,7 @@ confidence interval.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for fHMM_model</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">object</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">object</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>, digits <span class="op">=</span> <span class="fl">2</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -82,6 +82,11 @@ confidence interval.</p>
 <dt>alpha</dt>
 <dd><p>A <code>numeric</code> between 0 and 1, the alpha level for the confidence interval.
 By default, <code>alpha = 0.05</code>, which computes a 95% confidence interval.</p></dd>
+
+
+<dt>digits</dt>
+<dd><p>An <code>integer</code>, the number of significant digits to be used.
+By default, <code>digits = 2</code>.</p></dd>
 
 
 <dt>...</dt>
