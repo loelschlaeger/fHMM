@@ -250,44 +250,44 @@
 #' @keywords model
 "dax_vw_model"
 
-#' Unemployment rate and S&P 500 hierarchical HMM
-#'
-#' @description
-#' A pre-computed HHMM with monthly unemployment rate in the US on the coarse 
-#' scale and S&P 500 index data on the fine scale for demonstration purpose.
-#'
-#' @usage data("spx_unemp_model")
-#'
-#' @details
-#' The model was estimated via:
-#' \preformatted{
-#' controls <- list(
-#'   hierarchy = TRUE,
-#'   states    = c(3, 2),
-#'   sdds      = c("gamma", "t"),
-#'   period    = "m",
-#'   data      = list(
-#'     file       = list(unemp, spx),
-#'     date_column = c("date", "Date"),
-#'     data_column = c("rate", "Close"),
-#'     from       = "2000-01-01",
-#'     to         = "2022-12-31",
-#'     logreturns = c(FALSE, TRUE)
-#'   ),
-#'   fit       = list(
-#'     runs = 200
-#'   )
-#' )
-#' controls <- set_controls(controls)
-#' spx_unemp_data <- prepare_data(controls)
-#' spx_unemp_model <- fit_model(spx_unemp_data)
-#' spx_unemp_model <- decode_states(spx_unemp_model)
-#' spx_unemp_model <- compute_residuals(spx_unemp_model)
-#' }
-#' 
-#' @format An object of class \code{\link{fHMM_model}}.
-#'
-#' @keywords model
+# #' Unemployment rate and S&P 500 hierarchical HMM
+# #'
+# #' @description
+# #' A pre-computed HHMM with monthly unemployment rate in the US on the coarse 
+# #' scale and S&P 500 index data on the fine scale for demonstration purpose.
+# #'
+# #' @usage data("spx_unemp_model")
+# #'
+# #' @details
+# #' The model was estimated via:
+# #' \preformatted{
+# #' controls <- list(
+# #'   hierarchy = TRUE,
+# #'   states    = c(3, 2),
+# #'   sdds      = c("gamma", "t"),
+# #'   period    = "m",
+# #'   data      = list(
+# #'     file       = list(unemp, spx),
+# #'     date_column = c("date", "Date"),
+# #'     data_column = c("rate", "Close"),
+# #'     from       = "2000-01-01",
+# #'     to         = "2022-12-31",
+# #'     logreturns = c(FALSE, TRUE)
+# #'   ),
+# #'   fit       = list(
+# #'     runs = 200
+# #'   )
+# #' )
+# #' controls <- set_controls(controls)
+# #' spx_unemp_data <- prepare_data(controls)
+# #' spx_unemp_model <- fit_model(spx_unemp_data)
+# #' spx_unemp_model <- decode_states(spx_unemp_model)
+# #' spx_unemp_model <- compute_residuals(spx_unemp_model)
+# #' }
+# #' 
+# #' @format An object of class \code{\link{fHMM_model}}.
+# #'
+# #' @keywords model
 "spx_unemp_model"
 
 
