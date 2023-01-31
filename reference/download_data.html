@@ -70,7 +70,7 @@
 <span>  <span class="va">symbol</span>,</span>
 <span>  from <span class="op">=</span> <span class="st">"1902-01-01"</span>,</span>
 <span>  to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">symbol</span>, <span class="st">".csv"</span><span class="op">)</span>,</span>
+<span>  file <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -93,11 +93,9 @@ data bound. Default is the current date <code>Sys.date()</code>.</p></dd>
 
 
 <dt>file</dt>
-<dd><p>Either</p><ul><li><p><code>NULL</code> to return the data as a <code>data.frame</code>,</p></li>
+<dd><p>Either</p><ul><li><p><code>NULL</code> (default) to return the data as a <code>data.frame</code>,</p></li>
 <li><p>or a <code>character</code>, the name of the file where the data is saved as a
-<code>.csv</code>-file.
-By default, the data is saved in the current working directory with the name
-"<code>symbol</code>.csv".</p></li>
+<code>.csv</code>-file.</p></li>
 </ul></dd>
 
 
@@ -125,7 +123,7 @@ By default, the data is saved in the current working directory with the name
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">### download 21st century DAX data</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">download_data</span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, from <span class="op">=</span> <span class="st">"2000-01-03"</span>, file <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">download_data</span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, from <span class="op">=</span> <span class="st">"2000-01-03"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Date    Open    High     Low   Close Adj.Close   Volume</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2000-01-03 6961.72 7159.33 6720.87 6750.76   6750.76 43072500</span>
