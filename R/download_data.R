@@ -26,11 +26,9 @@
 #' data bound. Default is the current date \code{Sys.date()}.
 #' @param file
 #' Either
-#' * \code{NULL} to return the data as a \code{data.frame},
+#' * \code{NULL} (default) to return the data as a \code{data.frame},
 #' * or a \code{character}, the name of the file where the data is saved as a 
 #'   \code{.csv}-file. 
-#' By default, the data is saved in the current working directory with the name 
-#' "\code{symbol}.csv".
 #' @param verbose
 #' Set to \code{TRUE} to return information about download success.
 #'
@@ -39,7 +37,7 @@
 #'
 #' @examples
 #' ### download 21st century DAX data
-#' data <- download_data(symbol = "^GDAXI", from = "2000-01-03", file = NULL)
+#' data <- download_data(symbol = "^GDAXI", from = "2000-01-03")
 #' head(data)
 #' 
 #' @export
@@ -47,8 +45,7 @@
 #' @importFrom utils download.file read.csv head tail
 
 download_data <- function(
-    symbol, from = "1902-01-01", to = Sys.Date(), file = paste0(symbol, ".csv"), 
-    verbose = TRUE
+    symbol, from = "1902-01-01", to = Sys.Date(), file = NULL, verbose = TRUE
   ) {
 
   ### check input

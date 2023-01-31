@@ -8,7 +8,7 @@ download_data(
   symbol,
   from = "1902-01-01",
   to = Sys.Date(),
-  file = paste0(symbol, ".csv"),
+  file = NULL,
   verbose = TRUE
 )
 }
@@ -24,11 +24,9 @@ data bound. Default is the current date \code{Sys.date()}.}
 
 \item{file}{Either
 \itemize{
-\item \code{NULL} to return the data as a \code{data.frame},
+\item \code{NULL} (default) to return the data as a \code{data.frame},
 \item or a \code{character}, the name of the file where the data is saved as a
 \code{.csv}-file.
-By default, the data is saved in the current working directory with the name
-"\code{symbol}.csv".
 }}
 
 \item{verbose}{Set to \code{TRUE} to return information about download success.}
@@ -53,7 +51,7 @@ The downloaded data has the following columns:
 }
 \examples{
 ### download 21st century DAX data
-data <- download_data(symbol = "^GDAXI", from = "2000-01-03", file = NULL)
+data <- download_data(symbol = "^GDAXI", from = "2000-01-03")
 head(data)
 
 }
