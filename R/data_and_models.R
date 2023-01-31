@@ -288,7 +288,7 @@
 # #' @format An object of class \code{\link{fHMM_model}}.
 # #'
 # #' @keywords model
-"spx_unemp_model"
+# "spx_unemp_model"
 
 
 #' Simulated 2-state HMM with gamma distributions
