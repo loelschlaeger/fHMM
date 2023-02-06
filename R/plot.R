@@ -75,6 +75,10 @@ plot.fHMM_model <- function(
     stop("'x' is not of class 'fHMM_model'.", call. = FALSE)
   }
   plot_type <- intersect(plot_type, c("ll", "sdds", "pr", "ts"))
+  if (length(plot_type) == 0) {
+    stop("'plot_type' is misspecified, please see the documentation.", 
+         call. = FALSE)
+  }
   if (!is.null(events)) {
     if (!inherits(events, "fHMM_events")) {
       stop("'events' is not of class 'fHMM_events'.", call. = FALSE)
@@ -164,6 +168,9 @@ plot_ll <- function(lls, ll_relative = TRUE) {
   ll_unique_sorted <- unique(sort(round(lls[!is.na(lls)]), decreasing = TRUE))
   at <- ll_unique_sorted
   labels <- as.character(c(round(max_ll_absolute), ll_unique_sorted[-1]))
+  if (ll_relative) {
+    labels[1] <- "max"
+  }
   graphics::axis(2, las = 1, at = at, labels = labels)
   abline(h = max_ll, col = "red")
 }
