@@ -31,8 +31,7 @@ The data was obtained via:
 dax <- download_data(
   symbol = "^GDAXI",   # DAX identifier on Yahoo Finance
   from = "1988-01-01", # first observation
-  to = "2022-12-31",   # last observation
-  file = NULL          # return data as data.frame
+  to = "2022-12-31"    # last observation
 )
 }
 The data is also available as \code{.csv} file via:

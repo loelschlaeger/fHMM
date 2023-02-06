@@ -31,8 +31,7 @@ The data was obtained via:
 vw <- download_data(
   symbol = "VOW3.DE",  # Volkswagen AG identifier on Yahoo Finance
   from = "1988-07-22", # first observation
-  to = "2022-12-31",   # last observation
-  file = NULL          # return data as data.frame
+  to = "2022-12-31"    # last observation
 )
 }
 The data is also available as \code{.csv} file via:
