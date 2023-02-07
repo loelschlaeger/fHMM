@@ -115,6 +115,9 @@
     <loc>https://loelschlaeger.github.io/fHMM/reference/fHMM_sdds.html</loc>
   </url>
   <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/find_closest_year.html</loc>
+  </url>
+  <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/fit_model.html</loc>
   </url>
   <url>
@@ -242,6 +245,9 @@
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/unemp.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.github.io/fHMM/reference/unemp_spx_model_2_2.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.github.io/fHMM/reference/unemp_spx_model_3_2.html</loc>
