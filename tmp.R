@@ -1,4 +1,6 @@
 library(devtools)
+library(dplyr)
+library(lubridate)
 load_all()
 
 unemp <- fHMM::unemp
@@ -29,7 +31,7 @@ controls <- list(
     date_column = c("date", "Date"),
     data_column = c("rate_diff", "Close"),
     from       = "2000-01-01",
-    to         = "2022-12-31",
+    to         = "2020-01-01",
     logreturns = c(FALSE, TRUE)
   ),
   fit       = list(
@@ -56,7 +58,7 @@ controls <- list(
     date_column = c("date", "Date"),
     data_column = c("rate_diff", "Close"),
     from       = "2000-01-01",
-    to         = "2022-12-31",
+    to         = "2020-01-01",
     logreturns = c(FALSE, TRUE)
   ),
   fit       = list(
@@ -83,7 +85,7 @@ controls <- list(
     date_column = c("date", "Date"),
     data_column = c("rate_diff", "Close"),
     from       = "2000-01-01",
-    to         = "2022-12-31",
+    to         = "2020-01-01",
     logreturns = c(FALSE, TRUE)
   ),
   fit       = list(
@@ -110,12 +112,12 @@ controls <- list(
     date_column = c("date", "Date"),
     data_column = c("rate_diff", "Close"),
     from       = "1955-02-01",
-    to         = "2022-12-31",
+    to         = "2020-01-01",
     logreturns = c(FALSE, TRUE)
   ),
   fit       = list(
-    runs    = 500,
-    iterlim = 500
+    runs    = 100,
+    iterlim = 100
   )
 )
 controls <- set_controls(controls)
@@ -137,12 +139,12 @@ controls <- list(
     date_column = c("date", "Date"),
     data_column = c("rate_diff", "Close"),
     from       = "1955-02-01",
-    to         = "2022-12-31",
+    to         = "2020-01-01",
     logreturns = c(FALSE, TRUE)
   ),
   fit       = list(
-    runs    = 500,
-    iterlim = 500
+    runs    = 100,
+    iterlim = 100
   )
 )
 controls <- set_controls(controls)
@@ -164,12 +166,12 @@ controls <- list(
     date_column = c("date", "Date"),
     data_column = c("rate_diff", "Close"),
     from       = "1955-02-01",
-    to         = "2022-12-31",
+    to         = "2020-01-01",
     logreturns = c(FALSE, TRUE)
   ),
   fit       = list(
-    runs    = 500,
-    iterlim = 500
+    runs    = 100,
+    iterlim = 100
   )
 )
 controls <- set_controls(controls)
