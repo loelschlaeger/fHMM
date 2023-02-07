@@ -5,14 +5,11 @@
 \alias{unemp}
 \title{Unemployment rate data USA}
 \format{
-A \code{data.frame} with 24837 rows and the following 2 columns:
+A \code{data.frame} with 24806 rows and the following 3 columns:
 \itemize{
 \item \code{date}: The date.
 \item \code{rate}: The unemployment rate.
-}
-The data is also available as \code{.csv} file via:
-\preformatted{
-system.file("extdata", "unemp.csv", package = "fHMM")
+\item \code{rate_diff}: The difference rate to previous month.
 }
 }
 \source{

@@ -55,3 +55,4 @@ RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 LazyData: true
+LazyDataCompression: xz

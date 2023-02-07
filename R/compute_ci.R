@@ -62,12 +62,7 @@ compute_ci <- function(x, alpha = 0.05) {
     parUncon2parCon, x$data$controls
   )
   if (anyNA(unlist(out))) {
-    warning(paste(
-      "Some confidence intervals could not be computed.",
-      "The corresponding estimates may lie close to the boundaries of their",
-      "parameter space, the confidence intervals may be unreliable and are",
-      "therefore replaced by 'NA_real_'."),
-    call. = FALSE)
+    warning("Some confidence intervals could not be computed.", call. = FALSE)
   }
   names(out) <- c("lb", "estimate", "ub")
   return(out)

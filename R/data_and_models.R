@@ -10,8 +10,7 @@
 #' spx <- download_data(
 #'   symbol = "^GSPC",    # S&P 500 identifier on Yahoo Finance
 #'   from = "1928-01-01", # first observation
-#'   to = "2022-12-31",   # last observation
-#'   file = NULL          # return data as data.frame
+#'   to = "2022-12-31"    # last observation
 #' )
 #' }
 #' The data is also available as \code{.csv} file via:
@@ -47,8 +46,7 @@
 #' dax <- download_data(
 #'   symbol = "^GDAXI",   # DAX identifier on Yahoo Finance
 #'   from = "1988-01-01", # first observation
-#'   to = "2022-12-31",   # last observation
-#'   file = NULL          # return data as data.frame
+#'   to = "2022-12-31"    # last observation
 #' )
 #' }
 #' The data is also available as \code{.csv} file via:
@@ -84,8 +82,7 @@
 #' vw <- download_data(
 #'   symbol = "VOW3.DE",  # Volkswagen AG identifier on Yahoo Finance
 #'   from = "1988-07-22", # first observation
-#'   to = "2022-12-31",   # last observation
-#'   file = NULL          # return data as data.frame
+#'   to = "2022-12-31"    # last observation
 #' )
 #' }
 #' The data is also available as \code{.csv} file via:
@@ -117,14 +114,11 @@
 #' observation basis. 
 #' 
 #' @format 
-#' A \code{data.frame} with 24837 rows and the following 2 columns:
+#' A \code{data.frame} with 24806 rows and the following 3 columns:
 #' \itemize{
 #'   \item \code{date}: The date.
 #'   \item \code{rate}: The unemployment rate.
-#' }
-#' The data is also available as \code{.csv} file via:
-#' \preformatted{
-#' system.file("extdata", "unemp.csv", package = "fHMM")
+#'   \item \code{rate_diff}: The difference rate to previous month.
 #' }
 #' 
 #' @source 
@@ -291,7 +285,6 @@
 #'
 #' @keywords model
 "unemp_spx_model_3_2"
-
 
 #' Simulated 2-state HMM with gamma distributions
 #'
