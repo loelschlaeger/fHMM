@@ -211,7 +211,8 @@ plot_pr <- function(residuals, hierarchy) {
 
     ### residual plot
     plot(residuals,
-      ylim = c(floor(min(residuals)), ceiling(max(residuals))),
+      ylim = c(floor(min(residuals, na.rm = TRUE)), 
+               ceiling(max(residuals, na.rm = TRUE))),
       main = "Residual plot",
       ylab = "Pseudo-residuals",
       las = 1,
@@ -223,18 +224,22 @@ plot_pr <- function(residuals, hierarchy) {
       freq = FALSE,
       breaks = 25,
       col = "lightgrey",
-      xlim = c(floor(min(residuals)), ceiling(max(residuals))),
+      xlim = c(floor(min(residuals, na.rm = TRUE)), 
+               ceiling(max(residuals, na.rm = TRUE))),
       main = "Histogram with normal density",
       xlab = "Pseudo-residuals",
       las = 1
     )
-    x <- seq(floor(min(residuals)), ceiling(max(residuals)), 0.01)
+    x <- seq(floor(min(residuals, na.rm = TRUE)), 
+             ceiling(max(residuals, na.rm = TRUE)), 0.01)
     graphics::curve(stats::dnorm(x), add = TRUE, lwd = 2)
 
     ### qq-plot
     stats::qqnorm(residuals,
-      ylim = c(floor(min(residuals)), ceiling(max(residuals))),
-      xlim = c(floor(min(residuals)), ceiling(max(residuals))),
+      ylim = c(floor(min(residuals, na.rm = TRUE)), 
+               ceiling(max(residuals, na.rm = TRUE))),
+      xlim = c(floor(min(residuals, na.rm = TRUE)), 
+               ceiling(max(residuals, na.rm = TRUE))),
       main = "Normal Q-Q plot",
       ylab = "Quantiles of pseudo-residuals",
       xlab = "Normal quantiles",
@@ -300,6 +305,7 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
   ### reset of 'par' settings
   oldpar <- graphics::par(no.readonly = TRUE)
   on.exit(suppressWarnings(graphics::par(oldpar)))
+  par(las = 1)
 
   ### define densities
   density <- function(name, x, sigma, mu, df) {
@@ -313,17 +319,24 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
   }
 
   ### helper function to plot sdds
-  helper_sdds <- function(name, nstates, colors, main, est, true = NULL) {
+  helper_sdds <- function(
+    name, nstates, colors, main, est, true = NULL, xlim_fix = NULL
+  ) {
 
     ### define x-limits
-    xmin <- min(est$mus - 3 * est$sigmas)
-    xmax <- max(est$mus + 3 * est$sigmas)
-    if (!is.null(true)) {
-      xmin <- min(xmin, min(true$mus - 3 * true$sigmas))
-      xmax <- max(xmax, max(true$mus + 3 * true$sigmas))
-    }
-    if (name == "gamma") {
-      xmin <- 0.01
+    if (!is.null(xlim_fix)) {
+      xmin <- xlim_fix[1]
+      xmax <- xlim_fix[2]
+    } else {
+      xmin <- min(est$mus - 3 * est$sigmas, na.rm = TRUE)
+      xmax <- max(est$mus + 3 * est$sigmas, na.rm = TRUE)
+      if (!is.null(true)) {
+        xmin <- min(xmin, min(true$mus - 3 * true$sigmas, na.rm = TRUE), na.rm = TRUE)
+        xmax <- max(xmax, max(true$mus + 3 * true$sigmas, na.rm = TRUE), na.rm = TRUE)
+      }
+      if (name == "gamma") {
+        xmin <- 0.01
+      }
     }
 
     ### compute densities
@@ -364,15 +377,22 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 
     ### add legend
     if (!is.null(true)) {
-      graphics::legend("topright", c("estimated", "true"), lwd = 2, lty = 1:2)
+      graphics::legend(
+        "topright", c("estimated", "true"), lwd = 2, lty = 1:2,
+        bg = grDevices::rgb(1, 1, 1, 0.5)
+      )
     }
   }
 
   ### plot sdds
   if (controls$hierarchy) {
-    graphics::layout(matrix(c(rep(1, controls$states[1]), (1:controls$states[1]) + 1),
-      nrow = 2, byrow = TRUE
-    ))
+    par(mar = c(2, 2, 3, 1), oma = c(2, 2, 1, 1))
+    graphics::layout(
+      matrix(
+        c(rep(1, controls$states[1]), (1:controls$states[1]) + 1), 
+        nrow = 2, byrow = TRUE
+      )
+    )
   }
   helper_sdds(
     name = est$sdds[[1]]$name, nstates = controls$states[1],
@@ -392,6 +412,14 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
     }
   )
   if (controls$hierarchy) {
+    legend(
+      legend = paste("Coarse-scale state", seq_len(controls[["states"]][1])),
+      col = colors[["cs"]], pch = 20, cex = 1.25,
+      x = "topleft", bg = grDevices::rgb(1, 1, 1, 0.5)
+    )
+  }
+  
+  if (controls$hierarchy) {
     for (s in 1:controls$states[1]) {
       helper_sdds(
         name = est$sdds[[2]]$name, nstates = controls$states[2],
@@ -410,7 +438,11 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
           )
         } else {
           NULL
-        }
+        },
+        xlim_fix = c(
+          min(mapply(function(x,y) x - 3*y, est$mus_star, est$sigmas_star), na.rm = TRUE),
+          max(mapply(function(x,y) x + 3*y, est$mus_star, est$sigmas_star), na.rm = TRUE)
+        )
       )
     }
   }
@@ -456,6 +488,9 @@ plot_ts <- function(data, decoding, colors, events) {
   oldpar <- graphics::par(no.readonly = TRUE)
   on.exit(suppressWarnings(graphics::par(oldpar)))
   mar <- c(5.1, 5.1, 3.1, 2.1) ### bottom, left, top, and right
+  if (is.null(decoding)) {
+    mar[3] <- 1.1
+  }
   if (!is.null(events)) {
     ### add margin at the bottom for events
     mar <- mar + c(2, 0, 0, 0)
@@ -479,12 +514,12 @@ plot_ts <- function(data, decoding, colors, events) {
       xdata <- xdata[!is.na(xdata)]
       xdata <- as.Date(xdata)
     }
-    xmin <- as.Date(format(as.Date(head(xdata, n = 1)), "%Y-01-01"))
-    xmax <- as.Date(paste0(as.numeric(format(as.Date(tail(xdata, n = 1)), "%Y")) + 1, "-01-01"))
+    xmin <- as.Date(paste0(find_closest_year(xdata[1]), "-01-01"))
+    xmax <- as.Date(paste0(find_closest_year(tail(xdata, n = 1)), "-01-01"))
     ymin <- -ymax
     plot(xdata, ydata,
       type = "l",
-      xlim = c(xmin, xmax), ylim = c(1.2 * ymin, 1.2 * ymax), col = "black", xlab = "",
+      xlim = c(xmin, xmax), ylim = c(ymin * 1.2, ymax), col = "black", xlab = "",
       ylab = "", xaxt = "n", yaxt = "n", cex.lab = 2, cex.main = 2
     )
     if (!controls[["hierarchy"]]) {
@@ -497,7 +532,7 @@ plot_ts <- function(data, decoding, colors, events) {
     markdates <- seq(xmin, xmax, by = "year")
     markdates <- markdates[1:length(markdates) %% 2 == 1]
     axis(1, markdates, format(markdates, "%Y"))
-    y_ticks <- signif(seq(floor(min(ydata)), ymax, length.out = 3), digits = 3)
+    y_ticks <- signif(seq(floor(min(ydata, na.rm = TRUE)), ymax, length.out = 3), digits = 3)
     axis(4, y_ticks)
     mtext(data_lab,
       side = 4, line = 3.5, at = mean(y_ticks),
@@ -523,7 +558,7 @@ plot_ts <- function(data, decoding, colors, events) {
       }
     }
     par(new = TRUE, las = 1)
-    ymax_factor <- 3
+    ymax_factor <- 4
   }
   if (controls[["simulated"]]) {
     xmin <- 1
@@ -540,8 +575,8 @@ plot_ts <- function(data, decoding, colors, events) {
     x_values <- xdata
   }
   if (!controls[["hierarchy"]]) {
-    ymin <- min(data[["data"]])
-    ymax <- max(data[["data"]])
+    ymin <- min(data[["data"]], na.rm = TRUE)
+    ymax <- max(data[["data"]], na.rm = TRUE)
     if (ymin > 0 && ymax < 10) {
       ymin <- 0
     }
@@ -552,12 +587,12 @@ plot_ts <- function(data, decoding, colors, events) {
     )
   }
   if (controls[["hierarchy"]]) {
-    ymin <- min(fs_data)
-    ymax <- max(fs_data)
+    ymin <- min(fs_data, na.rm = TRUE)
+    ymax <- max(fs_data, na.rm = TRUE)
     plot(x_values, fs_data,
       type = "h", col = "black",
       xlab = "", ylab = "", xaxt = "n",
-      yaxt = "n", xlim = c(xmin, xmax), ylim = c(ymin, ymax * ymax_factor)
+      yaxt = "n", xlim = c(xmin, xmax), ylim = c(ymin, ymax) * ymax_factor
     )
   }
   if (!controls[["simulated"]]) {
@@ -634,31 +669,32 @@ plot_ts <- function(data, decoding, colors, events) {
     legend(
       legend = c(
         paste("Coarse-scale state", seq_len(controls[["states"]][1])),
-        paste0("Fine-scale state ", eg[, 1], " in coarse-scale state ", eg[, 2])
+        paste0("Fine-scale state ", rep(1:controls[["states"]][2], each = controls[["states"]][1]))
       ),
-      col = c(colors[["cs"]], as.vector(unlist(colors[["fs"]]))),
+      col = c(colors[["cs"]], as.vector(colors[["fs"]])),
       pt.lwd = c(rep(3, controls[["states"]][1]), rep(1, dim(eg)[1])),
-      pch = c(rep(1, controls[["states"]][1]), rep(20, dim(eg)[1])),
-      pt.cex = c(rep(3, controls[["states"]][1]), rep(2, dim(eg)[1])),
-      cex = 1.25, bg = grDevices::rgb(1, 1, 1, 0.5), x = "topleft"
+      pch = c(rep(16, controls[["states"]][1]), rep(20, dim(eg)[1])),
+      pt.cex = c(rep(2, controls[["states"]][1]), rep(2, dim(eg)[1])),
+      cex = 0.8, bg = grDevices::rgb(1, 1, 1, 0.5), 
+      x = "topleft", ncol = controls[["states"]][2] + 1
     )
   }
   if (controls[["hierarchy"]]) {
     par(new = TRUE)
-    ymin <- min(cs_data)
-    ymax <- max(cs_data)
+    ymin <- min(cs_data, na.rm = TRUE)
+    ymax <- max(cs_data, na.rm = TRUE)
     x_values_cs <- x_values[round(seq(1, length(x_values), length.out = T))]
     plot(x_values_cs, cs_data,
-      type = "c", xlab = "", ylab = "", xaxt = "n",
+      type = "l", xlab = "", ylab = "", xaxt = "n",
       yaxt = "n", xlim = c(xmin, xmax), ylim = c(ymin, ymax * ymax_factor * 1.5)
     )
     if (is.null(decoding)) {
-      points(x_values_cs, cs_data, pch = 1, cex = 3, lwd = 2)
+      points(x_values_cs, cs_data, pch = 16, cex = 1, lwd = 2)
     }
     if (!is.null(decoding)) {
       for (cs in seq_len(controls[["states"]][1])) {
         points(x_values_cs[decoding[, 1] == cs], cs_data[decoding[, 1] == cs],
-          col = colors[["cs"]][cs], pch = 1, cex = 3, lwd = 2
+          col = colors[["cs"]][cs], pch = 16, cex = 2, lwd = 2
         )
       }
     }

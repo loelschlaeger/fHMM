@@ -27,6 +27,34 @@ check_date <- function(date) {
   return(date)
 }
 
+#' Find the closest year to a given date
+#'
+#' @description 
+#' This function takes a \code{date} as input and returns the closest year.
+#'
+#' @param date 
+#' A \code{date} in the format of \code{"YYYY-MM-DD"}.
+#' 
+#' @return 
+#' An \code{integer} representing the closest year to the input date.
+#' 
+#' @examples
+#' \dontrun{
+#' find_closest_year(as.Date("2022-07-15"))
+#' find_closest_year(as.Date("2022-01-01"))
+#' }
+#'
+#' @keywords internal utils
+
+find_closest_year <- function(date) {
+  year <- as.numeric(format(date, "%Y"))
+  if (date <= as.Date(paste0(year, "-06-30"))) {
+    return(year)
+  } else {
+    return(year + 1)
+  }
+}
+
 #' Check for integers
 #'
 #' @description

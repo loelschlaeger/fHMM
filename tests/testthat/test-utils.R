@@ -5,6 +5,17 @@ test_that("checks of format 'YYYY-MM-DD' for dates work", {
   expect_error(check_date(date = "01.01.2021"))
 })
 
+test_that("finding closest year works", {
+  result <- find_closest_year(as.Date("2022-06-01"))
+  expect_equal(result, 2022)
+  result <- find_closest_year(as.Date("2022-06-30"))
+  expect_equal(result, 2022)
+  result <- find_closest_year(as.Date("2022-07-01"))
+  expect_equal(result, 2023)
+  result <- find_closest_year(as.Date("2022-12-31"))
+  expect_equal(result, 2023)
+})
+
 test_that("check for number works", {
   expect_false(is_number("1"))
   expect_true(is_number(1))
