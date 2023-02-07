@@ -1,4 +1,4 @@
-# fHMM 1.0.3.9000
+# fHMM 1.1.0
 
 * Extended the time horizon of saved data and updated models for demonstration.
 * The `download_data()` function now returns the data as a `data.frame` by default. However, specifying argument `file` still allows for saving the data as a .csv file.
