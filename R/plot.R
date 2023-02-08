@@ -5,17 +5,14 @@
 #'
 #' @param x
 #' An object of class \code{fHMM_data}.
-#' @param events
-#' Either \code{NULL} or an object of class \code{\link{fHMM_events}}.
-#' @param ...
-#' Ignored.
+#' @inheritParams plot.fHMM_model
 #'
 #' @return
 #' No return value. Draws a plot to the current device.
 #'
 #' @export
 
-plot.fHMM_data <- function(x, events = NULL, ...) {
+plot.fHMM_data <- function(x, events = NULL, title = NULL, ...) {
 
   ### check input
   if (!inherits(x, "fHMM_data")) {
@@ -30,9 +27,14 @@ plot.fHMM_data <- function(x, events = NULL, ...) {
       warning("Can't have 'events' for simulated data.", call. = FALSE)
     }
   }
+  if (!is.null(title)) {
+    if (!(is.character(title) && length(title) == 1)) {
+      stop("'title' must be a single 'character' (or 'NULL').", call. = FALSE)
+    }
+  }
 
   ### visualization
-  plot_ts(data = x, decoding = NULL, colors = NULL, events = events)
+  plot_ts(data = x, decoding = NULL, colors = NULL, events = events, title = title)
 }
 
 
@@ -56,10 +58,12 @@ plot.fHMM_data <- function(x, events = NULL, ...) {
 #' }
 #' @param events
 #' An object of class \code{\link{fHMM_events}}.
+#' @param title
+#' Optionally a \code{character} for a custom title.
 #' @inheritParams fHMM_colors
 #' @inheritParams plot_ll
 #' @param ...
-#' Ignored.
+#' Currently not used.
 #'
 #' @return
 #' No return value. Draws a plot to the current device.
@@ -67,7 +71,8 @@ plot.fHMM_data <- function(x, events = NULL, ...) {
 #' @export
 
 plot.fHMM_model <- function(
-    x, plot_type = "ts", events = NULL, colors = NULL, ll_relative = TRUE, ...
+    x, plot_type = "ts", events = NULL, colors = NULL, ll_relative = TRUE, 
+    title = NULL, ...
   ) {
 
   ### check input
@@ -88,6 +93,11 @@ plot.fHMM_model <- function(
       warning("Can't have 'events' for simulated data.", call. = FALSE)
     }
   }
+  if (!is.null(title)) {
+    if (!(is.character(title) && length(title) == 1)) {
+      stop("'title' must be a single 'character' (or 'NULL').", call. = FALSE)
+    }
+  }
 
   ### create and check colors
   colors <- fHMM_colors(controls = x$data$controls, colors = colors)
@@ -99,19 +109,26 @@ plot.fHMM_model <- function(
   if ("sdds" %in% plot_type) {
     plot_sdds(
       est = parUncon2par(x$estimate, x$data$controls),
-      true = x$data$true_parameters, controls = x$data$controls, colors = colors
+      true = x$data$true_parameters, controls = x$data$controls, 
+      colors = colors
     )
   }
   if ("pr" %in% plot_type) {
     if (is.null(x$residuals)) {
-      warning("Residuals are not available, please call 'compute_residuals()' first.")
+      warning(
+        "Residuals are not available, please call 'compute_residuals()' first.", 
+        call. = FALSE
+      )
     } else {
-      plot_pr(residuals = x$residuals, hierarchy = x$data$controls$hierarchy)
+      plot_pr(
+        residuals = x$residuals, hierarchy = x$data$controls$hierarchy
+      )
     }
   }
   if ("ts" %in% plot_type) {
     plot_ts(
-      data = x$data, decoding = x$decoding, colors = colors, events = events
+      data = x$data, decoding = x$decoding, colors = colors, events = events,
+      title = title
     )
   }
 }
@@ -146,7 +163,7 @@ plot_ll <- function(lls, ll_relative = TRUE) {
   }
   max_ll <- max(lls, na.rm = TRUE)
   min_ll <- min(lls, na.rm = TRUE)
-  main <- ifelse(ll_relative, "Relative log-likelihoods", "Log-likelihood values")
+  main <- ifelse(ll_relative, "Relative log-likelihoods", "Log-likelihood values") 
   if (length(lls) <= 5) {
     plot(lls,
       xaxt = "n", yaxt = "n", xlab = "Estimation run", ylab = "",
@@ -266,7 +283,8 @@ plot_pr <- function(residuals, hierarchy) {
     par(oma = oma, bty = "n")
     graphics::layout(matrix(1:8, 2, 4, byrow = TRUE))
     helper_pr(residuals = residuals[, 1])
-    graphics::title("Coarse-scale (top row) and fine-scale pseudo-residuals (bottom row)", line = 0, outer = TRUE)
+    main <- "Coarse-scale (top row) and fine-scale pseudo-residuals (bottom row)"
+    graphics::title(main, line = 0, outer = TRUE)
     helper_pr(residuals = as.vector(residuals[, -1]))
   }
 }
@@ -283,8 +301,7 @@ plot_pr <- function(residuals, hierarchy) {
 #' parameters.
 #' @param controls
 #' An object of class \code{fHMM_controls}.
-#' @param colors
-#' An object of class \code{fHMM_colors}.
+#' @inheritParams plot.fHMM_model
 #'
 #' @return
 #' No return value. Draws a plot to the current device.
@@ -364,8 +381,9 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
     plot(0,
       type = "n", xlim = c(xmin, xmax),
       ylim = round(c(0, max(sapply(c(f.x, f.x_true), max))), 1),
-      xlab = "", ylab = "", main = main
+      xlab = "", ylab = ""
     )
+    title(main = main, line = 1)
 
     ### plot densities
     for (s in 1:nstates) {
@@ -386,7 +404,7 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 
   ### plot sdds
   if (controls$hierarchy) {
-    par(mar = c(2, 2, 3, 1), oma = c(2, 2, 1, 1))
+    par(mar = c(2, 2, 3, 1), oma = c(2, 2, 0, 1))
     graphics::layout(
       matrix(
         c(rep(1, controls$states[1]), (1:controls$states[1]) + 1), 
@@ -417,14 +435,11 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
       col = colors[["cs"]], pch = 20, cex = 1.25,
       x = "topleft", bg = grDevices::rgb(1, 1, 1, 0.5)
     )
-  }
-  
-  if (controls$hierarchy) {
     for (s in 1:controls$states[1]) {
       helper_sdds(
         name = est$sdds[[2]]$name, nstates = controls$states[2],
         colors = colors[["fs"]][s, ],
-        main = paste("Coarse-scale state", s),
+        main = paste("Conditional on coarse-scale state", s),
         est = list(
           "mus" = est$mus_star[[s]],
           "sigmas" = est$sigmas_star[[s]],
@@ -444,6 +459,11 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
           max(mapply(function(x,y) x + 3*y, est$mus_star, est$sigmas_star), na.rm = TRUE)
         )
       )
+      legend(
+        legend = paste("Fine-scale state", seq_len(controls[["states"]][2])),
+        col = colors[["fs"]][s,], pch = 20, cex = 1.25,
+        x = "topleft", bg = grDevices::rgb(1, 1, 1, 0.5)
+      )
     }
   }
 }
@@ -457,11 +477,7 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 #' An object of class \code{fHMM_data}.
 #' @param decoding
 #' Either \code{NULL} or an object of class \code{fHMM_decoding}.
-#' @param colors
-#' Either \code{NULL} or an object of class \code{fHMM_colors}.
-#' Ignored if \code{decoding = NULL}.
-#' @param events
-#' Either \code{NULL} or an object of class \code{\link{fHMM_events}}.
+#' @inheritParams plot.fHMM_model
 #'
 #' @return
 #' No return value. Draws a plot to the current device.
@@ -471,7 +487,7 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 #' @importFrom graphics par abline mtext points layout plot.new text
 #' @importFrom grDevices rgb
 
-plot_ts <- function(data, decoding, colors, events) {
+plot_ts <- function(data, decoding, colors, events = NULL, title = NULL) {
   controls <- data$controls
   if (!controls[["hierarchy"]]) {
     T <- length(data[["data"]])
@@ -658,7 +674,7 @@ plot_ts <- function(data, decoding, colors, events) {
     legend(
       legend = paste("State", seq_len(controls[["states"]][1])),
       col = colors, pch = 20, cex = 1.25,
-      x = "topleft", bg = grDevices::rgb(1, 1, 1, 0.5)
+      x = "topleft"
     )
   }
   if (controls[["hierarchy"]] & !is.null(decoding)) {
@@ -675,8 +691,7 @@ plot_ts <- function(data, decoding, colors, events) {
       pt.lwd = c(rep(3, controls[["states"]][1]), rep(1, dim(eg)[1])),
       pch = c(rep(16, controls[["states"]][1]), rep(20, dim(eg)[1])),
       pt.cex = c(rep(2, controls[["states"]][1]), rep(2, dim(eg)[1])),
-      cex = 0.8, bg = grDevices::rgb(1, 1, 1, 0.5), 
-      x = "topleft", ncol = controls[["states"]][2] + 1
+      cex = 0.8, x = "topleft", ncol = controls[["states"]][2] + 1
     )
   }
   if (controls[["hierarchy"]]) {
@@ -711,5 +726,9 @@ plot_ts <- function(data, decoding, colors, events) {
       mtext("Coarse-scale data", side = 4, line = 3.5, at = mean(c(ymin, ymax)), cex = 1.25, las = 3)
     }
   }
-  title(main = ifelse(is.null(decoding), "Time series", "Decoded time series"))
+  if (!is.null(title)) {
+    title(main = title)
+  } else {
+    title(main = ifelse(is.null(decoding), "Time series", "Decoded time series"))
+  } 
 }

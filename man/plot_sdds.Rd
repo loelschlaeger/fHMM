@@ -14,7 +14,8 @@ parameters.}
 
 \item{controls}{An object of class \code{fHMM_controls}.}
 
-\item{colors}{An object of class \code{fHMM_colors}.}
+\item{colors}{Either \code{NULL} (default) or a \code{character} vector of color names or
+hexadecimal RGB triplets.}
 }
 \value{
 No return value. Draws a plot to the current device.

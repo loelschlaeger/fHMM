@@ -4,14 +4,16 @@
 \alias{plot.fHMM_data}
 \title{Plot method for an object of class \code{fHMM_data}}
 \usage{
-\method{plot}{fHMM_data}(x, events = NULL, ...)
+\method{plot}{fHMM_data}(x, events = NULL, title = NULL, ...)
 }
 \arguments{
 \item{x}{An object of class \code{fHMM_data}.}
 
-\item{events}{Either \code{NULL} or an object of class \code{\link{fHMM_events}}.}
+\item{events}{An object of class \code{\link{fHMM_events}}.}
 
-\item{...}{Ignored.}
+\item{title}{Optionally a \code{character} for a custom title.}
+
+\item{...}{Currently not used.}
 }
 \value{
 No return value. Draws a plot to the current device.

@@ -4,17 +4,19 @@
 \alias{plot_ts}
 \title{Visualize time series}
 \usage{
-plot_ts(data, decoding, colors, events)
+plot_ts(data, decoding, colors, events = NULL, title = NULL)
 }
 \arguments{
 \item{data}{An object of class \code{fHMM_data}.}
 
 \item{decoding}{Either \code{NULL} or an object of class \code{fHMM_decoding}.}
 
-\item{colors}{Either \code{NULL} or an object of class \code{fHMM_colors}.
-Ignored if \code{decoding = NULL}.}
+\item{colors}{Either \code{NULL} (default) or a \code{character} vector of color names or
+hexadecimal RGB triplets.}
 
-\item{events}{Either \code{NULL} or an object of class \code{\link{fHMM_events}}.}
+\item{events}{An object of class \code{\link{fHMM_events}}.}
+
+\item{title}{Optionally a \code{character} for a custom title.}
 }
 \value{
 No return value. Draws a plot to the current device.

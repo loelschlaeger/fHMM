@@ -10,6 +10,7 @@
   events = NULL,
   colors = NULL,
   ll_relative = TRUE,
+  title = NULL,
   ...
 )
 }
@@ -35,7 +36,9 @@ hexadecimal RGB triplets.}
 the best log-likelihood value. Set to \code{FALSE} to plot the absolute
 values.}
 
-\item{...}{Ignored.}
+\item{title}{Optionally a \code{character} for a custom title.}
+
+\item{...}{Currently not used.}
 }
 \value{
 No return value. Draws a plot to the current device.
