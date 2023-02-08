@@ -66,7 +66,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_ts</span><span class="op">(</span><span class="va">data</span>, <span class="va">decoding</span>, <span class="va">colors</span>, <span class="va">events</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_ts</span><span class="op">(</span><span class="va">data</span>, <span class="va">decoding</span>, <span class="va">colors</span>, events <span class="op">=</span> <span class="cn">NULL</span>, title <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -80,12 +80,16 @@
 
 
 <dt>colors</dt>
-<dd><p>Either <code>NULL</code> or an object of class <code>fHMM_colors</code>.
-Ignored if <code>decoding = NULL</code>.</p></dd>
+<dd><p>Either <code>NULL</code> (default) or a <code>character</code> vector of color names or
+hexadecimal RGB triplets.</p></dd>
 
 
 <dt>events</dt>
-<dd><p>Either <code>NULL</code> or an object of class <code><a href="fHMM_events.html">fHMM_events</a></code>.</p></dd>
+<dd><p>An object of class <code><a href="fHMM_events.html">fHMM_events</a></code>.</p></dd>
+
+
+<dt>title</dt>
+<dd><p>Optionally a <code>character</code> for a custom title.</p></dd>
 
 </dl></div>
     <div class="section level2">
