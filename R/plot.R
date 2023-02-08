@@ -613,7 +613,8 @@ plot_ts <- function(data, decoding, colors, events = NULL, title = NULL) {
   }
   if (!controls[["simulated"]]) {
     if (!controls[["hierarchy"]]) {
-      mtext("Time series data", side = 2, line = 3.5, at = 0, cex = 1.25, las = 3)
+      text <- ifelse(controls$data$logreturns, "Log-returns", "Time series data")
+      mtext(text, side = 2, line = 3.5, at = 0, cex = 1.25, las = 3)
     }
     if (controls[["hierarchy"]]) {
       mtext("Fine-scale data", side = 2, line = 3.5, at = 0, cex = 1.25, las = 3)
@@ -691,7 +692,7 @@ plot_ts <- function(data, decoding, colors, events = NULL, title = NULL) {
       pt.lwd = c(rep(3, controls[["states"]][1]), rep(1, dim(eg)[1])),
       pch = c(rep(16, controls[["states"]][1]), rep(20, dim(eg)[1])),
       pt.cex = c(rep(2, controls[["states"]][1]), rep(2, dim(eg)[1])),
-      cex = 0.8, x = "topleft", ncol = controls[["states"]][2] + 1
+      cex = 1.25, x = "topleft", ncol = controls[["states"]][2] + 1
     )
   }
   if (controls[["hierarchy"]]) {
