@@ -276,9 +276,9 @@
 #' )
 #' controls <- set_controls(controls)
 #' unemp_spx_data <- prepare_data(controls)
-#' unemp_spx_model_3_2 <- fit_model(unemp_spx_data)
-#' unemp_spx_model_3_2 <- decode_states(unemp_spx_model_3_2)
-#' unemp_spx_model_3_2 <- compute_residuals(unemp_spx_model_3_2)
+#' unemp_spx_model_2_2 <- fit_model(unemp_spx_data)
+#' unemp_spx_model_2_2 <- decode_states(unemp_spx_model_2_2)
+#' unemp_spx_model_2_2 <- compute_residuals(unemp_spx_model_2_2)
 #' }
 #'
 #' @format An object of class \code{\link{fHMM_model}}.
