@@ -802,7 +802,7 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
         fs_state_prediction[i, ] <- state_prediction[i, s] * state_prob
       }
       rownames(fs_state_prediction) <- 1:ahead
-      colnames(fs_state_prediction) <- paste("state", s, 1:M, sep = "_")
+      colnames(fs_state_prediction) <- paste("state", s, 1:N, sep = "_")
       state_prediction <- cbind(state_prediction, fs_state_prediction)
     }
   }
