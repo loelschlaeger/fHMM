@@ -15,12 +15,13 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.dim = c(10,6),
   out.width = "80%",
-  fig.align = 'center'
+  fig.align = 'center',
+  tidy = TRUE
 )
-library(fHMM)
+library("fHMM")
 ```
 
-The {fHMM} package fits a hidden Markov model via the maximum-likelihood method, i.e. by numerically maximizing the likelihood function. This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the {fHMM} `r utils::packageVersion("fHMM")` package.] derives the likelihood formula, discusses challenges associated with the likelihood maximization and presents the model estimation workflow.
+The `{fHMM}` package fits a hidden Markov model via the maximum-likelihood method, i.e. by numerically maximizing the likelihood function. This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] derives the likelihood formula, discusses challenges associated with the likelihood maximization and presents the model estimation workflow.
 
 ## Likelihood evaluation using the forward algorithm
 
@@ -68,9 +69,9 @@ rather than estimating the probabilities $(\gamma_{ij})_{i,j}$ directly. The dia
 \end{align*}
 Furthermore, variances are strictly positive, which can be achieved by applying an exponential transformation to the unconstrained estimator.
 
-When numerically maximizing the likelihood using some Newton-Raphson-type method, we often face numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way (see @zuc16 and @oel21 for details).
+When numerically maximizing the likelihood using some Newton-Raphson-type method, we often face numerical under- or overflow, which can be addressed by maximizing the logarithm of the likelihood and incorporating constants in a conducive way, see @zuc16 and @oel21 for details.
 
-As the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one. To avoid this problem, it is recommended to run the maximization multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood (see @zuc16 and @oel21 for details).
+As the likelihood is maximized with respect to a relatively large number of parameters, the obtained maximum can be a local rather than the global one. To avoid this problem, it is recommended to run the maximization multiple times from different, possibly randomly selected starting points, and to choose the model that corresponds to the highest likelihood, again see @zuc16 and @oel21 for details.
 
 ## Application
 
@@ -98,7 +99,7 @@ The `data` object can be directly passed to the `fit_model()` function that nume
 dax_model_3t <- fit_model(data, seed = 1, verbose = FALSE)
 ```
 
-The estimated model is saved in the {fHMM} package and can be accessed as follows:
+The estimated model is saved in the `{fHMM}` package and can be accessed as follows:
 
 ```{r access model}
 data(dax_model_3t)
