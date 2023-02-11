@@ -96,8 +96,9 @@
 
     
     
-<p>This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;This vignette was build using R 4.2.2 with the {fHMM}
-1.1.0 package.&lt;/p&gt;"><sup>1</sup></a> discusss model checking in {fHMM}.</p>
+<p>This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;This vignette was build using R 4.2.2 with the
+&lt;a href="https://loelschlaeger.de/fHMM/" class="external-link"&gt;fHMM&lt;/a&gt; 1.1.0 package.&lt;/p&gt;'><sup>1</sup></a> discusss model checking in
+<a href="https://loelschlaeger.de/fHMM/" class="external-link">fHMM</a>.</p>
 <div class="section level2">
 <h2 id="model-checking-using-pseudo-residuals">Model checking using pseudo-residuals<a class="anchor" aria-label="anchor" href="#model-checking-using-pseudo-residuals"></a>
 </h2>
@@ -124,9 +125,9 @@ transformation described above. Using the Viterbi-decoded coarse-scale
 states, we then treat the fine-scale observations analogously.</p>
 </div>
 <div class="section level2">
-<h2 id="implementation-in-fhmm">Implementation in {fHMM}<a class="anchor" aria-label="anchor" href="#implementation-in-fhmm"></a>
+<h2 id="implementation">Implementation<a class="anchor" aria-label="anchor" href="#implementation"></a>
 </h2>
-<p>In {fHMM}, pseudo-residuals can be computed via the
+<p>In <a href="https://loelschlaeger.de/fHMM/" class="external-link">fHMM</a>, pseudo-residuals can be computed via the
 <code><a href="../reference/compute_residuals.html">compute_residuals()</a></code> function, provided that the states have
 been decoded beforehand.</p>
 <p>We revisit the DAX example:</p>
@@ -147,9 +148,6 @@ The following lines exemplary perform a <a href="https://en.wikipedia.org/wiki/J
 test</a> <span class="citation">(<a href="#ref-jar87" role="doc-biblioref">Jarque and Bera 1987</a>)</span>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tseries</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tseries/man/jarque.bera.test.html" class="external-link">jarque.bera.test</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'quantmod':</span></span>
-<span><span class="co">#&gt;   method            from</span></span>
-<span><span class="co">#&gt;   as.zoo.data.frame zoo</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Jarque Bera Test</span></span>
 <span><span class="co">#&gt; </span></span>
