@@ -5,25 +5,28 @@ vignette: >
   %\VignetteIndexEntry{Controls}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: ref.bib
+link-citations: true
 ---
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  tidy = TRUE
 )
-library(printr)
+library("printr")
 ```
 
-The {fHMM} package allows for multiple hidden Markov model specifications, including different data transformations, state-dependent distributions, and a hierarchical model structure. This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the {fHMM} `r utils::packageVersion("fHMM")` package.] outlines what and how specifications are possible.
+The `{fHMM}` package allows for multiple hidden Markov model specifications, including different data transformations, state-dependent distributions, and a hierarchical model structure. This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] outlines what and how specifications are possible.
 
-```{r load fHMM}
-library(fHMM)
+```{r load fHMM, message = FALSE}
+library("fHMM")
 ```
 
 ## The `set_controls` function 
 
-The {fHMM} philosophy is to start the modeling process by setting all data, model, and estimation specifications. This is done by defining a named list of controls and passing it to the `set_controls()` function. The function checks the specifications and returns an `fHMM_controls` object which stores all specifications and thereby provides required information for other {fHMM} functionalities.
+The `{fHMM}` philosophy is to start the modeling process by setting all data, model, and estimation specifications. This is done by defining a named `list` of controls and passing it to the `set_controls()` function. The function checks the specifications and returns an `fHMM_controls` object which stores all specifications and thereby provides required information for other `{fHMM}` functionalities.
 
 ## Example specifications
 
@@ -83,4 +86,5 @@ The help page of the `set_controls()` function provides an overview of all possi
 ?set_controls
 ```
 
+## References
 

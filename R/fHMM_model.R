@@ -179,12 +179,18 @@ fit_model <- function(
     ll_at_start_values <- unlist(ll_at_start_values)
   }
   if (sum(is.na(ll_at_start_values)) == data[["controls"]][["fit"]][["runs"]]) {
-    stop("The likelihood function could not be computed at any of the selected start values, try to increase 'runs' in 'controls'.", 
-         call. = FALSE)
+    stop(
+      "The likelihood could not be computed at any of the selected start values.\n",
+      "Try to increase 'runs' in 'controls'.", 
+      call. = FALSE
+    )
   }
   if (sum(is.na(ll_at_start_values)) > 0.5 * data[["controls"]][["fit"]][["runs"]]) {
-    warning("The likelihood function could not be computed at more than half of the selected start values, try to increase 'runs' in 'controls'.", 
-            call. = FALSE, immediate. = TRUE)
+    warning(
+      "The likelihood could not be computed at more than half of the selected start values.\n",
+      "Try to increase 'runs' in 'controls'.", 
+      call. = FALSE, immediate. = TRUE
+    )
   }
   runs_seq <- which(!is.na(ll_at_start_values))
 
@@ -276,8 +282,11 @@ fit_model <- function(
   ### save and check likelihood values
   lls <- -unlist(sapply(mods, `[`, "minimum"), use.names = FALSE)
   if (all(is.na(lls))) {
-    stop("None of the estimation runs ended successfully, adapt 'accept' or increase 'runs' in 'controls'.", 
-         call. = FALSE)
+    stop(
+      "None of the estimation runs ended successfully.\n",
+      "Adapt 'accept' or increase 'runs' in 'controls'.", 
+      call. = FALSE
+    )
   }
 
   ### compute Hessian
@@ -510,6 +519,7 @@ residuals.fHMM_model <- function(object, ...) {
 
 #' @noRd
 #' @export
+#' @importFrom stats na.omit
 
 summary.fHMM_model <- function(object, alpha = 0.05, ...) {
   
@@ -574,8 +584,10 @@ summary.fHMM_model <- function(object, alpha = 0.05, ...) {
     if (!hierarchy) {
       res_summary <- summary(object$residuals)
     } else {
-      res_summary_cs <- summary(object$residuals[, 1])
-      res_summary_fs <- summary(as.vector(object$residuals[, -1]))
+      res_cs <- stats::na.omit(object$residuals[, 1])
+      res_summary_cs <- summary(res_cs)
+      res_fs <- stats::na.omit(as.vector(object$residuals[, -1]))
+      res_summary_fs <- summary(res_fs)
       res_summary <- list(
         "coarse-scale" = res_summary_cs,
         "fine-scale" = res_summary_fs

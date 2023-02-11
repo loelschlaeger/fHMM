@@ -26,9 +26,6 @@ controls <- list(
 controls <- set_controls(controls)
 data_sim <- prepare_data(controls, seed = 1)
 sim_model_4lnorm <- fit_model(data_sim, seed = 1)
-sim_model_4lnorm <- decode_states(sim_model_4lnorm)
-sim_model_4lnorm <- reorder_states(sim_model_4lnorm, c(4,2,3,1))
-sim_model_4lnorm <- compute_residuals(sim_model_4lnorm)
 }
 }
 \keyword{model}

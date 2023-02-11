@@ -5,6 +5,8 @@ vignette: >
   %\VignetteIndexEntry{Data management}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: ref.bib
+link-citations: true
 ---
 
 ```{r, include = FALSE}
@@ -13,21 +15,22 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.dim = c(10,6),
   out.width = "80%",
-  fig.align = 'center'
+  fig.align = 'center',
+  tidy = TRUE
 )
 ```
 
-This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the {fHMM} `r utils::packageVersion("fHMM")` package.] explains how to prepare or simulate data in {fHMM} for estimation.
+This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] explains how to prepare or simulate data in `{fHMM}` for estimation.
 
-```{r load fHMM}
-library(fHMM)
+```{r load fHMM, message = FALSE}
+library("fHMM")
 ```
 
 ## Empirical data
 
-Empirical data must be provided as a comma-separated values (CSV) file and its path must be specified in `set_controls()`, see [the vignette on specifying the controls](http://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from <https://finance.yahoo.com/> in csv-format.] The {fHMM} package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
+Empirical data can be provided either as a `data.frame` or as a comma-separated values (.csv) file, see [the vignette on specifying the controls](http://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from <https://finance.yahoo.com/> in csv-format.] The `{fHMM}` package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
 
-```{r, head dax}
+```{r, head dax, results = FALSE}
 system.file("extdata", "dax.csv", package = "fHMM")
 system.file("extdata", "vw.csv", package = "fHMM")
 ``` 
@@ -62,12 +65,13 @@ where
 
 - `from` and `to` define the time interval (in format `"YYYY-MM-DD"`),
 
-- `file` is the name of the file where the .csv-file is saved. Per default, it is saved in the current working directory under the name `<symbol>.csv`.
+- `file` is the name of the file where the .csv-file is saved. Per default, it is saved in the current working directory under the name `<symbol>.csv`. If `file = NULL` (default), the data is not saved but returned as a `data.frame`.
 
 For example, the call
 
 ```{r}
-download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date())
+dax <- download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date())
+head(dax)
 ```
 
 downloads the 21st century daily data of the DAX into the current working directory.

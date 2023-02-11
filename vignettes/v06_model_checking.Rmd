@@ -15,12 +15,13 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.dim = c(10,6),
   out.width = "80%",
-  fig.align = 'center'
+  fig.align = 'center',
+  tidy = TRUE
 )
 library("fHMM")
 ```
 
-This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the {fHMM} `r utils::packageVersion("fHMM")` package.] discusss model checking in {fHMM}.
+This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] discusss model checking in `{fHMM}`.
 
 ## Model checking using pseudo-residuals
 
@@ -34,9 +35,9 @@ is standard normally distributed, where $\Phi$ denotes the cumulative distributi
 
 For HHMMs, we first decode the coarse-scale state process using the Viterbi algorithm. Subsequently, we assign each coarse-scale observation its distribution function under the fitted model and perform the transformation described above. Using the Viterbi-decoded coarse-scale states, we then treat the fine-scale observations analogously.
 
-## Implementation in {fHMM}
+## Implementation
 
-In {fHMM}, pseudo-residuals can be computed via the `compute_residuals()` function, provided that the states have been decoded beforehand.
+In `{fHMM}`, pseudo-residuals can be computed via the `compute_residuals()` function, provided that the states have been decoded beforehand.
 
 We revisit the DAX example:
 
@@ -58,7 +59,7 @@ plot(dax_model_3t, plot_type = "pr")
 
 For additional normality tests, the residuals can be extracted from the `model` object via the `residuals()` method. The following lines exemplary perform a [Jarque–Bera test](https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test) [@jar87]:
 
-```{r}
+```{r, message=FALSE}
 tseries::jarque.bera.test(residuals(dax_model_3t))
 ```
 

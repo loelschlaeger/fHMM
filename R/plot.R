@@ -9,6 +9,9 @@
 #'
 #' @return
 #' No return value. Draws a plot to the current device.
+#' 
+#' @examples 
+#' plot(dax_model_3t$data, title = "DAX time series")
 #'
 #' @export
 

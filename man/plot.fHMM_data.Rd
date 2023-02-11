@@ -21,3 +21,7 @@ No return value. Draws a plot to the current device.
 \description{
 This function is the plot method for an object of class \code{fHMM_data}.
 }
+\examples{
+plot(dax_model_3t$data, title = "DAX time series")
+
+}

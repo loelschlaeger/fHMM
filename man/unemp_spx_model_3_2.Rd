@@ -13,7 +13,7 @@ data("unemp_spx_model_3_2")
 \description{
 A pre-computed HHMM with monthly unemployment rate in the US on the coarse
 scale using 3 states and S&P 500 index data on the fine scale using 2 states
-from 2000 to 2020 for demonstration purpose.
+from 1970 to 2020 for demonstration purpose.
 }
 \details{
 The model was estimated via:
@@ -27,20 +27,18 @@ controls <- list(
     file       = list(unemp, spx),
     date_column = c("date", "Date"),
     data_column = c("rate_diff", "Close"),
-    from       = "2000-01-01",
+    from       = "1970-01-01",
     to         = "2020-01-01",
     logreturns = c(FALSE, TRUE)
   ),
   fit       = list(
-    runs    = 500,
-    iterlim = 500
+    runs    = 200,
+    iterlim = 300
   )
 )
 controls <- set_controls(controls)
 unemp_spx_data <- prepare_data(controls)
 unemp_spx_model_3_2 <- fit_model(unemp_spx_data)
-unemp_spx_model_3_2 <- decode_states(unemp_spx_model_3_2)
-unemp_spx_model_3_2 <- compute_residuals(unemp_spx_model_3_2)
 }
 }
 \keyword{model}

@@ -72,7 +72,7 @@ fHMM_parameters <- function(controls,
   if (!inherits(controls, "fHMM_controls")) {
     stop("'controls' is not of class 'fHMM_controls'.", call. = FALSE)
   }
-  if (!(length(scale_par) == 2 && all(is_number(scale_par, pos = TRUE)))) {
+  if (!(length(scale_par) == 2 && all(is_number(scale_par, non_neg = TRUE)))) {
     stop("'scale_par' must be a positive numeric vector of length 2.",
          call. = FALSE)
   }
@@ -177,17 +177,17 @@ fHMM_parameters <- function(controls,
     }
   }
   if (controls[["sdds"]][[1]]$name == "gamma") {
-    if (!all(is_number(mus, pos = TRUE)) || length(mus) != M) {
+    if (!all(is_number(mus, non_neg = TRUE)) || length(mus) != M) {
       stop("'mus' must be a positive numeric vector of length 'controls$states[1]'.",
            call. = FALSE)
     }
   }
-  if (!all(is_number(sigmas, pos = TRUE)) || length(sigmas) != M) {
+  if (!all(is_number(sigmas, non_neg = TRUE)) || length(sigmas) != M) {
     stop("'sigmas' must be a positive numeric vector of length 'controls$states[1]'.",
          call. = FALSE)
   }
   if (controls[["sdds"]][[1]]$name == "t") {
-    if (!all(is_number(dfs, pos = TRUE)) || length(dfs) != M) {
+    if (!all(is_number(dfs, non_neg = TRUE)) || length(dfs) != M) {
       stop("'dfs' must be a positive numeric vector of length 'controls$states[1]'.",
            call. = FALSE)
     }
@@ -215,7 +215,7 @@ fHMM_parameters <- function(controls,
         }
       }
       if (controls[["sdds"]][[2]]$name == "gamma") {
-        if (!all(is_number(mus_star[[i]], pos = TRUE)) || length(mus_star[[i]]) != N) {
+        if (!all(is_number(mus_star[[i]], non_neg = TRUE)) || length(mus_star[[i]]) != N) {
           stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.",
                call. = FALSE)
         }
@@ -226,7 +226,7 @@ fHMM_parameters <- function(controls,
            call. = FALSE)
     }
     for (i in 1:M) {
-      if (!all(is_number(sigmas_star[[i]], pos = TRUE)) || length(sigmas_star[[i]]) != N) {
+      if (!all(is_number(sigmas_star[[i]], non_neg = TRUE)) || length(sigmas_star[[i]]) != N) {
         stop("Each element in 'sigmas_star' must be a positive numeric vector of length 'controls$states[2]'.",
              call. = FALSE)
       }
@@ -237,7 +237,7 @@ fHMM_parameters <- function(controls,
              call. = FALSE)
       }
       for (i in 1:M) {
-        if (!all(is_number(dfs_star[[i]], pos = TRUE)) || length(dfs_star[[i]]) != N) {
+        if (!all(is_number(dfs_star[[i]], non_neg = TRUE)) || length(dfs_star[[i]]) != N) {
           stop("Each element in 'dfs_star' must be a positive numeric vector of length 'controls$states[2]'.",
                call. = FALSE)
         }
