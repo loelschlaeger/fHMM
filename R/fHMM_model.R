@@ -519,6 +519,7 @@ residuals.fHMM_model <- function(object, ...) {
 
 #' @noRd
 #' @export
+#' @importFrom stats na.omit
 
 summary.fHMM_model <- function(object, alpha = 0.05, ...) {
   
@@ -583,8 +584,10 @@ summary.fHMM_model <- function(object, alpha = 0.05, ...) {
     if (!hierarchy) {
       res_summary <- summary(object$residuals)
     } else {
-      res_summary_cs <- summary(object$residuals[, 1])
-      res_summary_fs <- summary(as.vector(object$residuals[, -1]))
+      res_cs <- stats::na.omit(object$residuals[, 1])
+      res_summary_cs <- summary(res_cs)
+      res_fs <- stats::na.omit(as.vector(object$residuals[, -1]))
+      res_summary_fs <- summary(res_fs)
       res_summary <- list(
         "coarse-scale" = res_summary_cs,
         "fine-scale" = res_summary_fs
