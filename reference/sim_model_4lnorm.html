@@ -87,10 +87,7 @@ on <code>1000</code> simulated observations.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_controls.html">set_controls</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span></span>
 <span><span class="va">data_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data.html">prepare_data</a></span><span class="op">(</span><span class="va">controls</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">sim_model_4lnorm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">data_sim</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">sim_model_4lnorm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">sim_model_4lnorm</span><span class="op">)</span></span>
-<span><span class="va">sim_model_4lnorm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reorder_states.html">reorder_states</a></span><span class="op">(</span><span class="va">sim_model_4lnorm</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">sim_model_4lnorm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_residuals.html">compute_residuals</a></span><span class="op">(</span><span class="va">sim_model_4lnorm</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sim_model_4lnorm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">data_sim</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 
     </div>
 
