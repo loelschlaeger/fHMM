@@ -34,8 +34,6 @@ controls <- list(
 controls <- set_controls(controls)
 dax_data <- prepare_data(controls)
 dax_model_2n <- fit_model(dax_data)
-dax_model_2n <- decode_states(dax_model_2n)
-dax_model_2n <- compute_residuals(dax_model_2n)
 }
 }
 \keyword{model}

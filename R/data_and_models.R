@@ -157,8 +157,6 @@
 #' controls <- set_controls(controls)
 #' dax_data <- prepare_data(controls)
 #' dax_model_2n <- fit_model(dax_data)
-#' dax_model_2n <- decode_states(dax_model_2n)
-#' dax_model_2n <- compute_residuals(dax_model_2n)
 #' }
 #'
 #' @format An object of class \code{\link{fHMM_model}}.
@@ -194,9 +192,6 @@
 #' controls <- set_controls(controls)
 #' dax_data <- prepare_data(controls)
 #' dax_model_3t <- fit_model(dax_data)
-#' dax_model_3t <- decode_states(dax_model_3t)
-#' dax_model_3t <- reorder_states(dax_model_3t, c(2, 3, 1))
-#' dax_model_3t <- compute_residuals(dax_model_3t)
 #' }
 #'
 #' @format An object of class \code{\link{fHMM_model}}.
@@ -235,8 +230,6 @@
 #' controls <- set_controls(controls)
 #' dax_vw_data <- prepare_data(controls)
 #' dax_vw_model <- fit_model(dax_vw_data)
-#' dax_vw_model <- decode_states(dax_vw_model)
-#' dax_vw_model <- compute_residuals(dax_vw_model)
 #' }
 #'
 #' @format An object of class \code{\link{fHMM_model}}.
@@ -248,50 +241,8 @@
 #'
 #' @description
 #' A pre-computed HHMM with monthly unemployment rate in the US on the coarse
-#' scale using 2 states and S&P 500 index data on the fine scale using 2 states
-#' from 2000 to 2020 for demonstration purpose.
-#'
-#' @usage data("unemp_spx_model_2_2")
-#'
-#' @details
-#' The model was estimated via:
-#' \preformatted{
-#' controls <- list(
-#'   hierarchy = TRUE,
-#'   states    = c(2, 2),
-#'   sdds      = c("t", "t"),
-#'   period    = "m",
-#'   data      = list(
-#'     file       = list(unemp, spx),
-#'     date_column = c("date", "Date"),
-#'     data_column = c("rate_diff", "Close"),
-#'     from       = "2000-01-01",
-#'     to         = "2020-01-01",
-#'     logreturns = c(FALSE, TRUE)
-#'   ),
-#'   fit       = list(
-#'     runs    = 500,
-#'     iterlim = 500
-#'   )
-#' )
-#' controls <- set_controls(controls)
-#' unemp_spx_data <- prepare_data(controls)
-#' unemp_spx_model_2_2 <- fit_model(unemp_spx_data)
-#' unemp_spx_model_2_2 <- decode_states(unemp_spx_model_2_2)
-#' unemp_spx_model_2_2 <- compute_residuals(unemp_spx_model_2_2)
-#' }
-#'
-#' @format An object of class \code{\link{fHMM_model}}.
-#'
-#' @keywords model
-"unemp_spx_model_2_2"
-
-#' Unemployment rate and S&P 500 hierarchical HMM
-#'
-#' @description
-#' A pre-computed HHMM with monthly unemployment rate in the US on the coarse
 #' scale using 3 states and S&P 500 index data on the fine scale using 2 states
-#' from 2000 to 2020 for demonstration purpose.
+#' from 1970 to 2020 for demonstration purpose.
 #'
 #' @usage data("unemp_spx_model_3_2")
 #'
@@ -307,20 +258,18 @@
 #'     file       = list(unemp, spx),
 #'     date_column = c("date", "Date"),
 #'     data_column = c("rate_diff", "Close"),
-#'     from       = "2000-01-01",
+#'     from       = "1970-01-01",
 #'     to         = "2020-01-01",
 #'     logreturns = c(FALSE, TRUE)
 #'   ),
 #'   fit       = list(
-#'     runs    = 500,
-#'     iterlim = 500
+#'     runs    = 200,
+#'     iterlim = 300
 #'   )
 #' )
 #' controls <- set_controls(controls)
 #' unemp_spx_data <- prepare_data(controls)
 #' unemp_spx_model_3_2 <- fit_model(unemp_spx_data)
-#' unemp_spx_model_3_2 <- decode_states(unemp_spx_model_3_2)
-#' unemp_spx_model_3_2 <- compute_residuals(unemp_spx_model_3_2)
 #' }
 #'
 #' @format An object of class \code{\link{fHMM_model}}.
@@ -379,9 +328,6 @@
 #' controls <- set_controls(controls)
 #' data_sim <- prepare_data(controls, seed = 1)
 #' sim_model_4lnorm <- fit_model(data_sim, seed = 1)
-#' sim_model_4lnorm <- decode_states(sim_model_4lnorm)
-#' sim_model_4lnorm <- reorder_states(sim_model_4lnorm, c(4,2,3,1))
-#' sim_model_4lnorm <- compute_residuals(sim_model_4lnorm)
 #' }
 #'
 #' @format An object of class \code{\link{fHMM_model}}.

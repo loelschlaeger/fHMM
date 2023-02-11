@@ -37,8 +37,6 @@ controls <- list(
 controls <- set_controls(controls)
 dax_vw_data <- prepare_data(controls)
 dax_vw_model <- fit_model(dax_vw_data)
-dax_vw_model <- decode_states(dax_vw_model)
-dax_vw_model <- compute_residuals(dax_vw_model)
 }
 }
 \keyword{model}
