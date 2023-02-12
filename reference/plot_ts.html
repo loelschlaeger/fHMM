@@ -66,7 +66,15 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_ts</span><span class="op">(</span><span class="va">data</span>, <span class="va">decoding</span>, <span class="va">colors</span>, events <span class="op">=</span> <span class="cn">NULL</span>, title <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_ts</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">decoding</span>,</span>
+<span>  <span class="va">colors</span>,</span>
+<span>  events <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  from <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  to <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -90,6 +98,18 @@ hexadecimal RGB triplets.</p></dd>
 
 <dt>title</dt>
 <dd><p>Optionally a <code>character</code> for a custom title.</p></dd>
+
+
+<dt>from</dt>
+<dd><p>Optionally a <code>character</code>, a date in format <code>"YYYY-MM-DD"</code>,
+setting the lower date bound for plotting.
+By default, <code>from = NULL</code>, i.e. no lower bound.</p></dd>
+
+
+<dt>to</dt>
+<dd><p>Optionally a <code>character</code>, a date in format <code>"YYYY-MM-DD"</code>,
+setting the upper date bound for plotting.
+By default, <code>to = NULL</code>, i.e. no upper bound.</p></dd>
 
 </dl></div>
     <div class="section level2">
