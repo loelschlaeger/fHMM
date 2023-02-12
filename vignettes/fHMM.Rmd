@@ -32,19 +32,19 @@ The functionality of the {fHMM} package can be classified into functions for dat
 
 The tasks *data preparation*, *model estimation*, and *model evaluation* as well as their corresponding functions and classes are explained in detail in separate vignettes:
 
-- The vignette [*Model definition*](http://loelschlaeger.de/fHMM/articles/v01_model_definition.html) defines the HMM and its hierarchical extension.
+- The vignette [*Model definition*](https://loelschlaeger.de/fHMM/articles/v01_model_definition.html) defines the HMM and its hierarchical extension.
 
-- The vignette [*Controls*](http://loelschlaeger.de/fHMM/articles/v02_controls.html) introduces the `set_controls()` function which is used for model specifications.
+- The vignette [*Controls*](https://loelschlaeger.de/fHMM/articles/v02_controls.html) introduces the `set_controls()` function which is used for model specifications.
 
-- The vignette [*Data management*](http://loelschlaeger.de/fHMM/articles/v03_data_management.html) explains how to prepare or simulate data and introduces the `download_data()` function that can download financial data directly from https://finance.yahoo.com.
+- The vignette [*Data management*](https://loelschlaeger.de/fHMM/articles/v03_data_management.html) explains how to prepare or simulate data and introduces the `download_data()` function that can download financial data directly from https://finance.yahoo.com.
 
-- The vignette [*Model estimation*](http://loelschlaeger.de/fHMM/articles/v04_model_estimation.html) defines the likelihood function and explains the task of its numerical maximization via the `fit_model()` function.
+- The vignette [*Model estimation*](https://loelschlaeger.de/fHMM/articles/v04_model_estimation.html) defines the likelihood function and explains the task of its numerical maximization via the `fit_model()` function.
 
-- The vignette [*State decoding and prediction*](http://loelschlaeger.de/fHMM/articles/v05_state_decoding_and_prediction.html) introduces the Viterbi algorithm that is used for decoding the most likely underlying state sequence and forecasting. 
+- The vignette [*State decoding and prediction*](https://loelschlaeger.de/fHMM/articles/v05_state_decoding_and_prediction.html) introduces the Viterbi algorithm that is used for decoding the most likely underlying state sequence and forecasting. 
 
-- The vignette [*Model checking*](http://loelschlaeger.de/fHMM/articles/v06_model_checking.html) explains the task of checking a fitted model via computing (pseudo-) residuals, which is implemented in the `compute_residuals()` function.
+- The vignette [*Model checking*](https://loelschlaeger.de/fHMM/articles/v06_model_checking.html) explains the task of checking a fitted model via computing (pseudo-) residuals, which is implemented in the `compute_residuals()` function.
 
-- The vignette [*Model selection*](http://loelschlaeger.de/fHMM/articles/v07_model_selection.html) discusses the task of selecting the (in some sense) best model among a set of competing models via the `compare_models()` function. 
+- The vignette [*Model selection*](https://loelschlaeger.de/fHMM/articles/v07_model_selection.html) discusses the task of selecting the (in some sense) best model among a set of competing models via the `compare_models()` function. 
 
 ## Placement in the literature
 
