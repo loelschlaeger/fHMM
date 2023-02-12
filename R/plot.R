@@ -15,7 +15,9 @@
 #'
 #' @export
 
-plot.fHMM_data <- function(x, events = NULL, title = NULL, ...) {
+plot.fHMM_data <- function(
+    x, events = NULL, title = NULL, from = NULL, to = NULL, ...
+  ) {
 
   ### check input
   if (!inherits(x, "fHMM_data")) {
@@ -37,7 +39,10 @@ plot.fHMM_data <- function(x, events = NULL, title = NULL, ...) {
   }
 
   ### visualization
-  plot_ts(data = x, decoding = NULL, colors = NULL, events = events, title = title)
+  plot_ts(
+    data = x, decoding = NULL, colors = NULL, events = events, title = title, 
+    from = from, to = to
+  )
 }
 
 
@@ -65,6 +70,14 @@ plot.fHMM_data <- function(x, events = NULL, title = NULL, ...) {
 #' Optionally a \code{character} for a custom title.
 #' @inheritParams fHMM_colors
 #' @inheritParams plot_ll
+#' @param from
+#' Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"}, 
+#' setting the lower date bound for plotting. 
+#' By default, \code{from = NULL}, i.e. no lower bound.
+#' @param to
+#' Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"}, 
+#' setting the upper date bound for plotting. 
+#' By default, \code{to = NULL}, i.e. no upper bound.
 #' @param ...
 #' Currently not used.
 #'
@@ -75,7 +88,7 @@ plot.fHMM_data <- function(x, events = NULL, title = NULL, ...) {
 
 plot.fHMM_model <- function(
     x, plot_type = "ts", events = NULL, colors = NULL, ll_relative = TRUE, 
-    title = NULL, ...
+    title = NULL, from = NULL, to = NULL, ...
   ) {
 
   ### check input
@@ -131,7 +144,7 @@ plot.fHMM_model <- function(
   if ("ts" %in% plot_type) {
     plot_ts(
       data = x$data, decoding = x$decoding, colors = colors, events = events,
-      title = title
+      title = title, from = from, to = to
     )
   }
 }
@@ -481,7 +494,7 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 #' @param decoding
 #' Either \code{NULL} or an object of class \code{fHMM_decoding}.
 #' @inheritParams plot.fHMM_model
-#'
+#' 
 #' @return
 #' No return value. Draws a plot to the current device.
 #'
@@ -489,8 +502,11 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 #'
 #' @importFrom graphics par abline mtext points layout plot.new text
 #' @importFrom grDevices rgb
+#' @importFrom stats na.omit
 
-plot_ts <- function(data, decoding, colors, events = NULL, title = NULL) {
+plot_ts <- function(
+    data, decoding, colors, events = NULL, title = NULL, from = NULL, to = NULL
+  ) {
   controls <- data$controls
   if (!controls[["hierarchy"]]) {
     T <- length(data[["data"]])
@@ -499,14 +515,15 @@ plot_ts <- function(data, decoding, colors, events = NULL, title = NULL) {
     T <- dim(data[["data"]])[1]
     if (!is.null(decoding)) {
       decoding_cs <- rep(decoding[, 1], times = data[["T_star"]])
-      decoding_fs <- as.vector(t(decoding[, -1]))[!is.na(as.vector(t(decoding[, -1])))]
+      decoding_fs <- stats::na.omit(as.vector(t(decoding[, -1])))
     }
     cs_data <- data[["data"]][, 1]
-    fs_data <- as.vector(t(data[["data"]][, -1]))[!is.na(as.vector(t(data[["data"]][, -1])))]
+    fs_data <- stats::na.omit(as.vector(t(data[["data"]][, -1])))
   }
   oldpar <- graphics::par(no.readonly = TRUE)
   on.exit(suppressWarnings(graphics::par(oldpar)))
-  mar <- c(5.1, 5.1, 3.1, 2.1) ### bottom, left, top, and right
+  ### bottom, left, top, and right
+  mar <- c(5.1, 5.1, 3.1, 2.1)
   if (is.null(decoding)) {
     mar[3] <- 1.1
   }
@@ -523,23 +540,34 @@ plot_ts <- function(data, decoding, colors, events = NULL, title = NULL) {
     if (!controls[["hierarchy"]]) {
       ydata <- data[["time_series"]]
       ymax <- ceiling(max(ydata))
+      ymin <- floor(min(ydata))
+      ylim <- c(ymin - (ymax - ymin), ymax)
       xdata <- as.Date(data[["dates"]])
     }
     if (controls[["hierarchy"]]) {
       ydata <- as.numeric(t(data[["time_series"]][, -1, drop = FALSE]))
       ydata <- ydata[!is.na(ydata)]
       ymax <- ceiling(max(ydata))
+      ymin <- floor(min(ydata))
       xdata <- as.vector(t(data[["dates"]][, -1, drop = FALSE]))
       xdata <- xdata[!is.na(xdata)]
       xdata <- as.Date(xdata)
+      ylim <- c(ymin - (ymax - ymin) * 2, ymax)
     }
-    xmin <- as.Date(paste0(find_closest_year(xdata[1]), "-01-01"))
-    xmax <- as.Date(paste0(find_closest_year(tail(xdata, n = 1)), "-01-01"))
-    ymin <- -ymax
-    plot(xdata, ydata,
-      type = "l",
-      xlim = c(xmin, xmax), ylim = c(ymin * 1.2, ymax), col = "black", xlab = "",
-      ylab = "", xaxt = "n", yaxt = "n", cex.lab = 2, cex.main = 2
+    if (is.null(from)) {
+      xmin <- as.Date(paste0(find_closest_year(xdata[1]), "-01-01"))
+    } else {
+      xmin <- check_date(from)
+    }
+    if (is.null(to)) {
+      xmax <- as.Date(paste0(find_closest_year(tail(xdata, n = 1)), "-01-01"))
+    } else {
+      xmax <- check_date(to)
+    }
+    plot(
+      xdata, ydata, type = "l", xlim = c(xmin, xmax), ylim = ylim, 
+      col = "black", xlab = "", ylab = "", xaxt = "n", yaxt = "n", 
+      cex.lab = 2, cex.main = 2
     )
     if (!controls[["hierarchy"]]) {
       data_lab <- controls[["data"]][["data_column"]][1]
@@ -577,21 +605,6 @@ plot_ts <- function(data, decoding, colors, events = NULL, title = NULL) {
       }
     }
     par(new = TRUE, las = 1)
-    ymax_factor <- 4
-  }
-  if (controls[["simulated"]]) {
-    xmin <- 1
-    if (!controls[["hierarchy"]]) {
-      xmax <- length(data[["data"]])
-    }
-    if (controls[["hierarchy"]]) {
-      xmax <- length(fs_data)
-    }
-    x_values <- seq_len(xmax)
-    ymax_factor <- 1
-  }
-  if (!controls[["simulated"]]) {
-    x_values <- xdata
   }
   if (!controls[["hierarchy"]]) {
     ymin <- min(data[["data"]], na.rm = TRUE)
@@ -599,19 +612,41 @@ plot_ts <- function(data, decoding, colors, events = NULL, title = NULL) {
     if (ymin > 0 && ymax < 10) {
       ymin <- 0
     }
+  } else {
+    ymin <- min(fs_data, na.rm = TRUE)
+    ymax <- max(fs_data, na.rm = TRUE)
+  }
+  if (controls[["simulated"]]) {
+    xmin <- 1
+    if (!controls[["hierarchy"]]) {
+      xmax <- length(data[["data"]])
+      ylim <- c(ymin, ymax) 
+    } else {
+      xmax <- length(fs_data)
+      ylim <- c(ymin - (ymax - ymin), ymax)
+    }
+    x_values <- seq_len(xmax)
+  } else {
+    x_values <- xdata
+    if (!controls[["hierarchy"]]) {
+      ylim <- c(ymin, ymax + (ymax - ymin)) 
+    } else {
+      ylim <- c(ymin - (ymax - ymin), ymax + (ymax - ymin))
+    }
+  }
+  if (!controls[["hierarchy"]]) {
     plot(x_values, data[["data"]],
       type = "l", col = "black",
       xlab = "", ylab = "", xaxt = "n", yaxt = "n",
-      xlim = c(xmin, xmax), ylim = c(ymin, ymax * ymax_factor)
+      xlim = c(xmin, xmax), 
+      ylim = ylim
     )
-  }
-  if (controls[["hierarchy"]]) {
-    ymin <- min(fs_data, na.rm = TRUE)
-    ymax <- max(fs_data, na.rm = TRUE)
+  } else {
     plot(x_values, fs_data,
       type = "h", col = "black",
       xlab = "", ylab = "", xaxt = "n",
-      yaxt = "n", xlim = c(xmin, xmax), ylim = c(ymin, ymax) * ymax_factor
+      yaxt = "n", xlim = c(xmin, xmax), 
+      ylim = ylim 
     )
   }
   if (!controls[["simulated"]]) {
@@ -705,7 +740,9 @@ plot_ts <- function(data, decoding, colors, events = NULL, title = NULL) {
     x_values_cs <- x_values[round(seq(1, length(x_values), length.out = T))]
     plot(x_values_cs, cs_data,
       type = "l", xlab = "", ylab = "", xaxt = "n",
-      yaxt = "n", xlim = c(xmin, xmax), ylim = c(ymin, ymax * ymax_factor * 1.5)
+      yaxt = "n", 
+      xlim = c(xmin, xmax), 
+      ylim = c(ymin, ymax + (ymax - ymin) * 2) 
     )
     if (is.null(decoding)) {
       points(x_values_cs, cs_data, pch = 16, cex = 1, lwd = 2)

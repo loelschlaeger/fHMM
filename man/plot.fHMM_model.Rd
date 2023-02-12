@@ -11,6 +11,8 @@
   colors = NULL,
   ll_relative = TRUE,
   title = NULL,
+  from = NULL,
+  to = NULL,
   ...
 )
 }
@@ -37,6 +39,14 @@ the best log-likelihood value. Set to \code{FALSE} to plot the absolute
 values.}
 
 \item{title}{Optionally a \code{character} for a custom title.}
+
+\item{from}{Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"},
+setting the lower date bound for plotting.
+By default, \code{from = NULL}, i.e. no lower bound.}
+
+\item{to}{Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"},
+setting the upper date bound for plotting.
+By default, \code{to = NULL}, i.e. no upper bound.}
 
 \item{...}{Currently not used.}
 }

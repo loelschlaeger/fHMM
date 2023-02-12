@@ -5,7 +5,7 @@
 * The `plot.fHMM_model()` function now has the additional argument `ll_relative` (default is `TRUE`) to plot the relative log-likelihood values when `plot_type = "ll"`.
 * Significantly increased the test coverage and fixed minor bugs.
 * Changed color of time series plot from `"lightgray"` to `"black"` for better readability.
-* Added a title to the time series plot when calling `plot.fHMM_model(plot_type = "ts")`.
+* Added a title to the time series plot when calling `plot.fHMM_model(plot_type = "ts")`. Additionally, a time interval with arguments `from` and `to` can be selected to zoom into the data.
 
 # fHMM 1.0.3
 
