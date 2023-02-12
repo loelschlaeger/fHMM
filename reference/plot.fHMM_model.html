@@ -77,6 +77,8 @@ fHMM_model."><meta property="og:image" content="https://loelschlaeger.github.io/
 <span>  colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ll_relative <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  from <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  to <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -114,6 +116,18 @@ values.</p></dd>
 
 <dt>title</dt>
 <dd><p>Optionally a <code>character</code> for a custom title.</p></dd>
+
+
+<dt>from</dt>
+<dd><p>Optionally a <code>character</code>, a date in format <code>"YYYY-MM-DD"</code>,
+setting the lower date bound for plotting.
+By default, <code>from = NULL</code>, i.e. no lower bound.</p></dd>
+
+
+<dt>to</dt>
+<dd><p>Optionally a <code>character</code>, a date in format <code>"YYYY-MM-DD"</code>,
+setting the upper date bound for plotting.
+By default, <code>to = NULL</code>, i.e. no upper bound.</p></dd>
 
 
 <dt>...</dt>
