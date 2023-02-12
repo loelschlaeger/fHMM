@@ -20,3 +20,4 @@ vignettes/figs/
 ^CRAN-RELEASE$
 ^cran-comments\.md$
 ^data-raw$
+^CRAN-SUBMISSION$
