@@ -5,9 +5,9 @@
 * CRAN test NOTE: Found the following (possibly) invalid URLs: 
 
   - URL: https://finance.yahoo.com. 
-  - URL: https://finance.yahoo.com/quote/%5EGDAXI/
-  - URL: https://finance.yahoo.com/quote/%5EGSPC/
-  - URL: https://finance.yahoo.com/quote/vow3.de/
+  - URL: https://finance.yahoo.com/quote/%5EGDAXI
+  - URL: https://finance.yahoo.com/quote/%5EGSPC
+  - URL: https://finance.yahoo.com/quote/vow3.de
   
   Comment: We have no issues accessing this URL.
   

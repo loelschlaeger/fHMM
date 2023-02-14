@@ -17,7 +17,7 @@ A \code{data.frame} with 23864 rows and the following 7 columns:
 }
 }
 \source{
-\url{https://finance.yahoo.com/quote/\%5EGSPC/}
+\url{https://finance.yahoo.com/quote/\%5EGSPC}
 }
 \usage{
 spx

@@ -28,7 +28,7 @@ library("fHMM")
 
 ## Empirical data
 
-Empirical data can be provided either as a `data.frame` or as a comma-separated values (.csv) file, see [the vignette on specifying the controls](http://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from <https://finance.yahoo.com/> in csv-format.] The `{fHMM}` package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
+Empirical data can be provided either as a `data.frame` or as a comma-separated values (.csv) file, see [the vignette on specifying the controls](https://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from <https://finance.yahoo.com> in csv-format.] The `{fHMM}` package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
 
 ```{r, head dax, results = FALSE}
 system.file("extdata", "dax.csv", package = "fHMM")

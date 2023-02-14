@@ -30,7 +30,7 @@
 #' }
 #' 
 #' @source 
-#' <https://finance.yahoo.com/quote/%5EGSPC/>
+#' <https://finance.yahoo.com/quote/%5EGSPC>
 #' 
 #' @keywords data
 "spx"
@@ -66,7 +66,7 @@
 #' }
 #' 
 #' @source 
-#' <https://finance.yahoo.com/quote/%5EGDAXI/>
+#' <https://finance.yahoo.com/quote/%5EGDAXI>
 #' 
 #' @keywords data
 "dax"
@@ -102,7 +102,7 @@
 #' }
 #' 
 #' @source 
-#' <https://finance.yahoo.com/quote/vow3.de/>
+#' <https://finance.yahoo.com/quote/vow3.de>
 #' 
 #' @keywords data
 "vw"

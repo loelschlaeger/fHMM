@@ -17,7 +17,7 @@ A \code{data.frame} with 6260 rows and the following 7 columns:
 }
 }
 \source{
-\url{https://finance.yahoo.com/quote/vow3.de/}
+\url{https://finance.yahoo.com/quote/vow3.de}
 }
 \usage{
 vw
