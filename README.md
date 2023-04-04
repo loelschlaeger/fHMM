@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# \# fHMM <a href="https://loelschlaeger.github.io/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
+# fHMM <a href="https://loelschlaeger.github.io/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -14,7 +14,7 @@ coverage](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg
 [![R-CMD-check](https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml)
 <!-- badges: end -->
 
-With {fHMM} you can detect and characterize financial market regimes in
+With the {fHMM} R package you can detect and characterize financial market regimes in
 financial time series by applying hidden Markov Models (HMMs). The
 functionality and the model [is documented in detail
 here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a
