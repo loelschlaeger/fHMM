@@ -56,9 +56,15 @@ fHMM_colors <- function(controls, colors = NULL) {
   }
 
   ### helper functions
-  var_col <- function(col, n) grDevices::colorRampPalette(c("white", col, "black"))(n + 2)[2:(n + 1)]
-  base_col <- function(n) grDevices::colorRampPalette(colors)(n)
-  col_alpha <- function(col, alpha = 0.6) grDevices::adjustcolor(col, alpha)
+  var_col <- function(col, n) {
+    grDevices::colorRampPalette(c("white", col, "black"))(n + 2)[2:(n + 1)]
+  }
+  base_col <- function(n) {
+    grDevices::colorRampPalette(colors)(n)
+  }
+  col_alpha <- function(col, alpha = 0.6) {
+    grDevices::adjustcolor(col, alpha)
+  }
 
   ### create and return 'fHMM_colors'
   if (!controls[["hierarchy"]]) {
