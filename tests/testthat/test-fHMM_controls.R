@@ -1,7 +1,12 @@
 test_that("empty controls work", {
-  expect_s3_class(set_controls(), "fHMM_controls")
+  expect_s3_class(
+    set_controls(), 
+    "fHMM_controls"
+  )
   expect_error(
-    set_controls("not_a_list"),
+    set_controls(
+      controls = "not_a_list"
+    ),
     "Input 'controls' must be a list."
   )
 })
@@ -9,7 +14,7 @@ test_that("empty controls work", {
 test_that("warning for redundant controls work", {
   expect_warning(
     set_controls(
-      list(
+      controls = list(
         "not_a_valid_control" = 1
       )
     ),
@@ -17,7 +22,7 @@ test_that("warning for redundant controls work", {
   )
   expect_warning(
     set_controls(
-      list(
+      controls = list(
         "data" = list(
           "not_a_valid_control" = 1
         )
