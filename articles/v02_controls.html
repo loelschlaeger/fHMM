@@ -99,7 +99,7 @@
 <p>The <a href="https://loelschlaeger.de/fHMM/" class="external-link">fHMM</a> package allows for multiple hidden Markov
 model specifications, including different data transformations,
 state-dependent distributions, and a hierarchical model structure. This
-vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;This vignette was build using R 4.2.2 with the
+vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;This vignette was build using R 4.2.3 with the
 &lt;a href="https://loelschlaeger.de/fHMM/" class="external-link"&gt;fHMM&lt;/a&gt; 1.1.0 package.&lt;/p&gt;'><sup>1</sup></a>
 outlines what and how specifications are possible.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -127,7 +127,7 @@ in the vignette on data management.&lt;/p&gt;'><sup>2</sup></a> <span class="cit
 <span><span class="co">#&gt; Download successful.</span></span>
 <span><span class="co">#&gt; * symbol: ^GDAXI</span></span>
 <span><span class="co">#&gt; * from: 1987-12-30</span></span>
-<span><span class="co">#&gt; * to: 2023-02-13</span></span>
+<span><span class="co">#&gt; * to: 2023-04-04</span></span>
 <span><span class="co">#&gt; * path: /Users/runner/work/fHMM/fHMM/vignettes/dax.csv</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="hmms-for-empirical-data">HMMs for empirical data<a class="anchor" aria-label="anchor" href="#hmms-for-empirical-data"></a>
@@ -204,262 +204,194 @@ overview of all possible specifications.</p>
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">set_controls</span></span></code></pre></div>
 <div class="r-help-page">
 <div class="container">
+
 <table style="width: 100%;" class="table"><tr>
-<td>
-set_controls
-</td>
-<td style="text-align: right;">
-R Documentation
-</td>
+<td>set_controls</td>
+<td style="text-align: right;">R Documentation</td>
 </tr></table>
-<h2>
-Set and validate controls
-</h2>
-<h3>
-Arguments
-</h3>
+<h2>Set and validate controls</h2>
+
+<h3>Arguments</h3>
+
 <table class="table">
 <tr style="vertical-align: top;">
+<td><code>controls</code></td>
 <td>
-<code>controls</code>
-</td>
-<td>
-<p>
-A <code>list</code> of controls, see below.
+<p>A <code>list</code> of controls, see below.
 </p>
-<p>
-Either none, all, or selected parameters can be specified. Unspecified
-parameters are set to default values (see the values in brackets below).
+<p>Either none, all, or selected parameters can be specified.
+Unspecified parameters are set to default values
+(see the values in brackets below).
 </p>
-<p>
-If <code>hierarchy = TRUE</code>, parameters marked with a
-<code>(*)</code> must be a <code>vector</code> of length 2, where the
-first entry corresponds to the coarse-scale and the second entry to the
-fine-scale layer.
+<p>If <code>hierarchy = TRUE</code>, parameters marked with a <code>(*)</code> must be a
+<code>vector</code> of length 2, where the first entry corresponds to the
+coarse-scale and the second entry to the fine-scale layer.
 </p>
+
 <ul>
-<li>
-<p>
-<code>hierarchy</code> (<code>FALSE</code>): A <code>logical</code>, set
-to <code>TRUE</code> for an hierarchical HMM.
+<li> <p><code>hierarchy</code> (<code>FALSE</code>):
+A <code>logical</code>, set to <code>TRUE</code> for an hierarchical HMM.
 </p>
 </li>
-<li>
-<p>
-<code>states</code> <code>(*)</code> (<code>2</code>): An
-<code>integer</code>, the number of states of the underlying Markov
-chain.
+<li> <p><code>states</code> <code>(*)</code> (<code>2</code>):
+An <code>integer</code>, the number of states of the underlying Markov chain.
 </p>
 </li>
-<li>
-<p>
-<code>sdds</code> <code>(*)</code> (<code>“t(df = Inf)”</code>): A
-<code>character</code>, specifying the state-dependent distribution. One
-of <code>“t”</code> (the t-distribution), or <code>“gamma”</code> (the
-gamma distribution), or <code>“lnorm”</code> (the log-normal
-distribution). You can fix the parameters (mean <code>mu</code>,
-standard deviation <code>sigma</code>, degrees of freedom
-<code>df</code>) of these distributions via, e.g., <code>“t(df =
-Inf)”</code> or <code>“gamma(mu = 0, sigma = 1)”</code>. To fix
-different values of a parameter for different states, separate by "|",
-e.g. <code>“t(mu = -1|1)”</code>.
+<li> <p><code>sdds</code> <code>(*)</code> (<code>"t(df = Inf)"</code>):
+A <code>character</code>, specifying the state-dependent distribution.
+One of <code>"t"</code> (the t-distribution), or <code>"gamma"</code>
+(the gamma distribution), or <code>"lnorm"</code> (the log-normal distribution).
+You can fix the parameters (mean <code>mu</code>, standard deviation
+<code>sigma</code>, degrees of freedom <code>df</code>) of these distributions via,
+e.g., <code>"t(df = Inf)"</code> or <code>"gamma(mu = 0, sigma = 1)"</code>.
+To fix different values of a parameter for different states, separate by
+"|", e.g. <code>"t(mu = -1|1)"</code>.
 </p>
 </li>
-<li>
-<p>
-<code>horizon</code> <code>(*)</code> (<code>100</code>): A
-<code>numeric</code>, specifying the length of the time horizon. The
-first entry of <code>horizon</code> is ignored if <code>data</code> is
-specified.
+<li> <p><code>horizon</code> <code>(*)</code> (<code>100</code>):
+A <code>numeric</code>, specifying the length of the time horizon.
+The first entry of <code>horizon</code> is ignored if <code>data</code> is specified.
 </p>
 </li>
-<li>
-<p>
-<code>period</code> (<code>“m”</code>): Only relevant if <code>hierarchy
-= TRUE</code> and <code>horizon[2] = NA</code>. In this case, a
-<code>character</code> which specifies a flexible, periodic fine-scale
-time horizon and can be one of
+<li> <p><code>period</code> (<code>"m"</code>):
+Only relevant if <code>hierarchy = TRUE</code> and
+<code>horizon[2] = NA</code>.
+In this case, a <code>character</code> which specifies a flexible, periodic
+fine-scale time horizon and can be one of
 </p>
+
 <ul>
-<li>
-<p>
-<code>“w”</code> for a week,
+<li> <p><code>"w"</code> for a week,
 </p>
 </li>
-<li>
-<p>
-<code>“m”</code> for a month,
+<li> <p><code>"m"</code> for a month,
 </p>
 </li>
-<li>
-<p>
-<code>“q”</code> for a quarter,
+<li> <p><code>"q"</code> for a quarter,
 </p>
 </li>
-<li>
-<p>
-<code>“y”</code> for a year.
+<li> <p><code>"y"</code> for a year.
 </p>
 </li>
 </ul>
 </li>
-<li>
-<p>
-<code>data</code> (<code>NA</code>): A <code>list</code> of controls
-specifying the data. If <code>data = NA</code>, data gets simulated
-(default). Otherwise:
+<li> <p><code>data</code> (<code>NA</code>): A <code>list</code> of controls specifying the
+data. If <code>data = NA</code>, data gets simulated (default). Otherwise:
 </p>
+
+<ul>
+<li> <p><code>file</code> <code>(*)</code>: Either:
+</p>
+
 <ul>
 <li>
-<p>
-<code>file</code> <code>(*)</code>: Either:
-</p>
-<ul>
-<li>
-<p>
-A <code>data.frame</code>, which must have a column named
-<code>date_column</code> (with dates) and <code>data_column</code> (with
-financial data). If <code>hierarchy = TRUE</code>, this
-<code>data.frame</code> is used for both the coarse- and the fine-scale
-layer. To have different data sets for theses layers, <code>file</code>
-can be a <code>list</code> of two <code>data.frame</code>.
-</p>
-</li>
-<li>
-<p>
-A <code>character</code>, the path to a .csv-file with financial data,
-which must have a column named <code>date_column</code> (with dates) and
+<p> A <code>data.frame</code>, which must have a column named
+<code>date_column</code> (with dates) and
 <code>data_column</code> (with financial data).
+If <code>hierarchy = TRUE</code>, this <code>data.frame</code> is used for
+both the coarse- and the fine-scale layer. To have different
+data sets for theses layers, <code>file</code> can be a <code>list</code>
+of two <code>data.frame</code>.
+</p>
+</li>
+<li>
+<p> A <code>character</code>, the path to a .csv-file with financial data,
+which must have a column named <code>date_column</code> (with dates)
+and <code>data_column</code> (with financial data).
 </p>
 </li>
 </ul>
 </li>
-<li>
-<p>
-<code>date_column</code> <code>(*)</code> (<code>“Date”</code>): A
-<code>character</code>, the name of the column in <code>file</code> with
-dates. Can be <code>NA</code> in which case consecutive integers are
-used as time points.
+<li> <p><code>date_column</code> <code>(*)</code> (<code>"Date"</code>):
+A <code>character</code>, the name of the column in <code>file</code> with dates.
+Can be <code>NA</code> in which case consecutive integers are used
+as time points.
 </p>
 </li>
-<li>
-<p>
-<code>data_column</code> <code>(*)</code> (<code>“Close”</code>): A
-<code>character</code>, the name of the column in <code>file</code> with
-financial data.
+<li> <p><code>data_column</code> <code>(*)</code> (<code>"Close"</code>):
+A <code>character</code>, the name of the column in <code>file</code> with financial
+data.
 </p>
 </li>
-<li>
-<p>
-<code>from</code> (<code>NA</code>): A <code>character</code> of the
-format <code>“YYYY-MM-DD”</code>, setting a lower data limit. No lower
-limit if <code>from = NA</code>. Ignored if <code>controls<span class="math inline">\(data\)</span>date_column</code> is
-<code>NA</code>.
+<li> <p><code>from</code> (<code>NA</code>):
+A <code>character</code> of the format <code>"YYYY-MM-DD"</code>, setting a lower
+data limit. No lower limit if <code>from = NA</code>. Ignored if
+<code>controls$data$date_column</code> is <code>NA</code>.
 </p>
 </li>
-<li>
-<p>
-<code>to</code> (<code>NA</code>): A <code>character</code> of the
-format <code>“YYYY-MM-DD”</code>, setting an upper data limit. No upper
-limit if <code>from = NA</code>. Ignored if <code>controls<span class="math inline">\(data\)</span>date_column</code> is
-<code>NA</code>.
+<li> <p><code>to</code> (<code>NA</code>):
+A <code>character</code> of the format <code>"YYYY-MM-DD"</code>, setting an upper
+data limit. No upper limit if <code>from = NA</code>. Ignored if
+<code>controls$data$date_column</code> is <code>NA</code>.
 </p>
 </li>
-<li>
-<p>
-<code>logreturns</code> <code>(*)</code> (<code>FALSE</code>): A
-<code>logical</code>, if <code>TRUE</code> the data is transformed to
-log-returns.
+<li> <p><code>logreturns</code> <code>(*)</code> (<code>FALSE</code>):
+A <code>logical</code>, if <code>TRUE</code> the data is transformed to log-returns.
 </p>
 </li>
-<li>
-<p>
-<code>merge</code> (<code>function(x) mean(x)</code>): Only relevant if
-<code>hierarchy = TRUE</code>. In this case, a <code>function</code>
-with one argument <code>x</code>, which merges a numeric vector of
-fine-scale data <code>x</code> into one coarse-scale observation. For
-example,
+<li> <p><code>merge</code> (<code>function(x) mean(x)</code>):
+Only relevant if <code>hierarchy = TRUE</code>. In this case, a <code>function</code>
+with one argument <code>x</code>,
+which merges a numeric vector of fine-scale data <code>x</code> into one
+coarse-scale observation. For example,
 </p>
+
 <ul>
-<li>
-<p>
-<code>merge = function(x) mean(x)</code> defines the mean of the
+<li> <p><code>merge = function(x) mean(x)</code> defines the mean of the
 fine-scale data as the coarse-scale observation,
 </p>
 </li>
-<li>
-<p>
-<code>merge = function(x) mean(abs(x))</code> for the mean of the
+<li> <p><code>merge = function(x) mean(abs(x))</code> for the mean of the
 absolute values,
 </p>
 </li>
-<li>
-<p>
-<code>merge = function(x) sum(abs(x))</code> for the sum of the absolute
-values,
+<li> <p><code>merge = function(x) sum(abs(x))</code> for the sum of the
+absolute values,
 </p>
 </li>
-<li>
-<p>
-<code>merge = function(x) (tail(x,1)-head(x,1))/head(x,1)</code> for the
-relative change of the first to the last fine-scale observation.
+<li> <p><code>merge = function(x) (tail(x,1)-head(x,1))/head(x,1)</code> for
+the relative change of the first to the last fine-scale observation.
 </p>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li>
-<p>
-<code>fit</code>: A <code>list</code> of controls specifying the model
-fitting:
+<li> <p><code>fit</code>: A <code>list</code> of controls specifying the model fitting:
 </p>
+
 <ul>
-<li>
-<p>
-<code>runs</code> (<code>100</code>): An <code>integer</code>, setting
-the number of randomly initialized optimization runs from which the best
-one is selected as the final model.
+<li> <p><code>runs</code> (<code>100</code>):
+An <code>integer</code>, setting the number of randomly initialized
+optimization runs from which the best one is selected as the final model.
 </p>
 </li>
-<li>
-<p>
-<code>origin</code> (<code>FALSE</code>): A <code>logical</code>, if
-<code>TRUE</code> the optimization is initialized at the true parameter
-values. Only for simulated data. If <code>origin = TRUE</code>, this
-sets <code>run = 1</code> and <code>accept = 1:5</code>.
+<li> <p><code>origin</code> (<code>FALSE</code>):
+A <code>logical</code>, if <code>TRUE</code> the optimization is initialized at the
+true parameter values. Only for simulated data. If <code>origin = TRUE</code>,
+this sets <code>run = 1</code> and <code>accept = 1:5</code>.
 </p>
 </li>
-<li>
-<p>
-<code>accept</code> (<code>1:3</code>): An <code>integer</code>
-(vector), specifying which optimization runs are accepted based on the
-output code of <code>nlm</code>.
+<li> <p><code>accept</code> (<code>1:3</code>):
+An <code>integer</code> (vector), specifying which optimization runs are
+accepted based on the output code of <code>nlm</code>.
 </p>
 </li>
-<li>
-<p>
-<code>gradtol</code> (<code>1e-6</code>): A positive
-<code>numeric</code> value, passed on to <code>nlm</code>.
+<li> <p><code>gradtol</code> (<code>1e-6</code>):
+A positive <code>numeric</code> value, passed on to <code>nlm</code>.
 </p>
 </li>
-<li>
-<p>
-<code>iterlim</code> (<code>200</code>): A positive
-<code>integer</code>, passed on to <code>nlm</code>.
+<li> <p><code>iterlim</code> (<code>200</code>):
+A positive <code>integer</code>, passed on to <code>nlm</code>.
 </p>
 </li>
-<li>
-<p>
-<code>print.level</code> (<code>0</code>): One of <code>0</code>,
-<code>1</code>, and <code>2</code> to control the verbosity of the
+<li> <p><code>print.level</code> (<code>0</code>):
+One of <code>0</code>, <code>1</code>, and <code>2</code> to control the verbosity of the
 optimization, passed on to <code>nlm</code>.
 </p>
 </li>
-<li>
-<p>
-<code>steptol</code> (<code>1e-6</code>): A positive
-<code>numeric</code> value, passed on to <code>nlm</code>.
+<li> <p><code>steptol</code> (<code>1e-6</code>):
+A positive <code>numeric</code> value, passed on to <code>nlm</code>.
 </p>
 </li>
 </ul>
@@ -468,23 +400,15 @@ optimization, passed on to <code>nlm</code>.
 </td>
 </tr>
 <tr style="vertical-align: top;">
+<td><code>x</code></td>
 <td>
-<code>x</code>
-</td>
-<td>
-<p>
-An object of class <code>fHMM_controls</code>.
-</p>
+<p>An object of class <code>fHMM_controls</code>.</p>
 </td>
 </tr>
 <tr style="vertical-align: top;">
+<td><code>...</code></td>
 <td>
-<code>…</code>
-</td>
-<td>
-<p>
-Currently not used.
-</p>
+<p>Currently not used.</p>
 </td>
 </tr>
 </table>
