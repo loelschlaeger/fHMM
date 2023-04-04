@@ -17,7 +17,7 @@ model <- fHMM::dax_model_3t
 data <- model$data
 ```
 
-# {fHMM}: Fitting HMMs to financial time series <a href="https://loelschlaeger.de/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
+# # fHMM <a href="https://loelschlaeger.github.io/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/fHMM)](https://CRAN.R-project.org/package=fHMM)
