@@ -13,15 +13,15 @@ link-citations: true
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.dim = c(10,6),
+  fig.dim = c(10, 6),
   out.width = "80%",
-  fig.align = 'center',
-  tidy = TRUE
+  fig.align = "center",
+  fig.path = "fHMM-"
 )
 library("fHMM")
 ```
 
-Model selection involves the choice of a family for the state-dependent distribution and the selection of the number of states. This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] introduces model selection in `{fHMM}`.
+Model selection involves the choice of a family for the state-dependent distribution and the selection of the number of states. This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] introduces model selection in `{fHMM}`.
 
 ## Information criteria
 

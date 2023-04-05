@@ -56,6 +56,10 @@ log-returns from 2000 to 2022. The states can be interpreted as proxies
 for bearish (green below) and bullish markets (red) and an “in-between”
 market state (yellow).
 
+``` r
+library("fHMM")
+```
+
 The package has a build-in function to download financial data from
 [Yahoo Finance](https://finance.yahoo.com/):
 
