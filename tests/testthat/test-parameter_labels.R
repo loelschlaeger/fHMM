@@ -11,7 +11,10 @@ test_that("input checks work", {
 
 test_that("creation of HMM parameter labels works", {
   expect_equal(
-    parameter_labels(set_controls(), 8),
+    parameter_labels(
+      controls = set_controls(sdds = "t"), 
+      expected_length = 8
+    ),
     c("Gamma_2.1", "Gamma_1.2", "mu_1", "mu_2", "sigma_1", "sigma_2", 
       "df_1", "df_2")
   )
@@ -19,11 +22,13 @@ test_that("creation of HMM parameter labels works", {
 
 test_that("creation of HHMM parameter labels works", {
   expect_equal(
-    parameter_labels(set_controls(list(hierarchy = TRUE)), 24),
+    parameter_labels(
+      controls = set_controls(list(hierarchy = TRUE)), 
+      expected_length = 18
+    ),
     c("Gamma_2.1", "Gamma_1.2", "mu_1", "mu_2", "sigma_1", "sigma_2", 
-      "df_1", "df_2", "Gamma*1_2.1", "Gamma*1_1.2", "mu*1_1", "mu*1_2", 
-      "sigma*1_1", "sigma*1_2", "df*1_1", "df*1_2", "Gamma*2_2.1", 
-      "Gamma*2_1.2", "mu*2_1", "mu*2_2", "sigma*2_1", "sigma*2_2", 
-      "df*2_1", "df*2_2")
+      "Gamma*1_2.1", "Gamma*1_1.2", "mu*1_1", "mu*1_2", "sigma*1_1", 
+      "sigma*1_2", "Gamma*2_2.1", "Gamma*2_1.2", "mu*2_1", "mu*2_2", 
+      "sigma*2_1", "sigma*2_2")
   )
 })

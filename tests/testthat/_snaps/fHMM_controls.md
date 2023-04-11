@@ -7,7 +7,7 @@
       * hierarchy: FALSE 
       * data type: simulated 
       * number of states: 2 
-      * sdds: t() 
+      * sdds: t()
       * number of runs: 50  
 
 # checks of controls for empirical HMM work
@@ -19,7 +19,7 @@
       * hierarchy: FALSE 
       * data type: empirical 
       * number of states: 2 
-      * sdds: t() 
+      * sdds: t()
       * number of runs: 100  
 
 ---
@@ -31,7 +31,7 @@
       * hierarchy: FALSE 
       * data type: empirical 
       * number of states: 2 
-      * sdds: t() 
+      * sdds: t()
       * number of runs: 100  
 
 # checks of controls for simulated HHMM work
@@ -43,7 +43,7 @@
       * hierarchy: TRUE 
       * data type: simulated 
       * number of states: 2 2 
-      * sdds: t(df = Inf) t(df = Inf) 
+      * sdds: coarse-scale t(df = Inf), fine-scale t(df = Inf)
       * number of runs: 100  
 
 ---
@@ -55,7 +55,7 @@
       * hierarchy: TRUE 
       * data type: simulated 
       * number of states: 2 2 
-      * sdds: t(df = Inf) t(df = Inf) 
+      * sdds: coarse-scale t(df = Inf), fine-scale t(df = Inf)
       * number of runs: 100  
 
 ---
@@ -67,7 +67,7 @@
       * hierarchy: TRUE 
       * data type: simulated 
       * number of states: 2 2 
-      * sdds: t(df = Inf) t(df = Inf) 
+      * sdds: coarse-scale t(df = Inf), fine-scale t(df = Inf)
       * number of runs: 100  
 
 ---
@@ -79,7 +79,19 @@
       * hierarchy: TRUE 
       * data type: simulated 
       * number of states: 2 2 
-      * sdds: t(df = Inf) t(df = Inf) 
+      * sdds: coarse-scale t(df = Inf), fine-scale t(df = Inf)
+      * number of runs: 100  
+
+---
+
+    Code
+      controls
+    Output
+      fHMM controls:
+      * hierarchy: TRUE 
+      * data type: simulated 
+      * number of states: 2 2 
+      * sdds: coarse-scale t(df = Inf), fine-scale t(df = Inf)
       * number of runs: 100  
 
 # checks of controls for empirical HHMM work
@@ -91,7 +103,7 @@
       * hierarchy: TRUE 
       * data type: empirical 
       * number of states: 2 2 
-      * sdds: t(df = Inf) t(df = Inf) 
+      * sdds: coarse-scale t(df = Inf), fine-scale t(df = Inf)
       * number of runs: 100  
 
 ---
@@ -103,7 +115,7 @@
       * hierarchy: TRUE 
       * data type: empirical 
       * number of states: 2 2 
-      * sdds: t(df = Inf) t(df = Inf) 
+      * sdds: coarse-scale t(df = Inf), fine-scale t(df = Inf)
       * number of runs: 100  
 
 ---
@@ -115,7 +127,7 @@
       * hierarchy: TRUE 
       * data type: empirical 
       * number of states: 2 2 
-      * sdds: t(df = Inf) t(df = Inf) 
+      * sdds: coarse-scale t(df = Inf), fine-scale t(df = Inf)
       * number of runs: 100  
 
 ---
@@ -127,7 +139,7 @@
       * hierarchy: TRUE 
       * data type: empirical 
       * number of states: 2 2 
-      * sdds: t(df = Inf) t(df = Inf) 
+      * sdds: coarse-scale t(df = Inf), fine-scale t(df = Inf)
       * number of runs: 100  
 
 ---
@@ -139,6 +151,6 @@
       * hierarchy: TRUE 
       * data type: empirical 
       * number of states: 2 2 
-      * sdds: t(df = Inf) t(df = Inf) 
+      * sdds: coarse-scale t(df = Inf), fine-scale t(df = Inf)
       * number of runs: 100  
 

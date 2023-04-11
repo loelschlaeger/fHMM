@@ -18,7 +18,7 @@ test_that("warning for redundant controls work", {
         "not_a_valid_control" = 1
       )
     ),
-    "not_a_valid_control in 'controls' ignored."
+    "not_a_valid_control in 'controls' ignored"
   )
   expect_warning(
     set_controls(
@@ -32,6 +32,14 @@ test_that("warning for redundant controls work", {
   )
   expect_warning(
     set_controls(
+      data = list(
+        "not_a_valid_control" = 1
+      )
+    ),
+    "not_a_valid_control"
+  )
+  expect_warning(
+    set_controls(
       list(
         "fit" = list(
           "not_a_valid_control" = 1
@@ -39,6 +47,14 @@ test_that("warning for redundant controls work", {
       )
     ),
     "not_a_valid_control"
+  )
+  expect_warning(
+    set_controls(
+      fit = list(
+        "not_a_valid_control" = 1
+      )
+    ),
+    "not_a_valid_control in 'fit' ignored"
   )
 })
 
@@ -59,7 +75,7 @@ test_that("input checks for setting controls work", {
         "horizon" = 10.5
       )
     ),
-    "The control 'horizon' must be an integer."
+    "The control 'horizon' must be a positive integer."
   )
   expect_error(
     set_controls(
@@ -72,6 +88,18 @@ test_that("input checks for setting controls work", {
   )
   expect_error(
     set_controls(
+      controls = list("data" = "not_a_list")
+    ),
+    "Element 'data' in input 'controls' must be a list."
+  )
+  expect_error(
+    set_controls(
+      data = "not_a_list"
+    ),
+    "Control 'data' must be a list or NA."
+  )
+  expect_error(
+    set_controls(
       list(
         "hierarchy" = FALSE,
         "sdds" = "t",
@@ -80,7 +108,7 @@ test_that("input checks for setting controls work", {
         )
       )
     ),
-    "The control 'file' in 'data' must be a character."
+    "The control 'file' in 'data' is misspecified"
   )
   expect_error(
     set_controls(
@@ -88,7 +116,7 @@ test_that("input checks for setting controls work", {
         "hierarchy" = "not_a_boolean"
       )
     ),
-    "The control 'hierarchy' must be a TRUE or FALSE."
+    "The control 'hierarchy' must be TRUE or FALSE."
   )
   expect_error(
     set_controls(
@@ -106,7 +134,7 @@ test_that("input checks for setting controls work", {
         "horizon" = 1:3
       )
     ),
-    "The control 'horizon' must be an integer vector of length 2."
+    "The control 'horizon' must be a vector of length 2."
   )
   expect_error(
     set_controls(
@@ -116,11 +144,31 @@ test_that("input checks for setting controls work", {
         "period" = "wrong_symbol"
       )
     ),
-    "The control 'period' must be eiter 'NA' or one of 'w', 'm', 'q', 'y'."
+    "The control 'period' must be one of 'w', 'm', 'q', 'y'."
   )
 })
 
-test_that("checks for `fit` controls work", {
+test_that("missing controls can be set", {
+  expect_true(set_controls(data = list())$simulated)
+  set_controls(
+    file = data.frame("Close" = 1),
+    date_column = NA
+  )
+})
+
+test_that("checks for 'fit' controls work", {
+  expect_error(
+    set_controls(
+      controls = list("fit" = "not_a_list")
+    ),
+    "Element 'fit' in input 'controls' must be a list."
+  )
+  expect_error(
+    set_controls(
+      fit = "not_a_list"
+    ),
+    "Control 'fit' must be a list."
+  )
   controls <- list(
     fit = list("runs" = "1")
   )
@@ -336,7 +384,6 @@ test_that("checks of controls for simulated HHMM work", {
 
 test_that("checks of controls for empirical HHMM work", {
   controls <- list(
-    hierarchy = TRUE,
     horizon = c(100, NA),
     period = "w",
     data = list(
@@ -345,12 +392,11 @@ test_that("checks of controls for empirical HHMM work", {
       data_column = c("Close", "Close")
     )
   )
-  controls <- set_controls(controls)
+  controls <- set_controls(controls, hierarchy = TRUE)
   expect_true(controls$data$data_inside)
   expect_s3_class(controls, "fHMM_controls")
   expect_snapshot(controls)
   controls <- list(
-    hierarchy = TRUE,
     horizon = c(NA, NA, NA),
     period = "w",
     data = list(
@@ -360,11 +406,10 @@ test_that("checks of controls for empirical HHMM work", {
     )
   )
   expect_error(
-    controls <- set_controls(controls),
+    controls <- set_controls(controls, hierarchy = TRUE),
     "The control 'horizon' must be a vector of length 2."
   )
   controls <- list(
-    hierarchy = TRUE,
     horizon = c(100, NA),
     period = "w",
     data = list(
@@ -373,7 +418,7 @@ test_that("checks of controls for empirical HHMM work", {
       data_column = c("Close", "Close")
     )
   )
-  controls <- set_controls(controls)
+  controls <- set_controls(controls, hierarchy = TRUE)
   expect_true(controls$data$data_inside)
   expect_s3_class(controls, "fHMM_controls")
   expect_snapshot(controls)
@@ -427,7 +472,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'date_column' in 'data' must be a vector with two characters or two NA's."
+    "The control 'date_column' in 'data' must be a vector of length two."
   )
   controls <- list(
     hierarchy = TRUE,
@@ -471,7 +516,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'merge' in 'data' must be of class 'function'."
+    "The control 'merge' in 'data' must be a 'function'."
   )
   controls <- list(
     hierarchy = TRUE,
@@ -486,7 +531,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The controls 'merge' in 'data' must merge a numeric vector into a single numeric value."
+    "The controls 'merge' in 'data' must merge a numeric vector"
   )
   controls <- list(
     hierarchy = TRUE,

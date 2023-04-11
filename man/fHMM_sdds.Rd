@@ -5,13 +5,51 @@
 \alias{print.fHMM_sdds}
 \title{Define state-dependent distributions}
 \usage{
-fHMM_sdds(sdds)
+fHMM_sdds(sdds, states)
 
 \method{print}{fHMM_sdds}(x, ...)
 }
 \arguments{
-\item{sdds}{A \code{character} (vector) of length two that can be specified for
-\code{"sdds"} in \code{\link{set_controls}}.}
+\item{sdds}{A \code{character}, specifying the state-dependent distribution.
+One of
+\itemize{
+\item \code{"t"} (the t-distribution),
+\item \code{"gamma"} (the gamma distribution),
+\item \code{"lnorm"} (the log-normal distribution),
+\item \code{"poisson"} (the Poisson distribution).
+}
+
+The distribution parameters
+\itemize{
+\item mean \code{mu},
+\item standard deviation \code{sigma} (not for Poisson distribution),
+\item degrees of freedom \code{df} (only for t-distribution),
+}
+can be fixed via, e.g., \code{"t(df = Inf)"} or
+\code{"gamma(mu = 0, sigma = 1)"}.
+To fix different values of a parameter for different states, separate by
+"|", e.g. \code{"poisson(mu = 1|2|3)"}.
+
+If \code{hierarchy = TRUE}, \code{sdds} must be a \code{vector} of length 2.
+The first entry corresponds to the coarse-scale layer, while the second entry
+corresponds to the fine-scale layer.
+
+By default, \code{sdds = "t(df = Inf)"} (the normal distribution) if
+\code{hierarchy = FALSE} and \code{sdds = c("t(df = Inf)", "t(df = Inf)")}
+if \code{hierarchy = TRUE}.
+
+See also \code{\link{fHMM_sdds}} for more details.}
+
+\item{states}{An \code{integer}, the number of states of the underlying Markov chain.
+
+If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
+2. The first entry corresponds to the coarse-scale layer, while the second
+entry corresponds to the fine-scale layer.
+
+By default, \code{states = 2} if \code{hierarchy = FALSE} and
+\code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
+
+\item{x}{An object of class \code{fHMM_controls}.}
 
 \item{...}{Currently not used.}
 }
@@ -30,8 +68,10 @@ package.
 }
 \examples{
 \dontrun{
-sdds <- c("t(sigma = 0.1, df = Inf)", "gamma", "lnorm(mu = 1)")
-fHMM_sdds(sdds)
+fHMM_sdds(
+  sdds = c("t(sigma = 0.1 | 1, df = Inf)", "gamma"),
+  states = c(2, 3)
+)
 }
 
 }

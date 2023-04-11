@@ -4,9 +4,7 @@
 #' This helper function defines state-dependent distributions for the \{fHMM\} 
 #' package.
 #'
-#' @param sdds
-#' A \code{character} (vector) of length two that can be specified for
-#' \code{"sdds"} in \code{\link{set_controls}}.
+#' @inheritParams set_controls
 #'
 #' @return
 #' A \code{list} of length \code{length(sdds)}. 
@@ -17,22 +15,66 @@
 #'
 #' @examples
 #' \dontrun{
-#' sdds <- c("t(sigma = 0.1, df = Inf)", "gamma", "lnorm(mu = 1)")
-#' fHMM_sdds(sdds)
+#' fHMM_sdds(
+#'   sdds = c("t(sigma = 0.1 | 1, df = Inf)", "gamma"),
+#'   states = c(2, 3)
+#' )
 #' }
 #' 
 #' @keywords internal
 
-fHMM_sdds <- function(sdds) {
+fHMM_sdds <- function(sdds, states) {
+  
+  ### input checks
+  if (length(states) == 1) {
+    hierarchy <- FALSE
+    if (!(all(is_number(states, int = TRUE)) && all(states >= 2))) {
+      stop(
+        "The control 'states' must be an integer greater or equal 2.",
+        call. = FALSE
+      )
+    }
+  } else if (length(states) == 2) {
+    hierarchy <- TRUE
+    if (!(all(is_number(states, int = TRUE)) && all(states >= 2))) {
+      stop(
+        "The control 'states' must be a vector of integers greater or equal 2.",
+        call. = FALSE
+      )
+    }
+  } else {
+    stop(
+      "The control 'states' must be a vector of length 1 or 2.",
+      call. = FALSE
+    )
+  }
+  if (inherits(sdds, "fHMM_sdds")) {
+    sdds <- sapply(sdds, function(x) x$label)
+  }
+  if (!is.character(sdds) || length(sdds) != ifelse(hierarchy, 2, 1)) {
+    stop(
+      "The control 'sdds' must be a character ", 
+      if (hierarchy) "vector ", "of length ", ifelse(hierarchy, 2, 1), ".",
+      call. = FALSE
+    )
+  }
+  
+  ### create 'fHMM_sdds' object
   out <- list()
-  for (sdd in sdds) {
+  for (i in if (hierarchy) 1:2 else 1) {
+    sdd <- sdds[i]
     sdd_tws <- gsub(" ", "", sdd)
     sdd_tws_split <- unlist(strsplit(sdd_tws, split = "[()]"))
     distr <- sdd_tws_split[1]
-    if (!distr %in% c("t", "gamma", "lnorm")) {
-      stop(paste(
-        "Currently, only the t- ('t'), Gamma- ('gamma'), and log-normal",
-        "('lnorm') distribution are implemented."), call. = FALSE)
+    if (!distr %in% c("t", "gamma", "lnorm", "poisson")) {
+      stop(
+        paste0(
+          "Currently, only the following distributions are implemented:\n",
+          "t- ('t'), Gamma- ('gamma'), log-normal, ('lnorm'), and poisson- ",
+          "('poisson') distribution"
+        ), 
+        call. = FALSE
+      )
     }
     if (is.na(sdd_tws_split[2])) {
       pars <- NULL
@@ -50,11 +92,14 @@ fHMM_sdds <- function(sdds) {
       function(x) as.numeric(unlist(strsplit(x[2], split = "|", fixed = TRUE)))
     )
     names(pars) <- names
-    if (distr %in% c("t","lnorm")) {
+    if (distr == "t") {
       pars[!names(pars) %in% c("mu", "sigma", "df")] <- NULL
     }
-    if (distr == "gamma") {
-      pars[!names(pars) %in% c("mu", "sigma", "df")] <- NULL
+    if (distr %in% c("gamma", "lnorm")) {
+      pars[!names(pars) %in% c("mu", "sigma")] <- NULL
+    }
+    if (distr == "poisson") {
+      pars[!names(pars) %in% c("mu")] <- NULL
     }
     if (!is.null(pars$mu)) {
       if (distr == "gamma") {
@@ -62,26 +107,42 @@ fHMM_sdds <- function(sdds) {
           stop("'mu' must be a positive numeric.", call. = FALSE)
         }
       }
-    } else {
-      pars$mu <- NULL
-    }
+    } 
     if (!is.null(pars$sigma)) {
       if (!any(is_number(pars$sigma, pos = TRUE))) {
         stop("'sigma' must be a positive numeric.", call. = FALSE)
       }
-    } else {
-      pars$sigma <- NULL
-    }
+    } 
     if (!is.null(pars$df)) {
       if (!any(is_number(pars$df, pos = TRUE))) {
         stop("'df' must be a positive numeric.", call. = FALSE)
       }
-    } else if (distr == "t") {
-      pars$df <- NULL
     }
-    out[[length(out) + 1]] <- list("name" = distr, pars = pars)
+    label <- paste0(
+      distr, "(",
+      paste(
+        names(pars), unlist(sapply(pars, paste, collapse = "|")),
+        collapse = ", ", sep = " = "
+      ),
+      ")"
+    )
+    for (p in seq_along(pars)) {
+      if (length(pars[[p]]) == 1) {
+        pars[[p]] <- rep(pars[[p]], states[i])
+      }
+      if (length(pars[[p]]) != states[i]) {
+        stop(
+          "Number of fixed parameters in '", label, 
+          "' does not fit the number of states (", states[i], ").",
+          call. = FALSE
+        )
+      }
+    }
+    out[[length(out) + 1]] <- list(
+      "name" = distr, "pars" = pars, "label" = label
+    )
   }
-  class(out) <- "fHMM_sdds"
+  class(out) <- c("fHMM_sdds", "list")
   return(out)
 }
 
@@ -91,14 +152,14 @@ fHMM_sdds <- function(sdds) {
 #' @exportS3Method 
 
 print.fHMM_sdds <- function(x, ...) {
-  for (sdd in x) {
-    cat(sdd$name)
-    cat("(")
-    cat(paste(names(sdd$pars), unlist(sapply(sdd$pars, paste, collapse = "|")),
-      collapse = ", ", sep = " = "
-    ))
-    cat(")")
-    cat(" ")
+  if (!inherits(x, "fHMM_sdds")) {
+    stop("Not of class 'fHMM_sdds'.", call. = FALSE)
+  }
+  if (length(x) == 1) {
+    cat(x[[1]]$label)
+  } else {
+    cat("coarse-scale ", x[[1]]$label, ", fine-scale ", x[[2]]$label, 
+        sep = "")
   }
   return(invisible(x))
 }

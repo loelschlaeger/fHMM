@@ -11,14 +11,14 @@ set_controls(
   states = if (!hierarchy) 2 else c(2, 2),
   sdds = if (!hierarchy) "t(df = Inf)" else c("t(df = Inf)", "t(df = Inf)"),
   horizon = if (!hierarchy) 100 else c(100, 30),
-  period = "m",
+  period = if (hierarchy && is.na(horizon[2])) "m" else NA,
   data = NA,
   file,
   date_column = if (!hierarchy) "Date" else c("Date", "Date"),
   data_column = if (!hierarchy) "Close" else c("Close", "Close"),
   from = NA,
   to = NA,
-  logreturns = FALSE,
+  logreturns = if (!hierarchy) FALSE else c(FALSE, FALSE),
   merge = function(x) mean(x),
   fit = list(),
   runs = 100,
@@ -47,7 +47,7 @@ in more detail below:
 \item \code{horizon}, defines the time horizon,
 \item \code{period}, defines a flexible, periodic fine-scale time horizon,
 \item \code{data}, a \code{list} of controls that define the data,
-\item \code{fit}, a \code{list} of controls that define the fitting process,
+\item \code{fit}, a \code{list} of controls that define the fitting,
 \item \code{seed}, defines a seed for reproducibility,
 \item \code{verbose}, defines whether to print progress messages.
 }
@@ -66,9 +66,9 @@ By default, \code{hierarchy = FALSE}.}
 
 \item{states}{An \code{integer}, the number of states of the underlying Markov chain.
 
-If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length 2.
-The first entry corresponds to the coarse-scale layer, while the second entry
-corresponds to the fine-scale layer.
+If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
+2. The first entry corresponds to the coarse-scale layer, while the second
+entry corresponds to the fine-scale layer.
 
 By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
@@ -97,7 +97,7 @@ If \code{hierarchy = TRUE}, \code{sdds} must be a \code{vector} of length 2.
 The first entry corresponds to the coarse-scale layer, while the second entry
 corresponds to the fine-scale layer.
 
-By default, \code{sdds = "t(df = Inf)"} (normal distribution) if
+By default, \code{sdds = "t(df = Inf)"} (the normal distribution) if
 \code{hierarchy = FALSE} and \code{sdds = c("t(df = Inf)", "t(df = Inf)")}
 if \code{hierarchy = TRUE}.
 
@@ -105,16 +105,16 @@ See also \code{\link{fHMM_sdds}} for more details.}
 
 \item{horizon}{A \code{numeric}, specifying the length of the time horizon.
 
-If \code{hierarchy = TRUE}, \code{horizon} must be a \code{vector} of length 2.
-The first entry corresponds to the coarse-scale layer, while the second entry
-corresponds to the fine-scale layer.
+If \code{hierarchy = TRUE}, \code{horizon} must be a \code{vector} of length
+2. The first entry corresponds to the coarse-scale layer, while the second
+entry corresponds to the fine-scale layer.
 
 By default, \code{horizon = 100} if \code{hierarchy = FALSE} and
 \code{horizon = c(100, 30)} if \code{hierarchy = TRUE}.
 
 If \code{data} is specified (i.e., not \code{NA}), the first entry of
 \code{horizon} is ignored and the (coarse-scale) time horizon is defined by
-\code{data}.}
+available data.}
 
 \item{period}{Only relevant if \code{hierarchy = TRUE} and \code{horizon[2] = NA}.
 
@@ -127,9 +127,10 @@ fine-scale time horizon and can be one of
 \item \code{"y"} for a year.
 }
 
-By default, \code{period = "m"}.}
+By default, \code{period = "m"} if \code{hierarchy = TRUE} and
+\code{horizon[2] = NA}, and \code{NA} else.}
 
-\item{data}{Either \code{NA} (the default), in which case data is simulated, or a
+\item{data}{Either \code{NA}, in which case data is simulated (the default), or a
 \code{list} of controls specifying the data.
 
 The \code{list} can contain the following elements, which are described
@@ -152,12 +153,12 @@ Specifications in \code{data} override individual specifications.}
 \item{file}{Either:
 \itemize{
 \item A \code{data.frame}, which must have a column named
-\code{date_column} (with dates) and
-\code{data_column} (with financial data).
+\code{date_column} (with dates) and \code{data_column} (with data).
 If \code{hierarchy = TRUE}, this \code{data.frame} is used for
 both the coarse- and the fine-scale layer. To have different
 data sets for these layers, \code{file} can be a \code{list}
-of 2 \code{data.frame}.
+of 2 \code{data.frame}, where the first entry corresponds to the
+coarse-scale layer and the second entry to the fine-scale layer.
 \item A \code{character}, the path to a .csv-file with data,
 which must have a column named \code{date_column} (with dates)
 and \code{data_column} (with observations).
@@ -170,18 +171,18 @@ while the second entry corresponds to the fine-scale layer.
 Can be \code{NA} in which case consecutive integers are used
 as time points.
 
-If \code{hierarchy = TRUE}, \code{date_column} must be a \code{vector} of length 2.
-The first entry corresponds to the coarse-scale layer, while the second entry
-corresponds to the fine-scale layer.
+If \code{hierarchy = TRUE}, \code{date_column} must be a \code{vector} of
+length 2. The first entry corresponds to the coarse-scale layer, while the
+second entry corresponds to the fine-scale layer.
 
 By default, \code{date_column = "Date"} if \code{hierarchy = FALSE} and
 \code{date_column = c("Date", "Date")} if \code{hierarchy = TRUE}.}
 
 \item{data_column}{A \code{character}, the name of the column in \code{file} with observations.
 
-If \code{hierarchy = TRUE}, \code{data_column} must be a \code{vector} of length 2.
-The first entry corresponds to the coarse-scale layer, while the second entry
-corresponds to the fine-scale layer.
+If \code{hierarchy = TRUE}, \code{data_column} must be a \code{vector} of
+length 2. The first entry corresponds to the coarse-scale layer, while the
+second entry corresponds to the fine-scale layer.
 
 By default, \code{data_column = "Close"} if \code{hierarchy = FALSE} and
 \code{data_column = c("Close", "Close")} if \code{hierarchy = TRUE}.}
@@ -198,11 +199,12 @@ Ignored if \code{date_column} is \code{NA}.}
 
 \item{logreturns}{A \code{logical}, if \code{TRUE} the data is transformed to log-returns.
 
-If \code{hierarchy = TRUE}, \code{logreturns} must be a \code{vector} of length 2.
-The first entry corresponds to the coarse-scale layer, while the second entry
-corresponds to the fine-scale layer.
+If \code{hierarchy = TRUE}, \code{logreturns} must be a \code{vector} of
+length 2. The first entry corresponds to the coarse-scale layer, while the
+second entry corresponds to the fine-scale layer.
 
-By default, \code{logreturns = FALSE}.}
+By default, \code{logreturns = FALSE} if \code{hierarchy = FALSE} and
+\code{logreturns = c(FALSE, FALSE)} if \code{hierarchy = TRUE}.}
 
 \item{merge}{Only relevant if \code{hierarchy = TRUE}.
 
@@ -216,7 +218,7 @@ fine-scale data as the coarse-scale observation,
 absolute values,
 \item \code{merge = function(x) sum(abs(x))} for the sum of the
 absolute values,
-\item \code{merge = function(x) (tail(x,1)-head(x,1))/head(x,1)} for
+\item \code{merge = function(x) (tail(x, 1) - head(x, 1)) / head(x, 1)} for
 the relative change of the first to the last fine-scale observation.
 }}
 
