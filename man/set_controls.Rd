@@ -162,9 +162,11 @@ coarse-scale layer and the second entry to the fine-scale layer.
 \item A \code{character}, the path to a .csv-file with data,
 which must have a column named \code{date_column} (with dates)
 and \code{data_column} (with observations).
-If \code{hierarchy = TRUE}, \code{file} must be a \code{vector} of
-length 2. The first entry corresponds to the coarse-scale layer,
-while the second entry corresponds to the fine-scale layer.
+If \code{hierarchy = TRUE}, this file is used for both the coarse-
+and the fine-scale layer. To have different data sets for these
+layers, \code{file} can be a \code{vector} of
+length 2, where the first entry corresponds to the coarse-scale
+layer, and the second entry to the fine-scale layer.
 }}
 
 \item{date_column}{A \code{character}, the name of the column in \code{file} with dates.
