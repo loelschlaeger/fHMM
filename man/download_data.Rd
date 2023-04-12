@@ -9,6 +9,8 @@ download_data(
   from = "1902-01-01",
   to = Sys.Date(),
   file = NULL,
+  columns = c("Date", "Open", "High", "Low", "Close", "Adj.Close", "Volume"),
+  fill_dates = FALSE,
   verbose = TRUE
 )
 }
@@ -16,20 +18,24 @@ download_data(
 \item{symbol}{A \code{character}, the stock's symbol. It must match the identifier on
 \url{https://finance.yahoo.com/}.}
 
-\item{from}{A \code{character}, a date in format \code{"YYYY-MM-DD"}, setting the lower
+\item{from}{A \code{character} in the format \code{"YYYY-MM-DD"}, setting the lower
 data bound. Must not be earlier than \code{"1902-01-01"} (default).}
 
-\item{to}{A \code{character}, a date in format \code{"YYYY-MM-DD"}, setting the upper
+\item{to}{A \code{character} in the format \code{"YYYY-MM-DD"}, setting the upper
 data bound. Default is the current date \code{Sys.date()}.}
 
 \item{file}{Either
 \itemize{
 \item \code{NULL} (default) to return the data as a \code{data.frame},
-\item or a \code{character}, the name of the file where the data is saved as a
-\code{.csv}-file.
+\item or a \code{character}, the path where the data is saved as a .csv-file.
 }}
 
-\item{verbose}{Set to \code{TRUE} to return information about download success.}
+\item{columns}{A \code{character}}
+
+\item{fill_dates}{Set to \code{TRUE} to fill missing dates (e.g., days at which the stock
+market is closed )with \code{NA}s.}
+
+\item{verbose}{Set to \code{TRUE} (default) to print information about download success.}
 }
 \value{
 A \code{data.frame} if \code{file = NULL}.
@@ -38,7 +44,8 @@ A \code{data.frame} if \code{file = NULL}.
 This function downloads stock data from \url{https://finance.yahoo.com/}.
 }
 \details{
-The downloaded data has the following columns:
+Yahoo Finance provides the following historical daily data for a stock or
+an index:
 \itemize{
 \item \code{Date}: The date.
 \item \code{Open}: Opening price.
@@ -50,8 +57,11 @@ The downloaded data has the following columns:
 }
 }
 \examples{
-### download 21st century DAX data
-data <- download_data(symbol = "^GDAXI", from = "2000-01-03")
+### download 21st century closing prices of the DAX data
+data <- download_data(
+  symbol = "^GDAXI", from = "2000-01-01", columns = c("Date", "Close"),
+  fill_dates = TRUE
+)
 head(data)
 
 }

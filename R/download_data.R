@@ -4,7 +4,8 @@
 #' This function downloads stock data from <https://finance.yahoo.com/>.
 #'
 #' @details
-#' The downloaded data has the following columns:
+#' Yahoo Finance provides the following historical daily data for a stock or 
+#' an index:
 #' \itemize{
 #'   \item \code{Date}: The date.
 #'   \item \code{Open}: Opening price.
@@ -19,36 +20,46 @@
 #' A \code{character}, the stock's symbol. It must match the identifier on
 #' <https://finance.yahoo.com/>.
 #' @param from
-#' A \code{character}, a date in format \code{"YYYY-MM-DD"}, setting the lower 
+#' A \code{character} in the format \code{"YYYY-MM-DD"}, setting the lower 
 #' data bound. Must not be earlier than \code{"1902-01-01"} (default).
 #' @param to
-#' A \code{character}, a date in format \code{"YYYY-MM-DD"}, setting the upper 
+#' A \code{character} in the format \code{"YYYY-MM-DD"}, setting the upper 
 #' data bound. Default is the current date \code{Sys.date()}.
+#' @param columns
+#' A \code{character} 
+#' @param fill_dates
+#' Set to \code{TRUE} to fill missing dates (e.g., days at which the stock 
+#' market is closed )with \code{NA}s.
 #' @param file
 #' Either
 #' * \code{NULL} (default) to return the data as a \code{data.frame},
-#' * or a \code{character}, the name of the file where the data is saved as a 
-#'   \code{.csv}-file. 
+#' * or a \code{character}, the path where the data is saved as a .csv-file. 
 #' @param verbose
-#' Set to \code{TRUE} to return information about download success.
+#' Set to \code{TRUE} (default) to print information about download success.
 #'
 #' @return
 #' A \code{data.frame} if \code{file = NULL}.
 #'
 #' @examples
-#' ### download 21st century DAX data
-#' data <- download_data(symbol = "^GDAXI", from = "2000-01-03")
+#' ### download 21st century closing prices of the DAX data
+#' data <- download_data(
+#'   symbol = "^GDAXI", from = "2000-01-01", columns = c("Date", "Close"),
+#'   fill_dates = TRUE
+#' )
 #' head(data)
 #' 
 #' @export
 #'
 #' @importFrom utils download.file read.csv head tail
+#' @importFrom padr pad
 
 download_data <- function(
-    symbol, from = "1902-01-01", to = Sys.Date(), file = NULL, verbose = TRUE
+    symbol, from = "1902-01-01", to = Sys.Date(), file = NULL, 
+    columns = c("Date", "Open", "High", "Low", "Close", "Adj.Close", "Volume"),
+    fill_dates = FALSE, verbose = TRUE
   ) {
 
-  ### check input
+  ### check inputs
   if (!is.character(symbol) || length(symbol) != 1) {
     stop("'symbol' must be a single character.", call. = FALSE)
   }
@@ -62,7 +73,19 @@ download_data <- function(
       stop("'file' is invalid.", call. = FALSE)
     }
   }
-  if (length(verbose) != 1 || (!isTRUE(verbose) && !isFALSE(verbose))) {
+  if (!is.character(columns)) {
+    stop("'columns' must be a character vector.", call. = FALSE)
+  }
+  col_all <- c("Date", "Open", "High", "Low", "Close", "Adj.Close", "Volume")
+  columns <- intersect(columns, col_all)
+  if (length(columns) == 0) {
+    warning("'columns' is misspecified, no columns selected.", call. = FALSE)
+    return(invisible(NULL))
+  }
+  if (!isTRUE(fill_dates) && !isFALSE(fill_dates)) {
+    stop("'fill_dates' must be either TRUE or FALSE.", call. = FALSE)
+  }
+  if (!isTRUE(verbose) && !isFALSE(verbose)) {
     stop("'verbose' must be either TRUE or FALSE.", call. = FALSE)
   }
 
@@ -98,7 +121,7 @@ download_data <- function(
     return(url)
   }
 
-  ### try to download data
+  ### download data
   data_url <- create_url(symbol, from, to)
   destfile <- ifelse(save_file, file, tempfile())
   download_try <- suppressWarnings(
@@ -106,28 +129,41 @@ download_data <- function(
       silent = TRUE
     )
   )
-
-  ### check 'download_try'
   if (inherits(download_try, "try-error")) {
     stop(
-      "Download failed.\n",
-      "Either 'symbol' is unknown or there is no data for the specified time interval.", 
+      "Download failed. This can have different reasons:\n",
+      "Maybe 'symbol' is unknown.\n",
+      "Or there is no data for the specified time interval.", 
       call. = FALSE
     )
   } 
-  data <- utils::read.csv(file = destfile, header = TRUE, sep = ",", na.strings = "null")
-  if (save_file) {
-    if (verbose) {
-      ### print summary of new data
-      message(
-        "Download successful.\n",
-        "* symbol: ", symbol, "\n",
-        "* from: ", utils::head(data$Date, n = 1), "\n",
-        "* to: ", utils::tail(data$Date, n = 1), "\n",
-        "* path: ", normalizePath(destfile)
-      )
-    }
-  } else {
+  data <- utils::read.csv(
+    file = destfile, header = TRUE, sep = ",", na.strings = "null"
+  )
+  
+  ### fill missing dates with NA
+  if (fill_dates) {
+    data$Date <- as.Date(data$Date)
+    data <- padr::pad(data, interval = "day", start_val = from, end_val = to)
+    data$Date <- as.character(data$Date)
+  }
+  
+  ### select columns
+  data <- data[, columns, drop = FALSE]
+  
+  ### create output
+  if (verbose) {
+    ### print summary of new data
+    message(
+      "Download successful.\n",
+      "* symbol: ", symbol, "\n",
+      "* columns: ", paste(columns, collapse =", ") , "\n",
+      "* from: ", utils::head(data$Date, n = 1), "\n",
+      "* to: ", utils::tail(data$Date, n = 1),
+      if (save_file) paste("\n* path:", normalizePath(destfile))
+    )
+  }
+  if (!save_file) {
     return(data)
   }
 }

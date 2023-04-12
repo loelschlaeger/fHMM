@@ -35,7 +35,8 @@ Imports:
     Rcpp,
     progress,
     foreach,
-    cli
+    cli,
+    padr
 LinkingTo:
     Rcpp,
     RcppArmadillo
