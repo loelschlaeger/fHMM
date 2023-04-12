@@ -146,13 +146,79 @@ test_that("input checks for setting controls work", {
     ),
     "The control 'period' must be one of 'w', 'm', 'q', 'y'."
   )
+  expect_error(
+    set_controls(
+      data = list(logreturns = TRUE)
+    ),
+    "Please specify the 'file' control."
+  )
 })
 
-test_that("missing controls can be set", {
+test_that("missing controls can be set from individual controls", {
   expect_true(set_controls(data = list())$simulated)
   set_controls(
     file = data.frame("Close" = 1),
     date_column = NA
+  )
+  set_controls(
+    data = list(
+      "file" = data.frame("Close" = 1, "Date" = "2020-01-01"),
+      "date_column" = "Date",
+      "data_column" = "Close",
+      "from" = "2020-01-01",
+      "to" = "2020-01-01",
+      "logreturns" = TRUE,
+      "merge" = function(x) median(x)
+    )
+  )
+  set_controls(
+    fit = list(
+      "runs" = 7,
+      "origin" = TRUE,
+      "accept" = 1,
+      "gradtol" = 1,
+      "iterlim" = 123,
+      "print.level" = 2,
+      "steptol" = 0.5,
+      "ncluster" = 2
+    )
+  )
+})
+
+test_that("control validation works", {
+  expect_error(
+    validate_controls("controls"),
+    "must be a list"
+  )
+  expect_error(
+    validate_controls(
+      controls = list("hierarchy" = "FALSE")
+    ),
+    "'hierarchy' must be TRUE or FALSE"
+  )
+  expect_error(
+    validate_controls(
+      controls = list(
+        "hierarchy" = FALSE, "simulated" = "FALSE"
+      )
+    ),
+    "'simulated' must be TRUE or FALSE"
+  )
+  expect_error(
+    validate_controls(
+      controls = list(
+        "hierarchy" = FALSE, "simulated" = FALSE, "verbose" = "FALSE"
+      )
+    ),
+    "'verbose' must be TRUE or FALSE"
+  )
+  expect_error(
+    validate_controls(
+      controls = list(
+        "hierarchy" = FALSE, "simulated" = FALSE, "verbose" = FALSE, seed = pi
+      )
+    ),
+    "'seed' must be an integer"
   )
 })
 
@@ -282,7 +348,7 @@ test_that("checks of controls for empirical HMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'date_column' in 'data' must be a character or NA."
+    "'date_column' in 'data' must be a single character or NA"
   )
   controls <- list(
     states = 2,
@@ -296,7 +362,7 @@ test_that("checks of controls for empirical HMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'data_column' in 'data' must be a character or NA."
+    "'data_column' in 'data' must be a single character or NA"
   )
   controls <- list(
     states = 2,
@@ -312,6 +378,22 @@ test_that("checks of controls for empirical HMM work", {
   expect_error(
     controls <- set_controls(controls),
     "The control 'logreturns' in 'data' must be a boolean."
+  )
+  expect_error(
+    set_controls(
+      controls = list(
+        states = 2,
+        sdds = "t",
+        horizon = 400,
+        data = list(
+          file = c("too", "many"),
+          date_column = "Date",
+          data_column = "Close",
+          logreturns = "not_a_boolean"
+        )
+      )
+    ),
+    "'file' in 'data' must be a single character"
   )
   controls <- list(
     states = 2,
@@ -384,30 +466,50 @@ test_that("checks of controls for simulated HHMM work", {
 
 test_that("checks of controls for empirical HHMM work", {
   controls <- list(
+    hierarchy = TRUE,
     horizon = c(100, NA),
     period = "w",
     data = list(
       file = dax,
       date_column = c("Date", "Date"),
-      data_column = c("Close", "Close")
+      data_column = c("Close", "Close"),
+      from = "2020-01-01",
+      to = "2020-02-02"
     )
   )
-  controls <- set_controls(controls, hierarchy = TRUE)
+  controls <- set_controls(controls)
   expect_true(controls$data$data_inside)
   expect_s3_class(controls, "fHMM_controls")
   expect_snapshot(controls)
-  controls <- list(
-    horizon = c(NA, NA, NA),
-    period = "w",
-    data = list(
-      file = dax,
-      date_column = c("Date", "Date"),
-      data_column = c("Close", "Close")
-    )
+  expect_error(
+    set_controls(
+      list(
+        hierarchy = TRUE,
+        horizon = c(NA, NA, NA),
+        period = "w",
+        data = list(
+          file = dax,
+          date_column = c("Date", "Date"),
+          data_column = c("Close", "Close")
+        )
+      )
+    ),
+    "'horizon' must be a vector of length 2."
   )
   expect_error(
-    controls <- set_controls(controls, hierarchy = TRUE),
-    "The control 'horizon' must be a vector of length 2."
+    set_controls(
+      controls = list(
+        hierarchy = TRUE,
+        horizon = c("A", "B"),
+        period = "w",
+        data = list(
+          file = dax,
+          date_column = c("Date", "Date"),
+          data_column = c("Close", "Close")
+        )
+      )
+    ),
+    "'horizon' must be an integer vector of length 2"
   )
   controls <- list(
     horizon = c(100, NA),
@@ -486,7 +588,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'data_column' in 'data' must be a character vector of length two."
+    "'data_column' in 'data' must be a character vector of length two."
   )
   controls <- list(
     hierarchy = TRUE,
@@ -501,7 +603,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'logreturns' in 'data' must be a boolean vector of length two."
+    "'logreturns' in 'data' must be a boolean vector of length two."
   )
   controls <- list(
     hierarchy = TRUE,
@@ -662,5 +764,35 @@ test_that("checks of controls for empirical HHMM work", {
   expect_error(
     controls <- set_controls(controls),
     "Unable to read"
+  )
+  expect_error(
+    set_controls(
+      controls = list(
+        hierarchy = TRUE,
+        horizon = c(100, NA),
+        period = "w",
+        data = list(
+          file = diag(2),
+          date_column = c("Date", "Date"),
+          data_column = c("Close", "Close")
+        )
+      )
+    ),
+    "'file' in 'data' is misspecified"
+  )
+  expect_error(
+    set_controls(
+      controls = list(
+        hierarchy = TRUE,
+        horizon = c(100, NA),
+        period = "w",
+        data = list(
+          file = system.file("extdata", "dax.csv", package = "fHMM"),
+          date_column = 1:2,
+          data_column = c("Close", "Close")
+        )
+      )
+    ),
+    "'date_column' in 'data' must be a vector of two characters"
   )
 })

@@ -145,9 +145,11 @@
 #'   \item A \code{character}, the path to a .csv-file with data, 
 #'         which must have a column named \code{date_column} (with dates) 
 #'         and \code{data_column} (with observations).
-#'         If \code{hierarchy = TRUE}, \code{file} must be a \code{vector} of 
-#'         length 2. The first entry corresponds to the coarse-scale layer, 
-#'         while the second entry corresponds to the fine-scale layer.
+#'         If \code{hierarchy = TRUE}, this file is used for both the coarse-
+#'         and the fine-scale layer. To have different data sets for these 
+#'         layers, \code{file} can be a \code{vector} of 
+#'         length 2, where the first entry corresponds to the coarse-scale 
+#'         layer, and the second entry to the fine-scale layer.
 #' }
 #' 
 #' @param date_column
@@ -799,6 +801,9 @@ validate_controls <- function(controls) {
         controls[["data"]][["data_inside"]] <- TRUE
       } else if (is.character(controls[["data"]][["file"]])) {
         controls[["data"]][["data_inside"]] <- FALSE
+        if (length(controls[["data"]][["file"]]) == 1) {
+          controls[["data"]][["file"]] <- rep(controls[["data"]][["file"]], 2)
+        }
         if (length(controls[["data"]][["file"]]) != 2) {
           stop(
             "The control 'file' in 'data' must be a character vector of length two.",
@@ -885,14 +890,14 @@ validate_controls <- function(controls) {
              is.na(controls[["data"]][["date_column"]])) && 
             length(controls[["data"]][["date_column"]]) == 1)) {
         stop(
-          "The control 'date_column' in 'data' must be a character or NA.",
+          "The control 'date_column' in 'data' must be a single character or NA.",
           call. = FALSE
         )
       }
       if (!(is.character(controls[["data"]][["data_column"]])) && 
           length(controls[["data"]][["data_column"]]) == 1) {
         stop(
-          "The control 'data_column' in 'data' must be a character or NA.",
+          "The control 'data_column' in 'data' must be a single character or NA.",
           call. = FALSE
         )
       }
