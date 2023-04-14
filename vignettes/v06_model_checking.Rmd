@@ -13,15 +13,15 @@ link-citations: true
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.dim = c(10,6),
+  fig.dim = c(10, 6),
   out.width = "80%",
-  fig.align = 'center',
-  tidy = TRUE
+  fig.align = "center",
+  fig.path = "fHMM-"
 )
 library("fHMM")
 ```
 
-This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] discusss model checking in `{fHMM}`.
+This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] discuss model checking in `{fHMM}`.
 
 ## Model checking using pseudo-residuals
 
@@ -53,7 +53,7 @@ dax_model_3t <- compute_residuals(dax_model_3t)
 
 The residuals can be visualized as follows:
 
-```{r plot res}
+```{r plot-res}
 plot(dax_model_3t, plot_type = "pr")
 ```
 

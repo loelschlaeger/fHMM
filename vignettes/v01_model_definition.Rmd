@@ -13,11 +13,11 @@ link-citations: true
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  tidy = TRUE
+  fig.path = "fHMM-"
 )
 ```
 
-The `{fHMM}` package is an implementation of the hidden Markov model with a focus on applications to financial time series data. This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] introduces the model and its hierarchical extension. It closely follows @oel21.
+The `{fHMM}` package is an implementation of the hidden Markov model with a focus on applications to financial time series data. This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] introduces the model and its hierarchical extension. It closely follows @oel21.
 
 ## The Hidden Markov Model
 

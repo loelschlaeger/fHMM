@@ -13,12 +13,12 @@ link-citations: true
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  tidy = TRUE
+  fig.path = "fHMM-"
 )
 library("printr")
 ```
 
-The `{fHMM}` package allows for multiple hidden Markov model specifications, including different data transformations, state-dependent distributions, and a hierarchical model structure. This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] outlines what and how specifications are possible.
+The `{fHMM}` package allows for multiple hidden Markov model specifications, including different data transformations, state-dependent distributions, and a hierarchical model structure. This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] outlines what and how specifications are possible.
 
 ```{r load fHMM, message = FALSE}
 library("fHMM")

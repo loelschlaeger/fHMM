@@ -22,9 +22,7 @@ NULL
 .onAttach <- function(lib, pkg) {
   msg <- c(
     paste0("Thanks for using {fHMM} version ", utils::packageVersion("fHMM")), "!\n",
-    "With {fHMM}, you can fit (H)HMMs to financial data.\n",
-    "See ", cli::style_hyperlink("https://loelschlaeger.de/fHMM", "https://loelschlaeger.de/fHMM") ," for help.\n",
-    "Type 'citation(\"fHMM\")' for citing this R package."
+    "See ", cli::style_hyperlink("https://loelschlaeger.de/fHMM", "https://loelschlaeger.de/fHMM") ," for help."
   )
   packageStartupMessage(msg)
   invisible()
