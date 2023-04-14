@@ -16,12 +16,12 @@ knitr::opts_chunk$set(
   fig.dim = c(10,6),
   out.width = "80%",
   fig.align = 'center',
-  tidy = TRUE
+  fig.path = "fHMM-"
 )
 library("fHMM")
 ```
 
-This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] introduces the Viterbi algorithm for state decoding. The decoded state sequence in combination with the estimated model parameters can be used for forecasting.
+This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] introduces the Viterbi algorithm for state decoding. The decoded state sequence in combination with the estimated model parameters can be used for forecasting.
 
 ## State decoding using the Viterbi algorithm
 
@@ -51,7 +51,7 @@ dax_model_3t <- decode_states(dax_model_3t)
 
 We now can visualize the decoded time series:
 
-```{r, decoded ts}
+```{r, decoded-ts}
 plot(dax_model_3t)
 ```
 

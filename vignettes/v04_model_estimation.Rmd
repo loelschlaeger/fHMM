@@ -16,12 +16,12 @@ knitr::opts_chunk$set(
   fig.dim = c(10,6),
   out.width = "80%",
   fig.align = 'center',
-  tidy = TRUE
+  fig.path = "fHMM-"
 )
 library("fHMM")
 ```
 
-The `{fHMM}` package fits a hidden Markov model via the maximum-likelihood method, i.e. by numerically maximizing the likelihood function. This vignette^[This vignette was build using R `r paste(R.Version()[6:7], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] derives the likelihood formula, discusses challenges associated with the likelihood maximization and presents the model estimation workflow.
+The `{fHMM}` package fits a hidden Markov model via the maximum-likelihood method, i.e. by numerically maximizing the likelihood function. This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] derives the likelihood formula, discusses challenges associated with the likelihood maximization and presents the model estimation workflow.
 
 ## Likelihood evaluation using the forward algorithm
 
@@ -113,13 +113,13 @@ summary(dax_model_3t)
 
 The estimated state-dependent distributions can be plotted as follows:
 
-```{r plot sdds}
+```{r plot-sdds}
 plot(dax_model_3t, plot_type = "sdds")
 ```
 
 As mentioned above, the HMM likelihood function is prone to local optima. This effect can be visualized by plotting the log-likelihood value in the different optimization runs, where the best run is marked in red:
 
-```{r plot lls}
+```{r plot-lls}
 plot(dax_model_3t, plot_type = "ll")
 ```
 

@@ -1,4 +1,4 @@
-url: https://loelschlaeger.github.io/fHMM/
+url: https://loelschlaeger.de/fHMM/
 
 home:
   title: Fit hidden Markov models to financial data
@@ -63,3 +63,4 @@ reference:
   desc: These functions are not user-level.
   contents:
   - has_keyword("internal")
+

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# {fHMM}: Fitting HMMs to financial time series <a href="https://loelschlaeger.de/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
+# fHMM <a href="https://loelschlaeger.github.io/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -14,11 +14,12 @@ coverage](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg
 [![R-CMD-check](https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml)
 <!-- badges: end -->
 
-With {fHMM} you can detect and characterize financial market regimes in
-financial time series by applying hidden Markov Models (HMMs). The
-functionality and the model [is documented in detail
-here](https://loelschlaeger.de/fHMM/articles/). Below, you can find a
-first application to the German stock index
+The {fHMM} R package allows for the detection and characterization of
+financial market regimes in time series data by applying hidden Markov
+Models (HMMs). The [detailed
+documentation](https://loelschlaeger.de/fHMM/articles/) outlines the
+functionality and the model formulation. Below, we provide an initial
+application to the German stock index
 [DAX](https://en.wikipedia.org/wiki/DAX).
 
 ## Installation
@@ -39,12 +40,14 @@ devtools::install_github("loelschlaeger/fHMM")
 
 ## Contributing
 
-We welcome contributions! Please submit [bug
-reports](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=bug&template=bug.md)
-and [feature
-requests](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=future&template=suggestion.md)
-as issues and extensions as merge requests via a branch forked from
-“master”.
+We are open to contributions and would appreciate your input! If you
+encounter any issues, please [submit bug reports as
+issues](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=bug&template=bug.md).
+If you have any ideas for new features, please submit them as [feature
+requests](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=future&template=suggestion.md).
+If you would like to add extensions to the package, please fork the
+“master” branch and submit merge requests. We look forward to your
+contributions!
 
 ## Example: Fitting an HMM to the DAX
 
@@ -52,6 +55,10 @@ We fit a 3-state HMM with state-dependent t-distributions to the DAX
 log-returns from 2000 to 2022. The states can be interpreted as proxies
 for bearish (green below) and bullish markets (red) and an “in-between”
 market state (yellow).
+
+``` r
+library("fHMM")
+```
 
 The package has a build-in function to download financial data from
 [Yahoo Finance](https://finance.yahoo.com/):

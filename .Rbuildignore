@@ -3,15 +3,12 @@
 ..Rcheck
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^doc$
 ^Meta$
 LICENSE
 ^\.github$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-make_sticker.R
-sandbox.R
 ^README\.Rmd$
 ^codecov\.yml$
 docs/
@@ -19,5 +16,5 @@ vignettes/figs/
 ^vignettes/.*cache
 ^CRAN-RELEASE$
 ^cran-comments\.md$
-^data-raw$
 ^CRAN-SUBMISSION$
+^sticker$
