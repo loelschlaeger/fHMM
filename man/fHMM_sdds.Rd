@@ -54,12 +54,27 @@ By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \item{...}{Currently not used.}
 }
 \value{
-A \code{list} of length \code{length(sdds)}.
-Each element again is a \code{list}, containing
+An object of class \code{"fHMM_sdds"}, which is a \code{list} of length
+\code{length(sdds)}. Each element again is a \code{list}, containing
 \itemize{
-\item the \code{"name"} of the distribution
-\item and a list \code{"pars"} of its parameters, where unknown parameters are
-set to \code{NULL}.
+\item \code{"distr_class"}, a \code{character} which defines the
+distribution class and can be one of
+\itemize{
+\item \code{"norm"} (normal distribution),
+\item \code{"t"} (t-distribution),
+\item \code{"gamma"} (gamma distribution),
+\item \code{"lnorm"} (log-normal distribution),
+\item \code{"poisson"} (poisson distribution),
+}
+\item \code{"label"}, a \code{character} label for the specified
+distribution,
+\item \code{"fixed_pars"}, a \code{list} of fixed parameter values,
+\item \code{"sample"}, a \code{function} to sample from the state-dependent
+distribution,
+\item \code{"density"}, a \code{function} to compute the density of the
+state-dependent distribution,
+\item \code{"distribution"}, a \code{function} to compute the cumulative
+density of the state-dependent distribution.
 }
 }
 \description{

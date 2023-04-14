@@ -7,11 +7,28 @@
 #' @inheritParams set_controls
 #'
 #' @return
-#' A \code{list} of length \code{length(sdds)}. 
-#' Each element again is a \code{list}, containing
-#' * the \code{"name"} of the distribution 
-#' * and a list \code{"pars"} of its parameters, where unknown parameters are 
-#'   set to \code{NULL}.
+#' An object of class \code{"fHMM_sdds"}, which is a \code{list} of length 
+#' \code{length(sdds)}. Each element again is a \code{list}, containing
+#' \itemize{
+#'   \item \code{"distr_class"}, a \code{character} which defines the 
+#'   distribution class and can be one of
+#'   \itemize{
+#'     \item \code{"norm"} (normal distribution),
+#'     \item \code{"t"} (t-distribution),
+#'     \item \code{"gamma"} (gamma distribution),
+#'     \item \code{"lnorm"} (log-normal distribution),
+#'     \item \code{"poisson"} (poisson distribution),
+#'   }
+#'   \item \code{"label"}, a \code{character} label for the specified 
+#'         distribution,
+#'   \item \code{"fixed_pars"}, a \code{list} of fixed parameter values,
+#'   \item \code{"sample"}, a \code{function} to sample from the state-dependent
+#'         distribution,
+#'   \item \code{"density"}, a \code{function} to compute the density of the 
+#'         state-dependent distribution,
+#'   \item \code{"distribution"}, a \code{function} to compute the cumulative
+#'         density of the state-dependent distribution.
+#' }
 #'
 #' @examples
 #' \dontrun{
@@ -24,8 +41,12 @@
 #' @keywords internal
 
 fHMM_sdds <- function(sdds, states) {
-  
-  ### input checks
+  if (!is.atomic(states)) {
+    stop(
+      "The control 'states' must be a vector.", 
+      call. = FALSE
+    )
+  }
   if (length(states) == 1) {
     hierarchy <- FALSE
     if (!(all(is_number(states, int = TRUE)) && all(states >= 2))) {
@@ -58,17 +79,231 @@ fHMM_sdds <- function(sdds, states) {
       call. = FALSE
     )
   }
-  
-  ### create 'fHMM_sdds' object
   out <- list()
   for (i in if (hierarchy) 1:2 else 1) {
-    out <- encode_sdd(sdds[i])
-    class <- out$class
-    fixed_parameters <- out$fixed_parameters
-    label <- out$label
+    out[[i]] <- decode_sdd(sdd = sdds[i], states = states[i])
   }
   class(out) <- c("fHMM_sdds", "list")
   return(out)
+}
+
+#' Decode specification for state-dependent distribution
+#' 
+#' @description 
+#' This helper function decodes the specification for a state-dependent
+#' distribution.
+#' 
+#' @param sdd
+#' A single specification for the \code{"sdds"} control,
+#' see \code{\link{set_controls}}.
+#' @param states
+#' A single specification for the \code{"states"} control,
+#' see \code{\link{set_controls}}.
+#' 
+#' @return 
+#' A \code{list} with the elements
+#' \itemize{
+#'   \item \code{"distr_class"}, a \code{character} which defines the 
+#'   distribution class and can be one of
+#'   \itemize{
+#'     \item \code{"norm"} (normal distribution),
+#'     \item \code{"t"} (t-distribution),
+#'     \item \code{"gamma"} (gamma distribution),
+#'     \item \code{"lnorm"} (log-normal distribution),
+#'     \item \code{"poisson"} (poisson distribution),
+#'   }
+#'   \item \code{"label"}, a \code{character} label for the specified 
+#'         distribution,
+#'   \item \code{"fixed_pars"}, a \code{list} of fixed parameter values,
+#'   \item \code{"sample"}, a \code{function} to sample from the state-dependent
+#'         distribution,
+#'   \item \code{"density"}, a \code{function} to compute the density of the 
+#'         state-dependent distribution,
+#'   \item \code{"distribution"}, a \code{function} to compute the cumulative
+#'         density of the state-dependent distribution.
+#' }
+#' 
+#' @examples 
+#' \dontrun{
+#' decode_sdd("t(mu = 1)", states = 3)
+#' }
+#' 
+#' @keywords internal
+
+decode_sdd <- function(sdd, states) {
+  stopifnot(is.character(sdd), length(sdd) == 1)
+  stopifnot(
+    is.numeric(states), length(states) == 1, 
+    is_number(states, int = TRUE, pos = TRUE), states >= 2
+  )
+  sdd_tws <- gsub(" ", "", sdd)
+  sdd_tws_split <- unlist(strsplit(sdd_tws, split = "[()]"))
+  distr_class <- sdd_tws_split[1]
+  if (!distr_class %in% c("norm", "t", "gamma", "lnorm", "poisson")) {
+    stop(
+      paste0(
+        "Currently, only the following distributions are implemented:\n",
+        "normal- ('norm'), t- ('t'), gamma- ('gamma'), log-normal- ('lnorm')",
+        "and poisson- ('poisson') distribution."
+      ), 
+      call. = FALSE
+    )
+  }
+  if (is.na(sdd_tws_split[2])) {
+    fixed_pars <- list()
+  } else {
+    fixed_pars <- strsplit(strsplit(sdd_tws_split[2], split = c(","))[[1]], "=")
+  }
+  par_names <- unlist(lapply(fixed_pars, `[[`, 1))
+  names(fixed_pars) <- par_names
+  check_par_names_allowed <- function(fixed_pars, par_names_allowed) {
+    par_names_bad <- setdiff(names(fixed_pars), par_names_allowed)
+    if (length(par_names_bad) > 0) {
+      warning(
+        "The parameters '", paste(par_names_bad, collapse = ", "), 
+        "' in '", sdd, "' are ignored.\n",
+        "Only the following parameters can be specified:",
+        if ("mu" %in% par_names_allowed) "\n- mu: the expected value",
+        if ("sigma" %in% par_names_allowed) "\n- sigma: the standard deviation",
+        if ("df" %in% par_names_allowed) "\n- df: the degrees of freedom",
+        call. = FALSE
+      )
+    }
+    fixed_pars[par_names_bad] <- NULL
+    return(fixed_pars)
+  }
+  fixed_pars <- check_par_names_allowed(fixed_pars, c("mu", "sigma", "df"))
+  fixed_pars <- lapply(
+    fixed_pars, function(x) {
+      as.numeric(unlist(strsplit(x[2], split = "|", fixed = TRUE)))
+    }
+  )
+  if (distr_class == "t") {
+    fixed_pars <- check_par_names_allowed(fixed_pars, c("mu", "sigma", "df"))
+  }
+  if (distr_class %in% c("gamma", "lnorm")) {
+    fixed_pars <- check_par_names_allowed(fixed_pars, c("mu", "sigma"))
+  }
+  if (distr_class == "poisson") {
+    fixed_pars <- check_par_names_allowed(fixed_pars, c("mu"))
+  }
+  if ("mu" %in% names(fixed_pars)) {
+    if (distr_class == "gamma") {
+      if (!any(is_number(fixed_pars$mu, pos = TRUE))) {
+        stop(
+          "'mu' must be positive for the gamma distribution.", 
+          call. = FALSE
+        )
+      }
+    }
+  } 
+  if ("sigma" %in% names(fixed_pars)) {
+    if (!any(is_number(fixed_pars$sigma, pos = TRUE))) {
+      stop("'sigma' must be positive.", call. = FALSE)
+    }
+  } 
+  if ("df" %in% names(fixed_pars)) {
+    if (!any(is_number(fixed_pars$df, pos = TRUE))) {
+      stop("'df' must be positive.", call. = FALSE)
+    }
+  }
+  label <- paste0(
+    distr_class, "(",
+    paste(
+      names(fixed_pars), unlist(sapply(fixed_pars, paste, collapse = "|")),
+      collapse = ", ", sep = " = "
+    ),
+    ")"
+  )
+  for (p in seq_along(fixed_pars)) {
+    if (length(fixed_pars[[p]]) == 1) {
+      fixed_pars[[p]] <- rep(fixed_pars[[p]], states)
+    }
+    if (length(fixed_pars[[p]]) != states) {
+      stop(
+        "Number of fixed parameters in '", label, 
+        "' does not fit the number of states (", states, ").",
+        call. = FALSE
+      )
+    }
+  }
+  list(
+    "distr_class" = distr_class,
+    "name" = distr_class, # TODO: REMOVE LATER
+    "label" = label,
+    "fixed_pars" = fixed_pars,
+    "pars" = fixed_pars,  # TODO: REMOVE LATER
+    "sample" = build_sample_function(distr_class)
+    #"density" = build_density_function(distr_class),
+    #"distribution" = build_distribution_function(distr_class)
+  )
+}
+
+#' Build sampling function for state-dependent distribution
+#'
+#' @description 
+#' This helper function builds a \code{function} that can sample from a
+#' state-dependent distribution.
+#' 
+#' @param distr_class
+#' A \code{character} which defines the class of the state-dependent 
+#' distribution class and can be one of
+#' \itemize{
+#'   \item \code{"norm"} (normal distribution),
+#'   \item \code{"t"} (t-distribution),
+#'   \item \code{"gamma"} (gamma distribution),
+#'   \item \code{"lnorm"} (log-normal distribution),
+#'   \item \code{"poisson"} (poisson distribution),
+#' }
+#' 
+#' @return 
+#' A \code{function} which returns random samples from the state-dependent
+#' distribution and has the arguments
+#' \itemize{
+#'   \item \code{n}, the number of samples (by default \code{n = 1}),
+#'   \item \code{mu}, \code{sigma}, and \code{df}, vectors for the mean, 
+#'         standard deviation, and degrees of freedom, respectively 
+#'         (if required), in each state,
+#'   \item \code{state}, the state index.
+#' }
+#' 
+#' @examples
+#' \dontrun{
+#' sample_poisson_sdd <- build_sample_function("poisson")
+#' mu <- c(1, 10)
+#' sample_poisson_sdd(mu = mu, state = 1)
+#' sample_poisson_sdd(mu = mu, state = 2)
+#' }
+#' 
+#' @keywords internal  
+
+build_sample_function <- function(distr_class) {
+  stopifnot(is.character(distr_class), length(distr_class) == 1)
+  stopifnot(distr_class %in% c("norm", "t", "gamma", "lnorm", "poisson"))
+  if (distr_class == "norm") {
+    function (n = 1, mu, sigma, state) {
+      stats::rnorm(n, mean = mu[state], sd = sigma[state])
+    }
+  } else if (distr_class == "t") {
+    function (n = 1, mu, sigma, df, state) {
+      stats::rt(n = n, df[state]) * sigma[state] + mu[state]
+    }
+  } else if (distr_class == "gamma") {
+    function (n = 1, mu, sigma, state) {
+      stats::rgamma(
+        n = n, shape = mu[state]^2 / sigma[state]^2,
+        scale = sigma[state]^2 / mu[state]
+      )
+    } 
+  } else if (distr_class == "lnorm") {
+    function (n = 1, mu, sigma, state) {
+      stats::rlnorm(n = n, meanlog = mu[state], sdlog = sigma[state])
+    }
+  } else if (distr_class == "poisson") {
+    function (n = 1, mu, state) {
+      stats::rpois(n = n, lambda = mu[state])
+    }
+  }
 }
 
 #' @rdname fHMM_sdds
@@ -87,230 +322,6 @@ print.fHMM_sdds <- function(x, ...) {
   }
   return(invisible(x))
 }
-
-#' Clean fixed parameters for state-dependent distribution
-#' 
-#' @description 
-#' This helper function checks the fixed parameters for a state-dependent
-#' distribution.
-#' 
-#' @param class
-#' One of \code{"norm"}, \code{"t"}, \code{"gamma"}, \code{"lnorm"},
-#' \code{"poisson"}.
-#' @param nstates
-#' An \code{integer}, the number of states.
-#' @param ...
-#' TODO
-#'
-#' @return 
-#' A \code{list} ... TODO
-
-clean_fixed_parameters <- function(class, nstates, ...) {
-  
-}
-
-#' Build \code{function} to draw from state-dependent distribution
-#'
-#' @description 
-#' This helper function builds a \code{function} that can draw from a
-#' state-dependent distribution.
-#' 
-#' @inheritParams clean_fixed_parameters
-#' @param fixed_parameters
-#' A named \code{list} of fixed parameters for the state-dependent distribution.
-#' In most cases, it is the output of \code{\link{clean_fixed_parameters}}.
-#' 
-#' @return 
-#' A \code{function} that returns random draws. It has the following arguments:
-#' \itemize{
-#'   \item \code{n}, the number of draws (by default \code{n = 1}),
-#'   \item \code{mean}, \code{sd}, and \code{df} for the mean, standard 
-#'         deviation, and degrees of freedom, respectively (if required), 
-#'         in each state,
-#'   \item \code{state}, the state number.
-#' }
-#' The input \code{fixed_parameters} is used to define default arguments.
-#' 
-#' @examples
-#' \dontrun{
-#' draw_t_sdd <- build_draw_function("t", list("sd" = 1:2, "df" = 1:2))
-#' draw_t_sdd(mean = c(-10, 10), state = 1)
-#' draw_t_sdd(mean = c(-10, 10), state = 2)
-#' }
-#' 
-#' @keywords internal  
-
-build_draw_function <- function(class, fixed_parameters) {
-  stopifnot(is.character(class), length(class) == 1)
-  stopifnot(class %in% c("norm", "t", "gamma", "lnorm", "poisson"))
-  stopifnot(is.list(fixed_parameters))
-  stopifnot(check_all_list_elements_named(fixed_parameters))
-  draw_function <- if (class == "norm") {
-    function (n = 1, mean, sd, state) {
-      stats::rnorm(n, mean = mean[state], sd = sd[state])
-    }
-  } else if (class == "t") {
-    function (n = 1, mean, sd, df, state) {
-      stats::rt(n = n, df[state]) * sd[state] + mean[state]
-    }
-  } else if (class == "gamma") {
-    function (n = 1, mean, sd, state) {
-      stats::rgamma(
-        n = n, shape = mean[state]^2 / sd[state]^2,
-        scale = sd[state]^2 / mean[state]
-      )
-    } 
-  } else if (class == "lnorm") {
-    function (n = 1, mean, sd, state) {
-      stats::rlnorm(n = n, meanlog = mean[state], sdlog = sd[state])
-    }
-  } else if (class == "poisson") {
-    function (n = 1, mean, state) {
-      stats::rpois(n = n, lambda = mean)
-    }
-  }
-  set_default_arguments(draw_function, fixed_parameters)
-}
-
-#' Set default arguments to a \code{function}
-#'
-#' @description 
-#' This helper function defines default arguments for a \code{function}.
-#' 
-#' @param f
-#' A \code{function}.
-#' @param default_arguments
-#' A named \code{list} of default arguments to \code{f}.
-#' 
-#' @return 
-#' The input \code{f} with defined default arguments.
-#' 
-#' @examples
-#' \dontrun{
-#' f <- function(x) x
-#' f <- set_default_arguments(f, list("x" = 1))
-#' f()
-#' }
-#' 
-#' @keywords internal  
-
-set_default_arguments <- function(f, default_arguments = list()) {
-  stopifnot(is.function(f))
-  stopifnot(is.list(default_arguments))
-  stopifnot(names(default_arguments) %in% names(formals(f)))
-  formals(f)[names(default_arguments)] <- default_arguments
-  return(f)
-}
-
-#' Check if all elements of a \code{list} are named
-#'
-#' @description 
-#' This helper function checks whether all elements of a \code{list} are named.
-#' 
-#' @param x
-#' A \code{list}.
-#' 
-#' @return 
-#' Either \code{TRUE} or \code{FALSE}.
-#' 
-#' @examples
-#' \dontrun{
-#' check_all_list_elements_named(list())
-#' check_all_list_elements_named(list(1))
-#' check_all_list_elements_named(list("a" = 1))
-#' check_all_list_elements_named(list("a" = 1, 2))
-#' check_all_list_elements_named(list("a" = 1, "b" = 2))
-#' }
-#' 
-#' @keywords internal  
-
-check_all_list_elements_named <- function(x) {
-  stopifnot(is.list(x))
-  length(x) == sum(names(x) != "", na.rm = TRUE)
-}
-
-
-encode_sdd <- function(sdd) {
-  sdd_tws <- gsub(" ", "", sdd)
-  sdd_tws_split <- unlist(strsplit(sdd_tws, split = "[()]"))
-  distr <- sdd_tws_split[1]
-  if (!distr %in% c("norm", "t", "gamma", "lnorm", "poisson")) {
-    stop(
-      paste0(
-        "Currently, only the following distributions are implemented:\n",
-        "normal- ('norm'), t- ('t'), gamma- ('gamma'), log-normal- ('lnorm')",
-        "and poisson- ('poisson') distribution."
-      ), 
-      call. = FALSE
-    )
-  }
-  if (is.na(sdd_tws_split[2])) {
-    pars <- list()
-  } else {
-    pars <- strsplit(strsplit(sdd_tws_split[2], split = c(","))[[1]], "=")
-  }
-  for (par in pars) {
-    if (!par[1] %in% c("mu", "sigma", "df")) {
-      pars[which(lapply(pars, function(x) x[1]) == par[1])] <- NULL
-    }
-  }
-  names <- unlist(lapply(pars, `[[`, 1))
-  pars <- lapply(
-    pars,
-    function(x) as.numeric(unlist(strsplit(x[2], split = "|", fixed = TRUE)))
-  )
-  names(pars) <- names
-  if (distr == "t") {
-    pars[!names(pars) %in% c("mu", "sigma", "df")] <- NULL
-  }
-  if (distr %in% c("gamma", "lnorm")) {
-    pars[!names(pars) %in% c("mu", "sigma")] <- NULL
-  }
-  if (distr == "poisson") {
-    pars[!names(pars) %in% c("mu")] <- NULL
-  }
-  if (!is.null(pars$mu)) {
-    if (distr == "gamma") {
-      if (!any(is_number(pars$mu, pos = TRUE))) {
-        stop("'mu' must be a positive numeric.", call. = FALSE)
-      }
-    }
-  } 
-  if (!is.null(pars$sigma)) {
-    if (!any(is_number(pars$sigma, pos = TRUE))) {
-      stop("'sigma' must be a positive numeric.", call. = FALSE)
-    }
-  } 
-  if (!is.null(pars$df)) {
-    if (!any(is_number(pars$df, pos = TRUE))) {
-      stop("'df' must be a positive numeric.", call. = FALSE)
-    }
-  }
-  label <- paste0(
-    distr, "(",
-    paste(
-      names(pars), unlist(sapply(pars, paste, collapse = "|")),
-      collapse = ", ", sep = " = "
-    ),
-    ")"
-  )
-  for (p in seq_along(pars)) {
-    if (length(pars[[p]]) == 1) {
-      pars[[p]] <- rep(pars[[p]], states[i])
-    }
-    if (length(pars[[p]]) != states[i]) {
-      stop(
-        "Number of fixed parameters in '", label, 
-        "' does not fit the number of states (", states[i], ").",
-        call. = FALSE
-      )
-    }
-  }
-  out[[length(out) + 1]] <- list(
-    "name" = distr, "pars" = pars, "label" = label
-  )
-}
-
 
 
 
