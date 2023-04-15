@@ -11,7 +11,7 @@
 #' \code{as.Date(date)} if \code{date} has the format \code{"YYYY-MM-DD"}.
 #' Otherwise, the function throws an error.
 #'
-#' @keywords internal utils
+#' @keywords utils
 #'
 #' @examples
 #' \dontrun{
@@ -44,7 +44,7 @@ check_date <- function(date) {
 #' find_closest_year(as.Date("2022-01-01"))
 #' }
 #'
-#' @keywords internal utils
+#' @keywords utils
 
 find_closest_year <- function(date) {
   year <- as.numeric(format(date, "%Y"))
@@ -80,7 +80,7 @@ find_closest_year <- function(date) {
 #' @return
 #' A \code{logical}.
 #'
-#' @keywords internal utils
+#' @keywords utils
 #'
 #' @examples
 #' \dontrun{
@@ -140,7 +140,7 @@ is_number <- function(
 #' @return
 #' Either \code{TRUE} or \code{FALSE}.
 #'
-#' @keywords internal utils
+#' @keywords utils
 #'
 #' @examples
 #' \dontrun{
@@ -172,7 +172,7 @@ is_tpm <- function(x) {
 #' An \code{integer} vector of length \code{length(x)} with the positions of \code{y}
 #' in \code{x}.
 #'
-#' @keywords internal utils
+#' @keywords utils
 #'
 #' @importFrom stats dist
 #'
@@ -213,11 +213,13 @@ match_all <- function(x, y) {
 #'
 #' @param dim
 #' An \code{integer}, the matrix dimension.
+#' @param state_persistent
+#' Set to \code{TRUE} (default) to put more probability on the diagonal.
 #'
 #' @return
 #' A transition probability \code{matrix}.
 #'
-#' @keywords internal utils
+#' @keywords utils
 #'
 #' @importFrom stats runif
 #'
@@ -226,8 +228,14 @@ match_all <- function(x, y) {
 #' sample_tpm(dim = 3)
 #' }
 
-sample_tpm <- function(dim) {
+sample_tpm <- function(dim, state_persistent = TRUE) {
+  stopifnot(
+    is.atomic(dim), is.numeric(dim), length(dim) == 1, dim >= 1,
+    dim == as.integer(dim)
+  )
+  stopifnot(isTRUE(state_persistent) || isFALSE(state_persistent))
   Gamma <- matrix(stats::runif(dim^2), dim, dim)
+  if (state_persistent) Gamma <- Gamma + diag(dim)
   Gamma <- Gamma / rowSums(Gamma)
   return(Gamma)
 }
@@ -253,7 +261,7 @@ sample_tpm <- function(dim) {
 #' @return
 #' A \code{numeric} vector of length \code{T} with states.
 #'
-#' @keywords internal utils
+#' @keywords utils
 #'
 #' @examples
 #' \dontrun{
@@ -262,7 +270,7 @@ sample_tpm <- function(dim) {
 #' simulate_markov_chain(Gamma = Gamma, T = T)
 #' }
 
-simulate_markov_chain <- function(Gamma, T, delta = Gamma2delta(Gamma),
+simulate_markov_chain <- function(Gamma, T, delta = stationary_distribution(Gamma),
                                   seed = NULL, total_length = T) {
 
   ### input checks
@@ -297,4 +305,40 @@ simulate_markov_chain <- function(Gamma, T, delta = Gamma2delta(Gamma),
 
   ### return Markov chain
   return(markov_chain)
+}
+
+#' Compute stationary distribution
+#' 
+#' @description
+#' This function computes the stationary distribution of a transition
+#' probability matrix \code{Gamma}.
+#' 
+#' @details
+#' If the stationary distribution vector cannot be computed, it is set to the
+#' discrete uniform distribution over the states.
+#' 
+#' @param Gamma
+#' A transition probability \code{matrix}.
+#'
+#' @return
+#' A \code{numeric} vector, the stationary distribution.
+#' 
+#' @keywords utils
+#'
+#' @examples
+#' \dontrun{
+#' Gamma <- matrix(c(0.5, 0.3, 0.5, 0.7), 2, 2)
+#' stationary_distribution(Gamma)
+#' }
+
+stationary_distribution <- function(Gamma) {
+  stopifnot(is.matrix(Gamma), is.numeric(Gamma), nrow(Gamma) == ncol(Gamma))
+  dim <- dim(Gamma)[1]
+  delta_try <- try(solve(t(diag(dim) - Gamma + 1), rep(1, dim)), silent = TRUE)
+  if (inherits(delta_try, "try-error")) {
+    delta <- rep(1 / dim, dim)
+  } else {
+    delta <- delta_try
+  }
+  return(delta)
 }

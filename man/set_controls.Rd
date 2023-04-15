@@ -286,9 +286,9 @@ parallel optimization runs.
 
 By default, \code{ncluster = 1}.}
 
-\item{seed}{An \code{integer}, a seed for reproducibility (e.g., for data simulation and
-random initialization of optimization runs), passed on to
-\code{\link{set.seed}}.
+\item{seed}{An \code{integer}, a seed for reproducibility (e.g., for data simulation,
+parameter sampling, or random initialization of optimization runs), passed
+on to \code{\link{set.seed}}.
 
 By default, \code{seed = NULL} (i.e., no seed).}
 

@@ -1,33 +1,75 @@
 test_that("input checks for parameter transformations work", {
-  expect_error(fHMM_parameters("not_a_controls_object"))
-  controls <- set_controls()
-  expect_error(fHMM_parameters(controls, scale = c(-1,0)))
-  expect_error(fHMM_parameters(controls, Gamma = matrix(1:4,2,2)))
-  expect_error(fHMM_parameters(controls, mus = c("1", "2")))
-  expect_error(fHMM_parameters(controls, sigmas = c(-1, -2)))
-  controls <- set_controls(list(sdds = "t"))
-  expect_error(fHMM_parameters(controls, dfs = c(-1, -2)))
-  controls <- set_controls(list(sdds = "gamma"))
-  expect_error(fHMM_parameters(controls, mus = c(-1, -2)))
-  ### hierarchical case
-  controls <- set_controls(list(hierarchy = TRUE))
-  expect_error(fHMM_parameters(controls, Gammas_star = matrix(1:4,2,2)))
-  expect_error(fHMM_parameters(controls, Gammas_star = list(matrix(1:4,2,2), matrix(1:4,2,2))))
-  expect_error(fHMM_parameters(controls, mus_star = c("1", "2")))
-  expect_error(fHMM_parameters(controls, mus_star = list(c(1, 2), c("1", "2"))))
-  expect_error(fHMM_parameters(controls, sigmas_star = c(-1, -2)))
-  expect_error(fHMM_parameters(controls, sigmas_star = list(c(-1, -2), c(-2, -2))))
-  controls <- set_controls(list(hierarchy = TRUE, sdds = c("t","t")))
-  expect_error(fHMM_parameters(controls, dfs_star = c(-1, -2)))
-  expect_error(fHMM_parameters(controls, dfs_star = list(c(1, 1), c(1,-1))))
-  controls <- set_controls(list(hierarchy = TRUE, sdds = c("gamma", "gamma")))
-  expect_error(fHMM_parameters(controls, mus_star = list(c(1, 1), c(1,-1))))
+  expect_error(
+    fHMM_parameters("not_a_controls_object"),
+    "Input 'controls' must be a list or an 'fHMM_controls' object."
+  )
+  expect_error(
+    fHMM_parameters(scale = c(-1,0)),
+    "'scale_par' must be a positive numeric vector of length 2."
+  )
+  expect_error(
+    fHMM_parameters(Gamma = matrix(1:4,2,2)),
+    "'Gamma' must be a transition probability matrix of dimension 2"
+  )
+  expect_error(
+    fHMM_parameters(mus = c("1", "2")),
+    "'mus' must be a numeric vector of length 2"
+  )
+  expect_error(
+    fHMM_parameters(sigmas = c(-1, -2)),
+    "'sigmas' must be a positive numeric vector of length 2"
+  )
+  expect_error(
+    fHMM_parameters(sdds = "t", dfs = c(-1, -2)),
+    "'dfs' must be a positive numeric vector of length 2"
+  )
+  expect_error(
+    fHMM_parameters(sdds = "gamma", mus = c(-1, -2)),
+    "'mus' must be a positive numeric vector of length 2"
+  )
+  expect_error(
+    fHMM_parameters(hierarchy = TRUE, Gammas_star = matrix(1:4,2,2)),
+    "'Gammas_star' must be a list of length 2"
+  )
+  expect_error(
+    fHMM_parameters(hierarchy = TRUE, Gammas_star = list(matrix(1:4,2,2), matrix(1:4,2,2))),
+    "Element 1 in 'Gammas_star' must be a transition probability matrix of dimension 2"
+  )
+  expect_error(
+    fHMM_parameters(hierarchy = TRUE, mus_star = c("1", "2")),
+    "'mus_star' must be a list of length 2"
+  )
+  expect_error(
+    fHMM_parameters(hierarchy = TRUE, mus_star = list(c(1, 2), c("1", "2"))),
+    "Element 2 in 'mus_star' must be a numeric vector of length 2"
+  )
+  expect_error(
+    fHMM_parameters(hierarchy = TRUE, sigmas_star = c(-1, -2)),
+    "'sigmas_star' must be a list of length 2"
+  )
+  expect_error(
+    fHMM_parameters(hierarchy = TRUE, sigmas_star = list(c(-1, -2), c(-2, -2))),
+    "Element 1 in 'sigmas_star' must be a positive numeric vector of length 2"
+  )
+  expect_error(
+    fHMM_parameters(hierarchy = TRUE, sdds = c("t", "t"), dfs_star = c(-1, -2)),
+    "'dfs_star' must be a list of length 2"
+  )
+  expect_error(
+    fHMM_parameters(hierarchy = TRUE, sdds = c("t", "t"), dfs_star = list(c(1, 1), c(1,-1))),
+    "Element 2 in 'dfs_star' must be a positive numeric vector of length 2"
+  )
+  expect_error(
+    fHMM_parameters(hierarchy = TRUE, sdds = c("gamma", "gamma"), mus_star = list(c(1, 1), c(1,-1))),
+    "Element 2 in 'mus_star' must be a positive numeric vector of length 2"
+  )
   
 })
 
 test_that("parameter printing works", {
   sink(tempfile())
-  expect_s3_class(print(fHMM_parameters(set_controls())), "fHMM_parameters")
+  expect_s3_class(print(fHMM_parameters()), "fHMM_parameters")
+  expect_snapshot(print(fHMM_parameters()))
   sink()
 })
 
@@ -144,7 +186,6 @@ test_that("Gamma transformations work", {
   expect_equal(Gamma, gammasUncon2Gamma(gammasCon2gammasUncon(Gamma2gammasCon(Gamma), dim = dim), dim = dim))
   expect_equal(gammasCon, Gamma2gammasCon(gammasUncon2Gamma(gammasCon2gammasUncon(gammasCon, dim = dim), dim = dim)))
   expect_equal(gammasUncon, gammasCon2gammasUncon(Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim = dim)), dim = dim))
-  delta <- Gamma2delta(Gamma)
+  delta <- stationary_distribution(Gamma)
   expect_equal(delta, as.numeric(delta %*% Gamma))
-  expect_equal(Gamma2delta(matrix("1",2,2)), c(0.5, 0.5))
 })

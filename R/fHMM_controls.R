@@ -285,9 +285,9 @@
 #' By default, \code{ncluster = 1}.
 #'
 #' @param seed
-#' An \code{integer}, a seed for reproducibility (e.g., for data simulation and
-#' random initialization of optimization runs), passed on to 
-#' \code{\link{set.seed}}.
+#' An \code{integer}, a seed for reproducibility (e.g., for data simulation,
+#' parameter sampling, or random initialization of optimization runs), passed 
+#' on to \code{\link{set.seed}}.
 #'
 #' By default, \code{seed = NULL} (i.e., no seed).
 #'
@@ -389,16 +389,20 @@ set_controls <- function(
     
   ### assume that input 'controls' is a 'list'
   if (!is.list(controls)) {
-    stop("Input 'controls' must be a list.", call. = FALSE)
+    stop(
+      "Input 'controls' must be a list or an 'fHMM_controls' object.", 
+      call. = FALSE
+    )
   }
 
   ### define names of all possible elements in 'controls'
   all_controls <- c(
     "hierarchy", "states", "sdds", "horizon", "period", "data", "fit", "seed",
-    "verbose"
+    "verbose", "simulated"
   )
   data_controls <- c(
-    "file", "date_column", "data_column", "from", "to", "logreturns", "merge"
+    "file", "date_column", "data_column", "from", "to", "logreturns", "merge",
+    "data_inside"
   )
   fit_controls <- c(
     "runs", "origin", "accept", "gradtol", "iterlim", "print.level", 

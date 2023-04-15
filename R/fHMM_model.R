@@ -369,7 +369,7 @@ nLL_hmm <- function(parUncon, observations, controls) {
   par <- parUncon2par(parUncon, controls)
   sdd <- controls[["sdds"]][[1]]$name
   Gamma <- par[["Gamma"]]
-  delta <- Gamma2delta(Gamma)
+  delta <- stationary_distribution(Gamma)
   mus <- par[["mus"]]
   sigmas <- par[["sigmas"]]
   dfs <- par[["dfs"]]
@@ -429,7 +429,7 @@ nLL_hhmm <- function(parUncon, observations, controls) {
   T <- length(observations_cs)
   par <- parUncon2par(parUncon, controls)
   Gamma <- par[["Gamma"]]
-  delta <- Gamma2delta(Gamma)
+  delta <- stationary_distribution(Gamma)
   mus <- par[["mus"]]
   sigmas <- par[["sigmas"]]
   dfs <- par[["dfs"]]

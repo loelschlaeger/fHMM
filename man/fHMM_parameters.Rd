@@ -6,7 +6,10 @@
 \title{Set and check model parameters}
 \usage{
 fHMM_parameters(
-  controls,
+  controls = list(),
+  hierarchy = FALSE,
+  states = if (!hierarchy) 2 else c(2, 2),
+  sdds = if (!hierarchy) "t(df = Inf)" else c("t(df = Inf)", "t(df = Inf)"),
   Gamma = NULL,
   mus = NULL,
   sigmas = NULL,
@@ -22,44 +25,125 @@ fHMM_parameters(
 \method{print}{fHMM_parameters}(x, ...)
 }
 \arguments{
-\item{controls}{An object of class \code{fHMM_controls}.}
+\item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
 
-\item{Gamma}{A \code{matrix}, a tpm (transition probability matrix) of dimension
-\code{controls$states[1]}.}
+The \code{list} can contain the following elements, which are described
+in more detail below:
+\itemize{
+\item \code{hierarchy}, defines an hierarchical HMM,
+\item \code{states}, defines the number of states,
+\item \code{sdds}, defines the state-dependent distributions,
+\item \code{horizon}, defines the time horizon,
+\item \code{period}, defines a flexible, periodic fine-scale time horizon,
+\item \code{data}, a \code{list} of controls that define the data,
+\item \code{fit}, a \code{list} of controls that define the fitting,
+\item \code{seed}, defines a seed for reproducibility,
+\item \code{verbose}, defines whether to print progress messages.
+}
+Either none, all, or selected elements can be specified.
 
-\item{mus}{A \code{numeric} vector of expectations of length \code{controls$states[1]}.}
+Unspecified parameters are set to their default values, see below.
 
-\item{sigmas}{A \code{numeric} vector of standard deviations of length
-\code{controls$states[1]}.}
+Specifications in \code{controls} override individual specifications.}
 
-\item{dfs}{A \code{numeric} vector of degrees of freedom of length
-\code{controls$states[1]}.
-Only relevant in case of a state-dependent t-distribution.}
+\item{hierarchy}{A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
 
-\item{Gammas_star}{A \code{list} of length \code{controls$states[1]} of (fine-scale) tpm's.
-Each tpm must be of dimension \code{controls$states[2]}.}
+If \code{hierarchy = TRUE}, some of the other controls must be specified for
+both layers.
 
-\item{mus_star}{A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors
-of (fine-scale) expectations.
-Each vector must be of length \code{controls$states[2]}.}
+By default, \code{hierarchy = FALSE}.}
 
-\item{sigmas_star}{A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors
-of standard deviations.
-Each vector must be of length \code{controls$states[2]}.}
+\item{states}{An \code{integer}, the number of states of the underlying Markov chain.
 
-\item{dfs_star}{A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors
-of (fine-scale) degrees of freedom.
-Each vector must be of length \code{controls$states[2]}.
-Only relevant in case of a state-dependent t-distribution.}
+If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
+2. The first entry corresponds to the coarse-scale layer, while the second
+entry corresponds to the fine-scale layer.
 
-\item{seed}{Set a seed for the sampling of parameters.
-No seed per default.}
+By default, \code{states = 2} if \code{hierarchy = FALSE} and
+\code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
+
+\item{sdds}{A \code{character}, specifying the state-dependent distribution.
+One of
+\itemize{
+\item \code{"t"} (the t-distribution),
+\item \code{"gamma"} (the gamma distribution),
+\item \code{"lnorm"} (the log-normal distribution),
+\item \code{"poisson"} (the Poisson distribution).
+}
+
+The distribution parameters
+\itemize{
+\item mean \code{mu},
+\item standard deviation \code{sigma} (not for Poisson distribution),
+\item degrees of freedom \code{df} (only for t-distribution),
+}
+can be fixed via, e.g., \code{"t(df = Inf)"} or
+\code{"gamma(mu = 0, sigma = 1)"}.
+To fix different values of a parameter for different states, separate by
+"|", e.g. \code{"poisson(mu = 1|2|3)"}.
+
+If \code{hierarchy = TRUE}, \code{sdds} must be a \code{vector} of length 2.
+The first entry corresponds to the coarse-scale layer, while the second entry
+corresponds to the fine-scale layer.
+
+By default, \code{sdds = "t(df = Inf)"} (the normal distribution) if
+\code{hierarchy = FALSE} and \code{sdds = c("t(df = Inf)", "t(df = Inf)")}
+if \code{hierarchy = TRUE}.
+
+See also \code{\link{fHMM_sdds}} for more details.}
+
+\item{Gamma, Gammas_star}{A transition probability \code{matrix}.
+
+It should have dimension \code{states[1]}.
+
+\code{Gammas_star} is a \code{list} of fine-scale transition probability
+matrices. The \code{list} must be of length \code{states[1]}.
+Each transition probability matrix must be of dimension \code{states[2]}.}
+
+\item{mus, mus_star}{A \code{numeric} vector of expected values for the state-dependent
+distribution in the different states.
+
+For the gamma- or Poisson-distribution, \code{mus} must be positive.
+
+It should have length \code{states[1]}.
+
+\code{mus_star} is a \code{list} of \code{vectors} with fine-scale
+expectations. The \code{list} must be of length \code{states[1]}.
+Each \code{vector} must be of length \code{states[2]}.}
+
+\item{sigmas, sigmas_star}{A positive \code{numeric} vector of standard deviations for the
+state-dependent distribution in the different states.
+
+It should have length \code{states[1]}.
+
+\code{sigmas_star} is a \code{list} of \code{vectors} with fine-scale
+standard deviations. The \code{list} must be of length \code{states[1]}.
+Each vector must be of length \code{states[2]}.}
+
+\item{dfs, dfs_star}{A positive \code{numeric} vector of degrees of freedom for the
+state-dependent distribution in the different states.
+
+It should have length \code{states[1]}.
+
+Only relevant in case of a state-dependent t-distribution.
+
+\code{dfs_star} is a \code{list} of \code{vectors} with fine-scale
+degrees of freedom. The \code{list} must be of length \code{states[1]}.
+Each vector must be of length \code{states[2]}.
+Only relevant in case of a fine-scale state-dependent t-distribution.}
+
+\item{seed}{An \code{integer}, a seed for reproducibility (e.g., for data simulation,
+parameter sampling, or random initialization of optimization runs), passed
+on to \code{\link{set.seed}}.
+
+By default, \code{seed = NULL} (i.e., no seed).}
 
 \item{scale_par}{A positive \code{numeric} vector of length two, containing scales for sampled
-expectations and standard deviations. The first entry is the scale for
+expectations and standard deviations.
+
+The first entry is the scale for
 \code{mus} and \code{sigmas}, the second entry is the scale for
-\code{mus_star} and \code{sigmas_star}. Set an entry to \code{1} for no
-scaling.}
+\code{mus_star} and \code{sigmas_star} (if any).}
 
 \item{x}{An object of class \code{fHMM_parameters}.}
 
@@ -70,12 +154,14 @@ An object of class \code{fHMM_parameters}.
 }
 \description{
 This function sets and checks model parameters for the \{fHMM\} package.
+Unspecified parameters are sampled.
 }
 \details{
-See the vignette on the model definition for more details.
+See the \href{https://loelschlaeger.de/fHMM/articles}{vignette on the model definition}
+for more details.
 }
 \examples{
-controls <- set_controls()
-fHMM_parameters(controls)
+parameters <- fHMM_parameters(states = 2, sdds = "norm")
+parameters$Gamma
 
 }

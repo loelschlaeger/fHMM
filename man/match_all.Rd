@@ -25,5 +25,4 @@ y <- c(0.1, 2, -1.2)
 match_all(x = x, y = y)
 }
 }
-\keyword{internal}
 \keyword{utils}

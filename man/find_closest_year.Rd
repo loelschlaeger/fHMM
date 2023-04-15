@@ -22,5 +22,4 @@ find_closest_year(as.Date("2022-01-01"))
 }
 
 }
-\keyword{internal}
 \keyword{utils}

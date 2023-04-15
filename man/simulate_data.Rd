@@ -26,6 +26,6 @@ A \code{list} containing the following elements:
 }
 }
 \description{
-This helper function simulates data for the \{fHMM\} package.
+This helper function simulates data from a hidden Markov model.
 }
 \keyword{internal}

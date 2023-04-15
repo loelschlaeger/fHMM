@@ -4,10 +4,12 @@
 \alias{sample_tpm}
 \title{Sample transition probability matrices}
 \usage{
-sample_tpm(dim)
+sample_tpm(dim, state_persistent = TRUE)
 }
 \arguments{
 \item{dim}{An \code{integer}, the matrix dimension.}
+
+\item{state_persistent}{Set to \code{TRUE} (default) to put more probability on the diagonal.}
 }
 \value{
 A transition probability \code{matrix}.
@@ -21,5 +23,4 @@ that fulfills the properties of a transition probability matrix.
 sample_tpm(dim = 3)
 }
 }
-\keyword{internal}
 \keyword{utils}

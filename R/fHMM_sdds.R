@@ -233,9 +233,9 @@ decode_sdd <- function(sdd, states) {
     "label" = label,
     "fixed_pars" = fixed_pars,
     "pars" = fixed_pars,  # TODO: REMOVE LATER
-    "sample" = build_sample_function(distr_class)
-    #"density" = build_density_function(distr_class),
-    #"distribution" = build_distribution_function(distr_class)
+    "sample" = build_sample_function(distr_class),
+    "density" = NA, # TODO: implement build_density_function(distr_class),
+    "distribution" = NA # TODO: implement build_distribution_function(distr_class)
   )
 }
 
@@ -322,6 +322,4 @@ print.fHMM_sdds <- function(x, ...) {
   }
   return(invisible(x))
 }
-
-
 

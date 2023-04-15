@@ -21,5 +21,4 @@ is_tpm(diag(2))
 is_tpm(matrix(1, 2, 2))
 }
 }
-\keyword{internal}
 \keyword{utils}

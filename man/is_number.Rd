@@ -42,5 +42,4 @@ is_number(1, int = TRUE)
 is_number(pi, int = TRUE)
 }
 }
-\keyword{internal}
 \keyword{utils}

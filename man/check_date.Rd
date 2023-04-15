@@ -22,5 +22,4 @@ This function checks if the input \code{date} has the format
 check_date(date = "2000-01-01")
 }
 }
-\keyword{internal}
 \keyword{utils}

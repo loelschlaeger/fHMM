@@ -7,7 +7,7 @@
 simulate_markov_chain(
   Gamma,
   T,
-  delta = Gamma2delta(Gamma),
+  delta = stationary_distribution(Gamma),
   seed = NULL,
   total_length = T
 )
@@ -38,5 +38,4 @@ T <- 10
 simulate_markov_chain(Gamma = Gamma, T = T)
 }
 }
-\keyword{internal}
 \keyword{utils}

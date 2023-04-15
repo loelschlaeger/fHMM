@@ -441,7 +441,7 @@ read_data <- function(controls) {
 #' Simulate data
 #'
 #' @description
-#' This helper function simulates data for the \{fHMM\} package.
+#' This helper function simulates data from a hidden Markov model.
 #'
 #' @inheritParams prepare_data
 #'

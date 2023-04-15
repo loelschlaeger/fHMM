@@ -37,7 +37,7 @@ decode_states <- function(x, verbose = TRUE) {
   ### definition of the Viterbi algorithm for state decoding
   viterbi <- function(observations, nstates, Gamma, mus, sigmas, dfs, sdd) {
     T <- length(observations)
-    delta <- Gamma2delta(Gamma)
+    delta <- stationary_distribution(Gamma)
     allprobs <- matrix(0, nstates, T)
     for (n in seq_len(nstates)) {
       if (sdd == "t") {
