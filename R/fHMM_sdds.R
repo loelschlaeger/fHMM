@@ -13,10 +13,10 @@
 #'   \item \code{"distr_class"}, a \code{character} which defines the 
 #'   distribution class and can be one of
 #'   \itemize{
-#'     \item \code{"norm"} (normal distribution),
+#'     \item \code{"normal"} (normal distribution),
+#'     \item \code{"lognormal"} (log-normal distribution),
 #'     \item \code{"t"} (t-distribution),
 #'     \item \code{"gamma"} (gamma distribution),
-#'     \item \code{"lnorm"} (log-normal distribution),
 #'     \item \code{"poisson"} (poisson distribution),
 #'   }
 #'   \item \code{"label"}, a \code{character} label for the specified 
@@ -106,10 +106,10 @@ fHMM_sdds <- function(sdds, states) {
 #'   \item \code{"distr_class"}, a \code{character} which defines the 
 #'   distribution class and can be one of
 #'   \itemize{
-#'     \item \code{"norm"} (normal distribution),
+#'     \item \code{"normal"} (normal distribution),
+#'     \item \code{"lognormal"} (log-normal distribution),
 #'     \item \code{"t"} (t-distribution),
 #'     \item \code{"gamma"} (gamma distribution),
-#'     \item \code{"lnorm"} (log-normal distribution),
 #'     \item \code{"poisson"} (poisson distribution),
 #'   }
 #'   \item \code{"label"}, a \code{character} label for the specified 
@@ -139,12 +139,12 @@ decode_sdd <- function(sdd, states) {
   sdd_tws <- gsub(" ", "", sdd)
   sdd_tws_split <- unlist(strsplit(sdd_tws, split = "[()]"))
   distr_class <- sdd_tws_split[1]
-  if (!distr_class %in% c("norm", "t", "gamma", "lnorm", "poisson")) {
+  if (!distr_class %in% c("normal", "lognormal", "t", "gamma", "poisson")) {
     stop(
       paste0(
         "Currently, only the following distributions are implemented:\n",
-        "normal- ('norm'), t- ('t'), gamma- ('gamma'), log-normal- ('lnorm')",
-        "and poisson- ('poisson') distribution."
+        "normal- ('normal'), log-normal- ('lognormal'), t- ('t'),",
+        "gamma- ('gamma'), and Poisson- ('poisson') distribution."
       ), 
       call. = FALSE
     )
@@ -181,19 +181,16 @@ decode_sdd <- function(sdd, states) {
   if (distr_class == "t") {
     fixed_pars <- check_par_names_allowed(fixed_pars, c("mu", "sigma", "df"))
   }
-  if (distr_class %in% c("gamma", "lnorm")) {
+  if (distr_class %in% c("normal", "lognormal", "gamma")) {
     fixed_pars <- check_par_names_allowed(fixed_pars, c("mu", "sigma"))
   }
   if (distr_class == "poisson") {
-    fixed_pars <- check_par_names_allowed(fixed_pars, c("mu"))
+    fixed_pars <- check_par_names_allowed(fixed_pars, "mu")
   }
   if ("mu" %in% names(fixed_pars)) {
-    if (distr_class == "gamma") {
+    if (distr_class %in% c("gamma", "poisson")) {
       if (!any(is_number(fixed_pars$mu, pos = TRUE))) {
-        stop(
-          "'mu' must be positive for the gamma distribution.", 
-          call. = FALSE
-        )
+        stop("'mu' must be positive.", call. = FALSE)
       }
     }
   } 
@@ -233,77 +230,218 @@ decode_sdd <- function(sdd, states) {
     "label" = label,
     "fixed_pars" = fixed_pars,
     "pars" = fixed_pars,  # TODO: REMOVE LATER
-    "sample" = build_sample_function(distr_class),
-    "density" = NA, # TODO: implement build_density_function(distr_class),
-    "distribution" = NA # TODO: implement build_distribution_function(distr_class)
+    "sample" = build_sdd_function(distr_class, "sample"),
+    "density" = build_sdd_function(distr_class, "density"),
+    "distribution" = build_sdd_function(distr_class, "distribution")
   )
 }
 
-#' Build sampling function for state-dependent distribution
+#' Build sampling, density, and distribution function for state-dependent 
+#' distributions
 #'
 #' @description 
-#' This helper function builds a \code{function} that can sample from a
-#' state-dependent distribution.
+#' This helper function builds a \code{function} for sampling, density 
+#' computation, and cumulative distribution for a state-dependent distribution.
 #' 
 #' @param distr_class
 #' A \code{character} which defines the class of the state-dependent 
-#' distribution class and can be one of
+#' distribution and can be one of
 #' \itemize{
-#'   \item \code{"norm"} (normal distribution),
+#'   \item \code{"normal"} (normal distribution),
+#'   \item \code{"lognormal"} (log-normal distribution),
 #'   \item \code{"t"} (t-distribution),
 #'   \item \code{"gamma"} (gamma distribution),
-#'   \item \code{"lnorm"} (log-normal distribution),
-#'   \item \code{"poisson"} (poisson distribution),
+#'   \item \code{"poisson"} (poisson distribution).
+#' }
+#' @param function_type
+#' A \code{character} which defines the function type and can be one of
+#' \itemize{
+#'   \item \code{"sample"} (sampling function),
+#'   \item \code{"density"} (density function),
+#'   \item \code{"distribution"} (distribution function).
 #' }
 #' 
 #' @return 
-#' A \code{function} which returns random samples from the state-dependent
-#' distribution and has the arguments
+#' A \code{function} which either returns 
 #' \itemize{
-#'   \item \code{n}, the number of samples (by default \code{n = 1}),
-#'   \item \code{mu}, \code{sigma}, and \code{df}, vectors for the mean, 
+#'   \item random samples if \code{function_type = "sample"},
+#'   \item the density if \code{function_type = "density"},
+#'   \item the cumulative distribution if \code{function_type = "distribution"},
+#' }
+#' from the state-dependent distribution specified as \code{distr_class} 
+#' and has the arguments
+#' \itemize{
+#'   \item either \itemize{
+#'     \item \code{n}, the number of samples (by default \code{n = 1}),
+#'     \item \code{x}, the point where to compute the density,
+#'     \item \code{q}, the point where to compute the cumulative distribution,
+#'   }
+#'   \item \code{state}, the state index,
+#'   \item \code{...} vectors with parameters for each state, including
+#'         \code{mu}, \code{sigma}, and \code{df}, for the mean, 
 #'         standard deviation, and degrees of freedom, respectively 
-#'         (if required), in each state,
-#'   \item \code{state}, the state index.
+#'         (if required).
 #' }
 #' 
 #' @examples
 #' \dontrun{
-#' sample_poisson_sdd <- build_sample_function("poisson")
-#' mu <- c(1, 10)
-#' sample_poisson_sdd(mu = mu, state = 1)
-#' sample_poisson_sdd(mu = mu, state = 2)
+#' sample_poisson_sdd <- build_sdd_function("poisson", "sample")
+#' sample_poisson_sdd(state = 1, mu = c(1, 10))
+#' sample_poisson_sdd(state = 2, mu = c(1, 10))
 #' }
 #' 
 #' @keywords internal  
 
-build_sample_function <- function(distr_class) {
+build_sdd_function <- function(distr_class, function_type) {
   stopifnot(is.character(distr_class), length(distr_class) == 1)
-  stopifnot(distr_class %in% c("norm", "t", "gamma", "lnorm", "poisson"))
-  if (distr_class == "norm") {
-    function (n = 1, mu, sigma, state) {
-      stats::rnorm(n, mean = mu[state], sd = sigma[state])
+  stopifnot(distr_class %in% c("normal", "lognormal", "t", "gamma", "poisson"))
+  stopifnot(is.character(function_type), length(function_type) == 1)
+  stopifnot(function_type %in% c("sample", "density", "distribution"))
+  sdd_function <- function () {}
+  formals(sdd_function) <- if (function_type == "sample") {
+    alist(n = 1, state =, ... =)
+  } else if (function_type == "density") {
+    alist(x =, state =, ... =)
+  } else if (function_type == "distribution") {
+    alist(q =, state =, ... =)
+  }
+  body(sdd_function)[2] <- as.expression(as.call(quote(
+    if (missing(state)) {
+      stop("Which state?", call. = FALSE)
     }
-  } else if (distr_class == "t") {
-    function (n = 1, mu, sigma, df, state) {
-      stats::rt(n = n, df[state]) * sigma[state] + mu[state]
-    }
-  } else if (distr_class == "gamma") {
-    function (n = 1, mu, sigma, state) {
-      stats::rgamma(
-        n = n, shape = mu[state]^2 / sigma[state]^2,
-        scale = sigma[state]^2 / mu[state]
+  )))
+  body(sdd_function)[3] <- as.expression(as.call(quote(
+    args <- list(...)
+  )))
+  body(sdd_function)[4] <- if (distr_class %in% c("normal", "lognormal", "gamma")) {
+    as.expression(as.call(quote(
+      stopifnot(
+        "'mu' must be specified" = "mu" %in% names(args),
+        "'sigma' must be specified" = "sigma" %in% names(args)
       )
-    } 
-  } else if (distr_class == "lnorm") {
-    function (n = 1, mu, sigma, state) {
-      stats::rlnorm(n = n, meanlog = mu[state], sdlog = sigma[state])
-    }
+    )))
+  } else if (distr_class == "t") {
+    as.expression(as.call(quote(
+      stopifnot(
+        "'mu' must be specified" = "mu" %in% names(args),
+        "'sigma' must be specified" = "sigma" %in% names(args),
+        "'df' must be specified" = "df" %in% names(args)
+      )
+    )))
   } else if (distr_class == "poisson") {
-    function (n = 1, mu, state) {
-      stats::rpois(n = n, lambda = mu[state])
+    as.expression(as.call(quote(
+      stopifnot(
+        "'mu' must be specified" = "mu" %in% names(args)
+      )
+    )))
+  }
+  body(sdd_function)[5] <- if (function_type == "sample") {
+    if (distr_class == "normal") {
+      as.expression(as.call(quote(
+        stats::rnorm(n, mean = args$mu[state], sd = args$sigma[state])
+      )))
+    } else if (distr_class == "lognormal") {
+      as.expression(as.call(quote(
+        stats::rlnorm(n = n, meanlog = args$mu[state], sdlog = args$sigma[state])
+      )))
+    } else if (distr_class == "t") {
+      as.expression(as.call(quote(
+        stats::rt(n = n, args$df[state]) * args$sigma[state] + args$mu[state]
+      )))
+    } else if (distr_class == "gamma") {
+      as.expression(as.call(quote(
+        stats::rgamma(
+          n = n, shape = args$mu[state]^2 / args$sigma[state]^2,
+          scale = args$sigma[state]^2 / args$mu[state]
+        )
+      )))
+    } else if (distr_class == "poisson") {
+      as.expression(as.call(quote(
+        stats::rpois(n = n, lambda = args$mu[state])
+      )))
+    }
+  } else if (function_type == "density") {
+    if (distr_class == "normal") {
+      as.expression(as.call(quote(
+        stats::dnorm(
+          x = x, 
+          mean = args$mu[state], 
+          sd = args$sigma[state]
+        )
+      )))
+    } else if (distr_class == "lognormal") {
+      as.expression(as.call(quote(
+        stats::dlnorm(
+          x = x, 
+          meanlog = args$mu[state], 
+          sdlog = args$sigma[state]
+        )
+      )))
+    } else if (distr_class == "t") {
+      as.expression(as.call(quote(
+        1 / args$sigma[state] * stats::dt(
+          x = (x - args$mu[state]) / args$sigma[state],
+          df = args$df[state]
+        )
+      )))
+    } else if (distr_class == "gamma") {
+      as.expression(as.call(quote(
+        stats::dgamma(
+          x = x,
+          shape = args$mu[state]^2 / args$sigma[state]^2,
+          scale = args$sigma[state]^2 / args$mu[state]
+        )
+      )))
+    } else if (distr_class == "poisson") {
+      as.expression(as.call(quote(
+        stats::dpois(
+          x = x,
+          mean = args$mu[state]
+        )
+      )))
+    }
+  } else if (function_type == "distribution") {
+    if (distr_class == "normal") {
+      as.expression(as.call(quote(
+        stats::pnorm(
+          q = q,
+          mean = args$mu[state],
+          sd = args$sigma[state]
+        )
+      )))
+    } else if (distr_class == "lognormal") {
+      as.expression(as.call(quote(
+        stats::plnorm(
+          q = q,
+          meanlog = args$mu[state],
+          sdlog = args$sigma[state]
+        )
+      )))
+    } else if (distr_class == "t") {
+      as.expression(as.call(quote(
+        stats::pt(
+          q = (q - args$mu[state]) / args$sigma[state],
+          df = arg$df[state]
+        )
+      )))
+    } else if (distr_class == "gamma") {
+      as.expression(as.call(quote(
+        stats::pgamma(
+          q = q,
+          shape = args$mu[state]^2 / args$sigma[state]^2,
+          scale = args$sigma[state]^2 / args$mu[state]
+        )
+      )))
+    } else if (distr_class == "poisson") {
+      as.expression(as.call(quote(
+        stats::ppois(
+          q = q,
+          mean = args$mu[state]
+        )
+      )))
     }
   }
+  return(sdd_function)
 }
 
 #' @rdname fHMM_sdds
@@ -318,7 +456,11 @@ print.fHMM_sdds <- function(x, ...) {
   if (length(x) == 1) {
     cat(x[[1]]$label)
   } else {
-    cat("coarse-scale ", x[[1]]$label, ", fine-scale ", x[[2]]$label, sep = "")
+    cat(
+      "coarse-scale: ", x[[1]]$label, 
+      ", fine-scale: ", x[[2]]$label, 
+      sep = ""
+    )
   }
   return(invisible(x))
 }

@@ -52,22 +52,22 @@
 #' \code{states = c(2, 2)} if \code{hierarchy = TRUE}.
 #'
 #' @param sdds
-#' A \code{character}, specifying the state-dependent distribution.
-#' One of 
+#' A \code{character}, specifying the state-dependent distribution. One of 
 #' \itemize{
+#'   \item \code{"normal"} (the normal distribution),
+#'   \item \code{"lognormal"} (the log-normal distribution),
 #'   \item \code{"t"} (the t-distribution),
 #'   \item \code{"gamma"} (the gamma distribution),
-#'   \item \code{"lnorm"} (the log-normal distribution),
 #'   \item \code{"poisson"} (the Poisson distribution).
 #' }
 #' 
 #' The distribution parameters 
 #' \itemize{
 #'   \item mean \code{mu},
-#'   \item standard deviation \code{sigma} (not for Poisson distribution),
-#'   \item degrees of freedom \code{df} (only for t-distribution),
+#'   \item standard deviation \code{sigma} (not for the Poisson distribution),
+#'   \item degrees of freedom \code{df} (only for the t-distribution),
 #' }
-#' can be fixed via, e.g., \code{"t(df = Inf)"} or 
+#' can be fixed via, e.g., \code{"t(df = 1)"} or 
 #' \code{"gamma(mu = 0, sigma = 1)"}.
 #' To fix different values of a parameter for different states, separate by
 #' "|", e.g. \code{"poisson(mu = 1|2|3)"}. 
@@ -76,9 +76,8 @@
 #' The first entry corresponds to the coarse-scale layer, while the second entry
 #' corresponds to the fine-scale layer.
 #' 
-#' By default, \code{sdds = "t(df = Inf)"} (the normal distribution) if 
-#' \code{hierarchy = FALSE} and \code{sdds = c("t(df = Inf)", "t(df = Inf)")} 
-#' if \code{hierarchy = TRUE}.
+#' By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and 
+#' \code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.
 #'
 #' See also \code{\link{fHMM_sdds}} for more details.
 #'
@@ -301,28 +300,25 @@
 #' 
 #' @examples
 #' ### HMM controls for simulated data
-#' controls <- list(
+#' set_controls(
 #'   states  = 2,
 #'   sdds    = "t(mu = 0)",
 #'   fit     = list("runs" = 50)
 #' )
-#' set_controls(controls)
 #' 
 #' ### HMM controls with empirical data 
-#' data <- download_data("^GDAXI", file = NULL)
-#' controls <- list(
+#' set_controls(
 #'   states  = 3,
-#'   sdds    = "lnorm",
+#'   sdds    = "lognormal",
 #'   data    = list(
-#'     "file"        = data, 
+#'     "file"        = download_data("^GDAXI", verbose = FALSE), 
 #'     "date_column" = "Date", 
 #'     "data_column" = "Adj.Close"
 #'   )
 #' )
-#' set_controls(controls)
 #' 
 #' ### HMM controls with empirical data from .csv-file
-#' controls <- list(
+#' set_controls(
 #'   states  = 4,
 #'   sdds    = "t",
 #'   data    = list(
@@ -332,17 +328,15 @@
 #'     "logreturns"  = TRUE
 #'   )
 #' )
-#' set_controls(controls)
 #'
 #' ### Hierarchical HMM controls for simulated data
-#' controls <- list(
+#' set_controls(
 #'   hierarchy = TRUE,
 #'   states    = c(3, 2)
 #' )
-#' set_controls(controls)
 #' 
 #' ### Hierarchical HMM controls with empirical data
-#' controls <- list(
+#' set_controls(
 #'   hierarchy = TRUE,
 #'   states  = c(3, 2),
 #'   sdds    = c("t", "t"),
@@ -353,7 +347,6 @@
 #'     "logreturns"  = c(TRUE, TRUE)
 #'   )
 #' )
-#' set_controls(controls)
 #' 
 #' @export
 #' 
@@ -363,7 +356,7 @@ set_controls <- function(
     controls = list(), 
     hierarchy = FALSE, 
     states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "t(df = Inf)" else c("t(df = Inf)", "t(df = Inf)"), 
+    sdds = if (!hierarchy) "normal" else c("normal", "normal"), 
     horizon = if (!hierarchy) 100 else c(100, 30),
     period = if (hierarchy && is.na(horizon[2])) "m" else NA, 
     data = NA,

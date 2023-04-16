@@ -1,7 +1,7 @@
 test_that("input checks for parameter transformations work", {
   expect_error(
     fHMM_parameters("not_a_controls_object"),
-    "Input 'controls' must be a list or an 'fHMM_controls' object."
+    "'controls' must be a list or an 'fHMM_controls' object"
   )
   expect_error(
     fHMM_parameters(scale = c(-1,0)),
@@ -12,56 +12,56 @@ test_that("input checks for parameter transformations work", {
     "'Gamma' must be a transition probability matrix of dimension 2"
   )
   expect_error(
-    fHMM_parameters(mus = c("1", "2")),
-    "'mus' must be a numeric vector of length 2"
+    fHMM_parameters(mu = c("1", "2")),
+    "'mu' must be a numeric vector of length 2"
   )
   expect_error(
-    fHMM_parameters(sigmas = c(-1, -2)),
-    "'sigmas' must be a positive numeric vector of length 2"
+    fHMM_parameters(sigma = c(-1, -2)),
+    "'sigma' must be a positive numeric vector of length 2"
   )
   expect_error(
-    fHMM_parameters(sdds = "t", dfs = c(-1, -2)),
-    "'dfs' must be a positive numeric vector of length 2"
+    fHMM_parameters(sdds = "t", df = c(-1, -2)),
+    "'df' must be a positive numeric vector of length 2"
   )
   expect_error(
-    fHMM_parameters(sdds = "gamma", mus = c(-1, -2)),
-    "'mus' must be a positive numeric vector of length 2"
+    fHMM_parameters(sdds = "gamma", mu = c(-1, -2)),
+    "'mu' must be a positive numeric vector of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, Gammas_star = matrix(1:4,2,2)),
-    "'Gammas_star' must be a list of length 2"
+    fHMM_parameters(hierarchy = TRUE, Gamma_star = matrix(1:4,2,2)),
+    "'Gamma_star' must be a list of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, Gammas_star = list(matrix(1:4,2,2), matrix(1:4,2,2))),
-    "Element 1 in 'Gammas_star' must be a transition probability matrix of dimension 2"
+    fHMM_parameters(hierarchy = TRUE, Gamma_star = list(matrix(1:4,2,2), matrix(1:4,2,2))),
+    "Element 1 in 'Gamma_star' must be a transition probability matrix of dimension 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, mus_star = c("1", "2")),
-    "'mus_star' must be a list of length 2"
+    fHMM_parameters(hierarchy = TRUE, mu_star = c("1", "2")),
+    "'mu_star' must be a list of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, mus_star = list(c(1, 2), c("1", "2"))),
-    "Element 2 in 'mus_star' must be a numeric vector of length 2"
+    fHMM_parameters(hierarchy = TRUE, mu_star = list(c(1, 2), c("1", "2"))),
+    "Element 2 in 'mu_star' must be a numeric vector of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, sigmas_star = c(-1, -2)),
-    "'sigmas_star' must be a list of length 2"
+    fHMM_parameters(hierarchy = TRUE, sigma_star = c(-1, -2)),
+    "'sigma_star' must be a list of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, sigmas_star = list(c(-1, -2), c(-2, -2))),
-    "Element 1 in 'sigmas_star' must be a positive numeric vector of length 2"
+    fHMM_parameters(hierarchy = TRUE, sigma_star = list(c(-1, -2), c(-2, -2))),
+    "Element 1 in 'sigma_star' must be a positive numeric vector of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, sdds = c("t", "t"), dfs_star = c(-1, -2)),
-    "'dfs_star' must be a list of length 2"
+    fHMM_parameters(hierarchy = TRUE, sdds = c("t", "t"), df_star = c(-1, -2)),
+    "'df_star' must be a list of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, sdds = c("t", "t"), dfs_star = list(c(1, 1), c(1,-1))),
-    "Element 2 in 'dfs_star' must be a positive numeric vector of length 2"
+    fHMM_parameters(hierarchy = TRUE, sdds = c("t", "t"), df_star = list(c(1, 1), c(1,-1))),
+    "Element 2 in 'df_star' must be a positive numeric vector of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, sdds = c("gamma", "gamma"), mus_star = list(c(1, 1), c(1,-1))),
-    "Element 2 in 'mus_star' must be a positive numeric vector of length 2"
+    fHMM_parameters(hierarchy = TRUE, sdds = c("gamma", "gamma"), mu_star = list(c(1, 1), c(1,-1))),
+    "Element 2 in 'mu_star' must be a positive numeric vector of length 2"
   )
   
 })

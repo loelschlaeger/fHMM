@@ -10,22 +10,22 @@ fHMM_sdds(sdds, states)
 \method{print}{fHMM_sdds}(x, ...)
 }
 \arguments{
-\item{sdds}{A \code{character}, specifying the state-dependent distribution.
-One of
+\item{sdds}{A \code{character}, specifying the state-dependent distribution. One of
 \itemize{
+\item \code{"normal"} (the normal distribution),
+\item \code{"lognormal"} (the log-normal distribution),
 \item \code{"t"} (the t-distribution),
 \item \code{"gamma"} (the gamma distribution),
-\item \code{"lnorm"} (the log-normal distribution),
 \item \code{"poisson"} (the Poisson distribution).
 }
 
 The distribution parameters
 \itemize{
 \item mean \code{mu},
-\item standard deviation \code{sigma} (not for Poisson distribution),
-\item degrees of freedom \code{df} (only for t-distribution),
+\item standard deviation \code{sigma} (not for the Poisson distribution),
+\item degrees of freedom \code{df} (only for the t-distribution),
 }
-can be fixed via, e.g., \code{"t(df = Inf)"} or
+can be fixed via, e.g., \code{"t(df = 1)"} or
 \code{"gamma(mu = 0, sigma = 1)"}.
 To fix different values of a parameter for different states, separate by
 "|", e.g. \code{"poisson(mu = 1|2|3)"}.
@@ -34,9 +34,8 @@ If \code{hierarchy = TRUE}, \code{sdds} must be a \code{vector} of length 2.
 The first entry corresponds to the coarse-scale layer, while the second entry
 corresponds to the fine-scale layer.
 
-By default, \code{sdds = "t(df = Inf)"} (the normal distribution) if
-\code{hierarchy = FALSE} and \code{sdds = c("t(df = Inf)", "t(df = Inf)")}
-if \code{hierarchy = TRUE}.
+By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
+\code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.
 
 See also \code{\link{fHMM_sdds}} for more details.}
 
@@ -60,10 +59,10 @@ An object of class \code{"fHMM_sdds"}, which is a \code{list} of length
 \item \code{"distr_class"}, a \code{character} which defines the
 distribution class and can be one of
 \itemize{
-\item \code{"norm"} (normal distribution),
+\item \code{"normal"} (normal distribution),
+\item \code{"lognormal"} (log-normal distribution),
 \item \code{"t"} (t-distribution),
 \item \code{"gamma"} (gamma distribution),
-\item \code{"lnorm"} (log-normal distribution),
 \item \code{"poisson"} (poisson distribution),
 }
 \item \code{"label"}, a \code{character} label for the specified

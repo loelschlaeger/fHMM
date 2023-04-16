@@ -5,8 +5,8 @@
     Output
       fHMM parameters
        $Gamma
-       $mus
-       $sigmas
-       $dfs
+       $mu
+       $sigma
+       $df
        $sdds
 

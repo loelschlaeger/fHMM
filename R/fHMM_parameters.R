@@ -10,38 +10,38 @@
 #'
 #' @inheritParams set_controls
 #' 
-#' @param Gamma,Gammas_star
+#' @param Gamma,Gamma_star
 #' A transition probability \code{matrix}.
 #' 
 #' It should have dimension \code{states[1]}.
 #' 
-#' \code{Gammas_star} is a \code{list} of fine-scale transition probability 
+#' \code{Gamma_star} is a \code{list} of fine-scale transition probability 
 #' matrices. The \code{list} must be of length \code{states[1]}.
 #' Each transition probability matrix must be of dimension \code{states[2]}.
 #' 
-#' @param mus,mus_star
+#' @param mu,mu_star
 #' A \code{numeric} vector of expected values for the state-dependent 
 #' distribution in the different states.
 #' 
-#' For the gamma- or Poisson-distribution, \code{mus} must be positive.
+#' For the gamma- or Poisson-distribution, \code{mu} must be positive.
 #' 
 #' It should have length \code{states[1]}.
 #' 
-#' \code{mus_star} is a \code{list} of \code{vectors} with fine-scale 
+#' \code{mu_star} is a \code{list} of \code{vectors} with fine-scale 
 #' expectations. The \code{list} must be of length \code{states[1]}.
 #' Each \code{vector} must be of length \code{states[2]}.
 #' 
-#' @param sigmas,sigmas_star
+#' @param sigma,sigma_star
 #' A positive \code{numeric} vector of standard deviations for the 
 #' state-dependent distribution in the different states. 
 #' 
 #' It should have length \code{states[1]}.
 #' 
-#' \code{sigmas_star} is a \code{list} of \code{vectors} with fine-scale 
+#' \code{sigma_star} is a \code{list} of \code{vectors} with fine-scale 
 #' standard deviations. The \code{list} must be of length \code{states[1]}.
 #' Each vector must be of length \code{states[2]}.
 #' 
-#' @param dfs,dfs_star
+#' @param df,df_star
 #' A positive \code{numeric} vector of degrees of freedom for the 
 #' state-dependent distribution in the different states. 
 #' 
@@ -49,7 +49,7 @@
 #' 
 #' Only relevant in case of a state-dependent t-distribution.
 #' 
-#' \code{dfs_star} is a \code{list} of \code{vectors} with fine-scale 
+#' \code{df_star} is a \code{list} of \code{vectors} with fine-scale 
 #' degrees of freedom. The \code{list} must be of length \code{states[1]}.
 #' Each vector must be of length \code{states[2]}.
 #' Only relevant in case of a fine-scale state-dependent t-distribution.
@@ -59,8 +59,8 @@
 #' expectations and standard deviations. 
 #' 
 #' The first entry is the scale for
-#' \code{mus} and \code{sigmas}, the second entry is the scale for
-#' \code{mus_star} and \code{sigmas_star} (if any). 
+#' \code{mu} and \code{sigma}, the second entry is the scale for
+#' \code{mu_star} and \code{sigma_star} (if any). 
 #'
 #' @return
 #' An object of class \code{fHMM_parameters}.
@@ -68,7 +68,7 @@
 #' @export
 #'
 #' @examples
-#' parameters <- fHMM_parameters(states = 2, sdds = "norm")
+#' parameters <- fHMM_parameters(states = 2, sdds = "normal")
 #' parameters$Gamma
 #'
 #' @importFrom stats runif qunif runif
@@ -76,10 +76,10 @@
 fHMM_parameters <- function(
     controls = list(), hierarchy = FALSE, 
     states = if (!hierarchy) 2 else c(2, 2),
-    sdds = if (!hierarchy) "t(df = Inf)" else c("t(df = Inf)", "t(df = Inf)"),
-    Gamma = NULL, mus = NULL, sigmas = NULL, dfs = NULL,
-    Gammas_star = NULL, mus_star = NULL,
-    sigmas_star = NULL, dfs_star = NULL, seed = NULL,
+    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+    Gamma = NULL, mu = NULL, sigma = NULL, df = NULL,
+    Gamma_star = NULL, mu_star = NULL,
+    sigma_star = NULL, df_star = NULL, seed = NULL,
     scale_par = c(1, 1)
   ) {
 
@@ -111,96 +111,96 @@ fHMM_parameters <- function(
   if (is.null(Gamma)) {
     Gamma <- sample_tpm(M)
   }
-  if (is.null(mus)) {
-    if (sdds[[1]]$distr_class %in% c("norm", "t", "lnorm")) {
+  if (is.null(mu)) {
+    if (sdds[[1]]$distr_class %in% c("normal", "t", "lognormal")) {
       ### expectation is unrestricted
-      mus <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), -1, 1) * 
+      mu <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), -1, 1) * 
         scale_par[1]
     }
     if (sdds[[1]]$distr_class %in% c("gamma", "poisson")) {
       ### expectation is positive
-      mus <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 1) * 
+      mu <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 1) * 
         scale_par[1]
     }
   }
-  if (is.null(sigmas)) {
+  if (is.null(sigma)) {
     ### standard deviation is positive
-    sigmas <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 1) * 
+    sigma <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 1) * 
       scale_par[1]
   }
   if (sdds[[1]]$distr_class == "t") {
-    if (is.null(dfs)) {
+    if (is.null(df)) {
       ### degrees of freedom are positive
-      dfs <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 30)
+      df <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 30)
     }
   } else {
-    dfs <- NULL
+    df <- NULL
   }
   if (hierarchy) {
-    if (is.null(Gammas_star)) {
-      Gammas_star <- list()
+    if (is.null(Gamma_star)) {
+      Gamma_star <- list()
       for (i in 1:M) {
-        Gammas_star[[i]] <- sample_tpm(N)
+        Gamma_star[[i]] <- sample_tpm(N)
       }
     }
-    if (is.null(mus_star)) {
-      mus_star <- list()
+    if (is.null(mu_star)) {
+      mu_star <- list()
       for (i in 1:M) {
-        if (sdds[[2]]$distr_class %in% c("norm", "t", "lnorm")) {
+        if (sdds[[2]]$distr_class %in% c("normal", "t", "lognormal")) {
           ### expectation is unrestricted
-          mus_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), -1, 1) * 
+          mu_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), -1, 1) * 
             scale_par[2]
         }
         if (sdds[[2]]$distr_class %in% c("poisson", "gamma")) {
           ### expectation is positive
-          mus_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 1) * 
+          mu_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 1) * 
             scale_par[2]
         }
       }
     }
-    if (is.null(sigmas_star)) {
-      sigmas_star <- list()
+    if (is.null(sigma_star)) {
+      sigma_star <- list()
       for (i in 1:M) {
         ### standard deviation is positive
-        sigmas_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 1) * 
+        sigma_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 1) * 
           scale_par[2]
       }
     }
     if (sdds[[2]]$distr_class == "t") {
-      if (is.null(dfs_star)) {
-        dfs_star <- list()
+      if (is.null(df_star)) {
+        df_star <- list()
         for (i in 1:M) {
           ### degrees of freedom are positive
-          dfs_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 30)
+          df_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 30)
         }
       }
     } else {
-      dfs_star <- NULL
+      df_star <- NULL
     }
   }
 
   ### set fixed parameters (if any)
   if ("mu" %in% names(sdds[[1]]$fixed_pars)) {
-    mus <- rep_len(sdds[[1]]$fixed_pars$mu, M)
+    mu <- rep_len(sdds[[1]]$fixed_pars$mu, M)
   }
   if ("sigma" %in% names(sdds[[1]]$fixed_pars)) {
-    sigmas <- rep_len(sdds[[1]]$fixed_pars$sigma, M)
+    sigma <- rep_len(sdds[[1]]$fixed_pars$sigma, M)
   }
   if (sdds[[1]]$distr_class == "t") {
     if ("df" %in% names(sdds[[1]]$fixed_pars)) {
-      dfs <- rep_len(sdds[[1]]$fixed_pars$df, M)
+      df <- rep_len(sdds[[1]]$fixed_pars$df, M)
     }
   }
   if (hierarchy) {
     if ("mu" %in% names(sdds[[2]]$fixed_pars)) {
-      mus_star <- rep(list(rep_len(sdds[[2]]$fixed_pars$mu, N)), M)
+      mu_star <- rep(list(rep_len(sdds[[2]]$fixed_pars$mu, N)), M)
     }
     if ("sigma" %in% names(sdds[[2]]$fixed_pars)) {
-      sigmas_star <- rep(list(rep_len(sdds[[2]]$fixed_pars$sigma, N)), M)
+      sigma_star <- rep(list(rep_len(sdds[[2]]$fixed_pars$sigma, N)), M)
     }
     if (sdds[[2]]$distr_class == "t") {
       if ("df" %in% names(sdds[[2]]$fixed_pars)) {
-        dfs_star <- rep(list(rep_len(sdds[[2]]$fixed_pars$df, N)), M)
+        df_star <- rep(list(rep_len(sdds[[2]]$fixed_pars$df, N)), M)
       }
     }
   }
@@ -212,100 +212,100 @@ fHMM_parameters <- function(
       call. = FALSE
     )
   }
-  if (sdds[[1]]$distr_class %in% c("t", "norm", "lnorm")) {
-    if (!all(is_number(mus)) || length(mus) != M) {
+  if (sdds[[1]]$distr_class %in% c("t", "normal", "lognormal")) {
+    if (!all(is_number(mu)) || length(mu) != M) {
       stop(
-        paste("'mus' must be a numeric vector of length", M),
+        paste("'mu' must be a numeric vector of length", M),
         call. = FALSE
       )
     }
   }
   if (sdds[[1]]$distr_class %in% c("gamma", "poisson")) {
-    if (!all(is_number(mus, non_neg = TRUE)) || length(mus) != M) {
+    if (!all(is_number(mu, non_neg = TRUE)) || length(mu) != M) {
       stop(
-        paste("'mus' must be a positive numeric vector of length", M),
+        paste("'mu' must be a positive numeric vector of length", M),
         call. = FALSE
       )
     }
   }
-  if (!all(is_number(sigmas, non_neg = TRUE)) || length(sigmas) != M) {
+  if (!all(is_number(sigma, non_neg = TRUE)) || length(sigma) != M) {
     stop(
-      paste("'sigmas' must be a positive numeric vector of length", M),
+      paste("'sigma' must be a positive numeric vector of length", M),
       call. = FALSE
     )
   }
   if (sdds[[1]]$distr_class == "t") {
-    if (!all(is_number(dfs, non_neg = TRUE)) || length(dfs) != M) {
+    if (!all(is_number(df, non_neg = TRUE)) || length(df) != M) {
       stop(
-        paste("'dfs' must be a positive numeric vector of length", M),
+        paste("'df' must be a positive numeric vector of length", M),
         call. = FALSE
       )
     }
   }
   if (hierarchy) {
-    if (!is.list(Gammas_star) || length(Gammas_star) != M) {
+    if (!is.list(Gamma_star) || length(Gamma_star) != M) {
       stop(
-        paste("'Gammas_star' must be a list of length", M),
+        paste("'Gamma_star' must be a list of length", M),
         call. = FALSE
       )
     }
     for (i in 1:M) {
-      if (!is_tpm(Gammas_star[[i]]) || nrow(Gammas_star[[i]]) != N) {
+      if (!is_tpm(Gamma_star[[i]]) || nrow(Gamma_star[[i]]) != N) {
         stop(
-          paste("Element", i, "in 'Gammas_star' must be a transition probability matrix of dimension", N),
+          paste("Element", i, "in 'Gamma_star' must be a transition probability matrix of dimension", N),
           call. = FALSE
         )
       }
     }
-    if (!is.list(mus_star) || length(mus_star) != M) {
+    if (!is.list(mu_star) || length(mu_star) != M) {
       stop(
-        paste("'mus_star' must be a list of length", M),
+        paste("'mu_star' must be a list of length", M),
         call. = FALSE
       )
     }
     for (i in 1:M) {
-      if (sdds[[2]]$distr_class %in% c("t", "norm", "lnorm")) {
-        if (!all(is_number(mus_star[[i]])) || length(mus_star[[i]]) != N) {
+      if (sdds[[2]]$distr_class %in% c("t", "normal", "lognormal")) {
+        if (!all(is_number(mu_star[[i]])) || length(mu_star[[i]]) != N) {
           stop(
-            paste("Element", i, "in 'mus_star' must be a numeric vector of length", N),
+            paste("Element", i, "in 'mu_star' must be a numeric vector of length", N),
             call. = FALSE
           )
         }
       }
       if (sdds[[2]]$distr_class %in% c("gamma", "poisson")) {
-        if (!all(is_number(mus_star[[i]], non_neg = TRUE)) || length(mus_star[[i]]) != N) {
+        if (!all(is_number(mu_star[[i]], non_neg = TRUE)) || length(mu_star[[i]]) != N) {
           stop(
-            paste("Element", i, "in 'mus_star' must be a positive numeric vector of length", N),
+            paste("Element", i, "in 'mu_star' must be a positive numeric vector of length", N),
             call. = FALSE
           )
         }
       }
     }
-    if (!is.list(sigmas_star) || length(sigmas_star) != M) {
+    if (!is.list(sigma_star) || length(sigma_star) != M) {
       stop(
-        paste("'sigmas_star' must be a list of length", M),
+        paste("'sigma_star' must be a list of length", M),
         call. = FALSE
       )
     }
     for (i in 1:M) {
-      if (!all(is_number(sigmas_star[[i]], non_neg = TRUE)) || length(sigmas_star[[i]]) != N) {
+      if (!all(is_number(sigma_star[[i]], non_neg = TRUE)) || length(sigma_star[[i]]) != N) {
         stop(
-          paste("Element", i, "in 'sigmas_star' must be a positive numeric vector of length", N),
+          paste("Element", i, "in 'sigma_star' must be a positive numeric vector of length", N),
           call. = FALSE
         )
       }
     }
     if (sdds[[2]]$distr_class == "t") {
-      if (!is.list(dfs_star) || length(dfs_star) != M) {
+      if (!is.list(df_star) || length(df_star) != M) {
         stop(
-          paste("'dfs_star' must be a list of length", M),
+          paste("'df_star' must be a list of length", M),
           call. = FALSE
         )
       }
       for (i in 1:M) {
-        if (!all(is_number(dfs_star[[i]], non_neg = TRUE)) || length(dfs_star[[i]]) != N) {
+        if (!all(is_number(df_star[[i]], non_neg = TRUE)) || length(df_star[[i]]) != N) {
           stop(
-            paste("Element", i, "in 'dfs_star' must be a positive numeric vector of length", N),
+            paste("Element", i, "in 'df_star' must be a positive numeric vector of length", N),
             call. = FALSE
           )
         }
@@ -316,17 +316,17 @@ fHMM_parameters <- function(
   ### build 'fHMM_parameters'
   out <- list(
     "Gamma" = Gamma,
-    "mus" = mus,
-    "sigmas" = sigmas,
-    "dfs" = dfs,
+    "mu" = mu,
+    "sigma" = sigma,
+    "df" = df,
     "sdds" = sdds
   )
   if (hierarchy) {
     out <- c(out, list(
-      "Gammas_star" = Gammas_star,
-      "mus_star" = mus_star,
-      "sigmas_star" = sigmas_star,
-      "dfs_star" = dfs_star
+      "Gamma_star" = Gamma_star,
+      "mu_star" = mu_star,
+      "sigma_star" = sigma_star,
+      "df_star" = df_star
     ))
   }
   class(out) <- c("fHMM_parameters", "list")
@@ -399,34 +399,34 @@ par2parUncon <- function(par, controls) {
     parUncon <- c(
       parUncon,
       muCon2muUncon(
-        muCon = par[["mus"]],
+        muCon = par[["mu"]],
         link = (sdds[[1]]$distr_class %in% c("gamma", "poisson"))
       )
     )
   }
   if (!"sigma" %in% names(sdds[[1]]$fixed_pars)) {
     parUncon <- c(
-      parUncon, sigmaCon2sigmaUncon(par[["sigmas"]])
+      parUncon, sigmaCon2sigmaUncon(par[["sigma"]])
     )
   }
   if (sdds[[1]]$distr_class == "t") {
     if (!"df" %in% names(sdds[[1]]$fixed_pars)) {
       parUncon <- c(
         parUncon,
-        dfCon2dfUncon(par[["dfs"]])
+        dfCon2dfUncon(par[["df"]])
       )
     }
   }
   if (hierarchy) {
     for (s in 1:states[1]) {
       parUncon <- c(
-        parUncon, Gamma2gammasUncon(par[["Gammas_star"]][[s]])
+        parUncon, Gamma2gammasUncon(par[["Gamma_star"]][[s]])
       )
       if (!"mu" %in% names(sdds[[2]]$fixed_pars)) {
         parUncon <- c(
           parUncon,
           muCon2muUncon(
-            par[["mus_star"]][[s]],
+            par[["mu_star"]][[s]],
             link = (sdds[[2]]$distr_class %in% c("gamma", "poisson"))
           )
         )
@@ -434,14 +434,14 @@ par2parUncon <- function(par, controls) {
       if (!"sigma" %in% names(sdds[[2]]$fixed_pars)) {
         parUncon <- c(
           parUncon,
-          sigmaCon2sigmaUncon(par[["sigmas_star"]][[s]])
+          sigmaCon2sigmaUncon(par[["sigma_star"]][[s]])
         )
       }
       if (sdds[[2]]$distr_class == "t") {
         if (!"df" %in% names(sdds[[2]]$fixed_pars)) {
           parUncon <- c(
             parUncon,
-            dfCon2dfUncon(par[["dfs_star"]][[s]])
+            dfCon2dfUncon(par[["df_star"]][[s]])
           )
         }
       }
@@ -542,72 +542,72 @@ parCon2par <- function(parCon, controls) {
   Gamma <- gammasCon2Gamma(parCon[1:((M - 1) * M)], M)
   parCon <- parCon[-(1:((M - 1) * M))]
   if (!"mu" %in% names(sdds[[1]]$fixed_pars)) {
-    mus <- parCon[1:M]
+    mu <- parCon[1:M]
     parCon <- parCon[-(1:M)]
   } else {
-    mus <- rep(sdds[[1]]$fixed_pars$mu, M)
+    mu <- rep(sdds[[1]]$fixed_pars$mu, M)
   }
   if (!"sigma" %in% names(sdds[[1]]$fixed_pars)) {
-    sigmas <- parCon[1:M]
+    sigma <- parCon[1:M]
     parCon <- parCon[-(1:M)]
   } else {
-    sigmas <- rep(sdds[[1]]$fixed_pars$sigma, M)
+    sigma <- rep(sdds[[1]]$fixed_pars$sigma, M)
   }
   if (sdds[[1]]$distr_class == "t") {
     if (!"df" %in% names(sdds[[1]]$fixed_pars)) {
-      dfs <- parCon[1:M]
+      df <- parCon[1:M]
       parCon <- parCon[-(1:M)]
     } else {
-      dfs <- rep(sdds[[1]]$fixed_pars$df, M)
+      df <- rep(sdds[[1]]$fixed_pars$df, M)
     }
   } else {
-    dfs <- NULL
+    df <- NULL
   }
   if (hierarchy) {
     N <- controls[["states"]][2]
-    Gammas_star <- list()
-    mus_star <- list()
-    sigmas_star <- list()
+    Gamma_star <- list()
+    mu_star <- list()
+    sigma_star <- list()
     if (sdds[[2]]$distr_class == "t") {
-      dfs_star <- list()
+      df_star <- list()
     } else {
-      dfs_star <- NULL
+      df_star <- NULL
     }
     for (s in 1:M) {
-      Gammas_star[[s]] <- gammasCon2Gamma(parCon[1:((N - 1) * N)], N)
+      Gamma_star[[s]] <- gammasCon2Gamma(parCon[1:((N - 1) * N)], N)
       parCon <- parCon[-(1:((N - 1) * N))]
       if (!"mu" %in% names(sdds[[2]]$fixed_pars)) {
-        mus_star[[s]] <- parCon[1:N]
+        mu_star[[s]] <- parCon[1:N]
         parCon <- parCon[-(1:N)]
       } else {
-        mus_star[[s]] <- rep(sdds[[2]]$fixed_pars$mu, M)
+        mu_star[[s]] <- rep(sdds[[2]]$fixed_pars$mu, M)
       }
       if (!"sigma" %in% names(sdds[[2]]$fixed_pars)) {
-        sigmas_star[[s]] <- parCon[1:N]
+        sigma_star[[s]] <- parCon[1:N]
         parCon <- parCon[-(1:N)]
       } else {
-        sigmas_star[[s]] <- rep(sdds[[2]]$fixed_pars$sigma, M)
+        sigma_star[[s]] <- rep(sdds[[2]]$fixed_pars$sigma, M)
       }
       if (sdds[[2]]$distr_class == "t") {
         if (!"df" %in% names(sdds[[2]]$fixed_pars)) {
-          dfs_star[[s]] <- parCon[1:N]
+          df_star[[s]] <- parCon[1:N]
           parCon <- parCon[-(1:N)]
         } else {
-          dfs_star[[s]] <- rep(sdds[[2]]$fixed_pars$df, M)
+          df_star[[s]] <- rep(sdds[[2]]$fixed_pars$df, M)
         }
       }
     }
   } else {
-    Gammas_star <- NULL
-    mus_star <- NULL
-    sigmas_star <- NULL
-    dfs_star <- NULL
+    Gamma_star <- NULL
+    mu_star <- NULL
+    sigma_star <- NULL
+    df_star <- NULL
   }
   par <- fHMM_parameters(
     controls = controls,
-    Gamma = Gamma, mus = mus, sigmas = sigmas, dfs = dfs,
-    Gammas_star = Gammas_star, mus_star = mus_star,
-    sigmas_star = sigmas_star, dfs_star = dfs_star
+    Gamma = Gamma, mu = mu, sigma = sigma, df = df,
+    Gamma_star = Gamma_star, mu_star = mu_star,
+    sigma_star = sigma_star, df_star = df_star
   )
   return(par)
 }

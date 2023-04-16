@@ -9,15 +9,15 @@ fHMM_parameters(
   controls = list(),
   hierarchy = FALSE,
   states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "t(df = Inf)" else c("t(df = Inf)", "t(df = Inf)"),
+  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
   Gamma = NULL,
-  mus = NULL,
-  sigmas = NULL,
-  dfs = NULL,
-  Gammas_star = NULL,
-  mus_star = NULL,
-  sigmas_star = NULL,
-  dfs_star = NULL,
+  mu = NULL,
+  sigma = NULL,
+  df = NULL,
+  Gamma_star = NULL,
+  mu_star = NULL,
+  sigma_star = NULL,
+  df_star = NULL,
   seed = NULL,
   scale_par = c(1, 1)
 )
@@ -62,22 +62,22 @@ entry corresponds to the fine-scale layer.
 By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
 
-\item{sdds}{A \code{character}, specifying the state-dependent distribution.
-One of
+\item{sdds}{A \code{character}, specifying the state-dependent distribution. One of
 \itemize{
+\item \code{"normal"} (the normal distribution),
+\item \code{"lognormal"} (the log-normal distribution),
 \item \code{"t"} (the t-distribution),
 \item \code{"gamma"} (the gamma distribution),
-\item \code{"lnorm"} (the log-normal distribution),
 \item \code{"poisson"} (the Poisson distribution).
 }
 
 The distribution parameters
 \itemize{
 \item mean \code{mu},
-\item standard deviation \code{sigma} (not for Poisson distribution),
-\item degrees of freedom \code{df} (only for t-distribution),
+\item standard deviation \code{sigma} (not for the Poisson distribution),
+\item degrees of freedom \code{df} (only for the t-distribution),
 }
-can be fixed via, e.g., \code{"t(df = Inf)"} or
+can be fixed via, e.g., \code{"t(df = 1)"} or
 \code{"gamma(mu = 0, sigma = 1)"}.
 To fix different values of a parameter for different states, separate by
 "|", e.g. \code{"poisson(mu = 1|2|3)"}.
@@ -86,48 +86,47 @@ If \code{hierarchy = TRUE}, \code{sdds} must be a \code{vector} of length 2.
 The first entry corresponds to the coarse-scale layer, while the second entry
 corresponds to the fine-scale layer.
 
-By default, \code{sdds = "t(df = Inf)"} (the normal distribution) if
-\code{hierarchy = FALSE} and \code{sdds = c("t(df = Inf)", "t(df = Inf)")}
-if \code{hierarchy = TRUE}.
+By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
+\code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.
 
 See also \code{\link{fHMM_sdds}} for more details.}
 
-\item{Gamma, Gammas_star}{A transition probability \code{matrix}.
+\item{Gamma, Gamma_star}{A transition probability \code{matrix}.
 
 It should have dimension \code{states[1]}.
 
-\code{Gammas_star} is a \code{list} of fine-scale transition probability
+\code{Gamma_star} is a \code{list} of fine-scale transition probability
 matrices. The \code{list} must be of length \code{states[1]}.
 Each transition probability matrix must be of dimension \code{states[2]}.}
 
-\item{mus, mus_star}{A \code{numeric} vector of expected values for the state-dependent
+\item{mu, mu_star}{A \code{numeric} vector of expected values for the state-dependent
 distribution in the different states.
 
-For the gamma- or Poisson-distribution, \code{mus} must be positive.
+For the gamma- or Poisson-distribution, \code{mu} must be positive.
 
 It should have length \code{states[1]}.
 
-\code{mus_star} is a \code{list} of \code{vectors} with fine-scale
+\code{mu_star} is a \code{list} of \code{vectors} with fine-scale
 expectations. The \code{list} must be of length \code{states[1]}.
 Each \code{vector} must be of length \code{states[2]}.}
 
-\item{sigmas, sigmas_star}{A positive \code{numeric} vector of standard deviations for the
+\item{sigma, sigma_star}{A positive \code{numeric} vector of standard deviations for the
 state-dependent distribution in the different states.
 
 It should have length \code{states[1]}.
 
-\code{sigmas_star} is a \code{list} of \code{vectors} with fine-scale
+\code{sigma_star} is a \code{list} of \code{vectors} with fine-scale
 standard deviations. The \code{list} must be of length \code{states[1]}.
 Each vector must be of length \code{states[2]}.}
 
-\item{dfs, dfs_star}{A positive \code{numeric} vector of degrees of freedom for the
+\item{df, df_star}{A positive \code{numeric} vector of degrees of freedom for the
 state-dependent distribution in the different states.
 
 It should have length \code{states[1]}.
 
 Only relevant in case of a state-dependent t-distribution.
 
-\code{dfs_star} is a \code{list} of \code{vectors} with fine-scale
+\code{df_star} is a \code{list} of \code{vectors} with fine-scale
 degrees of freedom. The \code{list} must be of length \code{states[1]}.
 Each vector must be of length \code{states[2]}.
 Only relevant in case of a fine-scale state-dependent t-distribution.}
@@ -142,8 +141,8 @@ By default, \code{seed = NULL} (i.e., no seed).}
 expectations and standard deviations.
 
 The first entry is the scale for
-\code{mus} and \code{sigmas}, the second entry is the scale for
-\code{mus_star} and \code{sigmas_star} (if any).}
+\code{mu} and \code{sigma}, the second entry is the scale for
+\code{mu_star} and \code{sigma_star} (if any).}
 
 \item{x}{An object of class \code{fHMM_parameters}.}
 

@@ -459,7 +459,9 @@ read_data <- function(controls) {
 #'
 #' @importFrom utils head
 
-simulate_data <- function(controls, true_parameters, seed = NULL) {
+simulate_data <- function(
+    controls, true_parameters, seed = NULL
+  ) {
   
   ### check inputs
   if (!inherits(controls, "fHMM_controls")) {

@@ -19,10 +19,10 @@ A \code{list} with the elements
 \item \code{"distr_class"}, a \code{character} which defines the
 distribution class and can be one of
 \itemize{
-\item \code{"norm"} (normal distribution),
+\item \code{"normal"} (normal distribution),
+\item \code{"lognormal"} (log-normal distribution),
 \item \code{"t"} (t-distribution),
 \item \code{"gamma"} (gamma distribution),
-\item \code{"lnorm"} (log-normal distribution),
 \item \code{"poisson"} (poisson distribution),
 }
 \item \code{"label"}, a \code{character} label for the specified
