@@ -16,31 +16,27 @@ coverage](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg
 
 The {fHMM} R package allows for the detection and characterization of
 financial market regimes in time series data by applying hidden Markov
-models (HMMs). The [detailed
-documentation](https://loelschlaeger.de/fHMM/articles/) outlines the
-functionality and the model formulation. Below, we provide an initial
-application to the German stock index
+models (HMMs). The [vignettes](https://loelschlaeger.de/fHMM/articles/)
+outline the package functionality and the model formulation in detail.
+Below, we provide an initial application to the German stock index
 [DAX](https://en.wikipedia.org/wiki/DAX).
 
 ## Key package features
 
-- fitting HMMs and the hierarchical extension for analyzing time series
-  data
+- fitting (hierarchical) HMMs for the analysis of time series data
 
-- selecting from a range of state-dependent distributions, including the
-  normal, log-normal, t, gamma, and Poisson distribution
+- tailored to financial applications, but versatile enough to be applied
+  in other fields as well
+
+- different state-dependent distributions, including the (log-) normal,
+  t, gamma, and Poisson
 
 - state decoding, analysis of pseudo-residuals, model comparison, and
-  predictions
-
-- tailored for financial applications, but versatile enough to be
-  applied in other fields as well
-
-- downloading stock market data from Yahoo Finance
+  prediction
 
 ## Installation
 
-You can install the released version of {fHMM} from
+You can install the released package version from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
@@ -80,7 +76,7 @@ The package has a build-in function to download financial data from
 [Yahoo Finance](https://finance.yahoo.com/):
 
 ``` r
-dax <- download_data(symbol = "^GDAXI", file = NULL, verbose = FALSE)
+dax <- download_data(symbol = "^GDAXI")
 ```
 
 We first need to define the model:
