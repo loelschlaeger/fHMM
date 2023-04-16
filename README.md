@@ -16,11 +16,27 @@ coverage](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg
 
 The {fHMM} R package allows for the detection and characterization of
 financial market regimes in time series data by applying hidden Markov
-Models (HMMs). The [detailed
+models (HMMs). The [detailed
 documentation](https://loelschlaeger.de/fHMM/articles/) outlines the
 functionality and the model formulation. Below, we provide an initial
 application to the German stock index
 [DAX](https://en.wikipedia.org/wiki/DAX).
+
+## Key package features
+
+- fitting HMMs and the hierarchical extension for analyzing time series
+  data
+
+- selecting from a range of state-dependent distributions, including the
+  normal, log-normal, t, gamma, and Poisson distribution
+
+- state decoding, analysis of pseudo-residuals, model comparison, and
+  predictions
+
+- tailored for financial applications, but versatile enough to be
+  applied in other fields as well
+
+- downloading stock market data from Yahoo Finance
 
 ## Installation
 
