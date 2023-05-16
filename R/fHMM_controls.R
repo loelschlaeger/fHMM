@@ -674,15 +674,6 @@ validate_controls <- function(controls) {
     }
   }
   if (hierarchy) {
-    if (!(all(is_number(controls[["states"]], int = TRUE)) && 
-          length(controls[["states"]]) == 2 && 
-          all(controls[["states"]] >= 2))) {
-      stop(
-        "The control 'states' must be a vector of length 2.",
-        "It must only contain integers greater or equal 2.",
-        call. = FALSE
-      )
-    }
     controls[["sdds"]] <- fHMM_sdds(
       sdds = controls[["sdds"]], 
       states = controls[["states"]]
@@ -726,12 +717,6 @@ validate_controls <- function(controls) {
       }
     }
   } else {
-    if (!(is_number(controls[["states"]], int = TRUE) && 
-          length(controls[["states"]]) == 1 && 
-          controls[["states"]] >= 2)) {
-      stop("The control 'states' must be an integer greater or equal 2.",
-           call. = FALSE)
-    }
     controls[["sdds"]] <- fHMM_sdds(
       sdds = controls[["sdds"]], 
       states = controls[["states"]]

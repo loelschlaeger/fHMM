@@ -125,7 +125,7 @@ test_that("input checks for setting controls work", {
         "states" = 1:3
       )
     ),
-    "The control 'states' must be a vector of length 2"
+    "The control 'states' must be a vector of length 1 or 2"
   )
   expect_error(
     set_controls(
