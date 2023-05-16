@@ -5,7 +5,10 @@
 \alias{fHMM}
 \title{fHMM: Fitting Hidden Markov Models to Financial Data}
 \description{
-This package provides tools for modeling financial data via
+The \{fHMM\} package provides tools for modeling financial data with
 the (hierarchical) hidden Markov model.
+
+Please see the \href{https://loelschlaeger.de/fHMM}{package website}
+for more details.
 }
 \keyword{internal}
