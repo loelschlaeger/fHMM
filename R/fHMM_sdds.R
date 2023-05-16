@@ -8,27 +8,10 @@
 #'
 #' @return
 #' An object of class \code{"fHMM_sdds"}, which is a \code{list} of length 
-#' \code{length(sdds)}. Each element again is a \code{list}, containing
-#' \itemize{
-#'   \item \code{"distr_class"}, a \code{character} which defines the 
-#'   distribution class and can be one of
-#'   \itemize{
-#'     \item \code{"normal"} (normal distribution),
-#'     \item \code{"lognormal"} (log-normal distribution),
-#'     \item \code{"t"} (t-distribution),
-#'     \item \code{"gamma"} (gamma distribution),
-#'     \item \code{"poisson"} (poisson distribution),
-#'   }
-#'   \item \code{"label"}, a \code{character} label for the specified 
-#'         distribution,
-#'   \item \code{"fixed_pars"}, a \code{list} of fixed parameter values,
-#'   \item \code{"sample"}, a \code{function} to sample from the state-dependent
-#'         distribution,
-#'   \item \code{"density"}, a \code{function} to compute the density of the 
-#'         state-dependent distribution,
-#'   \item \code{"distribution"}, a \code{function} to compute the cumulative
-#'         density of the state-dependent distribution.
-#' }
+#' \code{length(sdds)}, i.e., of length 2 in the hierarchical case and 1 else.
+#' 
+#' Each \code{list} element again is a \code{list}, containing the output of
+#' \code{\link{decode_sdd}}.
 #'
 #' @examples
 #' \dontrun{
@@ -41,6 +24,8 @@
 #' @keywords internal
 
 fHMM_sdds <- function(sdds, states) {
+  
+  ### input checks
   if (!is.atomic(states)) {
     stop(
       "The control 'states' must be a vector.", 
@@ -70,6 +55,7 @@ fHMM_sdds <- function(sdds, states) {
     )
   }
   if (inherits(sdds, "fHMM_sdds")) {
+    ### allow for re-definition of already specified 'fHMM_sdds' object
     sdds <- sapply(sdds, function(x) x$label)
   }
   if (!is.character(sdds) || length(sdds) != ifelse(hierarchy, 2, 1)) {
@@ -79,9 +65,11 @@ fHMM_sdds <- function(sdds, states) {
       call. = FALSE
     )
   }
+  
+  ### define the 'fHMM_sdds' object
   out <- list()
   for (i in if (hierarchy) 1:2 else 1) {
-    out[[i]] <- decode_sdd(sdd = sdds[i], states = states[i])
+    out[[i]] <- decode_sdd(sdd = sdds[i], state = states[i])
   }
   class(out) <- c("fHMM_sdds", "list")
   return(out)
@@ -96,7 +84,7 @@ fHMM_sdds <- function(sdds, states) {
 #' @param sdd
 #' A single specification for the \code{"sdds"} control,
 #' see \code{\link{set_controls}}.
-#' @param states
+#' @param state
 #' A single specification for the \code{"states"} control,
 #' see \code{\link{set_controls}}.
 #' 
@@ -125,16 +113,15 @@ fHMM_sdds <- function(sdds, states) {
 #' 
 #' @examples 
 #' \dontrun{
-#' decode_sdd("t(mu = 1)", states = 3)
+#' decode_sdd(sdd = "t(mu = 1)", state = 3)
 #' }
 #' 
 #' @keywords internal
 
-decode_sdd <- function(sdd, states) {
-  stopifnot(is.character(sdd), length(sdd) == 1)
+decode_sdd <- function(sdd, state) {
   stopifnot(
-    is.numeric(states), length(states) == 1, 
-    is_number(states, int = TRUE, pos = TRUE), states >= 2
+    is.character(sdd), length(sdd) == 1, is.numeric(state), length(state) == 1, 
+    is_number(state, int = TRUE, pos = TRUE), state >= 2
   )
   sdd_tws <- gsub(" ", "", sdd)
   sdd_tws_split <- unlist(strsplit(sdd_tws, split = "[()]"))
@@ -143,8 +130,11 @@ decode_sdd <- function(sdd, states) {
     stop(
       paste0(
         "Currently, only the following distributions are implemented:\n",
-        "normal- ('normal'), log-normal- ('lognormal'), t- ('t'),",
-        "gamma- ('gamma'), and Poisson- ('poisson') distribution."
+        "- normal distribution ('normal')\n", 
+        "- log-normal distribution ('lognormal')\n", 
+        "- t-distribution ('t')\n",
+        "- Gamma distribution ('gamma')\n", 
+        "- Poisson distribution ('poisson')"
       ), 
       call. = FALSE
     )
@@ -214,47 +204,40 @@ decode_sdd <- function(sdd, states) {
   )
   for (p in seq_along(fixed_pars)) {
     if (length(fixed_pars[[p]]) == 1) {
-      fixed_pars[[p]] <- rep(fixed_pars[[p]], states)
+      fixed_pars[[p]] <- rep(fixed_pars[[p]], state)
     }
-    if (length(fixed_pars[[p]]) != states) {
+    if (length(fixed_pars[[p]]) != state) {
       stop(
         "Number of fixed parameters in '", label, 
-        "' does not fit the number of states (", states, ").",
+        "' does not fit the number of states (", state, ").",
         call. = FALSE
       )
     }
   }
   list(
-    "distr_class" = distr_class,
-    "name" = distr_class, # TODO: REMOVE LATER
-    "label" = label,
-    "fixed_pars" = fixed_pars,
-    "pars" = fixed_pars,  # TODO: REMOVE LATER
-    "sample" = build_sdd_function(distr_class, "sample"),
-    "density" = build_sdd_function(distr_class, "density"),
+    "distr_class"  = distr_class,
+    "name"         = distr_class, # TODO: REMOVE LATER
+    "label"        = label,
+    "fixed_pars"   = fixed_pars,
+    "pars"         = fixed_pars,  # TODO: REMOVE LATER
+    "sample"       = build_sdd_function(distr_class, "sample"),
+    "density"      = build_sdd_function(distr_class, "density"),
     "distribution" = build_sdd_function(distr_class, "distribution")
   )
 }
 
-#' Build sampling, density, and distribution function for state-dependent 
+#' Build sampling, density, or distribution function for state-dependent 
 #' distributions
 #'
 #' @description 
 #' This helper function builds a \code{function} for sampling, density 
-#' computation, and cumulative distribution for a state-dependent distribution.
+#' computation, or cumulative distribution for a state-dependent distribution.
 #' 
 #' @param distr_class
 #' A \code{character} which defines the class of the state-dependent 
-#' distribution and can be one of
-#' \itemize{
-#'   \item \code{"normal"} (normal distribution),
-#'   \item \code{"lognormal"} (log-normal distribution),
-#'   \item \code{"t"} (t-distribution),
-#'   \item \code{"gamma"} (gamma distribution),
-#'   \item \code{"poisson"} (poisson distribution).
-#' }
+#' distribution, see the output of \code{\link{decode_sdd}}.
 #' @param function_type
-#' A \code{character} which defines the function type and can be one of
+#' A \code{character} which defines the desired function type and can be one of
 #' \itemize{
 #'   \item \code{"sample"} (sampling function),
 #'   \item \code{"density"} (density function),
@@ -268,8 +251,9 @@ decode_sdd <- function(sdd, states) {
 #'   \item the density if \code{function_type = "density"},
 #'   \item the cumulative distribution if \code{function_type = "distribution"},
 #' }
-#' from the state-dependent distribution specified as \code{distr_class} 
-#' and has the arguments
+#' from the state-dependent distribution specified as \code{distr_class}.
+#'  
+#' The returned \code{function} has the arguments
 #' \itemize{
 #'   \item either \itemize{
 #'     \item \code{n}, the number of samples (by default \code{n = 1}),
@@ -277,7 +261,7 @@ decode_sdd <- function(sdd, states) {
 #'     \item \code{q}, the point where to compute the cumulative distribution,
 #'   }
 #'   \item \code{state}, the state index,
-#'   \item \code{...} vectors with parameters for each state, including
+#'   \item \code{...}, vectors with parameters for each state, named
 #'         \code{mu}, \code{sigma}, and \code{df}, for the mean, 
 #'         standard deviation, and degrees of freedom, respectively 
 #'         (if required).
@@ -285,18 +269,22 @@ decode_sdd <- function(sdd, states) {
 #' 
 #' @examples
 #' \dontrun{
-#' sample_poisson_sdd <- build_sdd_function("poisson", "sample")
-#' sample_poisson_sdd(state = 1, mu = c(1, 10))
-#' sample_poisson_sdd(state = 2, mu = c(1, 10))
+#' sample_poisson_sdd <- build_sdd_function(
+#'   distr_class = "poisson", function_type = "sample"
+#' )
+#' sample_poisson_sdd(n = 10, state = 1, mu = c(1, 10))
+#' sample_poisson_sdd(n = 10, state = 2, mu = c(1, 10))
 #' }
 #' 
 #' @keywords internal  
 
 build_sdd_function <- function(distr_class, function_type) {
-  stopifnot(is.character(distr_class), length(distr_class) == 1)
-  stopifnot(distr_class %in% c("normal", "lognormal", "t", "gamma", "poisson"))
-  stopifnot(is.character(function_type), length(function_type) == 1)
-  stopifnot(function_type %in% c("sample", "density", "distribution"))
+  stopifnot(
+    is.character(distr_class), length(distr_class) == 1,
+    distr_class %in% c("normal", "lognormal", "t", "gamma", "poisson"),
+    is.character(function_type), length(function_type) == 1,
+    function_type %in% c("sample", "density", "distribution")
+  )
   sdd_function <- function () {}
   formals(sdd_function) <- if (function_type == "sample") {
     alist(n = 1, state =, ... =)
@@ -307,7 +295,10 @@ build_sdd_function <- function(distr_class, function_type) {
   }
   body(sdd_function)[2] <- as.expression(as.call(quote(
     if (missing(state)) {
-      stop("Which state?", call. = FALSE)
+      stop(
+        "Which state? Please set, e.g., 'state' = 1.", 
+        call. = FALSE
+      )
     }
   )))
   body(sdd_function)[3] <- as.expression(as.call(quote(

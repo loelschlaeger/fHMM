@@ -72,7 +72,7 @@ in more detail below:
 \item \code{horizon}, defines the time horizon,
 \item \code{period}, defines a flexible, periodic fine-scale time horizon,
 \item \code{data}, a \code{list} of controls that define the data,
-\item \code{fit}, a \code{list} of controls that define the fitting,
+\item \code{fit}, a \code{list} of controls that define the model fitting,
 \item \code{seed}, defines a seed for reproducibility,
 \item \code{verbose}, defines whether to print progress messages.
 }

@@ -2,23 +2,16 @@
 % Please edit documentation in R/fHMM_sdds.R
 \name{build_sdd_function}
 \alias{build_sdd_function}
-\title{Build sampling, density, and distribution function for state-dependent
+\title{Build sampling, density, or distribution function for state-dependent
 distributions}
 \usage{
 build_sdd_function(distr_class, function_type)
 }
 \arguments{
 \item{distr_class}{A \code{character} which defines the class of the state-dependent
-distribution and can be one of
-\itemize{
-\item \code{"normal"} (normal distribution),
-\item \code{"lognormal"} (log-normal distribution),
-\item \code{"t"} (t-distribution),
-\item \code{"gamma"} (gamma distribution),
-\item \code{"poisson"} (poisson distribution).
-}}
+distribution, see the output of \code{\link{decode_sdd}}.}
 
-\item{function_type}{A \code{character} which defines the function type and can be one of
+\item{function_type}{A \code{character} which defines the desired function type and can be one of
 \itemize{
 \item \code{"sample"} (sampling function),
 \item \code{"density"} (density function),
@@ -32,8 +25,9 @@ A \code{function} which either returns
 \item the density if \code{function_type = "density"},
 \item the cumulative distribution if \code{function_type = "distribution"},
 }
-from the state-dependent distribution specified as \code{distr_class}
-and has the arguments
+from the state-dependent distribution specified as \code{distr_class}.
+
+The returned \code{function} has the arguments
 \itemize{
 \item either \itemize{
 \item \code{n}, the number of samples (by default \code{n = 1}),
@@ -41,7 +35,7 @@ and has the arguments
 \item \code{q}, the point where to compute the cumulative distribution,
 }
 \item \code{state}, the state index,
-\item \code{...} vectors with parameters for each state, including
+\item \code{...}, vectors with parameters for each state, named
 \code{mu}, \code{sigma}, and \code{df}, for the mean,
 standard deviation, and degrees of freedom, respectively
 (if required).
@@ -49,13 +43,15 @@ standard deviation, and degrees of freedom, respectively
 }
 \description{
 This helper function builds a \code{function} for sampling, density
-computation, and cumulative distribution for a state-dependent distribution.
+computation, or cumulative distribution for a state-dependent distribution.
 }
 \examples{
 \dontrun{
-sample_poisson_sdd <- build_sdd_function("poisson", "sample")
-sample_poisson_sdd(state = 1, mu = c(1, 10))
-sample_poisson_sdd(state = 2, mu = c(1, 10))
+sample_poisson_sdd <- build_sdd_function(
+  distr_class = "poisson", function_type = "sample"
+)
+sample_poisson_sdd(n = 10, state = 1, mu = c(1, 10))
+sample_poisson_sdd(n = 10, state = 2, mu = c(1, 10))
 }
 
 }

@@ -354,10 +354,10 @@ set_controls <- function(
     verbose = TRUE
   ) {
     
-  ### assume that input 'controls' is a 'list'
+  ### check that input 'controls' is a 'list'
   if (!is.list(controls)) {
     stop(
-      "Input 'controls' must be a list or an 'fHMM_controls' object.", 
+      "Input 'controls' must be a list or an object of class 'fHMM_controls'.", 
       call. = FALSE
     )
   }
@@ -376,7 +376,7 @@ set_controls <- function(
     "steptol", "ncluster"
   )
     
-  ### overall
+  ### check for redundant controls overall
   redundant_controls <- setdiff(names(controls), all_controls)
   if (length(redundant_controls) > 0) {
     warning(
@@ -388,7 +388,7 @@ set_controls <- function(
     controls[redundant_controls] <- NULL
   }
   
-  ### data controls
+  ### check for redundant data controls
   if (!is.null(controls[["data"]]) && !identical(controls[["data"]], NA)) {
     if (!is.list(controls[["data"]])) {
       stop(
@@ -425,7 +425,7 @@ set_controls <- function(
     )
   }
   
-  ### fit controls
+  ### check for redundant fit controls
   if (!is.null(controls[["fit"]])) {
     if (!is.list(controls[["fit"]])) {
       stop(

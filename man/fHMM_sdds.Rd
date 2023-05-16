@@ -54,27 +54,10 @@ By default, \code{states = 2} if \code{hierarchy = FALSE} and
 }
 \value{
 An object of class \code{"fHMM_sdds"}, which is a \code{list} of length
-\code{length(sdds)}. Each element again is a \code{list}, containing
-\itemize{
-\item \code{"distr_class"}, a \code{character} which defines the
-distribution class and can be one of
-\itemize{
-\item \code{"normal"} (normal distribution),
-\item \code{"lognormal"} (log-normal distribution),
-\item \code{"t"} (t-distribution),
-\item \code{"gamma"} (gamma distribution),
-\item \code{"poisson"} (poisson distribution),
-}
-\item \code{"label"}, a \code{character} label for the specified
-distribution,
-\item \code{"fixed_pars"}, a \code{list} of fixed parameter values,
-\item \code{"sample"}, a \code{function} to sample from the state-dependent
-distribution,
-\item \code{"density"}, a \code{function} to compute the density of the
-state-dependent distribution,
-\item \code{"distribution"}, a \code{function} to compute the cumulative
-density of the state-dependent distribution.
-}
+\code{length(sdds)}, i.e., of length 2 in the hierarchical case and 1 else.
+
+Each \code{list} element again is a \code{list}, containing the output of
+\code{\link{decode_sdd}}.
 }
 \description{
 This helper function defines state-dependent distributions for the \{fHMM\}

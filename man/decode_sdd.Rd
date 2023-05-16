@@ -4,13 +4,13 @@
 \alias{decode_sdd}
 \title{Decode specification for state-dependent distribution}
 \usage{
-decode_sdd(sdd, states)
+decode_sdd(sdd, state)
 }
 \arguments{
 \item{sdd}{A single specification for the \code{"sdds"} control,
 see \code{\link{set_controls}}.}
 
-\item{states}{A single specification for the \code{"states"} control,
+\item{state}{A single specification for the \code{"states"} control,
 see \code{\link{set_controls}}.}
 }
 \value{
@@ -42,7 +42,7 @@ distribution.
 }
 \examples{
 \dontrun{
-decode_sdd("t(mu = 1)", states = 3)
+decode_sdd(sdd = "t(mu = 1)", state = 3)
 }
 
 }
