@@ -3,7 +3,7 @@
 \name{set_controls}
 \alias{set_controls}
 \alias{print.fHMM_controls}
-\title{Set and validate model specifications}
+\title{Define model specifications}
 \usage{
 set_controls(
   controls = list(),
@@ -47,7 +47,7 @@ in more detail below:
 \item \code{horizon}, defines the time horizon,
 \item \code{period}, defines a flexible, periodic fine-scale time horizon,
 \item \code{data}, a \code{list} of controls that define the data,
-\item \code{fit}, a \code{list} of controls that define the fitting,
+\item \code{fit}, a \code{list} of controls that define the model fitting,
 \item \code{seed}, defines a seed for reproducibility,
 \item \code{verbose}, defines whether to print progress messages.
 }
@@ -303,64 +303,38 @@ By default, \code{verbose = TRUE}.}
 An object of class \code{fHMM_controls}.
 }
 \description{
-This function sets and validates specifications for model estimation with
-the \{fHMM\} package.
-
-It is recommended to set all specifications before fitting the model, but
-they can also be specified in the corresponding functions.
+This function defines specifications for model estimation with the
+\{fHMM\} package.
 }
 \details{
 See the \href{https://loelschlaeger.de/fHMM/articles}{vignette on controls}
 for more details.
 }
 \examples{
-### HMM controls for simulated data
+# 2-state HMM with t-distributions for simulated data
 set_controls(
-  states  = 2,
-  sdds    = "t(mu = 0)",
-  fit     = list("runs" = 50)
+  states = 2,   # the number of states
+  sdds   = "t", # the state-dependent distribution
+  runs   = 50   # the number of optimization runs
 )
 
-### HMM controls with empirical data 
+# 3-state HMM with normal distributions for the DAX closing prices
+dax <- download_data("^GDAXI", verbose = FALSE)
 set_controls(
-  states  = 3,
-  sdds    = "lognormal",
-  data    = list(
-    "file"        = download_data("^GDAXI", verbose = FALSE), 
-    "date_column" = "Date", 
-    "data_column" = "Adj.Close"
-  )
+  states      = 3,
+  sdds        = "normal",
+  file        = dax,      # the data set
+  date_column = "Date",   # the column with the dates
+  data_column = "Close"   # the column with the data
 )
 
-### HMM controls with empirical data from .csv-file
+# hierarchical HMM
 set_controls(
-  states  = 4,
-  sdds    = "t",
-  data    = list(
-    "file"        = system.file("extdata", "dax.csv", package = "fHMM"), 
-    "date_column" = "Date", 
-    "data_column" = "Close",
-    "logreturns"  = TRUE
-  )
-)
-
-### Hierarchical HMM controls for simulated data
-set_controls(
-  hierarchy = TRUE,
-  states    = c(3, 2)
-)
-
-### Hierarchical HMM controls with empirical data
-set_controls(
-  hierarchy = TRUE,
-  states  = c(3, 2),
-  sdds    = c("t", "t"),
-  data    = list(
-    "file"        = list(dax, vw), 
-    "date_column" = c("Date", "Date"), 
-    "data_column" = c("Close", "Close"),
-    "logreturns"  = c(TRUE, TRUE)
-  )
+  hierarchy = TRUE,                  # defines a hierarchy
+  states    = c(3, 2),               # coarse scale and fine scale states
+  sdds      = c("gamma", "poisson"), # distributions for both layers
+  horizon   = c(100, NA),            # 100 simulated coarse-scale data points 
+  period    = "m"                    # monthly simulated fine-scale data
 )
 
 }

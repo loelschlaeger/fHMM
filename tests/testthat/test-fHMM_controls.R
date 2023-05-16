@@ -348,7 +348,7 @@ test_that("checks of controls for empirical HMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "'date_column' in 'data' must be a single character or NA"
+    "'date_column' in 'data' must be a single character"
   )
   controls <- list(
     states = 2,
@@ -362,7 +362,7 @@ test_that("checks of controls for empirical HMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "'data_column' in 'data' must be a single character or NA"
+    "'data_column' in 'data' must be a single character"
   )
   controls <- list(
     states = 2,
@@ -494,7 +494,7 @@ test_that("checks of controls for empirical HHMM work", {
         )
       )
     ),
-    "'horizon' must be a vector of length 2."
+    "'horizon' must be a vector of length 2"
   )
   expect_error(
     set_controls(
@@ -536,7 +536,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'file' in 'data' must be a list of length two."
+    "The control 'file' in 'data' must be a list of length two"
   )
   controls <- list(
     hierarchy = TRUE,
@@ -548,7 +548,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'file' in 'data' must be a list of two data.frame."
+    "The control 'file' in 'data' must be a list of two data.frame"
   )
   controls <- list(
     hierarchy = TRUE,
@@ -560,7 +560,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'file' in 'data' must be a character vector of length two."
+    "The control 'file' in 'data' must be a character of length two"
   )
   controls <- list(
     hierarchy = TRUE,
@@ -574,7 +574,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'date_column' in 'data' must be a vector of length two."
+    "'date_column' in 'data' must of length two"
   )
   controls <- list(
     hierarchy = TRUE,
@@ -633,7 +633,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The controls 'merge' in 'data' must merge a numeric vector"
+    "'merge' in 'data' must merge a vector into a single numeric"
   )
   controls <- list(
     hierarchy = TRUE,
@@ -793,6 +793,7 @@ test_that("checks of controls for empirical HHMM work", {
         )
       )
     ),
-    "'date_column' in 'data' must be a vector of two characters"
+    "'date_column' in 'data' must be a character of length two"
   )
 })
+

@@ -1,11 +1,8 @@
-#' Set and validate model specifications
+#' Define model specifications
 #' 
 #' @description
-#' This function sets and validates specifications for model estimation with
-#' the \{fHMM\} package.
-#'
-#' It is recommended to set all specifications before fitting the model, but 
-#' they can also be specified in the corresponding functions.
+#' This function defines specifications for model estimation with the 
+#' \{fHMM\} package.
 #' 
 #' @details
 #' See the [vignette on controls](https://loelschlaeger.de/fHMM/articles) 
@@ -23,7 +20,7 @@
 #'   \item \code{horizon}, defines the time horizon,
 #'   \item \code{period}, defines a flexible, periodic fine-scale time horizon,
 #'   \item \code{data}, a \code{list} of controls that define the data,
-#'   \item \code{fit}, a \code{list} of controls that define the fitting,
+#'   \item \code{fit}, a \code{list} of controls that define the model fitting,
 #'   \item \code{seed}, defines a seed for reproducibility,
 #'   \item \code{verbose}, defines whether to print progress messages.
 #' }
@@ -299,53 +296,30 @@
 #' An object of class \code{fHMM_controls}.
 #' 
 #' @examples
-#' ### HMM controls for simulated data
+#' # 2-state HMM with t-distributions for simulated data
 #' set_controls(
-#'   states  = 2,
-#'   sdds    = "t(mu = 0)",
-#'   fit     = list("runs" = 50)
+#'   states = 2,   # the number of states
+#'   sdds   = "t", # the state-dependent distribution
+#'   runs   = 50   # the number of optimization runs
 #' )
 #' 
-#' ### HMM controls with empirical data 
+#' # 3-state HMM with normal distributions for the DAX closing prices
+#' dax <- download_data("^GDAXI", verbose = FALSE)
 #' set_controls(
-#'   states  = 3,
-#'   sdds    = "lognormal",
-#'   data    = list(
-#'     "file"        = download_data("^GDAXI", verbose = FALSE), 
-#'     "date_column" = "Date", 
-#'     "data_column" = "Adj.Close"
-#'   )
-#' )
-#' 
-#' ### HMM controls with empirical data from .csv-file
-#' set_controls(
-#'   states  = 4,
-#'   sdds    = "t",
-#'   data    = list(
-#'     "file"        = system.file("extdata", "dax.csv", package = "fHMM"), 
-#'     "date_column" = "Date", 
-#'     "data_column" = "Close",
-#'     "logreturns"  = TRUE
-#'   )
+#'   states      = 3,
+#'   sdds        = "normal",
+#'   file        = dax,      # the data set
+#'   date_column = "Date",   # the column with the dates
+#'   data_column = "Close"   # the column with the data
 #' )
 #'
-#' ### Hierarchical HMM controls for simulated data
+#' # hierarchical HMM
 #' set_controls(
-#'   hierarchy = TRUE,
-#'   states    = c(3, 2)
-#' )
-#' 
-#' ### Hierarchical HMM controls with empirical data
-#' set_controls(
-#'   hierarchy = TRUE,
-#'   states  = c(3, 2),
-#'   sdds    = c("t", "t"),
-#'   data    = list(
-#'     "file"        = list(dax, vw), 
-#'     "date_column" = c("Date", "Date"), 
-#'     "data_column" = c("Close", "Close"),
-#'     "logreturns"  = c(TRUE, TRUE)
-#'   )
+#'   hierarchy = TRUE,                  # defines a hierarchy
+#'   states    = c(3, 2),               # coarse scale and fine scale states
+#'   sdds      = c("gamma", "poisson"), # distributions for both layers
+#'   horizon   = c(100, NA),            # 100 simulated coarse-scale data points 
+#'   period    = "m"                    # monthly simulated fine-scale data
 #' )
 #' 
 #' @export
@@ -729,7 +703,11 @@ validate_controls <- function(controls) {
       )
     } 
     if (!all(is.na(controls[["horizon"]]))) {
-      if (!all(is_number(controls[["horizon"]][!is.na(controls[["horizon"]])], int = TRUE, pos = TRUE))) {
+      if (!all(
+        is_number(
+          controls[["horizon"]][!is.na(controls[["horizon"]])], int = TRUE, 
+          pos = TRUE)
+        )) {
         stop(
           "The control 'horizon' must be an integer vector of length 2.",
           call. = FALSE
@@ -803,19 +781,20 @@ validate_controls <- function(controls) {
         }
         if (length(controls[["data"]][["file"]]) != 2) {
           stop(
-            "The control 'file' in 'data' must be a character vector of length two.",
+            "The control 'file' in 'data' must be a character of length two.",
             call. = FALSE
           )
         }
       } else {
         stop(
-          "The control 'file' in 'data' is misspecified, please see the documentation.",
+          "The control 'file' in 'data' is misspecified. ",
+          "Please see the documentation.",
           call. = FALSE
         )
       }
       if (length(controls[["data"]][["date_column"]]) != 2) {
         stop(
-          "The control 'date_column' in 'data' must be a vector of length two.\n",
+          "The control 'date_column' in 'data' must of length two.\n",
           "Alternatively, it can be a vector of two NA's.",
           call. = FALSE
         )
@@ -825,7 +804,7 @@ validate_controls <- function(controls) {
              all(is.character(controls[["data"]][["date_column"]])))
             )) {
         stop(
-          "The control 'date_column' in 'data' must be a vector of two characters.\n",
+          "'date_column' in 'data' must be a character of length two.\n",
           "Alternatively, it can be a vector of two NA's.",
           call. = FALSE
         )
@@ -834,7 +813,7 @@ validate_controls <- function(controls) {
             is.character(controls[["data"]][["data_column"]]) && 
             length(controls[["data"]][["data_column"]]) == 2)) {
         stop(
-          "The control 'data_column' in 'data' must be a character vector of length two.",
+          "'data_column' in 'data' must be a character vector of length two.",
           call. = FALSE
         )
       }
@@ -847,7 +826,7 @@ validate_controls <- function(controls) {
       if (!(is.logical(controls[["data"]][["logreturns"]]) && 
             length(controls[["data"]][["logreturns"]]) == 2)) {
         stop(
-          "The control 'logreturns' in 'data' must be a boolean vector of length two.",
+          "'logreturns' in 'data' must be a boolean vector of length two.",
           call. = FALSE
         )
       }
@@ -861,7 +840,7 @@ validate_controls <- function(controls) {
       if (inherits(try_merge,"try-error") || !is.numeric(try_merge) || 
           length(try_merge) != 1) {
         stop(
-          "The controls 'merge' in 'data' must merge a numeric vector into a single numeric value.",
+          "'merge' in 'data' must merge a vector into a single numeric.",
           call. = FALSE
         )
       }
@@ -879,7 +858,8 @@ validate_controls <- function(controls) {
         }
       } else {
         stop(
-          "The control 'file' in 'data' is misspecified, please see the documentation.",
+          "The control 'file' in 'data' is misspecified. ", 
+          "Please see the documentation.",
           call. = FALSE
         )
       }
@@ -887,14 +867,14 @@ validate_controls <- function(controls) {
              is.na(controls[["data"]][["date_column"]])) && 
             length(controls[["data"]][["date_column"]]) == 1)) {
         stop(
-          "The control 'date_column' in 'data' must be a single character or NA.",
+          "'date_column' in 'data' must be a single character (or NA).",
           call. = FALSE
         )
       }
       if (!(is.character(controls[["data"]][["data_column"]])) && 
           length(controls[["data"]][["data_column"]]) == 1) {
         stop(
-          "The control 'data_column' in 'data' must be a single character or NA.",
+          "'data_column' in 'data' must be a single character (or NA).",
           call. = FALSE
         )
       }
