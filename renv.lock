@@ -908,10 +908,10 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "1.0.6",
+      "Version": "1.1.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "4ed1f8336c8d52c3e750adcdc57228a7",
+      "Hash": "dc079ccd156cde8647360f473c1fa718",
       "Requirements": []
     },
     "rmarkdown": {
