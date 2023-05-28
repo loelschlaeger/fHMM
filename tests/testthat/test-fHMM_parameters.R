@@ -1,7 +1,7 @@
 test_that("input checks for parameter transformations work", {
   expect_error(
     fHMM_parameters("not_a_controls_object"),
-    "'controls' must be a list or an 'fHMM_controls' object"
+    "'controls' must be a list or an object of class 'fHMM_controls'"
   )
   expect_error(
     fHMM_parameters(scale = c(-1,0)),

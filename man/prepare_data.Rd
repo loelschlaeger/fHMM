@@ -9,9 +9,6 @@ prepare_data(controls, true_parameters = NULL, seed = NULL)
 \arguments{
 \item{controls}{An object of class \code{fHMM_controls}.}
 
-\item{true_parameters}{An object of class \code{fHMM_parameters}, used as simulation parameters.
-By default, \code{true_parameters = NULL}, i.e., sampled true parameters.}
-
 \item{seed}{Set a seed for the data simulation.
 No seed per default.}
 }

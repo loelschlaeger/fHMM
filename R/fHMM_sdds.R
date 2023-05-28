@@ -5,6 +5,9 @@
 #' package.
 #'
 #' @inheritParams set_controls
+#' @param true_parameters
+#' An object of class \code{fHMM_parameters}, used as simulation parameters.
+#' By default, \code{true_parameters = NULL}, i.e., sampled true parameters.
 #'
 #' @return
 #' An object of class \code{"fHMM_sdds"}, which is a \code{list} of length 

@@ -12,11 +12,11 @@ match_all(x, y)
 \item{y}{Another \code{numeric} vector of the same length as \code{x}.}
 }
 \value{
-An \code{integer} vector of length \code{length(x)} with the positions of \code{y}
-in \code{x}.
+An \code{integer} vector of length \code{length(x)} with the positions of
+\code{y} in \code{x}.
 }
 \description{
-This function matches the positions of two numeric vectors as good as possible.
+This function matches the indices of two numeric vectors as good as possible.
 }
 \examples{
 \dontrun{

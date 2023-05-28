@@ -51,6 +51,9 @@ By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \item{x}{An object of class \code{fHMM_controls}.}
 
 \item{...}{Currently not used.}
+
+\item{true_parameters}{An object of class \code{fHMM_parameters}, used as simulation parameters.
+By default, \code{true_parameters = NULL}, i.e., sampled true parameters.}
 }
 \value{
 An object of class \code{"fHMM_sdds"}, which is a \code{list} of length
