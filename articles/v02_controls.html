@@ -99,7 +99,7 @@
 <p>The <a href="https://loelschlaeger.de/fHMM/">fHMM</a> package allows for multiple hidden Markov
 model specifications, including different data transformations,
 state-dependent distributions, and a hierarchical model structure. This
-vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;This vignette was build using R 4.2.3 with the
+vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;This vignette was build using R 4.3.0 with the
 &lt;a href="https://loelschlaeger.de/fHMM/"&gt;fHMM&lt;/a&gt; 1.1.0 package.&lt;/p&gt;'><sup>1</sup></a>
 outlines what and how specifications are possible.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -127,7 +127,7 @@ in the vignette on data management.&lt;/p&gt;'><sup>2</sup></a> <span class="cit
 <span><span class="co">#&gt; Download successful.</span></span>
 <span><span class="co">#&gt; * symbol: ^GDAXI</span></span>
 <span><span class="co">#&gt; * from: 1987-12-30</span></span>
-<span><span class="co">#&gt; * to: 2023-04-05</span></span>
+<span><span class="co">#&gt; * to: 2023-05-26</span></span>
 <span><span class="co">#&gt; * path: /home/runner/work/fHMM/fHMM/vignettes/dax.csv</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="hmms-for-empirical-data">HMMs for empirical data<a class="anchor" aria-label="anchor" href="#hmms-for-empirical-data"></a>
@@ -209,13 +209,13 @@ overview of all possible specifications.</p>
 <td>set_controls</td>
 <td style="text-align: right;">R Documentation</td>
 </tr></table>
-<h2>Set and validate controls</h2>
+<h2 id="set_controls">Set and validate controls</h2>
 
 <h3>Arguments</h3>
 
 <table class="table">
-<tr style="vertical-align: top;">
-<td><code>controls</code></td>
+<tr>
+<td><code id="set_controls_:_controls">controls</code></td>
 <td>
 <p>A <code>list</code> of controls, see below.
 </p>
@@ -399,14 +399,14 @@ A positive <code>numeric</code> value, passed on to <code>nlm</code>.
 </ul>
 </td>
 </tr>
-<tr style="vertical-align: top;">
-<td><code>x</code></td>
+<tr>
+<td><code id="set_controls_:_x">x</code></td>
 <td>
 <p>An object of class <code>fHMM_controls</code>.</p>
 </td>
 </tr>
-<tr style="vertical-align: top;">
-<td><code>...</code></td>
+<tr>
+<td><code id="set_controls_:_...">...</code></td>
 <td>
 <p>Currently not used.</p>
 </td>
