@@ -43,6 +43,7 @@ LinkingTo:
 Suggests:
     parallel,
     doSNOW,
+    devtools,
     rmarkdown,
     knitr,
     testthat (>= 3.0.0),
