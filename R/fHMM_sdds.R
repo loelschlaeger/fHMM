@@ -447,15 +447,9 @@ print.fHMM_sdds <- function(x, ...) {
   if (!inherits(x, "fHMM_sdds")) {
     stop("Not of class 'fHMM_sdds'.", call. = FALSE)
   }
-  if (length(x) == 1) {
-    cat(x[[1]]$label)
-  } else {
-    cat(
-      "coarse-scale: ", x[[1]]$label, 
-      ", fine-scale: ", x[[2]]$label, 
-      sep = ""
-    )
-  }
-  return(invisible(x))
+  cat(
+    "Sdds:", if (length(x) == 1) x[[1]]$label else c(x[[1]]$label, x[[2]]$label)
+  )
+  invisible(x)
 }
 

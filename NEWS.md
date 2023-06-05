@@ -1,12 +1,15 @@
 # fHMM 2.0.0
 
-## Change of function names
+## New names
 
 * `download_data()` -> `download_yahoo()`
 
 ## Change of functionality
 
 * `download_yahoo()` (former `download_data()`) no longer saves a .csv-file but returns the data as a data.frame. Its `verbose` argument is removed because the function no longer prints any messages.
+* The data set ...
+
+## New functionality
 
 # fHMM 1.1.0
 
@@ -19,7 +22,7 @@
 
 # fHMM 1.0.3
 
-* We added the following methods for an `fHMM_model` object: `AIC()`, `BIC()`, `logLik()`, `nobs()`, `npar()`, `residuals()`.
+* Added the following methods for an `fHMM_model` object: `AIC()`, `BIC()`, `logLik()`, `nobs()`, `npar()`, `residuals()`.
 * The log-normal distribution can now be estimated by setting `sdds = "lnorm"` in the `controls` object.
 
 # fHMM 1.0.2
@@ -30,7 +33,7 @@
 
 # fHMM 1.0.1
 
-* In the vignette 'Controls', in the section about example specifications for `controls`, corrected `sdds = "gamma(mu = -1|1)"` to `sdds = "gamma(mu = 0.5|2)"` because mean of the Gamma distribution must be positive.
+* In the vignette on controls, in the section about example specifications for `controls`, corrected `sdds = "gamma(mu = -1|1)"` to `sdds = "gamma(mu = 0.5|2)"` because mean of the Gamma distribution must be positive.
 * Added `digits` argument to `print.fHMM_predict()`.
 * Fixed bug in `reorder_states()` that allowed for misspecification of `state_order`.
 * Added option to `fit_model()` to initialize at the estimates of another model (#73).
@@ -45,8 +48,7 @@
 # fHMM 0.3.0
 
 * Added vignettes.
-* Improved specification of `controls`. 
-* Created a package start-up message.
+* Improved specification of `controls`.
 * Fixed minor bugs.
 
 # fHMM 0.2.0

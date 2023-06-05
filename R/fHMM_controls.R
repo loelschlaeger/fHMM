@@ -1,8 +1,7 @@
 #' Define model specifications
 #' 
 #' @description
-#' This function defines specifications for model estimation with the 
-#' \{fHMM\} package.
+#' This function defines specifications for model estimation.
 #' 
 #' @details
 #' See the [vignette on controls](https://loelschlaeger.de/fHMM/articles) 
@@ -34,7 +33,7 @@
 #' A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
 #'
 #' If \code{hierarchy = TRUE}, some of the other controls must be specified for
-#' both layers.
+#' the coarse-scale and the fine-scale layer.
 #' 
 #' By default, \code{hierarchy = FALSE}.
 #' 
@@ -58,7 +57,7 @@
 #'   \item \code{"poisson"} (the Poisson distribution).
 #' }
 #' 
-#' The distribution parameters 
+#' The distribution parameters, i.e. the 
 #' \itemize{
 #'   \item mean \code{mu},
 #'   \item standard deviation \code{sigma} (not for the Poisson distribution),
@@ -109,18 +108,18 @@
 #'
 #' @param data
 #' Either \code{NA}, in which case data is simulated (the default), or a 
-#' \code{list} of controls specifying the data.
+#' \code{list} of controls specifying the empirical data set.
 #' 
 #' The \code{list} can contain the following elements, which are described 
 #' in more detail below:
 #' \itemize{
-#'   \item \code{file}, defines the data source,
+#'   \item \code{file}, defines the data set,
 #'   \item \code{date_column}, defines the date column,
 #'   \item \code{data_column}, defines the data column,
 #'   \item \code{from}, defines a lower date limit,
 #'   \item \code{to}, defines an upper date limit,
 #'   \item \code{logreturns}, defines a data transformation to log-returns,
-#'   \item \code{merge}, defines the merging for a coarse-scale observation.
+#'   \item \code{merge}, defines the merging for coarse-scale observations.
 #' }
 #' Either none, all, or selected elements can be specified.
 #' 
@@ -129,36 +128,14 @@
 #' Specifications in \code{data} override individual specifications.
 #'
 #' @param file
-#' Either:
-#' \itemize{
-#'   \item A \code{data.frame}, which must have a column named 
-#'         \code{date_column} (with dates) and \code{data_column} (with data). 
-#'         If \code{hierarchy = TRUE}, this \code{data.frame} is used for
-#'         both the coarse- and the fine-scale layer. To have different 
-#'         data sets for these layers, \code{file} can be a \code{list}
-#'         of 2 \code{data.frame}, where the first entry corresponds to the 
-#'         coarse-scale layer and the second entry to the fine-scale layer.
-#'   \item A \code{character}, the path to a .csv-file with data, 
-#'         which must have a column named \code{date_column} (with dates) 
-#'         and \code{data_column} (with observations).
-#'         If \code{hierarchy = TRUE}, this file is used for both the coarse-
-#'         and the fine-scale layer. To have different data sets for these 
-#'         layers, \code{file} can be a \code{vector} of 
-#'         length 2, where the first entry corresponds to the coarse-scale 
-#'         layer, and the second entry to the fine-scale layer.
-#' }
+#' A \code{data.frame} with data and dates for modeling.
 #' 
 #' @param date_column
 #' A \code{character}, the name of the column in \code{file} with dates. 
-#' Can be \code{NA} in which case consecutive integers are used 
+#' Can also be \code{NA} in which case consecutive integers are used 
 #' as time points.
-#'
-#' If \code{hierarchy = TRUE}, \code{date_column} must be a \code{vector} of 
-#' length 2. The first entry corresponds to the coarse-scale layer, while the 
-#' second entry corresponds to the fine-scale layer.
 #' 
-#' By default, \code{date_column = "Date"} if \code{hierarchy = FALSE} and
-#' \code{date_column = c("Date", "Date")} if \code{hierarchy = TRUE}.
+#' By default, \code{date_column = "Date"}.
 #' 
 #' @param data_column
 #' A \code{character}, the name of the column in \code{file} with observations. 
@@ -231,7 +208,8 @@
 #' 
 #' @param runs
 #' An \code{integer}, setting the number of randomly initialized 
-#' optimization runs from which the best one is selected as the final model.
+#' optimization runs of the model likelihood from which the best one is selected
+#' as the final model.
 #'
 #' By default, \code{runs = 100}.
 #'
@@ -264,7 +242,7 @@
 #'
 #' @param print.level
 #' One of \code{0}, \code{1}, and \code{2} to control the verbosity of the 
-#' optimization, passed on to \code{\link[stats]{nlm}}.
+#' numerical likelihood optimization, passed on to \code{\link[stats]{nlm}}.
 #'
 #' By default, \code{print.level = 0}.
 #'
@@ -276,14 +254,13 @@
 #' 
 #' @param ncluster
 #' A positive \code{integer} value, specifying the number of clusters for
-#' parallel optimization runs.
+#' parallel optimization runs, passed on to \code{\link[parallel]{makeCluster}}. 
 #'
 #' By default, \code{ncluster = 1}.
 #'
 #' @param seed
-#' An \code{integer}, a seed for reproducibility (e.g., for data simulation,
-#' parameter sampling, or random initialization of optimization runs), passed 
-#' on to \code{\link{set.seed}}.
+#' An \code{integer}, a seed for reproducibility, passed on to 
+#' \code{\link{set.seed}}.
 #'
 #' By default, \code{seed = NULL} (i.e., no seed).
 #'
@@ -292,8 +269,15 @@
 #'
 #' By default, \code{verbose = TRUE}.
 #' 
-#' @return
+#' @param x,object
 #' An object of class \code{fHMM_controls}.
+#' 
+#' @param ...
+#' Currently not used.
+#' 
+#' @return
+#' An object of class \code{fHMM_controls}, which is a \code{list} that contains
+#' model and estimation specifications.
 #' 
 #' @examples
 #' # 2-state HMM with t-distributions for simulated data
@@ -304,16 +288,15 @@
 #' )
 #' 
 #' # 3-state HMM with normal distributions for the DAX closing prices
-#' dax <- download_data("^GDAXI", verbose = FALSE)
 #' set_controls(
 #'   states      = 3,
 #'   sdds        = "normal",
-#'   file        = dax,      # the data set
-#'   date_column = "Date",   # the column with the dates
-#'   data_column = "Close"   # the column with the data
+#'   file        = download_yahoo("^GDAXI"), # the data set
+#'   date_column = "Date",                   # the column with the dates
+#'   data_column = "Close"                   # the column with the data
 #' )
 #'
-#' # hierarchical HMM
+#' # hierarchical HMM with Gamma and Poisson state distributions
 #' set_controls(
 #'   hierarchy = TRUE,                  # defines a hierarchy
 #'   states    = c(3, 2),               # coarse scale and fine scale states
@@ -323,8 +306,6 @@
 #' )
 #' 
 #' @export
-#' 
-#' @importFrom utils read.csv
 
 set_controls <- function(
     controls = list(), 
@@ -334,8 +315,8 @@ set_controls <- function(
     horizon = if (!hierarchy) 100 else c(100, 30),
     period = if (hierarchy && is.na(horizon[2])) "m" else NA, 
     data = NA,
-    file, 
-    date_column = if (!hierarchy) "Date" else c("Date", "Date"), 
+    file = data.frame(), 
+    date_column = "Date", 
     data_column = if (!hierarchy) "Close" else c("Close", "Close"), 
     from = NA, 
     to = NA, 
@@ -365,30 +346,26 @@ set_controls <- function(
   ### define names of all possible elements in 'controls'
   all_controls <- c(
     "hierarchy", "states", "sdds", "horizon", "period", "data", "fit", "seed",
-    "verbose", "simulated"
+    "verbose"
   )
   data_controls <- c(
-    "file", "date_column", "data_column", "from", "to", "logreturns", "merge",
-    "data_inside"
+    "file", "date_column", "data_column", "from", "to", "logreturns", "merge"
   )
   fit_controls <- c(
     "runs", "origin", "accept", "gradtol", "iterlim", "print.level", 
     "steptol", "ncluster"
   )
     
-  ### check for redundant controls overall
+  ### check for redundant controls
   redundant_controls <- setdiff(names(controls), all_controls)
   if (length(redundant_controls) > 0) {
     warning(
-      "Element(s) ", paste(redundant_controls, collapse = ", "), 
-      " in 'controls' ignored.", 
-      " Did you misspll?",
+      "The following element(s) in 'controls' are ignored, did you misspll?\n", 
+      paste(redundant_controls, collapse = ", "),
       call. = FALSE
     )
     controls[redundant_controls] <- NULL
   }
-  
-  ### check for redundant data controls
   if (!is.null(controls[["data"]]) && !identical(controls[["data"]], NA)) {
     if (!is.list(controls[["data"]])) {
       stop(
@@ -399,9 +376,8 @@ set_controls <- function(
     redundant_data_controls <- setdiff(names(controls[["data"]]), data_controls)
     if (length(redundant_data_controls) > 0) {
       warning(
-        "Element(s) ", paste(redundant_data_controls, collapse = ", "), 
-        " in 'controls$data' ignored.", 
-        " Did you misspll?",
+        "The following element(s) in 'controls$data' are ignored, did you misspll?\n", 
+        paste(redundant_data_controls, collapse = ", "),
         call. = FALSE
       )
       controls[["data"]][redundant_data_controls] <- NULL
@@ -411,9 +387,8 @@ set_controls <- function(
     redundant_data_controls <- setdiff(names(data), data_controls)
     if (length(redundant_data_controls) > 0) {
       warning(
-        "Element(s) ", paste(redundant_data_controls, collapse = ", "), 
-        " in 'data' ignored.", 
-        " Did you misspll?",
+        "The following element(s) in 'data' are ignored, did you misspll?\n", 
+        paste(redundant_data_controls, collapse = ", "),
         call. = FALSE
       )
       data[redundant_data_controls] <- NULL
@@ -424,8 +399,6 @@ set_controls <- function(
       call. = FALSE
     )
   }
-  
-  ### check for redundant fit controls
   if (!is.null(controls[["fit"]])) {
     if (!is.list(controls[["fit"]])) {
       stop(
@@ -436,9 +409,8 @@ set_controls <- function(
     redundant_fit_controls <- setdiff(names(controls[["fit"]]), fit_controls)
     if (length(redundant_fit_controls) > 0) {
       warning(
-        "Element(s) ", paste(redundant_fit_controls, collapse = ", "), 
-        " in 'controls$fit' ignored.", 
-        " Did you misspll?",
+        "The following element(s) in 'controls$fit' are ignored, did you misspll?\n", 
+        paste(redundant_fit_controls, collapse = ", "),
         call. = FALSE
       )
       controls[["fit"]][redundant_fit_controls] <- NULL
@@ -448,9 +420,8 @@ set_controls <- function(
     redundant_fit_controls <- setdiff(names(fit), fit_controls)
     if (length(redundant_fit_controls) > 0) {
       warning(
-        "Element(s) ", paste(redundant_fit_controls, collapse = ", "), 
-        " in 'fit' ignored.", 
-        " Did you misspll?",
+        "The following element(s) in 'fit' are ignored, did you misspll?\n", 
+        paste(redundant_fit_controls, collapse = ", "),
         call. = FALSE
       )
       fit[redundant_fit_controls] <- NULL
@@ -493,36 +464,14 @@ set_controls <- function(
   }
 
   ### set missing 'data' controls
-  simulated <- TRUE
   if (!"data" %in% names(controls)) {
-    controls[["data"]] <- list()
+    controls[["data"]] <- data
   }
-  if (!identical(controls[["data"]], NA)) {
-    if (!is.null(controls[["data"]][["file"]])) {
-      simulated <- FALSE
-    }
-  }
-  if (!identical(data, NA) && length(data) > 0) {
-    simulated <- FALSE
-  }
-  if (!missing(file)) {
-    simulated <- FALSE
-  }
-  if (simulated) {
-    controls[["data"]] <- NA
-    controls[["simulated"]] <- TRUE
-  } else {
-    controls[["simulated"]] <- FALSE
+  simulated <- .simulated_data(controls)
+  if (!simulated) {
     if (!"file" %in% names(controls[["data"]])) {
       if (!"file" %in% names(data)) {
-        if (missing(file)) {
-          stop(
-            "Please specify the 'file' control.", 
-            call. = FALSE
-          )
-        } else {
-          controls[["data"]][["file"]] <- file
-        }
+        controls[["data"]][["file"]] <- file
       } else {
         controls[["data"]][["file"]] <- data[["file"]]
       }
@@ -573,7 +522,7 @@ set_controls <- function(
   
   ### set missing 'fit' controls
   if (!"fit" %in% names(controls)) {
-    controls[["fit"]] <- list()
+    controls[["fit"]] <- fit
   }
   if (!"runs" %in% names(controls[["fit"]])) {
     if (!"runs" %in% names(fit)) {
@@ -636,18 +585,13 @@ set_controls <- function(
   validate_controls(controls)
 }
 
-#' Validate control settings
-#'
-#' @description
-#' This helper function validates control settings.
-#'
-#' @param controls
-#' Either a \code{list} or an object of class \code{fHMM_controls}.
-#' 
-#' @return
-#' The checked input \code{controls}.
-#'
-#' @keywords internal
+.simulated_data <- function(controls) {
+  length(controls[["data"]]) == 1 && 
+    is.atomic(controls[["data"]]) && 
+    is.na(controls[["data"]])
+}
+
+#' @rdname set_controls
 
 validate_controls <- function(controls) {
   
@@ -661,10 +605,6 @@ validate_controls <- function(controls) {
   if (!isTRUE(hierarchy) && !isFALSE(hierarchy)) {
     stop("The control 'hierarchy' must be TRUE or FALSE.", call. = FALSE)
   }
-  simulated <- controls[["simulated"]]
-  if (!isTRUE(simulated) && !isFALSE(simulated)) {
-    stop("The control 'simulated' must be TRUE or FALSE.", call. = FALSE)
-  }
   if (!isTRUE(controls[["verbose"]]) && !isFALSE(controls[["verbose"]])) {
     stop("The control 'verbose' must be TRUE or FALSE.", call. = FALSE)
   }
@@ -673,11 +613,12 @@ validate_controls <- function(controls) {
       stop("The control 'seed' must be an integer.", call. = FALSE)
     }
   }
+  controls[["sdds"]] <- fHMM_sdds(
+    sdds = controls[["sdds"]], 
+    states = controls[["states"]]
+  )
+  simulated <- .simulated_data(controls)
   if (hierarchy) {
-    controls[["sdds"]] <- fHMM_sdds(
-      sdds = controls[["sdds"]], 
-      states = controls[["states"]]
-    )
     if (!simulated) {
       controls[["horizon"]][1] <- NA_integer_
     }
@@ -688,10 +629,7 @@ validate_controls <- function(controls) {
       controls[["horizon"]][2] <- NA_integer_
     }
     if (length(controls[["horizon"]]) != 2) {
-      stop(
-        "The control 'horizon' must be a vector of length 2.",
-        call. = FALSE
-      )
+      stop("The control 'horizon' must be a vector of length 2.", call. = FALSE)
     } 
     if (!all(is.na(controls[["horizon"]]))) {
       if (!all(
@@ -706,7 +644,7 @@ validate_controls <- function(controls) {
       }
     }
     if (!is.na(controls[["horizon"]][2])) {
-      controls[["period"]] <- NA
+      controls[["period"]] <- NA_character_
     }
     if (!is.na(controls[["period"]])) {
       if (!controls[["period"]] %in% c("w", "m", "q", "y")) {
@@ -717,12 +655,8 @@ validate_controls <- function(controls) {
       }
     }
   } else {
-    controls[["sdds"]] <- fHMM_sdds(
-      sdds = controls[["sdds"]], 
-      states = controls[["states"]]
-    )
     if (!simulated) {
-      controls[["horizon"]] <- NA
+      controls[["horizon"]] <- NA_integer_
     } else {
       if (!(length(controls[["horizon"]]) == 1 && 
             is_number(controls[["horizon"]], int = TRUE, pos = TRUE))) {
@@ -730,83 +664,40 @@ validate_controls <- function(controls) {
              call. = FALSE)
       }
     }
-    controls[["period"]] <- NA
+    controls[["period"]] <- NA_character_
   }
   
   ### check 'data' controls
   if (simulated) {
     controls[["data"]] <- NA
   } else {
+    if (!is.data.frame(controls[["data"]][["file"]])) {
+      stop(
+        "The control 'file' in 'data' must be a data.frame.",
+        call. = FALSE
+      )
+    }
+    if (!is.na(controls[["data"]][["from"]])) {
+      controls[["data"]][["from"]] <- check_date(controls[["data"]][["from"]])
+    }
+    if (!is.na(controls[["data"]][["to"]])) {
+      controls[["data"]][["to"]] <- check_date(controls[["data"]][["to"]])
+    }
+    if (!((is.character(controls[["data"]][["date_column"]]) || 
+           is.na(controls[["data"]][["date_column"]])) && 
+          length(controls[["data"]][["date_column"]]) == 1)) {
+      stop(
+        "'date_column' in 'data' must be a single character (or NA).",
+        call. = FALSE
+      )
+    }
     if (hierarchy) {
-      if (is.data.frame(controls[["data"]][["file"]])) {
-        controls[["data"]][["file"]] <- list(
-          "cs" = controls[["data"]][["file"]], 
-          "fs" = controls[["data"]][["file"]]
-        )
-        controls[["data"]][["data_inside"]] <- TRUE
-      } else if (is.list(controls[["data"]][["file"]])) {
-        if (length(controls[["data"]][["file"]]) != 2) {
-          stop(
-            "The control 'file' in 'data' must be a list of length two.",
-            call. = FALSE
-          )
-        }
-        if (!all(sapply(controls[["data"]][["file"]], is.data.frame))) {
-          stop(
-            "The control 'file' in 'data' must be a list of two data.frames.",
-            call. = FALSE
-          )
-        }
-        names(controls[["data"]][["file"]]) <- c("cs", "fs")
-        controls[["data"]][["data_inside"]] <- TRUE
-      } else if (is.character(controls[["data"]][["file"]])) {
-        controls[["data"]][["data_inside"]] <- FALSE
-        if (length(controls[["data"]][["file"]]) == 1) {
-          controls[["data"]][["file"]] <- rep(controls[["data"]][["file"]], 2)
-        }
-        if (length(controls[["data"]][["file"]]) != 2) {
-          stop(
-            "The control 'file' in 'data' must be a character of length two.",
-            call. = FALSE
-          )
-        }
-      } else {
-        stop(
-          "The control 'file' in 'data' is misspecified. ",
-          "Please see the documentation.",
-          call. = FALSE
-        )
-      }
-      if (length(controls[["data"]][["date_column"]]) != 2) {
-        stop(
-          "The control 'date_column' in 'data' must of length two.\n",
-          "Alternatively, it can be a vector of two NA's.",
-          call. = FALSE
-        )
-      }
-      if (!(all(is.na(controls[["data"]][["date_column"]])) || 
-            (all(!is.na(controls[["data"]][["date_column"]])) && 
-             all(is.character(controls[["data"]][["date_column"]])))
-            )) {
-        stop(
-          "'date_column' in 'data' must be a character of length two.\n",
-          "Alternatively, it can be a vector of two NA's.",
-          call. = FALSE
-        )
-      }
-      if (!(all(!is.na(controls[["data"]][["data_column"]])) && 
-            is.character(controls[["data"]][["data_column"]]) && 
+      if (!(is.character(controls[["data"]][["data_column"]]) && 
             length(controls[["data"]][["data_column"]]) == 2)) {
         stop(
           "'data_column' in 'data' must be a character vector of length two.",
           call. = FALSE
         )
-      }
-      if (!is.na(controls[["data"]][["from"]])) {
-        controls[["data"]][["from"]] <- check_date(controls[["data"]][["from"]])
-      }
-      if (!is.na(controls[["data"]][["to"]])) {
-        controls[["data"]][["to"]] <- check_date(controls[["data"]][["to"]])
       }
       if (!(is.logical(controls[["data"]][["logreturns"]]) && 
             length(controls[["data"]][["logreturns"]]) == 2)) {
@@ -817,7 +708,7 @@ validate_controls <- function(controls) {
       }
       if (!is.function(controls[["data"]][["merge"]])) {
         stop(
-          "The control 'merge' in 'data' must be a 'function'.",
+          "The control 'merge' in 'data' must be a function.",
           call. = FALSE
         )
       }
@@ -830,44 +721,12 @@ validate_controls <- function(controls) {
         )
       }
     } else {
-      if (is.data.frame(controls[["data"]][["file"]])) {
-        controls[["data"]][["file"]] <- list(controls[["data"]][["file"]])
-        controls[["data"]][["data_inside"]] <- TRUE
-      } else if (is.character(controls[["data"]][["file"]])) {
-        controls[["data"]][["data_inside"]] <- FALSE
-        if (length(controls[["data"]][["file"]]) != 1) {
-          stop(
-            "The control 'file' in 'data' must be a single character.",
-            call. = FALSE
-          )
-        }
-      } else {
+      if (!(is.character(controls[["data"]][["data_column"]]) && 
+            length(controls[["data"]][["data_column"]]) == 1)) {
         stop(
-          "The control 'file' in 'data' is misspecified. ", 
-          "Please see the documentation.",
+          "'data_column' in 'data' must be a single character.",
           call. = FALSE
         )
-      }
-      if (!((is.character(controls[["data"]][["date_column"]]) || 
-             is.na(controls[["data"]][["date_column"]])) && 
-            length(controls[["data"]][["date_column"]]) == 1)) {
-        stop(
-          "'date_column' in 'data' must be a single character (or NA).",
-          call. = FALSE
-        )
-      }
-      if (!(is.character(controls[["data"]][["data_column"]])) && 
-          length(controls[["data"]][["data_column"]]) == 1) {
-        stop(
-          "'data_column' in 'data' must be a single character (or NA).",
-          call. = FALSE
-        )
-      }
-      if (!is.na(controls[["data"]][["from"]])) {
-        controls[["data"]][["from"]] <- check_date(controls[["data"]][["from"]])
-      }
-      if (!is.na(controls[["data"]][["to"]])) {
-        controls[["data"]][["to"]] <- check_date(controls[["data"]][["to"]])
       }
       if (!(is.logical(controls[["data"]][["logreturns"]])) && 
           length(controls[["data"]][["logreturns"]]) == 1) {
@@ -878,67 +737,23 @@ validate_controls <- function(controls) {
       }
       controls[["data"]][["merge"]] <- NA
     }
-  }
-
-  ### check if data paths and column names are correct
-  if (!simulated) {
+    data <- controls[["data"]][["file"]]
+    if (!is.na(controls[["data"]][["date_column"]])) {
+      if (!controls[["data"]][["date_column"]] %in% colnames(data)) {
+        stop(
+          "Column '", controls[["data"]][["date_column"]], 
+          "' not found in data.frame 'file'.",
+          call. = FALSE
+        )
+      }
+    }
     for (i in if (hierarchy) 1:2 else 1) {
-      if (controls[["data"]][["data_inside"]]) {
-        data <- controls[["data"]][["file"]][[i]]
-        if (!is.na(controls[["data"]][["date_column"]][i])) {
-          if (!controls[["data"]][["date_column"]][i] %in% colnames(data)) {
-            stop(
-              "Date column '", controls[["data"]][["date_column"]][i], 
-              "' not found in supplied data.frame.",
-              call. = FALSE
-            )
-          }
-        }
-        if (!controls[["data"]][["data_column"]][i] %in% colnames(data)) {
-          stop(
-            "Data column '", controls[["data"]][["data_column"]][i], 
-            "' not found in supplied data.frame.",
-            call. = FALSE
-          )
-        }
-      } else {
-        controls[["data"]][["file"]][i] <- suppressWarnings(
-          normalizePath(controls[["data"]][["file"]][i])
+      if (!controls[["data"]][["data_column"]][i] %in% colnames(data)) {
+        stop(
+          "Column '", controls[["data"]][["data_column"]][i], 
+          "' not found in data.frame 'file'.",
+          call. = FALSE
         )
-        if (!file.exists(controls[["data"]][["file"]][i])) {
-          stop(
-            "File '", controls[["data"]][["file"]][i], "' not found.",
-            call. = FALSE
-          )
-        }
-        read_try <- suppressWarnings(
-          try(
-            utils::read.csv(file = controls[["data"]][["file"]][i]), 
-            silent = TRUE
-          )
-        )
-        if (inherits(read_try,"try-error")) {
-          stop(
-            "Unable to read '", controls[["data"]][["file"]][i], "'.",
-            call. = FALSE
-          )
-        }
-        if (!is.na(controls[["data"]][["date_column"]][i])) {
-          if (!controls[["data"]][["date_column"]][i] %in% colnames(read_try)) {
-            stop(
-              "Date column '", controls[["data"]][["date_column"]][i], 
-              "' not found in '", controls[["data"]][["file"]][i], "'.",
-              call. = FALSE
-            )
-          }
-        }
-        if (!controls[["data"]][["data_column"]][i] %in% colnames(read_try)) {
-          stop(
-            "Data column '", controls[["data"]][["data_column"]][i], 
-            "' not found in '", controls[["data"]][["file"]][i], "'.",
-            call. = FALSE
-          )
-        }
       }
     }
   }
@@ -950,7 +765,7 @@ validate_controls <- function(controls) {
       call. = FALSE
     )
   }
-  if (!isTRUE(controls[["fit"]][["origin"]]) &&  
+  if (!isTRUE(controls[["fit"]][["origin"]]) && 
       !isFALSE(controls[["fit"]][["origin"]])) {
     stop(
       "The control 'origin' in 'fit' must be a boolean.",
@@ -966,14 +781,14 @@ validate_controls <- function(controls) {
   }
   if (!all(controls[["fit"]][["accept"]] %in% 1:5)) {
     stop(
-      "The control 'accept' in 'fit' must be vector of integers from 1 to 5.",
+      "The control 'accept' in 'fit' must be a vector of integers from 1 to 5.",
       call. = FALSE
     )
   }
   if (!(length(controls[["fit"]][["gradtol"]]) == 1 && 
         is_number(controls[["fit"]][["gradtol"]], pos = TRUE))) {
     stop(
-      "The control 'gradtol' in 'fit' must be positive numeric value.",
+      "The control 'gradtol' in 'fit' must be a positive numeric value.",
       call. = FALSE
     )
   }
@@ -992,34 +807,36 @@ validate_controls <- function(controls) {
   if (!(length(controls[["fit"]][["steptol"]]) == 1 && 
         is_number(controls[["fit"]][["steptol"]], pos = TRUE))) {
     stop(
-      "The control 'steptol' in 'fit' must be positive numeric value.",
+      "The control 'steptol' in 'fit' must be a positive numeric value.",
       call. = FALSE
     )
   }
   
   ### return validated controls
-  class(controls) <- c("fHMM_controls", "list")
-  return(controls)
+  structure(controls, class = c("fHMM_controls", "list"))
 }
 
 #' @rdname set_controls
-#' @param x
-#' An object of class \code{fHMM_controls}.
-#' @param ...
-#' Currently not used.
 #' @exportS3Method 
 
 print.fHMM_controls <- function(x, ...) {
-  cat("fHMM controls:\n")
-  cat("* hierarchy:", x[["hierarchy"]], "\n")
-  cat("* data type:", ifelse(x[["simulated"]], "simulated", "empirical"), "\n")
-  cat("* number of states:", x[["states"]], "\n")
-  cat("* sdds: ")
+  if (!inherits(x, "fHMM_controls")) {
+    stop("Not an object of class 'fHMM_controls'.", call. = FALSE)
+  }
+  cat("Model:", ifelse(x[["hierarchy"]], "HHMM", "HMM"), "\n")
+  cat("States:", x[["states"]], "\n")
   print(x[["sdds"]])
-  cat("\n")
-  cat(
-    "* number of runs:", x[["fit"]][["runs"]],
-    ifelse(x[["fit"]][["at_true"]], "(initialised at true values)", ""), "\n"
-  )
+  cat("\nData:", ifelse(.simulated_data(x), "simulated", "empirical"), "\n")
   invisible(x)
+}
+
+#' @rdname set_controls
+#' @exportS3Method
+
+summary.fHMM_controls <- function(object, ...) {
+  if (!inherits(x, "fHMM_controls")) {
+    stop("Not an object of class 'fHMM_controls'.", call. = FALSE)
+  }
+  str(object, give.attr = FALSE, give.length = FALSE, no.list = TRUE)
+  invisible(object)
 }

@@ -20,9 +20,8 @@ simulate_markov_chain(
 If not specified, \code{delta} is set to the stationary distribution of
 \code{Gamma}.}
 
-\item{seed}{An \code{integer}, a seed for reproducibility (e.g., for data simulation,
-parameter sampling, or random initialization of optimization runs), passed
-on to \code{\link{set.seed}}.
+\item{seed}{An \code{integer}, a seed for reproducibility, passed on to
+\code{\link{set.seed}}.
 
 By default, \code{seed = NULL} (i.e., no seed).}
 }

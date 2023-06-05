@@ -41,7 +41,7 @@ Specifications in \code{controls} override individual specifications.}
 \item{hierarchy}{A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
 
 If \code{hierarchy = TRUE}, some of the other controls must be specified for
-both layers.
+the coarse-scale and the fine-scale layer.
 
 By default, \code{hierarchy = FALSE}.}
 
@@ -63,7 +63,7 @@ By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \item \code{"poisson"} (the Poisson distribution).
 }
 
-The distribution parameters
+The distribution parameters, i.e. the
 \itemize{
 \item mean \code{mu},
 \item standard deviation \code{sigma} (not for the Poisson distribution),
@@ -116,9 +116,8 @@ parameter values that are used for the data simulation.
 used as simulation parameters.
 By default, \code{true_parameters = NULL}, i.e., sampled true parameters.}
 
-\item{seed}{An \code{integer}, a seed for reproducibility (e.g., for data simulation,
-parameter sampling, or random initialization of optimization runs), passed
-on to \code{\link{set.seed}}.
+\item{seed}{An \code{integer}, a seed for reproducibility, passed on to
+\code{\link{set.seed}}.
 
 By default, \code{seed = NULL} (i.e., no seed).}
 }

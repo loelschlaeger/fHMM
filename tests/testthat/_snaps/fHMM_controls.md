@@ -3,154 +3,88 @@
     Code
       controls
     Output
-      fHMM controls:
-      * hierarchy: FALSE 
-      * data type: simulated 
-      * number of states: 2 
-      * sdds: t()
-      * number of runs: 50  
+      Model: HMM 
+      States: 2 
+      Sdds: t()
+      Data: simulated 
 
 # checks of controls for empirical HMM work
 
     Code
       controls
     Output
-      fHMM controls:
-      * hierarchy: FALSE 
-      * data type: empirical 
-      * number of states: 2 
-      * sdds: t()
-      * number of runs: 100  
-
----
-
-    Code
-      controls
-    Output
-      fHMM controls:
-      * hierarchy: FALSE 
-      * data type: empirical 
-      * number of states: 2 
-      * sdds: t()
-      * number of runs: 100  
+      Model: HMM 
+      States: 2 
+      Sdds: t()
+      Data: empirical 
 
 # checks of controls for simulated HHMM work
 
     Code
       controls
     Output
-      fHMM controls:
-      * hierarchy: TRUE 
-      * data type: simulated 
-      * number of states: 2 2 
-      * sdds: coarse-scale: normal(), fine-scale: normal()
-      * number of runs: 100  
+      Model: HHMM 
+      States: 2 2 
+      Sdds: normal() normal()
+      Data: simulated 
 
 ---
 
     Code
       controls
     Output
-      fHMM controls:
-      * hierarchy: TRUE 
-      * data type: simulated 
-      * number of states: 2 2 
-      * sdds: coarse-scale: normal(), fine-scale: normal()
-      * number of runs: 100  
+      Model: HHMM 
+      States: 2 2 
+      Sdds: normal() normal()
+      Data: simulated 
 
 ---
 
     Code
       controls
     Output
-      fHMM controls:
-      * hierarchy: TRUE 
-      * data type: simulated 
-      * number of states: 2 2 
-      * sdds: coarse-scale: normal(), fine-scale: normal()
-      * number of runs: 100  
+      Model: HHMM 
+      States: 2 2 
+      Sdds: normal() normal()
+      Data: simulated 
 
 ---
 
     Code
       controls
     Output
-      fHMM controls:
-      * hierarchy: TRUE 
-      * data type: simulated 
-      * number of states: 2 2 
-      * sdds: coarse-scale: normal(), fine-scale: normal()
-      * number of runs: 100  
+      Model: HHMM 
+      States: 2 2 
+      Sdds: normal() normal()
+      Data: simulated 
 
 ---
 
     Code
       controls
     Output
-      fHMM controls:
-      * hierarchy: TRUE 
-      * data type: simulated 
-      * number of states: 2 2 
-      * sdds: coarse-scale: normal(), fine-scale: normal()
-      * number of runs: 100  
+      Model: HHMM 
+      States: 2 2 
+      Sdds: normal() normal()
+      Data: simulated 
 
 # checks of controls for empirical HHMM work
 
     Code
       controls
     Output
-      fHMM controls:
-      * hierarchy: TRUE 
-      * data type: empirical 
-      * number of states: 2 2 
-      * sdds: coarse-scale: normal(), fine-scale: normal()
-      * number of runs: 100  
+      Model: HHMM 
+      States: 2 2 
+      Sdds: normal() normal()
+      Data: empirical 
 
 ---
 
     Code
       controls
     Output
-      fHMM controls:
-      * hierarchy: TRUE 
-      * data type: empirical 
-      * number of states: 2 2 
-      * sdds: coarse-scale: normal(), fine-scale: normal()
-      * number of runs: 100  
-
----
-
-    Code
-      controls
-    Output
-      fHMM controls:
-      * hierarchy: TRUE 
-      * data type: empirical 
-      * number of states: 2 2 
-      * sdds: coarse-scale: normal(), fine-scale: normal()
-      * number of runs: 100  
-
----
-
-    Code
-      controls
-    Output
-      fHMM controls:
-      * hierarchy: TRUE 
-      * data type: empirical 
-      * number of states: 2 2 
-      * sdds: coarse-scale: normal(), fine-scale: normal()
-      * number of runs: 100  
-
----
-
-    Code
-      controls
-    Output
-      fHMM controls:
-      * hierarchy: TRUE 
-      * data type: empirical 
-      * number of states: 2 2 
-      * sdds: coarse-scale: normal(), fine-scale: normal()
-      * number of runs: 100  
+      Model: HHMM 
+      States: 2 2 
+      Sdds: normal() normal()
+      Data: empirical 
 

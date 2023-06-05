@@ -19,7 +19,7 @@ fHMM_sdds(sdds, states)
 \item \code{"poisson"} (the Poisson distribution).
 }
 
-The distribution parameters
+The distribution parameters, i.e. the
 \itemize{
 \item mean \code{mu},
 \item standard deviation \code{sigma} (not for the Poisson distribution),
@@ -47,8 +47,6 @@ entry corresponds to the fine-scale layer.
 
 By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
-
-\item{x}{An object of class \code{fHMM_controls}.}
 
 \item{...}{Currently not used.}
 

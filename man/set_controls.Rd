@@ -2,7 +2,9 @@
 % Please edit documentation in R/fHMM_controls.R
 \name{set_controls}
 \alias{set_controls}
+\alias{validate_controls}
 \alias{print.fHMM_controls}
+\alias{summary.fHMM_controls}
 \title{Define model specifications}
 \usage{
 set_controls(
@@ -13,8 +15,8 @@ set_controls(
   horizon = if (!hierarchy) 100 else c(100, 30),
   period = if (hierarchy && is.na(horizon[2])) "m" else NA,
   data = NA,
-  file,
-  date_column = if (!hierarchy) "Date" else c("Date", "Date"),
+  file = data.frame(),
+  date_column = "Date",
   data_column = if (!hierarchy) "Close" else c("Close", "Close"),
   from = NA,
   to = NA,
@@ -33,7 +35,11 @@ set_controls(
   verbose = TRUE
 )
 
+validate_controls(controls)
+
 \method{print}{fHMM_controls}(x, ...)
+
+\method{summary}{fHMM_controls}(object, ...)
 }
 \arguments{
 \item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
@@ -60,7 +66,7 @@ Specifications in \code{controls} override individual specifications.}
 \item{hierarchy}{A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
 
 If \code{hierarchy = TRUE}, some of the other controls must be specified for
-both layers.
+the coarse-scale and the fine-scale layer.
 
 By default, \code{hierarchy = FALSE}.}
 
@@ -82,7 +88,7 @@ By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \item \code{"poisson"} (the Poisson distribution).
 }
 
-The distribution parameters
+The distribution parameters, i.e. the
 \itemize{
 \item mean \code{mu},
 \item standard deviation \code{sigma} (not for the Poisson distribution),
@@ -130,18 +136,18 @@ By default, \code{period = "m"} if \code{hierarchy = TRUE} and
 \code{horizon[2] = NA}, and \code{NA} else.}
 
 \item{data}{Either \code{NA}, in which case data is simulated (the default), or a
-\code{list} of controls specifying the data.
+\code{list} of controls specifying the empirical data set.
 
 The \code{list} can contain the following elements, which are described
 in more detail below:
 \itemize{
-\item \code{file}, defines the data source,
+\item \code{file}, defines the data set,
 \item \code{date_column}, defines the date column,
 \item \code{data_column}, defines the data column,
 \item \code{from}, defines a lower date limit,
 \item \code{to}, defines an upper date limit,
 \item \code{logreturns}, defines a data transformation to log-returns,
-\item \code{merge}, defines the merging for a coarse-scale observation.
+\item \code{merge}, defines the merging for coarse-scale observations.
 }
 Either none, all, or selected elements can be specified.
 
@@ -149,35 +155,13 @@ Unspecified parameters are set to their default values, see below.
 
 Specifications in \code{data} override individual specifications.}
 
-\item{file}{Either:
-\itemize{
-\item A \code{data.frame}, which must have a column named
-\code{date_column} (with dates) and \code{data_column} (with data).
-If \code{hierarchy = TRUE}, this \code{data.frame} is used for
-both the coarse- and the fine-scale layer. To have different
-data sets for these layers, \code{file} can be a \code{list}
-of 2 \code{data.frame}, where the first entry corresponds to the
-coarse-scale layer and the second entry to the fine-scale layer.
-\item A \code{character}, the path to a .csv-file with data,
-which must have a column named \code{date_column} (with dates)
-and \code{data_column} (with observations).
-If \code{hierarchy = TRUE}, this file is used for both the coarse-
-and the fine-scale layer. To have different data sets for these
-layers, \code{file} can be a \code{vector} of
-length 2, where the first entry corresponds to the coarse-scale
-layer, and the second entry to the fine-scale layer.
-}}
+\item{file}{A \code{data.frame} with data and dates for modeling.}
 
 \item{date_column}{A \code{character}, the name of the column in \code{file} with dates.
-Can be \code{NA} in which case consecutive integers are used
+Can also be \code{NA} in which case consecutive integers are used
 as time points.
 
-If \code{hierarchy = TRUE}, \code{date_column} must be a \code{vector} of
-length 2. The first entry corresponds to the coarse-scale layer, while the
-second entry corresponds to the fine-scale layer.
-
-By default, \code{date_column = "Date"} if \code{hierarchy = FALSE} and
-\code{date_column = c("Date", "Date")} if \code{hierarchy = TRUE}.}
+By default, \code{date_column = "Date"}.}
 
 \item{data_column}{A \code{character}, the name of the column in \code{file} with observations.
 
@@ -243,7 +227,8 @@ Unspecified parameters are set to their default values, see below.
 Specifications in \code{fit} override individual specifications.}
 
 \item{runs}{An \code{integer}, setting the number of randomly initialized
-optimization runs from which the best one is selected as the final model.
+optimization runs of the model likelihood from which the best one is selected
+as the final model.
 
 By default, \code{runs = 100}.}
 
@@ -271,7 +256,7 @@ to \code{\link[stats]{nlm}}.
 By default, \code{iterlim = 200}.}
 
 \item{print.level}{One of \code{0}, \code{1}, and \code{2} to control the verbosity of the
-optimization, passed on to \code{\link[stats]{nlm}}.
+numerical likelihood optimization, passed on to \code{\link[stats]{nlm}}.
 
 By default, \code{print.level = 0}.}
 
@@ -281,13 +266,12 @@ to \code{\link[stats]{nlm}}.
 By default, \code{gradtol = 1e-6}.}
 
 \item{ncluster}{A positive \code{integer} value, specifying the number of clusters for
-parallel optimization runs.
+parallel optimization runs, passed on to \code{\link[parallel]{makeCluster}}.
 
 By default, \code{ncluster = 1}.}
 
-\item{seed}{An \code{integer}, a seed for reproducibility (e.g., for data simulation,
-parameter sampling, or random initialization of optimization runs), passed
-on to \code{\link{set.seed}}.
+\item{seed}{An \code{integer}, a seed for reproducibility, passed on to
+\code{\link{set.seed}}.
 
 By default, \code{seed = NULL} (i.e., no seed).}
 
@@ -295,16 +279,16 @@ By default, \code{seed = NULL} (i.e., no seed).}
 
 By default, \code{verbose = TRUE}.}
 
-\item{x}{An object of class \code{fHMM_controls}.}
+\item{x, object}{An object of class \code{fHMM_controls}.}
 
 \item{...}{Currently not used.}
 }
 \value{
-An object of class \code{fHMM_controls}.
+An object of class \code{fHMM_controls}, which is a \code{list} that contains
+model and estimation specifications.
 }
 \description{
-This function defines specifications for model estimation with the
-\{fHMM\} package.
+This function defines specifications for model estimation.
 }
 \details{
 See the \href{https://loelschlaeger.de/fHMM/articles}{vignette on controls}
@@ -319,16 +303,15 @@ set_controls(
 )
 
 # 3-state HMM with normal distributions for the DAX closing prices
-dax <- download_data("^GDAXI", verbose = FALSE)
 set_controls(
   states      = 3,
   sdds        = "normal",
-  file        = dax,      # the data set
-  date_column = "Date",   # the column with the dates
-  data_column = "Close"   # the column with the data
+  file        = download_yahoo("^GDAXI"), # the data set
+  date_column = "Date",                   # the column with the dates
+  data_column = "Close"                   # the column with the data
 )
 
-# hierarchical HMM
+# hierarchical HMM with Gamma and Poisson state distributions
 set_controls(
   hierarchy = TRUE,                  # defines a hierarchy
   states    = c(3, 2),               # coarse scale and fine scale states
