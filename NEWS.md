@@ -1,3 +1,13 @@
+# fHMM 2.0.0
+
+## Change of function names
+
+* `download_data()` -> `download_yahoo()`
+
+## Change of functionality
+
+* `download_yahoo()` (former `download_data()`) no longer saves a .csv-file but returns the data as a data.frame. Its `verbose` argument is removed because the function no longer prints any messages.
+
 # fHMM 1.1.0
 
 * Extended the time horizon of saved data and updated models for demonstration.

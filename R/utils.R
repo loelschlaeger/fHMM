@@ -19,10 +19,9 @@
 #' }
 
 check_date <- function(date) {
-  date <- try(as.Date(date), silent = TRUE)
-  if (inherits(date,"try-error") || anyNA(as.Date(date, format = "%Y-%m-%d"))) {
-    stop("Date not in required format 'YYYY-MM-DD'.",
-         call. = FALSE)
+  date <- try(as.Date(date, format = "%Y-%m-%d"), silent = TRUE)
+  if (inherits(date, "try-error") || anyNA(date)) {
+    stop("Date is not in required format 'YYYY-MM-DD'.", call. = FALSE)
   }
   return(date)
 }
