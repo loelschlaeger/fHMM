@@ -274,3 +274,44 @@ stationary_distribution <- function(Gamma) {
   }
   return(delta)
 }
+
+#' Simulate Markov chain
+#'
+#' @description
+#' This function simulates a Markov chain.
+#'
+#' @param Gamma
+#' A transition probability \code{matrix}.
+#' @param T
+#' An \code{integer}, the length of the Markov chain.
+#' @param delta
+#' A \code{numeric} probability vector, the initial distribution. 
+#' If not specified, \code{delta} is set to the stationary distribution of
+#' \code{Gamma}.
+#' @param seed
+#' Passed on to \code{\link{set.seed}}.
+#'
+#' @return
+#' A \code{numeric} vector of length \code{T} with states.
+#' 
+#' @examples
+#' \dontrun{
+#' Gamma <- sample_tpm(dim = 3)
+#' simulate_markov_chain(Gamma = Gamma, T = 10)
+#' }
+
+simulate_markov_chain <- function(
+    Gamma, T, delta = stationary_distribution(Gamma), seed = NULL
+) {
+  stopifnot(is_tpm(Gamma))
+  stopifnot(length(T) == 1, is_number(T, int = TRUE, pos = TRUE))
+  stopifnot(is.numeric(delta), length(delta) == nrow(Gamma))
+  if (!is.null(seed)) set.seed(seed)
+  N <- length(delta)
+  markov_chain <- numeric(T)
+  markov_chain[1] <- sample(1:N, 1, prob = delta)
+  for (t in 2:T) {
+    markov_chain[t] <- sample(1:N, 1, prob = Gamma[markov_chain[t - 1], ])
+  }
+  markov_chain
+}
