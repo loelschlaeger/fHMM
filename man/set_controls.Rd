@@ -15,7 +15,7 @@ set_controls(
   horizon = if (!hierarchy) 100 else c(100, 30),
   period = if (hierarchy && is.na(horizon[2])) "m" else NA,
   data = NA,
-  file = data.frame(),
+  file,
   date_column = "Date",
   data_column = if (!hierarchy) "Close" else c("Close", "Close"),
   from = NA,

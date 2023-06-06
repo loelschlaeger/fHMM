@@ -315,7 +315,7 @@ set_controls <- function(
     horizon = if (!hierarchy) 100 else c(100, 30),
     period = if (hierarchy && is.na(horizon[2])) "m" else NA, 
     data = NA,
-    file = data.frame(), 
+    file, 
     date_column = "Date", 
     data_column = if (!hierarchy) "Close" else c("Close", "Close"), 
     from = NA, 
@@ -467,10 +467,16 @@ set_controls <- function(
   if (!"data" %in% names(controls)) {
     controls[["data"]] <- data
   }
-  simulated <- .simulated_data(controls)
+  simulated <- .simulated_data(controls) && missing(file)
   if (!simulated) {
+    if (!is.list(controls[["data"]])) {
+      controls[["data"]] <- list()
+    }
     if (!"file" %in% names(controls[["data"]])) {
       if (!"file" %in% names(data)) {
+        if (missing(file)) {
+          stop("Please specify 'file'.", call. = FALSE)
+        }
         controls[["data"]][["file"]] <- file
       } else {
         controls[["data"]][["file"]] <- data[["file"]]
@@ -834,7 +840,7 @@ print.fHMM_controls <- function(x, ...) {
 #' @exportS3Method
 
 summary.fHMM_controls <- function(object, ...) {
-  if (!inherits(x, "fHMM_controls")) {
+  if (!inherits(object, "fHMM_controls")) {
     stop("Not an object of class 'fHMM_controls'.", call. = FALSE)
   }
   str(object, give.attr = FALSE, give.length = FALSE, no.list = TRUE)

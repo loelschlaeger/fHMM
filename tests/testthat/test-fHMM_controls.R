@@ -1,17 +1,15 @@
-test_that("empty controls work", {
+test_that("defining empty controls work", {
   expect_s3_class(
     set_controls(), 
     "fHMM_controls"
   )
   expect_error(
-    set_controls(
-      controls = "not_a_list"
-    ),
+    set_controls(controls = "not_a_list"),
     "Input 'controls' must be a list."
   )
 })
 
-test_that("warning for redundant controls work", {
+test_that("checks for redundant controls work", {
   expect_warning(
     set_controls(
       controls = list(
@@ -27,6 +25,15 @@ test_that("warning for redundant controls work", {
           "file" = data.frame("Date" = "2000-01-01", "Close" = 1),
           "not_a_valid_control" = 1
         )
+      )
+    ),
+    "ignored"
+  )
+  expect_warning(
+    set_controls(
+      data = list(
+        "file" = data.frame("Date" = "2000-01-01", "Close" = 1),
+        "not_a_valid_control" = 1
       )
     ),
     "ignored"
@@ -143,11 +150,11 @@ test_that("input checks for setting controls work", {
     set_controls(
       data = list(logreturns = TRUE)
     ),
-    "Column 'Date' not found in data.frame 'file'."
+    "Please specify 'file'"
   )
 })
 
-test_that("missing controls can be set from individual controls", {
+test_that("missing data controls can be set from individual controls", {
   expect_s3_class(
     set_controls(
       file = data.frame("Close" = 1),
@@ -168,7 +175,51 @@ test_that("missing controls can be set from individual controls", {
       )
     ),
     "fHMM_controls"
-  ) 
+  )
+  expect_s3_class(
+    set_controls(
+      controls = list(
+        data = list()
+      ),
+      data = list(
+        "file" = data.frame("Close" = 1, "Date" = "2020-01-01"),
+        "date_column" = "Date",
+        "data_column" = "Close",
+        "from" = "2020-01-01",
+        "to" = "2020-01-01",
+        "logreturns" = TRUE,
+        "merge" = function(x) median(x)
+      )
+    ),
+    "fHMM_controls"
+  )
+  expect_s3_class(
+    set_controls(
+      file = data.frame("Close" = 1, "Date" = "2020-01-01")
+    ),
+    "fHMM_controls"
+  )
+})
+
+test_that("missing fit controls can be set from individual controls", {
+  expect_s3_class(
+    set_controls(
+      controls = list(
+        fit = list()
+      ),
+      fit = list(
+        "runs" = 7,
+        "origin" = TRUE,
+        "accept" = 1,
+        "gradtol" = 1,
+        "iterlim" = 123,
+        "print.level" = 2,
+        "steptol" = 0.5,
+        "ncluster" = 2
+      )
+    ),
+    "fHMM_controls"
+  )
   expect_s3_class(
     set_controls(
       fit = list(
@@ -297,9 +348,10 @@ test_that("checks of controls for simulated HMM work", {
     horizon = 400,
     fit     = list("runs" = 50)
   )
-  controls <- set_controls(controls)
-  expect_s3_class(controls, "fHMM_controls")
-  expect_snapshot(controls)
+  expect_s3_class(
+    set_controls(controls), 
+    "fHMM_controls"
+  )
 })
 
 test_that("checks of controls for empirical HMM work", {
@@ -314,9 +366,10 @@ test_that("checks of controls for empirical HMM work", {
       data_column = "Close"
     )
   )
-  controls <- set_controls(controls)
-  expect_s3_class(controls, "fHMM_controls")
-  expect_snapshot(controls)
+  expect_s3_class(
+    set_controls(controls), 
+    "fHMM_controls"
+  )
   controls <- list(
     states = 2,
     sdds = "t",
@@ -327,7 +380,7 @@ test_that("checks of controls for empirical HMM work", {
     )
   )
   expect_error(
-    controls <- set_controls(controls),
+    set_controls(controls),
     "'date_column' in 'data' must be a single character"
   )
   controls <- list(
@@ -391,39 +444,45 @@ test_that("checks of controls for simulated HHMM work", {
     hierarchy = TRUE,
     horizon = c(100, NA)
   )
-  controls <- set_controls(controls)
-  expect_s3_class(controls, "fHMM_controls")
-  expect_snapshot(controls)
+  expect_s3_class(
+    set_controls(controls), 
+    "fHMM_controls"
+  )
   controls <- list(
     hierarchy = TRUE,
     period = "w"
   )
   controls <- set_controls(controls)
-  expect_s3_class(controls, "fHMM_controls")
-  expect_snapshot(controls)
+  expect_s3_class(
+    set_controls(controls), 
+    "fHMM_controls"
+  )
   controls <- list(
     hierarchy = TRUE,
     horizon = c(100, NA),
     period = "m"
   )
-  controls <- set_controls(controls)
-  expect_s3_class(controls, "fHMM_controls")
-  expect_snapshot(controls)
+  expect_s3_class(
+    set_controls(controls), 
+    "fHMM_controls"
+  )
   controls <- list(
     hierarchy = TRUE,
     horizon = c(100, 30),
     period = "y"
   )
-  controls <- set_controls(controls)
-  expect_s3_class(controls, "fHMM_controls")
-  expect_snapshot(controls)
+  expect_s3_class(
+    set_controls(controls), 
+    "fHMM_controls"
+  )
   controls <- list(
     hierarchy = TRUE,
     horizon = c(100, 30)
   )
-  controls <- set_controls(controls)
-  expect_s3_class(controls, "fHMM_controls")
-  expect_snapshot(controls)
+  expect_s3_class(
+    set_controls(controls), 
+    "fHMM_controls"
+  )
 })
 
 test_that("checks of controls for empirical HHMM work", {
@@ -440,9 +499,10 @@ test_that("checks of controls for empirical HHMM work", {
       to = "2020-02-02"
     )
   )
-  controls <- set_controls(controls)
-  expect_s3_class(controls, "fHMM_controls")
-  expect_snapshot(controls)
+  expect_s3_class(
+    set_controls(controls), 
+    "fHMM_controls"
+  )
   expect_error(
     set_controls(
       list(
@@ -465,9 +525,6 @@ test_that("checks of controls for empirical HHMM work", {
     ),
     "'horizon' must be an integer vector of length 2"
   )
-  controls <- set_controls(controls, hierarchy = TRUE)
-  expect_s3_class(controls, "fHMM_controls")
-  expect_snapshot(controls)
   controls <- list(
     hierarchy = TRUE,
     horizon = c(100, NA),
@@ -549,3 +606,22 @@ test_that("checks of controls for empirical HHMM work", {
   )
 })
 
+test_that("print method of controls works", {
+  expect_error(
+    print.fHMM_controls("not_fHMM_controls"),
+    "Not an object of class 'fHMM_controls'."
+  )
+  expect_snapshot(
+    set_controls()
+  )
+})
+
+test_that("summary method of controls works", {
+  expect_error(
+    summary.fHMM_controls("not_fHMM_controls"),
+    "Not an object of class 'fHMM_controls'."
+  )
+  expect_snapshot(
+    summary(set_controls())
+  )
+})

@@ -1,90 +1,41 @@
-# checks of controls for simulated HMM work
+# print method of controls works
 
     Code
-      controls
+      set_controls()
     Output
       Model: HMM 
       States: 2 
-      Sdds: t()
+      Sdds: normal()
       Data: simulated 
 
-# checks of controls for empirical HMM work
+# summary method of controls works
 
     Code
-      controls
+      summary(set_controls())
     Output
-      Model: HMM 
-      States: 2 
-      Sdds: t()
-      Data: empirical 
-
-# checks of controls for simulated HHMM work
-
-    Code
-      controls
-    Output
-      Model: HHMM 
-      States: 2 2 
-      Sdds: normal() normal()
-      Data: simulated 
-
----
-
-    Code
-      controls
-    Output
-      Model: HHMM 
-      States: 2 2 
-      Sdds: normal() normal()
-      Data: simulated 
-
----
-
-    Code
-      controls
-    Output
-      Model: HHMM 
-      States: 2 2 
-      Sdds: normal() normal()
-      Data: simulated 
-
----
-
-    Code
-      controls
-    Output
-      Model: HHMM 
-      States: 2 2 
-      Sdds: normal() normal()
-      Data: simulated 
-
----
-
-    Code
-      controls
-    Output
-      Model: HHMM 
-      States: 2 2 
-      Sdds: normal() normal()
-      Data: simulated 
-
-# checks of controls for empirical HHMM work
-
-    Code
-      controls
-    Output
-      Model: HHMM 
-      States: 2 2 
-      Sdds: normal() normal()
-      Data: empirical 
-
----
-
-    Code
-      controls
-    Output
-      Model: HHMM 
-      States: 2 2 
-      Sdds: normal() normal()
-      Data: empirical 
+       $ hierarchy: logi FALSE
+       $ states   : num 2
+       $ sdds     :List of 1
+        ..$ :List of 8
+        .. ..$ distr_class : chr "normal"
+        .. ..$ name        : chr "normal"
+        .. ..$ label       : chr "normal()"
+        .. ..$ fixed_pars  : list()
+        .. ..$ pars        : list()
+        .. ..$ sample      :function (n = 1, state, ...)  
+        .. ..$ density     :function (x, state, ...)  
+        .. ..$ distribution:function (q, state, ...)  
+       $ horizon  : num 100
+       $ period   : chr NA
+       $ verbose  : logi TRUE
+       $ data     : logi NA
+       $ fit      :List of 8
+        ..$ runs       : num 100
+        ..$ origin     : logi FALSE
+        ..$ accept     : int  1 2 3
+        ..$ gradtol    : num 1e-06
+        ..$ iterlim    : num 200
+        ..$ print.level: num 0
+        ..$ steptol    : num 1e-06
+        ..$ ncluster   : num 1
 
