@@ -1,5 +1,9 @@
 test_that("defining state-dependent distributions works", {
   expect_error(
+    fHMM_sdds(sdds = "t", states = list()),
+    "The control 'states' must be a vector."
+  )
+  expect_error(
     fHMM_sdds(sdds = "t", states = 1),
     "The control 'states' must be an integer greater or equal 2."
   )
@@ -19,30 +23,22 @@ test_that("defining state-dependent distributions works", {
     fHMM_sdds(sdds = c("t"), states = c(2, 2)),
     "The control 'sdds' must be a character vector of length 2."
   )
-  expect_error(
-    print.fHMM_sdds(x = "t"), 
-    "Not of class 'fHMM_sdds'."
-  )
-  sink(tempfile())
   expect_s3_class(
-    print(fHMM_sdds(sdds = "t", states = 2)), 
-    "fHMM_sdds"
-  )
-  sdds <- fHMM_sdds(sdds = "t", states = 2)
-  expect_s3_class(
-    print(fHMM_sdds(sdds = sdds, states = 2)), 
+    fHMM_sdds(sdds = "t", states = 2), 
     "fHMM_sdds"
   )
   expect_s3_class(
-    print(fHMM_sdds(sdds = c("t", "t"), states = 2:3)), 
+    fHMM_sdds(sdds = fHMM_sdds(sdds = "t", states = 2), states = 2), 
     "fHMM_sdds"
   )
-  sdds <- fHMM_sdds(sdds = c("t", "t"), states = 2:3)
   expect_s3_class(
-    print(fHMM_sdds(sdds = sdds, states = 2:3)), 
+    fHMM_sdds(sdds = c("t", "t"), states = 2:3), 
     "fHMM_sdds"
   )
-  sink()
+  expect_s3_class(
+    fHMM_sdds(sdds = fHMM_sdds(sdds = c("t", "t"), states = 2:3), states = 2:3), 
+    "fHMM_sdds"
+  )
   expect_error(
     fHMM_sdds(sdds = "poisson(mu = 1|2)", states = 3),
     "Number of fixed parameters"
@@ -58,5 +54,74 @@ test_that("defining state-dependent distributions works", {
   expect_error(
     fHMM_sdds(sdds = "gamma(mu = -1)", states = 2),
     "'mu' must be positive"
+  )
+  expect_error(
+    fHMM_sdds(sdds = "unknown", states = 2),
+    "only the following distributions are implemented"
+  )
+  expect_warning(
+    fHMM_sdds(sdds = "t(bad = -1)", states = 2),
+    "ignored"
+  )
+  expect_s3_class(
+    fHMM_sdds(sdds = "t(mu = 1, sigma = 2)", states = 4), 
+    "fHMM_sdds"
+  )
+})
+
+test_that("calling state-dependent distribution functions works", {
+  x <- fHMM_sdds(sdds = "normal", states = 2)
+  expect_error(
+    x[[1]]$sample(),
+    "Which state?"
+  )
+  expect_error(
+    x[[1]]$sample(state = 1),
+    "'mu' must be specified"
+  )
+  expect_equal(
+    x[[1]]$density(x = 0, state = 1, mu = 0, sigma = 1),
+    stats::dnorm(0)
+  )
+  x <- fHMM_sdds(sdds = "lognormal", states = 2)
+  expect_type(
+    x[[1]]$sample(state = 1, mu = 1, sigma = 1),
+    "double"
+  )
+  x <- fHMM_sdds(sdds = "t(mu = 1, sigma = 2)", states = 4)
+  expect_type(
+    x[[1]]$sample(state = 1, mu = 1, sigma = 1, df = 1),
+    "double"
+  )
+  x <- fHMM_sdds(sdds = "gamma", states = 2)
+  expect_error(
+    x[[1]]$sample(state = 1, mu = 1),
+    "'sigma' must be specified"
+  )
+  expect_type(
+    x[[1]]$sample(state = 1, mu = 1, sigma = 1),
+    "double"
+  )
+  x <- fHMM_sdds(sdds = "poisson", states = 2)
+  expect_error(
+    x[[1]]$sample(state = 1),
+    "'mu' must be specified"
+  )
+  expect_type(
+    x[[1]]$sample(state = 1, mu = 1),
+    "integer"
+  )
+})
+
+test_that("print method works", {
+  expect_error(
+    print.fHMM_sdds(x = "t"), 
+    "Not of class 'fHMM_sdds'."
+  )
+  expect_snapshot(
+    fHMM_sdds(sdds = "t(mu = 1, sigma = 2)", states = 4)
+  )
+  expect_snapshot(
+    fHMM_sdds(sdds = c("t", "t"), states = c(2, 3))
   )
 })

@@ -1,28 +1,20 @@
 #' Define state-dependent distributions
 #'
 #' @description
-#' This helper function defines state-dependent distributions for the \{fHMM\} 
-#' package.
+#' This helper function defines state-dependent distributions.
 #'
 #' @inheritParams set_controls
 #' @param true_parameters
 #' An object of class \code{fHMM_parameters}, used as simulation parameters.
-#' By default, \code{true_parameters = NULL}, i.e., sampled true parameters.
+#' By default, \code{true_parameters = NULL}, in which case the true parameters
+#' are drawn randomly.
 #'
 #' @return
-#' An object of class \code{"fHMM_sdds"}, which is a \code{list} of length 
+#' An object of class \code{fHMM_sdds}, which is a \code{list} of length 
 #' \code{length(sdds)}, i.e., of length 2 in the hierarchical case and 1 else.
 #' 
 #' Each \code{list} element again is a \code{list}, containing the output of
 #' \code{\link{decode_sdd}}.
-#'
-#' @examples
-#' \dontrun{
-#' fHMM_sdds(
-#'   sdds = c("t(sigma = 0.1 | 1, df = Inf)", "gamma"),
-#'   states = c(2, 3)
-#' )
-#' }
 #' 
 #' @keywords internal
 
@@ -58,7 +50,7 @@ fHMM_sdds <- function(sdds, states) {
     )
   }
   if (inherits(sdds, "fHMM_sdds")) {
-    ### allow for re-definition of already specified 'fHMM_sdds' object
+    ### allows for re-definition of already specified 'fHMM_sdds' object
     sdds <- sapply(sdds, function(x) x$label)
   }
   if (!is.character(sdds) || length(sdds) != ifelse(hierarchy, 2, 1)) {
@@ -114,11 +106,6 @@ fHMM_sdds <- function(sdds, states) {
 #'         density of the state-dependent distribution.
 #' }
 #' 
-#' @examples 
-#' \dontrun{
-#' decode_sdd(sdd = "t(mu = 1)", state = 3)
-#' }
-#' 
 #' @keywords internal
 
 decode_sdd <- function(sdd, state) {
@@ -153,19 +140,24 @@ decode_sdd <- function(sdd, state) {
     par_names_bad <- setdiff(names(fixed_pars), par_names_allowed)
     if (length(par_names_bad) > 0) {
       warning(
-        "The parameters '", paste(par_names_bad, collapse = ", "), 
+        "The parameter(s) '", paste(par_names_bad, collapse = ", "), 
         "' in '", sdd, "' are ignored.\n",
         "Only the following parameters can be specified:",
-        if ("mu" %in% par_names_allowed) "\n- mu: the expected value",
-        if ("sigma" %in% par_names_allowed) "\n- sigma: the standard deviation",
-        if ("df" %in% par_names_allowed) "\n- df: the degrees of freedom",
+        if ("mu" %in% par_names_allowed) {
+          "\n- mu: the expected value"
+        },
+        if ("sigma" %in% par_names_allowed) {
+          "\n- sigma: the standard deviation"
+        },
+        if ("df" %in% par_names_allowed) {
+          "\n- df: the degrees of freedom"
+        },
         call. = FALSE
       )
     }
     fixed_pars[par_names_bad] <- NULL
     return(fixed_pars)
   }
-  fixed_pars <- check_par_names_allowed(fixed_pars, c("mu", "sigma", "df"))
   fixed_pars <- lapply(
     fixed_pars, function(x) {
       as.numeric(unlist(strsplit(x[2], split = "|", fixed = TRUE)))
@@ -219,18 +211,16 @@ decode_sdd <- function(sdd, state) {
   }
   list(
     "distr_class"  = distr_class,
-    "name"         = distr_class, # TODO: REMOVE LATER
     "label"        = label,
     "fixed_pars"   = fixed_pars,
-    "pars"         = fixed_pars,  # TODO: REMOVE LATER
     "sample"       = build_sdd_function(distr_class, "sample"),
     "density"      = build_sdd_function(distr_class, "density"),
     "distribution" = build_sdd_function(distr_class, "distribution")
   )
 }
 
-#' Build sampling, density, or distribution function for state-dependent 
-#' distributions
+#' Build sampling, density, or cumulative distribution function for 
+#' state-dependent distributions
 #'
 #' @description 
 #' This helper function builds a \code{function} for sampling, density 
@@ -268,15 +258,6 @@ decode_sdd <- function(sdd, state) {
 #'         \code{mu}, \code{sigma}, and \code{df}, for the mean, 
 #'         standard deviation, and degrees of freedom, respectively 
 #'         (if required).
-#' }
-#' 
-#' @examples
-#' \dontrun{
-#' sample_poisson_sdd <- build_sdd_function(
-#'   distr_class = "poisson", function_type = "sample"
-#' )
-#' sample_poisson_sdd(n = 10, state = 1, mu = c(1, 10))
-#' sample_poisson_sdd(n = 10, state = 2, mu = c(1, 10))
 #' }
 #' 
 #' @keywords internal  
@@ -439,6 +420,8 @@ build_sdd_function <- function(distr_class, function_type) {
 }
 
 #' @rdname fHMM_sdds
+#' @param x
+#' An object of class \code{fHMM_sdds}.
 #' @param ...
 #' Currently not used.
 #' @exportS3Method 
@@ -448,7 +431,12 @@ print.fHMM_sdds <- function(x, ...) {
     stop("Not of class 'fHMM_sdds'.", call. = FALSE)
   }
   cat(
-    "Sdds:", if (length(x) == 1) x[[1]]$label else c(x[[1]]$label, x[[2]]$label)
+    "Sdds:", if (length(x) == 1) {
+      x[[1]]$label 
+    } else {
+      c(x[[1]]$label, x[[2]]$label)
+    },
+    "\n"
   )
   invisible(x)
 }

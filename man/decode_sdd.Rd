@@ -40,10 +40,4 @@ density of the state-dependent distribution.
 This helper function decodes the specification for a state-dependent
 distribution.
 }
-\examples{
-\dontrun{
-decode_sdd(sdd = "t(mu = 1)", state = 3)
-}
-
-}
 \keyword{internal}

@@ -48,29 +48,22 @@ entry corresponds to the fine-scale layer.
 By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
 
+\item{x}{An object of class \code{fHMM_sdds}.}
+
 \item{...}{Currently not used.}
 
 \item{true_parameters}{An object of class \code{fHMM_parameters}, used as simulation parameters.
-By default, \code{true_parameters = NULL}, i.e., sampled true parameters.}
+By default, \code{true_parameters = NULL}, in which case the true parameters
+are drawn randomly.}
 }
 \value{
-An object of class \code{"fHMM_sdds"}, which is a \code{list} of length
+An object of class \code{fHMM_sdds}, which is a \code{list} of length
 \code{length(sdds)}, i.e., of length 2 in the hierarchical case and 1 else.
 
 Each \code{list} element again is a \code{list}, containing the output of
 \code{\link{decode_sdd}}.
 }
 \description{
-This helper function defines state-dependent distributions for the \{fHMM\}
-package.
-}
-\examples{
-\dontrun{
-fHMM_sdds(
-  sdds = c("t(sigma = 0.1 | 1, df = Inf)", "gamma"),
-  states = c(2, 3)
-)
-}
-
+This helper function defines state-dependent distributions.
 }
 \keyword{internal}

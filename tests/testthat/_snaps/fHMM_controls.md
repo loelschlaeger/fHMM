@@ -16,12 +16,10 @@
        $ hierarchy: logi FALSE
        $ states   : num 2
        $ sdds     :List of 1
-        ..$ :List of 8
+        ..$ :List of 6
         .. ..$ distr_class : chr "normal"
-        .. ..$ name        : chr "normal"
         .. ..$ label       : chr "normal()"
         .. ..$ fixed_pars  : list()
-        .. ..$ pars        : list()
         .. ..$ sample      :function (n = 1, state, ...)  
         .. ..$ density     :function (x, state, ...)  
         .. ..$ distribution:function (q, state, ...)  

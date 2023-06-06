@@ -2,8 +2,8 @@
 % Please edit documentation in R/fHMM_sdds.R
 \name{build_sdd_function}
 \alias{build_sdd_function}
-\title{Build sampling, density, or distribution function for state-dependent
-distributions}
+\title{Build sampling, density, or cumulative distribution function for
+state-dependent distributions}
 \usage{
 build_sdd_function(distr_class, function_type)
 }
@@ -44,15 +44,5 @@ standard deviation, and degrees of freedom, respectively
 \description{
 This helper function builds a \code{function} for sampling, density
 computation, or cumulative distribution for a state-dependent distribution.
-}
-\examples{
-\dontrun{
-sample_poisson_sdd <- build_sdd_function(
-  distr_class = "poisson", function_type = "sample"
-)
-sample_poisson_sdd(n = 10, state = 1, mu = c(1, 10))
-sample_poisson_sdd(n = 10, state = 2, mu = c(1, 10))
-}
-
 }
 \keyword{internal}
