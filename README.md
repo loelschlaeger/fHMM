@@ -11,7 +11,7 @@ status](https://www.r-pkg.org/badges/version/fHMM)](https://CRAN.R-project.org/p
 downloads](https://cranlogs.r-pkg.org/badges/last-month/fHMM)](https://cran.r-project.org/package=fHMM)
 [![Codecov test
 coverage](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg)](https://app.codecov.io/gh/loelschlaeger/fHMM)
-[![R-CMD-check](https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml)
+[![R-CMD-check](https://github.com/loelschlaeger/fHMM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The {fHMM} R package allows for the detection and characterization of
