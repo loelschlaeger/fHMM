@@ -1,19 +1,7 @@
-#' fHMM: Fitting Hidden Markov Models to Financial Data
-#'
-#' @description 
-#' This package provides tools for modeling financial data via
-#' the (hierarchical) hidden Markov model.
-#'
-#' @docType package
-#'
-#' @name fHMM
-#'
 #' @useDynLib fHMM, .registration=TRUE
-#'
 #' @importFrom Rcpp evalCpp
-#'
 #' @keywords internal
-NULL
+"_PACKAGE"
 
 #' @noRd
 #' @importFrom cli style_hyperlink
