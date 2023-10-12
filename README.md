@@ -9,12 +9,10 @@
 status](https://www.r-pkg.org/badges/version/fHMM)](https://CRAN.R-project.org/package=fHMM)
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/last-month/fHMM)](https://cran.r-project.org/package=fHMM)
-[![Codecov test
-coverage](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg)](https://app.codecov.io/gh/loelschlaeger/fHMM)
 [![R-CMD-check](https://github.com/loelschlaeger/fHMM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The {fHMM} R package allows for the detection and characterization of
+The `{fHMM}` R package allows for the detection and characterization of
 financial market regimes in time series data by applying hidden Markov
 Models (HMMs). The [detailed
 documentation](https://loelschlaeger.de/fHMM/articles/) outlines the
@@ -24,7 +22,7 @@ application to the German stock index
 
 ## Installation
 
-You can install the released version of {fHMM} from
+You can install the released version of `{fHMM}` from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
