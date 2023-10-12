@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# fHMM <a href="https://loelschlaeger.github.io/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
+# Hidden Markov Models for Finance <a href="https://loelschlaeger.github.io/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -158,7 +158,7 @@ events <- fHMM_events(
 plot(model, plot_type = c("sdds","ts"), events = events)
 ```
 
-<img src="man/figures/README-plot_model_fit-1.png" width="75%" style="display: block; margin: auto;" /><img src="man/figures/README-plot_model_fit-2.png" width="75%" style="display: block; margin: auto;" />
+![](man/figures/README-plot_model_fit-1.png)<!-- -->![](man/figures/README-plot_model_fit-2.png)<!-- -->
 
 The (pseudo-) residuals help to evaluate the model fit:
 
@@ -166,4 +166,4 @@ The (pseudo-) residuals help to evaluate the model fit:
 plot(model, plot_type = "pr")
 ```
 
-<img src="man/figures/README-plot_model_residuals-1.png" width="75%" style="display: block; margin: auto;" />
+![](man/figures/README-plot_model_residuals-1.png)<!-- -->
