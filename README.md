@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# HMMs for Finance <a href="https://loelschlaeger.github.io/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
+# HMMs for Finance <a href="https://loelschlaeger.de/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
