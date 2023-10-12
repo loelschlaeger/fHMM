@@ -19,7 +19,7 @@ No seed per default.}
 An object of class \code{\link{fHMM_data}}.
 }
 \description{
-This function simulates or reads financial data for the {fHMM} package.
+This function simulates or reads financial data for the \{fHMM\} package.
 }
 \examples{
 controls <- set_controls()

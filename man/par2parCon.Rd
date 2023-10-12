@@ -10,7 +10,7 @@ par2parCon(par, controls)
 \arguments{
 \item{par}{An object of class \code{fHMM_parameters}.}
 
-\item{controls}{An object of class{fHMM_controls}.}
+\item{controls}{An object of class \class{fHMM_controls}.}
 }
 \value{
 An object of class \code{parCon}.

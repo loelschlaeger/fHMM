@@ -28,7 +28,7 @@ library("fHMM")
 
 ## Empirical data
 
-Empirical data can be provided either as a `data.frame` or as a comma-separated values (.csv) file, see [the vignette on specifying the controls](https://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from <https://finance.yahoo.com> in csv-format.] The `{fHMM}` package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
+Empirical data can be provided either as a `data.frame` or as a comma-separated values (.csv) file, see [the vignette on specifying the controls](https://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from <https://finance.yahoo.com/> in csv-format.] The `{fHMM}` package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
 
 ```{r, head dax, results = FALSE}
 system.file("extdata", "dax.csv", package = "fHMM")
@@ -53,7 +53,7 @@ summary(data)
 
 ## Download stock data
 
-Daily stock prices listed on https://finance.yahoo.com can be downloaded directly via
+Daily stock prices listed on <https://finance.yahoo.com/> can be downloaded directly via
 
 ```{r, eval = FALSE} 
 download_data(symbol, from, to, file)
@@ -61,7 +61,7 @@ download_data(symbol, from, to, file)
 
 where
 
-- `symbol` is the stock's symbol that has to match the official symbol on <https://finance.yahoo.com>,^[For example, `"^GDAXI"` is the symbol of the DAX and `"^GSPC"` the one of the S\&P 500.]
+- `symbol` is the stock's symbol that has to match the official symbol on <https://finance.yahoo.com/>,^[For example, `"^GDAXI"` is the symbol of the DAX and `"^GSPC"` the one of the S\&P 500.]
 
 - `from` and `to` define the time interval (in format `"YYYY-MM-DD"`),
 

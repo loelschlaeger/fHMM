@@ -9,7 +9,7 @@
 #' where the second entry can be \code{NA_integer_}.
 #' @param period
 #' The element \code{controls$period}, i.e. one of \code{"w"},
-#' \code{"m"}, code{"q"}, or \code{"y"}.
+#' \code{"m"}, \code{"q"}, or \code{"y"}.
 #' @param dates
 #' A \code{character} vector of dates of empirical fine-scale data (if any).
 #' By default, \code{dates = NULL}.

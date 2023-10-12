@@ -521,7 +521,7 @@ parCon2par <- function(parCon, controls) {
 #' @param par
 #' An object of class \code{fHMM_parameters}.
 #' @param controls
-#' An object of class{fHMM_controls}.
+#' An object of class \class{fHMM_controls}.
 #' @return
 #' An object of class \code{parCon}.
 #' @keywords
