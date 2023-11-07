@@ -11,7 +11,7 @@ compute_T_star(horizon, period, dates = NULL, seed = NULL)
 where the second entry can be \code{NA_integer_}.}
 
 \item{period}{The element \code{controls$period}, i.e. one of \code{"w"},
-\code{"m"}, code{"q"}, or \code{"y"}.}
+\code{"m"}, \code{"q"}, or \code{"y"}.}
 
 \item{dates}{A \code{character} vector of dates of empirical fine-scale data (if any).
 By default, \code{dates = NULL}.}

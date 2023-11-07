@@ -15,7 +15,6 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "fHMM-"
 )
-library("printr")
 ```
 
 The `{fHMM}` package allows for multiple hidden Markov model specifications, including different data transformations, state-dependent distributions, and a hierarchical model structure. This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] outlines what and how specifications are possible.
@@ -81,10 +80,6 @@ set_controls(controls)
 ```
 
 The help page of the `set_controls()` function provides an overview of all possible specifications.
-
-```{r, set_controls help page, printr.help.sections=c('arguments')}
-?set_controls
-```
 
 ## References
 

@@ -63,7 +63,7 @@ fHMM_data <- function(
 #' Prepare data
 #'
 #' @description
-#' This function simulates or reads financial data for the {fHMM} package.
+#' This function simulates or reads financial data for the \{fHMM\} package.
 #'
 #' @param controls
 #' An object of class \code{fHMM_controls}.

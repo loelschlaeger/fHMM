@@ -8,22 +8,19 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "75%",
-  fig.align = "center"
+  fig.path = "man/figures/README-"
 )
 library("fHMM")
 model <- fHMM::dax_model_3t
 data <- model$data
 ```
 
-# fHMM <a href="https://loelschlaeger.github.io/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
+# HMMs for Finance <a href="https://loelschlaeger.de/fHMM/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/fHMM)](https://CRAN.R-project.org/package=fHMM)
 [![metacran downloads](https://cranlogs.r-pkg.org/badges/last-month/fHMM)](https://cran.r-project.org/package=fHMM)
-[![Codecov test coverage](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg)](https://app.codecov.io/gh/loelschlaeger/fHMM)
-[![R-CMD-check](https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/checks.yaml)
+[![R-CMD-check](https://github.com/loelschlaeger/fHMM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The {fHMM} R package allows for the detection and characterization of financial market regimes in time series data by applying hidden Markov models (HMMs). The [vignettes](https://loelschlaeger.de/fHMM/articles/) outline the package functionality and the model formulation in detail. Below, we provide an initial application to the German stock index [DAX](https://en.wikipedia.org/wiki/DAX).
@@ -115,7 +112,7 @@ summary(model)
 
 Having estimated the model, we can visualize the state-dependent distributions and the decoded time series:
 
-```{r plot_model_fit, fig.dim = c(10,6), fig.align='center'}
+```{r plot_model_fit, fig.dim = c(10,6)}
 events <- fHMM_events(
   list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
        labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers", "First COVID-19 case Germany"))
@@ -125,6 +122,6 @@ plot(model, plot_type = c("sdds","ts"), events = events)
 
 The (pseudo-) residuals help to evaluate the model fit:
 
-```{r plot_model_residuals, fig.dim = c(10,6), fig.align='center'}
+```{r plot_model_residuals, fig.dim = c(10,6)}
 plot(model, plot_type = "pr")
 ```

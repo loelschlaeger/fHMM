@@ -1,4 +1,4 @@
-# fHMM 1.1.1.9000
+# fHMM development
 
 ## New names
 
@@ -10,6 +10,10 @@
 * The data set ...
 
 ## New functionality
+
+# fHMM 1.1.1
+
+* Fixed documenting the new special sentinel "_PACKAGE" for the package help file, see https://github.com/r-lib/roxygen2/issues/1491.
 
 # fHMM 1.1.0
 

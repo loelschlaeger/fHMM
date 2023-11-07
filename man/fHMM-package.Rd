@@ -10,11 +10,6 @@
 
 Fitting (hierarchical) hidden Markov models to financial data via maximum likelihood estimation. The package offers different state-dependent distributions (including normal, log-normal, t, Gamma, and Poisson), state decoding, model selection, model checking, and prediction. For a reference, see Oelschläger, L. and Adam, T. "Detecting bearish and bullish markets in financial time series using hierarchical hidden Markov models" (2021, Statistical Modelling).
 }
-\references{
-Oelschläger, L. and Adam, T. "Detecting bearish and bullish markets in
-financial time series using  hierarchical hidden Markov models"
-(2021, Statistical Modelling)
-}
 \seealso{
 Useful links:
 \itemize{
