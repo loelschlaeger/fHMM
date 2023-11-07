@@ -5,7 +5,7 @@
     Output
       Model: HMM 
       States: 2 
-      Sdds: normal()
+      Sdds: normal() 
       Data: simulated 
 
 # summary method of controls works

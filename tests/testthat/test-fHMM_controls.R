@@ -316,7 +316,7 @@ test_that("checks for 'fit' controls work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'gradtol' in 'fit' must be a positive numeric value."
+    "The control 'gradtol' in 'fit' must be a positive number."
   )
   controls <- list(
     fit = list("iterlim" = -1)
@@ -337,7 +337,7 @@ test_that("checks for 'fit' controls work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'steptol' in 'fit' must be a positive numeric value."
+    "The control 'steptol' in 'fit' must be a positive number."
   )
 })
 
@@ -575,7 +575,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "'merge' in 'data' must merge a vector into a single numeric"
+    "'merge' in 'data' should merge a vector into a single number"
   )
   controls <- list(
     hierarchy = TRUE,

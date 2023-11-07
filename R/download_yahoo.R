@@ -64,13 +64,13 @@ download_yahoo <- function(
   if (missing(symbol) || !is.character(symbol) || length(symbol) != 1) {
     stop("'symbol' must be a single character.", call. = FALSE)
   }
-  from <- check_date(from)
+  from <- oeli::check_date(from)
   min_date <- as.Date("1902-01-01")
   if (from < min_date) {
     warning("'from' is set to lower bound of '1902-01-01'.", call. = FALSE)
     from <- min_date
   }
-  to <- check_date(to)
+  to <- oeli::check_date(to)
   if (to < from) {
     stop("'to' must not be earlier than 'from'.", call. = FALSE)
   }

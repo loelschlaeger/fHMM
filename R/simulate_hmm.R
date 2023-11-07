@@ -14,14 +14,24 @@
 #' @return
 #' A \code{list} containing the following elements:
 #' \itemize{
-#'  \item the \code{matrix} of \code{time_points},
-#'  \item the \code{matrix} of the simulated \code{markov_chain},
-#'  \item the \code{matrix} of the simulated \code{data},
-#'  \item the \code{numeric} vector of fine-scale chunk sizes \code{T_star} if
-#'        \code{controls$hierarchy = TRUE}.
+#'   \item \code{observations}, the \code{vector} (or \code{matrix} in the 
+#'         hierarchical case) of the simulated  observations
+#'   \item \code{states}, the \code{vector} (or \code{matrix} in the 
+#'         hierarchical case) of the simulated states
+#'   \item \code{parameter}, the \code{\link{fHMM_parameters}} object
 #' }
 #'
-#' @keywords internal
+#' @export
+#'
+#' @examples
+#' ### HMM data
+#' simulate_hmm(states = 2, sdds = "normal", horizon = 20)
+#' 
+#' ### HHMM data
+#' simulate_hmm(
+#'   hierarchy = TRUE, states = c(3, 3), sdds = c("gamma", "poisson"),
+#'   horizon = c(10, NA), period = "w"
+#' )
 #'
 #' @importFrom utils head
 
@@ -44,51 +54,32 @@ simulate_hmm <- function(
   if (!inherits(true_parameters, "fHMM_parameters")) {
     stop("'true_parameters' is not of class 'fHMM_parameters'.", call. = FALSE)
   }
+  if (!is.null(controls[["seed"]])) {
+    set.seed(controls[["seed"]])
+  }
   T <- controls[["horizon"]][1]
-  markov_chain <- simulate_markov_chain(
-    Gamma = true_parameters[["Gamma"]], T = T, seed = seed
-  )
+  states <- oeli::simulate_markov_chain(Gamma = true_parameters[["Gamma"]], T = T)
   observations <- rep(NA_real_, T)
-  time_points <- 1:T
-  sdd <- controls[["sdds"]][[1]]$sample()
-  for (t in time_points) {
-    observations[t] <- sdd(n = 1, state = markov_chain[t])
-    # TODO: continue work from here
+  sdd <- controls[["sdds"]][[1]]$sample
+  for (t in seq_along(observations)) {
+    observations[t] <- sdd(
+      n = 1, state = states[t], mu = true_parameters[["mu"]],
+      sigma = true_parameters[["sigma"]], df = true_parameters[["df"]]
+    )
   }
   if (controls[["hierarchy"]]) {
-    
-    
+    T_star <- compute_T_star(
+      horizon = controls[["horizon"]],
+      period = controls[["period"]]
+    )
   }
   list(
-    "time_points"  = time_points,
-    "markov_chain" = markov_chain,
-    "data"         = data,
-    "T_star"       = if (controls[["hierarchy"]]) T_star else NULL
+    "observations" = observations, "stats" = states, 
+    "parameter" = true_parameters
   )
   
   
 
-  # ### simulate data
-  # if (!controls[["hierarchy"]]) {
-  #   markov_chain <- simulate_markov_chain(
-  #     Gamma = true_parameters$Gamma,
-  #     T = controls[["horizon"]][1],
-  #     seed = seed
-  #   )
-  #   data <- simulate_observations(
-  #     markov_chain = markov_chain,
-  #     sdd = controls[["sdds"]][[1]]$name,
-  #     mus = true_parameters$mus,
-  #     sigmas = true_parameters$sigmas,
-  #     dfs = true_parameters$dfs,
-  #     seed = seed
-  #   )
-  #   time_points <- 1:controls[["horizon"]][1]
-  # } else {
-  #   T_star <- compute_T_star(
-  #     horizon = controls[["horizon"]],
-  #     period = controls[["period"]]
-  #   )
   #   markov_chain <- matrix(NA_real_,
   #                          nrow = controls[["horizon"]][1],
   #                          ncol = max(T_star) + 1

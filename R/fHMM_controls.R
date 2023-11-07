@@ -366,7 +366,8 @@ set_controls <- function(
     )
     controls[redundant_controls] <- NULL
   }
-  if (!is.null(controls[["data"]]) && !identical(controls[["data"]], NA)) {
+  if (!is.null(controls[["data"]]) && 
+      !checkmate::test_scalar_na(controls[["data"]])) {
     if (!is.list(controls[["data"]])) {
       stop(
         "Element 'data' in input 'controls' must be a list.", 
@@ -439,7 +440,7 @@ set_controls <- function(
   } else {
     controls[["hierarchy"]] <- hierarchy
   }
-  if (!isTRUE(hierarchy) && !isFALSE(hierarchy)) {
+  if (!checkmate::test_flag(hierarchy)) {
     stop("The control 'hierarchy' must be TRUE or FALSE.", call. = FALSE)
   }
   
@@ -591,10 +592,12 @@ set_controls <- function(
   validate_controls(controls)
 }
 
-.simulated_data <- function(controls) {
-  length(controls[["data"]]) == 1 && 
-    is.atomic(controls[["data"]]) && 
-    is.na(controls[["data"]])
+#' Helper function that checks if data was simulated
+#' @param x Either a \code{list} or an object of class \code{fHMM_controls}.
+#' @keywords internal
+
+.simulated_data <- function(x) {
+  length(x[["data"]]) == 1 && is.atomic(x[["data"]]) && is.na(x[["data"]])
 }
 
 #' @rdname set_controls
@@ -608,14 +611,14 @@ validate_controls <- function(controls) {
   
   ### check general controls
   hierarchy <- controls[["hierarchy"]]
-  if (!isTRUE(hierarchy) && !isFALSE(hierarchy)) {
+  if (!checkmate::test_flag(hierarchy)) {
     stop("The control 'hierarchy' must be TRUE or FALSE.", call. = FALSE)
   }
-  if (!isTRUE(controls[["verbose"]]) && !isFALSE(controls[["verbose"]])) {
+  if (!checkmate::test_flag(controls[["verbose"]])) {
     stop("The control 'verbose' must be TRUE or FALSE.", call. = FALSE)
   }
   if (!is.null(controls[["seed"]])) {
-    if (!is_number(controls[["seed"]], int = TRUE)) {
+    if (!checkmate::test_int(controls[["seed"]])) {
       stop("The control 'seed' must be an integer.", call. = FALSE)
     }
   }
@@ -638,11 +641,7 @@ validate_controls <- function(controls) {
       stop("The control 'horizon' must be a vector of length 2.", call. = FALSE)
     } 
     if (!all(is.na(controls[["horizon"]]))) {
-      if (!all(
-        is_number(
-          controls[["horizon"]][!is.na(controls[["horizon"]])], int = TRUE, 
-          pos = TRUE)
-        )) {
+      if (!checkmate::test_integerish(controls[["horizon"]], lower = 1, len = 2)) {
         stop(
           "The control 'horizon' must be an integer vector of length 2.",
           call. = FALSE
@@ -664,8 +663,7 @@ validate_controls <- function(controls) {
     if (!simulated) {
       controls[["horizon"]] <- NA_integer_
     } else {
-      if (!(length(controls[["horizon"]]) == 1 && 
-            is_number(controls[["horizon"]], int = TRUE, pos = TRUE))) {
+      if (!checkmate::test_int(controls[["horizon"]], lower = 1)) {
         stop("The control 'horizon' must be a positive integer.",
              call. = FALSE)
       }
@@ -684,29 +682,29 @@ validate_controls <- function(controls) {
       )
     }
     if (!is.na(controls[["data"]][["from"]])) {
-      controls[["data"]][["from"]] <- check_date(controls[["data"]][["from"]])
+      controls[["data"]][["from"]] <- oeli::check_date(controls[["data"]][["from"]])
     }
     if (!is.na(controls[["data"]][["to"]])) {
-      controls[["data"]][["to"]] <- check_date(controls[["data"]][["to"]])
+      controls[["data"]][["to"]] <- oeli::check_date(controls[["data"]][["to"]])
     }
-    if (!((is.character(controls[["data"]][["date_column"]]) || 
-           is.na(controls[["data"]][["date_column"]])) && 
-          length(controls[["data"]][["date_column"]]) == 1)) {
+    if (!checkmate::test_string(
+      controls[["data"]][["date_column"]], na.ok = TRUE)
+    ) {
       stop(
         "'date_column' in 'data' must be a single character (or NA).",
         call. = FALSE
       )
     }
     if (hierarchy) {
-      if (!(is.character(controls[["data"]][["data_column"]]) && 
-            length(controls[["data"]][["data_column"]]) == 2)) {
+      if (!checkmate::test_character(
+        controls[["data"]][["data_column"]], len = 2
+      )) {
         stop(
           "'data_column' in 'data' must be a character vector of length two.",
           call. = FALSE
         )
       }
-      if (!(is.logical(controls[["data"]][["logreturns"]]) && 
-            length(controls[["data"]][["logreturns"]]) == 2)) {
+      if (!checkmate::test_logical(controls[["data"]][["logreturns"]], len = 2)) {
         stop(
           "'logreturns' in 'data' must be a boolean vector of length two.",
           call. = FALSE
@@ -719,23 +717,20 @@ validate_controls <- function(controls) {
         )
       }
       try_merge <- try(controls[["data"]][["merge"]](-10:10), silent = TRUE)
-      if (inherits(try_merge,"try-error") || !is.numeric(try_merge) || 
-          length(try_merge) != 1) {
+      if (inherits(try_merge,"try-error") || !checkmate::test_number(try_merge)) {
         stop(
-          "'merge' in 'data' must merge a vector into a single numeric.",
+          "'merge' in 'data' should merge a vector into a single number.",
           call. = FALSE
         )
       }
     } else {
-      if (!(is.character(controls[["data"]][["data_column"]]) && 
-            length(controls[["data"]][["data_column"]]) == 1)) {
+      if (!checkmate::test_string(controls[["data"]][["data_column"]])) {
         stop(
           "'data_column' in 'data' must be a single character.",
           call. = FALSE
         )
       }
-      if (!(is.logical(controls[["data"]][["logreturns"]])) && 
-          length(controls[["data"]][["logreturns"]]) == 1) {
+      if (!checkmate::test_flag(controls[["data"]][["logreturns"]])) {
         stop(
           "The control 'logreturns' in 'data' must be a boolean.",
           call. = FALSE
@@ -765,14 +760,13 @@ validate_controls <- function(controls) {
   }
   
   ### check 'fit' controls
-  if (!is_number(controls[["fit"]][["runs"]], int = TRUE, pos = TRUE)) {
+  if (!checkmate::test_int(controls[["fit"]][["runs"]], lower = 1)) {
     stop(
       "The control 'runs' in 'fit' must be an integer.", 
       call. = FALSE
     )
   }
-  if (!isTRUE(controls[["fit"]][["origin"]]) && 
-      !isFALSE(controls[["fit"]][["origin"]])) {
+  if (!checkmate::test_flag(controls[["fit"]][["origin"]])) {
     stop(
       "The control 'origin' in 'fit' must be a boolean.",
       call. = FALSE
@@ -791,29 +785,27 @@ validate_controls <- function(controls) {
       call. = FALSE
     )
   }
-  if (!(length(controls[["fit"]][["gradtol"]]) == 1 && 
-        is_number(controls[["fit"]][["gradtol"]], pos = TRUE))) {
+  if (!checkmate::test_number(controls[["fit"]][["gradtol"]], lower = 0)) {
     stop(
-      "The control 'gradtol' in 'fit' must be a positive numeric value.",
+      "The control 'gradtol' in 'fit' must be a positive number.",
       call. = FALSE
     )
   }
-  if (!(length(controls[["fit"]][["iterlim"]]) == 1 && 
-        is_number(controls[["fit"]][["iterlim"]], int = TRUE, pos = TRUE))) {
+  if (!checkmate::test_int(controls[["fit"]][["iterlim"]], lower = 1)) {
     stop("The control 'iterlim' in 'fit' must be a positive integer.",
          call. = FALSE)
   }
-  if (!(length(controls[["fit"]][["print.level"]]) == 1 && 
-        controls[["fit"]][["print.level"]] %in% 0:2)) {
+  if (!checkmate::test_int(
+    controls[["fit"]][["print.level"]], lower = 0, upper = 2
+  )) {
     stop(
       "The control 'print.level' in 'fit' must be one of 0, 1, and 2.",
       call. = FALSE
     )
   }
-  if (!(length(controls[["fit"]][["steptol"]]) == 1 && 
-        is_number(controls[["fit"]][["steptol"]], pos = TRUE))) {
+  if (!checkmate::test_number(controls[["fit"]][["steptol"]], lower = 0)) {
     stop(
-      "The control 'steptol' in 'fit' must be a positive numeric value.",
+      "The control 'steptol' in 'fit' must be a positive number.",
       call. = FALSE
     )
   }
@@ -832,7 +824,7 @@ print.fHMM_controls <- function(x, ...) {
   cat("Model:", ifelse(x[["hierarchy"]], "HHMM", "HMM"), "\n")
   cat("States:", x[["states"]], "\n")
   print(x[["sdds"]])
-  cat("\nData:", ifelse(.simulated_data(x), "simulated", "empirical"), "\n")
+  cat("Data:", ifelse(.simulated_data(x), "simulated", "empirical"), "\n")
   invisible(x)
 }
 

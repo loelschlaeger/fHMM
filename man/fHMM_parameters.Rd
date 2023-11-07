@@ -151,7 +151,7 @@ The first entry is the scale for
 An object of class \code{fHMM_parameters}.
 }
 \description{
-This function sets and checks model parameters for the \{fHMM\} package.
+This function sets and checks model parameters.
 Unspecified parameters are sampled.
 }
 \details{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_hmm.R
 \name{simulate_hmm}
 \alias{simulate_hmm}
-\title{Simulate data from a HMM}
+\title{Simulate HMM data}
 \usage{
 simulate_hmm(
   controls = list(),
@@ -124,14 +124,24 @@ By default, \code{seed = NULL} (i.e., no seed).}
 \value{
 A \code{list} containing the following elements:
 \itemize{
-\item the \code{matrix} of \code{time_points},
-\item the \code{matrix} of the simulated \code{markov_chain},
-\item the \code{matrix} of the simulated \code{data},
-\item the \code{numeric} vector of fine-scale chunk sizes \code{T_star} if
-\code{controls$hierarchy = TRUE}.
+\item \code{observations}, the \code{vector} (or \code{matrix} in the
+hierarchical case) of the simulated  observations
+\item \code{states}, the \code{vector} (or \code{matrix} in the
+hierarchical case) of the simulated states
+\item \code{parameter}, the \code{\link{fHMM_parameters}} object
 }
 }
 \description{
 This function simulates time series data from a hidden Markov model.
 }
-\keyword{internal}
+\examples{
+### HMM data
+simulate_hmm(states = 2, sdds = "normal", horizon = 20)
+
+### HHMM data
+simulate_hmm(
+  hierarchy = TRUE, states = c(3, 3), sdds = c("gamma", "poisson"),
+  horizon = c(10, NA), period = "w"
+)
+
+}

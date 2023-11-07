@@ -87,7 +87,7 @@ fHMM_parameters <- function(
   controls <- set_controls(
     controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
   )
-  if (!(length(scale_par) == 2 && all(is_number(scale_par, non_neg = TRUE)))) {
+  if (!checkmate::test_numeric(scale_par, len = 2, lower = 0)) {
     stop(
       "'scale_par' must be a positive numeric vector of length 2.",
       call. = FALSE
@@ -109,7 +109,9 @@ fHMM_parameters <- function(
 
   ### specify missing parameters
   if (is.null(Gamma)) {
-    Gamma <- sample_tpm(M)
+    Gamma <- oeli::sample_transition_probability_matrix(
+      dim = M, state_persistent = TRUE
+    )  
   }
   if (is.null(mu)) {
     if (sdds[[1]]$distr_class %in% c("normal", "t", "lognormal")) {
@@ -140,7 +142,9 @@ fHMM_parameters <- function(
     if (is.null(Gamma_star)) {
       Gamma_star <- list()
       for (i in 1:M) {
-        Gamma_star[[i]] <- sample_tpm(N)
+        Gamma_star[[i]] <- oeli::sample_transition_probability_matrix(
+          dim = N, state_persistent = TRUE
+        )  
       }
     }
     if (is.null(mu_star)) {
@@ -181,39 +185,34 @@ fHMM_parameters <- function(
 
   ### set fixed parameters (if any)
   if ("mu" %in% names(sdds[[1]]$fixed_pars)) {
-    mu <- rep_len(sdds[[1]]$fixed_pars$mu, M)
+    mu <- sdds[[1]]$fixed_pars$mu
   }
   if ("sigma" %in% names(sdds[[1]]$fixed_pars)) {
-    sigma <- rep_len(sdds[[1]]$fixed_pars$sigma, M)
+    sigma <- sdds[[1]]$fixed_pars$sigma
   }
   if (sdds[[1]]$distr_class == "t") {
     if ("df" %in% names(sdds[[1]]$fixed_pars)) {
-      df <- rep_len(sdds[[1]]$fixed_pars$df, M)
+      df <- sdds[[1]]$fixed_pars$df
     }
   }
   if (hierarchy) {
     if ("mu" %in% names(sdds[[2]]$fixed_pars)) {
-      mu_star <- rep(list(rep_len(sdds[[2]]$fixed_pars$mu, N)), M)
+      mu_star <- rep(list(sdds[[2]]$fixed_pars$mu), M)
     }
     if ("sigma" %in% names(sdds[[2]]$fixed_pars)) {
-      sigma_star <- rep(list(rep_len(sdds[[2]]$fixed_pars$sigma, N)), M)
+      sigma_star <- rep(list(sdds[[2]]$fixed_pars$sigma), M)
     }
     if (sdds[[2]]$distr_class == "t") {
       if ("df" %in% names(sdds[[2]]$fixed_pars)) {
-        df_star <- rep(list(rep_len(sdds[[2]]$fixed_pars$df, N)), M)
+        df_star <- rep(list(sdds[[2]]$fixed_pars$df), M)
       }
     }
   }
 
   ### check parameters
-  if (!is_tpm(Gamma) || nrow(Gamma) != M) {
-    stop(
-      paste("'Gamma' must be a transition probability matrix of dimension", M),
-      call. = FALSE
-    )
-  }
+  oeli::assert_transition_probability_matrix(Gamma, dim = M)
   if (sdds[[1]]$distr_class %in% c("t", "normal", "lognormal")) {
-    if (!all(is_number(mu)) || length(mu) != M) {
+    if (!checkmate::test_numeric(mu, len = M)) {
       stop(
         paste("'mu' must be a numeric vector of length", M),
         call. = FALSE
@@ -221,21 +220,21 @@ fHMM_parameters <- function(
     }
   }
   if (sdds[[1]]$distr_class %in% c("gamma", "poisson")) {
-    if (!all(is_number(mu, non_neg = TRUE)) || length(mu) != M) {
+    if (!checkmate::test_numeric(mu, len = M) || any(mu <= 0)) {
       stop(
         paste("'mu' must be a positive numeric vector of length", M),
         call. = FALSE
       )
     }
   }
-  if (!all(is_number(sigma, non_neg = TRUE)) || length(sigma) != M) {
+  if (!checkmate::test_numeric(sigma, len = M, lower = 0)) {
     stop(
       paste("'sigma' must be a positive numeric vector of length", M),
       call. = FALSE
     )
   }
   if (sdds[[1]]$distr_class == "t") {
-    if (!all(is_number(df, non_neg = TRUE)) || length(df) != M) {
+    if (!checkmate::test_numeric(df, len = M, lower = 0)) {
       stop(
         paste("'df' must be a positive numeric vector of length", M),
         call. = FALSE
@@ -250,12 +249,9 @@ fHMM_parameters <- function(
       )
     }
     for (i in 1:M) {
-      if (!is_tpm(Gamma_star[[i]]) || nrow(Gamma_star[[i]]) != N) {
-        stop(
-          paste("Element", i, "in 'Gamma_star' must be a transition probability matrix of dimension", N),
-          call. = FALSE
-        )
-      }
+      oeli::assert_transition_probability_matrix(
+        Gamma_star[[i]], dim = N, .var.name = paste0("Gamma_star[[", i, "]]")
+      )
     }
     if (!is.list(mu_star) || length(mu_star) != M) {
       stop(
@@ -265,7 +261,7 @@ fHMM_parameters <- function(
     }
     for (i in 1:M) {
       if (sdds[[2]]$distr_class %in% c("t", "normal", "lognormal")) {
-        if (!all(is_number(mu_star[[i]])) || length(mu_star[[i]]) != N) {
+        if (!checkmate::test_numeric(mu_star[[i]], len = N)) {
           stop(
             paste("Element", i, "in 'mu_star' must be a numeric vector of length", N),
             call. = FALSE
@@ -273,7 +269,7 @@ fHMM_parameters <- function(
         }
       }
       if (sdds[[2]]$distr_class %in% c("gamma", "poisson")) {
-        if (!all(is_number(mu_star[[i]], non_neg = TRUE)) || length(mu_star[[i]]) != N) {
+        if (!checkmate::test_numeric(mu_star[[i]], len = N) || any(mu_star[[i]] <= 0)) {
           stop(
             paste("Element", i, "in 'mu_star' must be a positive numeric vector of length", N),
             call. = FALSE
@@ -288,7 +284,7 @@ fHMM_parameters <- function(
       )
     }
     for (i in 1:M) {
-      if (!all(is_number(sigma_star[[i]], non_neg = TRUE)) || length(sigma_star[[i]]) != N) {
+      if (!checkmate::test_numeric(sigma_star[[i]], len = N, lower = 0)) {
         stop(
           paste("Element", i, "in 'sigma_star' must be a positive numeric vector of length", N),
           call. = FALSE
@@ -303,7 +299,7 @@ fHMM_parameters <- function(
         )
       }
       for (i in 1:M) {
-        if (!all(is_number(df_star[[i]], non_neg = TRUE)) || length(df_star[[i]]) != N) {
+        if (!checkmate::test_numeric(df_star[[i]], len = N, lower = 0)) {
           stop(
             paste("Element", i, "in 'df_star' must be a positive numeric vector of length", N),
             call. = FALSE
@@ -329,8 +325,10 @@ fHMM_parameters <- function(
       "df_star" = df_star
     ))
   }
-  class(out) <- c("fHMM_parameters", "list")
-  return(out)
+  structure(
+    out,
+    class = c("fHMM_parameters", "list")
+  )
 }
 
 #' @rdname fHMM_parameters
@@ -447,8 +445,10 @@ par2parUncon <- function(par, controls) {
       }
     }
   }
-  class(parUncon) <- "parUncon"
-  return(parUncon)
+  structure(
+    parUncon,
+    class = "parUncon"
+  )
 }
 
 #' @rdname parameter_transformations
@@ -525,8 +525,10 @@ parUncon2parCon <- function(parUncon, controls) {
       }
     }
   }
-  class(parCon) <- "parCon"
-  return(parCon)
+  structure(
+    parCon,
+    class = "parCon"
+  )
 }
 
 #' @rdname parameter_transformations
@@ -545,20 +547,20 @@ parCon2par <- function(parCon, controls) {
     mu <- parCon[1:M]
     parCon <- parCon[-(1:M)]
   } else {
-    mu <- rep(sdds[[1]]$fixed_pars$mu, M)
+    mu <- sdds[[1]]$fixed_pars$mu
   }
   if (!"sigma" %in% names(sdds[[1]]$fixed_pars)) {
     sigma <- parCon[1:M]
     parCon <- parCon[-(1:M)]
   } else {
-    sigma <- rep(sdds[[1]]$fixed_pars$sigma, M)
+    sigma <- sdds[[1]]$fixed_pars$sigma
   }
   if (sdds[[1]]$distr_class == "t") {
     if (!"df" %in% names(sdds[[1]]$fixed_pars)) {
       df <- parCon[1:M]
       parCon <- parCon[-(1:M)]
     } else {
-      df <- rep(sdds[[1]]$fixed_pars$df, M)
+      df <- sdds[[1]]$fixed_pars$df
     }
   } else {
     df <- NULL
@@ -580,20 +582,20 @@ parCon2par <- function(parCon, controls) {
         mu_star[[s]] <- parCon[1:N]
         parCon <- parCon[-(1:N)]
       } else {
-        mu_star[[s]] <- rep(sdds[[2]]$fixed_pars$mu, M)
+        mu_star[[s]] <- sdds[[2]]$fixed_pars$mu
       }
       if (!"sigma" %in% names(sdds[[2]]$fixed_pars)) {
         sigma_star[[s]] <- parCon[1:N]
         parCon <- parCon[-(1:N)]
       } else {
-        sigma_star[[s]] <- rep(sdds[[2]]$fixed_pars$sigma, M)
+        sigma_star[[s]] <- sdds[[2]]$fixed_pars$sigma
       }
       if (sdds[[2]]$distr_class == "t") {
         if (!"df" %in% names(sdds[[2]]$fixed_pars)) {
           df_star[[s]] <- parCon[1:N]
           parCon <- parCon[-(1:N)]
         } else {
-          df_star[[s]] <- rep(sdds[[2]]$fixed_pars$df, M)
+          df_star[[s]] <- sdds[[2]]$fixed_pars$df
         }
       }
     }
@@ -603,13 +605,12 @@ parCon2par <- function(parCon, controls) {
     sigma_star <- NULL
     df_star <- NULL
   }
-  par <- fHMM_parameters(
+  fHMM_parameters(
     controls = controls,
     Gamma = Gamma, mu = mu, sigma = sigma, df = df,
     Gamma_star = Gamma_star, mu_star = mu_star,
     sigma_star = sigma_star, df_star = df_star
   )
-  return(par)
 }
 
 #' @rdname parameter_transformations
@@ -619,7 +620,7 @@ parCon2par <- function(parCon, controls) {
 par2parCon <- function(par, controls) {
   stopifnot(inherits(par,"fHMM_parameters"))
   stopifnot(inherits(controls,"fHMM_controls"))
-  return(parUncon2parCon(par2parUncon(par, controls), controls))
+  parUncon2parCon(par2parUncon(par, controls), controls)
 }
 
 #' @rdname parameter_transformations
@@ -629,7 +630,7 @@ par2parCon <- function(par, controls) {
 parCon2parUncon <- function(parCon, controls) {
   stopifnot(inherits(parCon,"parCon"))
   stopifnot(inherits(controls,"fHMM_controls"))
-  return(par2parUncon(parCon2par(parCon, controls), controls))
+  par2parUncon(parCon2par(parCon, controls), controls)
 }
 
 #' @rdname parameter_transformations
@@ -639,7 +640,7 @@ parCon2parUncon <- function(parCon, controls) {
 parUncon2par <- function(parUncon, controls) {
   stopifnot(inherits(parUncon,"parUncon"))
   stopifnot(inherits(controls,"fHMM_controls"))
-  return(parCon2par(parUncon2parCon(parUncon, controls), controls))
+  parCon2par(parUncon2parCon(parUncon, controls), controls)
 }
 
 #' @rdname parameter_transformations
@@ -652,7 +653,7 @@ muCon2muUncon <- function(muCon, link) {
   } else {
     muUncon <- muCon
   }
-  return(muUncon)
+  muUncon
 }
 
 #' @rdname parameter_transformations
@@ -661,11 +662,10 @@ muCon2muUncon <- function(muCon, link) {
 
 muUncon2muCon <- function(muUncon, link) {
   if (link) {
-    muCon <- exp(muUncon)
+    exp(muUncon)
   } else {
-    muCon <- muUncon
+    muUncon
   }
-  return(muCon)
 }
 
 #' @rdname parameter_transformations
@@ -674,7 +674,7 @@ muUncon2muCon <- function(muUncon, link) {
 #' deviations.
 
 sigmaCon2sigmaUncon <- function(sigmaCon) {
-  return(log(sigmaCon))
+  log(sigmaCon)
 }
 
 #' @rdname parameter_transformations
@@ -682,7 +682,7 @@ sigmaCon2sigmaUncon <- function(sigmaCon) {
 #' For \code{sigmaUncon2sigmaCon}: a vector of constrained standard deviations.
 
 sigmaUncon2sigmaCon <- function(sigmaUncon) {
-  return(exp(sigmaUncon))
+  exp(sigmaUncon)
 }
 
 #' @rdname parameter_transformations
@@ -690,7 +690,7 @@ sigmaUncon2sigmaCon <- function(sigmaUncon) {
 #' For \code{dfCon2dfUncon}: a vector of unconstrained degrees of freedom.
 
 dfCon2dfUncon <- function(dfCon) {
-  return(log(dfCon))
+  log(dfCon)
 }
 
 #' @rdname parameter_transformations
@@ -698,7 +698,7 @@ dfCon2dfUncon <- function(dfCon) {
 #' For \code{dfUncon2dfCon}: a vector of constrained degrees of freedom.
 
 dfUncon2dfCon <- function(dfUncon) {
-  return(exp(dfUncon))
+  exp(dfUncon)
 }
 
 #' @rdname parameter_transformations
@@ -710,7 +710,7 @@ Gamma2gammasCon <- function(Gamma, shift = 1e-3) {
   gammasCon <- Gamma[row(Gamma) != col(Gamma)]
   gammasCon <- replace(gammasCon, gammasCon == 0, shift)
   gammasCon <- replace(gammasCon, gammasCon == 1, 1 - shift)
-  return(gammasCon)
+  gammasCon
 }
 
 #' @rdname parameter_transformations
@@ -722,7 +722,7 @@ Gamma2gammasUncon <- function(Gamma) {
   diag(Gamma) <- 0
   Gamma <- log(Gamma / (1 - rowSums(Gamma)))
   diag(Gamma) <- NA_real_
-  return(Gamma[!is.na(Gamma)])
+  Gamma[!is.na(Gamma)]
 }
 
 #' @rdname parameter_transformations
@@ -735,7 +735,7 @@ gammasCon2Gamma <- function(gammasCon, dim) {
   for (i in 1:dim) {
     Gamma[i, i] <- 1 - (rowSums(Gamma)[i] - 1)
   }
-  return(Gamma)
+  Gamma
 }
 
 #' @rdname parameter_transformations
@@ -744,8 +744,7 @@ gammasCon2Gamma <- function(gammasCon, dim) {
 #' elements of the transition probability matrix.
 
 gammasCon2gammasUncon <- function(gammasCon, dim) {
-  gammasUncon <- Gamma2gammasUncon(gammasCon2Gamma(gammasCon, dim))
-  return(gammasUncon)
+  Gamma2gammasUncon(gammasCon2Gamma(gammasCon, dim))
 }
 
 #' @rdname parameter_transformations
@@ -755,8 +754,7 @@ gammasCon2gammasUncon <- function(gammasCon, dim) {
 gammasUncon2Gamma <- function(gammasUncon, dim) {
   Gamma <- diag(dim)
   Gamma[!Gamma] <- exp(gammasUncon)
-  Gamma <- Gamma / rowSums(Gamma)
-  return(Gamma)
+  Gamma / rowSums(Gamma)
 }
 
 #' @rdname parameter_transformations
@@ -765,6 +763,5 @@ gammasUncon2Gamma <- function(gammasUncon, dim) {
 #' elements of a transition probability matrix.
 
 gammasUncon2gammasCon <- function(gammasUncon, dim) {
-  gammasCon <- Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim))
-  return(gammasCon)
+  Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim))
 }

@@ -1,4 +1,4 @@
-# fHMM 2.0.0
+# fHMM 1.1.1.9000
 
 ## New names
 

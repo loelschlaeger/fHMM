@@ -21,7 +21,7 @@
 fHMM_sdds <- function(sdds, states) {
   
   ### input checks
-  if (!is.atomic(states)) {
+  if (!checkmate::test_atomic_vector(states)) {
     stop(
       "The control 'states' must be a vector.", 
       call. = FALSE
@@ -29,7 +29,7 @@ fHMM_sdds <- function(sdds, states) {
   }
   if (length(states) == 1) {
     hierarchy <- FALSE
-    if (!(all(is_number(states, int = TRUE)) && all(states >= 2))) {
+    if (!checkmate::test_integerish(states, lower = 2, len = 1)) {
       stop(
         "The control 'states' must be an integer greater or equal 2.",
         call. = FALSE
@@ -37,7 +37,7 @@ fHMM_sdds <- function(sdds, states) {
     }
   } else if (length(states) == 2) {
     hierarchy <- TRUE
-    if (!(all(is_number(states, int = TRUE)) && all(states >= 2))) {
+    if (!checkmate::test_integerish(states, lower = 2, len = 2)) {
       stop(
         "The control 'states' must be a vector of integers greater or equal 2.",
         call. = FALSE
@@ -53,7 +53,9 @@ fHMM_sdds <- function(sdds, states) {
     ### allows for re-definition of already specified 'fHMM_sdds' object
     sdds <- sapply(sdds, function(x) x$label)
   }
-  if (!is.character(sdds) || length(sdds) != ifelse(hierarchy, 2, 1)) {
+  if (!checkmate::test_character(
+    sdds, any.missing = FALSE, len = ifelse(hierarchy, 2, 1))
+  ) {
     stop(
       "The control 'sdds' must be a character ", 
       if (hierarchy) "vector ", "of length ", ifelse(hierarchy, 2, 1), ".",
@@ -109,10 +111,8 @@ fHMM_sdds <- function(sdds, states) {
 #' @keywords internal
 
 decode_sdd <- function(sdd, state) {
-  stopifnot(
-    is.character(sdd), length(sdd) == 1, is.numeric(state), length(state) == 1, 
-    is_number(state, int = TRUE, pos = TRUE), state >= 2
-  )
+  checkmate::assert_string(sdd)
+  checkmate::assert_number(state, lower = 2)
   sdd_tws <- gsub(" ", "", sdd)
   sdd_tws_split <- unlist(strsplit(sdd_tws, split = "[()]"))
   distr_class <- sdd_tws_split[1]
@@ -174,18 +174,18 @@ decode_sdd <- function(sdd, state) {
   }
   if ("mu" %in% names(fixed_pars)) {
     if (distr_class %in% c("gamma", "poisson")) {
-      if (!any(is_number(fixed_pars$mu, pos = TRUE))) {
+      if (!checkmate::test_numeric(fixed_pars$mu) || any(fixed_pars$mu <= 0)) {
         stop("'mu' must be positive.", call. = FALSE)
       }
     }
   } 
   if ("sigma" %in% names(fixed_pars)) {
-    if (!any(is_number(fixed_pars$sigma, pos = TRUE))) {
+    if (!checkmate::test_numeric(fixed_pars$sigma) || any(fixed_pars$sigma <= 0)) {
       stop("'sigma' must be positive.", call. = FALSE)
     }
   } 
   if ("df" %in% names(fixed_pars)) {
-    if (!any(is_number(fixed_pars$df, pos = TRUE))) {
+    if (!checkmate::test_numeric(fixed_pars$df) || any(fixed_pars$df <= 0)) {
       stop("'df' must be positive.", call. = FALSE)
     }
   }
@@ -263,11 +263,11 @@ decode_sdd <- function(sdd, state) {
 #' @keywords internal  
 
 build_sdd_function <- function(distr_class, function_type) {
-  stopifnot(
-    is.character(distr_class), length(distr_class) == 1,
-    distr_class %in% c("normal", "lognormal", "t", "gamma", "poisson"),
-    is.character(function_type), length(function_type) == 1,
-    function_type %in% c("sample", "density", "distribution")
+  checkmate::assert_choice(
+    distr_class, c("normal", "lognormal", "t", "gamma", "poisson")
+  )
+  checkmate::assert_choice(
+    function_type, c("sample", "density", "distribution")
   )
   sdd_function <- function () {}
   formals(sdd_function) <- if (function_type == "sample") {
@@ -280,7 +280,7 @@ build_sdd_function <- function(distr_class, function_type) {
   body(sdd_function)[2] <- as.expression(as.call(quote(
     if (missing(state)) {
       stop(
-        "Which state? Please set, e.g., 'state' = 1.", 
+        "Which state? Please set for example 'state' = 1.", 
         call. = FALSE
       )
     }

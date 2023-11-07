@@ -1,7 +1,7 @@
 Package: fHMM
 Type: Package
 Title: Fitting Hidden Markov Models to Financial Data
-Version: 2.0.0
+Version: 1.1.1.9000
 Authors@R: c(
     person(given = "Lennart",
            family = "Oelschl\U00E4ger",
@@ -25,7 +25,7 @@ Description: Fitting (hierarchical) hidden Markov models to financial data
     model checking, and prediction.
     For a reference, see Oelschläger, L. and Adam, T. "Detecting bearish and 
     bullish markets in financial time series using  hierarchical hidden Markov 
-    models" (2021, Statistical Modelling) <doi:10.1177/1471082X211034048>.
+    models" (2021, Statistical Modelling).
 Language: en-US
 URL: https://loelschlaeger.de/fHMM/, https://github.com/loelschlaeger/fHMM
 BugReports: https://github.com/loelschlaeger/fHMM/issues
