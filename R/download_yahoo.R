@@ -123,3 +123,17 @@ download_yahoo <- function(
   }
   data[, columns, drop = FALSE]
 }
+
+#' @inherit download_yahoo
+#' @examples
+#' data <- download_data(symbol = "^GDAXI", from = "2000-01-03")
+#' head(data)
+#' @export
+#' @param file,verbose Deprecated.
+
+download_data <- function(
+  symbol, from = "1902-01-01", to = Sys.Date(), file = NULL, verbose = TRUE
+) {
+  .Deprecated("download_yahoo()")
+  download_yahoo(symbol = symbol, from = from, to = to)
+}
