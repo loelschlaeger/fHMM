@@ -371,7 +371,7 @@ build_sdd_function <- function(distr_class, function_type) {
       as.expression(as.call(quote(
         stats::dpois(
           x = x,
-          mean = args$mu[state]
+          lambda = args$mu[state]
         )
       )))
     }
@@ -439,5 +439,34 @@ print.fHMM_sdds <- function(x, ...) {
     "\n"
   )
   invisible(x)
+}
+
+#' Density values of observations in states
+#' 
+#' @description 
+#' This helper function computes all density values for all observations in all
+#' possible states.
+#' 
+#' @inheritParams decode_sdd
+#' @param observations
+#' A \code{numeric} \code{vector} of observations.
+#' @param ...
+#' Vectors with parameters for each state, named \code{mu}, \code{sigma}, and 
+#' \code{df}, for the mean, standard deviation, and degrees of freedom, 
+#' respectively (if required).
+#' 
+#' @return 
+#' A \code{matrix} with \code{state} rows and \code{length(observations)} 
+#' columns. The element in row \eqn{i} and column \eqn{j} is the density value 
+#' for observation \eqn{j} in state \eqn{i}.
+#' 
+#' @keywords internal
+
+allprobs <- function(observations, sdd, state, ...) {
+  allprobs <- matrix(NA_real_, nrow = state, ncol = length(observations))
+  for (i in seq_len(state)) {
+    allprobs[i, ] <- sdd$density(x = observations, state = i, ...)
+  }
+  return(allprobs)
 }
 

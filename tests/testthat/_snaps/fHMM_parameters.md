@@ -4,8 +4,8 @@
       print(fHMM_parameters())
     Output
       fHMM parameters
+       $sdds
        $Gamma
        $mu
-       $sigma
-       $sdds
+       $sigma 
 

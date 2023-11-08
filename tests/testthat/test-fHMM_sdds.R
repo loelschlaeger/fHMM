@@ -125,3 +125,15 @@ test_that("print method works", {
     fHMM_sdds(sdds = c("t", "t"), states = c(2, 3))
   )
 })
+
+test_that("allprobs matrix can be created", {
+  observations <- 1:10
+  sdd <- fHMM_sdds("normal", 2)[[1]]
+  expect_identical(
+    allprobs(observations, sdd, 2, "mu" = 1:2, "sigma" = 1:2),
+    rbind(
+      dnorm(observations, mean = 1, sd = 1), 
+      dnorm(observations, mean = 2, sd = 2)
+    )
+  )
+})

@@ -140,12 +140,14 @@ test_that("parameter transformations for HHMM work", {
 test_that("mu transformations work", {
   size <- sample(10, 1)
   muUncon <- rnorm(size)
+  names(muUncon) <- paste0("muUncon_", 1:size)
   link <- sample(c(TRUE, FALSE), 1)
   expect_equal(
     muUncon,
     muCon2muUncon(muUncon2muCon(muUncon, link = link), link = link)
   )
   muCon <- abs(rnorm(size))
+  names(muCon) <- paste0("muCon_", 1:size)
   expect_equal(
     muCon,
     muUncon2muCon(muCon2muUncon(muCon, link = link), link = link)
@@ -155,11 +157,13 @@ test_that("mu transformations work", {
 test_that("sigma transformations work", {
   size <- sample(10, 1)
   sigmaUncon <- rnorm(size)
+  names(sigmaUncon) <- paste0("sigmaUncon_", 1:size)
   expect_equal(
     sigmaUncon,
     sigmaCon2sigmaUncon(sigmaUncon2sigmaCon(sigmaUncon))
   )
   sigmaCon <- abs(rnorm(size))
+  names(sigmaCon) <- paste0("sigmaCon_", 1:size)
   expect_equal(
     sigmaCon,
     sigmaUncon2sigmaCon(sigmaCon2sigmaUncon(sigmaCon))
@@ -169,11 +173,13 @@ test_that("sigma transformations work", {
 test_that("df transformations work", {
   size <- sample(10, 1)
   dfUncon <- rnorm(size)
+  names(dfUncon) <- paste0("dfUncon_", 1:size)
   expect_equal(
     dfUncon,
     dfCon2dfUncon(dfUncon2dfCon(dfUncon))
   )
   dfCon <- abs(rnorm(size))
+  names(dfCon) <- paste0("dfCon_", 1:size)
   expect_equal(
     dfCon,
     dfUncon2dfCon(dfCon2dfUncon(dfCon))
@@ -181,11 +187,18 @@ test_that("df transformations work", {
 })
 
 test_that("Gamma transformations work", {
-  dim <- sample(10, 1)
+  dim <- sample(2:10, 1)
   Gamma <- matrix(runif(dim^2), dim, dim)
   gammasUncon <- Gamma[Gamma != diag(Gamma)]
+  names(gammasUncon) <- oeli::matrix_indices(
+    Gamma, prefix = "gammasUncon_", exclude_diagonal = TRUE
+  )
   Gamma <- Gamma / rowSums(Gamma)
   gammasCon <- Gamma[Gamma != diag(Gamma)]
+  names(gammasCon) <- oeli::matrix_indices(
+    Gamma, prefix = "gammasCon_", exclude_diagonal = TRUE
+  )
+  colnames(Gamma) <- rownames(Gamma) <- paste0("state_", 1:dim)
   expect_equal(Gamma, gammasCon2Gamma(Gamma2gammasCon(Gamma), dim = dim))
   expect_equal(gammasCon, Gamma2gammasCon(gammasCon2Gamma(gammasCon, dim = dim)))
   expect_equal(Gamma, gammasUncon2Gamma(Gamma2gammasUncon(Gamma), dim = dim))
@@ -196,5 +209,5 @@ test_that("Gamma transformations work", {
   expect_equal(gammasCon, Gamma2gammasCon(gammasUncon2Gamma(gammasCon2gammasUncon(gammasCon, dim = dim), dim = dim)))
   expect_equal(gammasUncon, gammasCon2gammasUncon(Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim = dim)), dim = dim))
   delta <- oeli::stationary_distribution(Gamma)
-  expect_equal(delta, as.numeric(delta %*% Gamma))
+  expect_equal(unname(delta), as.numeric(delta %*% Gamma))
 })

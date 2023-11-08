@@ -22,44 +22,81 @@
 \alias{gammasUncon2gammasCon}
 \title{Parameter transformations}
 \usage{
-par2parUncon(par, controls)
+par2parUncon(
+  par,
+  controls = list(),
+  hierarchy = FALSE,
+  states = if (!hierarchy) 2 else c(2, 2),
+  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+)
 
-parUncon2parCon(parUncon, controls)
+parUncon2parCon(
+  parUncon,
+  controls = list(),
+  hierarchy = FALSE,
+  states = if (!hierarchy) 2 else c(2, 2),
+  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+)
 
-parCon2par(parCon, controls)
+parCon2par(
+  parCon,
+  controls = list(),
+  hierarchy = FALSE,
+  states = if (!hierarchy) 2 else c(2, 2),
+  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+)
 
-par2parCon(par, controls)
+par2parCon(
+  par,
+  controls = list(),
+  hierarchy = FALSE,
+  states = if (!hierarchy) 2 else c(2, 2),
+  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+)
 
-parCon2parUncon(parCon, controls)
+parCon2parUncon(
+  parCon,
+  controls = list(),
+  hierarchy = FALSE,
+  states = if (!hierarchy) 2 else c(2, 2),
+  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+)
 
-parUncon2par(parUncon, controls)
+parUncon2par(
+  parUncon,
+  controls = list(),
+  hierarchy = FALSE,
+  states = if (!hierarchy) 2 else c(2, 2),
+  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+)
 
-muCon2muUncon(muCon, link)
+muCon2muUncon(muCon, link, prefix = "muUncon_")
 
-muUncon2muCon(muUncon, link)
+muUncon2muCon(muUncon, link, prefix = "muCon_")
 
-sigmaCon2sigmaUncon(sigmaCon)
+sigmaCon2sigmaUncon(sigmaCon, prefix = "sigmaUncon_")
 
-sigmaUncon2sigmaCon(sigmaUncon)
+sigmaUncon2sigmaCon(sigmaUncon, prefix = "sigmaCon_")
 
-dfCon2dfUncon(dfCon)
+dfCon2dfUncon(dfCon, prefix = "dfUncon_")
 
-dfUncon2dfCon(dfUncon)
+dfUncon2dfCon(dfUncon, prefix = "dfCon_")
 
-Gamma2gammasCon(Gamma, shift = 0.001)
+Gamma2gammasCon(Gamma, shift = 0.001, prefix = "gammasCon_")
 
-Gamma2gammasUncon(Gamma)
+Gamma2gammasUncon(Gamma, prefix = "gammasUncon_")
 
-gammasCon2Gamma(gammasCon, dim)
+gammasCon2Gamma(gammasCon, dim, prefix = "state_")
 
-gammasCon2gammasUncon(gammasCon, dim)
+gammasCon2gammasUncon(gammasCon, dim, prefix = "gammasUncon_")
 
-gammasUncon2Gamma(gammasUncon, dim)
+gammasUncon2Gamma(gammasUncon, dim, prefix = "state_")
 
-gammasUncon2gammasCon(gammasUncon, dim)
+gammasUncon2gammasCon(gammasUncon, dim, prefix = "gammasCon_")
 }
 \arguments{
-\item{par}{An object of class \code{\link{fHMM_parameters}}.}
+\item{par}{An object of class \code{\link{fHMM_parameters}}, which is a \code{list}
+of model parameters.}
 
 \item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
 
@@ -82,10 +119,77 @@ Unspecified parameters are set to their default values, see below.
 
 Specifications in \code{controls} override individual specifications.}
 
+\item{hierarchy}{A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
+
+If \code{hierarchy = TRUE}, some of the other controls must be specified for
+the coarse-scale and the fine-scale layer.
+
+By default, \code{hierarchy = FALSE}.}
+
+\item{states}{An \code{integer}, the number of states of the underlying Markov chain.
+
+If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
+2. The first entry corresponds to the coarse-scale layer, while the second
+entry corresponds to the fine-scale layer.
+
+By default, \code{states = 2} if \code{hierarchy = FALSE} and
+\code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
+
+\item{sdds}{A \code{character}, specifying the state-dependent distribution. One of
+\itemize{
+\item \code{"normal"} (the normal distribution),
+\item \code{"lognormal"} (the log-normal distribution),
+\item \code{"t"} (the t-distribution),
+\item \code{"gamma"} (the gamma distribution),
+\item \code{"poisson"} (the Poisson distribution).
+}
+
+The distribution parameters, i.e. the
+\itemize{
+\item mean \code{mu},
+\item standard deviation \code{sigma} (not for the Poisson distribution),
+\item degrees of freedom \code{df} (only for the t-distribution),
+}
+can be fixed via, e.g., \code{"t(df = 1)"} or
+\code{"gamma(mu = 0, sigma = 1)"}.
+To fix different values of a parameter for different states, separate by
+"|", e.g. \code{"poisson(mu = 1|2|3)"}.
+
+If \code{hierarchy = TRUE}, \code{sdds} must be a \code{vector} of length 2.
+The first entry corresponds to the coarse-scale layer, while the second entry
+corresponds to the fine-scale layer.
+
+By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
+\code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.
+
+See also \code{\link{fHMM_sdds}} for more details.}
+
+\item{parUncon}{An object of class \code{parUncon}, which is a \code{numeric} \code{vector}
+with identified and unconstrained model parameters in the following order:
+\enumerate{
+\item non-diagonal transition probabilities \code{gammasUncon}
+\item expectations \code{muUncon}
+\item standard deviations \code{sigmaUncon} (if any)
+\item degrees of freedom \code{dfUncon} (if any)
+\item fine-scale parameters for each coarse-scale state, in the same order (if any)
+}}
+
+\item{parCon}{An object of class \code{parCon}, which is a \code{numeric} \code{vector}
+with identified (and constrained) model parameters in the following order:
+\enumerate{
+\item non-diagonal transition probabilities \code{gammasCon}
+\item expectations \code{muCon}
+\item standard deviations \code{sigmaCon} (if any)
+\item degrees of freedom \code{dfCon} (if any)
+\item fine-scale parameters for each coarse-scale state, in the same order (if any)
+}}
+
 \item{muCon, muUncon}{A vector of (un-) constrained expected values.}
 
 \item{link}{Either \code{TRUE} or \code{FALSE}, determining whether to apply the link
 function.}
+
+\item{prefix}{A \code{character} prefix for labelling.}
 
 \item{sigmaCon, sigmaUncon}{A vector of (un-) constrained standard deviations.}
 
@@ -141,8 +245,12 @@ For \code{gammasUncon2gammasCon}: a vector of constrained non-diagonal
 elements of a transition probability matrix.
 }
 \description{
-These helper functions transform model parameters between constrained
-(suffix \code{*Con}) and unconstrained spaces
-(suffix \code{*Uncon}) for numerical optimization.
+These helper functions transform model parameters between
+\itemize{
+\item constrained spaces (suffix \code{*Con})
+\item and unconstrained spaces (suffix \code{*Uncon}).
+}
+The former is useful for interpretation, the latter for unconstrained
+optimization.
 }
 \keyword{internal}

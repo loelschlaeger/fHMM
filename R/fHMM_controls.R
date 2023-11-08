@@ -606,7 +606,7 @@ set_controls <- function(
 #' @inheritParams set_controls
 #' @keywords internal
 
-.fHMM_seed <- function(controls) {
+fHMM_seed <- function(controls) {
   checkmate::assert_list(controls)
   if ("seed" %in% names(controls) && !is.null(controls$seed)) {
     set.seed(controls$seed)
@@ -617,7 +617,7 @@ set_controls <- function(
 #' @inheritParams set_controls
 #' @keywords internal
 
-.fHMM_hierarchical <- function(controls) {
+fHMM_hierarchical <- function(controls) {
   checkmate::assert_list(controls)
   hierarchy <- controls[["hierarchy"]]
   if (!checkmate::test_flag(hierarchy)) {

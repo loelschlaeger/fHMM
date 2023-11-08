@@ -60,7 +60,7 @@ simulate_hmm <- function(
   if (!inherits(true_parameters, "fHMM_parameters")) {
     stop("'true_parameters' is not of class 'fHMM_parameters'.", call. = FALSE)
   }
-  .fHMM_seed(controls)
+  fHMM_seed(controls)
   sdd <- controls[["sdds"]][[1]]$sample
   states <- oeli::simulate_markov_chain(
     Gamma = true_parameters[["Gamma"]], T = controls[["horizon"]][1]
@@ -72,7 +72,7 @@ simulate_hmm <- function(
       sigma = true_parameters[["sigma"]], df = true_parameters[["df"]]
     )
   }
-  if (.fHMM_hierarchical(controls)) {
+  if (fHMM_hierarchical(controls)) {
     observations_fs <- list()
     states_fs <- list()
     T_star <- compute_T_star(controls)
@@ -135,14 +135,14 @@ compute_T_star <- function(
     controls = controls, hierarchy = hierarchy, horizon = horizon, 
     period = period, seed = seed
   )
-  if (!.fHMM_hierarchical(controls)) {
+  if (!fHMM_hierarchical(controls)) {
     stop(
       "The function 'compute_T_star()' is only relevant for hierarchical HMMs.",
       call. = FALSE
     )
   }
   if (is.null(dates)) {
-    .fHMM_seed(controls)
+    fHMM_seed(controls)
     if (!is.na(controls[["horizon"]][2])) {
       T_star <- rep(controls[["horizon"]][2], controls[["horizon"]][1])
     } else {

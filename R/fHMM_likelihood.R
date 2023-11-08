@@ -1,58 +1,61 @@
-#' Negative log-likelihood function of an HMM
+#' Log-likelihood function of an (H)HMM
 #'
 #' @description
-#' This function computes the negative log-likelihood of an HMM.
+#' This function computes the log-likelihood value off a (hierarchical) hidden 
+#' Markov model for given observations and parameter values.
 #'
-#' @param parUncon
-#' An object of class \code{parUncon}.
+#' @inheritParams parameter_transformations
 #' @param observations
 #' The vector of the simulated or empirical data used for estimation.
-#' @param controls
-#' An object of class \code{fHMM_controls}.
+#' @inheritParams set_controls
+#' @param negative
+#' Either \code{TRUE} to return the negative log-likelihood value (useful for
+#' optimization) or \code{FALSE} (default), else.
 #'
 #' @return
-#' The negative log-likelihood value.
+#' The log-likelihood value.
+#'
+#' @examples
+#' controls <- set_controls(states = 2, sdds = "normal")
+#' parameters <- fHMM_parameters(controls)
+#' parUncon <- par2parUncon(parameters, controls)
+#' observations <- 1:10
+#' ll_hmm(parUncon, observations, controls)
 #'
 #' @export
 
-# TODO: rename nLL_hmm -> ll_hmm, neg as argument
-
-nLL_hmm <- function(parUncon, observations, controls) {
+ll_hmm <- function(
+    parUncon, 
+    observations, 
+    controls = list(),
+    hierarchy = FALSE,
+    states = if (!hierarchy) 2 else c(2, 2),
+    sdds = if (!hierarchy) "normal" else c("normal", "normal"), 
+    negative = FALSE
+  ) {
   class(parUncon) <- "parUncon"
-  T <- length(observations)
-  nstates <- controls[["states"]][1]
-  par <- parUncon2par(parUncon, controls)
-  sdd <- controls[["sdds"]][[1]]$name
-  Gamma <- par[["Gamma"]]
-  delta <- stationary_distribution(Gamma)
-  mus <- par[["mus"]]
-  sigmas <- par[["sigmas"]]
-  dfs <- par[["dfs"]]
-  allprobs <- matrix(NA_real_, nstates, T)
-  for (i in 1:nstates) {
-    if (sdd == "t") {
-      allprobs[i, ] <- 1 / sigmas[i] * stats::dt(
-        x = (observations - mus[i]) / sigmas[i],
-        df = dfs[i]
-      )
-    }
-    if (sdd == "gamma") {
-      allprobs[i, ] <- stats::dgamma(
-        x = observations,
-        shape = mus[i]^2 / sigmas[i]^2,
-        scale = sigmas[i]^2 / mus[i]
-      )
-    }
-    if (sdd == "lnorm") {
-      allprobs[i, ] <- stats::dlnorm(
-        x = observations,
-        meanlog = mus[i],
-        sdlog = sigmas[i]
-      )
-    }
-  }
-  return(-LL_HMM_Rcpp(allprobs, Gamma, delta, nstates, T))
+  controls <- set_controls(
+    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+  )
+  parameters <- parUncon2par(parUncon, controls)
+  allprobs <- allprobs(
+    observations = observations, 
+    sdd = controls[["sdds"]][[1]], 
+    state = controls[["states"]][1], 
+    "mu" = parameters[["mu"]], 
+    "sigma" = parameters[["sigma"]], 
+    "df" = parameters[["df"]]
+  )
+  ll <- LL_HMM_Rcpp(
+    allprobs = allprobs, 
+    Gamma = parameters[["Gamma"]], 
+    delta = oeli::stationary_distribution(parameters[["Gamma"]]), 
+    N = controls[["states"]][1], 
+    T = length(observations)
+  )
+  ifelse(negative, -ll, ll)
 }
+
 
 
 #' Negative log-likelihood function of an HHMM
