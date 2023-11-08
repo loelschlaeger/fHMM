@@ -326,7 +326,7 @@ fHMM_parameters <- function(
     ))
   }
   structure(
-    out,
+    Filter(Negate(is.null), out),
     class = c("fHMM_parameters", "list")
   )
 }
@@ -340,7 +340,7 @@ fHMM_parameters <- function(
 
 print.fHMM_parameters <- function(x, ...) {
   cat("fHMM parameters\n")
-  cat(paste0(" $", names(x), collapse = "\n"))
+  cat(paste0(" $", names(x), collapse = "\n"), "\n")
   invisible(x)
 }
 

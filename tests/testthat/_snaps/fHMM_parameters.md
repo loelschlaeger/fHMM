@@ -7,6 +7,5 @@
        $Gamma
        $mu
        $sigma
-       $df
        $sdds
 

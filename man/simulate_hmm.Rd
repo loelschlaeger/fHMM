@@ -124,11 +124,17 @@ By default, \code{seed = NULL} (i.e., no seed).}
 \value{
 A \code{list} containing the following elements:
 \itemize{
-\item \code{observations}, the \code{vector} (or \code{matrix} in the
-hierarchical case) of the simulated  observations
-\item \code{states}, the \code{vector} (or \code{matrix} in the
-hierarchical case) of the simulated states
+\item \code{observations}, the \code{vector} of the simulated observations
+\item \code{states}, the \code{vector} of the simulated states
 \item \code{parameter}, the \code{\link{fHMM_parameters}} object
+}
+
+In the hierarchical case, also the following elements:
+\itemize{
+\item \code{observations_fs}, a \code{list} with the simulated fine-scale
+observations corresponding to each (coarse-scale) observation
+\item \code{states_fs}, a \code{list} with the simulated fine-scale
+states corresponding to each (coarse-scale) state
 }
 }
 \description{
@@ -141,7 +147,7 @@ simulate_hmm(states = 2, sdds = "normal", horizon = 20)
 ### HHMM data
 simulate_hmm(
   hierarchy = TRUE, states = c(3, 3), sdds = c("gamma", "poisson"),
-  horizon = c(10, NA), period = "w"
+  horizon = c(5, NA), period = "w"
 )
 
 }

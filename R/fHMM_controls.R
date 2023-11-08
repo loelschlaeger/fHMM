@@ -593,11 +593,37 @@ set_controls <- function(
 }
 
 #' Helper function that checks if data was simulated
-#' @param x Either a \code{list} or an object of class \code{fHMM_controls}.
+#' @inheritParams set_controls
 #' @keywords internal
 
-.simulated_data <- function(x) {
-  length(x[["data"]]) == 1 && is.atomic(x[["data"]]) && is.na(x[["data"]])
+.simulated_data <- function(controls) {
+  checkmate::assert_list(controls)
+  length(controls[["data"]]) == 1 && 
+    is.atomic(controls[["data"]]) && is.na(controls[["data"]])
+}
+
+#' Helper function that sets a seed if specified
+#' @inheritParams set_controls
+#' @keywords internal
+
+.fHMM_seed <- function(controls) {
+  checkmate::assert_list(controls)
+  if ("seed" %in% names(controls) && !is.null(controls$seed)) {
+    set.seed(controls$seed)
+  }
+}
+
+#' Helper function that checks if the model is hierarchical
+#' @inheritParams set_controls
+#' @keywords internal
+
+.fHMM_hierarchical <- function(controls) {
+  checkmate::assert_list(controls)
+  hierarchy <- controls[["hierarchy"]]
+  if (!checkmate::test_flag(hierarchy)) {
+    stop("The control 'hierarchy' must be TRUE or FALSE.", call. = FALSE)
+  }
+  hierarchy
 }
 
 #' @rdname set_controls
