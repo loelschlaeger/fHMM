@@ -448,6 +448,16 @@ test_that("checks of controls for simulated HHMM work", {
     set_controls(controls), 
     "fHMM_controls"
   )
+  expect_true(fHMM_hierarchical(controls))
+  expect_error(
+    fHMM_hierarchical(
+      list("hierarchy" = "bad")
+    ),
+    "The control 'hierarchy' must be TRUE or FALSE."
+  )
+  expect_silent(
+    fHMM_seed(list("seed" = 1))
+  )
   controls <- list(
     hierarchy = TRUE,
     period = "w"

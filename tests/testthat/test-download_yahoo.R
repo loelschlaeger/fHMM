@@ -59,3 +59,10 @@ test_that("data download returns expected data", {
     )
   )
 })
+
+test_that("'download_data()' function shows deprecated warning", {
+  expect_warning(
+    download_data(symbol = "^GDAXI", from = "2000-01-03"),
+    "'download_data' is deprecated."
+  )
+})
