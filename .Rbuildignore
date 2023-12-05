@@ -18,4 +18,4 @@ vignettes/figs/
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^sticker$
-^dev_pkgs\.R$
+^development_packages\.R$

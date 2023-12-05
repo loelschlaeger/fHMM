@@ -1,12 +1,19 @@
 #' Log-likelihood function of an (H)HMM
 #'
 #' @description
-#' This function computes the log-likelihood value off a (hierarchical) hidden 
+#' This function computes the log-likelihood value of a (hierarchical) hidden 
 #' Markov model for given observations and parameter values.
 #'
 #' @inheritParams parameter_transformations
 #' @param observations
-#' The vector of the simulated or empirical data used for estimation.
+#' A \code{numeric} \code{vector} of time-series data.
+#' 
+#' In the hierarchical case (\code{hierarchy = TRUE}), a \code{list} with
+#' two elements:
+#' - the first element is a \code{numeric} \code{vector} of coarse-scale data
+#' - the second element is a \code{list} of the same length as the coarse-scale
+#'   data, and each element is a \code{numeric} \code{vector} of fine-scale data
+#'   corresponding to the coarse-scale data.
 #' @inheritParams set_controls
 #' @param negative
 #' Either \code{TRUE} to return the negative log-likelihood value (useful for
@@ -16,10 +23,23 @@
 #' The log-likelihood value.
 #'
 #' @examples
+#' ### HMM log-likelihood 
 #' controls <- set_controls(states = 2, sdds = "normal")
 #' parameters <- fHMM_parameters(controls)
 #' parUncon <- par2parUncon(parameters, controls)
 #' observations <- 1:10
+#' ll_hmm(parUncon, observations, controls)
+#' 
+#' ### HHMM log-likelihood 
+#' controls <- set_controls(
+#'   hierarchy = TRUE, states = c(2, 2), sdds = c("normal", "normal")
+#' )
+#' parameters <- fHMM_parameters(controls)
+#' parUncon <- par2parUncon(parameters, controls)
+#' observations <- list(
+#'   1:10,                                  # fine-scale data
+#'   replicate(10, 1:10, simplify = FALSE)  # coarse-scale data
+#' )
 #' ll_hmm(parUncon, observations, controls)
 #'
 #' @export
@@ -38,6 +58,37 @@ ll_hmm <- function(
     controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
   )
   parameters <- parUncon2par(parUncon, controls)
+  if (controls[["hierarchy"]]) {
+    observations_fs <- observations[[2]]
+    observations <- observations[[1]]
+  }
+  ll_fs <- matrix(0, nrow = controls[["states"]][1], ncol = length(observations))
+  if (controls[["hierarchy"]]) {
+    controls_fs <- list(
+      hierarchy = FALSE,
+      states = controls[["states"]][2],
+      sdds = controls[["sdds"]][[2]][["distr_class"]]
+    )
+    for (m in seq_len(controls[["states"]][1])) {
+      parUncon_m <- par2parUncon(
+        par = fHMM_parameters(
+          controls = controls_fs,
+          Gamma = parameters[["Gamma_star"]][[m]],
+          mu = parameters[["mu_star"]][[m]],
+          sigma = parameters[["sigma_star"]][[m]],
+          df = parameters[["df_star"]][[m]]
+        ), 
+        controls = controls_fs
+      )
+      for (t in seq_along(observations)) {
+        ll_fs[m, t] <- ll_hmm(
+          parUncon = parUncon_m, 
+          observations = observations_fs[[t]],
+          controls = controls_fs
+        )
+      }
+    }
+  }
   allprobs <- allprobs(
     observations = observations, 
     sdd = controls[["sdds"]][[1]], 
@@ -48,6 +99,7 @@ ll_hmm <- function(
   )
   ll <- LL_HMM_Rcpp(
     allprobs = allprobs, 
+    ll_fs = ll_fs,
     Gamma = parameters[["Gamma"]], 
     delta = oeli::stationary_distribution(parameters[["Gamma"]]), 
     N = controls[["states"]][1], 
@@ -56,84 +108,3 @@ ll_hmm <- function(
   ifelse(negative, -ll, ll)
 }
 
-
-
-#' Negative log-likelihood function of an HHMM
-#'
-#' @description
-#' This function computes the negative log-likelihood of an HHMM.
-#'
-#' @param parUncon
-#' An object of class \code{parUncon}.
-#' @param observations
-#' The matrix of the simulated or empirical data used for estimation.
-#' @param controls
-#' An object of class \code{fHMM_controls}.
-#'
-#' @return
-#' The negative log-likelihood value.
-#'
-#' @keywords
-#' internal
-#'
-#' @importFrom stats dt dgamma
-
-nLL_hhmm <- function(parUncon, observations, controls) {
-  class(parUncon) <- "parUncon"
-  M <- controls[["states"]][1]
-  N <- controls[["states"]][2]
-  observations_cs <- observations[, 1]
-  observations_fs <- observations[, -1]
-  T <- length(observations_cs)
-  par <- parUncon2par(parUncon, controls)
-  Gamma <- par[["Gamma"]]
-  delta <- stationary_distribution(Gamma)
-  mus <- par[["mus"]]
-  sigmas <- par[["sigmas"]]
-  dfs <- par[["dfs"]]
-  allprobs <- matrix(0, M, T)
-  log_likelihoods <- matrix(0, M, T)
-  controls_split <- list(
-    "hierarchy" = FALSE,
-    "states" = controls$states[2],
-    "sdds" = controls$sdds[2]
-  )
-  class(controls_split) <- "fHMM_controls"
-  for (m in seq_len(M)) {
-    if (controls[["sdds"]][[1]]$name == "t") {
-      allprobs[m, ] <- 1 / sigmas[m] * stats::dt((observations_cs - mus[m]) /
-                                                   sigmas[m], dfs[m])
-    }
-    if (controls[["sdds"]][[1]]$name == "gamma") {
-      allprobs[m, ] <- stats::dgamma(observations_cs,
-                                     shape = mus[m]^2 / sigmas[m]^2,
-                                     scale = sigmas[m]^2 / mus[m]
-      )
-    }
-    if (controls[["sdds"]][[1]]$name == "lnorm") {
-      allprobs[m, ] <- stats::dlnorm(observations_cs,
-                                     meanlog = mus[m],
-                                     sdlog = sigmas[m]
-      )
-    }
-    par_m <- list(
-      "Gamma" = par$Gammas_star[[m]],
-      "mus" = par$mus_star[[m]],
-      "sigmas" = par$sigmas_star[[m]],
-      "dfs" = par$dfs_star[[m]]
-    )
-    class(par_m) <- "fHMM_parameters"
-    parUncon_m <- par2parUncon(par = par_m, controls = controls_split)
-    for (t in seq_len(T)) {
-      log_likelihoods[m, t] <- -nLL_hmm(
-        parUncon_m, observations_fs[t, ][!is.na(observations_fs[t, ])],
-        controls_split
-      )
-    }
-  }
-  nLL <- -LL_HHMM_Rcpp(
-    log_likelihoods = log_likelihoods, allprobs = allprobs,
-    Gamma = Gamma, delta = delta, M = M, T = T
-  )
-  return(nLL)
-}

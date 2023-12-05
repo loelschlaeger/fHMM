@@ -113,7 +113,7 @@
 #' The \code{list} can contain the following elements, which are described 
 #' in more detail below:
 #' \itemize{
-#'   \item \code{file}, defines the data set,
+#'   \item \code{data_frame}, defines the data set,
 #'   \item \code{date_column}, defines the date column,
 #'   \item \code{data_column}, defines the data column,
 #'   \item \code{from}, defines a lower date limit,
@@ -127,18 +127,18 @@
 #' 
 #' Specifications in \code{data} override individual specifications.
 #'
-#' @param file
+#' @param data_frame
 #' A \code{data.frame} with data and dates for modeling.
 #' 
 #' @param date_column
-#' A \code{character}, the name of the column in \code{file} with dates. 
+#' A \code{character}, the name of the column in \code{data_frame} with dates. 
 #' Can also be \code{NA} in which case consecutive integers are used 
 #' as time points.
 #' 
 #' By default, \code{date_column = "Date"}.
 #' 
 #' @param data_column
-#' A \code{character}, the name of the column in \code{file} with observations. 
+#' A \code{character}, the name of the column in \code{data_frame} with observations. 
 #'
 #' If \code{hierarchy = TRUE}, \code{data_column} must be a \code{vector} of 
 #' length 2. The first entry corresponds to the coarse-scale layer, while the 
@@ -291,7 +291,7 @@
 #' set_controls(
 #'   states      = 3,
 #'   sdds        = "normal",
-#'   file        = download_yahoo("^GDAXI"), # the data set
+#'   data_frame  = download_yahoo("^GDAXI"), # the data set
 #'   date_column = "Date",                   # the column with the dates
 #'   data_column = "Close"                   # the column with the data
 #' )
@@ -315,7 +315,7 @@ set_controls <- function(
     horizon = if (!hierarchy) 100 else c(100, 30),
     period = if (hierarchy && is.na(horizon[2])) "m" else NA, 
     data = NA,
-    file, 
+    data_frame = NA, 
     date_column = "Date", 
     data_column = if (!hierarchy) "Close" else c("Close", "Close"), 
     from = NA, 
@@ -334,7 +334,7 @@ set_controls <- function(
     seed = NULL, 
     verbose = TRUE
   ) {
-    
+  
   ### check that input 'controls' is a 'list'
   if (!is.list(controls)) {
     stop(
@@ -349,7 +349,7 @@ set_controls <- function(
     "verbose"
   )
   data_controls <- c(
-    "file", "date_column", "data_column", "from", "to", "logreturns", "merge"
+    "data_frame", "date_column", "data_column", "from", "to", "logreturns", "merge"
   )
   fit_controls <- c(
     "runs", "origin", "accept", "gradtol", "iterlim", "print.level", 
@@ -468,19 +468,19 @@ set_controls <- function(
   if (!"data" %in% names(controls)) {
     controls[["data"]] <- data
   }
-  simulated <- .simulated_data(controls) && missing(file)
+  simulated <- .simulated_data(controls) && identical(data_frame, NA)
   if (!simulated) {
     if (!is.list(controls[["data"]])) {
       controls[["data"]] <- list()
     }
-    if (!"file" %in% names(controls[["data"]])) {
-      if (!"file" %in% names(data)) {
-        if (missing(file)) {
-          stop("Please specify 'file'.", call. = FALSE)
+    if (!"data_frame" %in% names(controls[["data"]])) {
+      if (!"data_frame" %in% names(data)) {
+        if (identical(data_frame, NA)) {
+          stop("Please specify 'data_frame'.", call. = FALSE)
         }
-        controls[["data"]][["file"]] <- file
+        controls[["data"]][["data_frame"]] <- data_frame
       } else {
-        controls[["data"]][["file"]] <- data[["file"]]
+        controls[["data"]][["data_frame"]] <- data[["data_frame"]]
       }
     }
     if (!"date_column" %in% names(controls[["data"]])) {
@@ -648,6 +648,21 @@ validate_controls <- function(controls) {
       stop("The control 'seed' must be an integer.", call. = FALSE)
     }
   }
+  if (hierarchy) {
+    if (!checkmate::test_integerish(controls[["states"]], lower = 2, len = 2)) {
+      stop(
+        "The control 'states' must be a vector of integers greater or equal 2.",
+        call. = FALSE
+      )
+    }
+  } else {
+    if (!checkmate::test_integerish(controls[["states"]], lower = 2, len = 1)) {
+      stop(
+        "The control 'states' must be an integer greater or equal 2.",
+        call. = FALSE
+      )
+    }
+  }
   controls[["sdds"]] <- fHMM_sdds(
     sdds = controls[["sdds"]], 
     states = controls[["states"]]
@@ -701,9 +716,9 @@ validate_controls <- function(controls) {
   if (simulated) {
     controls[["data"]] <- NA
   } else {
-    if (!is.data.frame(controls[["data"]][["file"]])) {
+    if (!is.data.frame(controls[["data"]][["data_frame"]])) {
       stop(
-        "The control 'file' in 'data' must be a data.frame.",
+        "The control 'data_frame' in 'data' must be a data.frame.",
         call. = FALSE
       )
     }
@@ -764,12 +779,12 @@ validate_controls <- function(controls) {
       }
       controls[["data"]][["merge"]] <- NA
     }
-    data <- controls[["data"]][["file"]]
+    data <- controls[["data"]][["data_frame"]]
     if (!is.na(controls[["data"]][["date_column"]])) {
       if (!controls[["data"]][["date_column"]] %in% colnames(data)) {
         stop(
           "Column '", controls[["data"]][["date_column"]], 
-          "' not found in data.frame 'file'.",
+          "' not found in data.frame 'data_frame'.",
           call. = FALSE
         )
       }
@@ -778,7 +793,7 @@ validate_controls <- function(controls) {
       if (!controls[["data"]][["data_column"]][i] %in% colnames(data)) {
         stop(
           "Column '", controls[["data"]][["data_column"]][i], 
-          "' not found in data.frame 'file'.",
+          "' not found in data.frame 'data_frame'.",
           call. = FALSE
         )
       }

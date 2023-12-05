@@ -22,7 +22,7 @@ test_that("checks for redundant controls work", {
     set_controls(
       controls = list(
         "data" = list(
-          "file" = data.frame("Date" = "2000-01-01", "Close" = 1),
+          "data_frame" = data.frame("Date" = "2000-01-01", "Close" = 1),
           "not_a_valid_control" = 1
         )
       )
@@ -32,7 +32,7 @@ test_that("checks for redundant controls work", {
   expect_warning(
     set_controls(
       data = list(
-        "file" = data.frame("Date" = "2000-01-01", "Close" = 1),
+        "data_frame" = data.frame("Date" = "2000-01-01", "Close" = 1),
         "not_a_valid_control" = 1
       )
     ),
@@ -104,11 +104,11 @@ test_that("input checks for setting controls work", {
         "hierarchy" = FALSE,
         "sdds" = "t",
         "data" = list(
-          "file" = 1
+          "data_frame" = 1
         )
       )
     ),
-    "The control 'file' in 'data' must be a data.frame"
+    "The control 'data_frame' in 'data' must be a data.frame"
   )
   expect_error(
     set_controls(
@@ -125,14 +125,12 @@ test_that("input checks for setting controls work", {
         "states" = 1:3
       )
     ),
-    "The control 'states' must be a vector of length 1 or 2"
+    "The control 'states' must be a vector of integers greater or equal 2."
   )
   expect_error(
     set_controls(
-      list(
-        "hierarchy" = TRUE,
-        "horizon" = 1:3
-      )
+      hierarchy = TRUE,
+      horizon = 1:3
     ),
     "The control 'horizon' must be a vector of length 2."
   )
@@ -150,14 +148,14 @@ test_that("input checks for setting controls work", {
     set_controls(
       data = list(logreturns = TRUE)
     ),
-    "Please specify 'file'"
+    "Please specify 'data_frame'"
   )
 })
 
 test_that("missing data controls can be set from individual controls", {
   expect_s3_class(
     set_controls(
-      file = data.frame("Close" = 1),
+      data_frame = data.frame("Close" = 1),
       date_column = NA
     ),
     "fHMM_controls"
@@ -165,7 +163,7 @@ test_that("missing data controls can be set from individual controls", {
   expect_s3_class(
     set_controls(
       data = list(
-        "file" = data.frame("Close" = 1, "Date" = "2020-01-01"),
+        "data_frame" = data.frame("Close" = 1, "Date" = "2020-01-01"),
         "date_column" = "Date",
         "data_column" = "Close",
         "from" = "2020-01-01",
@@ -182,7 +180,7 @@ test_that("missing data controls can be set from individual controls", {
         data = list()
       ),
       data = list(
-        "file" = data.frame("Close" = 1, "Date" = "2020-01-01"),
+        "data_frame" = data.frame("Close" = 1, "Date" = "2020-01-01"),
         "date_column" = "Date",
         "data_column" = "Close",
         "from" = "2020-01-01",
@@ -195,7 +193,7 @@ test_that("missing data controls can be set from individual controls", {
   )
   expect_s3_class(
     set_controls(
-      file = data.frame("Close" = 1, "Date" = "2020-01-01")
+      data_frame = data.frame("Close" = 1, "Date" = "2020-01-01")
     ),
     "fHMM_controls"
   )
@@ -361,7 +359,7 @@ test_that("checks of controls for empirical HMM work", {
     states = 2,
     sdds = "t",
     data = list(
-      file = dax,
+      data_frame = dax,
       date_column = "Date",
       data_column = "Close"
     )
@@ -374,7 +372,7 @@ test_that("checks of controls for empirical HMM work", {
     states = 2,
     sdds = "t",
     data = list(
-      file = dax,
+      data_frame = dax,
       date_column = 1,
       data_column = "Close"
     )
@@ -387,7 +385,7 @@ test_that("checks of controls for empirical HMM work", {
     states = 2,
     sdds = "t",
     data = list(
-      file = dax,
+      data_frame = dax,
       date_column = "Date",
       data_column = 1
     )
@@ -401,7 +399,7 @@ test_that("checks of controls for empirical HMM work", {
     sdds = "t",
     horizon = 400,
     data = list(
-      file = dax,
+      data_frame = dax,
       date_column = "Date",
       data_column = "Close",
       logreturns = "not_a_boolean"
@@ -416,7 +414,7 @@ test_that("checks of controls for empirical HMM work", {
     sdds = "t",
     horizon = 400,
     data = list(
-      file = dax,
+      data_frame = dax,
       date_column = NA,
       data_column = "Close"
     )
@@ -428,7 +426,7 @@ test_that("checks of controls for empirical HMM work", {
     sdds = "t",
     horizon = 400,
     data = list(
-      file = dax,
+      data_frame = dax,
       date_column = "Date",
       data_column = "Close",
       from = "2020-01-01",
@@ -503,7 +501,7 @@ test_that("checks of controls for empirical HHMM work", {
     horizon = c(100, NA),
     period = "w",
     data = list(
-      file = dax,
+      data_frame = dax,
       data_column = c("Close", "Close"),
       from = "2020-01-01",
       to = "2020-02-02"
@@ -519,7 +517,7 @@ test_that("checks of controls for empirical HHMM work", {
         hierarchy = TRUE,
         horizon = c(NA, NA, NA),
         period = "w",
-        data = list(file = dax)
+        data = list(data_frame = dax)
       )
     ),
     "'horizon' must be a vector of length 2"
@@ -530,7 +528,7 @@ test_that("checks of controls for empirical HHMM work", {
         hierarchy = TRUE,
         horizon = c("A", "B"),
         period = "w",
-        data = list(file = dax)
+        data = list(data_frame = dax)
       )
     ),
     "'horizon' must be an integer vector of length 2"
@@ -540,7 +538,7 @@ test_that("checks of controls for empirical HHMM work", {
     horizon = c(100, NA),
     period = "w",
     data = list(
-      file = dax,
+      data_frame = dax,
       data_column = c("one", "two", "three")
     )
   )
@@ -553,7 +551,7 @@ test_that("checks of controls for empirical HHMM work", {
     horizon = c(100, NA),
     period = "w",
     data = list(
-      file = dax,
+      data_frame = dax,
       logreturns = TRUE
     )
   )
@@ -566,7 +564,7 @@ test_that("checks of controls for empirical HHMM work", {
     horizon = c(100, NA),
     period = "w",
     data = list(
-      file = dax,
+      data_frame = dax,
       merge = "not_a_function"
     )
   )
@@ -579,7 +577,7 @@ test_that("checks of controls for empirical HHMM work", {
     horizon = c(100, NA),
     period = "w",
     data = list(
-      file = dax,
+      data_frame = dax,
       merge = function(x) 1:2
     )
   )
@@ -592,27 +590,27 @@ test_that("checks of controls for empirical HHMM work", {
     horizon = c(100, NA),
     period = "w",
     data = list(
-      file = dax,
+      data_frame = dax,
       date_column = "bad_name",
       data_column = c("Close", "Close")
     )
   )
   expect_error(
     controls <- set_controls(controls),
-    "Column 'bad_name' not found in data.frame 'file'."
+    "Column 'bad_name' not found in data.frame 'data_frame'."
   )
   controls <- list(
     hierarchy = TRUE,
     horizon = c(100, NA),
     period = "w",
     data = list(
-      file = dax,
+      data_frame = dax,
       data_column = c("Close", "bad_name")
     )
   )
   expect_error(
     controls <- set_controls(controls),
-    "Column 'bad_name' not found in data.frame 'file'."
+    "Column 'bad_name' not found in data.frame 'data_frame'."
   )
 })
 

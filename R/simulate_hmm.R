@@ -42,16 +42,16 @@
 #' @importFrom utils head
 
 simulate_hmm <- function(
-  controls = list(), 
-  hierarchy = FALSE, 
-  states = if (!hierarchy) 2 else c(2, 2), 
-  sdds = if (!hierarchy) "normal" else c("normal", "normal"), 
-  horizon = if (!hierarchy) 100 else c(100, 30),
-  period = if (hierarchy && is.na(horizon[2])) "m" else NA, 
-  true_parameters = fHMM_parameters(
-    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-  ), 
-  seed = NULL
+    controls = list(), 
+    hierarchy = FALSE, 
+    states = if (!hierarchy) 2 else c(2, 2), 
+    sdds = if (!hierarchy) "normal" else c("normal", "normal"), 
+    horizon = if (!hierarchy) 100 else c(100, 30),
+    period = if (hierarchy && is.na(horizon[2])) "m" else NA, 
+    true_parameters = fHMM_parameters(
+      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+    ), 
+    seed = NULL
 ) {
   controls <- set_controls(
     controls = controls, hierarchy = hierarchy, states = states, sdds = sdds,
@@ -124,12 +124,12 @@ simulate_hmm <- function(
 #' @importFrom stats dbinom
 
 compute_T_star <- function(
-  controls = list(), 
-  hierarchy = TRUE,
-  horizon = if (!hierarchy) 100 else c(100, 30),
-  period = if (hierarchy && is.na(horizon[2])) "m" else NA, 
-  dates = NULL, 
-  seed = NULL
+    controls = list(), 
+    hierarchy = TRUE,
+    horizon = if (!hierarchy) 100 else c(100, 30),
+    period = if (hierarchy && is.na(horizon[2])) "m" else NA, 
+    dates = NULL, 
+    seed = NULL
 ) {
   controls <- set_controls(
     controls = controls, hierarchy = hierarchy, horizon = horizon, 
@@ -204,5 +204,3 @@ compute_T_star <- function(
   }
   as.integer(T_star)
 }
-
-

@@ -15,7 +15,7 @@ set_controls(
   horizon = if (!hierarchy) 100 else c(100, 30),
   period = if (hierarchy && is.na(horizon[2])) "m" else NA,
   data = NA,
-  file,
+  data_frame = NA,
   date_column = "Date",
   data_column = if (!hierarchy) "Close" else c("Close", "Close"),
   from = NA,
@@ -141,7 +141,7 @@ By default, \code{period = "m"} if \code{hierarchy = TRUE} and
 The \code{list} can contain the following elements, which are described
 in more detail below:
 \itemize{
-\item \code{file}, defines the data set,
+\item \code{data_frame}, defines the data set,
 \item \code{date_column}, defines the date column,
 \item \code{data_column}, defines the data column,
 \item \code{from}, defines a lower date limit,
@@ -155,15 +155,15 @@ Unspecified parameters are set to their default values, see below.
 
 Specifications in \code{data} override individual specifications.}
 
-\item{file}{A \code{data.frame} with data and dates for modeling.}
+\item{data_frame}{A \code{data.frame} with data and dates for modeling.}
 
-\item{date_column}{A \code{character}, the name of the column in \code{file} with dates.
+\item{date_column}{A \code{character}, the name of the column in \code{data_frame} with dates.
 Can also be \code{NA} in which case consecutive integers are used
 as time points.
 
 By default, \code{date_column = "Date"}.}
 
-\item{data_column}{A \code{character}, the name of the column in \code{file} with observations.
+\item{data_column}{A \code{character}, the name of the column in \code{data_frame} with observations.
 
 If \code{hierarchy = TRUE}, \code{data_column} must be a \code{vector} of
 length 2. The first entry corresponds to the coarse-scale layer, while the
@@ -306,7 +306,7 @@ set_controls(
 set_controls(
   states      = 3,
   sdds        = "normal",
-  file        = download_yahoo("^GDAXI"), # the data set
+  data_frame  = download_yahoo("^GDAXI"), # the data set
   date_column = "Date",                   # the column with the dates
   data_column = "Close"                   # the column with the data
 )

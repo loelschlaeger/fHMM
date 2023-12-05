@@ -2,12 +2,12 @@
 #'
 #' @description
 #' This function constructs an object of class \code{\link{fHMM_model}}, which 
-#' contains details about the fitted (hierarchical) Hidden Markov model.
+#' contains details about the fitted (hierarchical) hidden Markov model.
 #' 
 #' @param data
 #' An object of class \code{\link{fHMM_data}}.
 #' @param estimate
-#' A \code{numeric} vector of unconstrained model estimates.
+#' A \code{numeric} vector of model estimates.
 #' @param nlm_output
 #' The output of \code{\link[stats]{nlm}} for the selected optimization run.
 #' @param estimation_time

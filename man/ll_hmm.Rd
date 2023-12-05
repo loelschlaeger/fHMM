@@ -25,7 +25,16 @@ with identified and unconstrained model parameters in the following order:
 \item fine-scale parameters for each coarse-scale state, in the same order (if any)
 }}
 
-\item{observations}{The vector of the simulated or empirical data used for estimation.}
+\item{observations}{A \code{numeric} \code{vector} of time-series data.
+
+In the hierarchical case (\code{hierarchy = TRUE}), a \code{list} with
+two elements:
+\itemize{
+\item the first element is a \code{numeric} \code{vector} of coarse-scale data
+\item the second element is a \code{list} of the same length as the coarse-scale
+data, and each element is a \code{numeric} \code{vector} of fine-scale data
+corresponding to the coarse-scale data.
+}}
 
 \item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
 
@@ -100,14 +109,27 @@ optimization) or \code{FALSE} (default), else.}
 The log-likelihood value.
 }
 \description{
-This function computes the log-likelihood value off a (hierarchical) hidden
+This function computes the log-likelihood value of a (hierarchical) hidden
 Markov model for given observations and parameter values.
 }
 \examples{
+### HMM log-likelihood 
 controls <- set_controls(states = 2, sdds = "normal")
 parameters <- fHMM_parameters(controls)
 parUncon <- par2parUncon(parameters, controls)
 observations <- 1:10
+ll_hmm(parUncon, observations, controls)
+
+### HHMM log-likelihood 
+controls <- set_controls(
+  hierarchy = TRUE, states = c(2, 2), sdds = c("normal", "normal")
+)
+parameters <- fHMM_parameters(controls)
+parUncon <- par2parUncon(parameters, controls)
+observations <- list(
+  1:10,                                  # fine-scale data
+  replicate(10, 1:10, simplify = FALSE)  # coarse-scale data
+)
 ll_hmm(parUncon, observations, controls)
 
 }

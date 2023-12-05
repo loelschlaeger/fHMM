@@ -2,24 +2,234 @@
 % Please edit documentation in R/fHMM_data.R
 \name{prepare_data}
 \alias{prepare_data}
+\alias{print.fHMM_data}
+\alias{summary.fHMM_data}
+\alias{plot.fHMM_data}
 \title{Prepare data}
 \usage{
-prepare_data(controls, true_parameters = NULL, seed = NULL)
+prepare_data(
+  controls = list(),
+  hierarchy = FALSE,
+  states = if (!hierarchy) 2 else c(2, 2),
+  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+  horizon = if (!hierarchy) 100 else c(100, 30),
+  period = if (hierarchy && is.na(horizon[2])) "m" else NA,
+  data = NA,
+  data_frame = NA,
+  date_column = "Date",
+  data_column = if (!hierarchy) "Close" else c("Close", "Close"),
+  from = NA,
+  to = NA,
+  logreturns = if (!hierarchy) FALSE else c(FALSE, FALSE),
+  merge = function(x) mean(x),
+  verbose = TRUE,
+  true_parameters = NULL,
+  seed = NULL
+)
+
+\method{print}{fHMM_data}(x, ...)
+
+\method{summary}{fHMM_data}(object, ...)
+
+\method{plot}{fHMM_data}(x, events = NULL, title = NULL, from = NULL, to = NULL, ...)
 }
 \arguments{
-\item{controls}{An object of class \code{fHMM_controls}.}
+\item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
 
-\item{seed}{Set a seed for the data simulation.
-No seed per default.}
+The \code{list} can contain the following elements, which are described
+in more detail below:
+\itemize{
+\item \code{hierarchy}, defines an hierarchical HMM,
+\item \code{states}, defines the number of states,
+\item \code{sdds}, defines the state-dependent distributions,
+\item \code{horizon}, defines the time horizon,
+\item \code{period}, defines a flexible, periodic fine-scale time horizon,
+\item \code{data}, a \code{list} of controls that define the data,
+\item \code{fit}, a \code{list} of controls that define the model fitting,
+\item \code{seed}, defines a seed for reproducibility,
+\item \code{verbose}, defines whether to print progress messages.
+}
+Either none, all, or selected elements can be specified.
+
+Unspecified parameters are set to their default values, see below.
+
+Specifications in \code{controls} override individual specifications.}
+
+\item{hierarchy}{A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
+
+If \code{hierarchy = TRUE}, some of the other controls must be specified for
+the coarse-scale and the fine-scale layer.
+
+By default, \code{hierarchy = FALSE}.}
+
+\item{states}{An \code{integer}, the number of states of the underlying Markov chain.
+
+If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
+2. The first entry corresponds to the coarse-scale layer, while the second
+entry corresponds to the fine-scale layer.
+
+By default, \code{states = 2} if \code{hierarchy = FALSE} and
+\code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
+
+\item{sdds}{A \code{character}, specifying the state-dependent distribution. One of
+\itemize{
+\item \code{"normal"} (the normal distribution),
+\item \code{"lognormal"} (the log-normal distribution),
+\item \code{"t"} (the t-distribution),
+\item \code{"gamma"} (the gamma distribution),
+\item \code{"poisson"} (the Poisson distribution).
+}
+
+The distribution parameters, i.e. the
+\itemize{
+\item mean \code{mu},
+\item standard deviation \code{sigma} (not for the Poisson distribution),
+\item degrees of freedom \code{df} (only for the t-distribution),
+}
+can be fixed via, e.g., \code{"t(df = 1)"} or
+\code{"gamma(mu = 0, sigma = 1)"}.
+To fix different values of a parameter for different states, separate by
+"|", e.g. \code{"poisson(mu = 1|2|3)"}.
+
+If \code{hierarchy = TRUE}, \code{sdds} must be a \code{vector} of length 2.
+The first entry corresponds to the coarse-scale layer, while the second entry
+corresponds to the fine-scale layer.
+
+By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
+\code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.
+
+See also \code{\link{fHMM_sdds}} for more details.}
+
+\item{horizon}{A \code{numeric}, specifying the length of the time horizon.
+
+If \code{hierarchy = TRUE}, \code{horizon} must be a \code{vector} of length
+2. The first entry corresponds to the coarse-scale layer, while the second
+entry corresponds to the fine-scale layer.
+
+By default, \code{horizon = 100} if \code{hierarchy = FALSE} and
+\code{horizon = c(100, 30)} if \code{hierarchy = TRUE}.
+
+If \code{data} is specified (i.e., not \code{NA}), the first entry of
+\code{horizon} is ignored and the (coarse-scale) time horizon is defined by
+available data.}
+
+\item{period}{Only relevant if \code{hierarchy = TRUE} and \code{horizon[2] = NA}.
+
+In this case, a \code{character} which specifies a flexible, periodic
+fine-scale time horizon and can be one of
+\itemize{
+\item \code{"w"} for a week,
+\item \code{"m"} for a month,
+\item \code{"q"} for a quarter,
+\item \code{"y"} for a year.
+}
+
+By default, \code{period = "m"} if \code{hierarchy = TRUE} and
+\code{horizon[2] = NA}, and \code{NA} else.}
+
+\item{data}{Either \code{NA}, in which case data is simulated (the default), or a
+\code{list} of controls specifying the empirical data set.
+
+The \code{list} can contain the following elements, which are described
+in more detail below:
+\itemize{
+\item \code{data_frame}, defines the data set,
+\item \code{date_column}, defines the date column,
+\item \code{data_column}, defines the data column,
+\item \code{from}, defines a lower date limit,
+\item \code{to}, defines an upper date limit,
+\item \code{logreturns}, defines a data transformation to log-returns,
+\item \code{merge}, defines the merging for coarse-scale observations.
+}
+Either none, all, or selected elements can be specified.
+
+Unspecified parameters are set to their default values, see below.
+
+Specifications in \code{data} override individual specifications.}
+
+\item{data_frame}{A \code{data.frame} with data and dates for modeling.}
+
+\item{date_column}{A \code{character}, the name of the column in \code{data_frame} with dates.
+Can also be \code{NA} in which case consecutive integers are used
+as time points.
+
+By default, \code{date_column = "Date"}.}
+
+\item{data_column}{A \code{character}, the name of the column in \code{data_frame} with observations.
+
+If \code{hierarchy = TRUE}, \code{data_column} must be a \code{vector} of
+length 2. The first entry corresponds to the coarse-scale layer, while the
+second entry corresponds to the fine-scale layer.
+
+By default, \code{data_column = "Close"} if \code{hierarchy = FALSE} and
+\code{data_column = c("Close", "Close")} if \code{hierarchy = TRUE}.}
+
+\item{from}{A \code{character} of the format \code{"YYYY-MM-DD"}, setting a lower
+date limit. No lower limit if \code{from = NA} (default).
+
+Ignored if \code{date_column} is \code{NA}.}
+
+\item{to}{A \code{character} of the format \code{"YYYY-MM-DD"}, setting an upper
+date limit. No lower limit if \code{to = NA} (default).
+
+Ignored if \code{date_column} is \code{NA}.}
+
+\item{logreturns}{A \code{logical}, if \code{TRUE} the data is transformed to log-returns.
+
+If \code{hierarchy = TRUE}, \code{logreturns} must be a \code{vector} of
+length 2. The first entry corresponds to the coarse-scale layer, while the
+second entry corresponds to the fine-scale layer.
+
+By default, \code{logreturns = FALSE} if \code{hierarchy = FALSE} and
+\code{logreturns = c(FALSE, FALSE)} if \code{hierarchy = TRUE}.}
+
+\item{merge}{Only relevant if \code{hierarchy = TRUE}.
+
+In this case, a \code{function}
+which merges an input numeric vector of fine-scale data \code{x} into one
+coarse-scale observation. For example,
+\itemize{
+\item \code{merge = function(x) mean(x)} (default) defines the mean of the
+fine-scale data as the coarse-scale observation,
+\item \code{merge = function(x) mean(abs(x))} for the mean of the
+absolute values,
+\item \code{merge = function(x) sum(abs(x))} for the sum of the
+absolute values,
+\item \code{merge = function(x) (tail(x, 1) - head(x, 1)) / head(x, 1)} for
+the relative change of the first to the last fine-scale observation.
+}}
+
+\item{verbose}{A \code{logical}, if \code{TRUE} progress messages are printed.
+
+By default, \code{verbose = TRUE}.}
+
+\item{seed}{An \code{integer}, a seed for reproducibility, passed on to
+\code{\link{set.seed}}.
+
+By default, \code{seed = NULL} (i.e., no seed).}
+
+\item{x}{An object of class \code{fHMM_data}.}
+
+\item{...}{Currently not used.}
+
+\item{object}{An object of class \code{fHMM_data}.}
+
+\item{events}{An object of class \code{\link{fHMM_events}}.}
+
+\item{title}{Optionally a \code{character} for a custom title.}
 }
 \value{
-An object of class \code{\link{fHMM_data}}.
+An object of class \code{\link{fHMM_data}}, which is ... TODO
 }
 \description{
-This function simulates or reads financial data for the \{fHMM\} package.
+This function prepares the data for modeling.
 }
 \examples{
+### simulate data
 controls <- set_controls()
 prepare_data(controls)
+
+### use empirical data
+data_frame <- download_yahoo("^GDAXI")
 
 }

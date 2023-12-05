@@ -1,7 +1,11 @@
 #' @useDynLib fHMM, .registration=TRUE
-#' @importFrom Rcpp evalCpp
 #' @keywords internal
 "_PACKAGE"
+
+## usethis namespace: start
+#' @importFrom Rcpp evalCpp
+## usethis namespace: end
+NULL
 
 #' @noRd
 #' @importFrom cli style_hyperlink

@@ -19,7 +19,7 @@ fHMM_model(
 \arguments{
 \item{data}{An object of class \code{\link{fHMM_data}}.}
 
-\item{estimate}{A \code{numeric} vector of unconstrained model estimates.}
+\item{estimate}{A \code{numeric} vector of model estimates.}
 
 \item{nlm_output}{The output of \code{\link[stats]{nlm}} for the selected optimization run.}
 
@@ -40,5 +40,5 @@ An object of class \code{\link{fHMM_model}}.
 }
 \description{
 This function constructs an object of class \code{\link{fHMM_model}}, which
-contains details about the fitted (hierarchical) Hidden Markov model.
+contains details about the fitted (hierarchical) hidden Markov model.
 }
