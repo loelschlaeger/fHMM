@@ -130,10 +130,19 @@
 #' @param data_frame
 #' A \code{data.frame} with data and dates for modeling.
 #' 
+#' If \code{hierarchy = TRUE}, \code{data_frame} can be a \code{list} of 
+#' length 2. The first entry is a \code{data.frame} and provides the data for 
+#' the coarse-scale layer, while the second entry corresponds to the fine-scale 
+#' layer. If \code{data_frame} is a single \code{data.frame}, then the same 
+#' \code{data.frame} is used for both layers.
+#' 
 #' @param date_column
 #' A \code{character}, the name of the column in \code{data_frame} with dates. 
-#' Can also be \code{NA} in which case consecutive integers are used 
-#' as time points.
+#' 
+#' If \code{hierarchy = TRUE} and \code{data_frame} is a \code{list} of two
+#' \code{data.frame}s, \code{data_column} must be a \code{vector} of 
+#' length 2. The first entry corresponds to the coarse-scale layer, while the 
+#' second entry corresponds to the fine-scale layer.
 #' 
 #' By default, \code{date_column = "Date"}.
 #' 
@@ -150,14 +159,10 @@
 #' @param from
 #' A \code{character} of the format \code{"YYYY-MM-DD"}, setting a lower 
 #' date limit. No lower limit if \code{from = NA} (default). 
-#' 
-#' Ignored if \code{date_column} is \code{NA}.
 #'
 #' @param to
 #' A \code{character} of the format \code{"YYYY-MM-DD"}, setting an upper
 #' date limit. No lower limit if \code{to = NA} (default). 
-#' 
-#' Ignored if \code{date_column} is \code{NA}.
 #'
 #' @param logreturns
 #' A \code{logical}, if \code{TRUE} the data is transformed to log-returns. 
@@ -316,7 +321,7 @@ set_controls <- function(
     period = if (hierarchy && is.na(horizon[2])) "m" else NA, 
     data = NA,
     data_frame = NA, 
-    date_column = "Date", 
+    date_column = if (!hierarchy) "Date" else c("Date", "Date"), 
     data_column = if (!hierarchy) "Close" else c("Close", "Close"), 
     from = NA, 
     to = NA, 
@@ -434,7 +439,7 @@ set_controls <- function(
     )
   }
   
-  ### check 'hierarchy' control (because other controls depend on it)
+  ### check 'hierarchy' control first (because other controls depend on it)
   if (!is.null(controls[["hierarchy"]])) {
     hierarchy <- controls[["hierarchy"]]
   } else {
@@ -716,27 +721,35 @@ validate_controls <- function(controls) {
   if (simulated) {
     controls[["data"]] <- NA
   } else {
-    if (!is.data.frame(controls[["data"]][["data_frame"]])) {
-      stop(
-        "The control 'data_frame' in 'data' must be a data.frame.",
-        call. = FALSE
-      )
-    }
     if (!is.na(controls[["data"]][["from"]])) {
       controls[["data"]][["from"]] <- oeli::check_date(controls[["data"]][["from"]])
     }
     if (!is.na(controls[["data"]][["to"]])) {
       controls[["data"]][["to"]] <- oeli::check_date(controls[["data"]][["to"]])
     }
-    if (!checkmate::test_string(
-      controls[["data"]][["date_column"]], na.ok = TRUE)
-    ) {
-      stop(
-        "'date_column' in 'data' must be a single character (or NA).",
-        call. = FALSE
-      )
-    }
     if (hierarchy) {
+      if (is.data.frame(controls[["data"]][["data_frame"]])) {
+        controls[["data"]][["data_frame"]] <- list(
+          controls[["data"]][["data_frame"]],
+          controls[["data"]][["data_frame"]]
+        )
+      } else if (!checkmate::test_list(
+        controls[["data"]][["data_frame"]], types = "data.frame", len = 2
+      )) {
+        stop(
+          "The control 'data_frame' in 'data' must be a data.frame.\n",
+          "It can also be a list with 2 'data.frame's.",
+          call. = FALSE
+        )
+      }
+      if (!checkmate::test_character(
+        controls[["data"]][["date_column"]], len = 2, any.missing = FALSE
+      )) {
+        stop(
+          "'date_column' in 'data' must be a character vector of length two.",
+          call. = FALSE
+        )
+      }
       if (!checkmate::test_character(
         controls[["data"]][["data_column"]], len = 2
       )) {
@@ -765,6 +778,20 @@ validate_controls <- function(controls) {
         )
       }
     } else {
+      if (!is.data.frame(controls[["data"]][["data_frame"]])) {
+        stop(
+          "The control 'data_frame' in 'data' must be a 'data.frame'.",
+          call. = FALSE
+        )
+      }
+      if (!checkmate::test_string(
+        controls[["data"]][["date_column"]], na.ok = FALSE)
+      ) {
+        stop(
+          "'date_column' in 'data' must be a single character.",
+          call. = FALSE
+        )
+      }
       if (!checkmate::test_string(controls[["data"]][["data_column"]])) {
         stop(
           "'data_column' in 'data' must be a single character.",
@@ -779,21 +806,21 @@ validate_controls <- function(controls) {
       }
       controls[["data"]][["merge"]] <- NA
     }
-    data <- controls[["data"]][["data_frame"]]
-    if (!is.na(controls[["data"]][["date_column"]])) {
-      if (!controls[["data"]][["date_column"]] %in% colnames(data)) {
+    for (i in if (hierarchy) 1:2 else 1) {
+      if (hierarchy) {
+        data <- controls[["data"]][["data_frame"]][[i]]
+      } else {
+        data <- controls[["data"]][["data_frame"]]
+      }
+      if (!controls[["data"]][["date_column"]][i] %in% colnames(data)) {
         stop(
-          "Column '", controls[["data"]][["date_column"]], 
-          "' not found in data.frame 'data_frame'.",
+          "Column '", controls[["data"]][["date_column"]][i], "' not found.",
           call. = FALSE
         )
       }
-    }
-    for (i in if (hierarchy) 1:2 else 1) {
       if (!controls[["data"]][["data_column"]][i] %in% colnames(data)) {
         stop(
-          "Column '", controls[["data"]][["data_column"]][i], 
-          "' not found in data.frame 'data_frame'.",
+          "Column '", controls[["data"]][["data_column"]][i], "' not found.",
           call. = FALSE
         )
       }

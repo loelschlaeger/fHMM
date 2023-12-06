@@ -7,8 +7,8 @@
 compute_T_star(
   controls = list(),
   hierarchy = TRUE,
-  horizon = if (!hierarchy) 100 else c(100, 30),
-  period = if (hierarchy && is.na(horizon[2])) "m" else NA,
+  horizon = c(100, 30),
+  period = if (is.na(horizon[2])) "m" else NA,
   dates = NULL,
   seed = NULL
 )

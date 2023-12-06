@@ -56,7 +56,7 @@ plot.fHMM_model <- function(
     if (!inherits(events, "fHMM_events")) {
       stop("'events' is not of class 'fHMM_events'.", call. = FALSE)
     }
-    if (x$data$controls$simulated) {
+    if (.simulated_data(x$data$controls)) {
       events <- NULL
       warning("Can't have 'events' for simulated data.", call. = FALSE)
     }
@@ -461,10 +461,10 @@ plot_ts <- function(
   ) {
   
   controls <- data$controls
-  if (!controls[["hierarchy"]]) {
+  if (!fHMM_hierarchical(controls)) {
     T <- length(data[["data"]])
   }
-  if (controls[["hierarchy"]]) {
+  if (fHMM_hierarchical(controls)) {
     T <- dim(data[["data"]])[1]
     if (!is.null(decoding)) {
       decoding_cs <- rep(decoding[, 1], times = data[["T_star"]])
@@ -485,20 +485,20 @@ plot_ts <- function(
     ### add margin at the bottom for events
     mar <- mar + c(2, 0, 0, 0)
   }
-  if (!controls[["simulated"]] || controls[["hierarchy"]]) {
+  if (!.simulated_data(controls) || fHMM_hierarchical(controls)) {
     ### add margin at the right for second axis
     mar <- mar + c(0, 0, 0, 4)
   }
   par(las = 1, mar = mar, bty = "n")
-  if (!controls[["simulated"]]) {
-    if (!controls[["hierarchy"]]) {
+  if (!.simulated_data(controls)) {
+    if (!fHMM_hierarchical(controls)) {
       ydata <- data[["time_series"]]
       ymax <- ceiling(max(ydata))
       ymin <- floor(min(ydata))
       ylim <- c(ymin - (ymax - ymin), ymax)
       xdata <- as.Date(data[["dates"]])
     }
-    if (controls[["hierarchy"]]) {
+    if (fHMM_hierarchical(controls)) {
       ydata <- as.numeric(t(data[["time_series"]][, -1, drop = FALSE]))
       ydata <- ydata[!is.na(ydata)]
       ymax <- ceiling(max(ydata))
@@ -509,12 +509,12 @@ plot_ts <- function(
       ylim <- c(ymin - (ymax - ymin) * 2, ymax)
     }
     if (is.null(from)) {
-      xmin <- as.Date(paste0(find_closest_year(xdata[1]), "-01-01"))
+      xmin <- as.Date(paste0(oeli::find_closest_year(xdata[1]), "-01-01"))
     } else {
       xmin <- check_date(from)
     }
     if (is.null(to)) {
-      xmax <- as.Date(paste0(find_closest_year(tail(xdata, n = 1)), "-01-01"))
+      xmax <- as.Date(paste0(oeli::find_closest_year(tail(xdata, n = 1)), "-01-01"))
     } else {
       xmax <- check_date(to)
     }
@@ -523,10 +523,10 @@ plot_ts <- function(
       col = "black", xlab = "", ylab = "", xaxt = "n", yaxt = "n", 
       cex.lab = 2, cex.main = 2
     )
-    if (!controls[["hierarchy"]]) {
+    if (!fHMM_hierarchical(controls)) {
       data_lab <- controls[["data"]][["data_column"]][1]
     }
-    if (controls[["hierarchy"]]) {
+    if (fHMM_hierarchical(controls)) {
       data_lab <- controls[["data"]][["data_column"]][2]
     }
     mtext("Year", side = 1, line = 2.5, cex = 1.25)
@@ -539,14 +539,14 @@ plot_ts <- function(
       side = 4, line = 3.5, at = mean(y_ticks),
       cex = 1.25, las = 3
     )
-    if (!controls[["hierarchy"]]) {
+    if (!fHMM_hierarchical(controls)) {
       if (!is.null(decoding)) {
         for (s in seq_len(controls[["states"]][1])) {
           points(xdata[decoding == s], ydata[decoding == s], col = colors[s], pch = 20)
         }
       }
     }
-    if (controls[["hierarchy"]]) {
+    if (fHMM_hierarchical(controls)) {
       if (!is.null(decoding)) {
         for (cs in seq_len(controls[["states"]][1])) {
           for (fs in seq_len(controls[["states"]][2])) {
@@ -560,7 +560,7 @@ plot_ts <- function(
     }
     par(new = TRUE, las = 1)
   }
-  if (!controls[["hierarchy"]]) {
+  if (!fHMM_hierarchical(controls)) {
     ymin <- min(data[["data"]], na.rm = TRUE)
     ymax <- max(data[["data"]], na.rm = TRUE)
     if (ymin > 0 && ymax < 10) {
@@ -570,9 +570,9 @@ plot_ts <- function(
     ymin <- min(fs_data, na.rm = TRUE)
     ymax <- max(fs_data, na.rm = TRUE)
   }
-  if (controls[["simulated"]]) {
+  if (.simulated_data(controls)) {
     xmin <- 1
-    if (!controls[["hierarchy"]]) {
+    if (!fHMM_hierarchical(controls)) {
       xmax <- length(data[["data"]])
       ylim <- c(ymin, ymax) 
     } else {
@@ -582,13 +582,13 @@ plot_ts <- function(
     x_values <- seq_len(xmax)
   } else {
     x_values <- xdata
-    if (!controls[["hierarchy"]]) {
+    if (!fHMM_hierarchical(controls)) {
       ylim <- c(ymin, ymax + (ymax - ymin)) 
     } else {
       ylim <- c(ymin - (ymax - ymin), ymax + (ymax - ymin))
     }
   }
-  if (!controls[["hierarchy"]]) {
+  if (!fHMM_hierarchical(controls)) {
     plot(x_values, data[["data"]],
       type = "l", col = "black",
       xlab = "", ylab = "", xaxt = "n", yaxt = "n",
@@ -603,24 +603,24 @@ plot_ts <- function(
       ylim = ylim 
     )
   }
-  if (!controls[["simulated"]]) {
-    if (!controls[["hierarchy"]]) {
+  if (!.simulated_data(controls)) {
+    if (!fHMM_hierarchical(controls)) {
       text <- ifelse(controls$data$logreturns, "Log-returns", "Time series data")
       mtext(text, side = 2, line = 3.5, at = 0, cex = 1.25, las = 3)
     }
-    if (controls[["hierarchy"]]) {
+    if (fHMM_hierarchical(controls)) {
       mtext("Fine-scale data", side = 2, line = 3.5, at = 0, cex = 1.25, las = 3)
     }
   }
-  if (controls[["simulated"]]) {
+  if (.simulated_data(controls)) {
     mtext("Index", side = 1, line = 2.5, cex = 1.25)
-    if (!controls[["hierarchy"]]) {
+    if (!fHMM_hierarchical(controls)) {
       mtext("Simulated data",
         side = 2, line = 3.5,
         cex = 1.25, las = 3, at = mean(c(ymin, ymax))
       )
     }
-    if (controls[["hierarchy"]]) {
+    if (fHMM_hierarchical(controls)) {
       mtext("Simulated fine-scale data",
         side = 2,
         line = 3.5, cex = 1.25, las = 3, at = mean(c(ymin, ymax))
@@ -634,19 +634,19 @@ plot_ts <- function(
   if (0 <= ymin || 0 >= ymax) {
     axis(2, c(ymin, ymax), labels = signif(c(ymin, ymax), 2))
   }
-  if (!controls[["hierarchy"]] & !is.null(decoding)) {
+  if (!fHMM_hierarchical(controls) & !is.null(decoding)) {
     for (s in seq_len(controls[["states"]][1])) {
       points(x_values[decoding == s], data[["data"]][decoding == s], col = colors[s], pch = 20)
     }
   }
-  if (controls[["hierarchy"]] & !is.null(decoding)) {
+  if (fHMM_hierarchical(controls) & !is.null(decoding)) {
     for (cs in seq_len(controls[["states"]][1])) {
       for (fs in seq_len(controls[["states"]][2])) {
         points(x_values[decoding_cs == cs & decoding_fs == fs], fs_data[decoding_cs == cs & decoding_fs == fs], col = colors[["fs"]][cs, fs], pch = 20)
       }
     }
   }
-  if (!controls[["simulated"]] & !is.null(events)) {
+  if (!.simulated_data(controls) & !is.null(events)) {
     events[["labels"]] <- events[["labels"]][events[["dates"]] > xmin & events[["dates"]] < xmax]
     events[["dates"]] <- events[["dates"]][events[["dates"]] > xmin & events[["dates"]] < xmax]
     if (length(events[["dates"]]) == 0) {
@@ -663,14 +663,14 @@ plot_ts <- function(
       )
     }
   }
-  if (!controls[["hierarchy"]] & !is.null(decoding)) {
+  if (!fHMM_hierarchical(controls) & !is.null(decoding)) {
     legend(
       legend = paste("State", seq_len(controls[["states"]][1])),
       col = colors, pch = 20, cex = 1.25,
       x = "topleft"
     )
   }
-  if (controls[["hierarchy"]] & !is.null(decoding)) {
+  if (fHMM_hierarchical(controls) & !is.null(decoding)) {
     eg <- expand.grid(
       seq_len(controls[["states"]][2]),
       seq_len(controls[["states"]][1])
@@ -687,7 +687,7 @@ plot_ts <- function(
       cex = 1.25, x = "topleft", ncol = controls[["states"]][2] + 1
     )
   }
-  if (controls[["hierarchy"]]) {
+  if (fHMM_hierarchical(controls)) {
     par(new = TRUE)
     ymin <- min(cs_data, na.rm = TRUE)
     ymax <- max(cs_data, na.rm = TRUE)
@@ -714,10 +714,10 @@ plot_ts <- function(
     if (0 <= ymin || 0 >= ymin) {
       axis(4, c(ymin, ymax), labels = signif(c(ymin, ymax), 2))
     }
-    if (controls[["simulated"]]) {
+    if (.simulated_data(controls)) {
       mtext("Simulated coarse-scale data", side = 4, line = 3.5, at = mean(c(ymin, ymax)), cex = 1.25, las = 3)
     }
-    if (!controls[["simulated"]]) {
+    if (!.simulated_data(controls)) {
       mtext("Coarse-scale data", side = 4, line = 3.5, at = mean(c(ymin, ymax)), cex = 1.25, las = 3)
     }
   }

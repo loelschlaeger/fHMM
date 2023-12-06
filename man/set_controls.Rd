@@ -16,7 +16,7 @@ set_controls(
   period = if (hierarchy && is.na(horizon[2])) "m" else NA,
   data = NA,
   data_frame = NA,
-  date_column = "Date",
+  date_column = if (!hierarchy) "Date" else c("Date", "Date"),
   data_column = if (!hierarchy) "Close" else c("Close", "Close"),
   from = NA,
   to = NA,
@@ -155,11 +155,20 @@ Unspecified parameters are set to their default values, see below.
 
 Specifications in \code{data} override individual specifications.}
 
-\item{data_frame}{A \code{data.frame} with data and dates for modeling.}
+\item{data_frame}{A \code{data.frame} with data and dates for modeling.
+
+If \code{hierarchy = TRUE}, \code{data_frame} can be a \code{list} of
+length 2. The first entry is a \code{data.frame} and provides the data for
+the coarse-scale layer, while the second entry corresponds to the fine-scale
+layer. If \code{data_frame} is a single \code{data.frame}, then the same
+\code{data.frame} is used for both layers.}
 
 \item{date_column}{A \code{character}, the name of the column in \code{data_frame} with dates.
-Can also be \code{NA} in which case consecutive integers are used
-as time points.
+
+If \code{hierarchy = TRUE} and \code{data_frame} is a \code{list} of two
+\code{data.frame}s, \code{data_column} must be a \code{vector} of
+length 2. The first entry corresponds to the coarse-scale layer, while the
+second entry corresponds to the fine-scale layer.
 
 By default, \code{date_column = "Date"}.}
 
@@ -173,14 +182,10 @@ By default, \code{data_column = "Close"} if \code{hierarchy = FALSE} and
 \code{data_column = c("Close", "Close")} if \code{hierarchy = TRUE}.}
 
 \item{from}{A \code{character} of the format \code{"YYYY-MM-DD"}, setting a lower
-date limit. No lower limit if \code{from = NA} (default).
-
-Ignored if \code{date_column} is \code{NA}.}
+date limit. No lower limit if \code{from = NA} (default).}
 
 \item{to}{A \code{character} of the format \code{"YYYY-MM-DD"}, setting an upper
-date limit. No lower limit if \code{to = NA} (default).
-
-Ignored if \code{date_column} is \code{NA}.}
+date limit. No lower limit if \code{to = NA} (default).}
 
 \item{logreturns}{A \code{logical}, if \code{TRUE} the data is transformed to log-returns.
 

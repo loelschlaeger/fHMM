@@ -13,6 +13,22 @@
       Summary of fHMM simulated data
       * number of observations: 100 
 
+# data preparation for simulated HHMM works
+
+    Code
+      print(out)
+    Output
+      fHMM simulated data
+
+---
+
+    Code
+      summary(out)
+    Output
+      Summary of fHMM simulated data
+      * number of observations: 100 3000 
+      * fine-scale dimension: 30 
+
 # data preparation for empirical HMM works
 
     Code
@@ -26,8 +42,8 @@
       summary(out)
     Output
       Summary of fHMM empirical data
-      * number of observations: 9012 
-      * data source: data.frame 
+      * number of observations: 5118 
+      * data column: Close 
       * date column: Date 
       * log returns: FALSE 
 
@@ -44,30 +60,10 @@
       summary(out)
     Output
       Summary of fHMM empirical data
-      * number of observations: 1839 9012 
-      * fine-scale dimension: w 
-      * data source: dax.csv dax.csv 
+      * number of observations: 433 9255 
+      * fine-scale dimension: m 
+      * data column: Close Close 
       * date column: Date Date 
-      * log returns: FALSE FALSE 
-      * coarse-scale merge: function (x) mean(x)
-
----
-
-    Code
-      print(out)
-    Output
-      fHMM empirical data
-
----
-
-    Code
-      summary(out)
-    Output
-      Summary of fHMM empirical data
-      * number of observations: 901 9010 
-      * fine-scale dimension: 10 
-      * data source: dax.csv dax.csv 
-      * date column: Date Date 
-      * log returns: FALSE FALSE 
-      * coarse-scale merge: function (x) mean(x)
+      * log returns: TRUE TRUE 
+      * coarse-scale merge: mean(x)
 

@@ -108,7 +108,7 @@ test_that("input checks for setting controls work", {
         )
       )
     ),
-    "The control 'data_frame' in 'data' must be a data.frame"
+    "The control 'data_frame' in 'data' must be a 'data.frame'."
   )
   expect_error(
     set_controls(
@@ -155,8 +155,8 @@ test_that("input checks for setting controls work", {
 test_that("missing data controls can be set from individual controls", {
   expect_s3_class(
     set_controls(
-      data_frame = data.frame("Close" = 1),
-      date_column = NA
+      data_frame = data.frame("Close" = 1, "Date" = 1),
+      date_column = "Date"
     ),
     "fHMM_controls"
   )
@@ -415,7 +415,7 @@ test_that("checks of controls for empirical HMM work", {
     horizon = 400,
     data = list(
       data_frame = dax,
-      date_column = NA,
+      date_column = "Date",
       data_column = "Close"
     )
   )
@@ -591,13 +591,13 @@ test_that("checks of controls for empirical HHMM work", {
     period = "w",
     data = list(
       data_frame = dax,
-      date_column = "bad_name",
+      date_column = c("bad_name", "Date"),
       data_column = c("Close", "Close")
     )
   )
   expect_error(
     controls <- set_controls(controls),
-    "Column 'bad_name' not found in data.frame 'data_frame'."
+    "Column 'bad_name' not found."
   )
   controls <- list(
     hierarchy = TRUE,
@@ -610,7 +610,33 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "Column 'bad_name' not found in data.frame 'data_frame'."
+    "Column 'bad_name' not found."
+  )
+  controls <- list(
+    hierarchy = TRUE,
+    horizon = c(100, NA),
+    period = "w",
+    data = list(
+      data_frame = list(dax, "not_a_data.frame"),
+      data_column = c("Close", "bad_name")
+    )
+  )
+  expect_error(
+    controls <- set_controls(controls),
+    "The control 'data_frame' in 'data' must be a data.frame."
+  )
+  controls <- list(
+    hierarchy = TRUE,
+    horizon = c(100, NA),
+    period = "w",
+    data = list(
+      data_frame = list(dax, dax),
+      date_column = c("Date")
+    )
+  )
+  expect_error(
+    controls <- set_controls(controls),
+    "'date_column' in 'data' must be a character vector of length two."
   )
 })
 
