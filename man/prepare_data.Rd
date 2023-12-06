@@ -23,7 +23,8 @@ prepare_data(
   logreturns = if (!hierarchy) FALSE else c(FALSE, FALSE),
   merge = function(x) mean(x),
   verbose = TRUE,
-  true_parameters = NULL,
+  true_parameters = fHMM_parameters(controls = controls, hierarchy = hierarchy, states =
+    states, sdds = sdds),
   seed = NULL
 )
 
@@ -203,6 +204,8 @@ the relative change of the first to the last fine-scale observation.
 
 By default, \code{verbose = TRUE}.}
 
+\item{true_parameters}{TODO}
+
 \item{seed}{An \code{integer}, a seed for reproducibility, passed on to
 \code{\link{set.seed}}.
 
@@ -226,10 +229,15 @@ This function prepares the data for modeling.
 }
 \examples{
 ### simulate data
-controls <- set_controls()
-prepare_data(controls)
+prepare_data(states = 2, sdds = "normal", horizon = 100)
 
 ### use empirical data
-data_frame <- download_yahoo("^GDAXI")
+prepare_data(
+  data_frame = download_yahoo("^GDAXI"),
+  date_column = "Date",
+  data_column = "Close",
+  from = "2000-01-01",
+  to = "2019-12-31"
+)
 
 }

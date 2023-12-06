@@ -1,8 +1,7 @@
 #' Set color scheme for visualizations
 #'
 #' @description
-#' This helper function defines a color scheme for visualizations in the 
-#' \{fHMM\} package.
+#' This helper function defines a color scheme for visualizations.
 #'
 #' @param controls
 #' An object of class \code{fHMM_controls}.
@@ -22,12 +21,6 @@
 #'           \item a \code{character} matrix of dimensions \code{controls$states}
 #'         }
 #'         with color codes.
-#' }
-#'
-#' @examples
-#' \dontrun{
-#' controls <- set_controls()
-#' fHMM_colors(controls, colors = c("red", "blue"))
 #' }
 #' 
 #' @keywords 

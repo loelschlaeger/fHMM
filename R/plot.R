@@ -459,6 +459,7 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 plot_ts <- function(
     data, decoding, colors, events = NULL, title = NULL, from = NULL, to = NULL
   ) {
+  
   controls <- data$controls
   if (!controls[["hierarchy"]]) {
     T <- length(data[["data"]])
@@ -472,6 +473,7 @@ plot_ts <- function(
     cs_data <- data[["data"]][, 1]
     fs_data <- stats::na.omit(as.vector(t(data[["data"]][, -1])))
   }
+  
   oldpar <- graphics::par(no.readonly = TRUE)
   on.exit(suppressWarnings(graphics::par(oldpar)))
   ### bottom, left, top, and right
@@ -719,9 +721,12 @@ plot_ts <- function(
       mtext("Coarse-scale data", side = 4, line = 3.5, at = mean(c(ymin, ymax)), cex = 1.25, las = 3)
     }
   }
+  
+  ### add title
   if (!is.null(title)) {
     title(main = title)
   } else {
     title(main = ifelse(is.null(decoding), "Time series", "Decoded time series"))
-  } 
+  }
+  
 }

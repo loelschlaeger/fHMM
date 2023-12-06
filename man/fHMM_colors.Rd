@@ -27,14 +27,6 @@ with color codes.
 }
 }
 \description{
-This helper function defines a color scheme for visualizations in the
-\{fHMM\} package.
-}
-\examples{
-\dontrun{
-controls <- set_controls()
-fHMM_colors(controls, colors = c("red", "blue"))
-}
-
+This helper function defines a color scheme for visualizations.
 }
 \keyword{internal}

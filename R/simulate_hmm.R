@@ -68,8 +68,11 @@ simulate_hmm <- function(
   observations <- rep(NA_real_, controls[["horizon"]][1])
   for (t in seq_along(observations)) {
     observations[t] <- sdd(
-      n = 1, state = states[t], mu = true_parameters[["mu"]],
-      sigma = true_parameters[["sigma"]], df = true_parameters[["df"]]
+      n = 1, 
+      state = states[t], 
+      mu = true_parameters[["mu"]],
+      sigma = true_parameters[["sigma"]], 
+      df = true_parameters[["df"]]
     )
   }
   if (fHMM_hierarchical(controls)) {
@@ -87,8 +90,8 @@ simulate_hmm <- function(
           n = 1, 
           state = states_fs[[t]][tt], 
           mu = true_parameters[["mu_star"]][[states[t]]],
-          sigma = true_parameters[["sigma"]][[states[t]]], 
-          df = true_parameters[["df"]][[states[t]]]
+          sigma = true_parameters[["sigma_star"]][[states[t]]], 
+          df = true_parameters[["df_star"]][[states[t]]]
         )
       }
     }

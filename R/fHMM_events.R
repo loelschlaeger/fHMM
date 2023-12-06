@@ -39,7 +39,7 @@ fHMM_events <- function(events) {
       stop("'events' must be a list containing the elements 'dates' and 'labels'.",
            call. = FALSE)
     }
-    events$dates <- check_date(events$dates)
+    events$dates <- oeli::check_date(events$dates)
     class(events) <- "fHMM_events"
   }
   return(events)
