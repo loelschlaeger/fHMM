@@ -1,7 +1,7 @@
 Package: fHMM
 Type: Package
 Title: Fitting Hidden Markov Models to Financial Data
-Version: 1.1.1
+Version: 1.1.2
 Authors@R: c(
     person(given = "Lennart",
            family = "Oelschl\U00E4ger",
@@ -31,21 +31,24 @@ Encoding: UTF-8
 Depends:
     R (>= 4.0.0)
 Imports: 
-    MASS,
-    Rcpp,
-    progress,
+    cli,
     foreach,
-    cli
+    MASS,
+    oeli (>= 0.3.0),
+    padr,
+    progress,
+    Rcpp,
+    utils
 LinkingTo:
     Rcpp,
     RcppArmadillo
 Suggests:
-    parallel,
-    doSNOW,
-    rmarkdown,
-    knitr,
-    testthat (>= 3.0.0),
     covr,
+    doSNOW,
+    knitr,
+    parallel,
+    rmarkdown,
+    testthat (>= 3.0.0),
     tseries
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

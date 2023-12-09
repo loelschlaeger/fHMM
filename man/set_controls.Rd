@@ -145,7 +145,7 @@ controls <- list(
 set_controls(controls)
 
 ### HMM controls with empirical data 
-data <- download_data("^GDAXI", file = NULL)
+data <- download_yahoo("^GDAXI")
 controls <- list(
   states  = 3,
   sdds    = "lnorm",

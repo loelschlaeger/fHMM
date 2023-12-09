@@ -1,11 +1,8 @@
 #' @useDynLib fHMM, .registration=TRUE
-#' @importFrom Rcpp evalCpp
 #' @keywords internal
 "_PACKAGE"
 
 #' @noRd
-#' @importFrom cli style_hyperlink
-#' @importFrom utils packageVersion
 
 .onAttach <- function(lib, pkg) {
   msg <- c(
@@ -15,3 +12,11 @@
   packageStartupMessage(msg)
   invisible()
 }
+
+## usethis namespace: start
+#' @importFrom utils tail
+#' @importFrom cli style_hyperlink
+#' @importFrom utils packageVersion
+#' @importFrom Rcpp evalCpp
+## usethis namespace: end
+NULL
