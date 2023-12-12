@@ -63,10 +63,10 @@ reorder_states <- function(x, state_order) {
   par <- parUncon2par(x$estimate, x$data$controls)
   permut <- diag(x$data$controls$states[1])[state_order[, 1], ]
   par$Gamma <- permut %*% par$Gamma %*% t(permut)
-  par$mus <- as.vector(permut %*% par$mus)
-  par$sigmas <- as.vector(permut %*% par$sigmas)
+  par$mu <- as.vector(permut %*% par$mu)
+  par$sigma <- as.vector(permut %*% par$sigma)
   if (x$data$controls$sdds[[1]]$name == "t") {
-    par$dfs <- as.vector(permut %*% par$dfs)
+    par$df <- as.vector(permut %*% par$df)
   }
   if (x$data$controls$hierarchy) {
     par$Gamma_star <- par$Gamma_star[state_order[, 1]]
@@ -86,7 +86,7 @@ reorder_states <- function(x, state_order) {
     }
   }
   parUncon <- par2parUncon(par, x$data$controls)
-  permut_all <- diag(length(x$estimate))[match_all(x$estimate, parUncon), ]
+  permut_all <- diag(length(x$estimate))[oeli::match_numerics(x$estimate, parUncon), ]
   x$estimate <- parUncon
   x$gradient <- as.vector(permut_all %*% x$gradient)
   x$hessian <- permut_all %*% x$hessian %*% t(permut_all)

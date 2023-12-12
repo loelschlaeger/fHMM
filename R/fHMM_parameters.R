@@ -145,6 +145,9 @@ fHMM_parameters <- function(
     sigma <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 1) * 
       scale_par[1]
   }
+  if (sdds[[1]]$name == "poisson") {
+    sigma <- NULL 
+  }
   if (sdds[[1]]$name == "t") {
     if (is.null(df)) {
       ### degrees of freedom are positive
@@ -185,6 +188,9 @@ fHMM_parameters <- function(
           scale_par[2]
       }
     }
+    if (sdds[[2]]$name == "poisson") {
+      sigma_star <- NULL 
+    }
     if (sdds[[2]]$name == "t") {
       if (is.null(df_star)) {
         df_star <- list()
@@ -205,10 +211,12 @@ fHMM_parameters <- function(
       mu <- rep(mu, M)
     }
   }
-  if ("sigma" %in% names(sdds[[1]]$pars)) {
-    sigma <- sdds[[1]]$pars$sigma
-    if (length(sigma) == 1) {
-      sigma <- rep(sigma, M)
+  if (sdds[[1]]$name != "poisson") {
+    if ("sigma" %in% names(sdds[[1]]$pars)) {
+      sigma <- sdds[[1]]$pars$sigma
+      if (length(sigma) == 1) {
+        sigma <- rep(sigma, M)
+      }
     }
   }
   if (sdds[[1]]$name == "t") {
@@ -227,12 +235,14 @@ fHMM_parameters <- function(
       }
       mu_star <- rep(list(mu_star), M)
     }
-    if ("sigma" %in% names(sdds[[2]]$pars)) {
-      sigma_star <- sdds[[2]]$pars$sigma
-      if (length(sigma_star) == 1) {
-        sigma_star <- rep(sigma_star, N)
+    if (sdds[[2]]$name != "poisson") {
+      if ("sigma" %in% names(sdds[[2]]$pars)) {
+        sigma_star <- sdds[[2]]$pars$sigma
+        if (length(sigma_star) == 1) {
+          sigma_star <- rep(sigma_star, N)
+        }
+        sigma_star <- rep(list(sigma_star), M)
       }
-      sigma_star <- rep(list(sigma_star), M)
     }
     if (sdds[[2]]$name == "t") {
       if ("df" %in% names(sdds[[2]]$pars)) {
@@ -263,11 +273,13 @@ fHMM_parameters <- function(
       )
     }
   }
-  if (!checkmate::test_numeric(sigma, len = M, lower = 0)) {
-    stop(
-      paste("'sigma' must be a positive numeric vector of length", M),
-      call. = FALSE
-    )
+  if (sdds[[1]]$name != "poisson") {
+    if (!checkmate::test_numeric(sigma, len = M, lower = 0)) {
+      stop(
+        paste("'sigma' must be a positive numeric vector of length", M),
+        call. = FALSE
+      )
+    }
   }
   if (sdds[[1]]$name == "t") {
     if (!checkmate::test_numeric(df, len = M, lower = 0)) {
@@ -313,18 +325,20 @@ fHMM_parameters <- function(
         }
       }
     }
-    if (!is.list(sigma_star) || length(sigma_star) != M) {
-      stop(
-        paste("'sigma_star' must be a list of length", M),
-        call. = FALSE
-      )
-    }
-    for (i in 1:M) {
-      if (!checkmate::test_numeric(sigma_star[[i]], len = N, lower = 0)) {
+    if (sdds[[2]]$name != "poisson") {
+      if (!is.list(sigma_star) || length(sigma_star) != M) {
         stop(
-          paste("Element", i, "in 'sigma_star' must be a positive numeric vector of length", N),
+          paste("'sigma_star' must be a list of length", M),
           call. = FALSE
         )
+      }
+      for (i in 1:M) {
+        if (!checkmate::test_numeric(sigma_star[[i]], len = N, lower = 0)) {
+          stop(
+            paste("Element", i, "in 'sigma_star' must be a positive numeric vector of length", N),
+            call. = FALSE
+          )
+        }
       }
     }
     if (sdds[[2]]$name == "t") {
@@ -533,10 +547,12 @@ par2parUncon <- function(
       )
     )
   }
-  if (!"sigma" %in% names(sdds[[1]]$pars)) {
-    parUncon <- c(
-      parUncon, sigmaCon2sigmaUncon(par[["sigma"]], prefix = "sigmaUncon_")
-    )
+  if (sdds[[1]]$name != "poisson") {
+    if (!"sigma" %in% names(sdds[[1]]$pars)) {
+      parUncon <- c(
+        parUncon, sigmaCon2sigmaUncon(par[["sigma"]], prefix = "sigmaUncon_")
+      )
+    }
   }
   if (sdds[[1]]$name == "t") {
     if (!"df" %in% names(sdds[[1]]$pars)) {
@@ -565,14 +581,16 @@ par2parUncon <- function(
           )
         )
       }
-      if (!"sigma" %in% names(sdds[[2]]$pars)) {
-        parUncon <- c(
-          parUncon,
-          sigmaCon2sigmaUncon(
-            par[["sigma_star"]][[s]],
-            prefix = paste0("cs_", s, ":sigmaUncon_")
+      if (sdds[[2]]$name != "poisson") {
+        if (!"sigma" %in% names(sdds[[2]]$pars)) {
+          parUncon <- c(
+            parUncon,
+            sigmaCon2sigmaUncon(
+              par[["sigma_star"]][[s]],
+              prefix = paste0("cs_", s, ":sigmaUncon_")
+            )
           )
-        )
+        }
       }
       if (sdds[[2]]$name == "t") {
         if (!"df" %in% names(sdds[[2]]$pars)) {
@@ -635,15 +653,17 @@ parUncon2parCon <- function(
     )
     parUncon <- parUncon[-(1:M)]
   }
-  if (!"sigma" %in% names(sdds[[1]]$pars)) {
-    parCon <- c(
-      parCon,
-      sigmaUncon2sigmaCon(
-        parUncon[1:M],
-        prefix = "sigmaCon_"
+  if (sdds[[1]]$name != "poisson") {
+    if (!"sigma" %in% names(sdds[[1]]$pars)) {
+      parCon <- c(
+        parCon,
+        sigmaUncon2sigmaCon(
+          parUncon[1:M],
+          prefix = "sigmaCon_"
+        )
       )
-    )
-    parUncon <- parUncon[-(1:M)]
+      parUncon <- parUncon[-(1:M)]
+    }
   }
   if (sdds[[1]]$name == "t") {
     if (!"df" %in% names(sdds[[1]]$pars)) {
@@ -680,15 +700,17 @@ parUncon2parCon <- function(
         )
         parUncon <- parUncon[-(1:N)]
       }
-      if (!"sigma" %in% names(sdds[[2]]$pars)) {
-        parCon <- c(
-          parCon,
-          sigmaUncon2sigmaCon(
-            parUncon[1:N],
-            prefix = paste0("cs_", s, ":sigmaCon_")
+      if (sdds[[2]]$name != "poisson") {
+        if (!"sigma" %in% names(sdds[[2]]$pars)) {
+          parCon <- c(
+            parCon,
+            sigmaUncon2sigmaCon(
+              parUncon[1:N],
+              prefix = paste0("cs_", s, ":sigmaCon_")
+            )
           )
-        )
-        parUncon <- parUncon[-(1:N)]
+          parUncon <- parUncon[-(1:N)]
+        }
       }
       if (sdds[[2]]$name == "t") {
         if (!"df" %in% names(sdds[[2]]$pars)) {
@@ -743,11 +765,13 @@ parCon2par <- function(
   } else {
     mu <- sdds[[1]]$pars$mu
   }
-  if (!"sigma" %in% names(sdds[[1]]$pars)) {
-    sigma <- parCon[1:M]
-    parCon <- parCon[-(1:M)]
-  } else {
-    sigma <- sdds[[1]]$pars$sigma
+  if (sdds[[1]]$name != "poisson") {
+    if (!"sigma" %in% names(sdds[[1]]$pars)) {
+      sigma <- parCon[1:M]
+      parCon <- parCon[-(1:M)]
+    } else {
+      sigma <- sdds[[1]]$pars$sigma
+    }
   }
   if (sdds[[1]]$name == "t") {
     if (!"df" %in% names(sdds[[1]]$pars)) {
@@ -778,11 +802,13 @@ parCon2par <- function(
       } else {
         mu_star[[s]] <- sdds[[2]]$pars$mu
       }
-      if (!"sigma" %in% names(sdds[[2]]$pars)) {
-        sigma_star[[s]] <- parCon[1:N]
-        parCon <- parCon[-(1:N)]
-      } else {
-        sigma_star[[s]] <- sdds[[2]]$pars$sigma
+      if (sdds[[2]]$name != "poisson") {
+        if (!"sigma" %in% names(sdds[[2]]$pars)) {
+          sigma_star[[s]] <- parCon[1:N]
+          parCon <- parCon[-(1:N)]
+        } else {
+          sigma_star[[s]] <- sdds[[2]]$pars$sigma
+        }
       }
       if (sdds[[2]]$name == "t") {
         if (!"df" %in% names(sdds[[2]]$pars)) {
@@ -803,7 +829,8 @@ parCon2par <- function(
     controls = controls,
     Gamma = Gamma, mu = mu, sigma = sigma, df = df,
     Gamma_star = Gamma_star, mu_star = mu_star,
-    sigma_star = sigma_star, df_star = df_star
+    sigma_star = sigma_star, df_star = df_star,
+    check_controls = check_controls
   )
 }
 
@@ -833,7 +860,11 @@ par2parCon <- function(
       class = "fHMM_controls"
     )
   }
-  parUncon2parCon(par2parUncon(par, controls), controls)
+  parUncon2parCon(
+    par2parUncon(par, controls, check_controls = check_controls), 
+    controls,
+    check_controls = check_controls
+  )
 }
 
 #' @rdname parameter_transformations
@@ -862,7 +893,11 @@ parCon2parUncon <- function(
       class = "fHMM_controls"
     )
   }
-  par2parUncon(parCon2par(parCon, controls), controls)
+  par2parUncon(
+    parCon2par(parCon, controls, check_controls = check_controls), 
+    controls,
+    check_controls = check_controls
+  )
 }
 
 #' @rdname parameter_transformations
@@ -891,7 +926,11 @@ parUncon2par <- function(
       class = "fHMM_controls"
     )
   }
-  parCon2par(parUncon2parCon(parUncon, controls), controls)
+  parCon2par(
+    parUncon2parCon(parUncon, controls, check_controls = check_controls), 
+    controls,
+    check_controls = check_controls
+  )
 }
 
 #' @rdname parameter_transformations

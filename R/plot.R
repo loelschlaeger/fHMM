@@ -358,11 +358,11 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
       xmin <- xlim_fix[1]
       xmax <- xlim_fix[2]
     } else {
-      xmin <- min(est$mus - 3 * est$sigmas, na.rm = TRUE)
-      xmax <- max(est$mus + 3 * est$sigmas, na.rm = TRUE)
+      xmin <- min(est$mu - 3 * est$sigma, na.rm = TRUE)
+      xmax <- max(est$mu + 3 * est$sigma, na.rm = TRUE)
       if (!is.null(true)) {
-        xmin <- min(xmin, min(true$mus - 3 * true$sigmas, na.rm = TRUE), na.rm = TRUE)
-        xmax <- max(xmax, max(true$mus + 3 * true$sigmas, na.rm = TRUE), na.rm = TRUE)
+        xmin <- min(xmin, min(true$mu - 3 * true$sigma, na.rm = TRUE), na.rm = TRUE)
+        xmax <- max(xmax, max(true$mu + 3 * true$sigma, na.rm = TRUE), na.rm = TRUE)
       }
       if (name == "gamma") {
         xmin <- 0.01
@@ -375,16 +375,16 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
     f.x <- list()
     for (s in 1:nstates) {
       f.x[[s]] <- density(
-        name = name, x = x, mu = est$mus[s], sigma = est$sigmas[s],
-        df = est$dfs[s]
+        name = name, x = x, mu = est$mu[s], sigma = est$sigma[s],
+        df = est$df[s]
       )
     }
     f.x_true <- list()
     if (!is.null(true)) {
       for (s in 1:nstates) {
         f.x_true[[s]] <- density(
-          name = name, x = x, mu = true$mus[s], sigma = true$sigmas[s],
-          df = true$dfs[s]
+          name = name, x = x, mu = true$mu[s], sigma = true$sigma[s],
+          df = true$df[s]
         )
       }
     }
@@ -430,13 +430,13 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
     colors = if (controls$hierarchy) colors[["cs"]] else colors,
     main = "State-dependent distributions",
     est = list(
-      "mus" = est$mus, "sigmas" = est$sigmas,
-      "dfs" = est$dfs
+      "mu" = est$mu, "sigma" = est$sigma,
+      "df" = est$df
     ),
     true = if (!is.null(true)) {
       list(
-        "mus" = true$mus, "sigmas" = true$sigmas,
-        "dfs" = true$dfs
+        "mu" = true$mu, "sigma" = true$sigma,
+        "df" = true$df
       )
     } else {
       NULL
@@ -454,15 +454,15 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
         colors = colors[["fs"]][s, ],
         main = paste("Conditional on coarse-scale state", s),
         est = list(
-          "mus" = est$mu_star[[s]],
-          "sigmas" = est$sigma_star[[s]],
-          "dfs" = est$df_star[[s]]
+          "mu" = est$mu_star[[s]],
+          "sigma" = est$sigma_star[[s]],
+          "df" = est$df_star[[s]]
         ),
         true = if (!is.null(true)) {
           list(
-            "mus" = true$mu_star[[s]],
-            "sigmas" = true$sigma_star[[s]],
-            "dfs" = true$df_star[[s]]
+            "mu" = true$mu_star[[s]],
+            "sigma" = true$sigma_star[[s]],
+            "df" = true$df_star[[s]]
           )
         } else {
           NULL

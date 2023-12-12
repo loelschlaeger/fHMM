@@ -171,12 +171,14 @@ nLL_hhmm <- function(parUncon, observations, controls) {
   df <- par[["df"]]
   allprobs <- matrix(0, M, T)
   log_likelihoods <- matrix(0, M, T)
-  controls_split <- list(
-    "hierarchy" = FALSE,
-    "states" = controls$states[2],
-    "sdds" = structure(controls$sdds[2], class = "fHMM_sdds")
+  controls_split <- structure(
+    list(
+      "hierarchy" = FALSE,
+      "states" = controls$states[2],
+      "sdds" = structure(controls$sdds[2], class = "fHMM_sdds")
+    ),
+    class = "fHMM_controls"
   )
-  class(controls_split) <- "fHMM_controls"
   for (m in seq_len(M)) {
     if (controls[["sdds"]][[1]]$name == "t") {
       allprobs[m, ] <- 1 / sigma[m] * stats::dt((observations_cs - mu[m]) /
@@ -202,13 +204,15 @@ nLL_hhmm <- function(parUncon, observations, controls) {
     } else {
       stop("Unknown state-dependent distribution", call. = FALSE)
     }
-    par_m <- list(
-      "Gamma" = par$Gamma_star[[m]],
-      "mu" = par$mu_star[[m]],
-      "sigma" = par$sigma_star[[m]],
-      "df" = par$df_star[[m]]
+    par_m <- structure(
+      list(
+        "Gamma" = par$Gamma_star[[m]],
+        "mu" = par$mu_star[[m]],
+        "sigma" = par$sigma_star[[m]],
+        "df" = par$df_star[[m]]
+      ),
+      class = "fHMM_parameters"
     )
-    class(par_m) <- "fHMM_parameters"
     parUncon_m <- par2parUncon(par = par_m, controls = controls_split)
     for (t in seq_len(T)) {
       log_likelihoods[m, t] <- -nLL_hmm(

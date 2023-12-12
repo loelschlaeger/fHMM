@@ -10,7 +10,7 @@ test_that("HMM log-likelihood can be computed", {
     ll_hmm(parUncon, observations, controls, negative = TRUE) 
   )
   checkmate::expect_number(
-    ll_hmm(parUncon, observations, controls, check_inputs = FALSE) 
+    ll_hmm(parUncon, observations, controls, check_controls = FALSE) 
   )
 })
 
@@ -28,6 +28,6 @@ test_that("HHMM log-likelihood can be computed", {
     ll_hmm(parUncon, observations, controls, negative = TRUE) 
   )
   checkmate::expect_number(
-    ll_hmm(parUncon, observations, controls, check_inputs = FALSE) 
+    ll_hmm(parUncon, observations, controls, check_controls = FALSE) 
   )
 })
