@@ -14,9 +14,15 @@
 }
 
 ## usethis namespace: start
-#' @importFrom utils tail
 #' @importFrom cli style_hyperlink
-#' @importFrom utils packageVersion
 #' @importFrom Rcpp evalCpp
+#' @importFrom stats rgamma
+#' @importFrom stats rlnorm
+#' @importFrom stats rnorm
+#' @importFrom stats rpois
+#' @importFrom stats rt
+#' @importFrom utils head
+#' @importFrom utils packageVersion
+#' @importFrom utils tail
 ## usethis namespace: end
 NULL

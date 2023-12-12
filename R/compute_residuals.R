@@ -92,9 +92,9 @@ compute_residuals <- function(x, verbose = TRUE) {
       curr <- x$decoding[t, 1]
       residuals[t, -1] <- cr(
         data = x$data$data[t, -1],
-        mus = par$mus_star[[curr]],
-        sigmas = par$sigmas_star[[curr]],
-        dfs = par$dfs_star[[curr]],
+        mus = par$mu_star[[curr]],
+        sigmas = par$sigma_star[[curr]],
+        dfs = par$df_star[[curr]],
         sdd_name = x$data$controls$sdds[[2]]$name,
         decoding = x$decoding[t, -1]
       )

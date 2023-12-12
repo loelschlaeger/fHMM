@@ -99,7 +99,7 @@ prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
       stop("'true_parameters' is not of class 'fHMM_parameters'.", 
            call. = FALSE)
     }
-    data <- simulate_data(
+    data <- simulate_hmm(
       controls = controls, true_parameters = true_parameters, seed = seed
     )
   } else {

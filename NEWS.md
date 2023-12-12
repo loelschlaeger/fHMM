@@ -1,14 +1,18 @@
-# fHMM 1.2.0
+# fHMM 2.0.0
 
 * Controls can now be provided separately for the `set_controls()` function.
 
 * The log-normal state-dependent distribution is renamed: `lnorm` -> `lognormal`.
 
-* Two more state-dependent distributions are added: `normal` and `poisson`.
+* Two more state-dependent distributions were added: `normal` and `poisson`.
 
 * Renamed `download_data()` -> `download_yahoo()` to make the functionality clearer.
 
+* Renamed `simulate_data()` -> `simulate_hmm()` to make the functionality clearer. Furthermore, this function is now exported and can be used outside of the package to simulate HMM data.
+
 * `download_yahoo()` (former `download_data()`) no longer saves a .csv-file but returns the data as a `data.frame`. Its `verbose` argument is removed because the function no longer prints any messages.
+
+* The utilities (i.e., all functions with roxygen tag `@keywords utils`) were moved to the [`{oeli}`](https://loelschlaeger.de/oeli/) package.
 
 # fHMM 1.1.1
 

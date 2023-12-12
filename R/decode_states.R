@@ -100,10 +100,10 @@ decode_states <- function(x, verbose = TRUE) {
         viterbi(
           observations = observations,
           nstates = x$data$controls$states[2],
-          Gamma = par$Gammas_star[[curr]],
-          mus = par$mus_star[[curr]],
-          sigmas = par$sigmas_star[[curr]],
-          dfs = par$dfs_star[[curr]],
+          Gamma = par$Gamma_star[[curr]],
+          mus = par$mu_star[[curr]],
+          sigmas = par$sigma_star[[curr]],
+          dfs = par$df_star[[curr]],
           sdd = par$sdd[[2]]$name
         ),
         rep(NA_real_, max(x$data$T_star) - x$data$T_star[t])

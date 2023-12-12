@@ -457,22 +457,22 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
         colors = colors[["fs"]][s, ],
         main = paste("Conditional on coarse-scale state", s),
         est = list(
-          "mus" = est$mus_star[[s]],
-          "sigmas" = est$sigmas_star[[s]],
-          "dfs" = est$dfs_star[[s]]
+          "mus" = est$mu_star[[s]],
+          "sigmas" = est$sigma_star[[s]],
+          "dfs" = est$df_star[[s]]
         ),
         true = if (!is.null(true)) {
           list(
-            "mus" = true$mus_star[[s]],
-            "sigmas" = true$sigmas_star[[s]],
-            "dfs" = true$dfs_star[[s]]
+            "mus" = true$mu_star[[s]],
+            "sigmas" = true$sigma_star[[s]],
+            "dfs" = true$df_star[[s]]
           )
         } else {
           NULL
         },
         xlim_fix = c(
-          min(mapply(function(x,y) x - 3*y, est$mus_star, est$sigmas_star), na.rm = TRUE),
-          max(mapply(function(x,y) x + 3*y, est$mus_star, est$sigmas_star), na.rm = TRUE)
+          min(mapply(function(x,y) x - 3*y, est$mu_star, est$sigma_star), na.rm = TRUE),
+          max(mapply(function(x,y) x + 3*y, est$mu_star, est$sigma_star), na.rm = TRUE)
         )
       )
       legend(

@@ -459,10 +459,10 @@ nLL_hhmm <- function(parUncon, observations, controls) {
       )
     }
     par_m <- list(
-      "Gamma" = par$Gammas_star[[m]],
-      "mus" = par$mus_star[[m]],
-      "sigmas" = par$sigmas_star[[m]],
-      "dfs" = par$dfs_star[[m]]
+      "Gamma" = par$Gamma_star[[m]],
+      "mus" = par$mu_star[[m]],
+      "sigmas" = par$sigma_star[[m]],
+      "dfs" = par$df_star[[m]]
     )
     class(par_m) <- "fHMM_parameters"
     parUncon_m <- par2parUncon(par = par_m, controls = controls_split)
@@ -810,7 +810,7 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
       state_prob <- rep(1 / N, N)
       fs_state_prediction <- matrix(NA_real_, nrow = ahead, ncol = N)
       for (i in 1:ahead) {
-        state_prob <- state_prob %*% par$Gammas_star[[s]]
+        state_prob <- state_prob %*% par$Gamma_star[[s]]
         fs_state_prediction[i, ] <- state_prediction[i, s] * state_prob
       }
       rownames(fs_state_prediction) <- 1:ahead
@@ -855,8 +855,8 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
       for (i in 1:ahead) {
         data_prediction[i, ] <- sapply(props, function(x) {
           state_prediction[i, -(1:M)] %*%
-            (stats::qt(p = x, df = unlist(par$dfs_star)) * 
-               unlist(par$sigmas_star) + unlist(par$mus_star))
+            (stats::qt(p = x, df = unlist(par$df_star)) * 
+               unlist(par$sigma_star) + unlist(par$mu_star))
         })
       }
     }
@@ -864,8 +864,8 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
       for (i in 1:ahead) {
         data_prediction[i, ] <- sapply(props, function(x) {
           state_prediction[i, -(1:M)] %*%
-            stats::qlnorm(p = x, meanlog = par$mus_star, 
-                          sdlog = par$sigmas_star)
+            stats::qlnorm(p = x, meanlog = par$mu_star, 
+                          sdlog = par$sigma_star)
         })
       }
     }
@@ -874,8 +874,8 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
         data_prediction[i, ] <- sapply(props, function(x) {
           state_prediction[i, -(1:M)] %*%
             stats::qgamma(
-              p = x, shape = unlist(par$mus_star)^2 / unlist(par$sigmas_star)^2,
-              scale = unlist(par$sigmas_star)^2 / unlist(par$mus_star)
+              p = x, shape = unlist(par$mu_star)^2 / unlist(par$sigma_star)^2,
+              scale = unlist(par$sigma_star)^2 / unlist(par$mu_star)
             )
         })
       }

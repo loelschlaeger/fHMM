@@ -69,19 +69,19 @@ reorder_states <- function(x, state_order) {
     par$dfs <- as.vector(permut %*% par$dfs)
   }
   if (x$data$controls$hierarchy) {
-    par$Gammas_star <- par$Gammas_star[state_order[, 1]]
-    par$mus_star <- par$mus_star[state_order[, 1]]
-    par$sigmas_star <- par$sigmas_star[state_order[, 1]]
+    par$Gamma_star <- par$Gamma_star[state_order[, 1]]
+    par$mu_star <- par$mu_star[state_order[, 1]]
+    par$sigma_star <- par$sigma_star[state_order[, 1]]
     if (x$data$controls$sdds[[1]]$name == "t") {
-      par$dfs_star <- par$dfs_star[state_order[, 1]]
+      par$df_star <- par$df_star[state_order[, 1]]
     }
     for (s in state_order[, 1]) {
       permut <- diag(x$data$controls$states[2])[state_order[which(state_order[, 1] == s), -1], ]
-      par$Gammas_star[[s]] <- permut %*% par$Gammas_star[[s]] %*% t(permut)
-      par$mus_star[[s]] <- as.vector(permut %*% par$mus_star[[s]])
-      par$sigmas_star[[s]] <- as.vector(permut %*% par$sigmas_star[[s]])
+      par$Gamma_star[[s]] <- permut %*% par$Gamma_star[[s]] %*% t(permut)
+      par$mu_star[[s]] <- as.vector(permut %*% par$mu_star[[s]])
+      par$sigma_star[[s]] <- as.vector(permut %*% par$sigma_star[[s]])
       if (x$data$controls$sdds[[2]]$name == "t") {
-        par$dfs_star[[s]] <- as.vector(permut %*% par$dfs_star[[s]])
+        par$df_star[[s]] <- as.vector(permut %*% par$df_star[[s]])
       }
     }
   }

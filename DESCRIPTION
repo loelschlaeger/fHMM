@@ -1,7 +1,7 @@
 Package: fHMM
 Type: Package
 Title: Fitting Hidden Markov Models to Financial Data
-Version: 1.1.2
+Version: 2.0.0
 Authors@R: c(
     person(given = "Lennart",
            family = "Oelschl\U00E4ger",
@@ -38,6 +38,7 @@ Imports:
     padr,
     progress,
     Rcpp,
+    stats,
     utils
 LinkingTo:
     Rcpp,
