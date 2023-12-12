@@ -19,7 +19,7 @@ state-dependent t-distributions for demonstration purpose.
 \details{
 The model was estimated via:
 \preformatted{
-controls <- list(
+controls <- set_controls(
   hierarchy = TRUE,
   states    = c(2, 2),
   sdds      = c("t", "t"),
@@ -34,7 +34,6 @@ controls <- list(
     runs = 200
   )
 )
-controls <- set_controls(controls)
 dax_vw_data <- prepare_data(controls)
 dax_vw_model <- fit_model(dax_vw_data)
 }

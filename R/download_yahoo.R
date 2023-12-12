@@ -53,9 +53,6 @@
 #' head(data)
 #' 
 #' @export
-#'
-#' @importFrom utils download.file read.csv
-#' @importFrom padr pad
 
 download_yahoo <- function(
     symbol, from = "1902-01-01", to = Sys.Date(), fill_dates = FALSE,

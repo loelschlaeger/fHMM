@@ -27,7 +27,8 @@ par2parUncon(
   controls = list(),
   hierarchy = FALSE,
   states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+  check_controls = FALSE
 )
 
 parUncon2parCon(
@@ -35,7 +36,8 @@ parUncon2parCon(
   controls = list(),
   hierarchy = FALSE,
   states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+  check_controls = FALSE
 )
 
 parCon2par(
@@ -43,7 +45,8 @@ parCon2par(
   controls = list(),
   hierarchy = FALSE,
   states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+  check_controls = FALSE
 )
 
 par2parCon(
@@ -51,7 +54,8 @@ par2parCon(
   controls = list(),
   hierarchy = FALSE,
   states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+  check_controls = FALSE
 )
 
 parCon2parUncon(
@@ -59,7 +63,8 @@ parCon2parUncon(
   controls = list(),
   hierarchy = FALSE,
   states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+  check_controls = FALSE
 )
 
 parUncon2par(
@@ -67,7 +72,8 @@ parUncon2par(
   controls = list(),
   hierarchy = FALSE,
   states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal")
+  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+  check_controls = FALSE
 )
 
 muCon2muUncon(muCon, link, prefix = "muUncon_")

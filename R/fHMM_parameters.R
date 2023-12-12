@@ -64,6 +64,10 @@
 #' 
 #' @param seed
 #' Sets a seed for the sampling of parameters.
+#' 
+#' @param check_controls
+#' Either \code{TRUE} to check the defined controls or \code{FALSE} to not check
+#' them (which saves computation time), else.
 #'
 #' @return
 #' An object of class \code{fHMM_parameters}.
@@ -73,8 +77,6 @@
 #' @examples
 #' parameters <- fHMM_parameters(states = 2, sdds = "normal")
 #' parameters$Gamma
-#'
-#' @importFrom stats runif qunif runif
 
 fHMM_parameters <- function(
     controls = list(), 
@@ -84,13 +86,24 @@ fHMM_parameters <- function(
     Gamma = NULL, mu = NULL, sigma = NULL, df = NULL,
     Gamma_star = NULL, mu_star = NULL,
     sigma_star = NULL, df_star = NULL,
-    scale_par = c(1, 1), seed = NULL
+    scale_par = c(1, 1), seed = NULL,
+    check_controls = TRUE
 ) {
   
   ### check 'controls' and 'scale_par'
-  controls <- set_controls(
-    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-  )
+  if (isTRUE(check_controls)) {
+    controls <- set_controls(
+      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+    )
+  } else {
+    controls <- structure(
+      oeli::merge_lists(
+        controls,
+        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
+      ),
+      class = "fHMM_controls"
+    )
+  }
   if (!checkmate::test_numeric(scale_par, len = 2, lower = 0)) {
     stop(
       "'scale_par' must be a positive numeric vector of length 2.",
@@ -490,12 +503,23 @@ par2parUncon <- function(
     controls = list(),
     hierarchy = FALSE,
     states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+    check_controls = FALSE
 ) {
   stopifnot(inherits(par, "fHMM_parameters"))
-  controls <- set_controls(
-    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-  )
+  if (isTRUE(check_controls)) {
+    controls <- set_controls(
+      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+    )
+  } else {
+    controls <- structure(
+      oeli::merge_lists(
+        controls,
+        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
+      ),
+      class = "fHMM_controls"
+    )
+  }
   sdds <- controls[["sdds"]]
   states <- controls[["states"]]
   parUncon <- Gamma2gammasUncon(par[["Gamma"]], prefix = "gammasUncon_")
@@ -575,12 +599,23 @@ parUncon2parCon <- function(
     controls = list(),
     hierarchy = FALSE,
     states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+    check_controls = FALSE
 ) {
   stopifnot(inherits(parUncon, "parUncon"))
-  controls <- set_controls(
-    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-  )
+  if (isTRUE(check_controls)) {
+    controls <- set_controls(
+      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+    )
+  } else {
+    controls <- structure(
+      oeli::merge_lists(
+        controls,
+        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
+      ),
+      class = "fHMM_controls"
+    )
+  }
   sdds <- controls[["sdds"]]
   M <- controls[["states"]][1]
   parCon <- gammasUncon2gammasCon(
@@ -681,12 +716,23 @@ parCon2par <- function(
     controls = list(),
     hierarchy = FALSE,
     states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+    check_controls = FALSE
 ) {
   stopifnot(inherits(parCon, "parCon"))
-  controls <- set_controls(
-    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-  )
+  if (isTRUE(check_controls)) {
+    controls <- set_controls(
+      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+    )
+  } else {
+    controls <- structure(
+      oeli::merge_lists(
+        controls,
+        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
+      ),
+      class = "fHMM_controls"
+    )
+  }
   sdds <- controls[["sdds"]]
   M <- controls[["states"]][1]
   Gamma <- gammasCon2Gamma(parCon[1:((M - 1) * M)], M)
@@ -770,12 +816,23 @@ par2parCon <- function(
     controls = list(),
     hierarchy = FALSE,
     states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+    check_controls = FALSE
 ) {
   stopifnot(inherits(par, "fHMM_parameters"))
-  controls <- set_controls(
-    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-  )
+  if (isTRUE(check_controls)) {
+    controls <- set_controls(
+      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+    )
+  } else {
+    controls <- structure(
+      oeli::merge_lists(
+        controls,
+        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
+      ),
+      class = "fHMM_controls"
+    )
+  }
   parUncon2parCon(par2parUncon(par, controls), controls)
 }
 
@@ -788,12 +845,23 @@ parCon2parUncon <- function(
     controls = list(),
     hierarchy = FALSE,
     states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+    check_controls = FALSE
 ) { 
   stopifnot(inherits(parCon, "parCon"))
-  controls <- set_controls(
-    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-  )
+  if (isTRUE(check_controls)) {
+    controls <- set_controls(
+      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+    )
+  } else {
+    controls <- structure(
+      oeli::merge_lists(
+        controls,
+        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
+      ),
+      class = "fHMM_controls"
+    )
+  }
   par2parUncon(parCon2par(parCon, controls), controls)
 }
 
@@ -806,12 +874,23 @@ parUncon2par <- function(
     controls = list(),
     hierarchy = FALSE,
     states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+    check_controls = FALSE
 ) {
   stopifnot(inherits(parUncon, "parUncon"))
-  controls <- set_controls(
-    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-  )
+  if (isTRUE(check_controls)) {
+    controls <- set_controls(
+      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+    )
+  } else {
+    controls <- structure(
+      oeli::merge_lists(
+        controls,
+        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
+      ),
+      class = "fHMM_controls"
+    )
+  }
   parCon2par(parUncon2parCon(parUncon, controls), controls)
 }
 

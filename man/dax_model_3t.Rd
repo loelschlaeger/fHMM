@@ -18,7 +18,7 @@ demonstration purpose.
 \details{
 The model was estimated via:
 \preformatted{
-controls <- list(
+controls <- set_controls(
   states = 3,
   sdds   = "t",
   data   = list(
@@ -31,7 +31,6 @@ controls <- list(
   ),
   fit    = list(runs = 200)
 )
-controls <- set_controls(controls)
 dax_data <- prepare_data(controls)
 dax_model_3t <- fit_model(dax_data)
 }

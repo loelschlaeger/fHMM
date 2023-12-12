@@ -33,6 +33,8 @@ Depends:
 Imports: 
     cli,
     foreach,
+    graphics,
+    grDevices,
     MASS,
     oeli (>= 0.3.0),
     padr,

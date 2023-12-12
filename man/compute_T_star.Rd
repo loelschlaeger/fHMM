@@ -26,13 +26,4 @@ An \code{integer} vector of fine-scale chunk sizes.
 This helper function computes lengths of fine-scale chunks in the
 hierarchical case.
 }
-\examples{
-\dontrun{
-### weekly fine-scale chunk sizes for 10 coarse-scale observations
-horizon <- c(10, NA_integer_)
-period <- "w"
-compute_T_star(horizon, period)
-}
-
-}
 \keyword{internal}

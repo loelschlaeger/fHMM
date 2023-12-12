@@ -166,8 +166,6 @@ plot.fHMM_model <- function(
 #' No return value. Draws a plot to the current device.
 #'
 #' @keywords internal
-#'
-#' @importFrom graphics axis points
 
 plot_ll <- function(lls, ll_relative = TRUE) {
   if (!isTRUE(ll_relative) && !isFALSE(ll_relative)) {
@@ -221,11 +219,7 @@ plot_ll <- function(lls, ll_relative = TRUE) {
 #' @return
 #' No return value. Draws a plot to the current device.
 #'
-#' @keywords
-#' internal
-#'
-#' @importFrom graphics hist curve abline layout mtext title
-#' @importFrom stats dnorm qqnorm acf
+#' @keywords internal
 
 plot_pr <- function(residuals, hierarchy) {
 
@@ -323,9 +317,6 @@ plot_pr <- function(residuals, hierarchy) {
 #' No return value. Draws a plot to the current device.
 #'
 #' @keywords internal
-#'
-#' @importFrom graphics par lines legend layout
-#' @importFrom stats dt dgamma
 
 plot_sdds <- function(est, true = NULL, controls, colors) {
 
@@ -344,10 +335,16 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
   density <- function(name, x, sigma, mu, df) {
     if (name == "t") {
       (1 / sigma) * stats::dt(x = (x - mu) / sigma, df = df)
-    } else if (name == "lnorm") {
+    } else if (name == "normal") {
+      stats::dnorm(x = x, mean = mu, sd = sigma)
+    } else if (name == "lognormal") {
       stats::dlnorm(x = x, meanlog = mu, sdlog = sigma)
     } else if (name == "gamma") {
       stats::dgamma(x = x, shape = mu^2 / sigma^2, scale = sigma^2 / mu)
+    } else if (name == "poisson") {
+      stats::dpois(x = x, lambda = mu)
+    } else {
+      stop("Unknown state-dependent distribution", call. = FALSE)
     }
   }
 
@@ -499,10 +496,6 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 #' No return value. Draws a plot to the current device.
 #'
 #' @keywords internal
-#'
-#' @importFrom graphics par abline mtext points layout plot.new text
-#' @importFrom grDevices rgb
-#' @importFrom stats na.omit
 
 plot_ts <- function(
     data, decoding, colors, events = NULL, title = NULL, from = NULL, to = NULL
@@ -555,14 +548,14 @@ plot_ts <- function(
       ylim <- c(ymin - (ymax - ymin) * 2, ymax)
     }
     if (is.null(from)) {
-      xmin <- as.Date(paste0(find_closest_year(xdata[1]), "-01-01"))
+      xmin <- as.Date(paste0(oeli::find_closest_year(xdata[1]), "-01-01"))
     } else {
-      xmin <- check_date(from)
+      xmin <- oeli::check_date(from)
     }
     if (is.null(to)) {
-      xmax <- as.Date(paste0(find_closest_year(tail(xdata, n = 1)), "-01-01"))
+      xmax <- as.Date(paste0(oeli::find_closest_year(tail(xdata, n = 1)), "-01-01"))
     } else {
-      xmax <- check_date(to)
+      xmax <- oeli::check_date(to)
     }
     plot(
       xdata, ydata, type = "l", xlim = c(xmin, xmax), ylim = ylim, 

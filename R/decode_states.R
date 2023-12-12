@@ -21,8 +21,6 @@
 #' @examples
 #' decode_states(dax_model_3t)
 #' plot(dax_model_3t, type = "ts")
-#' 
-#' @importFrom stats dt dgamma
 
 decode_states <- function(x, verbose = TRUE) {
 
@@ -35,26 +33,32 @@ decode_states <- function(x, verbose = TRUE) {
   }
 
   ### definition of the Viterbi algorithm for state decoding
-  viterbi <- function(observations, nstates, Gamma, mus, sigmas, dfs, sdd) {
+  viterbi <- function(observations, nstates, Gamma, mu, sigma, df, sdd) {
     T <- length(observations)
-    delta <- Gamma2delta(Gamma)
+    delta <- oeli::stationary_distribution(Gamma, soft_fail = TRUE)
     allprobs <- matrix(0, nstates, T)
     for (n in seq_len(nstates)) {
       if (sdd == "t") {
-        allprobs[n, ] <- (1 / sigmas[n]) * stats::dt(
-          (observations - mus[n]) / sigmas[n],
-          dfs[n]
+        allprobs[n, ] <- (1 / sigma[n]) * stats::dt(
+          (observations - mu[n]) / sigma[n],
+          df[n]
         )
       }
       if (sdd == "gamma") {
         allprobs[n, ] <- stats::dgamma(observations,
-          shape = mus[n]^2 / sigmas[n]^2,
-          scale = sigmas[n]^2 / mus[n]
+          shape = mu[n]^2 / sigma[n]^2,
+          scale = sigma[n]^2 / mu[n]
         )
       }
-      if (sdd == "lnorm") {
-        allprobs[n, ] <- stats::dlnorm(observations, meanlog = mus[n], 
-                                       sdlog = sigmas[n])                            
+      if (sdd == "normal") {
+        allprobs[n, ] <- stats::dnorm(observations, mean = mu[n], sd = sigma[n])                            
+      }
+      if (sdd == "lognormal") {
+        allprobs[n, ] <- stats::dlnorm(observations, meanlog = mu[n], 
+                                       sdlog = sigma[n])                            
+      }
+      if (sdd == "poisson") {
+        allprobs[n, ] <- stats::dpois(observations, lambda = mu[n])                            
       }
     }
     xi <- matrix(0, nstates, T)
@@ -80,8 +84,8 @@ decode_states <- function(x, verbose = TRUE) {
     decoding <- viterbi(
       observations = x$data$data,
       nstates = x$data$controls$states[1],
-      Gamma = par$Gamma, mus = par$mus, sigmas = par$sigmas,
-      dfs = par$dfs, sdd = par$sdd[[1]]$name
+      Gamma = par$Gamma, mu = par$mu, sigma = par$sigma,
+      df = par$df, sdd = par$sdd[[1]]$name
     )
   } else {
     decoding <- matrix(NA_real_, ncol = ncol(x$data$data), 
@@ -89,8 +93,8 @@ decode_states <- function(x, verbose = TRUE) {
     decoding[, 1] <- viterbi(
       observations = x$data$data[, 1],
       nstates = x$data$controls$states[1],
-      Gamma = par$Gamma, mus = par$mus,
-      sigmas = par$sigmas, dfs = par$dfs,
+      Gamma = par$Gamma, mu = par$mu,
+      sigma = par$sigma, df = par$df,
       sdd = par$sdd[[1]]$name
     )
     for (t in seq_len(nrow(decoding))) {
@@ -101,9 +105,9 @@ decode_states <- function(x, verbose = TRUE) {
           observations = observations,
           nstates = x$data$controls$states[2],
           Gamma = par$Gamma_star[[curr]],
-          mus = par$mu_star[[curr]],
-          sigmas = par$sigma_star[[curr]],
-          dfs = par$df_star[[curr]],
+          mu = par$mu_star[[curr]],
+          sigma = par$sigma_star[[curr]],
+          df = par$df_star[[curr]],
           sdd = par$sdd[[2]]$name
         ),
         rep(NA_real_, max(x$data$T_star) - x$data$T_star[t])

@@ -28,7 +28,7 @@ Deutscher Aktienindex (DAX) index data from 1988 to 2022 from Yahoo Finance.
 \details{
 The data was obtained via:
 \preformatted{
-dax <- download_data(
+dax <- download_yahoo(
   symbol = "^GDAXI",   # DAX identifier on Yahoo Finance
   from = "1988-01-01", # first observation
   to = "2022-12-31"    # last observation

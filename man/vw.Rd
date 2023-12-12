@@ -28,7 +28,7 @@ Volkswagen AG (VW) stock data from 1998 to 2022 from Yahoo Finance.
 \details{
 The data was obtained via:
 \preformatted{
-vw <- download_data(
+vw <- download_yahoo(
   symbol = "VOW3.DE",  # Volkswagen AG identifier on Yahoo Finance
   from = "1988-07-22", # first observation
   to = "2022-12-31"    # last observation

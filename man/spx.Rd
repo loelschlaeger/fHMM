@@ -29,7 +29,7 @@ Finance.
 \details{
 The data was obtained via:
 \preformatted{
-spx <- download_data(
+spx <- download_yahoo(
   symbol = "^GSPC",    # S&P 500 identifier on Yahoo Finance
   from = "1928-01-01", # first observation
   to = "2022-12-31"    # last observation

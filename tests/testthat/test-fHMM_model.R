@@ -7,16 +7,30 @@ test_that("HMM fitting works", {
     fit     = list("runs" = 10)
   )
   controls <- set_controls(controls)
-  data <- prepare_data(controls, seed = 1)
-  expect_error(fit_model(data, ncluster = 1.4))
-  expect_error(fit_model(data, verbose = "not_TRUE_or_FALSE"))
+  data <- prepare_data(
+    controls, 
+    true_parameters = fHMM_parameters(
+      controls = controls,
+      Gamma = matrix(c(0.9, 0.1, 0.1, 0.9), nrow = 2),
+      mu = c(1, 2) 
+    ),
+    seed = 1
+  )
+  expect_error(
+    fit_model(data, ncluster = 1.4)
+  )
+  expect_error(
+    fit_model(data, verbose = "not_TRUE_or_FALSE")
+  )
   model <- fit_model(data, ncluster = 1, seed = 1, verbose = FALSE)
   expect_s3_class(model, "fHMM_model")
   expect_equal(
     round(model$estimate, 2),
     structure(c(2.04, -0.34, -0.6, -3.56, -0.2, -2.09), class = "parUncon")
   )
-  model_refit <- fit_model(data, ncluster = 1, verbose = FALSE, init = model$estimate)
+  model_refit <- fit_model(
+    data, ncluster = 1, verbose = FALSE, init = model$estimate
+  )
   expect_s3_class(model_refit, "fHMM_model")
   controls <- list(
     states  = 2,
@@ -54,7 +68,10 @@ test_that("parallelization works", {
   )
   controls <- set_controls(controls)
   data <- prepare_data(controls, seed = 1)
-  expect_s3_class(fit_model(data, ncluster = 2, verbose = FALSE, seed = 1), "fHMM_model")
+  expect_s3_class(
+    fit_model(data, ncluster = 2, verbose = FALSE, seed = 1), 
+    "fHMM_model"
+  )
 })
 
 test_that("HHMM fitting works", {
@@ -83,7 +100,7 @@ test_that("log-normal sdds works", {
   seed <- 1
   controls <- list(
     states  = 2,
-    sdds    = "lnorm(mu = 1|3)",
+    sdds    = "lognormal(mu = 1|3)",
     horizon = 1000,
     fit     = list("runs" = 100)
   )

@@ -22,7 +22,6 @@ applying the Viterbi algorithm for global decoding.
 \examples{
 decode_states(dax_model_3t)
 plot(dax_model_3t, type = "ts")
-
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Viterbi_algorithm}

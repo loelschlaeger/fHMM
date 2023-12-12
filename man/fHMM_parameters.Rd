@@ -19,7 +19,8 @@ fHMM_parameters(
   sigma_star = NULL,
   df_star = NULL,
   scale_par = c(1, 1),
-  seed = NULL
+  seed = NULL,
+  check_controls = TRUE
 )
 
 \method{print}{fHMM_parameters}(x, ...)
@@ -136,6 +137,9 @@ The first entry is the scale for
 
 \item{seed}{Sets a seed for the sampling of parameters.}
 
+\item{check_controls}{Either \code{TRUE} to check the defined controls or \code{FALSE} to not check
+them (which saves computation time), else.}
+
 \item{x}{An object of class \code{fHMM_parameters}.}
 
 \item{...}{Currently not used.}
@@ -154,5 +158,4 @@ for more details.
 \examples{
 parameters <- fHMM_parameters(states = 2, sdds = "normal")
 parameters$Gamma
-
 }

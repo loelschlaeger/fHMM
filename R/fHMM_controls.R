@@ -743,6 +743,10 @@ validate_controls <- function(controls) {
         controls[["data"]][["data_inside"]] <- TRUE
       } else if (checkmate::test_string(controls[["data"]][["file"]])){
         controls[["data"]][["data_inside"]] <- FALSE
+      } else if (checkmate::test_list(
+        controls[["data"]][["file"]], types = "data.frame", len = 1
+      )) {
+        controls[["data"]][["data_inside"]] <- TRUE
       } else {
         stop(
           "The control 'file' in 'data' must be a 'data.frame' or a character.",

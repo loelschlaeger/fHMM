@@ -19,18 +19,8 @@
 #'
 #' @return
 #' An \code{integer} vector of fine-scale chunk sizes.
-#'
-#' @examples
-#' \dontrun{
-#' ### weekly fine-scale chunk sizes for 10 coarse-scale observations
-#' horizon <- c(10, NA_integer_)
-#' period <- "w"
-#' compute_T_star(horizon, period)
-#' }
 #' 
 #' @keywords internal
-#'
-#' @importFrom stats dbinom
 
 compute_T_star <- function(horizon, period, dates = NULL, seed = NULL) {
   if (is.null(dates)) {

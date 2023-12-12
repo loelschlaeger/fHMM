@@ -17,13 +17,12 @@ on \code{1000} simulated observations.
 \details{
 The model was estimated via:
 \preformatted{
-controls <- list(
+controls <- set_controls(
   states  = 4,
-  sdds    = "lnorm",
+  sdds    = "lognormal",
   horizon = 1000,
   fit     = list(runs = 50)
 )
-controls <- set_controls(controls)
 data_sim <- prepare_data(controls, seed = 1)
 sim_model_4lnorm <- fit_model(data_sim, seed = 1)
 }

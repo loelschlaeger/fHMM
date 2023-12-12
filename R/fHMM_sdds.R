@@ -17,6 +17,9 @@
 fHMM_sdds <- function(sdds, states) {
   
   ### input checks
+  if (inherits(sdds, "fHMM_sdds")) {
+    return(sdds)
+  }
   if (!checkmate::test_atomic_vector(states)) {
     stop(
       "The control 'states' must be a vector.", 
@@ -44,9 +47,6 @@ fHMM_sdds <- function(sdds, states) {
       "The control 'states' must be a vector of length 1 or 2.",
       call. = FALSE
     )
-  }
-  if (inherits(sdds, "fHMM_sdds")) {
-    return(sdds)
   }
   if (!checkmate::test_character(
     sdds, any.missing = FALSE, len = ifelse(hierarchy, 2, 1))
