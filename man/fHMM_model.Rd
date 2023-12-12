@@ -71,6 +71,14 @@ npar(object, ...)
 \item{x, object}{An object of class \code{\link{fHMM_model}}.}
 
 \item{...}{Currently not used.}
+
+\item{alpha}{A \code{numeric} between 0 and 1, the confidence level.}
+
+\item{digits}{The number of decimal places.}
+
+\item{k}{Passed on to \code{\link[stats]{AIC}}.}
+
+\item{ahead}{The number of time points to predict ahead.}
 }
 \value{
 An object of class \code{\link{fHMM_model}}.

@@ -3,6 +3,7 @@
 #' @description
 #' This helper function simulates HMM data.
 #'
+#' @inheritParams set_controls
 #' @inheritParams prepare_data
 #'
 #' @return

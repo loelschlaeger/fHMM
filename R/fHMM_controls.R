@@ -916,6 +916,6 @@ summary.fHMM_controls <- function(object, ...) {
   if (!inherits(object, "fHMM_controls")) {
     stop("Not an object of class 'fHMM_controls'.", call. = FALSE)
   }
-  str(object, give.attr = FALSE, give.length = FALSE, no.list = TRUE)
+  utils::str(object, give.attr = FALSE, give.length = FALSE, no.list = TRUE)
   invisible(object)
 }

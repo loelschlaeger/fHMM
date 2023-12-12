@@ -14,6 +14,21 @@
 }
 
 ## usethis namespace: start
+#' @importFrom checkmate assert_integerish
+#' @importFrom checkmate assert_number
+#' @importFrom checkmate expect_number
+#' @importFrom checkmate test_atomic_vector
+#' @importFrom checkmate test_character
+#' @importFrom checkmate test_count
+#' @importFrom checkmate test_flag
+#' @importFrom checkmate test_int
+#' @importFrom checkmate test_integerish
+#' @importFrom checkmate test_list
+#' @importFrom checkmate test_logical
+#' @importFrom checkmate test_number
+#' @importFrom checkmate test_numeric
+#' @importFrom checkmate test_scalar_na
+#' @importFrom checkmate test_string
 #' @importFrom cli style_hyperlink
 #' @importFrom foreach %dopar%
 #' @importFrom graphics abline
@@ -63,6 +78,7 @@
 #' @importFrom utils head
 #' @importFrom utils packageVersion
 #' @importFrom utils read.csv
+#' @importFrom utils str
 #' @importFrom utils tail
 ## usethis namespace: end
 NULL

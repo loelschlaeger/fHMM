@@ -26,6 +26,14 @@
 #' A \code{matrix}, the Hessian at the optimum.
 #' @param decoding
 #' A \code{numeric} vector, the decoded time series.
+#' @param alpha
+#' A \code{numeric} between 0 and 1, the confidence level.
+#' @param digits
+#' The number of decimal places.
+#' @param k
+#' Passed on to \code{\link[stats]{AIC}}.
+#' @param ahead
+#' The number of time points to predict ahead.
 #' 
 #' @return 
 #' An object of class \code{\link{fHMM_model}}.

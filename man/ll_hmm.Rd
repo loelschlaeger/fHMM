@@ -96,6 +96,9 @@ By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
 
 \item{negative}{Either \code{TRUE} to return the negative log-likelihood value (useful for
 optimization) or \code{FALSE} (default), else.}
+
+\item{check_controls}{Either \code{TRUE} to check the defined controls or \code{FALSE} to not check
+them (which saves computation time), else.}
 }
 \value{
 The (negative) log-likelihood value.

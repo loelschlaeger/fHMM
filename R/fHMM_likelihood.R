@@ -4,6 +4,7 @@
 #' This function computes the log-likelihood value of a (hierarchical) hidden 
 #' Markov model for given observations and parameter values.
 #'
+#' @inheritParams fHMM_parameters
 #' @inheritParams parameter_transformations
 #' @param observations
 #' A \code{numeric} \code{vector} of time-series data.
