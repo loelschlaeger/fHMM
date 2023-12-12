@@ -1,50 +1,69 @@
 #' Set and check model parameters
 #'
 #' @description
-#' This function sets and checks model parameters for the \{fHMM\} package.
+#' This function sets and checks model parameters.
+#' Unspecified parameters are sampled.
 #'
 #' @details
-#' See the vignette on the model definition for more details.
+#' See the [vignette on the model definition](https://loelschlaeger.de/fHMM/articles) 
+#' for more details.
 #'
-#' @param controls
-#' An object of class \code{fHMM_controls}.
-#' @param Gamma
-#' A \code{matrix}, a tpm (transition probability matrix) of dimension 
-#' \code{controls$states[1]}.
-#' @param mus
-#' A \code{numeric} vector of expectations of length \code{controls$states[1]}.
-#' @param sigmas
-#' A \code{numeric} vector of standard deviations of length 
-#' \code{controls$states[1]}.
-#' @param dfs
-#' A \code{numeric} vector of degrees of freedom of length 
-#' \code{controls$states[1]}.
+#' @inheritParams set_controls
+#' 
+#' @param Gamma,Gamma_star
+#' A transition probability \code{matrix}.
+#' 
+#' It should have dimension \code{states[1]}.
+#' 
+#' \code{Gamma_star} is a \code{list} of fine-scale transition probability 
+#' matrices. The \code{list} must be of length \code{states[1]}.
+#' Each transition probability matrix must be of dimension \code{states[2]}.
+#' 
+#' @param mu,mu_star
+#' A \code{numeric} vector of expected values for the state-dependent 
+#' distribution in the different states.
+#' 
+#' For the gamma- or Poisson-distribution, \code{mu} must be positive.
+#' 
+#' It should have length \code{states[1]}.
+#' 
+#' \code{mu_star} is a \code{list} of \code{vectors} with fine-scale 
+#' expectations. The \code{list} must be of length \code{states[1]}.
+#' Each \code{vector} must be of length \code{states[2]}.
+#' 
+#' @param sigma,sigma_star
+#' A positive \code{numeric} vector of standard deviations for the 
+#' state-dependent distribution in the different states. 
+#' 
+#' It should have length \code{states[1]}.
+#' 
+#' \code{sigma_star} is a \code{list} of \code{vectors} with fine-scale 
+#' standard deviations. The \code{list} must be of length \code{states[1]}.
+#' Each vector must be of length \code{states[2]}.
+#' 
+#' @param df,df_star
+#' A positive \code{numeric} vector of degrees of freedom for the 
+#' state-dependent distribution in the different states. 
+#' 
+#' It should have length \code{states[1]}.
+#' 
 #' Only relevant in case of a state-dependent t-distribution.
-#' @param Gammas_star
-#' A \code{list} of length \code{controls$states[1]} of (fine-scale) tpm's. 
-#' Each tpm must be of dimension \code{controls$states[2]}.
-#' @param mus_star
-#' A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors 
-#' of (fine-scale) expectations. 
-#' Each vector must be of length \code{controls$states[2]}.
-#' @param sigmas_star
-#' A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors 
-#' of standard deviations.
-#' Each vector must be of length \code{controls$states[2]}.
-#' @param dfs_star
-#' A \code{list} of length \code{controls$states[1]} of \code{numeric} vectors 
-#' of (fine-scale) degrees of freedom. 
-#' Each vector must be of length \code{controls$states[2]}.
-#' Only relevant in case of a state-dependent t-distribution.
-#' @param seed
-#' Set a seed for the sampling of parameters.
-#' No seed per default.
+#' 
+#' \code{df_star} is a \code{list} of \code{vectors} with fine-scale 
+#' degrees of freedom. The \code{list} must be of length \code{states[1]}.
+#' Each vector must be of length \code{states[2]}.
+#' Only relevant in case of a fine-scale state-dependent t-distribution.
+#' 
 #' @param scale_par
 #' A positive \code{numeric} vector of length two, containing scales for sampled
-#' expectations and standard deviations. The first entry is the scale for
-#' \code{mus} and \code{sigmas}, the second entry is the scale for
-#' \code{mus_star} and \code{sigmas_star}. Set an entry to \code{1} for no
-#' scaling.
+#' expectations and standard deviations. 
+#' 
+#' The first entry is the scale for
+#' \code{mu} and \code{sigma}, the second entry is the scale for
+#' \code{mu_star} and \code{sigma_star} (if any). 
+#' 
+#' @param seed
+#' Sets a seed for the sampling of parameters.
 #'
 #' @return
 #' An object of class \code{fHMM_parameters}.
@@ -52,213 +71,332 @@
 #' @export
 #'
 #' @examples
-#' controls <- set_controls()
-#' fHMM_parameters(controls)
+#' parameters <- fHMM_parameters(states = 2, sdds = "normal")
+#' parameters$Gamma
 #'
 #' @importFrom stats runif qunif runif
 
-fHMM_parameters <- function(controls,
-                            Gamma = NULL, mus = NULL, sigmas = NULL, dfs = NULL,
-                            Gammas_star = NULL, mus_star = NULL,
-                            sigmas_star = NULL, dfs_star = NULL, seed = NULL,
-                            scale_par = c(1, 1)) {
-
+fHMM_parameters <- function(
+    controls = list(), 
+    hierarchy = FALSE, 
+    states = if (!hierarchy) 2 else c(2, 2),
+    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
+    Gamma = NULL, mu = NULL, sigma = NULL, df = NULL,
+    Gamma_star = NULL, mu_star = NULL,
+    sigma_star = NULL, df_star = NULL,
+    scale_par = c(1, 1), seed = NULL
+) {
+  
+  ### check 'controls' and 'scale_par'
+  controls <- set_controls(
+    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+  )
+  if (!checkmate::test_numeric(scale_par, len = 2, lower = 0)) {
+    stop(
+      "'scale_par' must be a positive numeric vector of length 2.",
+      call. = FALSE
+    )
+  }
+  
+  ### extract specifications
+  M <- controls[["states"]][1] # number of (coarse-scale) states
+  N <- controls[["states"]][2] # number of fine-scale states
+  sdds <- controls[["sdds"]]
+  
   ### set seed
   if (!is.null(seed)) {
     set.seed(seed)
   }
-
-  ### check 'controls' and 'scale_par'
-  if (!inherits(controls, "fHMM_controls")) {
-    stop("'controls' is not of class 'fHMM_controls'.", call. = FALSE)
-  }
-  if (!(length(scale_par) == 2 && all(is_number(scale_par, non_neg = TRUE)))) {
-    stop("'scale_par' must be a positive numeric vector of length 2.",
-         call. = FALSE)
-  }
-
-  ### extract number of states
-  M <- controls[["states"]][1]
-  N <- controls[["states"]][2]
-
+  
   ### specify missing parameters
   if (is.null(Gamma)) {
-    Gamma <- sample_tpm(M)
+    Gamma <- oeli::sample_transition_probability_matrix(
+      dim = M, state_persistent = TRUE
+    )
+    colnames(Gamma) <- rownames(Gamma) <- paste0("state_", seq_len(M))
   }
-  if (is.null(mus)) {
-    if (controls[["sdds"]][[1]]$name %in% c("t","lnorm")) {
-      mus <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), -1, 1) * scale_par[1]
+  if (is.null(mu)) {
+    if (sdds[[1]]$name %in% c("normal", "t", "lognormal")) {
+      ### expectation is unrestricted
+      mu <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), -1, 1) * 
+        scale_par[1]
     }
-    if (controls[["sdds"]][[1]]$name == "gamma") {
-      mus <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 1) * scale_par[1]
+    if (sdds[[1]]$name %in% c("gamma", "poisson")) {
+      ### expectation is positive
+      mu <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 1) * 
+        scale_par[1]
     }
   }
-  if (is.null(sigmas)) {
-    sigmas <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 1) * scale_par[1]
+  if (is.null(sigma)) {
+    ### standard deviation is positive
+    sigma <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 1) * 
+      scale_par[1]
   }
-  if (controls[["sdds"]][[1]]$name == "t") {
-    if (is.null(dfs)) {
-      dfs <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 30)
+  if (sdds[[1]]$name == "t") {
+    if (is.null(df)) {
+      ### degrees of freedom are positive
+      df <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 30)
     }
   } else {
-    dfs <- NULL
+    df <- NULL
   }
   if (controls[["hierarchy"]]) {
-    if (is.null(Gammas_star)) {
-      Gammas_star <- list()
+    if (is.null(Gamma_star)) {
+      Gamma_star <- list()
       for (i in 1:M) {
-        Gammas_star[[i]] <- sample_tpm(N)
+        Gamma_star[[i]] <- oeli::sample_transition_probability_matrix(
+          dim = N, state_persistent = TRUE
+        )  
       }
     }
-    if (is.null(mus_star)) {
-      mus_star <- list()
+    if (is.null(mu_star)) {
+      mu_star <- list()
       for (i in 1:M) {
-        if (controls[["sdds"]][[2]]$name %in% c("t","lnorm")) {
-          mus_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), -1, 1) * scale_par[2]
+        if (sdds[[2]]$name %in% c("normal", "t", "lognormal")) {
+          ### expectation is unrestricted
+          mu_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), -1, 1) * 
+            scale_par[2]
         }
-        if (controls[["sdds"]][[2]]$name == "gamma") {
-          mus_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 1) * scale_par[2]
+        if (sdds[[2]]$name %in% c("poisson", "gamma")) {
+          ### expectation is positive
+          mu_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 1) * 
+            scale_par[2]
         }
       }
     }
-    if (is.null(sigmas_star)) {
-      sigmas_star <- list()
+    if (is.null(sigma_star)) {
+      sigma_star <- list()
       for (i in 1:M) {
-        sigmas_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 1) * scale_par[2]
+        ### standard deviation is positive
+        sigma_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 1) * 
+          scale_par[2]
       }
     }
-    if (controls[["sdds"]][[2]]$name == "t") {
-      if (is.null(dfs_star)) {
-        dfs_star <- list()
+    if (sdds[[2]]$name == "t") {
+      if (is.null(df_star)) {
+        df_star <- list()
         for (i in 1:M) {
-          dfs_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 30)
+          ### degrees of freedom are positive
+          df_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 30)
         }
       }
     } else {
-      dfs_star <- NULL
+      df_star <- NULL
     }
   }
-
-  ### set fixed parameters
-  if (!is.null(controls[["sdds"]][[1]]$pars$mu)) {
-    mus <- rep_len(controls[["sdds"]][[1]]$pars$mu, M)
-  }
-  if (!is.null(controls[["sdds"]][[1]]$pars$sigma)) {
-    sigmas <- rep_len(controls[["sdds"]][[1]]$pars$sigma, M)
-  }
-  if (controls[["sdds"]][[1]]$name == "t") {
-    if (!is.null(controls[["sdds"]][[1]]$pars$df)) {
-      dfs <- rep_len(controls[["sdds"]][[1]]$pars$df, M)
+  
+  ### set fixed parameters (if any)
+  if ("mu" %in% names(sdds[[1]]$pars)) {
+    mu <- sdds[[1]]$pars$mu
+    if (length(mu) == 1) {
+      mu <- rep(mu, M)
     }
   }
-  if (controls[["hierarchy"]]) {
-    if (!is.null(controls[["sdds"]][[2]]$pars$mu)) {
-      mus_star <- rep(list(rep_len(controls[["sdds"]][[2]]$pars$mu, N)), M)
+  if ("sigma" %in% names(sdds[[1]]$pars)) {
+    sigma <- sdds[[1]]$pars$sigma
+    if (length(sigma) == 1) {
+      sigma <- rep(sigma, M)
     }
-    if (!is.null(controls[["sdds"]][[2]]$pars$sigma)) {
-      sigmas_star <- rep(list(rep_len(controls[["sdds"]][[2]]$pars$sigma, N)), M)
-    }
-    if (controls[["sdds"]][[2]]$name == "t") {
-      if (!is.null(controls[["sdds"]][[2]]$pars$df)) {
-        dfs_star <- rep(list(rep_len(controls[["sdds"]][[2]]$pars$df, N)), M)
+  }
+  if (sdds[[1]]$name == "t") {
+    if ("df" %in% names(sdds[[1]]$pars)) {
+      df <- sdds[[1]]$pars$df
+      if (length(df) == 1) {
+        df <- rep(df, M)
       }
     }
   }
-
+  if (controls[["hierarchy"]]) {
+    if ("mu" %in% names(sdds[[2]]$pars)) {
+      mu_star <- sdds[[2]]$pars$mu
+      if (length(mu_star) == 1) {
+        mu_star <- rep(mu_star, N)
+      }
+      mu_star <- rep(list(mu_star), M)
+    }
+    if ("sigma" %in% names(sdds[[2]]$pars)) {
+      sigma_star <- sdds[[2]]$pars$sigma
+      if (length(sigma_star) == 1) {
+        sigma_star <- rep(sigma_star, N)
+      }
+      sigma_star <- rep(list(sigma_star), M)
+    }
+    if (sdds[[2]]$name == "t") {
+      if ("df" %in% names(sdds[[2]]$pars)) {
+        df_star <- sdds[[2]]$pars$df
+        if (length(df_star) == 1) {
+          df_star <- rep(df_star, N)
+        }
+        df_star <- rep(list(df_star), M)
+      }
+    }
+  }
+  
   ### check parameters
-  if (!is_tpm(Gamma) || nrow(Gamma) != M) {
-    stop("'Gamma' must be a tpm of dimension 'controls$states[1]'.",
-         call. = FALSE)
-  }
-  if (controls[["sdds"]][[1]]$name %in% c("t","lnorm")) {
-    if (!all(is_number(mus)) || length(mus) != M) {
-      stop("'mus' must be a numeric vector of length 'controls$states[1]'.",
-           call. = FALSE)
+  oeli::assert_transition_probability_matrix(Gamma, dim = M)
+  if (sdds[[1]]$name %in% c("t", "normal", "lognormal")) {
+    if (!checkmate::test_numeric(mu, len = M)) {
+      stop(
+        paste("'mu' must be a numeric vector of length", M),
+        call. = FALSE
+      )
     }
   }
-  if (controls[["sdds"]][[1]]$name == "gamma") {
-    if (!all(is_number(mus, non_neg = TRUE)) || length(mus) != M) {
-      stop("'mus' must be a positive numeric vector of length 'controls$states[1]'.",
-           call. = FALSE)
+  if (sdds[[1]]$name %in% c("gamma", "poisson")) {
+    if (!checkmate::test_numeric(mu, len = M) || any(mu <= 0)) {
+      stop(
+        paste("'mu' must be a positive numeric vector of length", M),
+        call. = FALSE
+      )
     }
   }
-  if (!all(is_number(sigmas, non_neg = TRUE)) || length(sigmas) != M) {
-    stop("'sigmas' must be a positive numeric vector of length 'controls$states[1]'.",
-         call. = FALSE)
+  if (!checkmate::test_numeric(sigma, len = M, lower = 0)) {
+    stop(
+      paste("'sigma' must be a positive numeric vector of length", M),
+      call. = FALSE
+    )
   }
-  if (controls[["sdds"]][[1]]$name == "t") {
-    if (!all(is_number(dfs, non_neg = TRUE)) || length(dfs) != M) {
-      stop("'dfs' must be a positive numeric vector of length 'controls$states[1]'.",
-           call. = FALSE)
+  if (sdds[[1]]$name == "t") {
+    if (!checkmate::test_numeric(df, len = M, lower = 0)) {
+      stop(
+        paste("'df' must be a positive numeric vector of length", M),
+        call. = FALSE
+      )
     }
   }
   if (controls[["hierarchy"]]) {
-    if (!is.list(Gammas_star) || length(Gammas_star) != M) {
-      stop("'Gammas_star' must be a list of length 'controls$states[1]'.",
-           call. = FALSE)
+    if (!is.list(Gamma_star) || length(Gamma_star) != M) {
+      stop(
+        paste("'Gamma_star' must be a list of length", M),
+        call. = FALSE
+      )
     }
     for (i in 1:M) {
-      if (!is_tpm(Gammas_star[[i]]) || nrow(Gammas_star[[i]]) != N) {
-        stop("Each element in 'Gammas_star' must be a tpm of dimension 'controls$states[2]'.",
-             call. = FALSE)
-      }
+      oeli::assert_transition_probability_matrix(
+        Gamma_star[[i]], dim = N, .var.name = paste0("Gamma_star[[", i, "]]")
+      )
     }
-    if (!is.list(mus_star) || length(mus_star) != M) {
-      stop("'mus_star' must be a list of length 'controls$states[1]'.",
-           call. = FALSE)
+    if (!is.list(mu_star) || length(mu_star) != M) {
+      stop(
+        paste("'mu_star' must be a list of length", M),
+        call. = FALSE
+      )
     }
     for (i in 1:M) {
-      if (controls[["sdds"]][[2]]$name %in% c("t","lnorm")) {
-        if (!all(is_number(mus_star[[i]])) || length(mus_star[[i]]) != N) {
-          stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.",
-               call. = FALSE)
+      if (sdds[[2]]$name %in% c("t", "normal", "lognormal")) {
+        if (!checkmate::test_numeric(mu_star[[i]], len = N)) {
+          stop(
+            paste("Element", i, "in 'mu_star' must be a numeric vector of length", N),
+            call. = FALSE
+          )
         }
       }
-      if (controls[["sdds"]][[2]]$name == "gamma") {
-        if (!all(is_number(mus_star[[i]], non_neg = TRUE)) || length(mus_star[[i]]) != N) {
-          stop("Each element in 'mus_star' must be a numeric vector of length 'controls$states[2]'.",
-               call. = FALSE)
+      if (sdds[[2]]$name %in% c("gamma", "poisson")) {
+        if (!checkmate::test_numeric(mu_star[[i]], len = N) || any(mu_star[[i]] <= 0)) {
+          stop(
+            paste("Element", i, "in 'mu_star' must be a positive numeric vector of length", N),
+            call. = FALSE
+          )
         }
       }
     }
-    if (!is.list(sigmas_star) || length(sigmas_star) != M) {
-      stop("'sigmas_star' must be a list of length 'controls$states[1]'.",
-           call. = FALSE)
+    if (!is.list(sigma_star) || length(sigma_star) != M) {
+      stop(
+        paste("'sigma_star' must be a list of length", M),
+        call. = FALSE
+      )
     }
     for (i in 1:M) {
-      if (!all(is_number(sigmas_star[[i]], non_neg = TRUE)) || length(sigmas_star[[i]]) != N) {
-        stop("Each element in 'sigmas_star' must be a positive numeric vector of length 'controls$states[2]'.",
-             call. = FALSE)
+      if (!checkmate::test_numeric(sigma_star[[i]], len = N, lower = 0)) {
+        stop(
+          paste("Element", i, "in 'sigma_star' must be a positive numeric vector of length", N),
+          call. = FALSE
+        )
       }
     }
-    if (controls[["sdds"]][[2]]$name == "t") {
-      if (!is.list(dfs_star) || length(dfs_star) != M) {
-        stop("'dfs_star' must be a list of length 'controls$states[1]'.",
-             call. = FALSE)
+    if (sdds[[2]]$name == "t") {
+      if (!is.list(df_star) || length(df_star) != M) {
+        stop(
+          paste("'df_star' must be a list of length", M),
+          call. = FALSE
+        )
       }
       for (i in 1:M) {
-        if (!all(is_number(dfs_star[[i]], non_neg = TRUE)) || length(dfs_star[[i]]) != N) {
-          stop("Each element in 'dfs_star' must be a positive numeric vector of length 'controls$states[2]'.",
-               call. = FALSE)
+        if (!checkmate::test_numeric(df_star[[i]], len = N, lower = 0)) {
+          stop(
+            paste("Element", i, "in 'df_star' must be a positive numeric vector of length", N),
+            call. = FALSE
+          )
         }
       }
     }
   }
-
-  ### build 'fHMM_parameters'
-  out <- list(
-    "Gamma" = Gamma,
-    "mus" = mus,
-    "sigmas" = sigmas,
-    "dfs" = dfs,
-    "sdds" = controls[["sdds"]],
-    "Gammas_star" = if (controls[["hierarchy"]]) Gammas_star else NULL,
-    "mus_star" = if (controls[["hierarchy"]]) mus_star else NULL,
-    "sigmas_star" = if (controls[["hierarchy"]]) sigmas_star else NULL,
-    "dfs_star" = if (controls[["hierarchy"]]) dfs_star else NULL
-  )
-  class(out) <- "fHMM_parameters"
-  return(out)
+  
+  ### build 'fHMM_parameters' with names
+  out <- list("sdds" = sdds)
+  if (!is.null(Gamma)) {
+    colnames(Gamma) <- rownames(Gamma) <- paste0("state_", seq_len(M))
+    out <- c(out, list("Gamma" = Gamma))
+  }
+  if (!is.null(mu)) {
+    names(mu) <- paste0("muCon_", seq_along(mu))
+    out <- c(out, list("mu" = mu))
+  }
+  if (!is.null(sigma)) {
+    names(sigma) <- paste0("sigmaCon_", seq_along(sigma))
+    out <- c(out, list("sigma" = sigma))
+  }
+  if (!is.null(df)) {
+    names(df) <- paste0("dfCon_", seq_along(df))
+    out <- c(out, list("df" = df))
+  }
+  if (controls[["hierarchy"]]) {
+    if (!is.null(Gamma_star)) {
+      Gamma_star <- lapply(
+        seq_len(M), function(x) {
+          Gamma <- Gamma_star[[x]]
+          colnames(Gamma) <- rownames(Gamma) <- paste0("fs_state_", seq_len(N))
+          return(Gamma)
+        }
+      )
+      names(Gamma_star) <- paste0("cs_state_", seq_len(M))
+      out <- c(out, list("Gamma_star" = Gamma_star))
+    }
+    if (!is.null(mu_star)) {
+      mu_star <- lapply(
+        seq_len(M), function(x) {
+          mu <- mu_star[[x]]
+          names(mu) <- paste0("cs_", x, ":muCon_", seq_len(N))
+          return(mu)
+        }
+      )
+      names(mu_star) <- paste0("cs_state_", seq_len(M))
+      out <- c(out, list("mu_star" = mu_star))
+    }
+    if (!is.null(sigma_star)) {
+      sigma_star <- lapply(
+        seq_len(M), function(x) {
+          sigma <- sigma_star[[x]]
+          names(sigma) <- paste0("cs_", x, ":sigmaCon_", seq_len(N))
+          return(sigma)
+        }
+      )
+      names(sigma_star) <- paste0("cs_state_", seq_len(M))
+      out <- c(out, list("sigma_star" = sigma_star))
+    }
+    if (!is.null(df_star)) {
+      df_star <- lapply(
+        seq_len(M), function(x) {
+          df <- df_star[[x]]
+          names(df) <- paste0("cs_", x, ":dfCon_", seq_len(N))
+          return(df)
+        }
+      )
+      names(df_star) <- paste0("cs_state_", seq_len(M))
+      out <- c(out, list("df_star" = df_star))
+    }
+  }
+  structure(out, class = c("fHMM_parameters", "list"))
 }
 
 #' @rdname fHMM_parameters
@@ -270,121 +408,216 @@ fHMM_parameters <- function(controls,
 
 print.fHMM_parameters <- function(x, ...) {
   cat("fHMM parameters\n")
+  cat(paste0(" $", names(x), collapse = "\n"), "\n")
   invisible(x)
 }
 
-#' This function transforms an object of class \code{fHMM_parameters} into
-#' an object of class \code{parUncon}.
+#' Parameter transformations
+#' 
+#' @description
+#' These helper functions transform model parameters between 
+#' \itemize{
+#'   \item constrained spaces (suffix \code{*Con})
+#'   \item and unconstrained spaces (suffix \code{*Uncon}).
+#' }
+#' The former is useful for interpretation, the latter for unconstrained 
+#' optimization.
+#' 
+#' @name parameter_transformations
+#' 
+#' @inheritParams set_controls
+#' 
 #' @param par
-#' An object of class \code{fHMM_parameters}.
-#' @param controls
-#' An object of class \code{fHMM_controls}.
-#' @return
-#' An object of class \code{parUncon}, i.e. a \code{numeric} vector of 
-#' unconstrained model parameters to be estimated.
-#' @keywords
-#' internal
+#' An object of class \code{\link{fHMM_parameters}}, which is a \code{list}
+#' of model parameters.
+#'
+#' @param parCon
+#' An object of class \code{parCon}, which is a \code{numeric} \code{vector} 
+#' with identified (and constrained) model parameters in the following order:
+#' \enumerate{
+#'   \item non-diagonal transition probabilities \code{gammasCon}
+#'   \item expectations \code{muCon}
+#'   \item standard deviations \code{sigmaCon} (if any)
+#'   \item degrees of freedom \code{dfCon} (if any)
+#'   \item fine-scale parameters for each coarse-scale state, in the same order (if any)
+#' }
+#'
+#' @param parUncon
+#' An object of class \code{parUncon}, which is a \code{numeric} \code{vector} 
+#' with identified and unconstrained model parameters in the following order:
+#' \enumerate{
+#'   \item non-diagonal transition probabilities \code{gammasUncon}
+#'   \item expectations \code{muUncon}
+#'   \item standard deviations \code{sigmaUncon} (if any)
+#'   \item degrees of freedom \code{dfUncon} (if any)
+#'   \item fine-scale parameters for each coarse-scale state, in the same order (if any)
+#' }
+#' 
+#' @param link
+#' Either \code{TRUE} or \code{FALSE}, determining whether to apply the link
+#' function.
+#' 
+#' @param shift
+#' A small, positive \code{numeric} for shifting boundary probabilities.
+#' By default, \code{shift = 1e-3}.
+#' 
+#' @param dim
+#' An \code{integer}, the dimension of the transition probability matrix.
+#'
+#' @param gammasCon,gammasUncon
+#' A vector of (un-) constrained non-diagonal transition probabilities.
+#' @param muCon,muUncon
+#' A vector of (un-) constrained expected values.
+#' @param sigmaCon,sigmaUncon
+#' A vector of (un-) constrained standard deviations.
+#' @param dfCon,dfUncon
+#' A vector of (un-) constrained degrees of freedom.
+#' 
+#' @param prefix
+#' A \code{character} prefix for labelling.
+#' 
+#' @keywords internal
 
-par2parUncon <- function(par, controls) {
-  stopifnot(inherits(par,"fHMM_parameters"))
-  stopifnot(inherits(controls,"fHMM_controls"))
-  parUncon <- Gamma2gammasUncon(par[["Gamma"]])
-  if (is.null(controls$sdds[[1]]$pars$mu)) {
+NULL
+
+#' @rdname parameter_transformations
+#' @return
+#' For \code{par2parUncon}: a vector of unconstrained model parameters.
+#' @export
+
+par2parUncon <- function(
+    par, 
+    controls = list(),
+    hierarchy = FALSE,
+    states = if (!hierarchy) 2 else c(2, 2), 
+    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+) {
+  stopifnot(inherits(par, "fHMM_parameters"))
+  controls <- set_controls(
+    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+  )
+  sdds <- controls[["sdds"]]
+  states <- controls[["states"]]
+  parUncon <- Gamma2gammasUncon(par[["Gamma"]], prefix = "gammasUncon_")
+  if (!"mu" %in% names(sdds[[1]]$pars)) {
     parUncon <- c(
       parUncon,
       muCon2muUncon(
-        muCon = par[["mus"]],
-        link = (controls[["sdds"]][[1]]$name == "gamma")
+        muCon = par[["mu"]],
+        link = (sdds[[1]]$name %in% c("gamma", "poisson")),
+        prefix = "muUncon_"
       )
     )
   }
-  if (is.null(controls$sdds[[1]]$pars$sigma)) {
+  if (!"sigma" %in% names(sdds[[1]]$pars)) {
     parUncon <- c(
-      parUncon,
-      sigmaCon2sigmaUncon(par[["sigmas"]])
+      parUncon, sigmaCon2sigmaUncon(par[["sigma"]], prefix = "sigmaUncon_")
     )
   }
-  if (controls[["sdds"]][[1]]$name == "t") {
-    if (is.null(controls$sdds[[1]]$pars$df)) {
+  if (sdds[[1]]$name == "t") {
+    if (!"df" %in% names(sdds[[1]]$pars)) {
       parUncon <- c(
         parUncon,
-        dfCon2dfUncon(par[["dfs"]])
+        dfCon2dfUncon(par[["df"]], prefix = "dfUncon_")
       )
     }
   }
   if (controls[["hierarchy"]]) {
-    for (s in 1:controls[["states"]][1]) {
+    for (s in 1:states[1]) {
       parUncon <- c(
-        parUncon,
-        Gamma2gammasUncon(par[["Gammas_star"]][[s]])
+        parUncon, 
+        Gamma2gammasUncon(
+          par[["Gamma_star"]][[s]],
+          prefix = paste0("cs_", s, ":gammasUncon_")
+        )
       )
-      if (is.null(controls$sdds[[2]]$pars$mu)) {
+      if (!"mu" %in% names(sdds[[2]]$pars)) {
         parUncon <- c(
           parUncon,
-          muCon2muUncon(par[["mus_star"]][[s]],
-            link = (controls[["sdds"]][[2]]$name == "gamma")
+          muCon2muUncon(
+            par[["mu_star"]][[s]],
+            link = (sdds[[2]]$name %in% c("gamma", "poisson")),
+            prefix = paste0("cs_", s, ":muUncon_")
           )
         )
       }
-      if (is.null(controls$sdds[[2]]$pars$sigma)) {
+      if (!"sigma" %in% names(sdds[[2]]$pars)) {
         parUncon <- c(
           parUncon,
-          sigmaCon2sigmaUncon(par[["sigmas_star"]][[s]])
+          sigmaCon2sigmaUncon(
+            par[["sigma_star"]][[s]],
+            prefix = paste0("cs_", s, ":sigmaUncon_")
+          )
         )
       }
-      if (controls[["sdds"]][[2]]$name == "t") {
-        if (is.null(controls$sdds[[2]]$pars$df)) {
+      if (sdds[[2]]$name == "t") {
+        if (!"df" %in% names(sdds[[2]]$pars)) {
           parUncon <- c(
             parUncon,
-            dfCon2dfUncon(par[["dfs_star"]][[s]])
+            dfCon2dfUncon(
+              par[["df_star"]][[s]],
+              prefix = paste0("cs_", s, ":dfUncon_")
+            )
           )
         }
       }
     }
   }
-  class(parUncon) <- "parUncon"
-  return(parUncon)
+  structure(parUncon, class = c("parUncon", "numeric"))
 }
 
-#' This function transforms an object of class \code{parUncon} into an object
-#' of class \code{parCon}.
-#' @param parUncon
-#' An object of class \code{parUncon}.
-#' @param controls
-#' An object of class \code{fHMM_controls}.
+#' @rdname parameter_transformations
 #' @return
-#' An object of class \code{parCon}, i.e. a \code{numeric} vector of 
-#' constrained model parameters to be estimated.
-#' @keywords
-#' internal
+#' For \code{parUncon2parCon}: a vector of constrained model parameters.
 
-parUncon2parCon <- function(parUncon, controls) {
-  stopifnot(inherits(parUncon,"parUncon"))
-  stopifnot(inherits(controls,"fHMM_controls"))
+parUncon2parCon <- function(
+    parUncon, 
+    controls = list(),
+    hierarchy = FALSE,
+    states = if (!hierarchy) 2 else c(2, 2), 
+    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+) {
+  stopifnot(inherits(parUncon, "parUncon"))
+  controls <- set_controls(
+    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+  )
+  sdds <- controls[["sdds"]]
   M <- controls[["states"]][1]
-  parCon <- gammasUncon2gammasCon(parUncon[1:((M - 1) * M)], M)
+  parCon <- gammasUncon2gammasCon(
+    parUncon[1:((M - 1) * M)], 
+    dim = M,
+    prefix = "gammasCon_"
+  )
   parUncon <- parUncon[-(1:((M - 1) * M))]
-  if (is.null(controls$sdds[[1]]$pars$mu)) {
+  if (!"mu" %in% names(sdds[[1]]$pars)) {
     parCon <- c(
       parCon,
-      muUncon2muCon(parUncon[1:M],
-        link = (controls[["sdds"]][[1]]$name == "gamma")
+      muUncon2muCon(
+        parUncon[1:M],
+        link = (sdds[[1]]$name %in% c("gamma", "poisson")),
+        prefix = "muCon_"
       )
     )
     parUncon <- parUncon[-(1:M)]
   }
-  if (is.null(controls$sdds[[1]]$pars$sigma)) {
+  if (!"sigma" %in% names(sdds[[1]]$pars)) {
     parCon <- c(
       parCon,
-      sigmaUncon2sigmaCon(parUncon[1:M])
+      sigmaUncon2sigmaCon(
+        parUncon[1:M],
+        prefix = "sigmaCon_"
+      )
     )
     parUncon <- parUncon[-(1:M)]
   }
-  if (controls[["sdds"]][[1]]$name == "t") {
-    if (is.null(controls$sdds[[1]]$pars$df)) {
+  if (sdds[[1]]$name == "t") {
+    if (!"df" %in% names(sdds[[1]]$pars)) {
       parCon <- c(
         parCon,
-        dfUncon2dfCon(parUncon[1:M])
+        dfUncon2dfCon(
+          parUncon[1:M],
+          prefix = "dfCon_"
+        )
       )
       parUncon <- parUncon[-(1:M)]
     }
@@ -394,389 +627,334 @@ parUncon2parCon <- function(parUncon, controls) {
     for (s in 1:M) {
       parCon <- c(
         parCon,
-        gammasUncon2gammasCon(parUncon[1:((N - 1) * N)], N)
+        gammasUncon2gammasCon(
+          parUncon[1:((N - 1) * N)], 
+          dim = N,
+          prefix = paste0("cs_", s, ":gammasCon_")
+        )
       )
       parUncon <- parUncon[-(1:((N - 1) * N))]
-      if (is.null(controls$sdds[[2]]$pars$mu)) {
+      if (!"mu" %in% names(sdds[[2]]$pars)) {
         parCon <- c(
           parCon,
-          muUncon2muCon(parUncon[1:N],
-            link = (controls[["sdds"]][[2]]$name == "gamma")
+          muUncon2muCon(
+            parUncon[1:N],
+            link = (sdds[[2]]$name %in% c("gamma", "poisson")),
+            prefix = paste0("cs_", s, ":muCon_")
           )
         )
         parUncon <- parUncon[-(1:N)]
       }
-      if (is.null(controls$sdds[[2]]$pars$sigma)) {
+      if (!"sigma" %in% names(sdds[[2]]$pars)) {
         parCon <- c(
           parCon,
-          sigmaUncon2sigmaCon(parUncon[1:N])
+          sigmaUncon2sigmaCon(
+            parUncon[1:N],
+            prefix = paste0("cs_", s, ":sigmaCon_")
+          )
         )
         parUncon <- parUncon[-(1:N)]
       }
-      if (controls[["sdds"]][[2]]$name == "t") {
-        if (is.null(controls$sdds[[2]]$pars$df)) {
+      if (sdds[[2]]$name == "t") {
+        if (!"df" %in% names(sdds[[2]]$pars)) {
           parCon <- c(
             parCon,
-            dfUncon2dfCon(parUncon[1:N])
+            dfUncon2dfCon(
+              parUncon[1:N],
+              prefix = paste0("cs_", s, ":dfCon_")
+            )
           )
           parUncon <- parUncon[-(1:N)]
         }
       }
     }
   }
-  class(parCon) <- "parCon"
-  return(parCon)
+  structure(parCon, class = c("parCon", "numeric"))
 }
 
-#' This function transforms an object of class \code{parCon} into an object
-#' of class \code{fHMM_parameters}.
-#' @param parCon
-#' An object of class \code{parCon}.
-#' @param controls
-#' An object of class \code{fHMM_controls}.
+#' @rdname parameter_transformations
 #' @return
-#' An object of class \code{fHMM_parameters}.
-#' @keywords
-#' internal
+#' For \code{parCon2par}: an object of class \code{\link{fHMM_parameters}}.
 
-parCon2par <- function(parCon, controls) {
-  stopifnot(inherits(parCon,"parCon"))
-  stopifnot(inherits(controls,"fHMM_controls"))
+parCon2par <- function(
+    parCon, 
+    controls = list(),
+    hierarchy = FALSE,
+    states = if (!hierarchy) 2 else c(2, 2), 
+    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+) {
+  stopifnot(inherits(parCon, "parCon"))
+  controls <- set_controls(
+    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+  )
+  sdds <- controls[["sdds"]]
   M <- controls[["states"]][1]
   Gamma <- gammasCon2Gamma(parCon[1:((M - 1) * M)], M)
   parCon <- parCon[-(1:((M - 1) * M))]
-  if (is.null(controls$sdds[[1]]$pars$mu)) {
-    mus <- parCon[1:M]
+  if (!"mu" %in% names(sdds[[1]]$pars)) {
+    mu <- parCon[1:M]
     parCon <- parCon[-(1:M)]
   } else {
-    mus <- rep(controls$sdds[[1]]$pars$mu, M)
+    mu <- sdds[[1]]$pars$mu
   }
-  if (is.null(controls$sdds[[1]]$pars$sigma)) {
-    sigmas <- parCon[1:M]
+  if (!"sigma" %in% names(sdds[[1]]$pars)) {
+    sigma <- parCon[1:M]
     parCon <- parCon[-(1:M)]
   } else {
-    sigmas <- rep(controls$sdds[[1]]$pars$sigma, M)
+    sigma <- sdds[[1]]$pars$sigma
   }
-  if (controls[["sdds"]][[1]]$name == "t") {
-    if (is.null(controls$sdds[[1]]$pars$df)) {
-      dfs <- parCon[1:M]
+  if (sdds[[1]]$name == "t") {
+    if (!"df" %in% names(sdds[[1]]$pars)) {
+      df <- parCon[1:M]
       parCon <- parCon[-(1:M)]
     } else {
-      dfs <- rep(controls$sdds[[1]]$pars$df, M)
+      df <- sdds[[1]]$pars$df
     }
   } else {
-    dfs <- NULL
+    df <- NULL
   }
   if (controls[["hierarchy"]]) {
     N <- controls[["states"]][2]
-    Gammas_star <- list()
-    mus_star <- list()
-    sigmas_star <- list()
-    if (controls[["sdds"]][[2]]$name == "t") {
-      dfs_star <- list()
+    Gamma_star <- list()
+    mu_star <- list()
+    sigma_star <- list()
+    if (sdds[[2]]$name == "t") {
+      df_star <- list()
     } else {
-      dfs_star <- NULL
+      df_star <- NULL
     }
     for (s in 1:M) {
-      Gammas_star[[s]] <- gammasCon2Gamma(parCon[1:((N - 1) * N)], N)
+      Gamma_star[[s]] <- gammasCon2Gamma(parCon[1:((N - 1) * N)], N)
       parCon <- parCon[-(1:((N - 1) * N))]
-      if (is.null(controls$sdds[[2]]$pars$mu)) {
-        mus_star[[s]] <- parCon[1:N]
+      if (!"mu" %in% names(sdds[[2]]$pars)) {
+        mu_star[[s]] <- parCon[1:N]
         parCon <- parCon[-(1:N)]
       } else {
-        mus_star[[s]] <- rep(controls$sdds[[2]]$pars$mu, M)
+        mu_star[[s]] <- sdds[[2]]$pars$mu
       }
-      if (is.null(controls$sdds[[2]]$pars$sigma)) {
-        sigmas_star[[s]] <- parCon[1:N]
+      if (!"sigma" %in% names(sdds[[2]]$pars)) {
+        sigma_star[[s]] <- parCon[1:N]
         parCon <- parCon[-(1:N)]
       } else {
-        sigmas_star[[s]] <- rep(controls$sdds[[2]]$pars$sigma, M)
+        sigma_star[[s]] <- sdds[[2]]$pars$sigma
       }
-      if (controls[["sdds"]][[2]]$name == "t") {
-        if (is.null(controls$sdds[[2]]$pars$df)) {
-          dfs_star[[s]] <- parCon[1:N]
+      if (sdds[[2]]$name == "t") {
+        if (!"df" %in% names(sdds[[2]]$pars)) {
+          df_star[[s]] <- parCon[1:N]
           parCon <- parCon[-(1:N)]
         } else {
-          dfs_star[[s]] <- rep(controls$sdds[[2]]$pars$df, M)
+          df_star[[s]] <- sdds[[2]]$pars$df
         }
       }
     }
   } else {
-    Gammas_star <- NULL
-    mus_star <- NULL
-    sigmas_star <- NULL
-    dfs_star <- NULL
+    Gamma_star <- NULL
+    mu_star <- NULL
+    sigma_star <- NULL
+    df_star <- NULL
   }
-  par <- fHMM_parameters(
+  fHMM_parameters(
     controls = controls,
-    Gamma = Gamma, mus = mus, sigmas = sigmas, dfs = dfs,
-    Gammas_star = Gammas_star, mus_star = mus_star,
-    sigmas_star = sigmas_star, dfs_star = dfs_star
+    Gamma = Gamma, mu = mu, sigma = sigma, df = df,
+    Gamma_star = Gamma_star, mu_star = mu_star,
+    sigma_star = sigma_star, df_star = df_star
   )
-  return(par)
 }
 
-#' This function transforms an object of class \code{fHMM_parameters} into an
-#' object of class \code{parCon}.
-#' @param par
-#' An object of class \code{fHMM_parameters}.
-#' @param controls
-#' An object of class \code{fHMM_controls}.
+#' @rdname parameter_transformations
 #' @return
-#' An object of class \code{parCon}.
-#' @keywords
-#' internal
+#' For \code{par2parCon}: a vector of constrained model parameters.
 
-par2parCon <- function(par, controls) {
-  stopifnot(inherits(par,"fHMM_parameters"))
-  stopifnot(inherits(controls,"fHMM_controls"))
-  return(parUncon2parCon(par2parUncon(par, controls), controls))
+par2parCon <- function(
+    par, 
+    controls = list(),
+    hierarchy = FALSE,
+    states = if (!hierarchy) 2 else c(2, 2), 
+    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+) {
+  stopifnot(inherits(par, "fHMM_parameters"))
+  controls <- set_controls(
+    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+  )
+  parUncon2parCon(par2parUncon(par, controls), controls)
 }
 
-#' This function transforms an object of class \code{parCon} into an
-#' object of class \code{parUncon}.
-#' @param parCon
-#' An object of class \code{parCon}.
-#' @param controls
-#' An object of class \code{fHMM_controls}.
+#' @rdname parameter_transformations
 #' @return
-#' An object of class \code{parUncon}.
-#' @keywords
-#' internal
+#' For \code{parCon2parUncon}: a vector of unconstrained model parameters.
 
-parCon2parUncon <- function(parCon, controls) {
-  stopifnot(inherits(parCon,"parCon"))
-  stopifnot(inherits(controls,"fHMM_controls"))
-  return(par2parUncon(parCon2par(parCon, controls), controls))
+parCon2parUncon <- function(
+    parCon, 
+    controls = list(),
+    hierarchy = FALSE,
+    states = if (!hierarchy) 2 else c(2, 2), 
+    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+) { 
+  stopifnot(inherits(parCon, "parCon"))
+  controls <- set_controls(
+    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+  )
+  par2parUncon(parCon2par(parCon, controls), controls)
 }
 
-#' This function transforms an object of class \code{parUncon} into an
-#' object of class \code{fHMM_parameters}.
-#' @param parUncon
-#' An object of class \code{parUncon}.
-#' @param controls
-#' An object of class \code{fHMM_controls}.
+#' @rdname parameter_transformations
 #' @return
-#' An object of class \code{fHMM_parameters}.
-#' @keywords
-#' internal
+#' For \code{parUncon2par}: an object of class \code{fHMM_parameters}.
 
-parUncon2par <- function(parUncon, controls) {
-  stopifnot(inherits(parUncon,"parUncon"))
-  stopifnot(inherits(controls,"fHMM_controls"))
-  return(parCon2par(parUncon2parCon(parUncon, controls), controls))
+parUncon2par <- function(
+    parUncon, 
+    controls = list(),
+    hierarchy = FALSE,
+    states = if (!hierarchy) 2 else c(2, 2), 
+    sdds = if (!hierarchy) "normal" else c("normal", "normal")
+) {
+  stopifnot(inherits(parUncon, "parUncon"))
+  controls <- set_controls(
+    controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
+  )
+  parCon2par(parUncon2parCon(parUncon, controls), controls)
 }
 
-#' This function un-constrains the constrained expected values \code{muCon}.
-#' @param muCon
-#' A vector of constrained expected values.
-#' @param link
-#' A boolean, determining whether to apply the link function.
+#' @rdname parameter_transformations
 #' @return
-#' A vector of un-constrained expected values.
-#' @keywords
-#' internal
+#' For \code{muCon2muUncon}: a vector of unconstrained expected values.
 
-muCon2muUncon <- function(muCon, link) {
-  if (link) {
-    muUncon <- log(muCon)
+muCon2muUncon <- function(muCon, link, prefix = "muUncon_") {
+  muUncon <- if (link) {
+    log(muCon)
   } else {
-    muUncon <- muCon
+    muCon
   }
+  names(muUncon) <- paste0(prefix, seq_along(muUncon))
   return(muUncon)
 }
 
-#' This function constrains the un-constrained expected values \code{muUncon}.
-#' @param muUncon
-#' A vector of un-constrained expected values.
-#' @param link
-#' A boolean, determining whether to apply the link function.
+#' @rdname parameter_transformations
 #' @return
-#' A vector of constrained expected values.
-#' @keywords
-#' internal
+#' For \code{muUncon2muCon}: a vector of constrained expected values.
 
-muUncon2muCon <- function(muUncon, link) {
-  if (link) {
-    muCon <- exp(muUncon)
+muUncon2muCon <- function(muUncon, link, prefix = "muCon_") {
+  muCon <- if (link) {
+    exp(muUncon)
   } else {
-    muCon <- muUncon
+    muUncon
   }
+  names(muCon) <- paste0(prefix, seq_along(muCon))
   return(muCon)
 }
 
-#' This function un-constrains the constrained standard deviations
-#' \code{sigmaCon}.
-#' @param sigmaCon
-#' A vector of constrained standard deviations.
+#' @rdname parameter_transformations
 #' @return
-#' A vector of un-constrained standard deviations.
-#' @keywords
-#' internal
+#' For \code{sigmaCon2sigmaUncon}: a vector of unconstrained standard 
+#' deviations.
 
-sigmaCon2sigmaUncon <- function(sigmaCon) {
-  return(log(sigmaCon))
+sigmaCon2sigmaUncon <- function(sigmaCon, prefix = "sigmaUncon_") {
+  sigmaUncon <- log(sigmaCon)
+  names(sigmaUncon) <- paste0(prefix, seq_along(sigmaUncon))
+  return(sigmaUncon)
 }
 
-#' This function constrains the un-constrained standard deviations
-#' \code{sigmaUncon}.
-#' @param sigmaUncon
-#' A vector of un-constrained standard deviations.
+#' @rdname parameter_transformations
 #' @return
-#' A vector of constrained standard deviations.
-#' @keywords
-#' internal
+#' For \code{sigmaUncon2sigmaCon}: a vector of constrained standard deviations.
 
-sigmaUncon2sigmaCon <- function(sigmaUncon) {
-  return(exp(sigmaUncon))
+sigmaUncon2sigmaCon <- function(sigmaUncon, prefix = "sigmaCon_") {
+  sigmaCon <- exp(sigmaUncon)
+  names(sigmaCon) <- paste0(prefix, seq_along(sigmaCon))
+  return(sigmaCon)
 }
 
-#' This function un-constrains the constrained degrees of freedom \code{dfCon}.
-#' @param dfCon
-#' A vector of constrained degrees of freedom.
+#' @rdname parameter_transformations
 #' @return
-#' A vector of un-constrained degrees of freedom.
-#' @keywords
-#' internal
+#' For \code{dfCon2dfUncon}: a vector of unconstrained degrees of freedom.
 
-dfCon2dfUncon <- function(dfCon) {
-  return(log(dfCon))
+dfCon2dfUncon <- function(dfCon, prefix = "dfUncon_") {
+  dfUncon <- log(dfCon)
+  names(dfUncon) <- paste0(prefix, seq_along(dfUncon))
+  return(dfUncon)
 }
 
-#' This function constrains the un-constrained degrees of freedom \code{dfUncon}.
-#' @param dfUncon
-#' A vector of un-constrained degrees of freedom.
+#' @rdname parameter_transformations
 #' @return
-#' A vector of constrained degrees of freedom.
-#' @keywords
-#' internal
+#' For \code{dfUncon2dfCon}: a vector of constrained degrees of freedom.
 
-dfUncon2dfCon <- function(dfUncon) {
-  return(exp(dfUncon))
+dfUncon2dfCon <- function(dfUncon, prefix = "dfCon_") {
+  dfCon <- exp(dfUncon)
+  names(dfCon) <- paste0(prefix, seq_along(dfCon))
+  return(dfCon)
 }
 
-#' This function constrains the non-diagonal matrix elements of a transition
-#' probability matrix \code{Gamma}.
-#' @param Gamma
-#' A transition probability matrix.
-#' @param shift
-#' A numeric value for shifting boundary probabilities.
+#' @rdname parameter_transformations
 #' @return
-#' A vector of constrained non-diagonal matrix elements (column-wise).
-#' @keywords
-#' internal
+#' For \code{Gamma2gammasCon}: a vector of constrained non-diagonal matrix 
+#' elements (column-wise).
 
-Gamma2gammasCon <- function(Gamma, shift = 1e-3) {
+Gamma2gammasCon <- function(Gamma, shift = 1e-3, prefix = "gammasCon_") {
   gammasCon <- Gamma[row(Gamma) != col(Gamma)]
   gammasCon <- replace(gammasCon, gammasCon == 0, shift)
   gammasCon <- replace(gammasCon, gammasCon == 1, 1 - shift)
+  names(gammasCon) <- oeli::matrix_indices(
+    Gamma, prefix = prefix, exclude_diagonal = TRUE
+  )
   return(gammasCon)
 }
 
-#' This function un-constrains the non-diagonal matrix elements of a transition
-#' probability matrix \code{Gamma}.
-#' @inheritParams Gamma2gammasCon
+#' @rdname parameter_transformations
 #' @return
-#' A vector of un-constrained non-diagonal matrix elements (column-wise).
-#' @keywords
-#' internal
+#' For \code{Gamma2gammasUncon}: a vector of unconstrained non-diagonal matrix 
+#' elements (column-wise).
 
-Gamma2gammasUncon <- function(Gamma) {
+Gamma2gammasUncon <- function(Gamma, prefix = "gammasUncon_") {
   diag(Gamma) <- 0
   Gamma <- log(Gamma / (1 - rowSums(Gamma)))
   diag(Gamma) <- NA_real_
-  return(Gamma[!is.na(Gamma)])
+  gammasUncon <- Gamma[!is.na(Gamma)]
+  names(gammasUncon) <- oeli::matrix_indices(
+    Gamma, prefix = prefix, exclude_diagonal = TRUE
+  )
+  return(gammasUncon)
 }
 
-#' This function builds a transition probability matrix of dimension \code{dim}
-#' from constrained non-diagonal elements \code{gammasCon}.
-#' @param gammasCon
-#' A vector of constrained non-diagonal elements of a transition probability
-#' matrix.
-#' @param dim
-#' The dimension of the transition probability matrix.
+#' @rdname parameter_transformations
 #' @return
-#' A transition probability matrix.
-#' @keywords
-#' internal
+#' For \code{gammasCon2Gamma}: a transition probability matrix.
 
-gammasCon2Gamma <- function(gammasCon, dim) {
+gammasCon2Gamma <- function(gammasCon, dim, prefix = "state_") {
   Gamma <- diag(dim)
   Gamma[!Gamma] <- gammasCon
   for (i in 1:dim) {
     Gamma[i, i] <- 1 - (rowSums(Gamma)[i] - 1)
   }
+  colnames(Gamma) <- rownames(Gamma) <- paste0(prefix, seq_len(dim))
   return(Gamma)
 }
 
-#' This function un-constrains the constrained non-diagonal elements
-#' \code{gammasCon} of a transition probability matrix of dimension \code{dim}.
-#' @inheritParams gammasCon2Gamma
+#' @rdname parameter_transformations
 #' @return
-#' A vector of un-constrained non-diagonal elements of the transition
-#' probability matrix.
-#' @keywords
-#' internal
+#' For \code{gammasCon2gammasUncon}: a vector of unconstrained non-diagonal 
+#' elements of the transition probability matrix.
 
-gammasCon2gammasUncon <- function(gammasCon, dim) {
-  gammasUncon <- Gamma2gammasUncon(gammasCon2Gamma(gammasCon, dim))
-  return(gammasUncon)
+gammasCon2gammasUncon <- function(gammasCon, dim, prefix = "gammasUncon_") {
+  Gamma2gammasUncon(gammasCon2Gamma(gammasCon, dim), prefix = prefix)
 }
 
-#' This function builds a transition probability matrix from un-constrained
-#' non-diagonal elements \code{gammasUncon}.
-#' @param gammasUncon
-#' A vector of un-constrained non-diagonal elements of a transition probability
-#' matrix.
-#' @inheritParams gammasCon2Gamma
+#' @rdname parameter_transformations
 #' @return
-#' A transition probability matrix.
-#' @keywords
-#' internal
+#' For \code{gammasUncon2Gamma}: a transition probability matrix.
 
-gammasUncon2Gamma <- function(gammasUncon, dim) {
+gammasUncon2Gamma <- function(gammasUncon, dim, prefix = "state_") {
   Gamma <- diag(dim)
   Gamma[!Gamma] <- exp(gammasUncon)
   Gamma <- Gamma / rowSums(Gamma)
+  colnames(Gamma) <- rownames(Gamma) <- paste0(prefix, seq_len(dim))
   return(Gamma)
 }
 
-#' This function constrains non-diagonal elements \code{gammasUncon} of a
-#' transition probability matrix.
-#' @param gammasUncon
-#' A vector of un-constrained non-diagonal elements of a transition probability
-#' matrix.
-#' @inheritParams gammasUncon2Gamma
+#' @rdname parameter_transformations
 #' @return
-#' A vector of constrained non-diagonal elements of a transition probability
-#' matrix.
-#' @keywords
-#' internal
+#' For \code{gammasUncon2gammasCon}: a vector of constrained non-diagonal 
+#' elements of a transition probability matrix.
 
-gammasUncon2gammasCon <- function(gammasUncon, dim) {
-  gammasCon <- Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim))
-  return(gammasCon)
-}
-
-#' This function computes the stationary distribution of a transition
-#' probability matrix \code{Gamma}.
-#' @param Gamma
-#' A transition probability \code{matrix}.
-#' @return
-#' A stationary distribution \code{vector}.
-#' @details
-#' If the stationary distribution vector cannot be computed, it is set to the
-#' discrete uniform distribution over the states.
-#' @keywords
-#' internal
-
-Gamma2delta <- function(Gamma) {
-  dim <- dim(Gamma)[1]
-  delta_try <- try(solve(t(diag(dim) - Gamma + 1), rep(1, dim)), silent = TRUE)
-  if (inherits(delta_try, "try-error")) {
-    delta <- rep(1 / dim, dim)
-  } else {
-    delta <- delta_try
-  }
-  return(delta)
+gammasUncon2gammasCon <- function(gammasUncon, dim, prefix = "gammasCon_") {
+  Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim), prefix = prefix)
 }
