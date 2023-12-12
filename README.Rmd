@@ -44,7 +44,57 @@ devtools::install_github("loelschlaeger/fHMM")
 
 We are open to contributions and would appreciate your input! If you encounter any issues, please [submit bug reports as issues](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=bug&template=bug.md). If you have any ideas for new features, please submit them as [feature requests](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=future&template=suggestion.md). If you would like to add extensions to the package, please fork the "master" branch and submit merge requests. We look forward to your contributions!
 
-## Example: Fitting an HMM to the DAX
+## Example 1: Simulating HMM data and maximizing the likelihood
+
+```{r, eval = FALSE}
+### define the model: 3-state HMM with normal sdds
+controls <- list(states = 3, sdds = "normal")
+
+### define the true parameters (un-specified parameters are set at random)
+Gamma <- matrix(c(0.9, 0.05, 0.05, 0.05, 0.9, 0.05, 0.05, 0.05, 0.9), 3, 3)
+mu <- -1:1
+sigma <- c(1, 1.5, 2)
+true_parameters <- fHMM_parameters(
+  controls = controls, Gamma = Gamma, mu = mu, sigma = sigma
+)
+
+### simulate 1000 data points
+data <- simulate_hmm(controls, horizon = 1000, true_parameters = true_parameters)
+
+### plot the data just for fun
+plot(data$data, col = data$markov_chain, type = "h")
+
+### transform the parameters to a vector of the identified and unconstrained 
+### parameters
+parUncon <- par2parUncon(true_parameters, controls)
+
+### evaluate the (negative) log-likelihood
+ll_hmm(parUncon, data$observations, controls)
+ll_hmm(parUncon, data$observations, controls, negative = TRUE)
+
+### optimize the likelihood (should only take some seconds)
+estimate <- nlm(
+    f = ll_hmm, p = parUncon, observations = data$observations, 
+    controls = controls, negative = TRUE
+  )$estimate
+
+### transform the identified and unconstrained parameters back to the full and 
+### interpretable parameters
+class(estimate) <- "parUncon"
+estimated_parameters <- fHMM:::parUncon2par(estimate, controls)
+
+### we can compare the true parameters with the estimated parameters (should be similar)
+true_parameters$Gamma
+estimated_parameters$Gamma
+
+true_parameters$mu
+estimated_parameters$mu
+
+true_parameters$sigma
+estimated_parameters$sigma
+```
+
+## Example 2: Fitting an HMM to the DAX
 
 We fit a 3-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2022. The states can be interpreted as proxies for bearish (green below) and bullish markets (red) and an "in-between" market state (yellow).
 
@@ -61,7 +111,7 @@ dax <- download_data(symbol = "^GDAXI", file = NULL, verbose = FALSE)
 We first need to define the model:
 
 ```{r controls, eval = FALSE}
-controls <- list(
+controls <- set_controls(
   states = 3,
   sdds   = "t",
   data   = list(file        = dax,
@@ -71,7 +121,6 @@ controls <- list(
                 from        = "2000-01-01",
                 to          = "2022-12-31")
 )
-controls <- set_controls(controls)
 ```
 
 The function `prepare_data()` then prepares the data for estimation:
