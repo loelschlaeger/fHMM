@@ -1,8 +1,14 @@
 # fHMM 1.2.0
 
-* Renamed `download_data()` -> `download_yahoo()`.
+* Controls can now be provided separately for the `set_controls()` function.
 
-* `download_yahoo()` (former `download_data()`) no longer saves a .csv-file but returns the data as a data.frame. Its `verbose` argument is removed because the function no longer prints any messages.
+* The log-normal state-dependent distribution is renamed: `lnorm` -> `lognormal`.
+
+* Two more state-dependent distributions are added: `normal` and `poisson`.
+
+* Renamed `download_data()` -> `download_yahoo()` to make the functionality clearer.
+
+* `download_yahoo()` (former `download_data()`) no longer saves a .csv-file but returns the data as a `data.frame`. Its `verbose` argument is removed because the function no longer prints any messages.
 
 # fHMM 1.1.1
 

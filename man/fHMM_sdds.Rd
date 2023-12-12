@@ -5,18 +5,51 @@
 \alias{print.fHMM_sdds}
 \title{Define state-dependent distributions}
 \usage{
-fHMM_sdds(sdds)
+fHMM_sdds(sdds, states)
 
 \method{print}{fHMM_sdds}(x, ...)
 }
 \arguments{
-\item{sdds}{A \code{character} (vector) of length two that can be specified for
-\code{"sdds"} in \code{\link{set_controls}}.}
+\item{sdds}{A \code{character}, specifying the state-dependent distribution. One of
+\itemize{
+\item \code{"normal"} (the normal distribution),
+\item \code{"lognormal"} (the log-normal distribution),
+\item \code{"t"} (the t-distribution),
+\item \code{"gamma"} (the gamma distribution),
+\item \code{"poisson"} (the Poisson distribution).
+}
+
+The distribution parameters, i.e. the
+\itemize{
+\item mean \code{mu},
+\item standard deviation \code{sigma} (not for the Poisson distribution),
+\item degrees of freedom \code{df} (only for the t-distribution),
+}
+can be fixed via, e.g., \code{"t(df = 1)"} or
+\code{"gamma(mu = 0, sigma = 1)"}.
+To fix different values of a parameter for different states, separate by
+"|", e.g. \code{"poisson(mu = 1|2|3)"}.
+
+If \code{hierarchy = TRUE}, \code{sdds} must be a \code{vector} of length 2.
+The first entry corresponds to the coarse-scale layer, while the second entry
+corresponds to the fine-scale layer.
+
+By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
+\code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.}
+
+\item{states}{An \code{integer}, the number of states of the underlying Markov chain.
+
+If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
+2. The first entry corresponds to the coarse-scale layer, while the second
+entry corresponds to the fine-scale layer.
+
+By default, \code{states = 2} if \code{hierarchy = FALSE} and
+\code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
 
 \item{...}{Currently not used.}
 }
 \value{
-A \code{list} of length \code{length(sdds)}.
+A \code{list} of length \code{1} (or \code{2} in the hierarchical case).
 Each element again is a \code{list}, containing
 \itemize{
 \item the \code{"name"} of the distribution
@@ -25,14 +58,6 @@ set to \code{NULL}.
 }
 }
 \description{
-This helper function defines state-dependent distributions for the \{fHMM\}
-package.
-}
-\examples{
-\dontrun{
-sdds <- c("t(sigma = 0.1, df = Inf)", "gamma", "lnorm(mu = 1)")
-fHMM_sdds(sdds)
-}
-
+This helper function defines state-dependent distributions.
 }
 \keyword{internal}
