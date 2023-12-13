@@ -278,7 +278,7 @@ model and estimation specifications.
 This function defines and validates specifications for model estimation.
 }
 \details{
-See the \href{https://loelschlaeger.de/fHMM/articles}{vignette on controls}
+See the \href{https://loelschlaeger.de/fHMM/articles/}{vignette on controls}
 for more details.
 }
 \examples{

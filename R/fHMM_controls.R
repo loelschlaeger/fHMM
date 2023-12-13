@@ -4,7 +4,7 @@
 #' This function defines and validates specifications for model estimation.
 #' 
 #' @details
-#' See the [vignette on controls](https://loelschlaeger.de/fHMM/articles) 
+#' See the [vignette on controls](https://loelschlaeger.de/fHMM/articles/) 
 #' for more details.
 #' 
 #' @param controls

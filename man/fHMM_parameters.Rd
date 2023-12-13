@@ -152,7 +152,7 @@ This function sets and checks model parameters.
 Unspecified parameters are sampled.
 }
 \details{
-See the \href{https://loelschlaeger.de/fHMM/articles}{vignette on the model definition}
+See the \href{https://loelschlaeger.de/fHMM/articles/}{vignette on the model definition}
 for more details.
 }
 \examples{

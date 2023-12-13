@@ -5,7 +5,7 @@
 #' Unspecified parameters are sampled.
 #'
 #' @details
-#' See the [vignette on the model definition](https://loelschlaeger.de/fHMM/articles) 
+#' See the [vignette on the model definition](https://loelschlaeger.de/fHMM/articles/) 
 #' for more details.
 #'
 #' @inheritParams set_controls
