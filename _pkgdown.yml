@@ -22,9 +22,18 @@ reference:
   - download_data
   - simulate_hmm
   - prepare_data
-  - fHMM_parameters
   - fHMM_data
   - plot.fHMM_data
+- title: Model parameters
+  desc: Use these functions to define and transform model parameters.
+  contents:
+  - fHMM_parameters
+  - par2parCon
+  - par2parUncon
+  - parCon2par
+  - parCon2parUncon
+  - parUncon2par
+  - parUncon2parCon
 - title: Model estimation
   desc: Use these function for model estimation and state decoding.
   contents:
@@ -32,6 +41,7 @@ reference:
   - fit_model
   - fHMM_model
   - decode_states
+  - viterbi
   - reorder_states
 - title: Model evaluation
   desc: Use these functions to evaluate a fitted model.

@@ -612,6 +612,7 @@ par2parUncon <- function(par, controls, use_parameter_labels = TRUE) {
 #' @rdname parameter_transformations
 #' @return
 #' For \code{parUncon2parCon}: a vector of constrained model parameters.
+#' @export
 
 parUncon2parCon <- function(parUncon, controls, use_parameter_labels = TRUE) {
   stopifnot(inherits(parUncon, "parUncon"))
@@ -722,6 +723,7 @@ parUncon2parCon <- function(parUncon, controls, use_parameter_labels = TRUE) {
 #' @rdname parameter_transformations
 #' @return
 #' For \code{parCon2par}: an object of class \code{\link{fHMM_parameters}}.
+#' @export
 
 parCon2par <- function(parCon, controls, use_parameter_labels = TRUE) {
   stopifnot(inherits(parCon, "parCon"))
@@ -816,6 +818,7 @@ parCon2par <- function(parCon, controls, use_parameter_labels = TRUE) {
 #' @rdname parameter_transformations
 #' @return
 #' For \code{par2parCon}: a vector of constrained model parameters.
+#' @export
 
 par2parCon <- function(par, controls, use_parameter_labels = TRUE) {
   stopifnot(inherits(par, "fHMM_parameters"))
@@ -830,6 +833,7 @@ par2parCon <- function(par, controls, use_parameter_labels = TRUE) {
 #' @rdname parameter_transformations
 #' @return
 #' For \code{parCon2parUncon}: a vector of unconstrained model parameters.
+#' @export
 
 parCon2parUncon <- function(parCon, controls, use_parameter_labels = TRUE) { 
   stopifnot(inherits(parCon, "parCon"))
@@ -844,6 +848,7 @@ parCon2parUncon <- function(parCon, controls, use_parameter_labels = TRUE) {
 #' @rdname parameter_transformations
 #' @return
 #' For \code{parUncon2par}: an object of class \code{fHMM_parameters}.
+#' @export
 
 parUncon2par <- function(
     parUncon, controls, use_parameter_labels = TRUE
