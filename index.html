@@ -18,8 +18,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Fit hidden Markov models to financial data">
 <meta property="og:description" content='Fitting (hierarchical) hidden Markov models to financial data
@@ -41,7 +41,7 @@
     
     <a class="navbar-brand me-2" href="index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,50 +98,54 @@
 </div>
 <!-- badges: start -->
 
-<p>The <a href="https://loelschlaeger.de/fHMM/">fHMM</a> R package allows for the detection and characterization of financial market regimes in time series data by applying hidden Markov Models (HMMs). The <a href="https://loelschlaeger.de/fHMM/articles/">detailed documentation</a> outlines the functionality and the model formulation. Below, we provide an initial application to the German stock index <a href="https://en.wikipedia.org/wiki/DAX" class="external-link">DAX</a>.</p>
+<p>The <a href="https://loelschlaeger.de/fHMM/">fHMM</a> R package allows for the detection and characterization of financial market regimes in time series data by applying hidden Markov Models (HMMs). The <a href="https://loelschlaeger.de/fHMM/articles/">vignettes</a> outline the package functionality and the model formulation. For a reference on the method, see</p>
+<blockquote>
+<p>Oelschläger, L., and T. Adam. 2021. “Detecting Bearish and Bullish Markets in Financial Time Series Using Hierarchical Hidden Markov Models.” Statistical Modelling. <a href="https://doi.org/10.1177/1471082X211034048" class="external-link uri">https://doi.org/10.1177/1471082X211034048</a></p>
+</blockquote>
+<p>Below, we illustrate an application to the German stock index <a href="https://en.wikipedia.org/wiki/DAX" class="external-link">DAX</a>. We also show how to use the package to simulate HMM data, compute the model likelihood, and decode the hidden states using the Viterbi algorithm.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the released version of <a href="https://loelschlaeger.de/fHMM/">fHMM</a> from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
+<p>You can install the released package version from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"fHMM"</span><span class="op">)</span></span></code></pre></div>
-<p>And the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"loelschlaeger/fHMM"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
 </h2>
-<p>We are open to contributions and would appreciate your input! If you encounter any issues, please <a href="https://github.com/loelschlaeger/fHMM/issues/new?assignees=&amp;labels=bug&amp;template=bug.md" class="external-link">submit bug reports as issues</a>. If you have any ideas for new features, please submit them as <a href="https://github.com/loelschlaeger/fHMM/issues/new?assignees=&amp;labels=future&amp;template=suggestion.md" class="external-link">feature requests</a>. If you would like to add extensions to the package, please fork the “master” branch and submit merge requests. We look forward to your contributions!</p>
+<p>We are open to contributions and would appreciate your input:</p>
+<ul>
+<li><p>If you encounter any issues, please <a href="https://github.com/loelschlaeger/fHMM/issues/new?assignees=&amp;labels=bug&amp;template=bug.md" class="external-link">submit bug reports as issues</a>.</p></li>
+<li><p>If you have any ideas for new features, please submit them as <a href="https://github.com/loelschlaeger/fHMM/issues/new?assignees=&amp;labels=future&amp;template=suggestion.md" class="external-link">feature requests</a>.</p></li>
+<li><p>If you would like to add extensions to the package, please fork the <code>master</code> branch and submit a merge request.</p></li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="example-fitting-an-hmm-to-the-dax">Example: Fitting an HMM to the DAX<a class="anchor" aria-label="anchor" href="#example-fitting-an-hmm-to-the-dax"></a>
 </h2>
 <p>We fit a 3-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2022. The states can be interpreted as proxies for bearish (green below) and bullish markets (red) and an “in-between” market state (yellow).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://loelschlaeger.de/fHMM/">"fHMM"</a></span><span class="op">)</span></span></code></pre></div>
 <p>The package has a build-in function to download financial data from <a href="https://finance.yahoo.com/" class="external-link">Yahoo Finance</a>:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dax</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, file <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dax</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span><span class="op">)</span></span></code></pre></div>
 <p>We first need to define the model:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  states <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  sdds   <span class="op">=</span> <span class="st">"t"</span>,</span>
-<span>  data   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>file        <span class="op">=</span> <span class="va">dax</span>,</span>
-<span>                date_column <span class="op">=</span> <span class="st">"Date"</span>,</span>
-<span>                data_column <span class="op">=</span> <span class="st">"Close"</span>,</span>
-<span>                logreturns  <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                from        <span class="op">=</span> <span class="st">"2000-01-01"</span>,</span>
-<span>                to          <span class="op">=</span> <span class="st">"2022-12-31"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_controls.html">set_controls</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_controls.html">set_controls</a></span><span class="op">(</span></span>
+<span>  states      <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  sdds        <span class="op">=</span> <span class="st">"t"</span>,</span>
+<span>  file        <span class="op">=</span> <span class="va">dax</span>,</span>
+<span>  date_column <span class="op">=</span> <span class="st">"Date"</span>,</span>
+<span>  data_column <span class="op">=</span> <span class="st">"Close"</span>,</span>
+<span>  logreturns  <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  from        <span class="op">=</span> <span class="st">"2000-01-01"</span>,</span>
+<span>  to          <span class="op">=</span> <span class="st">"2022-12-31"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The function <code><a href="reference/prepare_data.html">prepare_data()</a></code> then prepares the data for estimation:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prepare_data.html">prepare_data</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span></span></code></pre></div>
 <p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method gives an overview:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Summary of fHMM empirical data</span></span>
 <span><span class="co">#&gt; * number of observations: 5882 </span></span>
@@ -149,12 +153,12 @@
 <span><span class="co">#&gt; * date column: Date </span></span>
 <span><span class="co">#&gt; * log returns: TRUE</span></span></code></pre></div>
 <p>We fit the model and subsequently decode the hidden states and compute (pseudo-) residuals:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/compute_residuals.html">compute_residuals</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div>
 <p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method gives an overview of the model fit:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Summary of fHMM model</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -191,7 +195,7 @@
 <span><span class="co">#&gt;      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. </span></span>
 <span><span class="co">#&gt; -3.519694 -0.658831  0.009613 -0.002206  0.669598  3.905726</span></span></code></pre></div>
 <p>Having estimated the model, we can visualize the state-dependent distributions and the decoded time series:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fHMM_events.html">fHMM_events</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2001-09-11"</span>, <span class="st">"2008-09-15"</span>, <span class="st">"2020-01-27"</span><span class="op">)</span>,</span>
 <span>       labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9/11 terrorist attack"</span>, <span class="st">"Bankruptcy Lehman Brothers"</span>, <span class="st">"First COVID-19 case Germany"</span><span class="op">)</span><span class="op">)</span></span>
@@ -199,9 +203,99 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, plot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sdds"</span>,<span class="st">"ts"</span><span class="op">)</span>, events <span class="op">=</span> <span class="va">events</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_model_fit-1.png"><!-- --><img src="reference/figures/README-plot_model_fit-2.png"><!-- --></p>
 <p>The (pseudo-) residuals help to evaluate the model fit:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, plot_type <span class="op">=</span> <span class="st">"pr"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_model_residuals-1.png"><!-- --></p>
+</div>
+<div class="section level2">
+<h2 id="simulating-hmm-data">Simulating HMM data<a class="anchor" aria-label="anchor" href="#simulating-hmm-data"></a>
+</h2>
+<p>The <a href="https://loelschlaeger.de/fHMM/">fHMM</a> package supports data simulation from an HMM and access to the model likelihood function for model fitting and the Viterbi algorithm for state decoding.</p>
+<ol style="list-style-type: decimal">
+<li>As an example, we consider a 2-state HMM with state-dependent Gamma distributions and a time horizon of 1000 data points.</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/set_controls.html">set_controls</a></span><span class="op">(</span></span>
+<span>  states  <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  sdds    <span class="op">=</span> <span class="st">"gamma"</span>,</span>
+<span>  horizon <span class="op">=</span> <span class="fl">1000</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Define the model parameters via the <code><a href="reference/fHMM_parameters.html">fHMM_parameters()</a></code> function (unspecified parameters would be set at random).</li>
+</ol>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">par</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fHMM_parameters.html">fHMM_parameters</a></span><span class="op">(</span></span>
+<span>  controls <span class="op">=</span> <span class="va">controls</span>,</span>
+<span>  Gamma    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.95</span>, <span class="fl">0.05</span>, <span class="fl">0.05</span>, <span class="fl">0.95</span><span class="op">)</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>  mu       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, </span>
+<span>  sigma    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Simulate data points from this model via the <code><a href="reference/simulate_hmm.html">simulate_hmm()</a></code> function.</li>
+</ol>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/simulate_hmm.html">simulate_hmm</a></span><span class="op">(</span></span>
+<span>  controls        <span class="op">=</span> <span class="va">controls</span>,</span>
+<span>  true_parameters <span class="op">=</span> <span class="va">par</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">data</span>, col <span class="op">=</span> <span class="va">sim</span><span class="op">$</span><span class="va">markov_chain</span>, type <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-simulate-hmm-data-1.png"><!-- --></p>
+<ol start="4" style="list-style-type: decimal">
+<li>The log-likelihood function <code><a href="reference/ll_hmm.html">ll_hmm()</a></code> is evaluated at the identified and unconstrained parameter values, they can be derived via the <code><a href="reference/parameter_transformations.html">par2parUncon()</a></code> function.</li>
+</ol>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">parUncon</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parameter_transformations.html">par2parUncon</a></span><span class="op">(</span><span class="va">par</span>, <span class="va">controls</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; gammasUncon_21 gammasUncon_12      muUncon_1      muUncon_2   sigmaUncon_1 </span></span>
+<span><span class="co">#&gt;      -2.944439      -2.944439       0.000000       1.098612       0.000000 </span></span>
+<span><span class="co">#&gt;   sigmaUncon_2 </span></span>
+<span><span class="co">#&gt;       1.098612 </span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "parUncon" "numeric"</span></span></code></pre></div>
+<p>Note that this transformation takes care of the restrictions, that <code>Gamma</code> must be a transition probability matrix (which we can ensure via the logit link) and that <code>mu</code> and <code>sigma</code> must be positive (an assumption for the Gamma distribution, which we can ensure via the exponential link).</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/ll_hmm.html">ll_hmm</a></span><span class="op">(</span><span class="va">parUncon</span>, <span class="va">sim</span><span class="op">$</span><span class="va">data</span>, <span class="va">controls</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] -1620.515</span></span>
+<span><span class="fu"><a href="reference/ll_hmm.html">ll_hmm</a></span><span class="op">(</span><span class="va">parUncon</span>, <span class="va">sim</span><span class="op">$</span><span class="va">data</span>, <span class="va">controls</span>, negative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1620.515</span></span></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>For maximum likelihood estimation of the model parameters, we can numerically optimize <code><a href="reference/ll_hmm.html">ll_hmm()</a></code> over <code>parUncon</code> (or rather minimize the negative log-likelihood).</li>
+</ol>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">optimization</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></span><span class="op">(</span></span>
+<span>  f <span class="op">=</span> <span class="va">ll_hmm</span>, p <span class="op">=</span> <span class="va">parUncon</span>, observations <span class="op">=</span> <span class="va">sim</span><span class="op">$</span><span class="va">data</span>, controls <span class="op">=</span> <span class="va">controls</span>, negative <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">(</span><span class="va">estimate</span> <span class="op">&lt;-</span> <span class="va">optimization</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] -3.46338914 -3.44065510  0.05999846  1.06452908  0.11517809  1.07946253</span></span></code></pre></div>
+<ol start="6" style="list-style-type: decimal">
+<li>To interpret the estimate, it needs to be back transformed to the constrained parameter space via the <code><a href="reference/parameter_transformations.html">parUncon2par()</a></code> function. The state-labeling is not identified.</li>
+</ol>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">estimate</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"parUncon"</span></span>
+<span><span class="va">estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parameter_transformations.html">parUncon2par</a></span><span class="op">(</span><span class="va">estimate</span>, <span class="va">controls</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">par</span><span class="op">$</span><span class="va">Gamma</span></span>
+<span><span class="co">#&gt;         state_1 state_2</span></span>
+<span><span class="co">#&gt; state_1    0.95    0.05</span></span>
+<span><span class="co">#&gt; state_2    0.05    0.95</span></span>
+<span><span class="va">estimate</span><span class="op">$</span><span class="va">Gamma</span></span>
+<span><span class="co">#&gt;            state_1    state_2</span></span>
+<span><span class="co">#&gt; state_1 0.96895123 0.03104877</span></span>
+<span><span class="co">#&gt; state_2 0.03037207 0.96962793</span></span>
+<span></span>
+<span><span class="va">par</span><span class="op">$</span><span class="va">mu</span></span>
+<span><span class="co">#&gt; muCon_1 muCon_2 </span></span>
+<span><span class="co">#&gt;       1       3</span></span>
+<span><span class="va">estimate</span><span class="op">$</span><span class="va">mu</span></span>
+<span><span class="co">#&gt;  muCon_1  muCon_2 </span></span>
+<span><span class="co">#&gt; 1.061835 2.899473</span></span>
+<span></span>
+<span><span class="va">par</span><span class="op">$</span><span class="va">sigma</span></span>
+<span><span class="co">#&gt; sigmaCon_1 sigmaCon_2 </span></span>
+<span><span class="co">#&gt;          1          3</span></span>
+<span><span class="va">estimate</span><span class="op">$</span><span class="va">sigma</span></span>
+<span><span class="co">#&gt; sigmaCon_1 sigmaCon_2 </span></span>
+<span><span class="co">#&gt;   1.122073   2.943097</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -234,7 +328,7 @@
 <li>
 <a href="https://loelschlaeger.de" class="external-link">Lennart Oelschläger</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-5421-9313" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
-<a href="https://timoadam.github.io/" class="external-link">Timo Adam</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9079-3259" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://www.uni-bielefeld.de/fakultaeten/wirtschaftswissenschaften/lehrbereiche/statisticalmodelling/" class="external-link">Timo Adam</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9079-3259" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
 <a href="https://ekvv.uni-bielefeld.de/pers_publ/publ/PersonDetail.jsp?personId=241029889" class="external-link">Rouven Michels</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-5433-6197" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
@@ -255,7 +349,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by <a href="https://loelschlaeger.de" class="external-link">Lennart Oelschläger</a>, <a href="https://timoadam.github.io/" class="external-link">Timo Adam</a>, <a href="https://ekvv.uni-bielefeld.de/pers_publ/publ/PersonDetail.jsp?personId=241029889" class="external-link">Rouven Michels</a>.</p>
+<p>Developed by <a href="https://loelschlaeger.de" class="external-link">Lennart Oelschläger</a>, <a href="https://www.uni-bielefeld.de/fakultaeten/wirtschaftswissenschaften/lehrbereiche/statisticalmodelling/" class="external-link">Timo Adam</a>, <a href="https://ekvv.uni-bielefeld.de/pers_publ/publ/PersonDetail.jsp?personId=241029889" class="external-link">Rouven Michels</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
