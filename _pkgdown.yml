@@ -5,7 +5,7 @@ authors:
   Lennart Oelschläger:
     href: https://loelschlaeger.de
   Timo Adam:
-    href: https://timoadam.github.io/
+    href: https://www.uni-bielefeld.de/fakultaeten/wirtschaftswissenschaften/lehrbereiche/statisticalmodelling/
   Rouven Michels:
     href: https://ekvv.uni-bielefeld.de/pers_publ/publ/PersonDetail.jsp?personId=241029889
 template:
@@ -20,6 +20,7 @@ reference:
   contents:
   - set_controls
   - download_data
+  - simulate_hmm
   - prepare_data
   - fHMM_parameters
   - fHMM_data
@@ -27,6 +28,7 @@ reference:
 - title: Model estimation
   desc: Use these function for model estimation and state decoding.
   contents:
+  - ll_hmm
   - fit_model
   - fHMM_model
   - decode_states
@@ -49,10 +51,4 @@ reference:
 - title: Models
   desc: The following pre-computed models are included in the package.
   contents: has_keyword("model")
-- title: Small utilities
-  desc: These functions may be useful beyond {fHMM}.
-  contents: has_keyword("utils")
-- title: internal
-  desc: These functions are not user-level.
-  contents: has_keyword("internal")
 

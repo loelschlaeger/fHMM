@@ -501,7 +501,10 @@ print.fHMM_parameters <- function(x, ...) {
 #' A vector of (un-) constrained degrees of freedom.
 #' 
 #' @param prefix
-#' A \code{character} prefix for labelling.
+#' A \code{character} prefix for labeling the parameters.
+#' @param use_parameter_labels
+#' Either \code{TRUE} to label the parameters or \code{FALSE}, if not (this can
+#' save computation time).
 #' 
 #' @keywords internal
 
@@ -512,45 +515,35 @@ NULL
 #' For \code{par2parUncon}: a vector of unconstrained model parameters.
 #' @export
 
-par2parUncon <- function(
-    par, 
-    controls = list(),
-    hierarchy = FALSE,
-    states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-    check_controls = FALSE
-) {
+par2parUncon <- function(par, controls, use_parameter_labels = TRUE) {
   stopifnot(inherits(par, "fHMM_parameters"))
-  if (isTRUE(check_controls)) {
-    controls <- set_controls(
-      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-    )
-  } else {
-    controls <- structure(
-      oeli::merge_lists(
-        controls,
-        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
-      ),
-      class = "fHMM_controls"
-    )
-  }
+  stopifnot(inherits(controls, "fHMM_controls"))
   sdds <- controls[["sdds"]]
   states <- controls[["states"]]
-  parUncon <- Gamma2gammasUncon(par[["Gamma"]], prefix = "gammasUncon_")
+  parUncon <- Gamma2gammasUncon(
+    par[["Gamma"]], 
+    prefix = "gammasUncon_",
+    use_parameter_labels = use_parameter_labels
+  )
   if (!"mu" %in% names(sdds[[1]]$pars)) {
     parUncon <- c(
       parUncon,
       muCon2muUncon(
         muCon = par[["mu"]],
         link = (sdds[[1]]$name %in% c("gamma", "poisson")),
-        prefix = "muUncon_"
+        prefix = "muUncon_",
+        use_parameter_labels = use_parameter_labels
       )
     )
   }
   if (sdds[[1]]$name != "poisson") {
     if (!"sigma" %in% names(sdds[[1]]$pars)) {
       parUncon <- c(
-        parUncon, sigmaCon2sigmaUncon(par[["sigma"]], prefix = "sigmaUncon_")
+        parUncon, sigmaCon2sigmaUncon(
+          par[["sigma"]], 
+          prefix = "sigmaUncon_",
+          use_parameter_labels = use_parameter_labels
+        )
       )
     }
   }
@@ -558,7 +551,11 @@ par2parUncon <- function(
     if (!"df" %in% names(sdds[[1]]$pars)) {
       parUncon <- c(
         parUncon,
-        dfCon2dfUncon(par[["df"]], prefix = "dfUncon_")
+        dfCon2dfUncon(
+          par[["df"]], 
+          prefix = "dfUncon_",
+          use_parameter_labels = use_parameter_labels
+        )
       )
     }
   }
@@ -568,7 +565,8 @@ par2parUncon <- function(
         parUncon, 
         Gamma2gammasUncon(
           par[["Gamma_star"]][[s]],
-          prefix = paste0("cs_", s, ":gammasUncon_")
+          prefix = paste0("cs_", s, ":gammasUncon_"),
+          use_parameter_labels = use_parameter_labels
         )
       )
       if (!"mu" %in% names(sdds[[2]]$pars)) {
@@ -577,7 +575,8 @@ par2parUncon <- function(
           muCon2muUncon(
             par[["mu_star"]][[s]],
             link = (sdds[[2]]$name %in% c("gamma", "poisson")),
-            prefix = paste0("cs_", s, ":muUncon_")
+            prefix = paste0("cs_", s, ":muUncon_"),
+            use_parameter_labels = use_parameter_labels
           )
         )
       }
@@ -587,7 +586,8 @@ par2parUncon <- function(
             parUncon,
             sigmaCon2sigmaUncon(
               par[["sigma_star"]][[s]],
-              prefix = paste0("cs_", s, ":sigmaUncon_")
+              prefix = paste0("cs_", s, ":sigmaUncon_"),
+              use_parameter_labels = use_parameter_labels
             )
           )
         }
@@ -598,7 +598,8 @@ par2parUncon <- function(
             parUncon,
             dfCon2dfUncon(
               par[["df_star"]][[s]],
-              prefix = paste0("cs_", s, ":dfUncon_")
+              prefix = paste0("cs_", s, ":dfUncon_"),
+              use_parameter_labels = use_parameter_labels
             )
           )
         }
@@ -612,34 +613,16 @@ par2parUncon <- function(
 #' @return
 #' For \code{parUncon2parCon}: a vector of constrained model parameters.
 
-parUncon2parCon <- function(
-    parUncon, 
-    controls = list(),
-    hierarchy = FALSE,
-    states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-    check_controls = FALSE
-) {
+parUncon2parCon <- function(parUncon, controls, use_parameter_labels = TRUE) {
   stopifnot(inherits(parUncon, "parUncon"))
-  if (isTRUE(check_controls)) {
-    controls <- set_controls(
-      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-    )
-  } else {
-    controls <- structure(
-      oeli::merge_lists(
-        controls,
-        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
-      ),
-      class = "fHMM_controls"
-    )
-  }
+  stopifnot(inherits(controls, "fHMM_controls"))
   sdds <- controls[["sdds"]]
   M <- controls[["states"]][1]
   parCon <- gammasUncon2gammasCon(
     parUncon[1:((M - 1) * M)], 
     dim = M,
-    prefix = "gammasCon_"
+    prefix = "gammasCon_",
+    use_parameter_labels = use_parameter_labels
   )
   parUncon <- parUncon[-(1:((M - 1) * M))]
   if (!"mu" %in% names(sdds[[1]]$pars)) {
@@ -648,7 +631,8 @@ parUncon2parCon <- function(
       muUncon2muCon(
         parUncon[1:M],
         link = (sdds[[1]]$name %in% c("gamma", "poisson")),
-        prefix = "muCon_"
+        prefix = "muCon_",
+        use_parameter_labels = use_parameter_labels
       )
     )
     parUncon <- parUncon[-(1:M)]
@@ -659,7 +643,8 @@ parUncon2parCon <- function(
         parCon,
         sigmaUncon2sigmaCon(
           parUncon[1:M],
-          prefix = "sigmaCon_"
+          prefix = "sigmaCon_",
+          use_parameter_labels = use_parameter_labels
         )
       )
       parUncon <- parUncon[-(1:M)]
@@ -671,7 +656,8 @@ parUncon2parCon <- function(
         parCon,
         dfUncon2dfCon(
           parUncon[1:M],
-          prefix = "dfCon_"
+          prefix = "dfCon_",
+          use_parameter_labels = use_parameter_labels
         )
       )
       parUncon <- parUncon[-(1:M)]
@@ -685,7 +671,8 @@ parUncon2parCon <- function(
         gammasUncon2gammasCon(
           parUncon[1:((N - 1) * N)], 
           dim = N,
-          prefix = paste0("cs_", s, ":gammasCon_")
+          prefix = paste0("cs_", s, ":gammasCon_"),
+          use_parameter_labels = use_parameter_labels
         )
       )
       parUncon <- parUncon[-(1:((N - 1) * N))]
@@ -695,7 +682,8 @@ parUncon2parCon <- function(
           muUncon2muCon(
             parUncon[1:N],
             link = (sdds[[2]]$name %in% c("gamma", "poisson")),
-            prefix = paste0("cs_", s, ":muCon_")
+            prefix = paste0("cs_", s, ":muCon_"),
+            use_parameter_labels = use_parameter_labels
           )
         )
         parUncon <- parUncon[-(1:N)]
@@ -706,7 +694,8 @@ parUncon2parCon <- function(
             parCon,
             sigmaUncon2sigmaCon(
               parUncon[1:N],
-              prefix = paste0("cs_", s, ":sigmaCon_")
+              prefix = paste0("cs_", s, ":sigmaCon_"),
+              use_parameter_labels = use_parameter_labels
             )
           )
           parUncon <- parUncon[-(1:N)]
@@ -718,7 +707,8 @@ parUncon2parCon <- function(
             parCon,
             dfUncon2dfCon(
               parUncon[1:N],
-              prefix = paste0("cs_", s, ":dfCon_")
+              prefix = paste0("cs_", s, ":dfCon_"),
+              use_parameter_labels = use_parameter_labels
             )
           )
           parUncon <- parUncon[-(1:N)]
@@ -733,31 +723,16 @@ parUncon2parCon <- function(
 #' @return
 #' For \code{parCon2par}: an object of class \code{\link{fHMM_parameters}}.
 
-parCon2par <- function(
-    parCon, 
-    controls = list(),
-    hierarchy = FALSE,
-    states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-    check_controls = FALSE
-) {
+parCon2par <- function(parCon, controls, use_parameter_labels = TRUE) {
   stopifnot(inherits(parCon, "parCon"))
-  if (isTRUE(check_controls)) {
-    controls <- set_controls(
-      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-    )
-  } else {
-    controls <- structure(
-      oeli::merge_lists(
-        controls,
-        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
-      ),
-      class = "fHMM_controls"
-    )
-  }
+  stopifnot(inherits(controls, "fHMM_controls"))
   sdds <- controls[["sdds"]]
   M <- controls[["states"]][1]
-  Gamma <- gammasCon2Gamma(parCon[1:((M - 1) * M)], M)
+  Gamma <- gammasCon2Gamma(
+    parCon[1:((M - 1) * M)], 
+    M, 
+    use_parameter_labels = use_parameter_labels
+  )
   parCon <- parCon[-(1:((M - 1) * M))]
   if (!"mu" %in% names(sdds[[1]]$pars)) {
     mu <- parCon[1:M]
@@ -794,7 +769,11 @@ parCon2par <- function(
       df_star <- NULL
     }
     for (s in 1:M) {
-      Gamma_star[[s]] <- gammasCon2Gamma(parCon[1:((N - 1) * N)], N)
+      Gamma_star[[s]] <- gammasCon2Gamma(
+        parCon[1:((N - 1) * N)], 
+        N,
+        use_parameter_labels = use_parameter_labels
+      )
       parCon <- parCon[-(1:((N - 1) * N))]
       if (!"mu" %in% names(sdds[[2]]$pars)) {
         mu_star[[s]] <- parCon[1:N]
@@ -830,7 +809,7 @@ parCon2par <- function(
     Gamma = Gamma, mu = mu, sigma = sigma, df = df,
     Gamma_star = Gamma_star, mu_star = mu_star,
     sigma_star = sigma_star, df_star = df_star,
-    check_controls = check_controls
+    check_controls = FALSE
   )
 }
 
@@ -838,32 +817,13 @@ parCon2par <- function(
 #' @return
 #' For \code{par2parCon}: a vector of constrained model parameters.
 
-par2parCon <- function(
-    par, 
-    controls = list(),
-    hierarchy = FALSE,
-    states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-    check_controls = FALSE
-) {
+par2parCon <- function(par, controls, use_parameter_labels = TRUE) {
   stopifnot(inherits(par, "fHMM_parameters"))
-  if (isTRUE(check_controls)) {
-    controls <- set_controls(
-      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-    )
-  } else {
-    controls <- structure(
-      oeli::merge_lists(
-        controls,
-        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
-      ),
-      class = "fHMM_controls"
-    )
-  }
+  stopifnot(inherits(controls, "fHMM_controls"))
   parUncon2parCon(
-    par2parUncon(par, controls, check_controls = check_controls), 
+    par2parUncon(par, controls, use_parameter_labels = use_parameter_labels), 
     controls,
-    check_controls = check_controls
+    use_parameter_labels = use_parameter_labels
   )
 }
 
@@ -871,32 +831,13 @@ par2parCon <- function(
 #' @return
 #' For \code{parCon2parUncon}: a vector of unconstrained model parameters.
 
-parCon2parUncon <- function(
-    parCon, 
-    controls = list(),
-    hierarchy = FALSE,
-    states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-    check_controls = FALSE
-) { 
+parCon2parUncon <- function(parCon, controls, use_parameter_labels = TRUE) { 
   stopifnot(inherits(parCon, "parCon"))
-  if (isTRUE(check_controls)) {
-    controls <- set_controls(
-      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-    )
-  } else {
-    controls <- structure(
-      oeli::merge_lists(
-        controls,
-        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
-      ),
-      class = "fHMM_controls"
-    )
-  }
+  stopifnot(inherits(controls, "fHMM_controls"))
   par2parUncon(
-    parCon2par(parCon, controls, check_controls = check_controls), 
+    parCon2par(parCon, controls, use_parameter_labels = use_parameter_labels), 
     controls,
-    check_controls = check_controls
+    use_parameter_labels = use_parameter_labels
   )
 }
 
@@ -905,31 +846,14 @@ parCon2parUncon <- function(
 #' For \code{parUncon2par}: an object of class \code{fHMM_parameters}.
 
 parUncon2par <- function(
-    parUncon, 
-    controls = list(),
-    hierarchy = FALSE,
-    states = if (!hierarchy) 2 else c(2, 2), 
-    sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-    check_controls = FALSE
-) {
+    parUncon, controls, use_parameter_labels = TRUE
+  ) {
   stopifnot(inherits(parUncon, "parUncon"))
-  if (isTRUE(check_controls)) {
-    controls <- set_controls(
-      controls = controls, hierarchy = hierarchy, states = states, sdds = sdds
-    )
-  } else {
-    controls <- structure(
-      oeli::merge_lists(
-        controls,
-        list("hierarchy" = hierarchy, "states" = states, "sdds" = sdds)
-      ),
-      class = "fHMM_controls"
-    )
-  }
+  stopifnot(inherits(controls, "fHMM_controls"))
   parCon2par(
-    parUncon2parCon(parUncon, controls, check_controls = check_controls), 
+    parUncon2parCon(parUncon, controls, use_parameter_labels = use_parameter_labels), 
     controls,
-    check_controls = check_controls
+    use_parameter_labels = use_parameter_labels
   )
 }
 
@@ -937,13 +861,17 @@ parUncon2par <- function(
 #' @return
 #' For \code{muCon2muUncon}: a vector of unconstrained expected values.
 
-muCon2muUncon <- function(muCon, link, prefix = "muUncon_") {
+muCon2muUncon <- function(
+    muCon, link, prefix = "muUncon_", use_parameter_labels = TRUE
+  ) {
   muUncon <- if (link) {
     log(muCon)
   } else {
     muCon
   }
-  names(muUncon) <- paste0(prefix, seq_along(muUncon))
+  if (isTRUE(use_parameter_labels)) {
+    names(muUncon) <- paste0(prefix, seq_along(muUncon))
+  }
   return(muUncon)
 }
 
@@ -951,13 +879,17 @@ muCon2muUncon <- function(muCon, link, prefix = "muUncon_") {
 #' @return
 #' For \code{muUncon2muCon}: a vector of constrained expected values.
 
-muUncon2muCon <- function(muUncon, link, prefix = "muCon_") {
+muUncon2muCon <- function(
+    muUncon, link, prefix = "muCon_", use_parameter_labels = TRUE
+  ) {
   muCon <- if (link) {
     exp(muUncon)
   } else {
     muUncon
   }
-  names(muCon) <- paste0(prefix, seq_along(muCon))
+  if (isTRUE(use_parameter_labels)) {
+    names(muCon) <- paste0(prefix, seq_along(muCon))
+  }
   return(muCon)
 }
 
@@ -966,9 +898,13 @@ muUncon2muCon <- function(muUncon, link, prefix = "muCon_") {
 #' For \code{sigmaCon2sigmaUncon}: a vector of unconstrained standard 
 #' deviations.
 
-sigmaCon2sigmaUncon <- function(sigmaCon, prefix = "sigmaUncon_") {
+sigmaCon2sigmaUncon <- function(
+    sigmaCon, prefix = "sigmaUncon_", use_parameter_labels = TRUE
+  ) {
   sigmaUncon <- log(sigmaCon)
-  names(sigmaUncon) <- paste0(prefix, seq_along(sigmaUncon))
+  if (isTRUE(use_parameter_labels)) {
+    names(sigmaUncon) <- paste0(prefix, seq_along(sigmaUncon))
+  }
   return(sigmaUncon)
 }
 
@@ -976,9 +912,13 @@ sigmaCon2sigmaUncon <- function(sigmaCon, prefix = "sigmaUncon_") {
 #' @return
 #' For \code{sigmaUncon2sigmaCon}: a vector of constrained standard deviations.
 
-sigmaUncon2sigmaCon <- function(sigmaUncon, prefix = "sigmaCon_") {
+sigmaUncon2sigmaCon <- function(
+    sigmaUncon, prefix = "sigmaCon_", use_parameter_labels = TRUE
+  ) {
   sigmaCon <- exp(sigmaUncon)
-  names(sigmaCon) <- paste0(prefix, seq_along(sigmaCon))
+  if (isTRUE(use_parameter_labels)) {
+    names(sigmaCon) <- paste0(prefix, seq_along(sigmaCon))
+  }
   return(sigmaCon)
 }
 
@@ -986,9 +926,13 @@ sigmaUncon2sigmaCon <- function(sigmaUncon, prefix = "sigmaCon_") {
 #' @return
 #' For \code{dfCon2dfUncon}: a vector of unconstrained degrees of freedom.
 
-dfCon2dfUncon <- function(dfCon, prefix = "dfUncon_") {
+dfCon2dfUncon <- function(
+    dfCon, prefix = "dfUncon_", use_parameter_labels = TRUE
+  ) {
   dfUncon <- log(dfCon)
-  names(dfUncon) <- paste0(prefix, seq_along(dfUncon))
+  if (isTRUE(use_parameter_labels)) {
+    names(dfUncon) <- paste0(prefix, seq_along(dfUncon))
+  }
   return(dfUncon)
 }
 
@@ -996,9 +940,13 @@ dfCon2dfUncon <- function(dfCon, prefix = "dfUncon_") {
 #' @return
 #' For \code{dfUncon2dfCon}: a vector of constrained degrees of freedom.
 
-dfUncon2dfCon <- function(dfUncon, prefix = "dfCon_") {
+dfUncon2dfCon <- function(
+    dfUncon, prefix = "dfCon_", use_parameter_labels = TRUE
+  ) {
   dfCon <- exp(dfUncon)
-  names(dfCon) <- paste0(prefix, seq_along(dfCon))
+  if (isTRUE(use_parameter_labels)) {
+    names(dfCon) <- paste0(prefix, seq_along(dfCon))
+  }
   return(dfCon)
 }
 
@@ -1007,13 +955,17 @@ dfUncon2dfCon <- function(dfUncon, prefix = "dfCon_") {
 #' For \code{Gamma2gammasCon}: a vector of constrained non-diagonal matrix 
 #' elements (column-wise).
 
-Gamma2gammasCon <- function(Gamma, shift = 1e-3, prefix = "gammasCon_") {
+Gamma2gammasCon <- function(
+    Gamma, shift = 1e-3, prefix = "gammasCon_", use_parameter_labels = TRUE
+  ) {
   gammasCon <- Gamma[row(Gamma) != col(Gamma)]
   gammasCon <- replace(gammasCon, gammasCon == 0, shift)
   gammasCon <- replace(gammasCon, gammasCon == 1, 1 - shift)
-  names(gammasCon) <- oeli::matrix_indices(
-    Gamma, prefix = prefix, exclude_diagonal = TRUE
-  )
+  if (isTRUE(use_parameter_labels)) {
+    names(gammasCon) <- oeli::matrix_indices(
+      Gamma, prefix = prefix, exclude_diagonal = TRUE
+    )
+  }
   return(gammasCon)
 }
 
@@ -1022,14 +974,18 @@ Gamma2gammasCon <- function(Gamma, shift = 1e-3, prefix = "gammasCon_") {
 #' For \code{Gamma2gammasUncon}: a vector of unconstrained non-diagonal matrix 
 #' elements (column-wise).
 
-Gamma2gammasUncon <- function(Gamma, prefix = "gammasUncon_") {
+Gamma2gammasUncon <- function(
+    Gamma, prefix = "gammasUncon_", use_parameter_labels = TRUE
+  ) {
   diag(Gamma) <- 0
   Gamma <- log(Gamma / (1 - rowSums(Gamma)))
   diag(Gamma) <- NA_real_
   gammasUncon <- Gamma[!is.na(Gamma)]
-  names(gammasUncon) <- oeli::matrix_indices(
-    Gamma, prefix = prefix, exclude_diagonal = TRUE
-  )
+  if (isTRUE(use_parameter_labels)) {
+    names(gammasUncon) <- oeli::matrix_indices(
+      Gamma, prefix = prefix, exclude_diagonal = TRUE
+    )
+  }
   return(gammasUncon)
 }
 
@@ -1037,13 +993,17 @@ Gamma2gammasUncon <- function(Gamma, prefix = "gammasUncon_") {
 #' @return
 #' For \code{gammasCon2Gamma}: a transition probability matrix.
 
-gammasCon2Gamma <- function(gammasCon, dim, prefix = "state_") {
+gammasCon2Gamma <- function(
+    gammasCon, dim, prefix = "state_", use_parameter_labels = TRUE
+  ) {
   Gamma <- diag(dim)
   Gamma[!Gamma] <- gammasCon
   for (i in 1:dim) {
     Gamma[i, i] <- 1 - (rowSums(Gamma)[i] - 1)
   }
-  colnames(Gamma) <- rownames(Gamma) <- paste0(prefix, seq_len(dim))
+  if (isTRUE(use_parameter_labels)) {
+    colnames(Gamma) <- rownames(Gamma) <- paste0(prefix, seq_len(dim))
+  }
   return(Gamma)
 }
 
@@ -1052,19 +1012,29 @@ gammasCon2Gamma <- function(gammasCon, dim, prefix = "state_") {
 #' For \code{gammasCon2gammasUncon}: a vector of unconstrained non-diagonal 
 #' elements of the transition probability matrix.
 
-gammasCon2gammasUncon <- function(gammasCon, dim, prefix = "gammasUncon_") {
-  Gamma2gammasUncon(gammasCon2Gamma(gammasCon, dim), prefix = prefix)
+gammasCon2gammasUncon <- function(
+    gammasCon, dim, prefix = "gammasUncon_", use_parameter_labels = TRUE
+  ) {
+  Gamma2gammasUncon(
+    gammasCon2Gamma(gammasCon, dim, use_parameter_labels = use_parameter_labels), 
+    prefix = prefix,
+    use_parameter_labels = use_parameter_labels
+  )
 }
 
 #' @rdname parameter_transformations
 #' @return
 #' For \code{gammasUncon2Gamma}: a transition probability matrix.
 
-gammasUncon2Gamma <- function(gammasUncon, dim, prefix = "state_") {
+gammasUncon2Gamma <- function(
+    gammasUncon, dim, prefix = "state_", use_parameter_labels = TRUE
+  ) {
   Gamma <- diag(dim)
   Gamma[!Gamma] <- exp(gammasUncon)
   Gamma <- Gamma / rowSums(Gamma)
-  colnames(Gamma) <- rownames(Gamma) <- paste0(prefix, seq_len(dim))
+  if (isTRUE(use_parameter_labels)) {
+    colnames(Gamma) <- rownames(Gamma) <- paste0(prefix, seq_len(dim))
+  }
   return(Gamma)
 }
 
@@ -1073,6 +1043,12 @@ gammasUncon2Gamma <- function(gammasUncon, dim, prefix = "state_") {
 #' For \code{gammasUncon2gammasCon}: a vector of constrained non-diagonal 
 #' elements of a transition probability matrix.
 
-gammasUncon2gammasCon <- function(gammasUncon, dim, prefix = "gammasCon_") {
-  Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim), prefix = prefix)
+gammasUncon2gammasCon <- function(
+    gammasUncon, dim, prefix = "gammasCon_", use_parameter_labels = TRUE
+  ) {
+  Gamma2gammasCon(
+    gammasUncon2Gamma(gammasUncon, dim, use_parameter_labels = use_parameter_labels), 
+    prefix = prefix,
+    use_parameter_labels = use_parameter_labels
+  )
 }

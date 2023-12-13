@@ -1,45 +1,45 @@
-test_that("input checks for download_yahoo() work", {
+test_that("input checks for download_data() work", {
   expect_error(
-    download_yahoo(symbol = c("two", "symbols")),
+    download_data(symbol = c("two", "symbols")),
     "'symbol' must be a single character"
   )
   expect_error(
-    download_yahoo(symbol = "^GDAXI", from = "yesterday"),
+    download_data(symbol = "^GDAXI", from = "yesterday"),
     "Date is not in required format"
   )
   expect_error(
-    download_yahoo(symbol = "^GDAXI", to = "today"),
+    download_data(symbol = "^GDAXI", to = "today"),
     "Date is not in required format"
   )
   expect_error(
-    download_yahoo(symbol = "^GDAXI", from = "2000-01-02", to = "2000-01-01"),
+    download_data(symbol = "^GDAXI", from = "2000-01-02", to = "2000-01-01"),
     "'to' must not be earlier than 'from'."
   )
   expect_warning(
-    download_yahoo(symbol = "^GDAXI", from = "1901-01-01"),
+    download_data(symbol = "^GDAXI", from = "1901-01-01"),
     "'from' is set to lower bound of '1902-01-01'."
   )
   expect_error(
-    download_yahoo(symbol = "^GDAXI", columns = 1),
+    download_data(symbol = "^GDAXI", columns = 1),
     "'columns' must be a character vector"
   )
   expect_error(
-    download_yahoo(symbol = "^GDAXI", columns = "not_valid"),
+    download_data(symbol = "^GDAXI", columns = "not_valid"),
     "should be one of"
   )
   expect_error(
-    download_yahoo(symbol = "^GDAXI", fill_dates = "not_TRUE_or_FALSE"),
+    download_data(symbol = "^GDAXI", fill_dates = "not_TRUE_or_FALSE"),
     "'fill_dates' must be TRUE or FALSE"
   )
   expect_error(
-    download_yahoo(symbol = "wrong_symbol"),
+    download_data(symbol = "wrong_symbol"),
     "Download failed."
   )
 })
 
 test_that("data download returns expected data", {
   skip_if_offline()
-  data <- download_yahoo(
+  data <- download_data(
     symbol = "^GDAXI", from = "2000-01-01", to = "2000-01-10",
     columns = c("Date", "Close"), fill_dates = TRUE
   )
@@ -57,12 +57,5 @@ test_that("data download returns expected data", {
       class = "data.frame", 
       row.names = c(NA, -10L)
     )
-  )
-})
-
-test_that("'download_data()' function shows deprecated warning", {
-  expect_warning(
-    download_data(symbol = "^GDAXI", from = "2000-01-03"),
-    "'download_data' is deprecated."
   )
 })

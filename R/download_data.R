@@ -54,7 +54,7 @@
 #' 
 #' @export
 
-download_yahoo <- function(
+download_data <- function(
     symbol, from = "1902-01-01", to = Sys.Date(), fill_dates = FALSE,
     columns = c("Date", "Open", "High", "Low", "Close", "Adj.Close", "Volume")
 ) {
@@ -119,15 +119,4 @@ download_yahoo <- function(
     data$Date <- as.character(data$Date)
   }
   data[, columns, drop = FALSE]
-}
-
-#' @inherit download_yahoo
-#' @export
-#' @param file,verbose Deprecated.
-
-download_data <- function(
-    symbol, from = "1902-01-01", to = Sys.Date(), file = NULL, verbose = TRUE
-) {
-  .Deprecated("download_yahoo()")
-  download_yahoo(symbol = symbol, from = from, to = to)
 }

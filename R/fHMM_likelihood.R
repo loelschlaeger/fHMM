@@ -95,10 +95,13 @@ nLL_hmm <- function(parUncon, observations, controls) {
   class(parUncon) <- "parUncon"
   T <- length(observations)
   nstates <- controls[["states"]][1]
-  par <- parUncon2par(parUncon, controls)
+  par <- parUncon2par(parUncon, controls, FALSE)
   sdd <- controls[["sdds"]][[1]]$name
   Gamma <- par[["Gamma"]]
-  delta <- oeli::stationary_distribution(Gamma, soft_fail = TRUE)
+  delta <- try(solve(t(diag(nstates) - Gamma + 1), rep(1, nstates)))
+  if (inherits(delta, "try-error")) {
+    stat_distr <- rep(1, nstates) / nstates
+  }
   mu <- par[["mu"]]
   sigma <- par[["sigma"]]
   df <- par[["df"]]
@@ -139,7 +142,6 @@ nLL_hmm <- function(parUncon, observations, controls) {
   -LL_HMM_Rcpp(allprobs, Gamma, delta, nstates, T)
 }
 
-
 #' Negative log-likelihood function of an HHMM
 #'
 #' @description
@@ -164,9 +166,12 @@ nLL_hhmm <- function(parUncon, observations, controls) {
   observations_cs <- observations[, 1]
   observations_fs <- observations[, -1]
   T <- length(observations_cs)
-  par <- parUncon2par(parUncon, controls)
+  par <- parUncon2par(parUncon, controls, FALSE)
   Gamma <- par[["Gamma"]]
-  delta <- oeli::stationary_distribution(Gamma, soft_fail = TRUE)
+  delta <- try(solve(t(diag(M) - Gamma + 1), rep(1, M)))
+  if (inherits(delta, "try-error")) {
+    stat_distr <- rep(1, M) / M
+  }
   mu <- par[["mu"]]
   sigma <- par[["sigma"]]
   df <- par[["df"]]
@@ -214,7 +219,7 @@ nLL_hhmm <- function(parUncon, observations, controls) {
       ),
       class = "fHMM_parameters"
     )
-    parUncon_m <- par2parUncon(par = par_m, controls = controls_split)
+    parUncon_m <- par2parUncon(par_m, controls_split, FALSE)
     for (t in seq_len(T)) {
       log_likelihoods[m, t] <- -nLL_hmm(
         parUncon_m, observations_fs[t, ][!is.na(observations_fs[t, ])],

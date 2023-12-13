@@ -22,83 +22,69 @@
 \alias{gammasUncon2gammasCon}
 \title{Parameter transformations}
 \usage{
-par2parUncon(
-  par,
-  controls = list(),
-  hierarchy = FALSE,
-  states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-  check_controls = FALSE
+par2parUncon(par, controls, use_parameter_labels = TRUE)
+
+parUncon2parCon(parUncon, controls, use_parameter_labels = TRUE)
+
+parCon2par(parCon, controls, use_parameter_labels = TRUE)
+
+par2parCon(par, controls, use_parameter_labels = TRUE)
+
+parCon2parUncon(parCon, controls, use_parameter_labels = TRUE)
+
+parUncon2par(parUncon, controls, use_parameter_labels = TRUE)
+
+muCon2muUncon(muCon, link, prefix = "muUncon_", use_parameter_labels = TRUE)
+
+muUncon2muCon(muUncon, link, prefix = "muCon_", use_parameter_labels = TRUE)
+
+sigmaCon2sigmaUncon(
+  sigmaCon,
+  prefix = "sigmaUncon_",
+  use_parameter_labels = TRUE
 )
 
-parUncon2parCon(
-  parUncon,
-  controls = list(),
-  hierarchy = FALSE,
-  states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-  check_controls = FALSE
+sigmaUncon2sigmaCon(
+  sigmaUncon,
+  prefix = "sigmaCon_",
+  use_parameter_labels = TRUE
 )
 
-parCon2par(
-  parCon,
-  controls = list(),
-  hierarchy = FALSE,
-  states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-  check_controls = FALSE
+dfCon2dfUncon(dfCon, prefix = "dfUncon_", use_parameter_labels = TRUE)
+
+dfUncon2dfCon(dfUncon, prefix = "dfCon_", use_parameter_labels = TRUE)
+
+Gamma2gammasCon(
+  Gamma,
+  shift = 0.001,
+  prefix = "gammasCon_",
+  use_parameter_labels = TRUE
 )
 
-par2parCon(
-  par,
-  controls = list(),
-  hierarchy = FALSE,
-  states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-  check_controls = FALSE
+Gamma2gammasUncon(Gamma, prefix = "gammasUncon_", use_parameter_labels = TRUE)
+
+gammasCon2Gamma(gammasCon, dim, prefix = "state_", use_parameter_labels = TRUE)
+
+gammasCon2gammasUncon(
+  gammasCon,
+  dim,
+  prefix = "gammasUncon_",
+  use_parameter_labels = TRUE
 )
 
-parCon2parUncon(
-  parCon,
-  controls = list(),
-  hierarchy = FALSE,
-  states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-  check_controls = FALSE
+gammasUncon2Gamma(
+  gammasUncon,
+  dim,
+  prefix = "state_",
+  use_parameter_labels = TRUE
 )
 
-parUncon2par(
-  parUncon,
-  controls = list(),
-  hierarchy = FALSE,
-  states = if (!hierarchy) 2 else c(2, 2),
-  sdds = if (!hierarchy) "normal" else c("normal", "normal"),
-  check_controls = FALSE
+gammasUncon2gammasCon(
+  gammasUncon,
+  dim,
+  prefix = "gammasCon_",
+  use_parameter_labels = TRUE
 )
-
-muCon2muUncon(muCon, link, prefix = "muUncon_")
-
-muUncon2muCon(muUncon, link, prefix = "muCon_")
-
-sigmaCon2sigmaUncon(sigmaCon, prefix = "sigmaUncon_")
-
-sigmaUncon2sigmaCon(sigmaUncon, prefix = "sigmaCon_")
-
-dfCon2dfUncon(dfCon, prefix = "dfUncon_")
-
-dfUncon2dfCon(dfUncon, prefix = "dfCon_")
-
-Gamma2gammasCon(Gamma, shift = 0.001, prefix = "gammasCon_")
-
-Gamma2gammasUncon(Gamma, prefix = "gammasUncon_")
-
-gammasCon2Gamma(gammasCon, dim, prefix = "state_")
-
-gammasCon2gammasUncon(gammasCon, dim, prefix = "gammasUncon_")
-
-gammasUncon2Gamma(gammasUncon, dim, prefix = "state_")
-
-gammasUncon2gammasCon(gammasUncon, dim, prefix = "gammasCon_")
 }
 \arguments{
 \item{par}{An object of class \code{\link{fHMM_parameters}}, which is a \code{list}
@@ -123,48 +109,8 @@ Unspecified parameters are set to their default values, see below.
 
 Specifications in \code{controls} override individual specifications.}
 
-\item{hierarchy}{A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
-
-If \code{hierarchy = TRUE}, some of the other controls must be specified for
-the coarse-scale and the fine-scale layer.
-
-By default, \code{hierarchy = FALSE}.}
-
-\item{states}{An \code{integer}, the number of states of the underlying Markov chain.
-
-If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
-2. The first entry corresponds to the coarse-scale layer, while the second
-entry corresponds to the fine-scale layer.
-
-By default, \code{states = 2} if \code{hierarchy = FALSE} and
-\code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
-
-\item{sdds}{A \code{character}, specifying the state-dependent distribution. One of
-\itemize{
-\item \code{"normal"} (the normal distribution),
-\item \code{"lognormal"} (the log-normal distribution),
-\item \code{"t"} (the t-distribution),
-\item \code{"gamma"} (the gamma distribution),
-\item \code{"poisson"} (the Poisson distribution).
-}
-
-The distribution parameters, i.e. the
-\itemize{
-\item mean \code{mu},
-\item standard deviation \code{sigma} (not for the Poisson distribution),
-\item degrees of freedom \code{df} (only for the t-distribution),
-}
-can be fixed via, e.g., \code{"t(df = 1)"} or
-\code{"gamma(mu = 0, sigma = 1)"}.
-To fix different values of a parameter for different states, separate by
-"|", e.g. \code{"poisson(mu = 1|2|3)"}.
-
-If \code{hierarchy = TRUE}, \code{sdds} must be a \code{vector} of length 2.
-The first entry corresponds to the coarse-scale layer, while the second entry
-corresponds to the fine-scale layer.
-
-By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
-\code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.}
+\item{use_parameter_labels}{Either \code{TRUE} to label the parameters or \code{FALSE}, if not (this can
+save computation time).}
 
 \item{parUncon}{An object of class \code{parUncon}, which is a \code{numeric} \code{vector}
 with identified and unconstrained model parameters in the following order:
@@ -191,7 +137,7 @@ with identified (and constrained) model parameters in the following order:
 \item{link}{Either \code{TRUE} or \code{FALSE}, determining whether to apply the link
 function.}
 
-\item{prefix}{A \code{character} prefix for labelling.}
+\item{prefix}{A \code{character} prefix for labeling the parameters.}
 
 \item{sigmaCon, sigmaUncon}{A vector of (un-) constrained standard deviations.}
 

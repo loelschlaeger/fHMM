@@ -44,7 +44,78 @@ devtools::install_github("loelschlaeger/fHMM")
 
 We are open to contributions and would appreciate your input! If you encounter any issues, please [submit bug reports as issues](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=bug&template=bug.md). If you have any ideas for new features, please submit them as [feature requests](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=future&template=suggestion.md). If you would like to add extensions to the package, please fork the "master" branch and submit merge requests. We look forward to your contributions!
 
-## Example 1: Simulating HMM data and maximizing the likelihood
+## Example 1: Fitting an HMM to the DAX
+
+We fit a 3-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2022. The states can be interpreted as proxies for bearish (green below) and bullish markets (red) and an "in-between" market state (yellow).
+
+```{r}
+library("fHMM")
+```
+
+The package has a build-in function to download financial data from [Yahoo Finance](https://finance.yahoo.com/):
+
+```{r data download, eval = FALSE}
+dax <- download_data(symbol = "^GDAXI", file = NULL, verbose = FALSE)
+```
+
+We first need to define the model:
+
+```{r controls, eval = FALSE}
+controls <- set_controls(
+  states      = 3,
+  sdds        = "t",
+  file        = dax,
+  date_column = "Date",
+  data_column = "Close",
+  logreturns  = TRUE,
+  from        = "2000-01-01",
+  to          = "2022-12-31"
+)
+```
+
+The function `prepare_data()` then prepares the data for estimation:
+
+```{r data, eval = FALSE}
+data <- prepare_data(controls)
+```
+
+The `summary()` method gives an overview:
+
+```{r summary_data}
+summary(data)
+```
+
+We fit the model and subsequently decode the hidden states and compute (pseudo-) residuals:
+
+```{r fit, eval = FALSE}
+model <- fit_model(data)
+model <- decode_states(model)
+model <- compute_residuals(model)
+```
+
+The `summary()` method gives an overview of the model fit:
+
+```{r summary_model}
+summary(model)
+```
+
+Having estimated the model, we can visualize the state-dependent distributions and the decoded time series:
+
+```{r plot_model_fit, fig.dim = c(10,6)}
+events <- fHMM_events(
+  list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
+       labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers", "First COVID-19 case Germany"))
+)
+plot(model, plot_type = c("sdds","ts"), events = events)
+```
+
+The (pseudo-) residuals help to evaluate the model fit:
+
+```{r plot_model_residuals, fig.dim = c(10,6)}
+plot(model, plot_type = "pr")
+```
+
+## Example 2: Simulating HMM data and maximizing the likelihood
 
 ```{r, eval = FALSE}
 ### define the model: 3-state HMM with normal sdds
@@ -92,75 +163,4 @@ estimated_parameters$mu
 
 true_parameters$sigma
 estimated_parameters$sigma
-```
-
-## Example 2: Fitting an HMM to the DAX
-
-We fit a 3-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2022. The states can be interpreted as proxies for bearish (green below) and bullish markets (red) and an "in-between" market state (yellow).
-
-```{r}
-library("fHMM")
-```
-
-The package has a build-in function to download financial data from [Yahoo Finance](https://finance.yahoo.com/):
-
-```{r data download, eval = FALSE}
-dax <- download_data(symbol = "^GDAXI", file = NULL, verbose = FALSE)
-```
-
-We first need to define the model:
-
-```{r controls, eval = FALSE}
-controls <- set_controls(
-  states = 3,
-  sdds   = "t",
-  data   = list(file        = dax,
-                date_column = "Date",
-                data_column = "Close",
-                logreturns  = TRUE,
-                from        = "2000-01-01",
-                to          = "2022-12-31")
-)
-```
-
-The function `prepare_data()` then prepares the data for estimation:
-
-```{r data, eval = FALSE}
-data <- prepare_data(controls)
-```
-
-The `summary()` method gives an overview:
-
-```{r summary_data}
-summary(data)
-```
-
-We fit the model and subsequently decode the hidden states and compute (pseudo-) residuals:
-
-```{r fit, eval = FALSE}
-model <- fit_model(data)
-model <- decode_states(model)
-model <- compute_residuals(model)
-```
-
-The `summary()` method gives an overview of the model fit:
-
-```{r summary_model}
-summary(model)
-```
-
-Having estimated the model, we can visualize the state-dependent distributions and the decoded time series:
-
-```{r plot_model_fit, fig.dim = c(10,6)}
-events <- fHMM_events(
-  list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
-       labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers", "First COVID-19 case Germany"))
-)
-plot(model, plot_type = c("sdds","ts"), events = events)
-```
-
-The (pseudo-) residuals help to evaluate the model fit:
-
-```{r plot_model_residuals, fig.dim = c(10,6)}
-plot(model, plot_type = "pr")
 ```
