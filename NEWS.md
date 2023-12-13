@@ -2,6 +2,22 @@
 
 * Controls can now be provided separately for the `set_controls()` function.
 
+* The arguments in `fHMM_parameters()` for model parameters were slightly renamed as follows:
+
+  - `mus` -> `mu`
+  
+  - `sigmas` -> `sigma`
+  
+  - `dfs` -> `df`
+  
+  - `Gammas_star` -> `Gamma_star`
+  
+  - `mus_star` -> `mu_star`
+  
+  - `sigmas_star` -> `sigma_star`
+  
+  - `dfs_star` -> `df_star`
+
 * The log-normal state-dependent distribution is renamed: `lnorm` -> `lognormal`.
 
 * Two more state-dependent distributions were added: `normal` and `poisson`.
