@@ -110,7 +110,7 @@ simulate_hmm <- function(
         mu = true_parameters$mu_star[[S_t]],
         sigma = true_parameters$sigma_star[[S_t]],
         df = true_parameters$df_star[[S_t]],
-        seed = seed + t,
+        seed = if (!is.null(seed)) seed + t else NULL,
         total_length = max(T_star)
       )
       time_points[t, -1] <- c(
