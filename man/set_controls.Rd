@@ -293,7 +293,7 @@ set_controls(
 set_controls(
   states      = 3,
   sdds        = "normal",
-  file        = download_yahoo("^GDAXI"), # the data set
+  file        = download_data("^GDAXI"), # the data set
   date_column = "Date",                   # the column with the dates
   data_column = "Close"                   # the column with the data
 )

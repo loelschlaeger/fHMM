@@ -7,7 +7,7 @@
 #' @details 
 #' The data was obtained via: 
 #' \preformatted{
-#' spx <- download_yahoo(
+#' spx <- download_data(
 #'   symbol = "^GSPC",    # S&P 500 identifier on Yahoo Finance
 #'   from = "1928-01-01", # first observation
 #'   to = "2022-12-31"    # last observation
@@ -43,7 +43,7 @@
 #' @details 
 #' The data was obtained via: 
 #' \preformatted{
-#' dax <- download_yahoo(
+#' dax <- download_data(
 #'   symbol = "^GDAXI",   # DAX identifier on Yahoo Finance
 #'   from = "1988-01-01", # first observation
 #'   to = "2022-12-31"    # last observation
@@ -79,7 +79,7 @@
 #' @details 
 #' The data was obtained via: 
 #' \preformatted{
-#' vw <- download_yahoo(
+#' vw <- download_data(
 #'   symbol = "VOW3.DE",  # Volkswagen AG identifier on Yahoo Finance
 #'   from = "1988-07-22", # first observation
 #'   to = "2022-12-31"    # last observation

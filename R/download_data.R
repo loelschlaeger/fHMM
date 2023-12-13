@@ -46,7 +46,7 @@
 #'
 #' @examples
 #' ### 21st century DAX closing prices
-#' data <- download_yahoo(
+#' data <- download_data(
 #'   symbol = "^GDAXI", from = "2000-01-01", columns = c("Date", "Close"),
 #'   fill_dates = TRUE
 #' )
