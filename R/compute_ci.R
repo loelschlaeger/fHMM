@@ -20,13 +20,6 @@
 #' }
 #'
 #' @keywords internal
-#'
-#' @examples
-#' \dontrun{
-#' compute_ci(x = dax_model_3t, alpha = 0.05)
-#' }
-#'
-#' @importFrom stats qnorm
 
 compute_ci <- function(x, alpha = 0.05) {
 

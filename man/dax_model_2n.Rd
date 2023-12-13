@@ -18,9 +18,9 @@ demonstration purpose.
 \details{
 The model was estimated via:
 \preformatted{
-controls <- list(
+controls <- set_controls(
   states = 2,
-  sdds   = "t(df = Inf)",
+  sdds   = "t(df = normal)",
   data   = list(
     file        = dax,
     date_column = "Date",
@@ -31,7 +31,6 @@ controls <- list(
   ),
   fit    = list(runs = 100)
 )
-controls <- set_controls(controls)
 dax_data <- prepare_data(controls)
 dax_model_2n <- fit_model(dax_data)
 }

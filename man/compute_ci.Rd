@@ -24,10 +24,4 @@ A \code{list} containing the following elements:
 This helper function computes confidence intervals for the estimates of an
 \code{\link{fHMM_model}} object using the inverse Fisher information.
 }
-\examples{
-\dontrun{
-compute_ci(x = dax_model_3t, alpha = 0.05)
-}
-
-}
 \keyword{internal}

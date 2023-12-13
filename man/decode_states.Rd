@@ -2,14 +2,47 @@
 % Please edit documentation in R/decode_states.R
 \name{decode_states}
 \alias{decode_states}
+\alias{viterbi}
 \title{Decode the underlying hidden state sequence}
 \usage{
 decode_states(x, verbose = TRUE)
+
+viterbi(observations, nstates, sdd, Gamma, mu, sigma = NULL, df = NULL)
 }
 \arguments{
 \item{x}{An object of class \code{\link{fHMM_model}}.}
 
 \item{verbose}{Set to \code{TRUE} to print progress messages.}
+
+\item{observations}{A \code{numeric} \code{vector} of state-dependent observations.}
+
+\item{nstates}{The number of states.}
+
+\item{sdd}{A \code{character}, specifying the state-dependent distribution. One of
+\itemize{
+\item \code{"normal"} (the normal distribution),
+\item \code{"lognormal"} (the log-normal distribution),
+\item \code{"t"} (the t-distribution),
+\item \code{"gamma"} (the gamma distribution),
+\item \code{"poisson"} (the Poisson distribution).
+}}
+
+\item{Gamma}{A transition probability \code{matrix} of dimension \code{nstates}.}
+
+\item{mu}{A \code{numeric} vector of expected values for the state-dependent
+distribution in the different states of length \code{nstates}.
+
+For the gamma- or Poisson-distribution, \code{mu} must be positive.}
+
+\item{sigma}{A positive \code{numeric} vector of standard deviations for the
+state-dependent distribution in the different states of length \code{nstates}.
+
+Not relevant in case of a state-dependent Poisson distribution.}
+
+\item{df}{A positive \code{numeric} vector of degrees of freedom for the
+state-dependent distribution in the different states of length \code{nstates}.
+
+Only relevant in case of a state-dependent t-distribution.}
 }
 \value{
 An object of class \code{\link{fHMM_model}} with decoded state sequence
@@ -22,6 +55,13 @@ applying the Viterbi algorithm for global decoding.
 \examples{
 decode_states(dax_model_3t)
 plot(dax_model_3t, type = "ts")
+viterbi(
+  observations = c(1, 1, 1, 10, 10, 10),
+  nstates      = 2,
+  sdd          = "poisson",
+  Gamma        = matrix(0.5, 2, 2),
+  mu           = c(1, 10)
+)
 
 }
 \references{

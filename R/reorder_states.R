@@ -63,30 +63,30 @@ reorder_states <- function(x, state_order) {
   par <- parUncon2par(x$estimate, x$data$controls)
   permut <- diag(x$data$controls$states[1])[state_order[, 1], ]
   par$Gamma <- permut %*% par$Gamma %*% t(permut)
-  par$mus <- as.vector(permut %*% par$mus)
-  par$sigmas <- as.vector(permut %*% par$sigmas)
+  par$mu <- as.vector(permut %*% par$mu)
+  par$sigma <- as.vector(permut %*% par$sigma)
   if (x$data$controls$sdds[[1]]$name == "t") {
-    par$dfs <- as.vector(permut %*% par$dfs)
+    par$df <- as.vector(permut %*% par$df)
   }
   if (x$data$controls$hierarchy) {
-    par$Gammas_star <- par$Gammas_star[state_order[, 1]]
-    par$mus_star <- par$mus_star[state_order[, 1]]
-    par$sigmas_star <- par$sigmas_star[state_order[, 1]]
+    par$Gamma_star <- par$Gamma_star[state_order[, 1]]
+    par$mu_star <- par$mu_star[state_order[, 1]]
+    par$sigma_star <- par$sigma_star[state_order[, 1]]
     if (x$data$controls$sdds[[1]]$name == "t") {
-      par$dfs_star <- par$dfs_star[state_order[, 1]]
+      par$df_star <- par$df_star[state_order[, 1]]
     }
     for (s in state_order[, 1]) {
       permut <- diag(x$data$controls$states[2])[state_order[which(state_order[, 1] == s), -1], ]
-      par$Gammas_star[[s]] <- permut %*% par$Gammas_star[[s]] %*% t(permut)
-      par$mus_star[[s]] <- as.vector(permut %*% par$mus_star[[s]])
-      par$sigmas_star[[s]] <- as.vector(permut %*% par$sigmas_star[[s]])
+      par$Gamma_star[[s]] <- permut %*% par$Gamma_star[[s]] %*% t(permut)
+      par$mu_star[[s]] <- as.vector(permut %*% par$mu_star[[s]])
+      par$sigma_star[[s]] <- as.vector(permut %*% par$sigma_star[[s]])
       if (x$data$controls$sdds[[2]]$name == "t") {
-        par$dfs_star[[s]] <- as.vector(permut %*% par$dfs_star[[s]])
+        par$df_star[[s]] <- as.vector(permut %*% par$df_star[[s]])
       }
     }
   }
   parUncon <- par2parUncon(par, x$data$controls)
-  permut_all <- diag(length(x$estimate))[match_all(x$estimate, parUncon), ]
+  permut_all <- diag(length(x$estimate))[oeli::match_numerics(x$estimate, parUncon), ]
   x$estimate <- parUncon
   x$gradient <- as.vector(permut_all %*% x$gradient)
   x$hessian <- permut_all %*% x$hessian %*% t(permut_all)

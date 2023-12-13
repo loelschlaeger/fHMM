@@ -17,16 +17,16 @@ means fixed to \code{0.5} and \code{2} on \code{500} simulated observations.
 \details{
 The model was estimated via:
 \preformatted{
-controls <- list(
+controls <- set_controls(
   states  = 2,
   sdds    = "gamma(mu = 1|2)",
   horizon = 200,
   fit     = list(runs = 50)
 )
-controls <- set_controls(controls)
 pars <- fHMM_parameters(
-  controls = controls, Gamma = matrix(c(0.9, 0.2, 0.1, 0.8), nrow = 2),
-  sigmas = c(0.5, 1)
+  controls = controls, 
+  Gamma = matrix(c(0.9, 0.2, 0.1, 0.8), nrow = 2),
+  sigma = c(0.5, 1)
 )
 data_sim <- prepare_data(controls, true_parameters = pars, seed = 1)
 sim_model_2gamma <- fit_model(data_sim, seed = 1)

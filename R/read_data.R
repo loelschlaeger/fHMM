@@ -20,8 +20,6 @@
 #' }
 #' 
 #' @keywords internal
-#'
-#' @importFrom utils read.csv head
 
 read_data <- function(controls) {
 

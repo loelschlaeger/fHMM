@@ -166,8 +166,6 @@ plot.fHMM_model <- function(
 #' No return value. Draws a plot to the current device.
 #'
 #' @keywords internal
-#'
-#' @importFrom graphics axis points
 
 plot_ll <- function(lls, ll_relative = TRUE) {
   if (!isTRUE(ll_relative) && !isFALSE(ll_relative)) {
@@ -221,11 +219,7 @@ plot_ll <- function(lls, ll_relative = TRUE) {
 #' @return
 #' No return value. Draws a plot to the current device.
 #'
-#' @keywords
-#' internal
-#'
-#' @importFrom graphics hist curve abline layout mtext title
-#' @importFrom stats dnorm qqnorm acf
+#' @keywords internal
 
 plot_pr <- function(residuals, hierarchy) {
 
@@ -323,9 +317,6 @@ plot_pr <- function(residuals, hierarchy) {
 #' No return value. Draws a plot to the current device.
 #'
 #' @keywords internal
-#'
-#' @importFrom graphics par lines legend layout
-#' @importFrom stats dt dgamma
 
 plot_sdds <- function(est, true = NULL, controls, colors) {
 
@@ -344,10 +335,16 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
   density <- function(name, x, sigma, mu, df) {
     if (name == "t") {
       (1 / sigma) * stats::dt(x = (x - mu) / sigma, df = df)
-    } else if (name == "lnorm") {
+    } else if (name == "normal") {
+      stats::dnorm(x = x, mean = mu, sd = sigma)
+    } else if (name == "lognormal") {
       stats::dlnorm(x = x, meanlog = mu, sdlog = sigma)
     } else if (name == "gamma") {
       stats::dgamma(x = x, shape = mu^2 / sigma^2, scale = sigma^2 / mu)
+    } else if (name == "poisson") {
+      stats::dpois(x = x, lambda = mu)
+    } else {
+      stop("Unknown state-dependent distribution", call. = FALSE)
     }
   }
 
@@ -361,11 +358,11 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
       xmin <- xlim_fix[1]
       xmax <- xlim_fix[2]
     } else {
-      xmin <- min(est$mus - 3 * est$sigmas, na.rm = TRUE)
-      xmax <- max(est$mus + 3 * est$sigmas, na.rm = TRUE)
+      xmin <- min(est$mu - 3 * est$sigma, na.rm = TRUE)
+      xmax <- max(est$mu + 3 * est$sigma, na.rm = TRUE)
       if (!is.null(true)) {
-        xmin <- min(xmin, min(true$mus - 3 * true$sigmas, na.rm = TRUE), na.rm = TRUE)
-        xmax <- max(xmax, max(true$mus + 3 * true$sigmas, na.rm = TRUE), na.rm = TRUE)
+        xmin <- min(xmin, min(true$mu - 3 * true$sigma, na.rm = TRUE), na.rm = TRUE)
+        xmax <- max(xmax, max(true$mu + 3 * true$sigma, na.rm = TRUE), na.rm = TRUE)
       }
       if (name == "gamma") {
         xmin <- 0.01
@@ -378,16 +375,16 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
     f.x <- list()
     for (s in 1:nstates) {
       f.x[[s]] <- density(
-        name = name, x = x, mu = est$mus[s], sigma = est$sigmas[s],
-        df = est$dfs[s]
+        name = name, x = x, mu = est$mu[s], sigma = est$sigma[s],
+        df = est$df[s]
       )
     }
     f.x_true <- list()
     if (!is.null(true)) {
       for (s in 1:nstates) {
         f.x_true[[s]] <- density(
-          name = name, x = x, mu = true$mus[s], sigma = true$sigmas[s],
-          df = true$dfs[s]
+          name = name, x = x, mu = true$mu[s], sigma = true$sigma[s],
+          df = true$df[s]
         )
       }
     }
@@ -433,13 +430,13 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
     colors = if (controls$hierarchy) colors[["cs"]] else colors,
     main = "State-dependent distributions",
     est = list(
-      "mus" = est$mus, "sigmas" = est$sigmas,
-      "dfs" = est$dfs
+      "mu" = est$mu, "sigma" = est$sigma,
+      "df" = est$df
     ),
     true = if (!is.null(true)) {
       list(
-        "mus" = true$mus, "sigmas" = true$sigmas,
-        "dfs" = true$dfs
+        "mu" = true$mu, "sigma" = true$sigma,
+        "df" = true$df
       )
     } else {
       NULL
@@ -457,22 +454,22 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
         colors = colors[["fs"]][s, ],
         main = paste("Conditional on coarse-scale state", s),
         est = list(
-          "mus" = est$mus_star[[s]],
-          "sigmas" = est$sigmas_star[[s]],
-          "dfs" = est$dfs_star[[s]]
+          "mu" = est$mu_star[[s]],
+          "sigma" = est$sigma_star[[s]],
+          "df" = est$df_star[[s]]
         ),
         true = if (!is.null(true)) {
           list(
-            "mus" = true$mus_star[[s]],
-            "sigmas" = true$sigmas_star[[s]],
-            "dfs" = true$dfs_star[[s]]
+            "mu" = true$mu_star[[s]],
+            "sigma" = true$sigma_star[[s]],
+            "df" = true$df_star[[s]]
           )
         } else {
           NULL
         },
         xlim_fix = c(
-          min(mapply(function(x,y) x - 3*y, est$mus_star, est$sigmas_star), na.rm = TRUE),
-          max(mapply(function(x,y) x + 3*y, est$mus_star, est$sigmas_star), na.rm = TRUE)
+          min(mapply(function(x,y) x - 3*y, est$mu_star, est$sigma_star), na.rm = TRUE),
+          max(mapply(function(x,y) x + 3*y, est$mu_star, est$sigma_star), na.rm = TRUE)
         )
       )
       legend(
@@ -499,10 +496,6 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 #' No return value. Draws a plot to the current device.
 #'
 #' @keywords internal
-#'
-#' @importFrom graphics par abline mtext points layout plot.new text
-#' @importFrom grDevices rgb
-#' @importFrom stats na.omit
 
 plot_ts <- function(
     data, decoding, colors, events = NULL, title = NULL, from = NULL, to = NULL
@@ -555,14 +548,14 @@ plot_ts <- function(
       ylim <- c(ymin - (ymax - ymin) * 2, ymax)
     }
     if (is.null(from)) {
-      xmin <- as.Date(paste0(find_closest_year(xdata[1]), "-01-01"))
+      xmin <- as.Date(paste0(oeli::find_closest_year(xdata[1]), "-01-01"))
     } else {
-      xmin <- check_date(from)
+      xmin <- oeli::check_date(from)
     }
     if (is.null(to)) {
-      xmax <- as.Date(paste0(find_closest_year(tail(xdata, n = 1)), "-01-01"))
+      xmax <- as.Date(paste0(oeli::find_closest_year(tail(xdata, n = 1)), "-01-01"))
     } else {
-      xmax <- check_date(to)
+      xmax <- oeli::check_date(to)
     }
     plot(
       xdata, ydata, type = "l", xlim = c(xmin, xmax), ylim = ylim, 

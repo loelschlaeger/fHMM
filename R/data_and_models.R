@@ -141,9 +141,9 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
-#' controls <- list(
+#' controls <- set_controls(
 #'   states = 2,
-#'   sdds   = "t(df = Inf)",
+#'   sdds   = "t(df = normal)",
 #'   data   = list(
 #'     file        = dax,
 #'     date_column = "Date",
@@ -154,7 +154,6 @@
 #'   ),
 #'   fit    = list(runs = 100)
 #' )
-#' controls <- set_controls(controls)
 #' dax_data <- prepare_data(controls)
 #' dax_model_2n <- fit_model(dax_data)
 #' }
@@ -176,7 +175,7 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
-#' controls <- list(
+#' controls <- set_controls(
 #'   states = 3,
 #'   sdds   = "t",
 #'   data   = list(
@@ -189,7 +188,6 @@
 #'   ),
 #'   fit    = list(runs = 200)
 #' )
-#' controls <- set_controls(controls)
 #' dax_data <- prepare_data(controls)
 #' dax_model_3t <- fit_model(dax_data)
 #' }
@@ -212,7 +210,7 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
-#' controls <- list(
+#' controls <- set_controls(
 #'   hierarchy = TRUE,
 #'   states    = c(2, 2),
 #'   sdds      = c("t", "t"),
@@ -227,7 +225,6 @@
 #'     runs = 200
 #'   )
 #' )
-#' controls <- set_controls(controls)
 #' dax_vw_data <- prepare_data(controls)
 #' dax_vw_model <- fit_model(dax_vw_data)
 #' }
@@ -249,7 +246,7 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
-#' controls <- list(
+#' controls <- set_controls(
 #'   hierarchy = TRUE,
 #'   states    = c(3, 2),
 #'   sdds      = c("t", "t"),
@@ -267,7 +264,6 @@
 #'     iterlim = 300
 #'   )
 #' )
-#' controls <- set_controls(controls)
 #' unemp_spx_data <- prepare_data(controls)
 #' unemp_spx_model_3_2 <- fit_model(unemp_spx_data)
 #' }
@@ -288,16 +284,16 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
-#' controls <- list(
+#' controls <- set_controls(
 #'   states  = 2,
 #'   sdds    = "gamma(mu = 1|2)",
 #'   horizon = 200,
 #'   fit     = list(runs = 50)
 #' )
-#' controls <- set_controls(controls)
 #' pars <- fHMM_parameters(
-#'   controls = controls, Gamma = matrix(c(0.9, 0.2, 0.1, 0.8), nrow = 2),
-#'   sigmas = c(0.5, 1)
+#'   controls = controls, 
+#'   Gamma = matrix(c(0.9, 0.2, 0.1, 0.8), nrow = 2),
+#'   sigma = c(0.5, 1)
 #' )
 #' data_sim <- prepare_data(controls, true_parameters = pars, seed = 1)
 #' sim_model_2gamma <- fit_model(data_sim, seed = 1)
@@ -319,13 +315,12 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
-#' controls <- list(
+#' controls <- set_controls(
 #'   states  = 4,
-#'   sdds    = "lnorm",
+#'   sdds    = "lognormal",
 #'   horizon = 1000,
 #'   fit     = list(runs = 50)
 #' )
-#' controls <- set_controls(controls)
 #' data_sim <- prepare_data(controls, seed = 1)
 #' sim_model_4lnorm <- fit_model(data_sim, seed = 1)
 #' }

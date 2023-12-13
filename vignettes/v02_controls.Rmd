@@ -29,10 +29,11 @@ The `{fHMM}` philosophy is to start the modeling process by setting all data, mo
 
 ## Example specifications
 
-For demonstration, we list example specifications using data from the Deutscher Aktienindex DAX^[The `download_data()` function is explained in the vignette on data management.] [@jan92]:
+For demonstration, we list example specifications using data from the Deutscher Aktienindex DAX^[The `download_data()` function is explained in [the vignette on data management](https://loelschlaeger.de/fHMM/articles/v03_data_management.html).] [@jan92]:
 
 ```{r}
-download_data(symbol = "^GDAXI", file = "dax.csv")
+dax <- download_data(symbol = "^GDAXI")
+head(dax)
 ```
 
 ### HMMs for empirical data
@@ -43,7 +44,7 @@ The following lines of code specify a 3-state HMM with state-dependent t-distrib
 controls <- list(
   states = 3,
   sdds   = "t",
-  data   = list(file        = "dax.csv",
+  data   = list(file        = dax,
                 date_column = "Date",
                 data_column = "Close",
                 logreturns  = TRUE),

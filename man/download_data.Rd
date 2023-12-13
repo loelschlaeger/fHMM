@@ -8,37 +8,44 @@ download_data(
   symbol,
   from = "1902-01-01",
   to = Sys.Date(),
-  file = NULL,
-  verbose = TRUE
+  fill_dates = FALSE,
+  columns = c("Date", "Open", "High", "Low", "Close", "Adj.Close", "Volume")
 )
 }
 \arguments{
-\item{symbol}{A \code{character}, the stock's symbol. It must match the identifier on
-\url{https://finance.yahoo.com/}.}
+\item{symbol}{A \code{character}, the stock's symbol.
 
-\item{from}{A \code{character}, a date in format \code{"YYYY-MM-DD"}, setting the lower
-data bound. Must not be earlier than \code{"1902-01-01"} (default).}
+It must match the identifier on \url{https://finance.yahoo.com/}.}
 
-\item{to}{A \code{character}, a date in format \code{"YYYY-MM-DD"}, setting the upper
-data bound. Default is the current date \code{Sys.date()}.}
+\item{from}{A \code{character} in the format \code{"YYYY-MM-DD"}, setting the lower
+data bound.
 
-\item{file}{Either
-\itemize{
-\item \code{NULL} (default) to return the data as a \code{data.frame},
-\item or a \code{character}, the name of the file where the data is saved as a
-\code{.csv}-file.
-}}
+Must not be earlier than \code{"1902-01-01"} (default).}
 
-\item{verbose}{Set to \code{TRUE} to return information about download success.}
+\item{to}{A \code{character} in the format \code{"YYYY-MM-DD"}, setting the upper
+data bound.
+
+Default is the current date \code{Sys.date()}.}
+
+\item{fill_dates}{Set to \code{TRUE} to fill missing dates (e.g., days at which the stock
+market is closed) with \code{NA}'s.
+
+By default, \code{fill_dates = FALSE}.}
+
+\item{columns}{A \code{character} of requested data columns, see the details.
+
+By default, all columns are returned.}
 }
 \value{
-A \code{data.frame} if \code{file = NULL}.
+A \code{data.frame}.
 }
 \description{
-This function downloads stock data from \url{https://finance.yahoo.com/}.
+This function downloads financial data from \url{https://finance.yahoo.com/}
+and returns it as a \code{data.frame}.
 }
 \details{
-The downloaded data has the following columns:
+Yahoo Finance provides historical daily data for stocks or indices.
+The following data columns are available:
 \itemize{
 \item \code{Date}: The date.
 \item \code{Open}: Opening price.
@@ -50,8 +57,11 @@ The downloaded data has the following columns:
 }
 }
 \examples{
-### download 21st century DAX data
-data <- download_data(symbol = "^GDAXI", from = "2000-01-03")
+### 21st century DAX closing prices
+data <- download_data(
+  symbol = "^GDAXI", from = "2000-01-01", columns = c("Date", "Close"),
+  fill_dates = TRUE
+)
 head(data)
 
 }

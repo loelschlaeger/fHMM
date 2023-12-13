@@ -9,7 +9,10 @@ test_that("model comparison works", {
       loglikelihood2 = 17650, AIC1 = -34795, AIC2 = -35269, BIC1 = -34755, 
       BIC2 = -35169)          
   )
-  expect_error(compare_models("not_an_fHMM_model"))
+  expect_error(
+    compare_models("not_an_fHMM_model"),
+    "Input 'not_an_fHMM_model' is not of class 'fHMM_model'."
+  )
   expect_warning(
     compare_models(dax_model_2n, sim_model_2gamma),
     "are not estimated on the same data"

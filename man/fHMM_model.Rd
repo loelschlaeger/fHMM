@@ -2,6 +2,17 @@
 % Please edit documentation in R/fHMM_model.R
 \name{fHMM_model}
 \alias{fHMM_model}
+\alias{print.fHMM_model}
+\alias{residuals.fHMM_model}
+\alias{summary.fHMM_model}
+\alias{coef.fHMM_model}
+\alias{AIC.fHMM_model}
+\alias{BIC.fHMM_model}
+\alias{nobs.fHMM_model}
+\alias{logLik.fHMM_model}
+\alias{npar}
+\alias{npar.fHMM_model}
+\alias{predict.fHMM_model}
 \title{Constructor of a model object}
 \usage{
 fHMM_model(
@@ -15,6 +26,28 @@ fHMM_model(
   hessian,
   decoding
 )
+
+\method{print}{fHMM_model}(x, ...)
+
+\method{residuals}{fHMM_model}(object, ...)
+
+\method{summary}{fHMM_model}(object, alpha = 0.05, ...)
+
+\method{coef}{fHMM_model}(object, alpha = 0.05, digits = 2, ...)
+
+\method{AIC}{fHMM_model}(object, ..., k = 2)
+
+\method{BIC}{fHMM_model}(object, ...)
+
+\method{nobs}{fHMM_model}(object, ...)
+
+\method{logLik}{fHMM_model}(object, ...)
+
+npar(object, ...)
+
+\method{npar}{fHMM_model}(object, ...)
+
+\method{predict}{fHMM_model}(object, ahead = 5, alpha = 0.05, ...)
 }
 \arguments{
 \item{data}{An object of class \code{\link{fHMM_data}}.}
@@ -34,6 +67,18 @@ fHMM_model(
 \item{hessian}{A \code{matrix}, the Hessian at the optimum.}
 
 \item{decoding}{A \code{numeric} vector, the decoded time series.}
+
+\item{x, object}{An object of class \code{\link{fHMM_model}}.}
+
+\item{...}{Currently not used.}
+
+\item{alpha}{A \code{numeric} between 0 and 1, the confidence level.}
+
+\item{digits}{The number of decimal places.}
+
+\item{k}{Passed on to \code{\link[stats]{AIC}}.}
+
+\item{ahead}{The number of time points to predict ahead.}
 }
 \value{
 An object of class \code{\link{fHMM_model}}.

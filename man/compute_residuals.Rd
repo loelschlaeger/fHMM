@@ -20,7 +20,5 @@ object.
 }
 \examples{
 compute_residuals(dax_model_3t)
-res <- residuals(dax_model_3t)
-summary(res)
-
+summary(residuals(dax_model_3t))
 }

@@ -13,13 +13,14 @@ test_that("warning for redundant controls work", {
         "not_a_valid_control" = 1
       )
     ),
-    "not_a_valid_control in 'controls' ignored."
+    "not_a_valid_control"
   )
   expect_warning(
     set_controls(
       list(
         "data" = list(
-          "not_a_valid_control" = 1
+          "not_a_valid_control" = 1,
+          "file" = dax
         )
       )
     ),
@@ -54,7 +55,7 @@ test_that("input checks for setting controls work", {
         "horizon" = 10.5
       )
     ),
-    "The control 'horizon' must be an integer."
+    "The control 'horizon' must be a positive integer."
   )
   expect_error(
     set_controls(
@@ -75,7 +76,7 @@ test_that("input checks for setting controls work", {
         )
       )
     ),
-    "The control 'file' in 'data' must be a character."
+    "The control 'file' in 'data' must be a 'data.frame' or a character."
   )
   expect_error(
     set_controls(
@@ -83,7 +84,7 @@ test_that("input checks for setting controls work", {
         "hierarchy" = "not_a_boolean"
       )
     ),
-    "The control 'hierarchy' must be a TRUE or FALSE."
+    "The control 'hierarchy' must be TRUE or FALSE."
   )
   expect_error(
     set_controls(
@@ -92,7 +93,7 @@ test_that("input checks for setting controls work", {
         "states" = 1:3
       )
     ),
-    "The control 'states' must be a vector of length 2"
+    "The control 'states' must be a vector of integers greater or equal 2"
   )
   expect_error(
     set_controls(
@@ -101,7 +102,7 @@ test_that("input checks for setting controls work", {
         "horizon" = 1:3
       )
     ),
-    "The control 'horizon' must be an integer vector of length 2."
+    "The control 'horizon' must be a vector of length 2."
   )
   expect_error(
     set_controls(
@@ -111,7 +112,7 @@ test_that("input checks for setting controls work", {
         "period" = "wrong_symbol"
       )
     ),
-    "The control 'period' must be eiter 'NA' or one of 'w', 'm', 'q', 'y'."
+    "The control 'period' must be one of 'w', 'm', 'q', 'y'."
   )
 })
 
@@ -146,14 +147,14 @@ test_that("checks for `fit` controls work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'accept' in 'fit' must be vector of integers from 1 to 5."
+    "The control 'accept' in 'fit' must be a vector of integers from 1 to 5."
   )
   controls <- list(
     fit = list("gradtol" = -1)
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'gradtol' in 'fit' must be positive numeric value."
+    "The control 'gradtol' in 'fit' must be a positive number."
   )
   controls <- list(
     fit = list("iterlim" = -1)
@@ -174,7 +175,7 @@ test_that("checks for `fit` controls work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'steptol' in 'fit' must be positive numeric value."
+    "The control 'steptol' in 'fit' must be a positive number."
   )
 })
 
@@ -229,7 +230,7 @@ test_that("checks of controls for empirical HMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'date_column' in 'data' must be a character or NA."
+    "'date_column' in 'data' must be a single character."
   )
   controls <- list(
     states = 2,
@@ -243,7 +244,7 @@ test_that("checks of controls for empirical HMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'data_column' in 'data' must be a character or NA."
+    "'data_column' in 'data' must be a single character."
   )
   controls <- list(
     states = 2,
@@ -322,7 +323,10 @@ test_that("checks of controls for simulated HHMM work", {
   controls <- list(
     hierarchy = TRUE,
     horizon = c(100, 30),
-    data = list("data_column" = "Date")
+    data = list(
+      "file" = dax,
+      "data_column" = c("Date", "Date")
+    )
   )
   controls <- set_controls(controls)
   expect_s3_class(controls, "fHMM_controls")
@@ -384,7 +388,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'file' in 'data' must be a list of length two."
+    "The control 'file' in 'data' must be a data.frame."
   )
   controls <- list(
     hierarchy = TRUE,
@@ -396,7 +400,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'file' in 'data' must be a list of two data.frame."
+    "The control 'file' in 'data' must be a data.frame."
   )
   controls <- list(
     hierarchy = TRUE,
@@ -422,7 +426,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'date_column' in 'data' must be a vector with two characters or two NA's."
+    "'date_column' in 'data' must be a character vector of length two."
   )
   controls <- list(
     hierarchy = TRUE,
@@ -436,7 +440,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'data_column' in 'data' must be a character vector of length two."
+    "'data_column' in 'data' must be a character vector of length two."
   )
   controls <- list(
     hierarchy = TRUE,
@@ -451,7 +455,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'logreturns' in 'data' must be a boolean vector of length two."
+    "'logreturns' in 'data' must be a boolean vector of length two."
   )
   controls <- list(
     hierarchy = TRUE,
@@ -466,7 +470,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The control 'merge' in 'data' must be of class 'function'."
+    "The control 'merge' in 'data' must be a function."
   )
   controls <- list(
     hierarchy = TRUE,
@@ -481,7 +485,7 @@ test_that("checks of controls for empirical HHMM work", {
   )
   expect_error(
     controls <- set_controls(controls),
-    "The controls 'merge' in 'data' must merge a numeric vector into a single numeric value."
+    "'merge' in 'data' should merge a vector into a single number."
   )
   controls <- list(
     hierarchy = TRUE,

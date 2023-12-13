@@ -18,7 +18,7 @@ from 1970 to 2020 for demonstration purpose.
 \details{
 The model was estimated via:
 \preformatted{
-controls <- list(
+controls <- set_controls(
   hierarchy = TRUE,
   states    = c(3, 2),
   sdds      = c("t", "t"),
@@ -36,7 +36,6 @@ controls <- list(
     iterlim = 300
   )
 )
-controls <- set_controls(controls)
 unemp_spx_data <- prepare_data(controls)
 unemp_spx_model_3_2 <- fit_model(unemp_spx_data)
 }
