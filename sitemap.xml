@@ -43,21 +43,6 @@
     <loc>https://loelschlaeger.de/fHMM/news/index.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/Gamma2delta.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/Gamma2gammasCon.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/Gamma2gammasUncon.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/check_date.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/coef.fHMM_model.html</loc>
-  </url>
-  <url>
     <loc>https://loelschlaeger.de/fHMM/reference/compare_models.html</loc>
   </url>
   <url>
@@ -85,12 +70,6 @@
     <loc>https://loelschlaeger.de/fHMM/reference/decode_states.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/dfCon2dfUncon.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/dfUncon2dfCon.html</loc>
-  </url>
-  <url>
     <loc>https://loelschlaeger.de/fHMM/reference/download_data.html</loc>
   </url>
   <url>
@@ -115,40 +94,13 @@
     <loc>https://loelschlaeger.de/fHMM/reference/fHMM_sdds.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/find_closest_year.html</loc>
-  </url>
-  <url>
     <loc>https://loelschlaeger.de/fHMM/reference/fit_model.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/gammasCon2Gamma.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/gammasCon2gammasUncon.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/gammasUncon2Gamma.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/gammasUncon2gammasCon.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.de/fHMM/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/is_number.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/is_tpm.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/match_all.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/muCon2muUncon.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/muUncon2muCon.html</loc>
+    <loc>https://loelschlaeger.de/fHMM/reference/ll_hmm.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.de/fHMM/reference/nLL_hhmm.html</loc>
@@ -157,28 +109,10 @@
     <loc>https://loelschlaeger.de/fHMM/reference/nLL_hmm.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/npar.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/par2parCon.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/par2parUncon.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/parCon2par.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/parCon2parUncon.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/parUncon2par.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/parUncon2parCon.html</loc>
-  </url>
-  <url>
     <loc>https://loelschlaeger.de/fHMM/reference/parameter_labels.html</loc>
+  </url>
+  <url>
+    <loc>https://loelschlaeger.de/fHMM/reference/parameter_transformations.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.de/fHMM/reference/plot.fHMM_data.html</loc>
@@ -199,9 +133,6 @@
     <loc>https://loelschlaeger.de/fHMM/reference/plot_ts.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/predict.fHMM_model.html</loc>
-  </url>
-  <url>
     <loc>https://loelschlaeger.de/fHMM/reference/prepare_data.html</loc>
   </url>
   <url>
@@ -211,19 +142,7 @@
     <loc>https://loelschlaeger.de/fHMM/reference/reorder_states.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/residuals.fHMM_model.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/sample_tpm.html</loc>
-  </url>
-  <url>
     <loc>https://loelschlaeger.de/fHMM/reference/set_controls.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/sigmaCon2sigmaUncon.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/sigmaUncon2sigmaCon.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.de/fHMM/reference/sim_model_2gamma.html</loc>
@@ -232,10 +151,7 @@
     <loc>https://loelschlaeger.de/fHMM/reference/sim_model_4lnorm.html</loc>
   </url>
   <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/simulate_data.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/simulate_markov_chain.html</loc>
+    <loc>https://loelschlaeger.de/fHMM/reference/simulate_hmm.html</loc>
   </url>
   <url>
     <loc>https://loelschlaeger.de/fHMM/reference/simulate_observations.html</loc>
