@@ -17,5 +17,4 @@ vignettes/figs/
 ^CRAN-RELEASE$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
-^sticker$
-^dev_pkgs\.R$
+^development_packages\.R$
