@@ -1,3 +1,7 @@
+# fHMM 1.2.1
+
+* Small bug fix when computing the stationary distribution. 
+
 # fHMM 1.2.0
 
 * Controls can now be provided separately for the `set_controls()` function.

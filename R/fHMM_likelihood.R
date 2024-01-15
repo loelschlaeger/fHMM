@@ -98,9 +98,12 @@ nLL_hmm <- function(parUncon, observations, controls) {
   par <- parUncon2par(parUncon, controls, FALSE)
   sdd <- controls[["sdds"]][[1]]$name
   Gamma <- par[["Gamma"]]
-  delta <- try(solve(t(diag(nstates) - Gamma + 1), rep(1, nstates)))
+  delta <- try(
+    solve(t(diag(nstates) - Gamma + 1), rep(1, nstates)),
+    silent = TRUE
+  )
   if (inherits(delta, "try-error")) {
-    stat_distr <- rep(1, nstates) / nstates
+    delta <- rep(1, nstates) / nstates
   }
   mu <- par[["mu"]]
   sigma <- par[["sigma"]]
@@ -168,9 +171,12 @@ nLL_hhmm <- function(parUncon, observations, controls) {
   T <- length(observations_cs)
   par <- parUncon2par(parUncon, controls, FALSE)
   Gamma <- par[["Gamma"]]
-  delta <- try(solve(t(diag(M) - Gamma + 1), rep(1, M)))
+  delta <- try(
+    solve(t(diag(M) - Gamma + 1), rep(1, M)),
+    silent = TRUE
+  )
   if (inherits(delta, "try-error")) {
-    stat_distr <- rep(1, M) / M
+    delta <- rep(1, M) / M
   }
   mu <- par[["mu"]]
   sigma <- par[["sigma"]]
