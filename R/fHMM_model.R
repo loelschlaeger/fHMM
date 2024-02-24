@@ -86,6 +86,31 @@ fHMM_model <- function(
 #'
 #' @return
 #' An object of class \code{\link{fHMM_model}}.
+#' 
+#' @examples
+#' ### 2-state HMM with normal distributions
+#' 
+#' # define model
+#' controls <- set_controls(states = 2, sdds = "normal", horizon = 100, runs = 20)
+#' 
+#' # define parameters
+#' parameters <- fHMM_parameters(controls, mu = c(-1, 1), seed = 1)
+#' 
+#' # sample data
+#' data <- prepare_data(controls, true_parameter = parameters, seed = 1)
+#' 
+#' # fit model
+#' model <- fit_model(data, seed = 1)
+#' 
+#' # inspect fit
+#' summary(model)
+#' plot(model, "sdds")
+#' 
+#' # decode states
+#' model <- decode_states(model)
+#' 
+#' # predict
+#' predict(model, ahead = 5)
 #'
 #' @export
 
@@ -579,6 +604,12 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
   }
   if (!checkmate::test_number(alpha, lower = 0, upper = 1)) {
     stop("'alpha' must be a numeric between 0 and 1.", call. = FALSE)
+  }
+  if (is.null(object$decoding)) {
+    stop(
+      "Prediction not available, please call 'decode_states()' first.", 
+      call. = FALSE
+    )
   }
   
   ### extract parameters

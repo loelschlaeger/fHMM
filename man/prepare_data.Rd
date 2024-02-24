@@ -23,6 +23,8 @@ This function simulates or reads financial data for the \{fHMM\} package.
 }
 \examples{
 controls <- set_controls()
-prepare_data(controls)
+data <- prepare_data(controls)
+class(data)
+summary(data)
 
 }

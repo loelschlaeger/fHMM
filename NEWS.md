@@ -1,3 +1,9 @@
+# fHMM 1.2.2
+
+* Added examples to `fit_model()`.
+
+* Small code improvements in file `ll.cpp`.
+
 # fHMM 1.2.1
 
 * Small bug fix when computing the stationary distribution. 

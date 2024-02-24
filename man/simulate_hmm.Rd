@@ -128,3 +128,7 @@ in the hierarchical case
 \description{
 This helper function simulates HMM data.
 }
+\examples{
+simulate_hmm(states = 2, sdds = "normal", horizon = 10)
+
+}

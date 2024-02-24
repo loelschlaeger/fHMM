@@ -79,7 +79,9 @@ fHMM_data <- function(
 #'
 #' @examples
 #' controls <- set_controls()
-#' prepare_data(controls)
+#' data <- prepare_data(controls)
+#' class(data)
+#' summary(data)
 #' 
 #' @export
 

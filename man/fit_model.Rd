@@ -33,3 +33,29 @@ maximization.
 \details{
 The function is parallelized if \code{ncluster > 1}.
 }
+\examples{
+### 2-state HMM with normal distributions
+
+# define model
+controls <- set_controls(states = 2, sdds = "normal", horizon = 100, runs = 20)
+
+# define parameters
+parameters <- fHMM_parameters(controls, mu = c(-1, 1), seed = 1)
+
+# sample data
+data <- prepare_data(controls, true_parameter = parameters, seed = 1)
+
+# fit model
+model <- fit_model(data, seed = 1)
+
+# inspect fit
+summary(model)
+plot(model, "sdds")
+
+# decode states
+model <- decode_states(model)
+
+# predict
+predict(model, ahead = 5)
+
+}

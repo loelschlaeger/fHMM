@@ -19,6 +19,9 @@
 #'         in the hierarchical case
 #' }
 #' 
+#' @examples
+#' simulate_hmm(states = 2, sdds = "normal", horizon = 10)
+#' 
 #' @export
 
 simulate_hmm <- function(
