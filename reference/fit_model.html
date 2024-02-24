@@ -12,7 +12,7 @@ maximization."><meta property="og:image" content="https://loelschlaeger.de/fHMM/
     
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,6 +111,62 @@ where <code>n &lt;- data$controls$fit$runs</code>.</p></dd>
     <p>The function is parallelized if <code>ncluster &gt; 1</code>.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">### 2-state HMM with normal distributions</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># define model</span></span></span>
+<span class="r-in"><span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="set_controls.html">set_controls</a></span><span class="op">(</span>states <span class="op">=</span> <span class="fl">2</span>, sdds <span class="op">=</span> <span class="st">"normal"</span>, horizon <span class="op">=</span> <span class="fl">100</span>, runs <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># define parameters</span></span></span>
+<span class="r-in"><span><span class="va">parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="fHMM_parameters.html">fHMM_parameters</a></span><span class="op">(</span><span class="va">controls</span>, mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># sample data</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data.html">prepare_data</a></span><span class="op">(</span><span class="va">controls</span>, true_parameter <span class="op">=</span> <span class="va">parameters</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># fit model</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">fit_model</span><span class="op">(</span><span class="va">data</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking start values</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Maximizing likelihood</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Computing Hessian</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting completed</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># inspect fit</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of fHMM model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   simulated hierarchy        LL     AIC     BIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      TRUE     FALSE -62.46398 136.928 152.559</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> State-dependent distributions:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> normal() </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimates:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 lb estimate      ub    true</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gamma_2.1  0.07189   0.1360  0.2423  0.1632</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gamma_1.2  0.14611   0.2643  0.4299  0.3116</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mu_1      -1.01493  -0.9813 -0.9477 -1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mu_2       0.91994   1.0404  1.1609  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma_1    0.08027   0.1015  0.1283  0.1008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma_2    0.41670   0.4953  0.5887  0.6008</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, <span class="st">"sdds"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="fit_model-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># decode states</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Decoded states</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># predict</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">model</span>, ahead <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   state_1 state_2       lb estimate      ub</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.13598 0.86402  0.03891  0.76552 1.49212</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.21754 0.78246 -0.07314  0.60063 1.27441</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.26645 0.73355 -0.14035  0.50174 1.14383</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.29579 0.70421 -0.18066  0.44243 1.06551</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.31339 0.68661 -0.20483  0.40685 1.01854</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
