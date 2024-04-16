@@ -29,7 +29,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
@@ -108,18 +108,17 @@ sell stocks at the right moment. In general, stock traders seek to
 invest at the beginning of upward trends (hereon termed as bullish
 markets) and repel their stocks just in time before the prices fall
 again (hereon termed as bearish markets). As stock prices depend on a
-variety of environmental factors <span class="citation">(<a href="#ref-hum09" role="doc-biblioref">Humpe and Macmillan 2009</a>; <a href="#ref-coh13" role="doc-biblioref">Cohen, Diether, and Malloy
-2013</a>)</span>, chance certainly plays a fundamental role in hitting
-those exact moments. However, investigating market behavior can lead to
-a better understanding of how trends alternate and thereby increases the
-chance of making profitable investment decisions.</p>
+variety of environmental factors <span class="citation">(<a href="#ref-hum09">Humpe and Macmillan 2009</a>; <a href="#ref-coh13">Cohen, Diether, and Malloy 2013</a>)</span>, chance
+certainly plays a fundamental role in hitting those exact moments.
+However, investigating market behavior can lead to a better
+understanding of how trends alternate and thereby increases the chance
+of making profitable investment decisions.</p>
 <p>The <a href="https://loelschlaeger.de/fHMM/">fHMM</a> package aims at contributing to those
 investigations by applying HMMs to detect bearish and bullish markets in
 financial time series. It also implemented the hierarchical model
-extension presented in <span class="citation">Oelschläger and Adam (<a href="#ref-oel21" role="doc-biblioref">2021</a>)</span>, which improves
-the model’s capability for distinguishing between short- and long-term
-trends and allows to interpret market dynamics at multiple time
-scales.</p>
+extension presented in <span class="citation">Oelschläger and Adam (<a href="#ref-oel21">2021</a>)</span>, which improves the model’s
+capability for distinguishing between short- and long-term trends and
+allows to interpret market dynamics at multiple time scales.</p>
 </div>
 <div class="section level2">
 <h2 id="package-and-vignettes-overview">Package and vignettes overview<a class="anchor" aria-label="anchor" href="#package-and-vignettes-overview"></a>
@@ -128,9 +127,9 @@ scales.</p>
 classified into functions for data preparation, model estimation, and
 model evaluation. The following flowchart visualizes their
 dependencies:</p>
-<div class="figure">
-<img src="flowchart.png" style="width:80.0%" alt=""><p class="caption">A flowchart of the {fHMM} package: Functions are
-boxed and classes displayed as circles.</p>
+<div class="float">
+<img src="flowchart.png" style="width:80.0%" alt="A flowchart of the {fHMM} package: Functions are boxed and classes displayed as circles."><div class="figcaption">A flowchart of the {fHMM} package: Functions are
+boxed and classes displayed as circles.</div>
 </div>
 <p>The tasks <em>data preparation</em>, <em>model estimation</em>, and
 <em>model evaluation</em> as well as their corresponding functions and
@@ -169,34 +168,34 @@ best model among a set of competing models via the
 </h2>
 <p>Over the last decades, various HMM-type models have emerged as
 popular tools for modeling financial time series that are subject to
-state-switching over time <span class="citation">(<a href="#ref-sch97" role="doc-biblioref">Schaller and Van Norden 1997</a>; <a href="#ref-dia09" role="doc-biblioref">Dias, Vermunt, and Ramos
-2010</a>; <a href="#ref-ang12" role="doc-biblioref">Ang and Timmermann
-2012</a>; <a href="#ref-dea17" role="doc-biblioref">De Angelis and
-Viroli 2017</a>)</span>. <span class="citation">Rydén, Teräsvirta, and
-Åsbrink (<a href="#ref-ryd98" role="doc-biblioref">1998</a>)</span>,
-<span class="citation">Bulla and Bulla (<a href="#ref-bul06" role="doc-biblioref">2006</a>)</span>, and <span class="citation">Nystrup, Madsen, and Lindström (<a href="#ref-nys15a" role="doc-biblioref">2015</a>)</span>, e.g., used HMMs to derive
-stylized facts of stock returns, while <span class="citation">Hassan and
-Nath (<a href="#ref-has05" role="doc-biblioref">2005</a>)</span> and
-<span class="citation">Nystrup, Madsen, and Lindström (<a href="#ref-nys17" role="doc-biblioref">2017</a>)</span> demonstrated
-that HMMs can prove useful for economic forecasting. More recently,
-<span class="citation">Lihn (<a href="#ref-lih17" role="doc-biblioref">2017</a>)</span> applied HMMs to the Standard and
+state-switching over time <span class="citation">(<a href="#ref-sch97">Schaller and Van Norden 1997</a>; <a href="#ref-dia09">Dias, Vermunt, and Ramos 2010</a>; <a href="#ref-ang12">Ang and Timmermann 2012</a>; <a href="#ref-dea17">De
+Angelis and Viroli 2017</a>)</span>. <span class="citation">Rydén,
+Teräsvirta, and Åsbrink (<a href="#ref-ryd98">1998</a>)</span>, <span class="citation">Bulla and Bulla (<a href="#ref-bul06">2006</a>)</span>,
+and <span class="citation">Nystrup, Madsen, and Lindström (<a href="#ref-nys15a">2015</a>)</span>, e.g., used HMMs to derive stylized
+facts of stock returns, while <span class="citation">Hassan and Nath (<a href="#ref-has05">2005</a>)</span> and <span class="citation">Nystrup,
+Madsen, and Lindström (<a href="#ref-nys17">2017</a>)</span>
+demonstrated that HMMs can prove useful for economic forecasting. More
+recently, <span class="citation">Lihn (<a href="#ref-lih17">2017</a>)</span> applied HMMs to the Standard and
 Poor’s 500, where HMMs were used to identify different levels of market
 volatility, aiming at providing evidence for the conjecture that returns
 exhibit negative correlation with volatility. Another application to the
-S&amp;P 500 can be found in <span class="citation">Nguyen (<a href="#ref-ngu18" role="doc-biblioref">2018</a>)</span>, where HMMs were
-used to predict monthly closing prices to derive an optimal trading
-strategy, which was shown to outperform the conventional buy-and-hold
-strategy. Further applications, which involve HMM-type models for asset
-allocation and portfolio optimization, can be found in <span class="citation">Bekaert and Ang (<a href="#ref-ang02" role="doc-biblioref">2002</a>)</span>, <span class="citation">Bulla et
-al. (<a href="#ref-bul11" role="doc-biblioref">2011</a>)</span>, <span class="citation">Nystrup, Madsen, and Lindström (<a href="#ref-nys15a" role="doc-biblioref">2015</a>)</span> and <span class="citation">Nystrup, Madsen, and Lindström (<a href="#ref-nys18" role="doc-biblioref">2018</a>)</span>, to name but a few examples. All
-these applications demonstrate that HMMs constitute a versatile class of
-time series models that naturally accounts for the dynamics typically
-exhibited by financial time series.</p>
+S&amp;P 500 can be found in <span class="citation">Nguyen (<a href="#ref-ngu18">2018</a>)</span>, where HMMs were used to predict
+monthly closing prices to derive an optimal trading strategy, which was
+shown to outperform the conventional buy-and-hold strategy. Further
+applications, which involve HMM-type models for asset allocation and
+portfolio optimization, can be found in <span class="citation">Bekaert
+and Ang (<a href="#ref-ang02">2002</a>)</span>, <span class="citation">Bulla et al. (<a href="#ref-bul11">2011</a>)</span>,
+<span class="citation">Nystrup, Madsen, and Lindström (<a href="#ref-nys15a">2015</a>)</span> and <span class="citation">Nystrup,
+Madsen, and Lindström (<a href="#ref-nys18">2018</a>)</span>, to name
+but a few examples. All these applications demonstrate that HMMs
+constitute a versatile class of time series models that naturally
+accounts for the dynamics typically exhibited by financial time
+series.</p>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-ang12" class="csl-entry">
 Ang, A., and A. Timmermann. 2012. <span>“Regime Changes and Financial
 Markets.”</span> <em>Annual Review of Financial Economics</em> 4 (1):
@@ -298,7 +297,7 @@ Market Returns.”</span> <em>Applied Financial Economics</em> 7 (2):
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
     </footer>
