@@ -29,7 +29,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
@@ -96,7 +96,7 @@
 
     
     
-<p>This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;This vignette was build using R 4.3.2 with the
+<p>This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;This vignette was build using R 4.3.3 with the
 &lt;a href="https://loelschlaeger.de/fHMM/"&gt;fHMM&lt;/a&gt; 1.2.2 package.&lt;/p&gt;'><sup>1</sup></a> introduces the Viterbi algorithm for state
 decoding. The decoded state sequence in combination with the estimated
 model parameters can be used for forecasting.</p>
@@ -110,7 +110,7 @@ decoding</em>. Hereby, we aim to find the most likely trajectory of
 hidden states under the estimated model. Global decoding can be
 accomplished by using the so-called Viterbi algorithm which is a
 recursive scheme enabling to find the global maximum without being
-confronted with huge computational costs. To this end, we follow <span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span> and define <span class="math display">\[\zeta_{1i} = Pr(S_1 = i, X_1 = x_1) = \delta_i
+confronted with huge computational costs. To this end, we follow <span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zuc16">2016</a>)</span> and define <span class="math display">\[\zeta_{1i} = Pr(S_1 = i, X_1 = x_1) = \delta_i
 p_i(x_1)\]</span> for <span class="math inline">\(i = 1, \ldots,
 N\)</span> and for the following <span class="math inline">\(t = 2,
 \ldots, T\)</span> <span class="math display">\[\zeta_{ti} =
@@ -124,7 +124,7 @@ from <span class="math display">\[i_t = \operatorname*{argmax}_{i = 1,
 state decoding to HHMMs is straightforward: at first the coarse-scale
 state process must be decoded. Afterwards, by using this information the
 fine-scale state process can be decoded, see <span class="citation">Adam
-et al. (<a href="#ref-ada19" role="doc-biblioref">2019</a>)</span>.</p>
+et al. (<a href="#ref-ada19">2019</a>)</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="the-decode_states-function">The <code>decode_states()</code> function<a class="anchor" aria-label="anchor" href="#the-decode_states-function"></a>
@@ -154,7 +154,7 @@ example:</p>
 <p>Having decoded the underlying states, it is possible to compute the
 state probabilities of next observations. Based on these probabilities
 and in combination with the estimated state-dependent distributions,
-next observations can be predicted, compare <span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zuc16" role="doc-biblioref">2016</a>)</span>:</p>
+next observations can be predicted, compare <span class="citation">Zucchini, MacDonald, and Langrock (<a href="#ref-zuc16">2016</a>)</span>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">dax_model_3t</span>, ahead <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    state_1 state_2 state_3       lb estimate      ub</span></span>
@@ -172,7 +172,7 @@ next observations can be predicted, compare <span class="citation">Zucchini, Mac
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-ada19" class="csl-entry">
 Adam, T., C. A. Griffiths, V. Leos-Barajas, E. N. Meese, C. G. Lowe, P.
 G. Blackwell, D. Righton, and R. Langrock. 2019. <span>“Joint Modelling
@@ -201,7 +201,7 @@ Edition.”</span> <em>Chapman and Hall/CRC</em>.
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
     </footer>
