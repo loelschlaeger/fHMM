@@ -37,6 +37,7 @@ Imports:
     graphics,
     grDevices,
     MASS,
+    numDeriv,
     oeli (>= 0.3.0),
     padr,
     progress,
