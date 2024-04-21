@@ -29,9 +29,9 @@ optimization. Can be:
 \itemize{
 \item \code{NULL} (the default), in this case
 \itemize{
-\item applies a heuristic to calculate an initial estimate,
-\item or uses the true parameter values if \code{data$controls$origin} is
-\code{TRUE}.
+\item applies a heuristic to calculate a good initial estimate
+\item or uses the true parameter values (if available and
+\code{data$controls$origin} is \code{TRUE})
 }
 \item or an object of class \code{parUncon}, for example the estimate of a
 previously fitted model, i.e. the element \code{model$estimate}.

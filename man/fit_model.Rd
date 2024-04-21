@@ -29,9 +29,9 @@ optimization. Can be:
 \itemize{
 \item \code{NULL} (the default), in this case
 \itemize{
-\item applies a heuristic to calculate an initial estimate,
-\item or uses the true parameter values if \code{data$controls$origin} is
-\code{TRUE}.
+\item applies a heuristic to calculate a good initial estimate
+\item or uses the true parameter values (if available and
+\code{data$controls$origin} is \code{TRUE})
 }
 \item or an object of class \code{parUncon}, for example the estimate of a
 previously fitted model, i.e. the element \code{model$estimate}.
@@ -41,7 +41,7 @@ previously fitted model, i.e. the element \code{model$estimate}.
 An object of class \code{\link{fHMM_model}}.
 }
 \description{
-This function fits a HMM to \code{\link{fHMM_data}} via numerical likelihood
+This function fits a hidden Markov model via numerical likelihood
 maximization.
 }
 \details{

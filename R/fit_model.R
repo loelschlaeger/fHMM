@@ -1,7 +1,7 @@
 #' Model fitting
 #'
 #' @description
-#' This function fits a HMM to \code{\link{fHMM_data}} via numerical likelihood 
+#' This function fits a hidden Markov model via numerical likelihood 
 #' maximization.
 #'
 #' @details

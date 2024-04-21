@@ -4,12 +4,21 @@
 #' This helper function generates a set of initial values for the numerical
 #' optimization of the model likelihood function.
 #' 
+#' @param initial_estimate
+#' Optionally defines an initial estimate for the numerical likelihood 
+#' optimization. Can be:
+#' - \code{NULL} (the default), in this case
+#'   - applies a heuristic to calculate a good initial estimate
+#'   - or uses the true parameter values (if available and 
+#'     \code{data$controls$origin} is \code{TRUE})
+#' - or an object of class \code{parUncon}, for example the estimate of a 
+#'   previously fitted model, i.e. the element \code{model$estimate}. 
+#'   
 #' @param seed
 #' Set a seed for the generation of initial values.
 #' No seed by default.
 #' 
 #' @inheritParams fit_model
-#' @inheritParams get_initial_estimate
 #' 
 #' @return
 #' A \code{list}, where each element is an object of class \code{parUncon}.
@@ -20,79 +29,146 @@ get_initial_values <- function(
     data, ncluster = 1, seed = NULL, verbose = TRUE, initial_estimate = NULL
   ) {
   
+  ### input checks
+  checkmate::assert_class(data, "fHMM_data")
+  checkmate::assert_number(ncluster)
+  checkmate::assert_flag(verbose)
+  controls <- data[["controls"]]
+  checkmate::assert_class(controls, "fHMM_controls")
+  runs <- controls[["fit"]][["runs"]]
+  
   ### set seed
   if (!is.null(seed)) {
     set.seed(seed)
   }
   
-  ### generate start values
-  initial_estimate <- get_initial_estimate(
-    data = data, verbose = verbose, initial_estimate = initial_estimate
-  )
-  initial_values <- replicate(data$controls$fit$runs, jitter(initial_estimate), simplify = FALSE)
+  ### initialize at pre-defined initial estimate
+  if (!is.null(initial_estimate)) {
+    if (verbose) {
+      message("Initializing using given value 'initial_estimate'")
+    }
+    if (!check_initial_estimate(initial_estimate)) {
+      initial_estimate <- NULL
+    }
+  }
+  
+  ### initialize at true value
+  if (is.null(initial_estimate) && controls[["fit"]][["origin"]]) {
+    if (verbose) {
+      message("Initializing at true values")
+    }
+    initial_estimate <- list(par2parUncon(data[["true_parameters"]], controls))
+    if (check_initial_estimate(initial_estimate)) {
+      return(list(initial_estimate))
+    } else {
+      if (verbose) {
+        message(
+          "Initializing at true values failed, choosing other values instead"
+        )
+      }
+    }
+  }
+  
+  ### define heuristic
+  initial_heuristic <- function(data, states) {
+    
+    cluster <- stats::kmeans(
+      data, centers = states, iter.max = 100, nstart = 100
+    )$cluster
+    
+    mu <- numeric(states)
+    sigma <- numeric(states)
+    Gamma <- oeli::sample_transition_probability_matrix(states)
+    
+    for (s in seq_len(states)) {
+      cluster_s <- data[cluster == s]
+      mu[s] <- mean(cluster_s, na.rm = TRUE)
+      sigma[s] <- sd(cluster_s, na.rm = TRUE)
+    }
+    list("mu" = mu, "sigma" = sigma, "Gamma" = Gamma)
+  }
+  
+  ### applying heuristic
+  if (is.null(initial_estimate)) {
+    if (controls[["hierarchy"]]) {
+      
+      # TODO
+      
+    } else {
+      initial_estimate_list <- initial_heuristic(
+        data[["data"]], states = controls[["states"]]
+      )
+      initial_estimate <- par2parUncon(
+        do.call(
+          what = fHMM_parameters,
+          args = c(initial_estimate_list, list(controls))
+        ),
+        controls
+      )
+    }
+  }
   
   ### define likelihood function
   target <- ifelse(!data[["controls"]][["hierarchy"]], nLL_hmm, nLL_hhmm)
   
-  ### check start values
+  ### generate and check start values
   if (verbose) {
-    pb <- progress::progress_bar$new(
-      format = "[:bar] :percent, :eta ETA",
-      total = data[["controls"]][["fit"]][["runs"]], width = 45, clear = TRUE,
-      complete = "=", incomplete = "-", current = ">"
-    )
-    pb$message("Checking start values")
+    message("Checking start values")
   }
-  ll_at_initial_values <- rep(NA_real_, data[["controls"]][["fit"]][["runs"]])
-  if (ncluster == 1) {
-    for (run in 1:data[["controls"]][["fit"]][["runs"]]) {
-      if (verbose) pb$tick(0)
-      ll <- target(
-        parUncon = initial_values[[run]],
-        observations = data[["data"]],
-        controls = data[["controls"]]
-      )
-      if (!(is.na(ll) || is.nan(ll) || abs(ll) > 1e100)) {
-        ll_at_initial_values[run] <- ll
-      }
-      if (verbose) pb$tick()
+  N <- runs * 2
+  
+  while (TRUE) {
+    
+    if (N < ncluster) {
+      ncluster <- 1
     }
-  } else if (ncluster > 1) {
-    cluster <- parallel::makeCluster(ncluster)
-    doSNOW::registerDoSNOW(cluster)
-    opts <- if (verbose) list(progress = function(n) pb$tick()) else list()
-    ll_at_initial_values <- foreach::foreach(
-      run = 1:data[["controls"]][["fit"]][["runs"]],
-      .packages = "fHMM", .options.snow = opts
-    ) %dopar% {
-      ll <- target(
-        parUncon = initial_values[[run]],
-        observations = data[["data"]],
-        controls = data[["controls"]]
-      )
-      if (verbose) pb$tick()
-      if (!(is.na(ll) || is.nan(ll) || abs(ll) > 1e100)) {
-        ll
-      } else {
-        NA_real_
+    
+    initial_values <- replicate(N, jitter(initial_estimate), simplify = FALSE)
+  
+
+    ll_at_initial_values <- rep(NA_real_, N)
+    if (ncluster == 1) {
+      
+      for (n in seq_len(N)) {
+        
+        ll <- target(
+          parUncon = initial_values[[run]],
+          observations = data[["data"]],
+          controls = controls
+        )
+        
+        if (!(is.na(ll) || is.nan(ll) || abs(ll) > 1e100)) {
+          ll_at_initial_values[run] <- ll
+        }
+
       }
+    } else if (ncluster > 1) {
+      
+      cluster <- parallel::makeCluster(ncluster)
+      doSNOW::registerDoSNOW(cluster)
+
+      ll_at_initial_values <- foreach::foreach(
+        run = 1:N, .packages = "fHMM"
+      ) %dopar% {
+        
+        ll <- target(
+          parUncon = initial_values[[run]],
+          observations = data[["data"]],
+          controls = controls
+        )
+
+        if (!(is.na(ll) || is.nan(ll) || abs(ll) > 1e100)) {
+          ll
+        } else {
+          NA_real_
+        }
+      }
+      
+      parallel::stopCluster(cluster)
+      ll_at_initial_values <- unlist(ll_at_initial_values)
     }
-    parallel::stopCluster(cluster)
-    ll_at_initial_values <- unlist(ll_at_initial_values)
-  }
-  if (sum(is.na(ll_at_initial_values)) == data[["controls"]][["fit"]][["runs"]]) {
-    stop(
-      "The likelihood could not be computed at any of the selected start values.\n",
-      "Try to increase 'runs' in 'controls'.", 
-      call. = FALSE
-    )
-  }
-  if (sum(is.na(ll_at_initial_values)) > 0.5 * data[["controls"]][["fit"]][["runs"]]) {
-    warning(
-      "The likelihood could not be computed at more than half of the selected start values.\n",
-      "Try to increase 'runs' in 'controls'.", 
-      call. = FALSE, immediate. = TRUE
-    )
+    
+    
   }
   
   return(initial_values)
