@@ -101,7 +101,8 @@ No seed by default.</p></dd>
 
 <dt>initial_estimate</dt>
 <dd><p>Optionally defines an initial estimate for the numerical likelihood
-optimization. Can be:</p><ul><li><p><code>NULL</code> (the default), in this case</p><ul><li><p>applies a heuristic to calculate a good initial estimate</p></li>
+optimization. Good initial estimates can improve the optimization process.
+Can be:</p><ul><li><p><code>NULL</code> (the default), in this case</p><ul><li><p>applies a heuristic to calculate a good initial estimate</p></li>
 <li><p>or uses the true parameter values (if available and
 <code>data$controls$origin</code> is <code>TRUE</code>)</p></li>
 </ul></li>
@@ -138,21 +139,43 @@ computed in parallel if <code>ncluster &gt; 1</code>.</p>
 <span class="r-in"><span><span class="co"># fit model</span></span></span>
 <span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">fit_model</span><span class="op">(</span><span class="va">data</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Checking start values</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in get_initial_values(data = data, ncluster = ncluster, seed = seed,     verbose = verbose, initial_estimate = initial_estimate):</span> object 'run' not found</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Maximizing likelihood</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Computing Hessian</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting completed</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># inspect fit</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'model' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of fHMM model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   simulated hierarchy        LL      AIC      BIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      TRUE     FALSE -42.16861 96.33721 110.6294</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> State-dependent distributions:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> normal() </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimates:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 lb estimate      ub    true</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gamma_2.1  0.11660   0.2288  0.4000  0.1632</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gamma_1.2  0.08275   0.1628  0.2953  0.3116</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mu_1       0.89192   1.0271  1.1623 -1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mu_2      -1.01581  -0.9806 -0.9453  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma_1    0.38598   0.4728  0.5790  0.1008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma_2    0.08113   0.1033  0.1314  0.6008</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, <span class="st">"sdds"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'model' not found</span>
+<span class="r-plt img"><img src="fit_model-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># decode states</span></span></span>
 <span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'model' not found</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Decoded states</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># predict</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">model</span>, ahead <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'model' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   state_1 state_2       lb estimate       ub</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.22877 0.77123 -0.83016 -0.52126 -0.21237</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.36797 0.63203 -0.63529 -0.24180  0.15169</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.45266 0.54734 -0.51673 -0.07177  0.37319</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.50419 0.49581 -0.44459  0.03169  0.50797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.53554 0.46446 -0.40070  0.09464  0.58997</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
