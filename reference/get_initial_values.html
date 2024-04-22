@@ -101,7 +101,8 @@ No seed by default.</p></dd>
 
 <dt>initial_estimate</dt>
 <dd><p>Optionally defines an initial estimate for the numerical likelihood
-optimization. Can be:</p><ul><li><p><code>NULL</code> (the default), in this case</p><ul><li><p>applies a heuristic to calculate a good initial estimate</p></li>
+optimization. Good initial estimates can improve the optimization process.
+Can be:</p><ul><li><p><code>NULL</code> (the default), in this case</p><ul><li><p>applies a heuristic to calculate a good initial estimate</p></li>
 <li><p>or uses the true parameter values (if available and
 <code>data$controls$origin</code> is <code>TRUE</code>)</p></li>
 </ul></li>
