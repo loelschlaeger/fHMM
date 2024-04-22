@@ -20,6 +20,7 @@
 #' Set to \code{TRUE} to print progress messages.
 #' 
 #' @inheritParams get_initial_values
+#' @inheritParams set_controls
 #'
 #' @return
 #' An object of class \code{\link{fHMM_model}}.
@@ -66,14 +67,14 @@ fit_model <- function(
     stop("'verbose' must be either TRUE or FALSE.", call. = FALSE)
   }
   
-  ### define likelihood function
-  target <- ifelse(!data[["controls"]][["hierarchy"]], nLL_hmm, nLL_hhmm)
-  
   ### generate initial values
   initial_values <- get_initial_values(
     data = data, ncluster = ncluster, seed = seed, verbose = verbose,
     initial_estimate = initial_estimate
   )
+  
+  ### define likelihood function
+  target <- ifelse(!data[["controls"]][["hierarchy"]], nLL_hmm, nLL_hhmm)
   
   ### start optimization
   if (verbose) {

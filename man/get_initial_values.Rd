@@ -25,7 +25,8 @@ No seed by default.}
 \item{verbose}{Set to \code{TRUE} to print progress messages.}
 
 \item{initial_estimate}{Optionally defines an initial estimate for the numerical likelihood
-optimization. Can be:
+optimization. Good initial estimates can improve the optimization process.
+Can be:
 \itemize{
 \item \code{NULL} (the default), in this case
 \itemize{
