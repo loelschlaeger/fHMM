@@ -6,6 +6,15 @@
 \usage{
 fit_model(
   data,
+  controls = data[["controls"]],
+  fit = list(),
+  runs = 100,
+  origin = FALSE,
+  accept = 1:3,
+  gradtol = 1e-06,
+  iterlim = 200,
+  print.level = 0,
+  steptol = 1e-06,
   ncluster = 1,
   seed = NULL,
   verbose = TRUE,
@@ -14,6 +23,85 @@ fit_model(
 }
 \arguments{
 \item{data}{An object of class \code{\link{fHMM_data}}.}
+
+\item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
+
+The \code{list} can contain the following elements, which are described
+in more detail below:
+\itemize{
+\item \code{hierarchy}, defines an hierarchical HMM,
+\item \code{states}, defines the number of states,
+\item \code{sdds}, defines the state-dependent distributions,
+\item \code{horizon}, defines the time horizon,
+\item \code{period}, defines a flexible, periodic fine-scale time horizon,
+\item \code{data}, a \code{list} of controls that define the data,
+\item \code{fit}, a \code{list} of controls that define the model fitting
+}
+Either none, all, or selected elements can be specified.
+
+Unspecified parameters are set to their default values.
+
+Important: Specifications in \code{controls} always override individual
+specifications.}
+
+\item{fit}{A \code{list} of controls specifying the model fitting.
+
+The \code{list} can contain the following elements, which are described
+in more detail below:
+\itemize{
+\item \code{runs}, defines the number of numerical optimization runs,
+\item \code{origin}, defines initialization at the true parameters,
+\item \code{accept}, defines the set of accepted optimization runs,
+\item \code{gradtol}, defines the gradient tolerance,
+\item \code{iterlim}, defines the iteration limit,
+\item \code{print.level}, defines the level of printing,
+\item \code{steptol}, defines the minimum allowable relative step length.
+}
+Either none, all, or selected elements can be specified.
+
+Unspecified parameters are set to their default values, see below.
+
+Specifications in \code{fit} override individual specifications.}
+
+\item{runs}{An \code{integer}, setting the number of randomly initialized
+optimization runs of the model likelihood from which the best one is selected
+as the final model.
+
+By default, \code{runs = 100}.}
+
+\item{origin}{Only relevant for simulated data, i.e., if the \code{data} control is
+\code{NA}.
+
+In this case, a \code{logical}. If \code{origin = TRUE} the optimization is
+initialized at the true parameter values.
+This sets \code{run = 1} and \code{accept = 1:5}.
+
+By default, \code{origin = FALSE}.}
+
+\item{accept}{An \code{integer} (vector), specifying which optimization runs are
+accepted based on the output code of \code{\link[stats]{nlm}}.
+
+By default, \code{accept = 1:3}.}
+
+\item{gradtol}{A positive \code{numeric} value, specifying the gradient tolerance, passed on
+to \code{\link[stats]{nlm}}.
+
+By default, \code{gradtol = 1e-6}.}
+
+\item{iterlim}{A positive \code{integer} value, specifying the iteration limit, passed on
+to \code{\link[stats]{nlm}}.
+
+By default, \code{iterlim = 200}.}
+
+\item{print.level}{One of \code{0}, \code{1}, and \code{2} to control the verbosity of the
+numerical likelihood optimization, passed on to \code{\link[stats]{nlm}}.
+
+By default, \code{print.level = 0}.}
+
+\item{steptol}{A positive \code{numeric} value, specifying the step tolerance, passed on
+to \code{\link[stats]{nlm}}.
+
+By default, \code{gradtol = 1e-6}.}
 
 \item{ncluster}{Set the number of clusters for parallel optimization runs to reduce
 optimization time.
@@ -34,8 +122,9 @@ Can be:
 \item or uses the true parameter values (if available and
 \code{data$controls$origin} is \code{TRUE})
 }
-\item or an object of class \code{parUncon}, for example the estimate of a
-previously fitted model, i.e. the element \code{model$estimate}.
+\item or an object of class \code{parUncon} (i.e., a \code{numeric} of
+unconstrained model parameters), for example the estimate of a
+previously fitted model (i.e. the element \code{model$estimate}).
 }}
 }
 \value{
@@ -52,8 +141,10 @@ computed in parallel if \code{ncluster > 1}.
 \examples{
 ### 2-state HMM with normal distributions
 
-# define model
-controls <- set_controls(states = 2, sdds = "normal", horizon = 80, runs = 5)
+# set specifications
+controls <- set_controls(
+  states = 2, sdds = "normal", horizon = 100, runs = 10
+)
 
 # define parameters
 parameters <- fHMM_parameters(controls, mu = c(-1, 1), seed = 1)
@@ -70,6 +161,7 @@ plot(model, "sdds")
 
 # decode states
 model <- decode_states(model)
+plot(model, "ts")
 
 # predict
 predict(model, ahead = 5)

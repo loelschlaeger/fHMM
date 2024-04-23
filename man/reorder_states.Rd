@@ -4,19 +4,23 @@
 \alias{reorder_states}
 \title{Reorder estimated states}
 \usage{
-reorder_states(x, state_order)
+reorder_states(x, state_order = "mean")
 }
 \arguments{
 \item{x}{An object of class \code{\link{fHMM_model}}.}
 
-\item{state_order}{A vector or a matrix which determines the new ordering.
+\item{state_order}{Either
+\itemize{
+\item \code{"mean"}, in which case the states are ordered according to the means
+of the state-dependent distributions,
+\item or a vector (or a matrix) which determines the new ordering:
 \itemize{
 \item If \code{x$data$controls$hierarchy = FALSE}, \code{state_order} must
 be a vector of length \code{x$data$controls$states} with integer
 values from \code{1} to \code{x$data$controls$states}. If the old
 state number \code{x} should be the new state number \code{y}, put
 the value \code{x} at the position \code{y} of \code{state_order}.
-E.g. for a 2-state HMM, specifying \code{state_order = c(2,1)} swaps
+E.g. for a 2-state HMM, specifying \code{state_order = c(2, 1)} swaps
 the states.
 \item If \code{x$data$controls$hierarchy = TRUE}, \code{state_order} must
 be a matrix of dimension \code{x$data$controls$states[1]} x
@@ -25,8 +29,10 @@ coarse-scale states with the logic as described above. For each row,
 the elements from second to last position order the fine-scale states
 of the coarse-scale state specified by the first element. E.g. for an
 HHMM with 2 coarse-scale and 2 fine-scale states, specifying
-\code{state_order = matrix(c(2,1,2,1,1,2),2,3)} swaps the
-coarse-scale states and the fine-scale states of coarse-scale state 2.
+\code{state_order = matrix(c(2, 1, 2, 1, 1, 2), 2, 3)} swaps the
+coarse-scale states and the fine-scale states connected to
+coarse-scale state 2.
+}
 }}
 }
 \value{
@@ -37,6 +43,6 @@ This function reorders the estimated states, which can be useful for a
 comparison to true parameters or the interpretation of states.
 }
 \examples{
-reorder_states(dax_model_3t, state_order = 3:1)
+dax_model_3t_reordered <- reorder_states(dax_model_3t, state_order = 3:1)
 
 }

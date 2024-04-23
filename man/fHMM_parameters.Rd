@@ -41,9 +41,10 @@ in more detail below:
 }
 Either none, all, or selected elements can be specified.
 
-Unspecified parameters are set to their default values, see below.
+Unspecified parameters are set to their default values.
 
-Specifications in \code{controls} override individual specifications.}
+Important: Specifications in \code{controls} always override individual
+specifications.}
 
 \item{hierarchy}{A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
 

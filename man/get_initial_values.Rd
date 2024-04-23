@@ -34,8 +34,9 @@ Can be:
 \item or uses the true parameter values (if available and
 \code{data$controls$origin} is \code{TRUE})
 }
-\item or an object of class \code{parUncon}, for example the estimate of a
-previously fitted model, i.e. the element \code{model$estimate}.
+\item or an object of class \code{parUncon} (i.e., a \code{numeric} of
+unconstrained model parameters), for example the estimate of a
+previously fitted model (i.e. the element \code{model$estimate}).
 }}
 }
 \value{

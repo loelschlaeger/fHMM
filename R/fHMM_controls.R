@@ -23,9 +23,10 @@
 #' }
 #' Either none, all, or selected elements can be specified.
 #' 
-#' Unspecified parameters are set to their default values, see below.
+#' Unspecified parameters are set to their default values.
 #' 
-#' Specifications in \code{controls} override individual specifications.
+#' Important: Specifications in \code{controls} always override individual 
+#' specifications.
 #' 
 #' @param hierarchy
 #' A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
@@ -218,7 +219,8 @@
 #' By default, \code{runs = 100}.
 #'
 #' @param origin
-#' Only relevant for simulated data, i.e., if \code{data} is \code{NA}. 
+#' Only relevant for simulated data, i.e., if the \code{data} control is 
+#' \code{NA}. 
 #'
 #' In this case, a \code{logical}. If \code{origin = TRUE} the optimization is 
 #' initialized at the true parameter values. 

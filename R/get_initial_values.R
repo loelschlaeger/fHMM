@@ -12,8 +12,9 @@
 #'   - applies a heuristic to calculate a good initial estimate
 #'   - or uses the true parameter values (if available and 
 #'     \code{data$controls$origin} is \code{TRUE})
-#' - or an object of class \code{parUncon}, for example the estimate of a 
-#'   previously fitted model, i.e. the element \code{model$estimate}. 
+#' - or an object of class \code{parUncon} (i.e., a \code{numeric} of 
+#'   unconstrained model parameters), for example the estimate of a 
+#'   previously fitted model (i.e. the element \code{model$estimate}). 
 #'   
 #' @param seed
 #' Set a seed for the generation of initial values.
@@ -103,10 +104,25 @@ get_initial_values <- function(
     if (!check_initial_estimate(initial_estimate, verbose = verbose, return_value = FALSE)) {
       if (verbose) {
         message(
-          "Initializing at 'initial_estimate' failed, choosing other values instead"
+          "Initializing at 'initial_estimate' failed, applying heuristic instead"
         )
       }
       initial_estimate <- NULL
+    } else {
+      class(initial_estimate) <- c("parUncon", "numeric")
+      initial_estimate <- try(
+        par2parUncon(
+          parUncon2par(initial_estimate, controls), controls, use_parameter_labels = TRUE
+        ), silent = TRUE
+      )
+      if (inherits(initial_estimate, "try-error")) {
+        if (verbose) {
+          message(
+            "Initializing at 'initial_estimate' failed, applying heuristic instead"
+          )
+        }
+        initial_estimate <- NULL
+      }
     }
   }
   
@@ -115,7 +131,7 @@ get_initial_values <- function(
     if (verbose) {
       message("Initializing at true values")
     }
-    initial_estimate <- list(par2parUncon(data[["true_parameters"]], controls))
+    initial_estimate <- par2parUncon(data[["true_parameters"]], controls)
     if (check_initial_estimate(initial_estimate, verbose = verbose, return_value = FALSE)) {
       
       ### only one initial value in this case
@@ -125,7 +141,7 @@ get_initial_values <- function(
       initial_estimate <- NULL
       if (verbose) {
         message(
-          "Initializing at true values failed, choosing other values instead"
+          "Initializing at true values failed, applying heuristic instead"
         )
       }
     }
@@ -139,8 +155,9 @@ get_initial_values <- function(
       data, centers = states, iter.max = 100, nstart = 100
     )$cluster
     
-    ### sample tpm at random with state persistence
-    Gamma <- oeli::sample_transition_probability_matrix(states, state_persistent = TRUE)
+    ### set tpm with state persistence
+    Gamma <- matrix(0.1 / (states - 1), nrow = states, ncol = states)
+    diag(Gamma) <- 0.9
     
     ### compute method of moments estimator for each cluster
     mu <- numeric(states)
@@ -152,19 +169,54 @@ get_initial_values <- function(
     }
     
     ### return
-    list("mu" = mu, "sigma" = sigma, "Gamma" = Gamma)
+    list(
+      "cluster" = cluster, 
+      "pars" = list("mu" = mu, "sigma" = sigma, "Gamma" = Gamma)
+    )
   }
   
   ### applying heuristic
   if (is.null(initial_estimate)) {
     if (controls[["hierarchy"]]) {
       
-      # TODO
+      ### heuristic for coarse-scale
+      heuristic_cs <- initial_heuristic(
+        data[["data"]][, 1], states = controls[["states"]][1]
+      )
+      cluster_cs <- heuristic_cs[["cluster"]]
+      initial_estimate_list_cs <- heuristic_cs[["pars"]]
       
+      ### heuristic for fine-scale
+      Gamma_star <- list()
+      mu_star <- list()
+      sigma_star <- list()
+      for (s in seq_len(controls[["states"]][1])) {
+        cluster_fs_data <- as.vector(data[["data"]][s == cluster_cs, ])
+        heuristic_fs <- initial_heuristic(
+          cluster_fs_data, states = controls[["states"]][2]
+        )
+        Gamma_star[[s]] <- heuristic_fs[["pars"]][["Gamma"]]
+        mu_star[[s]] <- heuristic_fs[["pars"]][["mu"]]
+        sigma_star[[s]] <- heuristic_fs[["pars"]][["sigma"]]
+      }
+      initial_estimate_list_fs <- list(
+        "Gamma_star" = Gamma_star, "mu_star" = mu_star, "sigma_star" = sigma_star
+      )
+      
+      ### combine coarse-scale and fine-scale
+      initial_estimate <- par2parUncon(
+        do.call(
+          what = fHMM_parameters,
+          args = c(
+            initial_estimate_list_cs, initial_estimate_list_fs, list(controls)
+          )
+        ),
+        controls
+      )
     } else {
       initial_estimate_list <- initial_heuristic(
         data[["data"]], states = controls[["states"]]
-      )
+      )[["pars"]]
       initial_estimate <- par2parUncon(
         do.call(
           what = fHMM_parameters,
@@ -177,14 +229,16 @@ get_initial_values <- function(
   
   ### jitter 'initial_estimate'
   jitter_initial_estimate <- function(initial_estimate, N) {
-    
-    
-    
-    replicate(
-      N, jitter(initial_estimate, factor = 100), simplify = FALSE
+    par_names <- names(initial_estimate)
+    jittered <- matrix(
+      initial_estimate, nrow = N, ncol = length(initial_estimate), byrow = TRUE
     )
-    
-    
+    parameter_class <- gsub("_.*", "", names(initial_estimate))
+    for (class in unique(parameter_class)) {
+      id <- which(parameter_class == class)
+      jittered[, id] <- jitter(jittered[, id], factor = 10)
+    }
+    lapply(seq_len(N), function(i) structure(jittered[i, ], names = par_names))
   }
   
   
@@ -227,10 +281,10 @@ get_initial_values <- function(
       doSNOW::registerDoSNOW(cluster)
 
       ll_at_initial_values <- foreach::foreach(
-        run = seq_along(ind), .packages = "fHMM"
+        N = seq_along(ind), .packages = "fHMM"
       ) %dopar% {
         check_initial_estimate(
-          initial_values[[ind[run]]], verbose = FALSE, return_value = TRUE
+          initial_values[[ind[N]]], verbose = FALSE, return_value = TRUE
         )
       }
       
@@ -240,7 +294,9 @@ get_initial_values <- function(
     
     ### replace initial values that lead to NA
     ind <- which(is.na(ll_at_initial_values))
-    initial_values[ind] <- jitter_initial_estimate(initial_estimate, length(ind))
+    if (length(ind) > 0) {
+      initial_values[ind] <- jitter_initial_estimate(initial_estimate, length(ind))
+    }
     
     ### drop largest negative log-likelihood value
     largest <- which.max(ll_at_initial_values)

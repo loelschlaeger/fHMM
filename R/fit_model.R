@@ -19,6 +19,7 @@
 #' @param verbose
 #' Set to \code{TRUE} to print progress messages.
 #' 
+#' @inheritParams set_controls
 #' @inheritParams get_initial_values
 #' @inheritParams set_controls
 #'
@@ -28,8 +29,10 @@
 #' @examples
 #' ### 2-state HMM with normal distributions
 #' 
-#' # define model
-#' controls <- set_controls(states = 2, sdds = "normal", horizon = 80, runs = 5)
+#' # set specifications
+#' controls <- set_controls(
+#'   states = 2, sdds = "normal", horizon = 100, runs = 10
+#' )
 #' 
 #' # define parameters
 #' parameters <- fHMM_parameters(controls, mu = c(-1, 1), seed = 1)
@@ -46,6 +49,7 @@
 #' 
 #' # decode states
 #' model <- decode_states(model)
+#' plot(model, "ts")
 #' 
 #' # predict
 #' predict(model, ahead = 5)
@@ -53,7 +57,10 @@
 #' @export
 
 fit_model <- function(
-    data, ncluster = 1, seed = NULL, verbose = TRUE, initial_estimate = NULL
+    data, controls = data[["controls"]], 
+    fit = list(), runs = 100, origin = FALSE, accept = 1:3, gradtol = 1e-6, 
+    iterlim = 200, print.level = 0, steptol = 1e-6, 
+    ncluster = 1, seed = NULL, verbose = TRUE, initial_estimate = NULL
 ) {
   
   ### check inputs
@@ -63,9 +70,26 @@ fit_model <- function(
   if (!checkmate::test_count(ncluster, positive = TRUE)) {
     stop("'ncluster' must be a positive integer.", call. = FALSE)
   }
-  if (!isTRUE(verbose) && !isFALSE(verbose)) {
+  if (!checkmate::test_flag(verbose)) {
     stop("'verbose' must be either TRUE or FALSE.", call. = FALSE)
   }
+  data[["controls"]] <- set_controls(
+    controls = controls,
+    hierarchy = data[["controls"]][["hierarchy"]],
+    states = data[["controls"]][["states"]],
+    sdds = data[["controls"]][["sdds"]],
+    horizon = data[["controls"]][["horizon"]],
+    period = data[["controls"]][["period"]],
+    data = data[["controls"]][["data"]],
+    fit = fit,
+    runs = runs,
+    origin = origin,
+    accept = accept,
+    gradtol = gradtol,
+    iterlim = iterlim,
+    print.level = print.level,
+    steptol = steptol
+  )
   
   ### generate initial values
   initial_values <- get_initial_values(
@@ -90,7 +114,6 @@ fit_model <- function(
   if (ncluster == 1) {
     mods <- list()
     for (run in 1:data[["controls"]][["fit"]][["runs"]]) {
-      
       
       if (verbose) pb$tick(0)
       
@@ -201,10 +224,8 @@ fit_model <- function(
   class(estimate) <- "parUncon"
   estimation_time <- ceiling(difftime(end_time, start_time, units = "mins"))
   
-  ### TODO reorder states
-  
   ### create and return 'fHMM_model' object
-  fHMM_model(
+  out <- fHMM_model(
     data = data,
     estimate = estimate,
     nlm_output = mod,
@@ -215,4 +236,10 @@ fit_model <- function(
     hessian = hessian,
     decoding = NULL
   )
+  
+  ### reorder states
+  out <- reorder_states(out, state_order = "mean")
+  
+  ### return 'fHMM_model' object
+  return(out)
 }

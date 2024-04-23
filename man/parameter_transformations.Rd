@@ -105,9 +105,10 @@ in more detail below:
 }
 Either none, all, or selected elements can be specified.
 
-Unspecified parameters are set to their default values, see below.
+Unspecified parameters are set to their default values.
 
-Specifications in \code{controls} override individual specifications.}
+Important: Specifications in \code{controls} always override individual
+specifications.}
 
 \item{use_parameter_labels}{Either \code{TRUE} to label the parameters or \code{FALSE}, if not (this can
 save computation time).}
