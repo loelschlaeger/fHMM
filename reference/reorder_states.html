@@ -69,7 +69,7 @@ comparison to true parameters or the interpretation of states.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reorder_states</span><span class="op">(</span><span class="va">x</span>, <span class="va">state_order</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reorder_states</span><span class="op">(</span><span class="va">x</span>, state_order <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,12 +79,14 @@ comparison to true parameters or the interpretation of states.</p>
 
 
 <dt>state_order</dt>
-<dd><p>A vector or a matrix which determines the new ordering.</p><ul><li><p>If <code>x$data$controls$hierarchy = FALSE</code>, <code>state_order</code> must
+<dd><p>Either</p><ul><li><p><code>"mean"</code>, in which case the states are ordered according to the means
+of the state-dependent distributions,</p></li>
+<li><p>or a vector (or a matrix) which determines the new ordering:</p><ul><li><p>If <code>x$data$controls$hierarchy = FALSE</code>, <code>state_order</code> must
 be a vector of length <code>x$data$controls$states</code> with integer
 values from <code>1</code> to <code>x$data$controls$states</code>. If the old
 state number <code>x</code> should be the new state number <code>y</code>, put
 the value <code>x</code> at the position <code>y</code> of <code>state_order</code>.
-E.g. for a 2-state HMM, specifying <code>state_order = c(2,1)</code> swaps
+E.g. for a 2-state HMM, specifying <code>state_order = c(2, 1)</code> swaps
 the states.</p></li>
 <li><p>If <code>x$data$controls$hierarchy = TRUE</code>, <code>state_order</code> must
 be a matrix of dimension <code>x$data$controls$states[1]</code> x
@@ -93,8 +95,10 @@ coarse-scale states with the logic as described above. For each row,
 the elements from second to last position order the fine-scale states
 of the coarse-scale state specified by the first element. E.g. for an
 HHMM with 2 coarse-scale and 2 fine-scale states, specifying
-<code>state_order = matrix(c(2,1,2,1,1,2),2,3)</code> swaps the
-coarse-scale states and the fine-scale states of coarse-scale state 2.</p></li>
+<code>state_order = matrix(c(2, 1, 2, 1, 1, 2), 2, 3)</code> swaps the
+coarse-scale states and the fine-scale states connected to
+coarse-scale state 2.</p></li>
+</ul></li>
 </ul></dd>
 
 </dl></div>
@@ -107,11 +111,7 @@ coarse-scale states and the fine-scale states of coarse-scale state 2.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">reorder_states</span><span class="op">(</span><span class="va">dax_model_3t</span>, state_order <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fHMM fitted model:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * total estimation time: 13 mins </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * accepted runs: 33 of 200 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * log-likelihood: 17649.52 </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dax_model_3t_reordered</span> <span class="op">&lt;-</span> <span class="fu">reorder_states</span><span class="op">(</span><span class="va">dax_model_3t</span>, state_order <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
