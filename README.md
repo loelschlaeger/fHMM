@@ -10,6 +10,9 @@ status](https://www.r-pkg.org/badges/version/fHMM)](https://CRAN.R-project.org/p
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/last-month/fHMM)](https://cran.r-project.org/package=fHMM)
 [![R-CMD-check](https://github.com/loelschlaeger/fHMM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/R-CMD-check.yaml)
+[![test-coverage](https://github.com/loelschlaeger/fHMM/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/test-coverage.yaml)
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
 The `{fHMM}` R package allows for the detection and characterization of
@@ -249,7 +252,7 @@ optimization <- nlm(
 )
 
 (estimate <- optimization$estimate)
-#> [1] -3.46338914 -3.44065510  0.05999846  1.06452908  0.11517809  1.07946253
+#> [1] -3.46338961 -3.44065502  0.05999843  1.06452905  0.11517804  1.07946250
 ```
 
 6.  To interpret the estimate, it needs to be back transformed to the
@@ -267,7 +270,7 @@ par$Gamma
 estimate$Gamma
 #>            state_1    state_2
 #> state_1 0.96895123 0.03104877
-#> state_2 0.03037207 0.96962793
+#> state_2 0.03037205 0.96962795
 
 par$mu
 #> muCon_1 muCon_2 
