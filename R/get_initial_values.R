@@ -148,7 +148,7 @@ get_initial_values <- function(
   }
   
   ### define initialization heuristic
-  initial_heuristic <- function(data, states) {
+  initial_heuristic <- function(data, states, positive_mu) {
     
     ### cluster data
     cluster <- stats::kmeans(
@@ -168,6 +168,11 @@ get_initial_values <- function(
       sigma[s] <- sd(cluster_s, na.rm = TRUE)
     }
     
+    ### make 'mu' positive for gamma and poisson sdd
+    if (positive_mu) {
+      mu <- vapply(mu, function(x) max(x, 0.1), numeric(1))
+    }
+    
     ### return
     list(
       "cluster" = cluster, 
@@ -181,7 +186,8 @@ get_initial_values <- function(
       
       ### heuristic for coarse-scale
       heuristic_cs <- initial_heuristic(
-        data[["data"]][, 1], states = controls[["states"]][1]
+        data = data[["data"]][, 1], states = controls[["states"]][1],
+        positive_mu = controls[["sdds"]][[1]][["name"]] %in% c("gamma", "poisson")
       )
       cluster_cs <- heuristic_cs[["cluster"]]
       initial_estimate_list_cs <- heuristic_cs[["pars"]]
@@ -191,9 +197,10 @@ get_initial_values <- function(
       mu_star <- list()
       sigma_star <- list()
       for (s in seq_len(controls[["states"]][1])) {
-        cluster_fs_data <- as.vector(data[["data"]][s == cluster_cs, ])
+        cluster_fs_data <- as.vector(data[["data"]][s == cluster_cs, -1])
         heuristic_fs <- initial_heuristic(
-          cluster_fs_data, states = controls[["states"]][2]
+          cluster_fs_data, states = controls[["states"]][2],
+          positive_mu = controls[["sdds"]][[2]][["name"]] %in% c("gamma", "poisson")
         )
         Gamma_star[[s]] <- heuristic_fs[["pars"]][["Gamma"]]
         mu_star[[s]] <- heuristic_fs[["pars"]][["mu"]]
@@ -215,7 +222,8 @@ get_initial_values <- function(
       )
     } else {
       initial_estimate_list <- initial_heuristic(
-        data[["data"]], states = controls[["states"]]
+        data = data[["data"]], states = controls[["states"]],
+        positive_mu = controls[["sdds"]][[1]][["name"]] %in% c("gamma", "poisson")
       )[["pars"]]
       initial_estimate <- par2parUncon(
         do.call(
@@ -238,7 +246,9 @@ get_initial_values <- function(
       id <- which(parameter_class == class)
       jittered[, id] <- jitter(jittered[, id], factor = 10)
     }
-    lapply(seq_len(N), function(i) structure(jittered[i, ], names = par_names))
+    lapply(seq_len(N), function(i) {
+      structure(jittered[i, ], names = par_names, class = c("parUncon", "numeric"))
+    })
   }
   
   
