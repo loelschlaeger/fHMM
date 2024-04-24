@@ -216,7 +216,7 @@
 #' optimization runs of the model likelihood from which the best one is selected
 #' as the final model.
 #'
-#' By default, \code{runs = 100}.
+#' By default, \code{runs = 10}.
 #'
 #' @param origin
 #' Only relevant for simulated data, i.e., if the \code{data} control is 
@@ -326,7 +326,7 @@ set_controls <- function(
     logreturns = if (!hierarchy) FALSE else c(FALSE, FALSE), 
     merge = function(x) mean(x),
     fit = list(),
-    runs = 100, 
+    runs = 10, 
     origin = FALSE, 
     accept = 1:3, 
     gradtol = 1e-6, 

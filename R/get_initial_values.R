@@ -168,6 +168,10 @@ get_initial_values <- function(
       sigma[s] <- sd(cluster_s, na.rm = TRUE)
     }
     
+    ### check for missing values
+    mu[is.na(mu)] <- 0
+    sigma[is.na(sigma)] <- 1
+    
     ### make 'mu' positive for gamma and poisson sdd
     if (positive_mu) {
       mu <- vapply(mu, function(x) max(x, 0.1), numeric(1))
@@ -277,29 +281,31 @@ get_initial_values <- function(
     }
     
     ### compute log-likelihood values
-    if (ncluster <= 1) {
-      
-      for (i in ind) {
-        ll_at_initial_values[i] <- check_initial_estimate(
-          initial_values[[i]], verbose = FALSE, return_value = TRUE
-        )
+    if (length(ind) > 0) {
+      if (ncluster <= 1) {
+        
+        for (i in ind) {
+          ll_at_initial_values[i] <- check_initial_estimate(
+            initial_values[[i]], verbose = FALSE, return_value = TRUE
+          )
+        }
+        
+      } else {
+        
+        cluster <- parallel::makeCluster(ncluster)
+        doSNOW::registerDoSNOW(cluster)
+  
+        ll_at_initial_values_update <- foreach::foreach(
+          N = seq_along(ind), .packages = "fHMM"
+        ) %dopar% {
+          check_initial_estimate(
+            initial_values[[ind[N]]], verbose = FALSE, return_value = TRUE
+          )
+        }
+        
+        parallel::stopCluster(cluster)
+        ll_at_initial_values[ind] <- ll_at_initial_values_update
       }
-      
-    } else {
-      
-      cluster <- parallel::makeCluster(ncluster)
-      doSNOW::registerDoSNOW(cluster)
-
-      ll_at_initial_values <- foreach::foreach(
-        N = seq_along(ind), .packages = "fHMM"
-      ) %dopar% {
-        check_initial_estimate(
-          initial_values[[ind[N]]], verbose = FALSE, return_value = TRUE
-        )
-      }
-      
-      parallel::stopCluster(cluster)
-      ll_at_initial_values <- unlist(ll_at_initial_values)
     }
     
     ### replace initial values that lead to NA
@@ -310,7 +316,7 @@ get_initial_values <- function(
     
     ### drop largest negative log-likelihood value
     largest <- which.max(ll_at_initial_values)
-    if (length(largest) == 1) {
+    if (length(largest) >= 1) {
       ll_at_initial_values <- ll_at_initial_values[-largest]
       initial_values <- initial_values[-largest]
     }

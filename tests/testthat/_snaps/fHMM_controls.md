@@ -20,7 +20,7 @@
       * data type: empirical 
       * number of states: 2 
       * sdds: t() 
-      * number of runs: 100  
+      * number of runs: 10  
 
 ---
 
@@ -32,7 +32,7 @@
       * data type: empirical 
       * number of states: 2 
       * sdds: t() 
-      * number of runs: 100  
+      * number of runs: 10  
 
 # checks of controls for simulated HHMM work
 
@@ -44,7 +44,7 @@
       * data type: simulated 
       * number of states: 2 2 
       * sdds: normal() normal() 
-      * number of runs: 100  
+      * number of runs: 10  
 
 ---
 
@@ -56,7 +56,7 @@
       * data type: simulated 
       * number of states: 2 2 
       * sdds: normal() normal() 
-      * number of runs: 100  
+      * number of runs: 10  
 
 ---
 
@@ -68,7 +68,7 @@
       * data type: simulated 
       * number of states: 2 2 
       * sdds: normal() normal() 
-      * number of runs: 100  
+      * number of runs: 10  
 
 ---
 
@@ -80,7 +80,7 @@
       * data type: simulated 
       * number of states: 2 2 
       * sdds: normal() normal() 
-      * number of runs: 100  
+      * number of runs: 10  
 
 ---
 
@@ -92,7 +92,7 @@
       * data type: empirical 
       * number of states: 2 2 
       * sdds: normal() normal() 
-      * number of runs: 100  
+      * number of runs: 10  
 
 # checks of controls for empirical HHMM work
 
@@ -104,7 +104,7 @@
       * data type: empirical 
       * number of states: 2 2 
       * sdds: normal() normal() 
-      * number of runs: 100  
+      * number of runs: 10  
 
 ---
 
@@ -116,7 +116,7 @@
       * data type: empirical 
       * number of states: 2 2 
       * sdds: normal() normal() 
-      * number of runs: 100  
+      * number of runs: 10  
 
 ---
 
@@ -128,7 +128,7 @@
       * data type: empirical 
       * number of states: 2 2 
       * sdds: normal() normal() 
-      * number of runs: 100  
+      * number of runs: 10  
 
 ---
 
@@ -140,7 +140,7 @@
       * data type: empirical 
       * number of states: 2 2 
       * sdds: normal() normal() 
-      * number of runs: 100  
+      * number of runs: 10  
 
 ---
 
@@ -152,5 +152,5 @@
       * data type: empirical 
       * number of states: 2 2 
       * sdds: normal() normal() 
-      * number of runs: 100  
+      * number of runs: 10  
 

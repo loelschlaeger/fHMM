@@ -151,7 +151,7 @@ fHMM_parameters <- function(
   if (sdds[[1]]$name == "t") {
     if (is.null(df)) {
       ### degrees of freedom are positive
-      df <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 0, 30)
+      df <- stats::qunif((0:(M - 1) / M + stats::runif(1, 0, 1 / M)), 1, 30)
     }
   } else {
     df <- NULL
@@ -196,7 +196,7 @@ fHMM_parameters <- function(
         df_star <- list()
         for (i in 1:M) {
           ### degrees of freedom are positive
-          df_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 30)
+          df_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 1, 30)
         }
       }
     } else {
