@@ -77,7 +77,7 @@ contains details about the fitted (hierarchical) Hidden Markov model.</p>
 <span>  <span class="va">ll</span>,</span>
 <span>  <span class="va">lls</span>,</span>
 <span>  <span class="va">gradient</span>,</span>
-<span>  <span class="va">hessian</span>,</span>
+<span>  <span class="va">hessian_diagonal</span>,</span>
 <span>  <span class="va">decoding</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -144,8 +144,9 @@ contains details about the fitted (hierarchical) Hidden Markov model.</p>
 <dd><p>A <code>numeric</code> vector, the gradient at the optimum.</p></dd>
 
 
-<dt>hessian</dt>
-<dd><p>A <code>matrix</code>, the Hessian at the optimum.</p></dd>
+<dt>hessian_diagonal</dt>
+<dd><p>A <code>numeric</code> vector, the diagonal elements of the approximated Hessian at
+the optimum.</p></dd>
 
 
 <dt>decoding</dt>

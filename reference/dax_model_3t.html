@@ -82,21 +82,25 @@ demonstration purpose.</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The model was estimated via:</p><div class="sourceCode"><pre><code><span></span>
+<span><span class="co"># TODO refit</span></span>
 <span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_controls.html">set_controls</a></span><span class="op">(</span></span>
-<span>  states <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  sdds   <span class="op">=</span> <span class="st">"t"</span>,</span>
-<span>  data   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    file        <span class="op">=</span> <span class="va">dax</span>,</span>
-<span>    date_column <span class="op">=</span> <span class="st">"Date"</span>,</span>
-<span>    data_column <span class="op">=</span> <span class="st">"Close"</span>,</span>
-<span>    logreturns  <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    from        <span class="op">=</span> <span class="st">"2000-01-03"</span>,</span>
-<span>    to          <span class="op">=</span> <span class="st">"2022-12-31"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  fit    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>runs <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<span>states <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>sdds   <span class="op">=</span> <span class="st">"t"</span>,</span>
+<span>data   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  file        <span class="op">=</span> <span class="va">dax</span>,</span>
+<span>  date_column <span class="op">=</span> <span class="st">"Date"</span>,</span>
+<span>  data_column <span class="op">=</span> <span class="st">"Close"</span>,</span>
+<span>  logreturns  <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  from        <span class="op">=</span> <span class="st">"2000-01-03"</span>,</span>
+<span>  to          <span class="op">=</span> <span class="st">"2022-12-31"</span></span>
+<span><span class="op">)</span>,</span>
+<span>fit    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"runs"</span> <span class="op">=</span> <span class="fl">100</span>, <span class="st">"gradtol"</span> <span class="op">=</span> <span class="fl">1e-6</span>, <span class="st">"steptol"</span> <span class="op">=</span> <span class="fl">1e-6</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">dax_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data.html">prepare_data</a></span><span class="op">(</span><span class="va">controls</span><span class="op">)</span></span>
-<span><span class="va">dax_model_3t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">dax_data</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">dax_model_3t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">dax_data</span><span class="op">)</span></span>
+<span><span class="va">dax_model_3t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span></span>
+<span><span class="va">dax_model_3t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_residuals.html">compute_residuals</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span></span></code></pre></div>
 
     </div>
 

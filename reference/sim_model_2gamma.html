@@ -80,18 +80,22 @@ means fixed to <code>0.5</code> and <code>2</code> on <code>500</code> simulated
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The model was estimated via:</p><div class="sourceCode"><pre><code><span></span>
 <span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_controls.html">set_controls</a></span><span class="op">(</span></span>
-<span>  states  <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  sdds    <span class="op">=</span> <span class="st">"gamma(mu = 1|2)"</span>,</span>
-<span>  horizon <span class="op">=</span> <span class="fl">200</span>,</span>
-<span>  fit     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>runs <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span>states  <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>sdds    <span class="op">=</span> <span class="st">"gamma(mu = 1|2)"</span>,</span>
+<span>horizon <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>fit     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"runs"</span> <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">pars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fHMM_parameters.html">fHMM_parameters</a></span><span class="op">(</span></span>
-<span>  controls <span class="op">=</span> <span class="va">controls</span>, </span>
+<span>  controls <span class="op">=</span> <span class="va">controls</span>,</span>
 <span>  Gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="fl">0.8</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span>  sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">data_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data.html">prepare_data</a></span><span class="op">(</span><span class="va">controls</span>, true_parameters <span class="op">=</span> <span class="va">pars</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">sim_model_2gamma</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">data_sim</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sim_model_2gamma</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">data_sim</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">sim_model_2gamma</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">sim_model_2gamma</span><span class="op">)</span></span>
+<span><span class="va">sim_model_2gamma</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_residuals.html">compute_residuals</a></span><span class="op">(</span><span class="va">sim_model_2gamma</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">sim_model_2gamma</span><span class="op">)</span></span></code></pre></div>
 
     </div>
 
