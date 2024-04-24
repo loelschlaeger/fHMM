@@ -484,9 +484,13 @@ print.fHMM_parameters <- function(x, ...) {
 #' Either \code{TRUE} or \code{FALSE}, determining whether to apply the link
 #' function.
 #' 
-#' @param shift
-#' A small, positive \code{numeric} for shifting boundary probabilities.
-#' By default, \code{shift = 1e-3}.
+#' @param numerical_safeguard
+#' Either \code{TRUE} or \code{FALSE}, determining whether to apply the 
+#' following small corrections to boundary parameters to improve numerical 
+#' performance when calculating and optimizing the likelihood function:
+#' - transition probabilities equal to 0 or 1 are shifted towards the center
+#'   by \code{1e-3}
+#' - standard deviations and degrees of freedom are bounded above by \code{100}
 #' 
 #' @param dim
 #' An \code{integer}, the dimension of the transition probability matrix.
@@ -614,7 +618,9 @@ par2parUncon <- function(par, controls, use_parameter_labels = TRUE) {
 #' For \code{parUncon2parCon}: a vector of constrained model parameters.
 #' @export
 
-parUncon2parCon <- function(parUncon, controls, use_parameter_labels = TRUE) {
+parUncon2parCon <- function(
+    parUncon, controls, use_parameter_labels = TRUE, numerical_safeguard = FALSE
+  ) {
   stopifnot(inherits(parUncon, "parUncon"))
   stopifnot(inherits(controls, "fHMM_controls"))
   sdds <- controls[["sdds"]]
@@ -623,7 +629,8 @@ parUncon2parCon <- function(parUncon, controls, use_parameter_labels = TRUE) {
     parUncon[1:((M - 1) * M)], 
     dim = M,
     prefix = "gammasCon_",
-    use_parameter_labels = use_parameter_labels
+    use_parameter_labels = use_parameter_labels,
+    numerical_safeguard = numerical_safeguard
   )
   parUncon <- parUncon[-(1:((M - 1) * M))]
   if (!"mu" %in% names(sdds[[1]]$pars)) {
@@ -645,7 +652,8 @@ parUncon2parCon <- function(parUncon, controls, use_parameter_labels = TRUE) {
         sigmaUncon2sigmaCon(
           parUncon[1:M],
           prefix = "sigmaCon_",
-          use_parameter_labels = use_parameter_labels
+          use_parameter_labels = use_parameter_labels,
+          numerical_safeguard = numerical_safeguard
         )
       )
       parUncon <- parUncon[-(1:M)]
@@ -658,7 +666,8 @@ parUncon2parCon <- function(parUncon, controls, use_parameter_labels = TRUE) {
         dfUncon2dfCon(
           parUncon[1:M],
           prefix = "dfCon_",
-          use_parameter_labels = use_parameter_labels
+          use_parameter_labels = use_parameter_labels,
+          numerical_safeguard = numerical_safeguard
         )
       )
       parUncon <- parUncon[-(1:M)]
@@ -666,14 +675,15 @@ parUncon2parCon <- function(parUncon, controls, use_parameter_labels = TRUE) {
   }
   if (controls[["hierarchy"]]) {
     N <- controls[["states"]][2]
-    for (s in 1:M) {
+    for (s in seq_len(M)) {
       parCon <- c(
         parCon,
         gammasUncon2gammasCon(
           parUncon[1:((N - 1) * N)], 
           dim = N,
           prefix = paste0("cs_", s, ":gammasCon_"),
-          use_parameter_labels = use_parameter_labels
+          use_parameter_labels = use_parameter_labels,
+          numerical_safeguard = numerical_safeguard
         )
       )
       parUncon <- parUncon[-(1:((N - 1) * N))]
@@ -696,7 +706,8 @@ parUncon2parCon <- function(parUncon, controls, use_parameter_labels = TRUE) {
             sigmaUncon2sigmaCon(
               parUncon[1:N],
               prefix = paste0("cs_", s, ":sigmaCon_"),
-              use_parameter_labels = use_parameter_labels
+              use_parameter_labels = use_parameter_labels,
+              numerical_safeguard = numerical_safeguard
             )
           )
           parUncon <- parUncon[-(1:N)]
@@ -709,7 +720,8 @@ parUncon2parCon <- function(parUncon, controls, use_parameter_labels = TRUE) {
             dfUncon2dfCon(
               parUncon[1:N],
               prefix = paste0("cs_", s, ":dfCon_"),
-              use_parameter_labels = use_parameter_labels
+              use_parameter_labels = use_parameter_labels,
+              numerical_safeguard = numerical_safeguard
             )
           )
           parUncon <- parUncon[-(1:N)]
@@ -726,6 +738,9 @@ parUncon2parCon <- function(parUncon, controls, use_parameter_labels = TRUE) {
 #' @export
 
 parCon2par <- function(parCon, controls, use_parameter_labels = TRUE) {
+  
+  parCon_tmp <- parCon
+  
   stopifnot(inherits(parCon, "parCon"))
   stopifnot(inherits(controls, "fHMM_controls"))
   sdds <- controls[["sdds"]]
@@ -851,12 +866,15 @@ parCon2parUncon <- function(parCon, controls, use_parameter_labels = TRUE) {
 #' @export
 
 parUncon2par <- function(
-    parUncon, controls, use_parameter_labels = TRUE
+    parUncon, controls, use_parameter_labels = TRUE, numerical_safeguard = FALSE
   ) {
   stopifnot(inherits(parUncon, "parUncon"))
   stopifnot(inherits(controls, "fHMM_controls"))
   parCon2par(
-    parUncon2parCon(parUncon, controls, use_parameter_labels = use_parameter_labels), 
+    parUncon2parCon(
+      parUncon, controls, use_parameter_labels = use_parameter_labels,
+      numerical_safeguard = numerical_safeguard
+    ), 
     controls,
     use_parameter_labels = use_parameter_labels
   )
@@ -918,9 +936,13 @@ sigmaCon2sigmaUncon <- function(
 #' For \code{sigmaUncon2sigmaCon}: a vector of constrained standard deviations.
 
 sigmaUncon2sigmaCon <- function(
-    sigmaUncon, prefix = "sigmaCon_", use_parameter_labels = TRUE
+    sigmaUncon, prefix = "sigmaCon_", use_parameter_labels = TRUE,
+    numerical_safeguard = FALSE
   ) {
   sigmaCon <- exp(sigmaUncon)
+  if (isTRUE(numerical_safeguard)) {
+    sigmaCon[sigmaCon > 100] <- 100
+  }
   if (isTRUE(use_parameter_labels)) {
     names(sigmaCon) <- paste0(prefix, seq_along(sigmaCon))
   }
@@ -946,9 +968,13 @@ dfCon2dfUncon <- function(
 #' For \code{dfUncon2dfCon}: a vector of constrained degrees of freedom.
 
 dfUncon2dfCon <- function(
-    dfUncon, prefix = "dfCon_", use_parameter_labels = TRUE
+    dfUncon, prefix = "dfCon_", use_parameter_labels = TRUE,
+    numerical_safeguard = FALSE
   ) {
   dfCon <- exp(dfUncon)
+  if (isTRUE(numerical_safeguard)) {
+    dfCon[dfCon > 100] <- 100
+  }
   if (isTRUE(use_parameter_labels)) {
     names(dfCon) <- paste0(prefix, seq_along(dfCon))
   }
@@ -961,11 +987,14 @@ dfUncon2dfCon <- function(
 #' elements (column-wise).
 
 Gamma2gammasCon <- function(
-    Gamma, shift = 1e-3, prefix = "gammasCon_", use_parameter_labels = TRUE
+    Gamma, prefix = "gammasCon_", use_parameter_labels = TRUE,
+    numerical_safeguard = FALSE
   ) {
   gammasCon <- Gamma[row(Gamma) != col(Gamma)]
-  gammasCon <- replace(gammasCon, gammasCon == 0, shift)
-  gammasCon <- replace(gammasCon, gammasCon == 1, 1 - shift)
+  if (isTRUE(numerical_safeguard)) {
+    gammasCon <- replace(gammasCon, gammasCon == 0, 1e-3)
+    gammasCon <- replace(gammasCon, gammasCon == 1, 1 - 1e-3)
+  }
   if (isTRUE(use_parameter_labels)) {
     names(gammasCon) <- oeli::matrix_indices(
       Gamma, prefix = prefix, exclude_diagonal = TRUE
@@ -1032,10 +1061,14 @@ gammasCon2gammasUncon <- function(
 #' For \code{gammasUncon2Gamma}: a transition probability matrix.
 
 gammasUncon2Gamma <- function(
-    gammasUncon, dim, prefix = "state_", use_parameter_labels = TRUE
+    gammasUncon, dim, prefix = "state_", use_parameter_labels = TRUE,
+    numerical_safeguard = FALSE
   ) {
   Gamma <- diag(dim)
   Gamma[!Gamma] <- exp(gammasUncon)
+  if (isTRUE(numerical_safeguard)) {
+    Gamma[!is.finite(Gamma)] <- 100
+  }
   Gamma <- Gamma / rowSums(Gamma)
   if (isTRUE(use_parameter_labels)) {
     colnames(Gamma) <- rownames(Gamma) <- paste0(prefix, seq_len(dim))
@@ -1049,11 +1082,16 @@ gammasUncon2Gamma <- function(
 #' elements of a transition probability matrix.
 
 gammasUncon2gammasCon <- function(
-    gammasUncon, dim, prefix = "gammasCon_", use_parameter_labels = TRUE
+    gammasUncon, dim, prefix = "gammasCon_", use_parameter_labels = TRUE,
+    numerical_safeguard = FALSE
   ) {
   Gamma2gammasCon(
-    gammasUncon2Gamma(gammasUncon, dim, use_parameter_labels = use_parameter_labels), 
+    gammasUncon2Gamma(
+      gammasUncon, dim, use_parameter_labels = use_parameter_labels,
+      numerical_safeguard = numerical_safeguard
+    ), 
     prefix = prefix,
-    use_parameter_labels = use_parameter_labels
+    use_parameter_labels = use_parameter_labels,
+    numerical_safeguard = numerical_safeguard
   )
 }

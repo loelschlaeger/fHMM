@@ -22,8 +22,9 @@
 #' A \code{numeric} vector, the model log-likelihoods in all optimization runs.
 #' @param gradient
 #' A \code{numeric} vector, the gradient at the optimum.
-#' @param hessian
-#' A \code{matrix}, the Hessian at the optimum.
+#' @param hessian_diagonal
+#' A \code{numeric} vector, the diagonal elements of the approximated Hessian at 
+#' the optimum.
 #' @param decoding
 #' A \code{numeric} vector, the decoded time series.
 #' @param alpha
@@ -39,8 +40,8 @@
 #' An object of class \code{\link{fHMM_model}}.
 
 fHMM_model <- function(
-    data, estimate, nlm_output, estimation_time, ll, lls, gradient, hessian, 
-    decoding
+    data, estimate, nlm_output, estimation_time, ll, lls, gradient, 
+    hessian_diagonal, decoding
 ) {
   structure(
     list(
@@ -51,7 +52,7 @@ fHMM_model <- function(
       "ll" = ll,
       "lls" = lls,
       "gradient" = gradient,
-      "hessian" = hessian,
+      "hessian_diagonal" = hessian_diagonal,
       "decoding" = NULL
     ), 
     class = "fHMM_model"

@@ -23,7 +23,7 @@ fHMM_model(
   ll,
   lls,
   gradient,
-  hessian,
+  hessian_diagonal,
   decoding
 )
 
@@ -64,7 +64,8 @@ npar(object, ...)
 
 \item{gradient}{A \code{numeric} vector, the gradient at the optimum.}
 
-\item{hessian}{A \code{matrix}, the Hessian at the optimum.}
+\item{hessian_diagonal}{A \code{numeric} vector, the diagonal elements of the approximated Hessian at
+the optimum.}
 
 \item{decoding}{A \code{numeric} vector, the decoded time series.}
 

@@ -24,7 +24,12 @@
 \usage{
 par2parUncon(par, controls, use_parameter_labels = TRUE)
 
-parUncon2parCon(parUncon, controls, use_parameter_labels = TRUE)
+parUncon2parCon(
+  parUncon,
+  controls,
+  use_parameter_labels = TRUE,
+  numerical_safeguard = FALSE
+)
 
 parCon2par(parCon, controls, use_parameter_labels = TRUE)
 
@@ -32,7 +37,12 @@ par2parCon(par, controls, use_parameter_labels = TRUE)
 
 parCon2parUncon(parCon, controls, use_parameter_labels = TRUE)
 
-parUncon2par(parUncon, controls, use_parameter_labels = TRUE)
+parUncon2par(
+  parUncon,
+  controls,
+  use_parameter_labels = TRUE,
+  numerical_safeguard = FALSE
+)
 
 muCon2muUncon(muCon, link, prefix = "muUncon_", use_parameter_labels = TRUE)
 
@@ -47,18 +57,24 @@ sigmaCon2sigmaUncon(
 sigmaUncon2sigmaCon(
   sigmaUncon,
   prefix = "sigmaCon_",
-  use_parameter_labels = TRUE
+  use_parameter_labels = TRUE,
+  numerical_safeguard = FALSE
 )
 
 dfCon2dfUncon(dfCon, prefix = "dfUncon_", use_parameter_labels = TRUE)
 
-dfUncon2dfCon(dfUncon, prefix = "dfCon_", use_parameter_labels = TRUE)
+dfUncon2dfCon(
+  dfUncon,
+  prefix = "dfCon_",
+  use_parameter_labels = TRUE,
+  numerical_safeguard = FALSE
+)
 
 Gamma2gammasCon(
   Gamma,
-  shift = 0.001,
   prefix = "gammasCon_",
-  use_parameter_labels = TRUE
+  use_parameter_labels = TRUE,
+  numerical_safeguard = FALSE
 )
 
 Gamma2gammasUncon(Gamma, prefix = "gammasUncon_", use_parameter_labels = TRUE)
@@ -76,14 +92,16 @@ gammasUncon2Gamma(
   gammasUncon,
   dim,
   prefix = "state_",
-  use_parameter_labels = TRUE
+  use_parameter_labels = TRUE,
+  numerical_safeguard = FALSE
 )
 
 gammasUncon2gammasCon(
   gammasUncon,
   dim,
   prefix = "gammasCon_",
-  use_parameter_labels = TRUE
+  use_parameter_labels = TRUE,
+  numerical_safeguard = FALSE
 )
 }
 \arguments{
@@ -123,6 +141,15 @@ with identified and unconstrained model parameters in the following order:
 \item fine-scale parameters for each coarse-scale state, in the same order (if any)
 }}
 
+\item{numerical_safeguard}{Either \code{TRUE} or \code{FALSE}, determining whether to apply the
+following small corrections to boundary parameters to improve numerical
+performance when calculating and optimizing the likelihood function:
+\itemize{
+\item transition probabilities equal to 0 or 1 are shifted towards the center
+by \code{1e-3}
+\item standard deviations and degrees of freedom are bounded above by \code{100}
+}}
+
 \item{parCon}{An object of class \code{parCon}, which is a \code{numeric} \code{vector}
 with identified (and constrained) model parameters in the following order:
 \enumerate{
@@ -143,9 +170,6 @@ function.}
 \item{sigmaCon, sigmaUncon}{A vector of (un-) constrained standard deviations.}
 
 \item{dfCon, dfUncon}{A vector of (un-) constrained degrees of freedom.}
-
-\item{shift}{A small, positive \code{numeric} for shifting boundary probabilities.
-By default, \code{shift = 1e-3}.}
 
 \item{gammasCon, gammasUncon}{A vector of (un-) constrained non-diagonal transition probabilities.}
 

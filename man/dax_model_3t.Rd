@@ -18,21 +18,25 @@ demonstration purpose.
 \details{
 The model was estimated via:
 \preformatted{
+# TODO refit
 controls <- set_controls(
-  states = 3,
-  sdds   = "t",
-  data   = list(
-    file        = dax,
-    date_column = "Date",
-    data_column = "Close",
-    logreturns  = TRUE,
-    from        = "2000-01-03",
-    to          = "2022-12-31"
-  ),
-  fit    = list(runs = 200)
+states = 3,
+sdds   = "t",
+data   = list(
+  file        = dax,
+  date_column = "Date",
+  data_column = "Close",
+  logreturns  = TRUE,
+  from        = "2000-01-03",
+  to          = "2022-12-31"
+),
+fit    = list("runs" = 100, "gradtol" = 1e-6, "steptol" = 1e-6)
 )
 dax_data <- prepare_data(controls)
 dax_model_3t <- fit_model(dax_data)
+dax_model_3t <- decode_states(dax_model_3t)
+dax_model_3t <- compute_residuals(dax_model_3t)
+summary(dax_model_3t)
 }
 }
 \keyword{model}

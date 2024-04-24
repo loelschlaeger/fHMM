@@ -48,7 +48,6 @@
 #' @importFrom grDevices col2rgb
 #' @importFrom grDevices colorRampPalette
 #' @importFrom grDevices rgb
-#' @importFrom numDeriv hessian
 #' @importFrom padr pad
 #' @importFrom Rcpp evalCpp
 #' @importFrom stats acf

@@ -8,13 +8,13 @@ fit_model(
   data,
   controls = data[["controls"]],
   fit = list(),
-  runs = 100,
+  runs = 10,
   origin = FALSE,
   accept = 1:3,
-  gradtol = 1e-06,
-  iterlim = 200,
+  gradtol = 0.01,
+  iterlim = 100,
   print.level = 0,
-  steptol = 1e-06,
+  steptol = 0.01,
   ncluster = 1,
   seed = NULL,
   verbose = TRUE,
@@ -86,12 +86,12 @@ By default, \code{accept = 1:3}.}
 \item{gradtol}{A positive \code{numeric} value, specifying the gradient tolerance, passed on
 to \code{\link[stats]{nlm}}.
 
-By default, \code{gradtol = 1e-6}.}
+By default, \code{gradtol = 0.01}.}
 
 \item{iterlim}{A positive \code{integer} value, specifying the iteration limit, passed on
 to \code{\link[stats]{nlm}}.
 
-By default, \code{iterlim = 200}.}
+By default, \code{iterlim = 100}.}
 
 \item{print.level}{One of \code{0}, \code{1}, and \code{2} to control the verbosity of the
 numerical likelihood optimization, passed on to \code{\link[stats]{nlm}}.
@@ -101,7 +101,7 @@ By default, \code{print.level = 0}.}
 \item{steptol}{A positive \code{numeric} value, specifying the step tolerance, passed on
 to \code{\link[stats]{nlm}}.
 
-By default, \code{gradtol = 1e-6}.}
+By default, \code{gradtol = 0.01}.}
 
 \item{ncluster}{Set the number of clusters for parallel optimization runs to reduce
 optimization time.

@@ -50,9 +50,13 @@ reorder_states <- function(x, state_order = "mean") {
     if (!x$data$controls$hierarchy) {
       state_order <- as.matrix(order(pars$mu))
     } else {
-      
-      # TODO
-      
+      states <- x$data$controls$states
+      state_order <- matrix(0, nrow = states[1], ncol = states[2] + 1)
+      state_order_cs <- order(pars$mu)
+      state_order[, 1] <- state_order_cs
+      for (s in state_order_cs) {
+        state_order[s, -1] <- order(pars$mu_star[[s]])
+      }
     }
   } else {
     if (!x$data$controls$hierarchy) {
@@ -111,7 +115,7 @@ reorder_states <- function(x, state_order = "mean") {
   permut_all <- diag(length(x$estimate))[match, ]
   x$estimate <- parUncon
   x$gradient <- as.vector(permut_all %*% x$gradient)
-  x$hessian <- permut_all %*% x$hessian %*% t(permut_all)
+  x$hessian_diagonal <- as.vector(permut_all %*% x$hessian_diagonal)
   x$nlm_output$estimate <- x$estimate
   x$nlm_output$gradient <- x$gradient
 

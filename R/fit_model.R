@@ -58,8 +58,8 @@
 
 fit_model <- function(
     data, controls = data[["controls"]], 
-    fit = list(), runs = 100, origin = FALSE, accept = 1:3, gradtol = 1e-6, 
-    iterlim = 200, print.level = 0, steptol = 1e-6, 
+    fit = list(), runs = 10, origin = FALSE, accept = 1:3, gradtol = 0.01, 
+    iterlim = 100, print.level = 0, steptol = 0.01, 
     ncluster = 1, seed = NULL, verbose = TRUE, initial_estimate = NULL
 ) {
   
@@ -96,6 +96,7 @@ fit_model <- function(
     data = data, ncluster = ncluster, seed = seed, verbose = verbose,
     initial_estimate = initial_estimate
   )
+  runs <- length(initial_values)
   
   ### define likelihood function
   target <- ifelse(!data[["controls"]][["hierarchy"]], nLL_hmm, nLL_hhmm)
@@ -104,16 +105,16 @@ fit_model <- function(
   if (verbose) {
     pb <- progress::progress_bar$new(
       format = "[:bar] :percent, :eta ETA",
-      total = data[["controls"]][["fit"]][["runs"]], width = 45, clear = TRUE,
+      total = runs, width = 45, clear = TRUE,
       complete = "=", incomplete = "-", current = ">"
     )
-    pb$message("Maximizing likelihood")
+    pb$message("Maximizing likelihood...")
   }
   start_time <- Sys.time()
   
   if (ncluster == 1) {
     mods <- list()
-    for (run in 1:data[["controls"]][["fit"]][["runs"]]) {
+    for (run in seq_len(runs)) {
       
       if (verbose) pb$tick(0)
       
@@ -128,7 +129,6 @@ fit_model <- function(
             steptol = data[["controls"]][["fit"]][["steptol"]],
             gradtol = data[["controls"]][["fit"]][["gradtol"]],
             print.level = data[["controls"]][["fit"]][["print.level"]],
-            typsize = initial_values[[run]],
             hessian = FALSE
           ),
           silent = TRUE
@@ -152,8 +152,7 @@ fit_model <- function(
     doSNOW::registerDoSNOW(cluster)
     opts <- if (verbose) list(progress = function(n) pb$tick()) else list()
     mods <- foreach::foreach(
-      run = 1:data[["controls"]][["fit"]][["runs"]],
-      .packages = "fHMM", .options.snow = opts
+      run = seq_len(runs), .packages = "fHMM", .options.snow = opts
     ) %dopar% {
       
       if (verbose) pb$tick(0)
@@ -169,7 +168,6 @@ fit_model <- function(
             steptol = data[["controls"]][["fit"]][["steptol"]],
             gradtol = data[["controls"]][["fit"]][["gradtol"]],
             print.level = data[["controls"]][["fit"]][["print.level"]],
-            typsize = initial_values[[run]],
             hessian = FALSE
           ),
           silent = TRUE
@@ -202,20 +200,17 @@ fit_model <- function(
     )
   }
   
-  ### compute Hessian
-  if (verbose) message("Computing Hessian")
-  hessian <- suppressWarnings(
-    numDeriv::hessian(
-      func = target,
-      method = "Richardson",
-      x = mods[[which.max(lls)]][["estimate"]],
-      observations = data[["data"]],
-      controls = data[["controls"]]
-    )
-  )
+  ### compute diagonal elements of Hessian
+  if (verbose) message("Approximating Hessian...")
+  hessian_diagonal <- suppressWarnings(pracma::hessdiag(
+    f = target,
+    x = mods[[which.max(lls)]][["estimate"]],
+    observations = data[["data"]],
+    controls = data[["controls"]]
+  ))
   
   ### final message
-  if (verbose) message("Fitting completed")
+  if (verbose) message("Fitting completed!")
   
   ### extract estimation results
   mod <- mods[[which.max(lls)]]
@@ -233,7 +228,7 @@ fit_model <- function(
     ll = ll,
     lls = lls,
     gradient = mod$gradient,
-    hessian = hessian,
+    hessian_diagonal = hessian_diagonal,
     decoding = NULL
   )
   

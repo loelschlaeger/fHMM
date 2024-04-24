@@ -18,18 +18,22 @@ means fixed to \code{0.5} and \code{2} on \code{500} simulated observations.
 The model was estimated via:
 \preformatted{
 controls <- set_controls(
-  states  = 2,
-  sdds    = "gamma(mu = 1|2)",
-  horizon = 200,
-  fit     = list(runs = 50)
+states  = 2,
+sdds    = "gamma(mu = 1|2)",
+horizon = 200,
+fit     = list("runs" = 10)
 )
 pars <- fHMM_parameters(
-  controls = controls, 
+  controls = controls,
   Gamma = matrix(c(0.9, 0.2, 0.1, 0.8), nrow = 2),
-  sigma = c(0.5, 1)
+  sigma = c(0.5, 1),
+  seed = 1
 )
 data_sim <- prepare_data(controls, true_parameters = pars, seed = 1)
 sim_model_2gamma <- fit_model(data_sim, seed = 1)
+sim_model_2gamma <- decode_states(sim_model_2gamma)
+sim_model_2gamma <- compute_residuals(sim_model_2gamma)
+summary(sim_model_2gamma)
 }
 }
 \keyword{model}

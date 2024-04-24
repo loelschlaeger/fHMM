@@ -17,6 +17,7 @@ on \code{1000} simulated observations.
 \details{
 The model was estimated via:
 \preformatted{
+# TODO refit
 controls <- set_controls(
   states  = 4,
   sdds    = "lognormal",

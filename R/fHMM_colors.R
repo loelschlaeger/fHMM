@@ -39,7 +39,7 @@ fHMM_colors <- function(controls, colors = NULL) {
     stop("'controls' must be of class 'fHMM_controls'.", call. = FALSE)
   }
   if (is.null(colors)) {
-    colors <- c("darkgreen", "green", "yellow", "orange", "red", "darkred")
+    colors <- c("darkred", "red", "orange", "yellow", "green", "darkgreen")
   }
   if (!is.character(colors)) {
     stop("'colors' must be a character vector.", call. = FALSE)

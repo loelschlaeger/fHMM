@@ -32,22 +32,21 @@ compute_ci <- function(x, alpha = 0.05) {
   }
 
   ### compute confidence intervals using the inverse Hessian approach
-  if(any(!is.finite(x$hessian))) {
-    x$hessian[!is.finite(x$hessian)] <- 0
-    warning(paste(
-      "The Hessian matrix contains non-finite values.",
-      "For confidence interval computation, they were replaced by zeros."),
-      immediate. = TRUE, call. = FALSE)
-  }
-  inv_fisher <- MASS::ginv(x$hessian)
-  sds <- suppressWarnings(sqrt(diag(inv_fisher)))
+  inv_fisher <- 1 / x$hessian_diagonal
+  sds <- suppressWarnings(sqrt(inv_fisher))
   z_alpha <- stats::qnorm(p = 1 - alpha / 2)
   lower_limit <- x$estimate - z_alpha * sds
   upper_limit <- x$estimate + z_alpha * sds
 
   ### if negative variance, replace by NA_real_
-  lower_limit[diag(inv_fisher) < 0] <- NA_real_
-  upper_limit[diag(inv_fisher) < 0] <- NA_real_
+  bad_inv_fisher <- which(
+    !vapply(
+      inv_fisher, checkmate::test_number, logical(1), na.ok = FALSE, 
+      finite = TRUE, lower = 0
+    )
+  )
+  lower_limit[bad_inv_fisher] <- NA_real_
+  upper_limit[bad_inv_fisher] <- NA_real_
 
   ### create and return output
   out <- lapply(
@@ -55,7 +54,7 @@ compute_ci <- function(x, alpha = 0.05) {
     parUncon2parCon, x$data$controls
   )
   if (anyNA(unlist(out))) {
-    warning("Some confidence intervals could not be computed.", call. = FALSE)
+    warning("Some confidence bounds could not be computed.", call. = FALSE)
   }
   names(out) <- c("lb", "estimate", "ub")
   return(out)

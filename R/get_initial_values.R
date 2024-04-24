@@ -258,7 +258,7 @@ get_initial_values <- function(
   
   ### generate and check start values
   if (verbose) {
-    message("Checking start values")
+    message("Checking start values...")
   }
   N <- runs * 2
   initial_values <- jitter_initial_estimate(initial_estimate, N)

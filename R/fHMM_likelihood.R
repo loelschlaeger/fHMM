@@ -95,7 +95,7 @@ nLL_hmm <- function(parUncon, observations, controls) {
   class(parUncon) <- "parUncon"
   T <- length(observations)
   nstates <- controls[["states"]][1]
-  par <- parUncon2par(parUncon, controls, FALSE)
+  par <- parUncon2par(parUncon, controls, FALSE, numerical_safeguard = TRUE)
   sdd <- controls[["sdds"]][[1]]$name
   Gamma <- par[["Gamma"]]
   delta <- try(
@@ -169,7 +169,7 @@ nLL_hhmm <- function(parUncon, observations, controls) {
   observations_cs <- observations[, 1]
   observations_fs <- observations[, -1]
   T <- length(observations_cs)
-  par <- parUncon2par(parUncon, controls, FALSE)
+  par <- parUncon2par(parUncon, controls, FALSE, numerical_safeguard = TRUE)
   Gamma <- par[["Gamma"]]
   delta <- try(
     solve(t(diag(M) - Gamma + 1), rep(1, M)),

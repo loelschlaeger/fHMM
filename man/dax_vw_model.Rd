@@ -19,6 +19,7 @@ state-dependent t-distributions for demonstration purpose.
 \details{
 The model was estimated via:
 \preformatted{
+# TODO refit
 controls <- set_controls(
   hierarchy = TRUE,
   states    = c(2, 2),

@@ -142,20 +142,23 @@
 #' The model was estimated via:
 #' \preformatted{
 #' controls <- set_controls(
-#'   states = 2,
-#'   sdds   = "t(df = normal)",
-#'   data   = list(
-#'     file        = dax,
-#'     date_column = "Date",
-#'     data_column = "Close",
-#'     logreturns  = TRUE,
-#'     from        = "2000-01-03",
-#'     to          = "2022-12-31"
-#'   ),
-#'   fit    = list(runs = 100)
+#' states = 2,
+#' sdds   = "normal",
+#' data   = list(
+#'   file        = dax,
+#'   date_column = "Date",
+#'   data_column = "Close",
+#'   logreturns  = TRUE,
+#'   from        = "2000-01-03",
+#'   to          = "2022-12-31"
+#' ),
+#' fit    = list("runs" = 10, "gradtol" = 1e-6, "steptol" = 1e-6)
 #' )
 #' dax_data <- prepare_data(controls)
 #' dax_model_2n <- fit_model(dax_data)
+#' dax_model_2n <- decode_states(dax_model_2n)
+#' dax_model_2n <- compute_residuals(dax_model_2n)
+#' summary(dax_model_2n)
 #' }
 #'
 #' @format An object of class \code{\link{fHMM_model}}.
@@ -175,21 +178,25 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
+#' # TODO refit
 #' controls <- set_controls(
-#'   states = 3,
-#'   sdds   = "t",
-#'   data   = list(
-#'     file        = dax,
-#'     date_column = "Date",
-#'     data_column = "Close",
-#'     logreturns  = TRUE,
-#'     from        = "2000-01-03",
-#'     to          = "2022-12-31"
-#'   ),
-#'   fit    = list(runs = 200)
+#' states = 3,
+#' sdds   = "t",
+#' data   = list(
+#'   file        = dax,
+#'   date_column = "Date",
+#'   data_column = "Close",
+#'   logreturns  = TRUE,
+#'   from        = "2000-01-03",
+#'   to          = "2022-12-31"
+#' ),
+#' fit    = list("runs" = 100, "gradtol" = 1e-6, "steptol" = 1e-6)
 #' )
 #' dax_data <- prepare_data(controls)
 #' dax_model_3t <- fit_model(dax_data)
+#' dax_model_3t <- decode_states(dax_model_3t)
+#' dax_model_3t <- compute_residuals(dax_model_3t)
+#' summary(dax_model_3t)
 #' }
 #'
 #' @format An object of class \code{\link{fHMM_model}}.
@@ -210,6 +217,7 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
+#' # TODO refit
 #' controls <- set_controls(
 #'   hierarchy = TRUE,
 #'   states    = c(2, 2),
@@ -246,6 +254,7 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
+#' # TODO refit
 #' controls <- set_controls(
 #'   hierarchy = TRUE,
 #'   states    = c(3, 2),
@@ -285,18 +294,22 @@
 #' The model was estimated via:
 #' \preformatted{
 #' controls <- set_controls(
-#'   states  = 2,
-#'   sdds    = "gamma(mu = 1|2)",
-#'   horizon = 200,
-#'   fit     = list(runs = 50)
+#' states  = 2,
+#' sdds    = "gamma(mu = 1|2)",
+#' horizon = 200,
+#' fit     = list("runs" = 10)
 #' )
 #' pars <- fHMM_parameters(
-#'   controls = controls, 
+#'   controls = controls,
 #'   Gamma = matrix(c(0.9, 0.2, 0.1, 0.8), nrow = 2),
-#'   sigma = c(0.5, 1)
+#'   sigma = c(0.5, 1),
+#'   seed = 1
 #' )
 #' data_sim <- prepare_data(controls, true_parameters = pars, seed = 1)
 #' sim_model_2gamma <- fit_model(data_sim, seed = 1)
+#' sim_model_2gamma <- decode_states(sim_model_2gamma)
+#' sim_model_2gamma <- compute_residuals(sim_model_2gamma)
+#' summary(sim_model_2gamma)
 #' }
 #'
 #' @format An object of class \code{\link{fHMM_model}}.
@@ -315,6 +328,7 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
+#' # TODO refit
 #' controls <- set_controls(
 #'   states  = 4,
 #'   sdds    = "lognormal",

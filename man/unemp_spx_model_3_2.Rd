@@ -18,6 +18,7 @@ from 1970 to 2020 for demonstration purpose.
 \details{
 The model was estimated via:
 \preformatted{
+# TODO refit
 controls <- set_controls(
   hierarchy = TRUE,
   states    = c(3, 2),

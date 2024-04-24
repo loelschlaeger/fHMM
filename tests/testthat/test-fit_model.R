@@ -40,6 +40,25 @@ test_that("HMM fitting works", {
   expect_s3_class(model_origin, "fHMM_model")
 })
 
+test_that("HHMM fitting works", {
+  skip_on_cran()
+  controls <- list(
+    hierarchy = TRUE,
+    states  = c(2, 2),
+    sdds    = c("normal", "normal"),
+    horizon = c(50, 30),
+    fit     = list("runs" = 3, "print.level" = 2)
+  )
+  controls <- set_controls(controls)
+  data <- prepare_data(
+    controls, 
+    true_parameters = fHMM_parameters(controls = controls, seed = 1),
+    seed = 1
+  )
+  model <- fit_model(data, ncluster = 3, seed = 1, verbose = TRUE)
+  expect_s3_class(model, "fHMM_model")
+})
+
 test_that("printing progress works", {
   controls <- list(
     states  = 2,
