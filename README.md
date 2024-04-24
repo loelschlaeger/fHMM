@@ -10,7 +10,7 @@ status](https://www.r-pkg.org/badges/version/fHMM)](https://CRAN.R-project.org/p
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/last-month/fHMM)](https://cran.r-project.org/package=fHMM)
 [![R-CMD-check](https://github.com/loelschlaeger/fHMM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/R-CMD-check.yaml)
-[![test-coverage](https://github.com/loelschlaeger/fHMM/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/loelschlaeger/fHMM/actions/workflows/test-coverage.yaml)
+[![codecov](https://codecov.io/gh/loelschlaeger/fHMM/branch/master/graph/badge.svg?token=OYU22T74DV)](https://codecov.io/gh/loelschlaeger/fHMM)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
