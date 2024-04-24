@@ -82,13 +82,13 @@
 <span>  logreturns <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="va">hierarchy</span><span class="op">)</span> <span class="cn">FALSE</span> <span class="kw">else</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>,</span>
 <span>  merge <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
 <span>  fit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  runs <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  runs <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  origin <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  accept <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,</span>
-<span>  gradtol <span class="op">=</span> <span class="fl">1e-06</span>,</span>
-<span>  iterlim <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  gradtol <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>  iterlim <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  print.level <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  steptol <span class="op">=</span> <span class="fl">1e-06</span></span>
+<span>  steptol <span class="op">=</span> <span class="fl">0.01</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">validate_controls</span><span class="op">(</span><span class="va">controls</span><span class="op">)</span></span>
@@ -275,7 +275,7 @@ in more detail below:</p><ul><li><p><code>runs</code>, defines the number of num
 <dd><p>An <code>integer</code>, setting the number of randomly initialized
 optimization runs of the model likelihood from which the best one is selected
 as the final model.</p>
-<p>By default, <code>runs = 100</code>.</p></dd>
+<p>By default, <code>runs = 10</code>.</p></dd>
 
 
 <dt>origin</dt>
@@ -296,13 +296,13 @@ accepted based on the output code of <code><a href="https://rdrr.io/r/stats/nlm.
 <dt>gradtol</dt>
 <dd><p>A positive <code>numeric</code> value, specifying the gradient tolerance, passed on
 to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
-<p>By default, <code>gradtol = 1e-6</code>.</p></dd>
+<p>By default, <code>gradtol = 0.01</code>.</p></dd>
 
 
 <dt>iterlim</dt>
 <dd><p>A positive <code>integer</code> value, specifying the iteration limit, passed on
 to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
-<p>By default, <code>iterlim = 200</code>.</p></dd>
+<p>By default, <code>iterlim = 100</code>.</p></dd>
 
 
 <dt>print.level</dt>
@@ -314,7 +314,7 @@ numerical likelihood optimization, passed on to <code><a href="https://rdrr.io/r
 <dt>steptol</dt>
 <dd><p>A positive <code>numeric</code> value, specifying the step tolerance, passed on
 to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
-<p>By default, <code>gradtol = 1e-6</code>.</p></dd>
+<p>By default, <code>gradtol = 0.01</code>.</p></dd>
 
 
 <dt>x, object</dt>
@@ -366,7 +366,7 @@ for more details.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * data type: empirical </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * number of states: 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * sdds: normal() </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * number of runs: 100  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> * number of runs: 10  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># hierarchical HMM with Gamma and Poisson state distributions</span></span></span>
 <span class="r-in"><span><span class="fu">set_controls</span><span class="op">(</span></span></span>
@@ -381,7 +381,7 @@ for more details.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * data type: simulated </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * number of states: 3 2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * sdds: gamma() poisson() </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * number of runs: 100  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> * number of runs: 10  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># hierarchical HMM with data from .csv-file</span></span></span>
 <span class="r-in"><span><span class="fu">set_controls</span><span class="op">(</span></span></span>
@@ -401,7 +401,7 @@ for more details.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * data type: empirical </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * number of states: 3 2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * sdds: t() t() </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * number of runs: 100  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> * number of runs: 10  </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

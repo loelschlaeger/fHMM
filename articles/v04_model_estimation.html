@@ -219,6 +219,7 @@ model fit, whereas <code><a href="https://rdrr.io/r/stats/coef.html" class="exte
 estimated model coefficients:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Some confidence bounds could not be computed.</span></span>
 <span><span class="co">#&gt; Summary of fHMM model</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   simulated hierarchy       LL       AIC       BIC</span></span>
@@ -229,21 +230,21 @@ estimated model coefficients:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Estimates:</span></span>
 <span><span class="co">#&gt;                   lb   estimate        ub</span></span>
-<span><span class="co">#&gt; Gamma_2.1  1.286e-02  2.007e-02 3.113e-02</span></span>
-<span><span class="co">#&gt; Gamma_3.1  1.208e-06  1.198e-06 1.180e-06</span></span>
-<span><span class="co">#&gt; Gamma_1.2  1.557e-02  2.489e-02 3.959e-02</span></span>
-<span><span class="co">#&gt; Gamma_3.2  1.036e-02  1.877e-02 3.378e-02</span></span>
-<span><span class="co">#&gt; Gamma_1.3  4.119e-07  4.080e-07 4.019e-07</span></span>
-<span><span class="co">#&gt; Gamma_2.3  2.935e-03  5.275e-03 9.422e-03</span></span>
-<span><span class="co">#&gt; mu_1       9.655e-04  1.271e-03 1.576e-03</span></span>
-<span><span class="co">#&gt; mu_2      -8.483e-04 -3.102e-04 2.278e-04</span></span>
-<span><span class="co">#&gt; mu_3      -3.813e-03 -1.760e-03 2.932e-04</span></span>
-<span><span class="co">#&gt; sigma_1    5.417e-03  5.853e-03 6.324e-03</span></span>
-<span><span class="co">#&gt; sigma_2    1.278e-02  1.330e-02 1.384e-02</span></span>
-<span><span class="co">#&gt; sigma_3    2.348e-02  2.579e-02 2.832e-02</span></span>
-<span><span class="co">#&gt; df_1       3.957e+00  5.198e+00 6.828e+00</span></span>
-<span><span class="co">#&gt; df_2       3.870e+08  3.870e+08 3.870e+08</span></span>
-<span><span class="co">#&gt; df_3       5.549e+00  1.078e+01 2.095e+01</span></span>
+<span><span class="co">#&gt; Gamma_2.1  0.0142363  2.007e-02 2.817e-02</span></span>
+<span><span class="co">#&gt; Gamma_3.1         NA  1.198e-06        NA</span></span>
+<span><span class="co">#&gt; Gamma_1.2         NA  2.489e-02        NA</span></span>
+<span><span class="co">#&gt; Gamma_3.2         NA  1.877e-02        NA</span></span>
+<span><span class="co">#&gt; Gamma_1.3         NA  4.080e-07        NA</span></span>
+<span><span class="co">#&gt; Gamma_2.3  0.0029998  5.275e-03 9.236e-03</span></span>
+<span><span class="co">#&gt; mu_1       0.0009714  1.271e-03 1.571e-03</span></span>
+<span><span class="co">#&gt; mu_2      -0.0008363 -3.102e-04 2.158e-04</span></span>
+<span><span class="co">#&gt; mu_3      -0.0038030 -1.760e-03 2.831e-04</span></span>
+<span><span class="co">#&gt; sigma_1    0.0055489  5.853e-03 6.174e-03</span></span>
+<span><span class="co">#&gt; sigma_2    0.0128512  1.330e-02 1.376e-02</span></span>
+<span><span class="co">#&gt; sigma_3    0.0241406  2.579e-02 2.755e-02</span></span>
+<span><span class="co">#&gt; df_1       4.1914584  5.198e+00 6.447e+00</span></span>
+<span><span class="co">#&gt; df_2       0.0000000  3.870e+08       Inf</span></span>
+<span><span class="co">#&gt; df_3       6.6507280  1.078e+01 1.748e+01</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; States:</span></span>
 <span><span class="co">#&gt; decoded</span></span>

@@ -79,7 +79,12 @@ optimization.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">par2parUncon</span><span class="op">(</span><span class="va">par</span>, <span class="va">controls</span>, use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">parUncon2parCon</span><span class="op">(</span><span class="va">parUncon</span>, <span class="va">controls</span>, use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">parUncon2parCon</span><span class="op">(</span></span>
+<span>  <span class="va">parUncon</span>,</span>
+<span>  <span class="va">controls</span>,</span>
+<span>  use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  numerical_safeguard <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">parCon2par</span><span class="op">(</span><span class="va">parCon</span>, <span class="va">controls</span>, use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -87,7 +92,12 @@ optimization.</p>
 <span></span>
 <span><span class="fu">parCon2parUncon</span><span class="op">(</span><span class="va">parCon</span>, <span class="va">controls</span>, use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">parUncon2par</span><span class="op">(</span><span class="va">parUncon</span>, <span class="va">controls</span>, use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">parUncon2par</span><span class="op">(</span></span>
+<span>  <span class="va">parUncon</span>,</span>
+<span>  <span class="va">controls</span>,</span>
+<span>  use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  numerical_safeguard <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">muCon2muUncon</span><span class="op">(</span><span class="va">muCon</span>, <span class="va">link</span>, prefix <span class="op">=</span> <span class="st">"muUncon_"</span>, use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -102,18 +112,24 @@ optimization.</p>
 <span><span class="fu">sigmaUncon2sigmaCon</span><span class="op">(</span></span>
 <span>  <span class="va">sigmaUncon</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="st">"sigmaCon_"</span>,</span>
-<span>  use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  numerical_safeguard <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">dfCon2dfUncon</span><span class="op">(</span><span class="va">dfCon</span>, prefix <span class="op">=</span> <span class="st">"dfUncon_"</span>, use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">dfUncon2dfCon</span><span class="op">(</span><span class="va">dfUncon</span>, prefix <span class="op">=</span> <span class="st">"dfCon_"</span>, use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">dfUncon2dfCon</span><span class="op">(</span></span>
+<span>  <span class="va">dfUncon</span>,</span>
+<span>  prefix <span class="op">=</span> <span class="st">"dfCon_"</span>,</span>
+<span>  use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  numerical_safeguard <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">Gamma2gammasCon</span><span class="op">(</span></span>
 <span>  <span class="va">Gamma</span>,</span>
-<span>  shift <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="st">"gammasCon_"</span>,</span>
-<span>  use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  numerical_safeguard <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">Gamma2gammasUncon</span><span class="op">(</span><span class="va">Gamma</span>, prefix <span class="op">=</span> <span class="st">"gammasUncon_"</span>, use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -131,14 +147,16 @@ optimization.</p>
 <span>  <span class="va">gammasUncon</span>,</span>
 <span>  <span class="va">dim</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="st">"state_"</span>,</span>
-<span>  use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  numerical_safeguard <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">gammasUncon2gammasCon</span><span class="op">(</span></span>
 <span>  <span class="va">gammasUncon</span>,</span>
 <span>  <span class="va">dim</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="st">"gammasCon_"</span>,</span>
-<span>  use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  use_parameter_labels <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  numerical_safeguard <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -180,6 +198,15 @@ with identified and unconstrained model parameters in the following order:</p><o
 </ol></dd>
 
 
+<dt>numerical_safeguard</dt>
+<dd><p>Either <code>TRUE</code> or <code>FALSE</code>, determining whether to apply the
+following small corrections to boundary parameters to improve numerical
+performance when calculating and optimizing the likelihood function:</p><ul><li><p>transition probabilities equal to 0 or 1 are shifted towards the center
+by <code>1e-3</code></p></li>
+<li><p>standard deviations and degrees of freedom are bounded above by <code>100</code></p></li>
+</ul></dd>
+
+
 <dt>parCon</dt>
 <dd><p>An object of class <code>parCon</code>, which is a <code>numeric</code> <code>vector</code>
 with identified (and constrained) model parameters in the following order:</p><ol><li><p>non-diagonal transition probabilities <code>gammasCon</code></p></li>
@@ -209,11 +236,6 @@ function.</p></dd>
 
 <dt>dfCon, dfUncon</dt>
 <dd><p>A vector of (un-) constrained degrees of freedom.</p></dd>
-
-
-<dt>shift</dt>
-<dd><p>A small, positive <code>numeric</code> for shifting boundary probabilities.
-By default, <code>shift = 1e-3</code>.</p></dd>
 
 
 <dt>gammasCon, gammasUncon</dt>
