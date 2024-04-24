@@ -1,3 +1,11 @@
+# fHMM development
+
+* Improved initialization of the numerical likelihood optimization.
+
+* Now the states after model estimation are automatically ordered according to the estimated mean of the state-dependent distributions, see `reorder_states()` with the new (default) option `state_order = "mean"`.
+
+* Re-fitted the example models contained in the package.
+
 # fHMM 1.2.2
 
 * Added examples to `fit_model()`.
