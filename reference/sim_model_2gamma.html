@@ -80,10 +80,10 @@ means fixed to <code>0.5</code> and <code>2</code> on <code>500</code> simulated
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The model was estimated via:</p><div class="sourceCode"><pre><code><span></span>
 <span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_controls.html">set_controls</a></span><span class="op">(</span></span>
-<span>states  <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>sdds    <span class="op">=</span> <span class="st">"gamma(mu = 1|2)"</span>,</span>
-<span>horizon <span class="op">=</span> <span class="fl">200</span>,</span>
-<span>fit     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"runs"</span> <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>  states  <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  sdds    <span class="op">=</span> <span class="st">"gamma(mu = 1|2)"</span>,</span>
+<span>  horizon <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  runs    <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">pars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fHMM_parameters.html">fHMM_parameters</a></span><span class="op">(</span></span>
 <span>  controls <span class="op">=</span> <span class="va">controls</span>,</span>
