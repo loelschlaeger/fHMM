@@ -96,7 +96,7 @@
 
     
     
-<p>This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;This vignette was build using R 4.3.3 with the
+<p>This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;This vignette was build using R 4.4.0 with the
 &lt;a href="https://loelschlaeger.de/fHMM/"&gt;fHMM&lt;/a&gt; 1.2.2.9000 package.&lt;/p&gt;'><sup>1</sup></a> introduces the Viterbi algorithm for state
 decoding. The decoded state sequence in combination with the estimated
 model parameters can be used for forecasting.</p>
@@ -158,16 +158,16 @@ next observations can be predicted, compare <span class="citation">Zucchini, Mac
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">dax_model_3t</span>, ahead <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    state_1 state_2 state_3       lb estimate      ub</span></span>
-<span><span class="co">#&gt; 1  0.00000 0.02489 0.97511 -0.01072  0.00123 0.01318</span></span>
-<span><span class="co">#&gt; 2  0.00013 0.04854 0.95133 -0.01100  0.00119 0.01339</span></span>
-<span><span class="co">#&gt; 3  0.00039 0.07099 0.92862 -0.01127  0.00116 0.01359</span></span>
-<span><span class="co">#&gt; 4  0.00075 0.09232 0.90693 -0.01154  0.00112 0.01378</span></span>
-<span><span class="co">#&gt; 5  0.00123 0.11257 0.88621 -0.01179  0.00109 0.01397</span></span>
-<span><span class="co">#&gt; 6  0.00180 0.13180 0.86640 -0.01204  0.00106 0.01416</span></span>
-<span><span class="co">#&gt; 7  0.00246 0.15006 0.84748 -0.01228  0.00103 0.01433</span></span>
-<span><span class="co">#&gt; 8  0.00321 0.16740 0.82939 -0.01251  0.00100 0.01451</span></span>
-<span><span class="co">#&gt; 9  0.00403 0.18387 0.81211 -0.01274  0.00097 0.01467</span></span>
-<span><span class="co">#&gt; 10 0.00492 0.19950 0.79558 -0.01296  0.00094 0.01484</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  0.97554 0.02446 0.00000 -0.01065  0.00123 0.01311</span></span>
+<span><span class="co">#&gt; 2  0.95215 0.04773 0.00012 -0.01092  0.00120 0.01332</span></span>
+<span><span class="co">#&gt; 3  0.92976 0.06988 0.00036 -0.01119  0.00116 0.01352</span></span>
+<span><span class="co">#&gt; 4  0.90835 0.09095 0.00070 -0.01145  0.00113 0.01371</span></span>
+<span><span class="co">#&gt; 5  0.88786 0.11099 0.00115 -0.01170  0.00110 0.01390</span></span>
+<span><span class="co">#&gt; 6  0.86825 0.13007 0.00169 -0.01195  0.00107 0.01408</span></span>
+<span><span class="co">#&gt; 7  0.84948 0.14821 0.00231 -0.01218  0.00104 0.01426</span></span>
+<span><span class="co">#&gt; 8  0.83152 0.16547 0.00301 -0.01241  0.00101 0.01443</span></span>
+<span><span class="co">#&gt; 9  0.81432 0.18189 0.00379 -0.01263  0.00098 0.01459</span></span>
+<span><span class="co">#&gt; 10 0.79785 0.19752 0.00463 -0.01285  0.00095 0.01476</span></span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

@@ -230,23 +230,43 @@ computed in parallel if <code>ncluster &gt; 1</code>.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Checking start values...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximizing likelihood...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Approximating Hessian...</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘pracma’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting completed!</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># inspect fit</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'model' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of fHMM model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   simulated hierarchy        LL      AIC     BIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      TRUE     FALSE -62.46497 136.9299 152.561</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> State-dependent distributions:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> normal() </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimates:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 lb estimate      ub    true</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gamma_2.1  0.07297   0.1375  0.2441  0.1632</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gamma_1.2  0.14580   0.2638  0.4294  0.3116</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mu_1      -1.01451  -0.9809 -0.9474 -1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mu_2       0.91985   1.0404  1.1609  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma_1    0.08018   0.1013  0.1280  0.1008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma_2    0.41678   0.4954  0.5889  0.6008</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, <span class="st">"sdds"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'model' not found</span>
+<span class="r-plt img"><img src="fit_model-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># decode states</span></span></span>
 <span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'model' not found</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Decoded states</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, <span class="st">"ts"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'model' not found</span>
+<span class="r-plt img"><img src="fit_model-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># predict</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">model</span>, ahead <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'model' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   state_1 state_2       lb estimate      ub</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.13749 0.86251  0.03672  0.76246 1.48820</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.21980 0.78020 -0.07631  0.59608 1.26846</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.26909 0.73091 -0.14397  0.49647 1.13691</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.29859 0.70141 -0.18448  0.43683 1.05815</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.31625 0.68375 -0.20874  0.40113 1.01099</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -105,11 +105,9 @@ the BIC value.
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">### 3-state HMM with t-distributions is preferred over 2-state HMM with</span></span></span>
 <span class="r-in"><span><span class="co">### normal distributions for the DAX data based on AIC and BIC</span></span></span>
 <span class="r-in"><span><span class="fu">compare_models</span><span class="op">(</span><span class="va">dax_model_2n</span>, <span class="va">dax_model_3t</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Models 'dax_model_3t' and 'dax_model_2n' are not estimated on the same data, be cautious comparing them.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Some confidence bounds could not be computed.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              parameters loglikelihood       AIC       BIC</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dax_model_2n          6      17403.61 -34795.21 -34755.13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dax_model_3t         15      17649.52 -35269.03 -35168.84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> dax_model_3t         15      17650.02 -35270.05 -35169.85</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
