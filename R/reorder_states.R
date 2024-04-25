@@ -115,7 +115,7 @@ reorder_states <- function(x, state_order = "mean") {
   permut_all <- diag(length(x$estimate))[match, ]
   x$estimate <- parUncon
   x$gradient <- as.vector(permut_all %*% x$gradient)
-  x$hessian_diagonal <- as.vector(permut_all %*% x$hessian_diagonal)
+  x$inverse_fisher <- as.vector(permut_all %*% x$inverse_fisher)
   x$nlm_output$estimate <- x$estimate
   x$nlm_output$gradient <- x$gradient
 

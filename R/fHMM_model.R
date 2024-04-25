@@ -22,9 +22,8 @@
 #' A \code{numeric} vector, the model log-likelihoods in all optimization runs.
 #' @param gradient
 #' A \code{numeric} vector, the gradient at the optimum.
-#' @param hessian_diagonal
-#' A \code{numeric} vector, the diagonal elements of the approximated Hessian at 
-#' the optimum.
+#' @param inverse_fisher
+#' A \code{numeric} vector, the inverse Fisher information for each parameter.
 #' @param decoding
 #' A \code{numeric} vector, the decoded time series.
 #' @param alpha
@@ -41,7 +40,7 @@
 
 fHMM_model <- function(
     data, estimate, nlm_output, estimation_time, ll, lls, gradient, 
-    hessian_diagonal, decoding
+    inverse_fisher, decoding
 ) {
   structure(
     list(
@@ -52,8 +51,9 @@ fHMM_model <- function(
       "ll" = ll,
       "lls" = lls,
       "gradient" = gradient,
-      "hessian_diagonal" = hessian_diagonal,
-      "decoding" = NULL
+      "inverse_fisher" = inverse_fisher,
+      "decoding" = NULL,
+      "system_information" = oeli::system_information()
     ), 
     class = "fHMM_model"
   )

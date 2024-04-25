@@ -200,14 +200,25 @@ fit_model <- function(
     )
   }
   
-  ### compute diagonal elements of Hessian
+  ### compute inverse Fisher information
   if (verbose) message("Approximating Hessian...")
-  hessian_diagonal <- suppressWarnings(pracma::hessdiag(
+  fisher <- pracma::hessdiag(
     f = target,
     x = mods[[which.max(lls)]][["estimate"]],
     observations = data[["data"]],
     controls = data[["controls"]]
-  ))
+  )
+  if (all(fisher > 0)) {
+    inverse_fisher <- 1 / fisher
+  } else {
+    hessian <- suppressWarnings(pracma::hessian(
+      f = target,
+      x0 = mods[[which.max(lls)]][["estimate"]],
+      observations = data[["data"]],
+      controls = data[["controls"]]
+    ))
+    inverse_fisher <- diag(MASS::ginv(hessian))
+  }
   
   ### final message
   if (verbose) message("Fitting completed!")
@@ -228,7 +239,7 @@ fit_model <- function(
     ll = ll,
     lls = lls,
     gradient = mod$gradient,
-    hessian_diagonal = hessian_diagonal,
+    inverse_fisher = inverse_fisher,
     decoding = NULL
   )
   

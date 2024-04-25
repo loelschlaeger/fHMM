@@ -32,21 +32,21 @@ compute_ci <- function(x, alpha = 0.05) {
   }
 
   ### compute confidence intervals using the inverse Hessian approach
-  inv_fisher <- 1 / x$hessian_diagonal
-  sds <- suppressWarnings(sqrt(inv_fisher))
+  inverse_fisher <- x$inverse_fisher
+  sds <- suppressWarnings(sqrt(inverse_fisher))
   z_alpha <- stats::qnorm(p = 1 - alpha / 2)
   lower_limit <- x$estimate - z_alpha * sds
   upper_limit <- x$estimate + z_alpha * sds
 
   ### if negative variance, replace by NA_real_
-  bad_inv_fisher <- which(
+  bad_inverse_fisher <- which(
     !vapply(
-      inv_fisher, checkmate::test_number, logical(1), na.ok = FALSE, 
+      inverse_fisher, checkmate::test_number, logical(1), na.ok = FALSE, 
       finite = TRUE, lower = 0
     )
   )
-  lower_limit[bad_inv_fisher] <- NA_real_
-  upper_limit[bad_inv_fisher] <- NA_real_
+  lower_limit[bad_inverse_fisher] <- NA_real_
+  upper_limit[bad_inverse_fisher] <- NA_real_
 
   ### create and return output
   out <- lapply(

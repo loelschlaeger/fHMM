@@ -6,8 +6,8 @@ test_that("model comparison works", {
   expect_equal(
     values,
     c(parameters1 = 6, parameters2 = 15, loglikelihood1 = 17404, 
-      loglikelihood2 = 17650, AIC1 = -34795, AIC2 = -35269, BIC1 = -34755, 
-      BIC2 = -35169)          
+      loglikelihood2 = 17650, AIC1 = -34795, AIC2 = -35270, BIC1 = -34755, 
+      BIC2 = -35170)         
   )
   expect_error(
     compare_models("not_an_fHMM_model"),

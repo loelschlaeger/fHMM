@@ -18,10 +18,10 @@ means fixed to \code{0.5} and \code{2} on \code{500} simulated observations.
 The model was estimated via:
 \preformatted{
 controls <- set_controls(
-states  = 2,
-sdds    = "gamma(mu = 1|2)",
-horizon = 200,
-fit     = list("runs" = 10)
+  states  = 2,
+  sdds    = "gamma(mu = 1|2)",
+  horizon = 200,
+  runs    = 10
 )
 pars <- fHMM_parameters(
   controls = controls,

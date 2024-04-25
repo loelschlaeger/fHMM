@@ -19,3 +19,4 @@ vignettes/figs/
 ^CRAN-SUBMISSION$
 ^sticker$
 ^development_packages\.R$
+^fit_models\.R$

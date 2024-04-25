@@ -10,7 +10,7 @@ test_that("color scheme setting works", {
   expect_equal(
     fHMM_colors(controls),
     structure(
-      c("#00640099", "#8B000099"), class = "fHMM_colors"
+      c("#8B000099", "#00640099"), class = "fHMM_colors"
     )
   )
   expect_equal(
@@ -23,11 +23,12 @@ test_that("color scheme setting works", {
   expect_equal(
     fHMM_colors(controls),
     structure(
-      list(cs = c("#00640099", "#8B000099"), 
+      list(cs = c("#8B000099", "#00640099"), 
            fs = structure(
-             c("#55975599", "#B1555599", "#00420099", "#5C000099"), 
-             dim = c(2L, 2L))
-           ), 
+             c("#B1555599", "#55975599", "#5C000099", "#00420099"), 
+             dim = c(2L, 2L)
+            )
+          ), 
       class = "fHMM_colors"
     )
   )

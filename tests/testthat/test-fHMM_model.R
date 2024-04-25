@@ -5,12 +5,12 @@ test_that("coefficients can be extracted", {
 
 test_that("AIC can be computed", {
   expect_equal(round(AIC(dax_model_2n)), -34795)
-  expect_equal(round(AIC(dax_model_2n, dax_model_3t)), c(-34795, -35269))
+  expect_equal(round(AIC(dax_model_2n, dax_model_3t)), c(-34795, -35270))
 })
 
 test_that("BIC can be computed", {
   expect_equal(round(BIC(dax_model_2n)), -34755)
-  expect_equal(round(BIC(dax_model_2n, dax_model_3t)), c(-34755, -35169))
+  expect_equal(round(BIC(dax_model_2n, dax_model_3t)), c(-34755, -35170))
 })
 
 test_that("number of observations can be computed", {

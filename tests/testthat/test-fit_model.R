@@ -55,7 +55,7 @@ test_that("HHMM fitting works", {
     true_parameters = fHMM_parameters(controls = controls, seed = 1),
     seed = 1
   )
-  model <- fit_model(data, ncluster = 3, seed = 1, verbose = TRUE)
+  model <- fit_model(data, ncluster = 2, seed = 1, verbose = FALSE)
   expect_s3_class(model, "fHMM_model")
 })
 

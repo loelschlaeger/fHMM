@@ -10,14 +10,10 @@ test_that("residual computation works", {
   expect_s3_class(x$residuals, "fHMM_residuals")
   expect_equal(
     round(fivenum(x$residuals), 2), 
-    c(-3.52, -0.66, 0.01, 0.67, 3.91)
+    c(-3.52, -0.66, 0.01, 0.67, 3.69)
   )
   sim_model_2gamma <- decode_states(sim_model_2gamma, verbose = FALSE)
   x <- compute_residuals(sim_model_2gamma, verbose = FALSE)
-  expect_s3_class(x, "fHMM_model")
-  expect_s3_class(x$residuals, "fHMM_residuals")
-  sim_model_4lnorm <- decode_states(sim_model_4lnorm, verbose = FALSE)
-  x <- compute_residuals(sim_model_4lnorm, verbose = FALSE)
   expect_s3_class(x, "fHMM_model")
   expect_s3_class(x$residuals, "fHMM_residuals")
   dax_vw_model <- decode_states(dax_vw_model, verbose = FALSE)

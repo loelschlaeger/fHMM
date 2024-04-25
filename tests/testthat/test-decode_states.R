@@ -7,30 +7,24 @@ test_that("state decoding input checks work", {
 test_that("state decoding for normal distribution works", {
   x <- decode_states(dax_model_2n, verbose = FALSE)
   expect_s3_class(x, "fHMM_model")
-  expect_equal(fivenum(x$decoding), c(1,1,1,2,2))
+  expect_equal(fivenum(x$decoding), c(1, 1, 2, 2, 2))
 })
 
 test_that("state decoding for t distribution works", {
   x <- decode_states(dax_model_3t, verbose = FALSE)
   expect_s3_class(x, "fHMM_model")
-  expect_equal(fivenum(x$decoding), c(1,1,2,2,3))
+  expect_equal(fivenum(x$decoding), c(1, 2, 2, 3, 3))
 })
 
 test_that("state decoding for gamma distribution works", {
   x <- decode_states(sim_model_2gamma, verbose = FALSE)
   expect_s3_class(x, "fHMM_model")
-  expect_equal(fivenum(x$decoding), c(1,1,1,2,2))
-})
-
-test_that("state decoding for log-normal distribution works", {
-  x <- decode_states(sim_model_4lnorm, verbose = FALSE)
-  expect_s3_class(x, "fHMM_model")
-  expect_equal(fivenum(x$decoding), c(1,2,2,4,4))
+  expect_equal(fivenum(x$decoding), c(1, 1, 1, 2, 2))
 })
 
 test_that("state decoding for hierarchical case works", {
   x <- decode_states(dax_vw_model, verbose = FALSE)
   expect_s3_class(x, "fHMM_model")
-  expect_equal(dim(x$decoding), c(96L, 24L))
-  expect_equal(fivenum(x$decoding), c(1,1,1,2,2))
+  expect_equal(dim(x$decoding), c(110L, 31L))
+  expect_equal(fivenum(x$decoding), c(1, 1, 1, 2, 2))
 })

@@ -18,7 +18,6 @@ from 1970 to 2020 for demonstration purpose.
 \details{
 The model was estimated via:
 \preformatted{
-# TODO refit
 controls <- set_controls(
   hierarchy = TRUE,
   states    = c(3, 2),
@@ -38,7 +37,7 @@ controls <- set_controls(
   )
 )
 unemp_spx_data <- prepare_data(controls)
-unemp_spx_model_3_2 <- fit_model(unemp_spx_data)
+unemp_spx_model_3_2 <- fit_model(unemp_spx_data, seed = 1)
 }
 }
 \keyword{model}
