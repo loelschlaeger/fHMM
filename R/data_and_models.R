@@ -221,7 +221,6 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
-#' try({
 #' controls <- set_controls(
 #'   hierarchy = TRUE,
 #'   states    = c(2, 2),
@@ -245,7 +244,6 @@
 #' dax_vw_model <- decode_states(dax_vw_model)
 #' dax_vw_model <- compute_residuals(dax_vw_model)
 #' summary(dax_vw_model)
-#' })
 #' }
 #'
 #' @format An object of class \code{\link{fHMM_model}}.
@@ -266,25 +264,32 @@
 #' The model was estimated via:
 #' \preformatted{
 #' controls <- set_controls(
-#'   hierarchy = TRUE,
-#'   states    = c(3, 2),
-#'   sdds      = c("t", "t"),
-#'   period    = "m",
-#'   data      = list(
-#'     file       = list(unemp, spx),
-#'     date_column = c("date", "Date"),
-#'     data_column = c("rate_diff", "Close"),
-#'     from       = "1970-01-01",
-#'     to         = "2020-01-01",
-#'     logreturns = c(FALSE, TRUE)
-#'   ),
-#'   fit       = list(
-#'     runs    = 200,
-#'     iterlim = 300
-#'   )
-#' )
+#'  hierarchy = TRUE,
+#'  states    = c(3, 2),
+#'  sdds      = c("t", "t"),
+#'  period    = "m",
+#'  data      = list(
+#'    file        = list(unemp, spx),
+#'    date_column = c("date", "Date"),
+#'    data_column = c("rate_diff", "Close"),
+#'    from        = "1970-01-01",
+#'    to          = "2020-01-01",
+#'    logreturns  = c(FALSE, TRUE)
+#'  ),
+#'  fit       = list(
+#'    runs        = 50, 
+#'    iterlim     = 1000,
+#'    gradtol     = 1e-6,
+#'    steptol     = 1e-6
+#'  )
+#')
 #' unemp_spx_data <- prepare_data(controls)
-#' unemp_spx_model_3_2 <- fit_model(unemp_spx_data, seed = 1)
+#' unemp_spx_model_3_2 <- fit_model(unemp_spx_data, seed = 1, ncluster = 25)
+#' unemp_spx_model_3_2 <- decode_states(unemp_spx_model_3_2)
+#' unemp_spx_model_3_2 <- compute_residuals(unemp_spx_model_3_2)
+#' summary(unemp_spx_model_3_2)
+#' state_order <- matrix(c(3, 2, 1, 2, 2, 2, 1, 1, 1), 3, 3)
+#' unemp_spx_model_3_2 <- reorder_states(unemp_spx_model_3_2, state_order)
 #' }
 #'
 #' @format An object of class \code{\link{fHMM_model}}.

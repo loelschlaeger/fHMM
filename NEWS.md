@@ -1,4 +1,4 @@
-# fHMM development
+# fHMM 1.3.0
 
 * Improved initialization of the numerical likelihood optimization.
 
