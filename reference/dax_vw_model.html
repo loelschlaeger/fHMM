@@ -16,7 +16,7 @@ state-dependent t-distributions for demonstration purpose."><meta property="og:i
     
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,7 +85,6 @@ state-dependent t-distributions for demonstration purpose.</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The model was estimated via:</p><div class="sourceCode"><pre><code><span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">{</span></span>
 <span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_controls.html">set_controls</a></span><span class="op">(</span></span>
 <span>  hierarchy <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  states    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,</span>
@@ -108,8 +107,7 @@ state-dependent t-distributions for demonstration purpose.</p>
 <span><span class="va">dax_vw_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_model.html">fit_model</a></span><span class="op">(</span><span class="va">dax_vw_data</span>, seed <span class="op">=</span> <span class="fl">1</span>, ncluster <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">dax_vw_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decode_states.html">decode_states</a></span><span class="op">(</span><span class="va">dax_vw_model</span><span class="op">)</span></span>
 <span><span class="va">dax_vw_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_residuals.html">compute_residuals</a></span><span class="op">(</span><span class="va">dax_vw_model</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">dax_vw_model</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">dax_vw_model</span><span class="op">)</span></span></code></pre></div>
 
     </div>
 
