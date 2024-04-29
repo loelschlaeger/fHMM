@@ -16,9 +16,6 @@ A \code{data.frame} with 9012 rows and the following 7 columns:
 \item \code{Volume}: Trade volume.
 }
 }
-\source{
-\url{https://finance.yahoo.com/quote/\%5EGDAXI}
-}
 \usage{
 dax
 }

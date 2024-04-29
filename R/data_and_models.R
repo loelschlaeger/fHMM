@@ -29,8 +29,8 @@
 #'   \item \code{Volume}: Trade volume.
 #' }
 #' 
-#' @source 
-#' <https://finance.yahoo.com/quote/%5EGSPC>
+# #' @source 
+# #' <https://finance.yahoo.com/quote/%5EGSPC>
 #' 
 #' @keywords data
 "spx"
@@ -65,8 +65,8 @@
 #'   \item \code{Volume}: Trade volume.
 #' }
 #' 
-#' @source 
-#' <https://finance.yahoo.com/quote/%5EGDAXI>
+# #' @source 
+# #' <https://finance.yahoo.com/quote/%5EGDAXI>
 #' 
 #' @keywords data
 "dax"
@@ -101,8 +101,8 @@
 #'   \item \code{Volume}: Trade volume.
 #' }
 #' 
-#' @source 
-#' <https://finance.yahoo.com/quote/vow3.de>
+# #' @source 
+# #' <https://finance.yahoo.com/quote/VOW3.DE>
 #' 
 #' @keywords data
 "vw"
