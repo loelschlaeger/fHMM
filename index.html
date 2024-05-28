@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content='Fitting (hierarchical) hidden Markov models to financial data via maximum likelihood estimation. See Oelschläger, L. and Adam, T. "Detecting bearish and bullish markets in financial time series using hierarchical hidden Markov models" (2021, Statistical Modelling) &lt;doi:10.1177/1471082X211034048&gt; for a reference on the method. A user guide is provided by the accompanying software paper "fHMM: Hidden Markov Models for Financial Time Series in R", Oelschläger, L., Adam, T., and Michels, R. (2024, Journal of Statistical Software) &lt;doi:10.18637/jss.v109.i09&gt;.'>
+<meta name="description" content='Fitting (hierarchical) hidden Markov models to financial data via maximum likelihood estimation. See Oelschläger, L. and Adam, T. "Detecting Bearish and Bullish Markets in Financial Time Series Using Hierarchical Hidden Markov Models" (2021, Statistical Modelling) &lt;doi:10.1177/1471082X211034048&gt; for a reference on the method. A user guide is provided by the accompanying software paper "fHMM: Hidden Markov Models for Financial Time Series in R", Oelschläger, L., Adam, T., and Michels, R. (2024, Journal of Statistical Software) &lt;doi:10.18637/jss.v109.i09&gt;.'>
 <title>Fit hidden Markov models to financial data • fHMM</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -18,7 +18,7 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Fit hidden Markov models to financial data">
-<meta property="og:description" content='Fitting (hierarchical) hidden Markov models to financial data via maximum likelihood estimation. See Oelschläger, L. and Adam, T. "Detecting bearish and bullish markets in financial time series using hierarchical hidden Markov models" (2021, Statistical Modelling) &lt;doi:10.1177/1471082X211034048&gt; for a reference on the method. A user guide is provided by the accompanying software paper "fHMM: Hidden Markov Models for Financial Time Series in R", Oelschläger, L., Adam, T., and Michels, R. (2024, Journal of Statistical Software) &lt;doi:10.18637/jss.v109.i09&gt;.'>
+<meta property="og:description" content='Fitting (hierarchical) hidden Markov models to financial data via maximum likelihood estimation. See Oelschläger, L. and Adam, T. "Detecting Bearish and Bullish Markets in Financial Time Series Using Hierarchical Hidden Markov Models" (2021, Statistical Modelling) &lt;doi:10.1177/1471082X211034048&gt; for a reference on the method. A user guide is provided by the accompanying software paper "fHMM: Hidden Markov Models for Financial Time Series in R", Oelschläger, L., Adam, T., and Michels, R. (2024, Journal of Statistical Software) &lt;doi:10.18637/jss.v109.i09&gt;.'>
 <meta property="og:image" content="https://loelschlaeger.de/fHMM/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -90,9 +90,14 @@
 </div>
 <!-- badges: start -->
 
-<p>The <a href="https://loelschlaeger.de/fHMM/">fHMM</a> R package allows for the detection and characterization of financial market regimes in time series data by applying hidden Markov Models (HMMs). The <a href="https://loelschlaeger.de/fHMM/articles/">vignettes</a> outline the package functionality and the model formulation. For a reference on the method, see</p>
+<p>The <a href="https://loelschlaeger.de/fHMM/">fHMM</a> R package allows for the detection and characterization of financial market regimes in time series data by applying hidden Markov Models (HMMs). The <a href="https://loelschlaeger.de/fHMM/articles/">vignettes</a> outline the package functionality and the model formulation.</p>
+<p>For a reference on the method, see:</p>
 <blockquote>
-<p>Oelschläger, L., and T. Adam. 2021. “Detecting Bearish and Bullish Markets in Financial Time Series Using Hierarchical Hidden Markov Models.” Statistical Modelling. <a href="https://doi.org/10.1177/1471082X211034048" class="external-link uri">https://doi.org/10.1177/1471082X211034048</a></p>
+<p>Oelschläger, L., and Adam, T. 2021. “Detecting Bearish and Bullish Markets in Financial Time Series Using Hierarchical Hidden Markov Models.” Statistical Modelling. <a href="https://doi.org/10.1177/1471082X211034048" class="external-link uri">https://doi.org/10.1177/1471082X211034048</a></p>
+</blockquote>
+<p>A user guide is provided by the accompanying software paper:</p>
+<blockquote>
+<p>Oelschläger, L., Adam, T., and Michels, R. 2024. “fHMM: Hidden Markov Models for Financial Time Series in R”. Journal of Statistical Software. <a href="https://doi.org/10.18637/jss.v109.i09" class="external-link uri">https://doi.org/10.18637/jss.v109.i09</a></p>
 </blockquote>
 <p>Below, we illustrate an application to the German stock index <a href="https://en.wikipedia.org/wiki/DAX" class="external-link">DAX</a>. We also show how to use the package to simulate HMM data, compute the model likelihood, and decode the hidden states using the Viterbi algorithm.</p>
 <div class="section level2">
@@ -246,13 +251,14 @@
 <p>Note that this transformation takes care of the restrictions, that <code>Gamma</code> must be a transition probability matrix (which we can ensure via the logit link) and that <code>mu</code> and <code>sigma</code> must be positive (an assumption for the Gamma distribution, which we can ensure via the exponential link).</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ll_hmm.html">ll_hmm</a></span><span class="op">(</span><span class="va">parUncon</span>, <span class="va">sim</span><span class="op">$</span><span class="va">data</span>, <span class="va">controls</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] -1620.515</span></span>
-<span><span class="fu"><a href="reference/ll_hmm.html">ll_hmm</a></span><span class="op">(</span><span class="va">parUncon</span>, <span class="va">sim</span><span class="op">$</span><span class="va">data</span>, <span class="va">controls</span>, negative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] -1620.515</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/ll_hmm.html">ll_hmm</a></span><span class="op">(</span><span class="va">parUncon</span>, <span class="va">sim</span><span class="op">$</span><span class="va">data</span>, <span class="va">controls</span>, negative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1620.515</span></span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>For maximum likelihood estimation of the model parameters, we can numerically optimize <code><a href="reference/ll_hmm.html">ll_hmm()</a></code> over <code>parUncon</code> (or rather minimize the negative log-likelihood).</li>
 </ol>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">optimization</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></span><span class="op">(</span></span>
 <span>  f <span class="op">=</span> <span class="va">ll_hmm</span>, p <span class="op">=</span> <span class="va">parUncon</span>, observations <span class="op">=</span> <span class="va">sim</span><span class="op">$</span><span class="va">data</span>, controls <span class="op">=</span> <span class="va">controls</span>, negative <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
@@ -262,30 +268,35 @@
 <ol start="6" style="list-style-type: decimal">
 <li>To interpret the estimate, it needs to be back transformed to the constrained parameter space via the <code><a href="reference/parameter_transformations.html">parUncon2par()</a></code> function. The state-labeling is not identified.</li>
 </ol>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">estimate</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"parUncon"</span></span>
 <span><span class="va">estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parameter_transformations.html">parUncon2par</a></span><span class="op">(</span><span class="va">estimate</span>, <span class="va">controls</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">par</span><span class="op">$</span><span class="va">Gamma</span></span>
 <span><span class="co">#&gt;         state_1 state_2</span></span>
 <span><span class="co">#&gt; state_1    0.95    0.05</span></span>
-<span><span class="co">#&gt; state_2    0.05    0.95</span></span>
-<span><span class="va">estimate</span><span class="op">$</span><span class="va">Gamma</span></span>
+<span><span class="co">#&gt; state_2    0.05    0.95</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">estimate</span><span class="op">$</span><span class="va">Gamma</span></span>
 <span><span class="co">#&gt;            state_1    state_2</span></span>
 <span><span class="co">#&gt; state_1 0.96895127 0.03104873</span></span>
-<span><span class="co">#&gt; state_2 0.03037199 0.96962801</span></span>
-<span></span>
+<span><span class="co">#&gt; state_2 0.03037199 0.96962801</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="va">par</span><span class="op">$</span><span class="va">mu</span></span>
 <span><span class="co">#&gt; muCon_1 muCon_2 </span></span>
-<span><span class="co">#&gt;       1       3</span></span>
-<span><span class="va">estimate</span><span class="op">$</span><span class="va">mu</span></span>
+<span><span class="co">#&gt;       1       3</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">estimate</span><span class="op">$</span><span class="va">mu</span></span>
 <span><span class="co">#&gt;  muCon_1  muCon_2 </span></span>
-<span><span class="co">#&gt; 1.061835 2.899473</span></span>
-<span></span>
+<span><span class="co">#&gt; 1.061835 2.899473</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="va">par</span><span class="op">$</span><span class="va">sigma</span></span>
 <span><span class="co">#&gt; sigmaCon_1 sigmaCon_2 </span></span>
-<span><span class="co">#&gt;          1          3</span></span>
-<span><span class="va">estimate</span><span class="op">$</span><span class="va">sigma</span></span>
+<span><span class="co">#&gt;          1          3</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">estimate</span><span class="op">$</span><span class="va">sigma</span></span>
 <span><span class="co">#&gt; sigmaCon_1 sigmaCon_2 </span></span>
 <span><span class="co">#&gt;   1.122073   2.943097</span></span></code></pre></div>
 </div>
