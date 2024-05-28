@@ -1,3 +1,7 @@
+# fHMM 1.3.1
+
+* Added citation to JSS paper in DESCRIPTION.
+
 # fHMM 1.3.0
 
 * Improved initialization of the numerical likelihood optimization.

@@ -1,0 +1,20 @@
+bibentry(bibtype = "Article",
+  title        = "{fHMM}: Hidden Markov Models for Financial Time Series in {R}",
+  author       = c(person(given = "Lennart",
+                          family = "Oelschl\\\"ager",
+                          email = "lennart.oelschlaeger@uni-bielefeld.de"),
+                   person(given = "Timo",
+                          family = "Adam",
+                          email = "ta59@st-andrews.ac.uk"),
+                   person(given = "Rouven",
+                          family = "Michels",
+                          email = "r.michels@uni-bielefeld.de")),
+  journal      = "Journal of Statistical Software",
+  year         = "2024",
+  volume       = "109",
+  number       = "9",
+  pages        = "1--25",
+  doi          = "10.18637/jss.v109.i09",
+  header       = "To cite fHMM in publications use:"
+)
+

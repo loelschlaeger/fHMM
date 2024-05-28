@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Fitting (hierarchical) hidden Markov models to financial data via maximum likelihood estimation. See Oelschläger, L. and Adam, T. "Detecting bearish and bullish markets in financial time series using hierarchical hidden Markov models" (2021, Statistical Modelling) \doi{10.1177/1471082X211034048} for a reference.
+Fitting (hierarchical) hidden Markov models to financial data via maximum likelihood estimation. See Oelschläger, L. and Adam, T. "Detecting bearish and bullish markets in financial time series using hierarchical hidden Markov models" (2021, Statistical Modelling) \doi{10.1177/1471082X211034048} for a reference on the method. A user guide is provided by the accompanying software paper "fHMM: Hidden Markov Models for Financial Time Series in R", Oelschläger, L., Adam, T., and Michels, R. (2024, Journal of Statistical Software) \doi{10.18637/jss.v109.i09}.
 }
 \seealso{
 Useful links:
