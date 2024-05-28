@@ -26,9 +26,15 @@ data <- model$data
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
-The `{fHMM}` R package allows for the detection and characterization of financial market regimes in time series data by applying hidden Markov Models (HMMs). The [vignettes](https://loelschlaeger.de/fHMM/articles/) outline the package functionality and the model formulation. For a reference on the method, see
+The `{fHMM}` R package allows for the detection and characterization of financial market regimes in time series data by applying hidden Markov Models (HMMs). The [vignettes](https://loelschlaeger.de/fHMM/articles/) outline the package functionality and the model formulation. 
 
-> Oelschläger, L., and T. Adam. 2021. “Detecting Bearish and Bullish Markets in Financial Time Series Using Hierarchical Hidden Markov Models.” Statistical Modelling. https://doi.org/10.1177/1471082X211034048
+For a reference on the method, see:
+
+> Oelschläger, L., and Adam, T. 2021. "Detecting Bearish and Bullish Markets in Financial Time Series Using Hierarchical Hidden Markov Models." Statistical Modelling. https://doi.org/10.1177/1471082X211034048
+
+A user guide is provided by the accompanying software paper: 
+
+> Oelschläger, L., Adam, T., and Michels, R. 2024. "fHMM: Hidden Markov Models for Financial Time Series in R". Journal of Statistical Software. https://doi.org/10.18637/jss.v109.i09
 
 Below, we illustrate an application to the German stock index [DAX](https://en.wikipedia.org/wiki/DAX). We also show how to use the package to simulate HMM data, compute the model likelihood, and decode the hidden states using the Viterbi algorithm.
 

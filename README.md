@@ -18,13 +18,20 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 The `{fHMM}` R package allows for the detection and characterization of
 financial market regimes in time series data by applying hidden Markov
 Models (HMMs). The [vignettes](https://loelschlaeger.de/fHMM/articles/)
-outline the package functionality and the model formulation. For a
-reference on the method, see
+outline the package functionality and the model formulation.
 
-> Oelschläger, L., and T. Adam. 2021. “Detecting Bearish and Bullish
+For a reference on the method, see:
+
+> Oelschläger, L., and Adam, T. 2021. “Detecting Bearish and Bullish
 > Markets in Financial Time Series Using Hierarchical Hidden Markov
 > Models.” Statistical Modelling.
 > <https://doi.org/10.1177/1471082X211034048>
+
+A user guide is provided by the accompanying software paper:
+
+> Oelschläger, L., Adam, T., and Michels, R. 2024. “fHMM: Hidden Markov
+> Models for Financial Time Series in R”. Journal of Statistical
+> Software. <https://doi.org/10.18637/jss.v109.i09>
 
 Below, we illustrate an application to the German stock index
 [DAX](https://en.wikipedia.org/wiki/DAX). We also show how to use the
@@ -238,6 +245,9 @@ exponential link).
 ``` r
 ll_hmm(parUncon, sim$data, controls)
 #> [1] -1620.515
+```
+
+``` r
 ll_hmm(parUncon, sim$data, controls, negative = TRUE)
 #> [1] 1620.515
 ```
@@ -267,21 +277,36 @@ par$Gamma
 #>         state_1 state_2
 #> state_1    0.95    0.05
 #> state_2    0.05    0.95
+```
+
+``` r
 estimate$Gamma
 #>            state_1    state_2
 #> state_1 0.96895127 0.03104873
 #> state_2 0.03037199 0.96962801
+```
+
+``` r
 
 par$mu
 #> muCon_1 muCon_2 
 #>       1       3
+```
+
+``` r
 estimate$mu
 #>  muCon_1  muCon_2 
 #> 1.061835 2.899473
+```
+
+``` r
 
 par$sigma
 #> sigmaCon_1 sigmaCon_2 
 #>          1          3
+```
+
+``` r
 estimate$sigma
 #> sigmaCon_1 sigmaCon_2 
 #>   1.122073   2.943097
