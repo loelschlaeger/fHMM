@@ -32,9 +32,5 @@ spx <- download_data(
   to = "2022-12-31"    # last observation
 )
 }
-The data is also available as \code{.csv} file via:
-\preformatted{
-system.file("extdata", "spx.csv", package = "fHMM")
-}
 }
 \keyword{data}

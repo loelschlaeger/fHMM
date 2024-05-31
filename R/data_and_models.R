@@ -13,10 +13,6 @@
 #'   to = "2022-12-31"    # last observation
 #' )
 #' }
-#' The data is also available as \code{.csv} file via:
-#' \preformatted{
-#' system.file("extdata", "spx.csv", package = "fHMM")
-#' }
 #' 
 #' @format A \code{data.frame} with 23864 rows and the following 7 columns:
 #' \itemize{
@@ -84,10 +80,6 @@
 #'   from = "1988-07-22", # first observation
 #'   to = "2022-12-31"    # last observation
 #' )
-#' }
-#' The data is also available as \code{.csv} file via:
-#' \preformatted{
-#' system.file("extdata", "vw.csv", package = "fHMM")
 #' }
 #' 
 #' @format A \code{data.frame} with 6260 rows and the following 7 columns:

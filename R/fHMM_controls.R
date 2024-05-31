@@ -301,7 +301,7 @@
 #'   sdds      = c("t", "t"),
 #'   file      = c(               
 #'     system.file("extdata", "dax.csv", package = "fHMM"),
-#'     system.file("extdata", "vw.csv", package = "fHMM")
+#'     system.file("extdata", "dax.csv", package = "fHMM")
 #'   ),
 #'   date_column = c("Date", "Date"), 
 #'   data_column = c("Close", "Close"),
