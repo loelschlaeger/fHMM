@@ -18,21 +18,17 @@ knitr::opts_chunk$set(
   fig.align = 'center',
   fig.path = "fHMM-"
 )
+library("fHMM")
 ```
 
 This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] explains how to prepare or simulate data in `{fHMM}` for estimation.
 
-```{r load fHMM, message = FALSE}
-library("fHMM")
-```
-
 ## Empirical data
 
-Empirical data can be provided either as a `data.frame` or as a comma-separated values (.csv) file, see [the vignette on specifying the controls](https://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from <https://finance.yahoo.com/> in csv-format.] The `{fHMM}` package comes with two datasets of the Deutscher Aktienindex and the VW stock for demonstration purpose that can be accessed as follows:
+Empirical data can be provided either as a `data.frame` or as a comma-separated values (.csv) file, see [the vignette on specifying the controls](https://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from <https://finance.yahoo.com/>.] The `{fHMM}` package comes with a dataset of the Deutscher Aktienindex for demonstration purpose that can be accessed as follows:
 
 ```{r, head dax, results = FALSE}
 system.file("extdata", "dax.csv", package = "fHMM")
-system.file("extdata", "vw.csv", package = "fHMM")
 ``` 
 
 The `prepare_data()` function prepares the data based on the `data` controls specifications and returns an `fHMM_data` object that can be passed to the `fit_model()` function for model fitting.
@@ -65,16 +61,14 @@ where
 
 - `from` and `to` define the time interval (in format `"YYYY-MM-DD"`),
 
-- `file` is the name of the file where the .csv-file is saved. Per default, it is saved in the current working directory under the name `<symbol>.csv`. If `file = NULL` (default), the data is not saved but returned as a `data.frame`.
+- `file` is the name of the file where the .csv-file is saved. If `file = NULL` (default), the data is not saved but returned as a `data.frame`.
 
-For example, the call
+For example, the following call downloads the 21st century daily data of the DAX:
 
 ```{r}
 dax <- download_data(symbol = "^GDAXI", from = "2000-01-01", to = Sys.Date())
 head(dax)
 ```
-
-downloads the 21st century daily data of the DAX into the current working directory.
 
 ## Highlighting events
 
@@ -93,4 +87,6 @@ plot(data, events = events)
 
 ## Simulated data
 
-If the `data` parameter in the model's `controls` is unspecified, the model is fitted to simulated data from the model specification. This can be useful for testing the functionality or conducting simulation experiments. True model parameters can be specified by defining an `fHMM_parameters`-object via the `fHMM_parameters()` function and passing it to `prepare_data()`.
+If the `data` parameter in the model's `controls` is unspecified, the model is fitted to simulated data from the model specification. This can be useful for testing the functionality or conducting simulation experiments. 
+
+True model parameters can be specified by defining an `fHMM_parameters`-object via the `fHMM_parameters()` function and passing it to `prepare_data()`.

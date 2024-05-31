@@ -55,9 +55,11 @@ We now can visualize the decoded time series:
 plot(dax_model_3t)
 ```
 
+## Invariance towards state labelling
+
 Mind that the model is invariant to permutations of the state labels. Therefore, `{fHMM}` provides the option to switch labels after decoding via the `reorder_states()` function, for example:
 
-```{r, reorder}
+```{r, reorder, eval = FALSE}
 dax_model_3t <- reorder_states(dax_model_3t, 3:1)
 ```
 

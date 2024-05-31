@@ -21,9 +21,9 @@ Welcome to `{fHMM}`, an R package for modeling financial time series data with h
 
 ## Motivation
 
-Earning money with stock trading is simple: one only needs to buy and sell stocks at the right moment. In general, stock traders seek to invest at the beginning of upward trends (hereon termed as bullish markets) and repel their stocks just in time before the prices fall again (hereon termed as bearish markets). As stock prices depend on a variety of environmental factors [@hum09; @coh13], chance certainly plays a fundamental role in hitting those exact moments. However, investigating market behavior can lead to a better understanding of how trends alternate and thereby increases the chance of making profitable investment decisions. 
+Earning money with stock trading is simple: one "only" needs to buy and sell stocks at the right moment. In general, stock traders seek to invest at the beginning of upward trends (hereon termed as bullish markets) and repel their stocks just in time before the prices fall again (hereon termed as bearish markets). As stock prices depend on a variety of environmental factors [@hum09; @coh13], chance certainly plays a fundamental role in hitting those exact moments. However, investigating market behavior can lead to a better understanding of how trends alternate and thereby increases the chance of making profitable investment decisions. 
 
-The `{fHMM}` package aims at contributing to those investigations by applying HMMs to detect bearish and bullish markets in financial time series. It also implemented the hierarchical model extension presented in @oel21, which improves the model's capability for distinguishing between short- and long-term trends and allows to interpret market dynamics at multiple time scales.
+The `{fHMM}` package aims at contributing to those investigations by applying HMMs to detect bearish and bullish markets in financial time series. It also implements the hierarchical model extension presented in @oel21, which improves the model's capability for distinguishing between short- and long-term trends and allows to interpret market dynamics at multiple time scales.
 
 ## Package and vignettes overview
 
@@ -41,7 +41,7 @@ The tasks *data preparation*, *model estimation*, and *model evaluation* as well
 
 - The vignette [*Model estimation*](https://loelschlaeger.de/fHMM/articles/v04_model_estimation.html) defines the likelihood function and explains the task of its numerical maximization via the `fit_model()` function.
 
-- The vignette [*State decoding and prediction*](https://loelschlaeger.de/fHMM/articles/v05_state_decoding_and_prediction.html) introduces the Viterbi algorithm that is used for decoding the most likely underlying state sequence and forecasting. 
+- The vignette [*State decoding and prediction*](https://loelschlaeger.de/fHMM/articles/v05_state_decoding_and_prediction.html) introduces the Viterbi algorithm that is used for decoding the most likely underlying state sequence and subsequently for forecasting. 
 
 - The vignette [*Model checking*](https://loelschlaeger.de/fHMM/articles/v06_model_checking.html) explains the task of checking a fitted model via computing (pseudo-) residuals, which is implemented in the `compute_residuals()` function.
 

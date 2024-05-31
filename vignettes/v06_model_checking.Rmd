@@ -21,11 +21,11 @@ knitr::opts_chunk$set(
 library("fHMM")
 ```
 
-This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] discuss model checking in `{fHMM}`.
+This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] discusses model checking in `{fHMM}`, that means the task of verifying whether the fitted model describes the data well.
 
 ## Model checking using pseudo-residuals
 
-Analyzing pseudo-residuals allows us to check whether the fitted model describes the data well. Since the observations are explained by different distributions (depending on the active state), this cannot be done by analyzing standard residuals. To transform all observations on a common scale, we proceed as follows: If $X_t$ has the invertible distribution function $F_{X_t}$, then
+Since the observations are explained by different distributions (depending on the active state), model checking cannot be done by analyzing standard residuals. Instead, we consider "pseudo-residuals". To transform all observations on a common scale, we proceed as follows: If $X_t$ has the invertible distribution function $F_{X_t}$, then
 
 \begin{align*}
 Z_t=\Phi^{-1}(F_{X_t} (X_t))

@@ -35,7 +35,7 @@ where $p$ denotes the number of parameters, while the BIC is defined as
 \begin{align*}
 \text{BIC} = - 2 \log (\mathcal{L}^\text{(H)HMM}(\theta,(\theta^{*(i)})_i\mid (X_t)_t,((X^*_{t,t^*})_{t^*})_t)) + \log(T) p,
 \end{align*}
-where $T$ is the number of observations.
+where $T$ is the total number of observations.
 
 ## Challenges associated with model selection
 

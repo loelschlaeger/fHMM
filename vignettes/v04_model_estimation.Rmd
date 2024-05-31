@@ -105,7 +105,7 @@ The estimated model is saved in the `{fHMM}` package and can be accessed as foll
 data(dax_model_3t)
 ```
 
-Calling the `summary()` method provides an overview of the model fit, whereas `coef()` returns a data frame of the estimated model coefficients:
+Calling the `summary()` method provides an overview of the model fit:^[Alternatively,  `coef()` only returns the estimated model coefficients]
 
 ```{r summarize model}
 summary(dax_model_3t)
