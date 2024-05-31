@@ -102,6 +102,8 @@ state-dependent distributions, and a hierarchical model structure. This
 vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;This vignette was build using R 4.4.0 with the
 &lt;a href="https://loelschlaeger.de/fHMM/"&gt;fHMM&lt;/a&gt; 1.3.1 package.&lt;/p&gt;'><sup>1</sup></a>
 outlines what and how specifications are possible.</p>
+<p>We first load the package via the familiar <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code>
+call:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://loelschlaeger.de/fHMM/">"fHMM"</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
@@ -202,7 +204,8 @@ and some parameters now can be specified for both hierarchies.</p>
 <span><span class="co">#&gt; * sdds: t(df = 1) t(df = Inf) </span></span>
 <span><span class="co">#&gt; * number of runs: 10</span></span></code></pre></div>
 <p>The help page of the <code><a href="../reference/set_controls.html">set_controls()</a></code> function provides an
-overview of all possible specifications.</p>
+overview of all possible specifications, it can be accessed via
+<code><a href="../reference/set_controls.html">help("set_controls", package = "fHMM")</a></code>.</p>
 </div>
 </div>
 <div class="section level2 unnumbered">
