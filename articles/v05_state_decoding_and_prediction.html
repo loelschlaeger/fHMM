@@ -141,6 +141,10 @@ et al. (<a href="#ref-ada19">2019</a>)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dax_model_3t</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fHMM-decoded-ts-1.png" width="80%" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level2">
+<h2 id="invariance-towards-state-labelling">Invariance towards state labelling<a class="anchor" aria-label="anchor" href="#invariance-towards-state-labelling"></a>
+</h2>
 <p>Mind that the model is invariant to permutations of the state labels.
 Therefore, <a href="https://loelschlaeger.de/fHMM/">fHMM</a> provides the option to switch labels
 after decoding via the <code><a href="../reference/reorder_states.html">reorder_states()</a></code> function, for
@@ -158,16 +162,16 @@ next observations can be predicted, compare <span class="citation">Zucchini, Mac
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">dax_model_3t</span>, ahead <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    state_1 state_2 state_3       lb estimate      ub</span></span>
-<span><span class="co">#&gt; 1  0.97554 0.02446 0.00000 -0.01065  0.00123 0.01311</span></span>
-<span><span class="co">#&gt; 2  0.95215 0.04773 0.00012 -0.01092  0.00120 0.01332</span></span>
-<span><span class="co">#&gt; 3  0.92976 0.06988 0.00036 -0.01119  0.00116 0.01352</span></span>
-<span><span class="co">#&gt; 4  0.90835 0.09095 0.00070 -0.01145  0.00113 0.01371</span></span>
-<span><span class="co">#&gt; 5  0.88786 0.11099 0.00115 -0.01170  0.00110 0.01390</span></span>
-<span><span class="co">#&gt; 6  0.86825 0.13007 0.00169 -0.01195  0.00107 0.01408</span></span>
-<span><span class="co">#&gt; 7  0.84948 0.14821 0.00231 -0.01218  0.00104 0.01426</span></span>
-<span><span class="co">#&gt; 8  0.83152 0.16547 0.00301 -0.01241  0.00101 0.01443</span></span>
-<span><span class="co">#&gt; 9  0.81432 0.18189 0.00379 -0.01263  0.00098 0.01459</span></span>
-<span><span class="co">#&gt; 10 0.79785 0.19752 0.00463 -0.01285  0.00095 0.01476</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  0.00000 0.02446 0.97554 -0.01065  0.00123 0.01311</span></span>
+<span><span class="co">#&gt; 2  0.00012 0.04773 0.95215 -0.01092  0.00120 0.01332</span></span>
+<span><span class="co">#&gt; 3  0.00036 0.06988 0.92976 -0.01119  0.00116 0.01352</span></span>
+<span><span class="co">#&gt; 4  0.00070 0.09095 0.90835 -0.01145  0.00113 0.01371</span></span>
+<span><span class="co">#&gt; 5  0.00115 0.11099 0.88786 -0.01170  0.00110 0.01390</span></span>
+<span><span class="co">#&gt; 6  0.00169 0.13007 0.86825 -0.01195  0.00107 0.01408</span></span>
+<span><span class="co">#&gt; 7  0.00231 0.14821 0.84948 -0.01218  0.00104 0.01426</span></span>
+<span><span class="co">#&gt; 8  0.00301 0.16547 0.83152 -0.01241  0.00101 0.01443</span></span>
+<span><span class="co">#&gt; 9  0.00379 0.18189 0.81432 -0.01263  0.00098 0.01459</span></span>
+<span><span class="co">#&gt; 10 0.00463 0.19752 0.79785 -0.01285  0.00095 0.01476</span></span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

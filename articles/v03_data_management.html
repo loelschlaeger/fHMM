@@ -99,26 +99,23 @@
 <p>This vignette<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;This vignette was build using R 4.4.0 with the
 &lt;a href="https://loelschlaeger.de/fHMM/"&gt;fHMM&lt;/a&gt; 1.3.1 package.&lt;/p&gt;'><sup>1</sup></a> explains how to prepare or simulate data in
 <a href="https://loelschlaeger.de/fHMM/">fHMM</a> for estimation.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://loelschlaeger.de/fHMM/">"fHMM"</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="empirical-data">Empirical data<a class="anchor" aria-label="anchor" href="#empirical-data"></a>
 </h2>
 <p>Empirical data can be provided either as a <code>data.frame</code> or
 as a comma-separated values (.csv) file, see <a href="https://loelschlaeger.de/fHMM/articles/v02_controls.html">the
 vignette on specifying the controls</a> for details.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;The &lt;code&gt;&lt;a href="../reference/download_data.html"&gt;download_data()&lt;/a&gt;&lt;/code&gt; function explained
-below provides a convenient tool for downloading stock data from &lt;a href="https://finance.yahoo.com/" class="external-link uri"&gt;https://finance.yahoo.com/&lt;/a&gt; in csv-format.&lt;/p&gt;'><sup>2</sup></a> The
-<a href="https://loelschlaeger.de/fHMM/">fHMM</a> package comes with two datasets of the Deutscher
-Aktienindex and the VW stock for demonstration purpose that can be
-accessed as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dax.csv"</span>, package <span class="op">=</span> <span class="st">"fHMM"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"vw.csv"</span>, package <span class="op">=</span> <span class="st">"fHMM"</span><span class="op">)</span></span></code></pre></div>
+below provides a convenient tool for downloading stock data from &lt;a href="https://finance.yahoo.com/" class="external-link uri"&gt;https://finance.yahoo.com/&lt;/a&gt;.&lt;/p&gt;'><sup>2</sup></a> The
+<a href="https://loelschlaeger.de/fHMM/">fHMM</a> package comes with a dataset of the Deutscher
+Aktienindex for demonstration purpose that can be accessed as
+follows:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dax.csv"</span>, package <span class="op">=</span> <span class="st">"fHMM"</span><span class="op">)</span></span></code></pre></div>
 <p>The <code><a href="../reference/prepare_data.html">prepare_data()</a></code> function prepares the data based on
 the <code>data</code> controls specifications and returns an
 <code>fHMM_data</code> object that can be passed to the
 <code><a href="../reference/fit_model.html">fit_model()</a></code> function for model fitting.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  states <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  sdds   <span class="op">=</span> <span class="st">"t"</span>,</span>
@@ -141,7 +138,7 @@ the <code>data</code> controls specifications and returns an
 </h2>
 <p>Daily stock prices listed on <a href="https://finance.yahoo.com/" class="external-link uri">https://finance.yahoo.com/</a> can be downloaded directly
 via</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/download_data.html">download_data</a></span><span class="op">(</span><span class="va">symbol</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">file</span><span class="op">)</span></span></code></pre></div>
 <p>where</p>
 <ul>
@@ -151,13 +148,12 @@ DAX and &lt;code&gt;"^GSPC"&lt;/code&gt; the one of the S&amp;amp;P 500.&lt;/p&g
 <li><p><code>from</code> and <code>to</code> define the time interval
 (in format <code>"YYYY-MM-DD"</code>),</p></li>
 <li><p><code>file</code> is the name of the file where the .csv-file is
-saved. Per default, it is saved in the current working directory under
-the name <code>&lt;symbol&gt;.csv</code>. If <code>file = NULL</code>
-(default), the data is not saved but returned as a
-<code>data.frame</code>.</p></li>
+saved. If <code>file = NULL</code> (default), the data is not saved but
+returned as a <code>data.frame</code>.</p></li>
 </ul>
-<p>For example, the call</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>For example, the following call downloads the 21st century daily data
+of the DAX:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span>, from <span class="op">=</span> <span class="st">"2000-01-01"</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dax</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         Date    Open    High     Low   Close Adj.Close   Volume</span></span>
@@ -167,8 +163,6 @@ the name <code>&lt;symbol&gt;.csv</code>. If <code>file = NULL</code>
 <span><span class="co">#&gt; 4 2000-01-06 6501.45 6539.31 6402.63 6474.92   6474.92 41180600</span></span>
 <span><span class="co">#&gt; 5 2000-01-07 6489.94 6791.53 6470.14 6780.96   6780.96 56058900</span></span>
 <span><span class="co">#&gt; 6 2000-01-10 6785.47 6975.26 6785.47 6925.52   6925.52 42006200</span></span></code></pre></div>
-<p>downloads the 21st century daily data of the DAX into the current
-working directory.</p>
 </div>
 <div class="section level2">
 <h2 id="highlighting-events">Highlighting events<a class="anchor" aria-label="anchor" href="#highlighting-events"></a>
@@ -177,7 +171,7 @@ working directory.</p>
 <code>events</code> with elements <code>dates</code> (a vector of dates)
 and <code>labels</code> (a vector of labels for the events) and passing
 it to the plot method, for example:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu">fHMM</span><span class="fu">:::</span><span class="fu"><a href="../reference/fHMM_events.html">fHMM_events</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2001-09-11"</span>,<span class="st">"2008-09-15"</span>,<span class="st">"2020-01-27"</span><span class="op">)</span>,</span>
@@ -189,7 +183,7 @@ it to the plot method, for example:</p>
 <span><span class="co">#&gt; 1 2001-09-11          9/11 terrorist attack</span></span>
 <span><span class="co">#&gt; 2 2008-09-15  Bankruptcy of Lehman Brothers</span></span>
 <span><span class="co">#&gt; 3 2020-01-27 First COVID-19 case in Germany</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">data</span>, events <span class="op">=</span> <span class="va">events</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fHMM-events-1.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
@@ -199,8 +193,8 @@ it to the plot method, for example:</p>
 <p>If the <code>data</code> parameter in the model’s
 <code>controls</code> is unspecified, the model is fitted to simulated
 data from the model specification. This can be useful for testing the
-functionality or conducting simulation experiments. True model
-parameters can be specified by defining an
+functionality or conducting simulation experiments.</p>
+<p>True model parameters can be specified by defining an
 <code>fHMM_parameters</code>-object via the
 <code><a href="../reference/fHMM_parameters.html">fHMM_parameters()</a></code> function and passing it to
 <code><a href="../reference/prepare_data.html">prepare_data()</a></code>.</p>
