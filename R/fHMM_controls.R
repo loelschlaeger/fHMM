@@ -89,7 +89,7 @@
 #' available data.
 #'
 #' @param period
-#' Only relevant if \code{hierarchy = TRUE} and \code{horizon[2] = NA}.
+#' Only relevant if \code{hierarchy = TRUE}.
 #' 
 #' In this case, a \code{character} which specifies a flexible, periodic 
 #' fine-scale time horizon and can be one of
@@ -100,8 +100,8 @@
 #'   \item \code{"y"} for a year.
 #' } 
 #' 
-#' By default, \code{period = "m"} if \code{hierarchy = TRUE} and 
-#' \code{horizon[2] = NA}, and \code{NA} else.
+#' By default, \code{period = NA}. If \code{period} is not \code{NA}, it
+#' overrules \code{horizon[2]}.
 #'
 #' @param data
 #' Either \code{NA}, in which case data is simulated (the default), or a 
@@ -316,7 +316,7 @@ set_controls <- function(
     states = if (!hierarchy) 2 else c(2, 2), 
     sdds = if (!hierarchy) "normal" else c("normal", "normal"), 
     horizon = if (!hierarchy) 100 else c(100, 30),
-    period = if (hierarchy && is.na(horizon[2])) "m" else NA, 
+    period = NA, 
     data = NA,
     file = NA, 
     date_column = if (!hierarchy) "Date" else c("Date", "Date"), 
@@ -459,7 +459,7 @@ set_controls <- function(
   if (!"period" %in% names(controls)) {
     controls[["period"]] <- period
   }
-  
+
   ### set missing 'data' controls
   if (!"data" %in% names(controls)) {
     controls[["data"]] <- data
@@ -644,9 +644,6 @@ validate_controls <- function(controls) {
         )
       }
     }
-    if (!is.na(controls[["horizon"]][2])) {
-      controls[["period"]] <- NA_character_
-    }
     if (!is.na(controls[["period"]])) {
       if (!controls[["period"]] %in% c("w", "m", "q", "y")) {
         stop(
@@ -654,6 +651,7 @@ validate_controls <- function(controls) {
           call. = FALSE
         )
       }
+      controls[["horizon"]][2] <- NA_integer_
     }
   } else {
     if (!simulated) {

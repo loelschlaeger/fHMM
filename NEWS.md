@@ -1,3 +1,7 @@
+# fHMM 1.4.0
+
+* Fixed a bug around the `period` control (#93, thanks to @dongsen86).
+
 # fHMM 1.3.1
 
 * Added citation to JSS paper in DESCRIPTION.

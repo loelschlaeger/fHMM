@@ -10,7 +10,7 @@ simulate_hmm(
   states = if (!hierarchy) 2 else c(2, 2),
   sdds = if (!hierarchy) "normal" else c("normal", "normal"),
   horizon = if (!hierarchy) 100 else c(100, 30),
-  period = if (hierarchy && is.na(horizon[2])) "m" else NA,
+  period = NA,
   true_parameters = fHMM_parameters(controls = controls, hierarchy = hierarchy, states =
     states, sdds = sdds),
   seed = NULL
@@ -93,7 +93,7 @@ If \code{data} is specified (i.e., not \code{NA}), the first entry of
 \code{horizon} is ignored and the (coarse-scale) time horizon is defined by
 available data.}
 
-\item{period}{Only relevant if \code{hierarchy = TRUE} and \code{horizon[2] = NA}.
+\item{period}{Only relevant if \code{hierarchy = TRUE}.
 
 In this case, a \code{character} which specifies a flexible, periodic
 fine-scale time horizon and can be one of
@@ -104,8 +104,8 @@ fine-scale time horizon and can be one of
 \item \code{"y"} for a year.
 }
 
-By default, \code{period = "m"} if \code{hierarchy = TRUE} and
-\code{horizon[2] = NA}, and \code{NA} else.}
+By default, \code{period = NA}. If \code{period} is not \code{NA}, it
+overrules \code{horizon[2]}.}
 
 \item{true_parameters}{An object of class \code{fHMM_parameters}, used as simulation parameters.
 By default, \code{true_parameters = NULL}, i.e., sampled true parameters.}
