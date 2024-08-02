@@ -56,6 +56,15 @@ read_data <- function(controls) {
       data_raw[[i]] <- data_raw[[i]][!is.na(data_raw[[i]][[date_column[i]]]), ]
     }
   }
+  
+  ### transform dates to characters
+  for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
+    if (!is.na(date_column[i])) {
+      data_raw[[i]][[date_column[i]]] <- as.character(
+        oeli::check_date(data_raw[[i]][[date_column[i]]])
+      )
+    }
+  }
 
   ### replace NA values by neighbor means
   for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
