@@ -1,171 +1,61 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/404.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/articles/fHMM.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/articles/v01_model_definition.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/articles/v02_controls.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/articles/v03_data_management.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/articles/v04_model_estimation.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/articles/v05_state_decoding_and_prediction.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/articles/v06_model_checking.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/articles/v07_model_selection.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/index.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/compare_models.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/compute_T_star.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/compute_ci.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/compute_residuals.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/dax.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/dax_model_2n.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/dax_model_3t.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/dax_vw_model.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/decode_states.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/download_data.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/fHMM-package.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/fHMM_colors.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/fHMM_data.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/fHMM_events.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/fHMM_model.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/fHMM_parameters.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/fHMM_sdds.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/fit_model.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/get_initial_values.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/ll_hmm.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/nLL_hhmm.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/nLL_hmm.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/parameter_labels.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/parameter_transformations.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/plot.fHMM_data.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/plot.fHMM_model.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/plot_ll.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/plot_pr.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/plot_sdds.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/plot_ts.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/prepare_data.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/read_data.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/reorder_states.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/set_controls.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/sim_model_2gamma.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/simulate_hmm.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/simulate_observations.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/spx.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/unemp.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/unemp_spx_model_3_2.html</loc>
-  </url>
-  <url>
-    <loc>https://loelschlaeger.de/fHMM/reference/vw.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://loelschlaeger.de/fHMM/404.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/LICENSE-text.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/articles/fHMM.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/articles/index.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/articles/v01_model_definition.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/articles/v02_controls.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/articles/v03_data_management.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/articles/v04_model_estimation.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/articles/v05_state_decoding_and_prediction.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/articles/v06_model_checking.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/articles/v07_model_selection.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/authors.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/index.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/news/index.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/check_date.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/compare_models.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/compute_T_star.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/compute_ci.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/compute_residuals.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/dax.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/dax_model_2n.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/dax_model_3t.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/dax_vw_model.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/decode_states.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/download_data.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/fHMM-package.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/fHMM_colors.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/fHMM_data.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/fHMM_events.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/fHMM_model.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/fHMM_parameters.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/fHMM_sdds.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/find_closest_year.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/fit_model.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/get_initial_values.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/index.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/ll_hmm.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/nLL_hhmm.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/nLL_hmm.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/parameter_labels.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/parameter_transformations.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/plot.fHMM_data.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/plot.fHMM_model.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/plot_ll.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/plot_pr.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/plot_sdds.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/plot_ts.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/prepare_data.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/read_data.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/reorder_states.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/set_controls.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/sim_model_2gamma.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/simulate_hmm.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/simulate_observations.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/spx.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/unemp.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/unemp_spx_model_3_2.html</loc></url>
+<url><loc>https://loelschlaeger.de/fHMM/reference/vw.html</loc></url>
 </urlset>
+
