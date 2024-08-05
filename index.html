@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -145,20 +145,20 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Estimates:</span></span>
 <span><span class="co">#&gt;                   lb   estimate        ub</span></span>
-<span><span class="co">#&gt; Gamma_2.1  2.747e-03  5.024e-03 9.133e-03</span></span>
-<span><span class="co">#&gt; Gamma_3.1  2.080e-13  2.060e-13 2.029e-13</span></span>
-<span><span class="co">#&gt; Gamma_1.2  1.006e-02  1.839e-02 3.337e-02</span></span>
-<span><span class="co">#&gt; Gamma_3.2  1.516e-02  2.446e-02 3.924e-02</span></span>
-<span><span class="co">#&gt; Gamma_1.3  2.250e-11  2.232e-11 2.198e-11</span></span>
-<span><span class="co">#&gt; Gamma_2.3  1.195e-02  1.898e-02 2.995e-02</span></span>
+<span><span class="co">#&gt; Gamma_2.1  2.754e-03  5.024e-03 9.110e-03</span></span>
+<span><span class="co">#&gt; Gamma_3.1  2.808e-16  2.781e-16 2.739e-16</span></span>
+<span><span class="co">#&gt; Gamma_1.2  1.006e-02  1.839e-02 3.338e-02</span></span>
+<span><span class="co">#&gt; Gamma_3.2  1.514e-02  2.446e-02 3.927e-02</span></span>
+<span><span class="co">#&gt; Gamma_1.3  5.596e-17  5.549e-17 5.464e-17</span></span>
+<span><span class="co">#&gt; Gamma_2.3  1.196e-02  1.898e-02 2.993e-02</span></span>
 <span><span class="co">#&gt; mu_1      -3.862e-03 -1.793e-03 2.754e-04</span></span>
 <span><span class="co">#&gt; mu_2      -7.994e-04 -2.649e-04 2.696e-04</span></span>
 <span><span class="co">#&gt; mu_3       9.642e-04  1.272e-03 1.579e-03</span></span>
 <span><span class="co">#&gt; sigma_1    2.354e-02  2.586e-02 2.840e-02</span></span>
-<span><span class="co">#&gt; sigma_2    1.226e-02  1.300e-02 1.380e-02</span></span>
+<span><span class="co">#&gt; sigma_2    1.225e-02  1.300e-02 1.380e-02</span></span>
 <span><span class="co">#&gt; sigma_3    5.390e-03  5.833e-03 6.312e-03</span></span>
-<span><span class="co">#&gt; df_1       5.551e+00  1.084e+01 2.115e+01</span></span>
-<span><span class="co">#&gt; df_2       6.814e+00  4.866e+01 3.475e+02</span></span>
+<span><span class="co">#&gt; df_1       5.550e+00  1.084e+01 2.116e+01</span></span>
+<span><span class="co">#&gt; df_2       6.785e+00  4.866e+01 3.489e+02</span></span>
 <span><span class="co">#&gt; df_3       3.973e+00  5.248e+00 6.934e+00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; States:</span></span>
@@ -168,7 +168,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Residuals:</span></span>
 <span><span class="co">#&gt;      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. </span></span>
-<span><span class="co">#&gt; -3.517897 -0.664017  0.012171 -0.003261  0.673180  3.693577</span></span></code></pre></div>
+<span><span class="co">#&gt; -3.517900 -0.664018  0.012170 -0.003262  0.673180  3.693568</span></span></code></pre></div>
 <p>Having estimated the model, we can visualize the state-dependent distributions and the decoded time series:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fHMM_events.html">fHMM_events</a></span><span class="op">(</span></span>
@@ -242,7 +242,7 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="op">(</span><span class="va">estimate</span> <span class="op">&lt;-</span> <span class="va">optimization</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] -3.4633918 -3.4406564  0.0599985  1.0645290  0.1151781  1.0794625</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] -3.46338992 -3.44065582  0.05999848  1.06452907  0.11517811  1.07946252</span></span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>To interpret the estimate, it needs to be back transformed to the constrained parameter space via the <code><a href="reference/parameter_transformations.html">parUncon2par()</a></code> function. The state-labeling is not identified.</li>
 </ol>
@@ -257,8 +257,8 @@
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">estimate</span><span class="op">$</span><span class="va">Gamma</span></span>
 <span><span class="co">#&gt;            state_1    state_2</span></span>
-<span><span class="co">#&gt; state_1 0.96895127 0.03104873</span></span>
-<span><span class="co">#&gt; state_2 0.03037199 0.96962801</span></span></code></pre></div>
+<span><span class="co">#&gt; state_1 0.96895125 0.03104875</span></span>
+<span><span class="co">#&gt; state_2 0.03037204 0.96962796</span></span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">par</span><span class="op">$</span><span class="va">mu</span></span>
