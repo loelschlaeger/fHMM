@@ -25,9 +25,6 @@
 #'   \item \code{Volume}: Trade volume.
 #' }
 #' 
-# #' @source 
-# #' <https://finance.yahoo.com/quote/%5EGSPC>
-#' 
 #' @keywords data
 "spx"
 
@@ -45,10 +42,6 @@
 #'   to = "2022-12-31"    # last observation
 #' )
 #' }
-#' The data is also available as \code{.csv} file via:
-#' \preformatted{
-#' system.file("extdata", "dax.csv", package = "fHMM")
-#' }
 #' 
 #' @format A \code{data.frame} with 9012 rows and the following 7 columns:
 #' \itemize{
@@ -60,9 +53,6 @@
 #'   \item \code{Adj.Close}: Close price adjusted for dividends and splits.
 #'   \item \code{Volume}: Trade volume.
 #' }
-#' 
-# #' @source 
-# #' <https://finance.yahoo.com/quote/%5EGDAXI>
 #' 
 #' @keywords data
 "dax"
@@ -92,9 +82,6 @@
 #'   \item \code{Adj.Close}: Close price adjusted for dividends and splits.
 #'   \item \code{Volume}: Trade volume.
 #' }
-#' 
-# #' @source 
-# #' <https://finance.yahoo.com/quote/VOW3.DE>
 #' 
 #' @keywords data
 "vw"
@@ -134,17 +121,17 @@
 #' The model was estimated via:
 #' \preformatted{
 #' controls <- set_controls(
-#' states = 2,
-#' sdds   = "normal",
-#' data   = list(
-#'   file        = dax,
-#'   date_column = "Date",
-#'   data_column = "Close",
-#'   logreturns  = TRUE,
-#'   from        = "2000-01-03",
-#'   to          = "2022-12-31"
-#' ),
-#' fit    = list("runs" = 10, "gradtol" = 1e-6, "steptol" = 1e-6)
+#'   states = 2,
+#'   sdds   = "normal",
+#'   data   = list(
+#'     file        = dax,
+#'     date_column = "Date",
+#'     data_column = "Close",
+#'     logreturns  = TRUE,
+#'     from        = "2000-01-03",
+#'     to          = "2022-12-31"
+#'   ),
+#'   fit    = list("runs" = 10, "gradtol" = 1e-6, "steptol" = 1e-6)
 #' )
 #' dax_data <- prepare_data(controls)
 #' dax_model_2n <- fit_model(dax_data, seed = 1)
@@ -255,28 +242,21 @@
 #' @details
 #' The model was estimated via:
 #' \preformatted{
-#' controls <- set_controls(
-#'  hierarchy = TRUE,
-#'  states    = c(3, 2),
-#'  sdds      = c("t", "t"),
-#'  period    = "m",
-#'  data      = list(
-#'    file        = list(unemp, spx),
-#'    date_column = c("date", "Date"),
-#'    data_column = c("rate_diff", "Close"),
-#'    from        = "1970-01-01",
-#'    to          = "2020-01-01",
-#'    logreturns  = c(FALSE, TRUE)
-#'  ),
-#'  fit       = list(
-#'    runs        = 50, 
-#'    iterlim     = 1000,
-#'    gradtol     = 1e-6,
-#'    steptol     = 1e-6
-#'  )
-#')
+#' controls <- list(
+#'   hierarchy = TRUE, states = c(3, 2), 
+#'   sdds = c("t", "t"), period = "m",
+#'   data = list(
+#'     file = list(unemp, spx), 
+#'     data_column = c("rate_diff", "Close"), 
+#'     date_column = c("date", "Date"), 
+#'     from = "1970-01-01", to = "2020-01-01", 
+#'     logreturns = c(FALSE, TRUE)
+#'   ),
+#'   fit = list(runs = 50, iterlim = 1000, gradtol = 1e-6, steptol = 1e-6)
+#' )
+#' controls <- set_controls(controls)
 #' unemp_spx_data <- prepare_data(controls)
-#' unemp_spx_model_3_2 <- fit_model(unemp_spx_data, seed = 1, ncluster = 25)
+#' unemp_spx_model_3_2 <- fit_model(unemp_spx_data, seed = 1, ncluster = 10)
 #' unemp_spx_model_3_2 <- decode_states(unemp_spx_model_3_2)
 #' unemp_spx_model_3_2 <- compute_residuals(unemp_spx_model_3_2)
 #' summary(unemp_spx_model_3_2)

@@ -31,9 +31,5 @@ dax <- download_data(
   to = "2022-12-31"    # last observation
 )
 }
-The data is also available as \code{.csv} file via:
-\preformatted{
-system.file("extdata", "dax.csv", package = "fHMM")
-}
 }
 \keyword{data}

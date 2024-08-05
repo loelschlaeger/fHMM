@@ -25,6 +25,6 @@ test_that("state decoding for gamma distribution works", {
 test_that("state decoding for hierarchical case works", {
   x <- decode_states(dax_vw_model, verbose = FALSE)
   expect_s3_class(x, "fHMM_model")
-  expect_equal(dim(x$decoding), c(110L, 31L))
-  expect_equal(fivenum(x$decoding), c(1, 1, 1, 2, 2))
+  expect_equal(dim(x$decoding), c(157L, 24L))
+  expect_equal(fivenum(x$decoding), c(1, 1, 2, 2, 2))
 })
