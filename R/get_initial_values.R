@@ -152,7 +152,7 @@ get_initial_values <- function(
     
     ### cluster data
     cluster <- stats::kmeans(
-      data, centers = states, iter.max = 100, nstart = 100
+      data[!is.na(data)], centers = states, iter.max = 100, nstart = 100
     )$cluster
     
     ### set tpm with state persistence

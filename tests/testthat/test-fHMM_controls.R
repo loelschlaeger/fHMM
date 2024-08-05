@@ -618,3 +618,13 @@ test_that("checks of controls for empirical HHMM work", {
     "Unable to read"
   )
 })
+
+test_that("period control does not get overruled by default horizon", {
+  controls <- set_controls(controls = list(hierarchy = TRUE, period = "m"))
+  expect_identical(controls$period, "m")
+  expect_identical(controls$horizon, c(100, NA))
+  controls <- set_controls(hierarchy = TRUE, period = "m")
+  expect_identical(controls$period, "m")
+  expect_identical(controls$horizon, c(100, NA))
+})
+
