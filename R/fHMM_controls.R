@@ -672,10 +672,10 @@ validate_controls <- function(controls) {
     controls[["data"]] <- NA
   } else {
     if (!is.na(controls[["data"]][["from"]])) {
-      controls[["data"]][["from"]] <- oeli::check_date(controls[["data"]][["from"]])
+      controls[["data"]][["from"]] <- check_date(controls[["data"]][["from"]])
     }
     if (!is.na(controls[["data"]][["to"]])) {
-      controls[["data"]][["to"]] <- oeli::check_date(controls[["data"]][["to"]])
+      controls[["data"]][["to"]] <- check_date(controls[["data"]][["to"]])
     }
     if (hierarchy) {
       if (is.data.frame(controls[["data"]][["file"]])) {

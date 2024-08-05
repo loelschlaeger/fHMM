@@ -548,14 +548,14 @@ plot_ts <- function(
       ylim <- c(ymin - (ymax - ymin) * 2, ymax)
     }
     if (is.null(from)) {
-      xmin <- as.Date(paste0(oeli::find_closest_year(xdata[1]), "-01-01"))
+      xmin <- as.Date(paste0(find_closest_year(xdata[1]), "-01-01"))
     } else {
-      xmin <- oeli::check_date(from)
+      xmin <- check_date(from)
     }
     if (is.null(to)) {
-      xmax <- as.Date(paste0(oeli::find_closest_year(tail(xdata, n = 1)), "-01-01"))
+      xmax <- as.Date(paste0(find_closest_year(tail(xdata, n = 1)), "-01-01"))
     } else {
-      xmax <- oeli::check_date(to)
+      xmax <- check_date(to)
     }
     plot(
       xdata, ydata, type = "l", xlim = c(xmin, xmax), ylim = ylim, 
