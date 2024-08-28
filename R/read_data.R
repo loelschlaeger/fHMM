@@ -61,7 +61,7 @@ read_data <- function(controls) {
   for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
     if (!is.na(date_column[i])) {
       data_raw[[i]][[date_column[i]]] <- as.character(
-        oeli::check_date(data_raw[[i]][[date_column[i]]])
+        check_date(data_raw[[i]][[date_column[i]]])
       )
     }
   }

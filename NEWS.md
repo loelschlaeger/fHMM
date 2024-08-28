@@ -1,3 +1,7 @@
+# fHMM 1.4.1
+
+* Removed stale import of `oeli::check_date()`.
+
 # fHMM 1.4.0
 
 * Fixed a bug around the `period` control (#93, thanks to @dongsen86).
