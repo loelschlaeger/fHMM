@@ -14,6 +14,6 @@ The date in format \code{"YYYY-MM-DD"}.}
 An \code{integer}, the closest year to the input date.
 }
 \description{
-This function takes a date as input and returns the closest year.
+This function takes a \code{date} as input and returns the closest year.
 }
 \keyword{internal}

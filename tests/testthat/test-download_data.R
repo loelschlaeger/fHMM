@@ -33,7 +33,7 @@ test_that("input checks for download_data() work", {
   )
   expect_error(
     download_data(symbol = "wrong_symbol"),
-    "Download failed."
+    "Yahoo Finance API request failed."
   )
 })
 

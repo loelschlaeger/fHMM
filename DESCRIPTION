@@ -36,9 +36,12 @@ Depends:
 Imports: 
     checkmate,
     cli,
+    curl,
     foreach,
     graphics,
     grDevices,
+    httr,
+    jsonlite,
     MASS,
     oeli (>= 0.3.0),
     padr,

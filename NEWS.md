@@ -2,6 +2,8 @@
 
 * Removed stale import of `oeli::check_date()`.
 
+* Updated `download_data()` to confirm with new Yahoo Finance API.
+
 # fHMM 1.4.0
 
 * Fixed a bug around the `period` control (#93, thanks to @dongsen86).

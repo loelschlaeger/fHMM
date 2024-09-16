@@ -58,9 +58,22 @@ download_data <- function(
     symbol, from = "1902-01-01", to = Sys.Date(), fill_dates = FALSE,
     columns = c("Date", "Open", "High", "Low", "Close", "Adj.Close", "Volume")
 ) {
+  ### check inputs
+  if (!curl::has_internet()) {
+    stop("This function requires an internet connection.", call. = FALSE)
+  }
   if (missing(symbol) || !is.character(symbol) || length(symbol) != 1) {
     stop("'symbol' must be a single character.", call. = FALSE)
   }
+  if (!isTRUE(fill_dates) && !isFALSE(fill_dates)) {
+    stop("'fill_dates' must be TRUE or FALSE.", call. = FALSE)
+  }
+  if (!is.character(columns)) {
+    stop("'columns' must be a character vector.", call. = FALSE)
+  }
+  columns <- match.arg(columns, several.ok = TRUE)
+  
+  ### check range
   from <- check_date(from)
   min_date <- as.Date("1902-01-01")
   if (from < min_date) {
@@ -71,52 +84,54 @@ download_data <- function(
   if (to < from) {
     stop("'to' must not be earlier than 'from'.", call. = FALSE)
   }
-  if (!isTRUE(fill_dates) && !isFALSE(fill_dates)) {
-    stop("'fill_dates' must be TRUE or FALSE.", call. = FALSE)
+  if (to > Sys.Date()) {
+    stop("'to' cannot be in the future.", call. = FALSE)
   }
-  if (!is.character(columns)) {
-    stop("'columns' must be a character vector.", call. = FALSE)
-  }
-  columns <- match.arg(columns, several.ok = TRUE)
-  create_url <- function(symbol, from, to) {
-    t1 <- as.integer(ISOdate(as.numeric(format(from, format = "%Y")),
-                             as.numeric(format(from, format = "%m")),
-                             as.numeric(format(from, format = "%d")),
-                             hour = 0
-    ))
-    t2 <- as.integer(ISOdate(as.numeric(format(to, format = "%Y")),
-                             as.numeric(format(to, format = "%m")),
-                             as.numeric(format(to, format = "%d")),
-                             hour = 24
-    ))
-    paste("https://query1.finance.yahoo.com/v7/finance/download/",
-          symbol, "?period1=", t1, "&period2=", t2,
-          "&interval=1d&events=history",
-          sep = ""
-    )
-  }
-  destfile <- tempfile()
-  download_try <- suppressWarnings(
-    try(utils::download.file(
-      url = create_url(symbol, from, to), destfile = destfile, quiet = TRUE),
-      silent = TRUE
+  
+  ### API request
+  url <- paste0("https://query2.finance.yahoo.com/v8/finance/chart/", symbol)
+  resp <- httr::GET(
+    url = url, 
+    query = list(
+      period1 = as.numeric(as.POSIXct(from, tz = "UTC")), 
+      period2 = as.numeric(as.POSIXct(to + 1, tz = "UTC")), 
+      interval = "1d"
     )
   )
-  if (inherits(download_try, "try-error")) {
+  if (httr::http_error(resp)) {
     stop(
-      "Download failed. This can have different reasons:\n",
+      "Yahoo Finance API request failed. This can have different reasons:\n",
       "- Maybe 'symbol' is unknown.\n",
       "- Or there is no data for the specified time interval.", 
       call. = FALSE
     )
-  } 
-  data <- utils::read.csv(
-    file = destfile, header = TRUE, sep = ",", na.strings = "null"
+  }
+  parsed <- jsonlite::fromJSON(
+    httr::content(resp, "text", encoding = "UTF-8"), simplifyVector = FALSE
   )
+  
+  ### shape data
+  data <- parsed[["chart"]][["result"]][[1]]
+  date <- format(as.POSIXct(unlist(data$timestamp)), format = "%Y-%m-%d")
+  indicators <- data$indicators$quote[[1]]
+  adjclose <- data$indicators$adjclose[[1]][["adjclose"]]
+  data <- data.frame(
+    Date = date,
+    Open = list_to_vector(indicators$open),
+    High = list_to_vector(indicators$high),
+    Low  = list_to_vector(indicators$low),
+    Close = list_to_vector(indicators$close),
+    Adj.Close = list_to_vector(adjclose),
+    Volume = list_to_vector(indicators$volume)
+  )
+  
+  ### fill dates (if requested)
   if (fill_dates) {
     data$Date <- as.Date(data$Date)
     data <- padr::pad(data, interval = "day", start_val = from, end_val = to)
     data$Date <- as.character(data$Date)
   }
+  
+  ### select columns
   data[, columns, drop = FALSE]
 }

@@ -24,7 +24,7 @@ check_date <- function(date) {
 #' Find closest year
 #'
 #' @description
-#' This function takes a date as input and returns the closest year.
+#' This function takes a \code{date} as input and returns the closest year.
 #'
 #' @param date \[`character(1)`\]\cr
 #' The date in format \code{"YYYY-MM-DD"}.
@@ -43,3 +43,21 @@ find_closest_year <- function(date) {
   )
 }
 
+#' List to vector
+#' 
+#' @description
+#' This function produces a \code{vector} from a \code{list} structure and 
+#' replaces \code{NULL} elements by \code{NA}.
+#' 
+#' @param x \[`list()`\]\cr
+#' A \code{list}.
+#' 
+#' @return 
+#' A \code{numeric}.
+#' 
+#' @keywords internal
+
+list_to_vector <- function(x) {
+  stopifnot(is.list(x))
+  unlist(lapply(x, function(m) ifelse(is.null(m), NA, m)))
+}

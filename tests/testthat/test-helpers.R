@@ -35,3 +35,10 @@ test_that("finding closest year works", {
     2023
   )
 })
+
+test_that("list to vector works", {
+  expect_equal(
+    list_to_vector(list(1, 2, NA, NULL)),
+    c(1, 2, NA, NA)
+  )
+})
