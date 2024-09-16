@@ -113,22 +113,36 @@ download_data <- function(
   ### shape data
   data <- parsed[["chart"]][["result"]][[1]]
   date <- format(as.POSIXct(unlist(data$timestamp)), format = "%Y-%m-%d")
-  indicators <- data$indicators$quote[[1]]
-  adjclose <- data$indicators$adjclose[[1]][["adjclose"]]
-  data <- data.frame(
-    Date = date,
-    Open = list_to_vector(indicators$open),
-    High = list_to_vector(indicators$high),
-    Low  = list_to_vector(indicators$low),
-    Close = list_to_vector(indicators$close),
-    Adj.Close = list_to_vector(adjclose),
-    Volume = list_to_vector(indicators$volume)
-  )
+  if (length(date) == 0) {
+    data <- data.frame(
+      Date = seq(from, to, by = 1),
+      Open = NA,
+      High = NA,
+      Low = NA,
+      Close = NA,
+      Adj.Close = NA,
+      Volume = NA
+    )
+  } else {
+    indicators <- data$indicators$quote[[1]]
+    adjclose <- data$indicators$adjclose[[1]][["adjclose"]]
+    data <- data.frame(
+      Date = date,
+      Open = list_to_vector(indicators$open),
+      High = list_to_vector(indicators$high),
+      Low  = list_to_vector(indicators$low),
+      Close = list_to_vector(indicators$close),
+      Adj.Close = list_to_vector(adjclose),
+      Volume = list_to_vector(indicators$volume)
+    ) 
+  }
   
   ### fill dates (if requested)
   if (fill_dates) {
     data$Date <- as.Date(data$Date)
-    data <- padr::pad(data, interval = "day", start_val = from, end_val = to)
+    data <- suppressWarnings(
+      padr::pad(data, interval = "day", start_val = from, end_val = to)
+    )
     data$Date <- as.character(data$Date)
   }
   

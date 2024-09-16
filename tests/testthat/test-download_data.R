@@ -15,6 +15,10 @@ test_that("input checks for download_data() work", {
     download_data(symbol = "^GDAXI", from = "2000-01-02", to = "2000-01-01"),
     "'to' must not be earlier than 'from'."
   )
+  expect_error(
+    download_data(symbol = "^GDAXI", to = Sys.Date() + 2),
+    "'to' cannot be in the future."
+  )
   expect_warning(
     download_data(symbol = "^GDAXI", from = "1901-01-01"),
     "'from' is set to lower bound of '1902-01-01'."
@@ -39,6 +43,8 @@ test_that("input checks for download_data() work", {
 
 test_that("data download returns expected data", {
   skip_if_offline()
+  
+  ### test 1
   data <- download_data(
     symbol = "^GDAXI", from = "2000-01-01", to = "2000-01-10",
     columns = c("Date", "Close"), fill_dates = TRUE
@@ -56,6 +62,24 @@ test_that("data download returns expected data", {
       ), 
       class = "data.frame", 
       row.names = c(NA, -10L)
+    )
+  )
+  
+  ### test 2
+  data <- download_data(
+    symbol = "^GDAXI", from = "2000-01-01", to = "2000-01-02",
+    columns = c("Date", "Close"), fill_dates = TRUE
+  )
+  expect_true(is.data.frame(data))
+  expect_equal(
+    data,
+    structure(
+      list(
+        Date = c("2000-01-01", "2000-01-02"), 
+        Close = c(NA, NA)
+      ),
+      class = "data.frame", 
+      row.names = c(NA, -2L)
     )
   )
 })
