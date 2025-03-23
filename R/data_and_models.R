@@ -103,7 +103,7 @@
 #' @source 
 #' OECD (2023), Unemployment rate (indicator). 
 #' doi: 10.1787/52570002-en (Accessed on 18 January 2023)
-#' <https://data.oecd.org/unemp/unemployment-rate.htm>
+#' <https://www.oecd.org/en/data/indicators/unemployment-rate.html>
 #' 
 #' @keywords data
 "unemp"

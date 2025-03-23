@@ -4,6 +4,8 @@
 
 * Restored test coverage via codecov.io.
 
+* Fixed invalid URLs.
+
 # fHMM 1.4.1
 
 * Removed stale import of `oeli::check_date()`.

@@ -15,7 +15,7 @@ A \code{data.frame} with 24806 rows and the following 3 columns:
 \source{
 OECD (2023), Unemployment rate (indicator).
 doi: 10.1787/52570002-en (Accessed on 18 January 2023)
-\url{https://data.oecd.org/unemp/unemployment-rate.htm}
+\url{https://www.oecd.org/en/data/indicators/unemployment-rate.html}
 }
 \usage{
 unemp
