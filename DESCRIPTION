@@ -55,6 +55,7 @@ LinkingTo:
     RcppArmadillo
 Suggests:
     covr,
+    devtools,
     doSNOW,
     knitr,
     parallel,
