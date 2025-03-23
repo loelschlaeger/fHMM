@@ -35,7 +35,7 @@ test_that("input checks for download_data() work", {
     download_data(symbol = "^GDAXI", fill_dates = "not_TRUE_or_FALSE"),
     "'fill_dates' must be TRUE or FALSE"
   )
-  expect_error(
+  expect_message(
     download_data(symbol = "wrong_symbol"),
     "Yahoo Finance API request failed."
   )

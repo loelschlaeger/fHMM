@@ -90,21 +90,24 @@ download_data <- function(
   
   ### API request
   url <- paste0("https://query2.finance.yahoo.com/v8/finance/chart/", symbol)
-  resp <- httr::GET(
-    url = url, 
-    query = list(
-      period1 = as.numeric(as.POSIXct(from, tz = "UTC")), 
-      period2 = as.numeric(as.POSIXct(to + 1, tz = "UTC")), 
-      interval = "1d"
+  resp <- oeli::try_silent(
+    httr::GET(
+      url = url, 
+      query = list(
+        period1 = as.numeric(as.POSIXct(from, tz = "UTC")), 
+        period2 = as.numeric(as.POSIXct(to + 1, tz = "UTC")), 
+        interval = "1d"
+      )
     )
   )
-  if (httr::http_error(resp)) {
-    stop(
+  if (inherits(resp, "fail") || httr::http_error(resp)) {
+    message(
       "Yahoo Finance API request failed. This can have different reasons:\n",
       "- Maybe 'symbol' is unknown.\n",
       "- Or there is no data for the specified time interval.", 
       call. = FALSE
     )
+    return(data.frame())
   }
   parsed <- jsonlite::fromJSON(
     httr::content(resp, "text", encoding = "UTF-8"), simplifyVector = FALSE

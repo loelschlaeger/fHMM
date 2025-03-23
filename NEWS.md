@@ -1,3 +1,9 @@
+# fHMM 1.4.2
+
+* Let `download_data()` fail gracefully with an informative message if the Yahoo Finance resource is not available or has changed.
+
+* Restored test coverage via codecov.io.
+
 # fHMM 1.4.1
 
 * Removed stale import of `oeli::check_date()`.
