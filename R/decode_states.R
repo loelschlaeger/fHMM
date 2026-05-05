@@ -99,13 +99,15 @@ decode_states <- function(x, verbose = TRUE) {
 #' 
 #' @param sigma
 #' A positive \code{numeric} vector of standard deviations for the 
-#' state-dependent distribution in the different states of length \code{nstates}. 
+#' state-dependent distribution in the different states of length
+#' \code{nstates}.
 #' 
 #' Not relevant in case of a state-dependent Poisson distribution.
 #' 
 #' @param df
 #' A positive \code{numeric} vector of degrees of freedom for the 
-#' state-dependent distribution in the different states of length \code{nstates}. 
+#' state-dependent distribution in the different states of length
+#' \code{nstates}.
 #' 
 #' Only relevant in case of a state-dependent t-distribution.
 #' 
@@ -140,14 +142,17 @@ viterbi <- function(
       )
     }
     if (sdd == "normal") {
-      allprobs[n, ] <- stats::dnorm(observations, mean = mu[n], sd = sigma[n])                            
+      allprobs[n, ] <- stats::dnorm(
+        observations, mean = mu[n], sd = sigma[n]
+      )
     }
     if (sdd == "lognormal") {
-      allprobs[n, ] <- stats::dlnorm(observations, meanlog = mu[n], 
-                                     sdlog = sigma[n])                            
+      allprobs[n, ] <- stats::dlnorm(
+        observations, meanlog = mu[n], sdlog = sigma[n]
+      )
     }
     if (sdd == "poisson") {
-      allprobs[n, ] <- stats::dpois(observations, lambda = mu[n])                            
+      allprobs[n, ] <- stats::dpois(observations, lambda = mu[n])
     }
   }
   xi <- matrix(0, nstates, T)

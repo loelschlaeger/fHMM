@@ -35,12 +35,14 @@ distribution in the different states of length \code{nstates}.
 For the gamma- or Poisson-distribution, \code{mu} must be positive.}
 
 \item{sigma}{A positive \code{numeric} vector of standard deviations for the
-state-dependent distribution in the different states of length \code{nstates}.
+state-dependent distribution in the different states of length
+\code{nstates}.
 
 Not relevant in case of a state-dependent Poisson distribution.}
 
 \item{df}{A positive \code{numeric} vector of degrees of freedom for the
-state-dependent distribution in the different states of length \code{nstates}.
+state-dependent distribution in the different states of length
+\code{nstates}.
 
 Only relevant in case of a state-dependent t-distribution.}
 }

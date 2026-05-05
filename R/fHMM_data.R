@@ -27,7 +27,8 @@
 #' \itemize{
 #'  \item The \code{matrix} of the \code{dates} if \code{simulated = FALSE} and
 #'        \code{controls$data$data_column} is specified,
-#'  \item the \code{matrix} of the \code{time_points} if \code{simulated = TRUE} 
+#'  \item the \code{matrix} of the \code{time_points} if
+#'        \code{simulated = TRUE}
 #'        or \code{controls$data$data_column} is not specified,
 #'  \item the \code{matrix} of the simulated \code{markov_chain} if
 #'        \code{simulated = TRUE},
@@ -42,7 +43,7 @@
 #' }
 
 fHMM_data <- function(
-    dates, time_points, markov_chain, data, time_series, T_star, controls, 
+    dates, time_points, markov_chain, data, time_series, T_star, controls,
     true_parameters
 ) {
   structure(

@@ -5,8 +5,8 @@
 #' Unspecified parameters are sampled.
 #'
 #' @details
-#' See the [vignette on the model definition](https://loelschlaeger.de/fHMM/articles/) 
-#' for more details.
+#' See the package vignettes at <https://loelschlaeger.de/fHMM/articles/>
+#' for details.
 #'
 #' @inheritParams set_controls
 #' 
@@ -170,12 +170,14 @@ fHMM_parameters <- function(
       for (i in 1:M) {
         if (sdds[[2]]$name %in% c("normal", "t", "lognormal")) {
           ### expectation is unrestricted
-          mu_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), -1, 1) * 
+          probs <- 0:(N - 1) / N + stats::runif(1, 0, 1 / N)
+          mu_star[[i]] <- stats::qunif(probs, -1, 1) *
             scale_par[2]
         }
         if (sdds[[2]]$name %in% c("poisson", "gamma")) {
           ### expectation is positive
-          mu_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 1) * 
+          probs <- 0:(N - 1) / N + stats::runif(1, 0, 1 / N)
+          mu_star[[i]] <- stats::qunif(probs, 0, 1) *
             scale_par[2]
         }
       }
@@ -184,7 +186,8 @@ fHMM_parameters <- function(
       sigma_star <- list()
       for (i in 1:M) {
         ### standard deviation is positive
-        sigma_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 0, 1) * 
+        probs <- 0:(N - 1) / N + stats::runif(1, 0, 1 / N)
+        sigma_star[[i]] <- stats::qunif(probs, 0, 1) *
           scale_par[2]
       }
     }
@@ -196,7 +199,8 @@ fHMM_parameters <- function(
         df_star <- list()
         for (i in 1:M) {
           ### degrees of freedom are positive
-          df_star[[i]] <- stats::qunif((0:(N - 1) / N + stats::runif(1, 0, 1 / N)), 1, 30)
+          probs <- 0:(N - 1) / N + stats::runif(1, 0, 1 / N)
+          df_star[[i]] <- stats::qunif(probs, 1, 30)
         }
       }
     } else {
@@ -311,15 +315,24 @@ fHMM_parameters <- function(
       if (sdds[[2]]$name %in% c("t", "normal", "lognormal")) {
         if (!checkmate::test_numeric(mu_star[[i]], len = N)) {
           stop(
-            paste("Element", i, "in 'mu_star' must be a numeric vector of length", N),
+            paste(
+              "Element", i, "in 'mu_star' must be a numeric vector of",
+              "length", N
+            ),
             call. = FALSE
           )
         }
       }
       if (sdds[[2]]$name %in% c("gamma", "poisson")) {
-        if (!checkmate::test_numeric(mu_star[[i]], len = N) || any(mu_star[[i]] <= 0)) {
+        if (
+          !checkmate::test_numeric(mu_star[[i]], len = N) ||
+            any(mu_star[[i]] <= 0)
+        ) {
           stop(
-            paste("Element", i, "in 'mu_star' must be a positive numeric vector of length", N),
+            paste(
+              "Element", i, "in 'mu_star' must be a positive numeric",
+              "vector of length", N
+            ),
             call. = FALSE
           )
         }
@@ -335,7 +348,10 @@ fHMM_parameters <- function(
       for (i in 1:M) {
         if (!checkmate::test_numeric(sigma_star[[i]], len = N, lower = 0)) {
           stop(
-            paste("Element", i, "in 'sigma_star' must be a positive numeric vector of length", N),
+            paste(
+              "Element", i, "in 'sigma_star' must be a positive numeric",
+              "vector of length", N
+            ),
             call. = FALSE
           )
         }
@@ -351,7 +367,10 @@ fHMM_parameters <- function(
       for (i in 1:M) {
         if (!checkmate::test_numeric(df_star[[i]], len = N, lower = 0)) {
           stop(
-            paste("Element", i, "in 'df_star' must be a positive numeric vector of length", N),
+            paste(
+              "Element", i, "in 'df_star' must be a positive numeric",
+              "vector of length", N
+            ),
             call. = FALSE
           )
         }
@@ -466,7 +485,8 @@ print.fHMM_parameters <- function(x, ...) {
 #'   \item expectations \code{muCon}
 #'   \item standard deviations \code{sigmaCon} (if any)
 #'   \item degrees of freedom \code{dfCon} (if any)
-#'   \item fine-scale parameters for each coarse-scale state, in the same order (if any)
+#'   \item fine-scale parameters for each coarse-scale state, in the same order
+#'         (if any)
 #' }
 #'
 #' @param parUncon
@@ -477,7 +497,8 @@ print.fHMM_parameters <- function(x, ...) {
 #'   \item expectations \code{muUncon}
 #'   \item standard deviations \code{sigmaUncon} (if any)
 #'   \item degrees of freedom \code{dfUncon} (if any)
-#'   \item fine-scale parameters for each coarse-scale state, in the same order (if any)
+#'   \item fine-scale parameters for each coarse-scale state, in the same order
+#'         (if any)
 #' }
 #' 
 #' @param link
@@ -1050,7 +1071,9 @@ gammasCon2gammasUncon <- function(
     gammasCon, dim, prefix = "gammasUncon_", use_parameter_labels = TRUE
   ) {
   Gamma2gammasUncon(
-    gammasCon2Gamma(gammasCon, dim, use_parameter_labels = use_parameter_labels), 
+    gammasCon2Gamma(
+      gammasCon, dim, use_parameter_labels = use_parameter_labels
+    ),
     prefix = prefix,
     use_parameter_labels = use_parameter_labels
   )

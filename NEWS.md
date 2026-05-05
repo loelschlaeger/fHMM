@@ -1,3 +1,9 @@
+# fHMM 1.4.3
+
+* Small documentation fixes.
+
+* Removed renv.
+
 # fHMM 1.4.2
 
 * Let `download_data()` fail gracefully with an informative message if the Yahoo Finance resource is not available or has changed.
@@ -10,7 +16,7 @@
 
 * Removed stale import of `oeli::check_date()`.
 
-* Updated `download_data()` to confirm with new Yahoo Finance API.
+* Updated `download_data()` to work with the new Yahoo Finance API.
 
 # fHMM 1.4.0
 

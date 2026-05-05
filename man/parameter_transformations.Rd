@@ -138,7 +138,8 @@ with identified and unconstrained model parameters in the following order:
 \item expectations \code{muUncon}
 \item standard deviations \code{sigmaUncon} (if any)
 \item degrees of freedom \code{dfUncon} (if any)
-\item fine-scale parameters for each coarse-scale state, in the same order (if any)
+\item fine-scale parameters for each coarse-scale state, in the same order
+(if any)
 }}
 
 \item{numerical_safeguard}{Either \code{TRUE} or \code{FALSE}, determining whether to apply the
@@ -157,7 +158,8 @@ with identified (and constrained) model parameters in the following order:
 \item expectations \code{muCon}
 \item standard deviations \code{sigmaCon} (if any)
 \item degrees of freedom \code{dfCon} (if any)
-\item fine-scale parameters for each coarse-scale state, in the same order (if any)
+\item fine-scale parameters for each coarse-scale state, in the same order
+(if any)
 }}
 
 \item{muCon, muUncon}{A vector of (un-) constrained expected values.}

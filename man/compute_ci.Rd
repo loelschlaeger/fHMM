@@ -9,7 +9,8 @@ compute_ci(x, alpha = 0.05)
 \arguments{
 \item{x}{An object of class \code{\link{fHMM_model}}.}
 
-\item{alpha}{A \code{numeric} between 0 and 1, the alpha level for the confidence interval.
+\item{alpha}{A \code{numeric} between 0 and 1, the alpha level for the confidence
+interval.
 By default, \code{alpha = 0.05}, which computes a 95\% confidence interval.}
 }
 \value{

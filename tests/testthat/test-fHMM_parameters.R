@@ -28,11 +28,14 @@ test_that("input checks for parameter transformations work", {
     "'mu' must be a positive numeric vector of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, Gamma_star = matrix(1:4,2,2)),
+    fHMM_parameters(hierarchy = TRUE, Gamma_star = matrix(1:4, 2, 2)),
     "'Gamma_star' must be a list of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, Gamma_star = list(matrix(1:4,2,2), matrix(1:4,2,2))),
+    fHMM_parameters(
+      hierarchy = TRUE,
+      Gamma_star = list(matrix(1:4, 2, 2), matrix(1:4, 2, 2))
+    ),
     "Must have values between 0 and 1."
   )
   expect_error(
@@ -52,15 +55,25 @@ test_that("input checks for parameter transformations work", {
     "Element 1 in 'sigma_star' must be a positive numeric vector of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, sdds = c("t", "t"), df_star = c(-1, -2)),
+    fHMM_parameters(
+      hierarchy = TRUE, sdds = c("t", "t"), df_star = c(-1, -2)
+    ),
     "'df_star' must be a list of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, sdds = c("t", "t"), df_star = list(c(1, 1), c(1,-1))),
+    fHMM_parameters(
+      hierarchy = TRUE,
+      sdds = c("t", "t"),
+      df_star = list(c(1, 1), c(1, -1))
+    ),
     "Element 2 in 'df_star' must be a positive numeric vector of length 2"
   )
   expect_error(
-    fHMM_parameters(hierarchy = TRUE, sdds = c("gamma", "gamma"), mu_star = list(c(1, 1), c(1,-1))),
+    fHMM_parameters(
+      hierarchy = TRUE,
+      sdds = c("gamma", "gamma"),
+      mu_star = list(c(1, 1), c(1, -1))
+    ),
     "Element 2 in 'mu_star' must be a positive numeric vector of length 2"
   )
   
@@ -81,19 +94,43 @@ test_that("parameter transformations for HMM work", {
   parCon <- parUncon2parCon(parUncon, controls)
   par2 <- parCon2par(parCon, controls)
   expect_equal(par, par2)
-  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
+  expect_equal(
+    par,
+    parUncon2par(
+      parCon2parUncon(par2parCon(par, controls), controls),
+      controls
+    )
+  )
   ### fixed mu
   controls <- set_controls(list("sdds" = "t(mu = 1)"))
   par <- fHMM_parameters(controls, seed = 1)
-  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
+  expect_equal(
+    par,
+    parUncon2par(
+      parCon2parUncon(par2parCon(par, controls), controls),
+      controls
+    )
+  )
   ### fixed sigma
   controls <- set_controls(list("sdds" = "gamma(sigma = 1)"))
   par <- fHMM_parameters(controls, seed = 1)
-  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
+  expect_equal(
+    par,
+    parUncon2par(
+      parCon2parUncon(par2parCon(par, controls), controls),
+      controls
+    )
+  )
   ### fixed df
   controls <- set_controls(list("sdds" = "t(df = Inf)"))
   par <- fHMM_parameters(controls, seed = 1)
-  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
+  expect_equal(
+    par,
+    parUncon2par(
+      parCon2parUncon(par2parCon(par, controls), controls),
+      controls
+    )
+  )
 })
 
 test_that("parameter transformations for HHMM work", {
@@ -104,7 +141,13 @@ test_that("parameter transformations for HHMM work", {
   parCon <- parUncon2parCon(parUncon, controls)
   par2 <- parCon2par(parCon, controls)
   expect_equal(par, par2)
-  expect_equal(par, parUncon2par(parCon2parUncon(par2parCon(par, controls), controls), controls))
+  expect_equal(
+    par,
+    parUncon2par(
+      parCon2parUncon(par2parCon(par, controls), controls),
+      controls
+    )
+  )
   ### fixed mu
   controls <- set_controls(list(
     "hierarchy" = TRUE,
@@ -199,15 +242,59 @@ test_that("Gamma transformations work", {
     Gamma, prefix = "gammasCon_", exclude_diagonal = TRUE
   )
   colnames(Gamma) <- rownames(Gamma) <- paste0("state_", 1:dim)
-  expect_equal(Gamma, gammasCon2Gamma(Gamma2gammasCon(Gamma), dim = dim))
-  expect_equal(gammasCon, Gamma2gammasCon(gammasCon2Gamma(gammasCon, dim = dim)))
-  expect_equal(Gamma, gammasUncon2Gamma(Gamma2gammasUncon(Gamma), dim = dim))
-  expect_equal(gammasUncon, Gamma2gammasUncon(gammasUncon2Gamma(gammasUncon, dim = dim)))
-  expect_equal(gammasCon, gammasUncon2gammasCon(gammasCon2gammasUncon(gammasCon, dim = dim), dim = dim))
-  expect_equal(gammasUncon, gammasCon2gammasUncon(gammasUncon2gammasCon(gammasUncon, dim = dim), dim = dim))
-  expect_equal(Gamma, gammasUncon2Gamma(gammasCon2gammasUncon(Gamma2gammasCon(Gamma), dim = dim), dim = dim))
-  expect_equal(gammasCon, Gamma2gammasCon(gammasUncon2Gamma(gammasCon2gammasUncon(gammasCon, dim = dim), dim = dim)))
-  expect_equal(gammasUncon, gammasCon2gammasUncon(Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim = dim)), dim = dim))
+  expect_equal(
+    Gamma,
+    gammasCon2Gamma(Gamma2gammasCon(Gamma), dim = dim)
+  )
+  expect_equal(
+    gammasCon,
+    Gamma2gammasCon(gammasCon2Gamma(gammasCon, dim = dim))
+  )
+  expect_equal(
+    Gamma,
+    gammasUncon2Gamma(Gamma2gammasUncon(Gamma), dim = dim)
+  )
+  expect_equal(
+    gammasUncon,
+    Gamma2gammasUncon(gammasUncon2Gamma(gammasUncon, dim = dim))
+  )
+  expect_equal(
+    gammasCon,
+    gammasUncon2gammasCon(
+      gammasCon2gammasUncon(gammasCon, dim = dim),
+      dim = dim
+    )
+  )
+  expect_equal(
+    gammasUncon,
+    gammasCon2gammasUncon(
+      gammasUncon2gammasCon(gammasUncon, dim = dim),
+      dim = dim
+    )
+  )
+  expect_equal(
+    Gamma,
+    gammasUncon2Gamma(
+      gammasCon2gammasUncon(Gamma2gammasCon(Gamma), dim = dim),
+      dim = dim
+    )
+  )
+  expect_equal(
+    gammasCon,
+    Gamma2gammasCon(
+      gammasUncon2Gamma(
+        gammasCon2gammasUncon(gammasCon, dim = dim),
+        dim = dim
+      )
+    )
+  )
+  expect_equal(
+    gammasUncon,
+    gammasCon2gammasUncon(
+      Gamma2gammasCon(gammasUncon2Gamma(gammasUncon, dim = dim)),
+      dim = dim
+    )
+  )
   delta <- oeli::stationary_distribution(Gamma)
   expect_equal(unname(delta), as.numeric(delta %*% Gamma))
 })

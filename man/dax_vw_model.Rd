@@ -14,7 +14,7 @@ data("dax_vw_model")
 A pre-computed HHMM with monthly averaged closing prices of the
 DAX from 2010 to 2022 on the coarse scale, Volkswagen AG stock data on the
 fine scale, two hidden fine-scale and coarse-scale states, respectively, and
-state-dependent t-distributions for demonstration purpose.
+state-dependent t-distributions for demonstration purposes.
 }
 \details{
 The model was estimated via:

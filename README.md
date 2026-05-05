@@ -59,7 +59,7 @@ We are open to contributions and would appreciate your input:
   requests](https://github.com/loelschlaeger/fHMM/issues/new?assignees=&labels=future&template=suggestion.md).
 
 - If you would like to add extensions to the package, please fork the
-  `master` branch and submit a merge request.
+  `master` branch and submit a pull request.
 
 ## Example: Fitting an HMM to the DAX
 
@@ -72,7 +72,7 @@ market state (yellow).
 library("fHMM")
 ```
 
-The package has a build-in function to download financial data from
+The package has a built-in function to download financial data from
 [Yahoo Finance](https://finance.yahoo.com/):
 
 ``` r
@@ -165,8 +165,14 @@ distributions and the decoded time series:
 
 ``` r
 events <- fHMM_events(
-  list(dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
-       labels = c("9/11 terrorist attack", "Bankruptcy Lehman Brothers", "First COVID-19 case Germany"))
+  list(
+    dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
+    labels = c(
+      "9/11 terrorist attack",
+      "Bankruptcy Lehman Brothers",
+      "First COVID-19 case Germany"
+    )
+  )
 )
 plot(model, plot_type = c("sdds","ts"), events = events)
 ```
@@ -259,16 +265,17 @@ ll_hmm(parUncon, sim$data, controls, negative = TRUE)
 
 ``` r
 optimization <- nlm(
-  f = ll_hmm, p = parUncon, observations = sim$data, controls = controls, negative = TRUE
+  f = ll_hmm, p = parUncon, observations = sim$data,
+  controls = controls, negative = TRUE
 )
 
 (estimate <- optimization$estimate)
 #> [1] -3.46338992 -3.44065582  0.05999848  1.06452907  0.11517811  1.07946252
 ```
 
-6.  To interpret the estimate, it needs to be back transformed to the
+6.  To interpret the estimate, it needs to be back-transformed to the
     constrained parameter space via the `parUncon2par()` function. The
-    state-labeling is not identified.
+    state labeling is not identified.
 
 ``` r
 class(estimate) <- "parUncon"

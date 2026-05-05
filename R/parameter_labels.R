@@ -20,7 +20,9 @@ parameter_labels <- function(controls, expected_length = NULL) {
   if (!inherits(controls,"fHMM_controls")) {
     stop("'controls' is not of class 'fHMM_controls'.", call. = FALSE)
   }
-  if (!checkmate::test_count(expected_length, positive = TRUE, null.ok = TRUE)) {
+  if (!checkmate::test_count(
+    expected_length, positive = TRUE, null.ok = TRUE
+  )) {
     stop("'expected_length' must be a positive integer.", call. = FALSE)
   }
 
@@ -49,7 +51,10 @@ parameter_labels <- function(controls, expected_length = NULL) {
   }
   if (controls[["hierarchy"]]) {
     for (i in 1:controls$states[1]) {
-      labels <- c(labels, paste0("Gamma*", i, "_", tpm_labels(controls$states[2])))
+      labels <- c(
+        labels,
+        paste0("Gamma*", i, "_", tpm_labels(controls$states[2]))
+      )
       for (par in par_types(2)) {
         if (is.null(controls[["sdds"]][[2]]$pars[[par]])) {
           labels <- c(labels, paste0(par, "*", i, "_", 1:controls$states[2]))

@@ -12,9 +12,11 @@ read_data(controls)
 \value{
 A \code{list} containing the following elements:
 \itemize{
-\item the \code{matrix} of the \code{dates} if \code{controls$simulated = FALSE}
+\item the \code{matrix} of the \code{dates} if
+\code{controls$simulated = FALSE}
 and \code{controls$data$data_column} is specified,
-\item the \code{matrix} of the \code{time_points} if \code{controls$simulated = TRUE}
+\item the \code{matrix} of the \code{time_points} if
+\code{controls$simulated = TRUE}
 or \code{controls$data$data_column} is not specified,
 \item the \code{matrix} of the empirical \code{data} used for estimation,
 \item the \code{matrix} named \code{time_series} of empirical data before

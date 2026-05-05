@@ -13,7 +13,7 @@ data("dax_model_3t")
 \description{
 A pre-computed HMM on closing prices of the DAX from 2000 to 2022
 with three hidden states and state-dependent t-distributions for
-demonstration purpose.
+demonstration purposes.
 }
 \details{
 The model was estimated via:

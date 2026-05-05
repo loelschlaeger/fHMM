@@ -28,7 +28,8 @@
 #' @keywords internal
 
 get_initial_values <- function(
-    data, ncluster = 1, seed = NULL, verbose = TRUE, initial_estimate = NULL
+    data, ncluster = 1, seed = NULL, verbose = TRUE,
+    initial_estimate = NULL
   ) {
   
   ### input checks
@@ -62,23 +63,31 @@ get_initial_values <- function(
     ### check correct format
     expected_length <- length(par2parUncon(fHMM_parameters(controls), controls))
     test_initial_estimate <- oeli::test_numeric_vector(
-      initial_estimate, finite = TRUE, any.missing = FALSE, len = expected_length
+      initial_estimate, finite = TRUE, any.missing = FALSE,
+      len = expected_length
     )
     if (!test_initial_estimate) {
       ll <- NA_real_
       if (verbose) {
         error_msg <- oeli::check_numeric_vector(
-          initial_estimate, finite = TRUE, any.missing = FALSE, len = expected_length
+          initial_estimate, finite = TRUE, any.missing = FALSE,
+          len = expected_length
         )
         message("'initial_estimate' is bad: ", error_msg)
       }
     } else {
       ### check implied log-likelihood value
-      ll <- try(compute_ll_at_initial_estimate(initial_estimate), silent = TRUE) 
+      ll <- try(
+        compute_ll_at_initial_estimate(initial_estimate),
+        silent = TRUE
+      )
     }
     
     ### return value
-    if (!(inherits(ll, "try-error") || is.na(ll) || is.nan(ll) || abs(ll) > 1e100)) {
+    ll_failed <- (
+      inherits(ll, "try-error") || is.na(ll) || is.nan(ll) || abs(ll) > 1e100
+    )
+    if (!ll_failed) {
       if (return_value) {
         return(ll)
       } else {
@@ -101,10 +110,13 @@ get_initial_values <- function(
     if (verbose) {
       message("Initializing using given value 'initial_estimate'")
     }
-    if (!check_initial_estimate(initial_estimate, verbose = verbose, return_value = FALSE)) {
+    if (!check_initial_estimate(
+      initial_estimate, verbose = verbose, return_value = FALSE
+    )) {
       if (verbose) {
         message(
-          "Initializing at 'initial_estimate' failed, applying heuristic instead"
+          "Initializing at 'initial_estimate' failed, ",
+          "applying heuristic instead"
         )
       }
       initial_estimate <- NULL
@@ -112,13 +124,17 @@ get_initial_values <- function(
       class(initial_estimate) <- c("parUncon", "numeric")
       initial_estimate <- try(
         par2parUncon(
-          parUncon2par(initial_estimate, controls), controls, use_parameter_labels = TRUE
-        ), silent = TRUE
+          parUncon2par(initial_estimate, controls),
+          controls,
+          use_parameter_labels = TRUE
+        ),
+        silent = TRUE
       )
       if (inherits(initial_estimate, "try-error")) {
         if (verbose) {
           message(
-            "Initializing at 'initial_estimate' failed, applying heuristic instead"
+            "Initializing at 'initial_estimate' failed, ",
+            "applying heuristic instead"
           )
         }
         initial_estimate <- NULL
@@ -132,7 +148,9 @@ get_initial_values <- function(
       message("Initializing at true values")
     }
     initial_estimate <- par2parUncon(data[["true_parameters"]], controls)
-    if (check_initial_estimate(initial_estimate, verbose = verbose, return_value = FALSE)) {
+    if (check_initial_estimate(
+      initial_estimate, verbose = verbose, return_value = FALSE
+    )) {
       
       ### only one initial value in this case
       return(list(initial_estimate))
@@ -191,7 +209,8 @@ get_initial_values <- function(
       ### heuristic for coarse-scale
       heuristic_cs <- initial_heuristic(
         data = data[["data"]][, 1], states = controls[["states"]][1],
-        positive_mu = controls[["sdds"]][[1]][["name"]] %in% c("gamma", "poisson")
+        positive_mu = controls[["sdds"]][[1]][["name"]] %in%
+          c("gamma", "poisson")
       )
       cluster_cs <- heuristic_cs[["cluster"]]
       initial_estimate_list_cs <- heuristic_cs[["pars"]]
@@ -204,14 +223,17 @@ get_initial_values <- function(
         cluster_fs_data <- as.vector(data[["data"]][s == cluster_cs, -1])
         heuristic_fs <- initial_heuristic(
           cluster_fs_data, states = controls[["states"]][2],
-          positive_mu = controls[["sdds"]][[2]][["name"]] %in% c("gamma", "poisson")
+          positive_mu = controls[["sdds"]][[2]][["name"]] %in%
+            c("gamma", "poisson")
         )
         Gamma_star[[s]] <- heuristic_fs[["pars"]][["Gamma"]]
         mu_star[[s]] <- heuristic_fs[["pars"]][["mu"]]
         sigma_star[[s]] <- heuristic_fs[["pars"]][["sigma"]]
       }
       initial_estimate_list_fs <- list(
-        "Gamma_star" = Gamma_star, "mu_star" = mu_star, "sigma_star" = sigma_star
+        "Gamma_star" = Gamma_star,
+        "mu_star" = mu_star,
+        "sigma_star" = sigma_star
       )
       
       ### combine coarse-scale and fine-scale
@@ -227,7 +249,8 @@ get_initial_values <- function(
     } else {
       initial_estimate_list <- initial_heuristic(
         data = data[["data"]], states = controls[["states"]],
-        positive_mu = controls[["sdds"]][[1]][["name"]] %in% c("gamma", "poisson")
+        positive_mu = controls[["sdds"]][[1]][["name"]] %in%
+          c("gamma", "poisson")
       )[["pars"]]
       initial_estimate <- par2parUncon(
         do.call(
@@ -251,7 +274,10 @@ get_initial_values <- function(
       jittered[, id] <- jitter(jittered[, id], factor = 10)
     }
     lapply(seq_len(N), function(i) {
-      structure(jittered[i, ], names = par_names, class = c("parUncon", "numeric"))
+      structure(
+        jittered[i, ], names = par_names,
+        class = c("parUncon", "numeric")
+      )
     })
   }
   
@@ -270,7 +296,7 @@ get_initial_values <- function(
     ind <- which(is.na(ll_at_initial_values))
     N <- length(initial_values)
     
-    ### stopping criterium
+    ### stopping criterion
     if (length(ind) == 0 && N == runs) {
       break
     }
@@ -311,7 +337,9 @@ get_initial_values <- function(
     ### replace initial values that lead to NA
     ind <- which(is.na(ll_at_initial_values))
     if (length(ind) > 0) {
-      initial_values[ind] <- jitter_initial_estimate(initial_estimate, length(ind))
+      initial_values[ind] <- jitter_initial_estimate(
+        initial_estimate, length(ind)
+      )
     }
     
     ### drop largest negative log-likelihood value

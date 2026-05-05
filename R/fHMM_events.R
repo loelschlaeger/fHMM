@@ -36,8 +36,10 @@ fHMM_events <- function(events) {
       stop("'events' must be a list of two elements.", call. = FALSE)
     }
     if (!identical(names(events), c("dates", "labels"))) {
-      stop("'events' must be a list containing the elements 'dates' and 'labels'.",
-           call. = FALSE)
+      stop(
+        "'events' must be a list containing the elements 'dates' and 'labels'.",
+        call. = FALSE
+      )
     }
     events$dates <- check_date(events$dates)
     class(events) <- "fHMM_events"

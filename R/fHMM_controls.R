@@ -235,8 +235,8 @@
 #' By default, \code{accept = 1:3}.
 #'
 #' @param gradtol
-#' A positive \code{numeric} value, specifying the gradient tolerance, passed on 
-#' to \code{\link[stats]{nlm}}.
+#' A positive \code{numeric} value, specifying the gradient tolerance, passed
+#' on to \code{\link[stats]{nlm}}.
 #'
 #' By default, \code{gradtol = 0.01}.
 #'
@@ -253,10 +253,10 @@
 #' By default, \code{print.level = 0}.
 #'
 #' @param steptol
-#' A positive \code{numeric} value, specifying the step tolerance, passed on 
+#' A positive \code{numeric} value, specifying the step tolerance, passed on
 #' to \code{\link[stats]{nlm}}.
 #'
-#' By default, \code{gradtol = 0.01}.
+#' By default, \code{steptol = 0.01}.
 #' 
 #' @param x,object
 #' An object of class \code{fHMM_controls}.
@@ -290,7 +290,7 @@
 #'   hierarchy = TRUE,                  # defines a hierarchy
 #'   states    = c(3, 2),               # coarse scale and fine scale states
 #'   sdds      = c("gamma", "poisson"), # distributions for both layers
-#'   horizon   = c(100, NA),            # 100 simulated coarse-scale data points 
+#'   horizon   = c(100, NA),            # 100 coarse-scale data points
 #'   period    = "m"                    # monthly simulated fine-scale data
 #' )
 #' 
@@ -358,7 +358,8 @@ set_controls <- function(
   redundant_controls <- setdiff(names(controls), c(all_controls, "simulated"))
   if (length(redundant_controls) > 0) {
     warning(
-      "The following element(s) in 'controls' are ignored, did you misspll?\n", 
+      "The following element(s) in 'controls' are ignored, ",
+      "did you misspell?\n",
       paste(redundant_controls, collapse = ", "),
       call. = FALSE
     )
@@ -377,7 +378,8 @@ set_controls <- function(
     )
     if (length(redundant_data_controls) > 0) {
       warning(
-        "The following element(s) in 'controls$data' are ignored, did you misspll?\n", 
+        "The following element(s) in 'controls$data' are ignored, ",
+        "did you misspell?\n",
         paste(redundant_data_controls, collapse = ", "),
         call. = FALSE
       )
@@ -390,7 +392,8 @@ set_controls <- function(
     )
     if (length(redundant_data_controls) > 0) {
       warning(
-        "The following element(s) in 'data' are ignored, did you misspll?\n", 
+        "The following element(s) in 'data' are ignored, ",
+        "did you misspell?\n",
         paste(redundant_data_controls, collapse = ", "),
         call. = FALSE
       )
@@ -412,7 +415,8 @@ set_controls <- function(
     redundant_fit_controls <- setdiff(names(controls[["fit"]]), fit_controls)
     if (length(redundant_fit_controls) > 0) {
       warning(
-        "The following element(s) in 'controls$fit' are ignored, did you misspll?\n", 
+        "The following element(s) in 'controls$fit' are ignored, ",
+        "did you misspell?\n",
         paste(redundant_fit_controls, collapse = ", "),
         call. = FALSE
       )
@@ -423,7 +427,8 @@ set_controls <- function(
     redundant_fit_controls <- setdiff(names(fit), fit_controls)
     if (length(redundant_fit_controls) > 0) {
       warning(
-        "The following element(s) in 'fit' are ignored, did you misspll?\n", 
+        "The following element(s) in 'fit' are ignored, ",
+        "did you misspell?\n",
         paste(redundant_fit_controls, collapse = ", "),
         call. = FALSE
       )
@@ -637,7 +642,9 @@ validate_controls <- function(controls) {
       stop("The control 'horizon' must be a vector of length 2.", call. = FALSE)
     } 
     if (!all(is.na(controls[["horizon"]]))) {
-      if (!checkmate::test_integerish(controls[["horizon"]], lower = 1, len = 2)) {
+      if (!checkmate::test_integerish(
+        controls[["horizon"]], lower = 1, len = 2
+      )) {
         stop(
           "The control 'horizon' must be an integer vector of length 2.",
           call. = FALSE
@@ -699,7 +706,8 @@ validate_controls <- function(controls) {
           controls[["data"]][["file"]], len = 2, any.missing = FALSE
         )) {
           stop(
-            "The control 'file' in 'data' must be a character vector of length two.",
+            "The control 'file' in 'data' must be a character vector ",
+            "of length two.",
             call. = FALSE
           )
         }
@@ -720,7 +728,9 @@ validate_controls <- function(controls) {
           call. = FALSE
         )
       }
-      if (!checkmate::test_logical(controls[["data"]][["logreturns"]], len = 2)) {
+      if (!checkmate::test_logical(
+        controls[["data"]][["logreturns"]], len = 2
+      )) {
         stop(
           "'logreturns' in 'data' must be a boolean vector of length two.",
           call. = FALSE
@@ -733,7 +743,10 @@ validate_controls <- function(controls) {
         )
       }
       try_merge <- try(controls[["data"]][["merge"]](-10:10), silent = TRUE)
-      if (inherits(try_merge,"try-error") || !checkmate::test_number(try_merge)) {
+      if (
+        inherits(try_merge, "try-error") ||
+          !checkmate::test_number(try_merge)
+      ) {
         stop(
           "'merge' in 'data' should merge a vector into a single number.",
           call. = FALSE

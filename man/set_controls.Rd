@@ -248,8 +248,8 @@ accepted based on the output code of \code{\link[stats]{nlm}}.
 
 By default, \code{accept = 1:3}.}
 
-\item{gradtol}{A positive \code{numeric} value, specifying the gradient tolerance, passed on
-to \code{\link[stats]{nlm}}.
+\item{gradtol}{A positive \code{numeric} value, specifying the gradient tolerance, passed
+on to \code{\link[stats]{nlm}}.
 
 By default, \code{gradtol = 0.01}.}
 
@@ -266,7 +266,7 @@ By default, \code{print.level = 0}.}
 \item{steptol}{A positive \code{numeric} value, specifying the step tolerance, passed on
 to \code{\link[stats]{nlm}}.
 
-By default, \code{gradtol = 0.01}.}
+By default, \code{steptol = 0.01}.}
 
 \item{x, object}{An object of class \code{fHMM_controls}.}
 
@@ -305,7 +305,7 @@ set_controls(
   hierarchy = TRUE,                  # defines a hierarchy
   states    = c(3, 2),               # coarse scale and fine scale states
   sdds      = c("gamma", "poisson"), # distributions for both layers
-  horizon   = c(100, NA),            # 100 simulated coarse-scale data points 
+  horizon   = c(100, NA),            # 100 coarse-scale data points
   period    = "m"                    # monthly simulated fine-scale data
 )
 

@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 library("fHMM")
 ```
 
-Model selection involves the choice of a family for the state-dependent distribution and the selection of the number of states. This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] introduces model selection in `{fHMM}`.
+Model selection involves the choice of a family for the state-dependent distribution and the selection of the number of states. This vignette^[This vignette was built using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] introduces model selection in `{fHMM}`.
 
 ## Information criteria
 
@@ -39,7 +39,7 @@ where $T$ is the total number of observations.
 
 ## Challenges associated with model selection
 
-In practice, however, information criteria often favor overly complex models. Real data typically exhibit more structure than can actually be captured by the model. This can be the case if the true state-dependent distributions are too complex to be fully modeled by some (rather simple) parametric distribution, or if certain temporal patterns are neglected in the model formulation. Additional states may be able to capture this structure, which can lead to an increased goodness of fit that outweighs the higher model complexity. However, as models with too many states are difficult to interpret and are therefore often not desired, information criteria should be treaten with some caution and only considered as a rough guidance. For an in-depth discussion of pitfalls, practical challenges, and pragmatic solutions regarding model selection, see @poh17.
+In practice, however, information criteria often favor overly complex models. Real data typically exhibit more structure than can actually be captured by the model. This can be the case if the true state-dependent distributions are too complex to be fully modeled by some (rather simple) parametric distribution, or if certain temporal patterns are neglected in the model formulation. Additional states may be able to capture this structure, which can lead to an increased goodness of fit that outweighs the higher model complexity. However, as models with too many states are difficult to interpret and are therefore often not desired, information criteria should be treated with some caution and only considered as a rough guidance. For an in-depth discussion of pitfalls, practical challenges, and pragmatic solutions regarding model selection, see @poh17.
 
 ## The `compare_models()` function
 

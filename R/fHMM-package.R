@@ -6,8 +6,17 @@
 
 .onAttach <- function(lib, pkg) {
   msg <- c(
-    paste0("Thanks for using {fHMM} version ", utils::packageVersion("fHMM")), "!\n",
-    "See ", cli::style_hyperlink("https://loelschlaeger.de/fHMM", "https://loelschlaeger.de/fHMM") ," for help."
+    paste0(
+      "Thanks for using {fHMM} version ",
+      utils::packageVersion("fHMM")
+    ),
+    "!\n",
+    "See ",
+    cli::style_hyperlink(
+      "https://loelschlaeger.de/fHMM",
+      "https://loelschlaeger.de/fHMM"
+    ),
+    " for help."
   )
   packageStartupMessage(msg)
   invisible()

@@ -20,8 +20,10 @@ An object of class \code{fHMM_colors}, which is:
 length \code{controls$states} of color codes,
 \item for \code{controls$hierarchy == TRUE} a \code{list} of
 \itemize{
-\item a \code{character} vector of length  \code{controls$states[1]} and
-\item a \code{character} matrix of dimensions \code{controls$states}
+\item a \code{character} vector of length
+\code{controls$states[1]} and
+\item a \code{character} matrix of dimensions
+\code{controls$states}
 }
 with color codes.
 }

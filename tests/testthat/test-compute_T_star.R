@@ -20,23 +20,38 @@ test_that("computation of T_star works", {
     c(236L, 232L, 238L, 226L, 233L, 242L, 243L)
   )
   expect_equal(
-    compute_T_star(horizon = c(5, 2), period = NA, dates = (as.Date("2022-01-01") - 1:10), seed = 1),
+    compute_T_star(
+      horizon = c(5, 2), period = NA,
+      dates = (as.Date("2022-01-01") - 1:10), seed = 1
+    ),
     c(2L, 2L, 2L, 2L, 2L)
   )
   expect_equal(
-    compute_T_star(horizon = c(4, NA), period = "w", dates = (as.Date("2022-01-01") - 1:20), seed = 1),
+    compute_T_star(
+      horizon = c(4, NA), period = "w",
+      dates = (as.Date("2022-01-01") - 1:20), seed = 1
+    ),
     c(1L, 7L, 7L, 5L)
   )
   expect_equal(
-    compute_T_star(horizon = c(6, NA), period = "m", dates = (as.Date("2022-01-01") - 1:100), seed = 1),
+    compute_T_star(
+      horizon = c(6, NA), period = "m",
+      dates = (as.Date("2022-01-01") - 1:100), seed = 1
+    ),
     c(8L, 31L, 30L, 31L)
   )
   expect_equal(
-    compute_T_star(horizon = c(100, NA), period = "q", dates = (as.Date("2022-01-01") - 1:300), seed = 1),
+    compute_T_star(
+      horizon = c(100, NA), period = "q",
+      dates = (as.Date("2022-01-01") - 1:300), seed = 1
+    ),
     c(25L, 91L, 92L, 92L)
   )
   expect_equal(
-    compute_T_star(horizon = c(100, NA), period = "y", dates = (as.Date("2022-01-01") - 1:3000), seed = 1),
+    compute_T_star(
+      horizon = c(100, NA), period = "y",
+      dates = (as.Date("2022-01-01") - 1:3000), seed = 1
+    ),
     c(78L, 365L, 365L, 366L, 365L, 365L, 365L, 366L, 365L)
   )
 })

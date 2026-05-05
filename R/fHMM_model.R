@@ -64,7 +64,10 @@ fHMM_model <- function(
 
 print.fHMM_model <- function(x, ...) {
   cat("fHMM fitted model:\n")
-  cat("* total estimation time:", x$estimation_time, units(x$estimation_time), "\n")
+  cat(
+    "* total estimation time:", x$estimation_time,
+    units(x$estimation_time), "\n"
+  )
   cat("* accepted runs:", sum(!is.na(x$lls)), "of", length(x$lls), "\n")
   cat("* log-likelihood:", x$ll, "\n")
   invisible(x)
@@ -318,7 +321,14 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
   
   ### predict states
   state_prediction <- matrix(NA_real_, nrow = ahead, ncol = M)
-  last_state <- tail(if (object$data$controls$hierarchy) object$decoding[, 1] else object$decoding, n = 1)
+  last_state <- tail(
+    if (object$data$controls$hierarchy) {
+      object$decoding[, 1]
+    } else {
+      object$decoding
+    },
+    n = 1
+  )
   state_prob <- replace(numeric(M), last_state, 1)
   for (i in 1:ahead) {
     state_prob <- state_prob %*% par$Gamma

@@ -153,8 +153,8 @@ This function sets and checks model parameters.
 Unspecified parameters are sampled.
 }
 \details{
-See the \href{https://loelschlaeger.de/fHMM/articles/}{vignette on the model definition}
-for more details.
+See the package vignettes at \url{https://loelschlaeger.de/fHMM/articles/}
+for details.
 }
 \examples{
 parameters <- fHMM_parameters(states = 2, sdds = "normal")

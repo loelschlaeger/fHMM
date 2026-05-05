@@ -18,8 +18,10 @@
 #'         length \code{controls$states} of color codes,
 #'   \item for \code{controls$hierarchy == TRUE} a \code{list} of
 #'         \itemize{
-#'           \item a \code{character} vector of length  \code{controls$states[1]} and
-#'           \item a \code{character} matrix of dimensions \code{controls$states}
+#'           \item a \code{character} vector of length
+#'                 \code{controls$states[1]} and
+#'           \item a \code{character} matrix of dimensions
+#'                 \code{controls$states}
 #'         }
 #'         with color codes.
 #' }
@@ -45,7 +47,10 @@ fHMM_colors <- function(controls, colors = NULL) {
     stop("'colors' must be a character vector.", call. = FALSE)
   }
   for (col in colors) {
-    out <- tryCatch(is.matrix(grDevices::col2rgb(col)), error = function(e) FALSE)
+    out <- tryCatch(
+      is.matrix(grDevices::col2rgb(col)),
+      error = function(e) FALSE
+    )
     if (out == FALSE) {
       stop("'", col, "' in 'colors' is not a valid color representation.",
            call. = FALSE)
@@ -53,7 +58,9 @@ fHMM_colors <- function(controls, colors = NULL) {
   }
 
   ### helper functions
-  var_col <- function(col, n) grDevices::colorRampPalette(c("white", col, "black"))(n + 2)[2:(n + 1)]
+  var_col <- function(col, n) {
+    grDevices::colorRampPalette(c("white", col, "black"))(n + 2)[2:(n + 1)]
+  }
   base_col <- function(n) grDevices::colorRampPalette(colors)(n)
   col_alpha <- function(col, alpha = 0.6) grDevices::adjustcolor(col, alpha)
 

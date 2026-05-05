@@ -83,8 +83,8 @@ accepted based on the output code of \code{\link[stats]{nlm}}.
 
 By default, \code{accept = 1:3}.}
 
-\item{gradtol}{A positive \code{numeric} value, specifying the gradient tolerance, passed on
-to \code{\link[stats]{nlm}}.
+\item{gradtol}{A positive \code{numeric} value, specifying the gradient tolerance, passed
+on to \code{\link[stats]{nlm}}.
 
 By default, \code{gradtol = 0.01}.}
 
@@ -101,7 +101,7 @@ By default, \code{print.level = 0}.}
 \item{steptol}{A positive \code{numeric} value, specifying the step tolerance, passed on
 to \code{\link[stats]{nlm}}.
 
-By default, \code{gradtol = 0.01}.}
+By default, \code{steptol = 0.01}.}
 
 \item{ncluster}{Set the number of clusters for parallel optimization runs to reduce
 optimization time.

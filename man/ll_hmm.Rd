@@ -23,7 +23,8 @@ with identified and unconstrained model parameters in the following order:
 \item expectations \code{muUncon}
 \item standard deviations \code{sigmaUncon} (if any)
 \item degrees of freedom \code{dfUncon} (if any)
-\item fine-scale parameters for each coarse-scale state, in the same order (if any)
+\item fine-scale parameters for each coarse-scale state, in the same order
+(if any)
 }}
 
 \item{observations}{A \code{numeric} \code{vector} of time-series data.

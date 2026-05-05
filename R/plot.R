@@ -132,7 +132,8 @@ plot.fHMM_model <- function(
   if ("pr" %in% plot_type) {
     if (is.null(x$residuals)) {
       warning(
-        "Residuals are not available, please call 'compute_residuals()' first.", 
+        "Residuals are not available, ",
+        "please call 'compute_residuals()' first.",
         call. = FALSE
       )
     } else {
@@ -177,14 +178,21 @@ plot_ll <- function(lls, ll_relative = TRUE) {
   }
   max_ll <- max(lls, na.rm = TRUE)
   min_ll <- min(lls, na.rm = TRUE)
-  main <- ifelse(ll_relative, "Relative log-likelihoods", "Log-likelihood values") 
+  main <- ifelse(
+    ll_relative,
+    "Relative log-likelihoods",
+    "Log-likelihood values"
+  )
   if (length(lls) <= 5) {
     plot(lls,
       xaxt = "n", yaxt = "n", xlab = "Estimation run", ylab = "",
       main = main, pch = 16,
       ylim = c(floor(min_ll), ceiling(max_ll))
     )
-    graphics::axis(1, las = 1, at = seq_len(length(lls)), labels = seq_len(length(lls)))
+    graphics::axis(
+      1, las = 1, at = seq_len(length(lls)),
+      labels = seq_len(length(lls))
+    )
   } else {
     plot(lls,
       yaxt = "n", xlab = "Estimation run", ylab = "",
@@ -293,7 +301,10 @@ plot_pr <- function(residuals, hierarchy) {
     par(oma = oma, bty = "n")
     graphics::layout(matrix(1:8, 2, 4, byrow = TRUE))
     helper_pr(residuals = residuals[, 1])
-    main <- "Coarse-scale (top row) and fine-scale pseudo-residuals (bottom row)"
+    main <- paste(
+      "Coarse-scale (top row) and fine-scale pseudo-residuals",
+      "(bottom row)"
+    )
     graphics::title(main, line = 0, outer = TRUE)
     helper_pr(residuals = as.vector(residuals[, -1]))
   }
@@ -361,8 +372,14 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
       xmin <- min(est$mu - 3 * est$sigma, na.rm = TRUE)
       xmax <- max(est$mu + 3 * est$sigma, na.rm = TRUE)
       if (!is.null(true)) {
-        xmin <- min(xmin, min(true$mu - 3 * true$sigma, na.rm = TRUE), na.rm = TRUE)
-        xmax <- max(xmax, max(true$mu + 3 * true$sigma, na.rm = TRUE), na.rm = TRUE)
+        xmin <- min(
+          xmin, min(true$mu - 3 * true$sigma, na.rm = TRUE),
+          na.rm = TRUE
+        )
+        xmax <- max(
+          xmax, max(true$mu + 3 * true$sigma, na.rm = TRUE),
+          na.rm = TRUE
+        )
       }
       if (name == "gamma") {
         xmin <- 0.01
@@ -468,8 +485,14 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
           NULL
         },
         xlim_fix = c(
-          min(mapply(function(x,y) x - 3*y, est$mu_star, est$sigma_star), na.rm = TRUE),
-          max(mapply(function(x,y) x + 3*y, est$mu_star, est$sigma_star), na.rm = TRUE)
+          min(
+            mapply(function(x, y) x - 3 * y, est$mu_star, est$sigma_star),
+            na.rm = TRUE
+          ),
+          max(
+            mapply(function(x, y) x + 3 * y, est$mu_star, est$sigma_star),
+            na.rm = TRUE
+          )
         )
       )
       legend(
@@ -572,7 +595,10 @@ plot_ts <- function(
     markdates <- seq(xmin, xmax, by = "year")
     markdates <- markdates[1:length(markdates) %% 2 == 1]
     axis(1, markdates, format(markdates, "%Y"))
-    y_ticks <- signif(seq(floor(min(ydata, na.rm = TRUE)), ymax, length.out = 3), digits = 3)
+    y_ticks <- signif(
+      seq(floor(min(ydata, na.rm = TRUE)), ymax, length.out = 3),
+      digits = 3
+    )
     axis(4, y_ticks)
     mtext(data_lab,
       side = 4, line = 3.5, at = mean(y_ticks),
@@ -581,7 +607,10 @@ plot_ts <- function(
     if (!controls[["hierarchy"]]) {
       if (!is.null(decoding)) {
         for (s in seq_len(controls[["states"]][1])) {
-          points(xdata[decoding == s], ydata[decoding == s], col = colors[s], pch = 20)
+          points(
+            xdata[decoding == s], ydata[decoding == s],
+            col = colors[s], pch = 20
+          )
         }
       }
     }
@@ -644,11 +673,16 @@ plot_ts <- function(
   }
   if (!controls[["simulated"]]) {
     if (!controls[["hierarchy"]]) {
-      text <- ifelse(controls$data$logreturns, "Log-returns", "Time series data")
+      text <- ifelse(
+        controls$data$logreturns, "Log-returns", "Time series data"
+      )
       mtext(text, side = 2, line = 3.5, at = 0, cex = 1.25, las = 3)
     }
     if (controls[["hierarchy"]]) {
-      mtext("Fine-scale data", side = 2, line = 3.5, at = 0, cex = 1.25, las = 3)
+      mtext(
+        "Fine-scale data",
+        side = 2, line = 3.5, at = 0, cex = 1.25, las = 3
+      )
     }
   }
   if (controls[["simulated"]]) {
@@ -675,29 +709,44 @@ plot_ts <- function(
   }
   if (!controls[["hierarchy"]] & !is.null(decoding)) {
     for (s in seq_len(controls[["states"]][1])) {
-      points(x_values[decoding == s], data[["data"]][decoding == s], col = colors[s], pch = 20)
+      points(
+        x_values[decoding == s], data[["data"]][decoding == s],
+        col = colors[s], pch = 20
+      )
     }
   }
   if (controls[["hierarchy"]] & !is.null(decoding)) {
     for (cs in seq_len(controls[["states"]][1])) {
       for (fs in seq_len(controls[["states"]][2])) {
-        points(x_values[decoding_cs == cs & decoding_fs == fs], fs_data[decoding_cs == cs & decoding_fs == fs], col = colors[["fs"]][cs, fs], pch = 20)
+        decoded_state <- decoding_cs == cs & decoding_fs == fs
+        points(
+          x_values[decoded_state], fs_data[decoded_state],
+          col = colors[["fs"]][cs, fs], pch = 20
+        )
       }
     }
   }
   if (!controls[["simulated"]] & !is.null(events)) {
-    events[["labels"]] <- events[["labels"]][events[["dates"]] > xmin & events[["dates"]] < xmax]
-    events[["dates"]] <- events[["dates"]][events[["dates"]] > xmin & events[["dates"]] < xmax]
+    events_in_range <- events[["dates"]] > xmin & events[["dates"]] < xmax
+    events[["labels"]] <- events[["labels"]][events_in_range]
+    events[["dates"]] <- events[["dates"]][events_in_range]
     if (length(events[["dates"]]) == 0) {
       warning("No events fall in the considered time period.", call. = FALSE)
     } else {
       for (l in seq_len(length(events[["dates"]]))) {
         if (events[["dates"]][l] > xmin & events[["dates"]][l] < xmax) {
           abline(v = as.Date(events[["dates"]][l]))
-          graphics::text(x = as.Date(events[["dates"]][l]), y = ymin, labels = l, pos = 2, cex = 1.25)
+          graphics::text(
+            x = as.Date(events[["dates"]][l]), y = ymin,
+            labels = l, pos = 2, cex = 1.25
+          )
         }
       }
-      mtext(paste0(seq_len(length(events[["labels"]])), ": ", events[["labels"]], collapse = "   "),
+      event_labels <- paste0(
+        seq_len(length(events[["labels"]])), ": ",
+        events[["labels"]], collapse = "   "
+      )
+      mtext(event_labels,
         side = 1, line = 4, cex = 1.25
       )
     }
@@ -717,7 +766,10 @@ plot_ts <- function(
     legend(
       legend = c(
         paste("Coarse-scale state", seq_len(controls[["states"]][1])),
-        paste0("Fine-scale state ", rep(1:controls[["states"]][2], each = controls[["states"]][1]))
+        paste0(
+          "Fine-scale state ",
+          rep(1:controls[["states"]][2], each = controls[["states"]][1])
+        )
       ),
       col = c(colors[["cs"]], as.vector(colors[["fs"]])),
       pt.lwd = c(rep(3, controls[["states"]][1]), rep(1, dim(eg)[1])),
@@ -754,15 +806,25 @@ plot_ts <- function(
       axis(4, c(ymin, ymax), labels = signif(c(ymin, ymax), 2))
     }
     if (controls[["simulated"]]) {
-      mtext("Simulated coarse-scale data", side = 4, line = 3.5, at = mean(c(ymin, ymax)), cex = 1.25, las = 3)
+      mtext(
+        "Simulated coarse-scale data",
+        side = 4, line = 3.5, at = mean(c(ymin, ymax)),
+        cex = 1.25, las = 3
+      )
     }
     if (!controls[["simulated"]]) {
-      mtext("Coarse-scale data", side = 4, line = 3.5, at = mean(c(ymin, ymax)), cex = 1.25, las = 3)
+      mtext(
+        "Coarse-scale data",
+        side = 4, line = 3.5, at = mean(c(ymin, ymax)),
+        cex = 1.25, las = 3
+      )
     }
   }
   if (!is.null(title)) {
     title(main = title)
   } else {
-    title(main = ifelse(is.null(decoding), "Time series", "Decoded time series"))
+    title(
+      main = ifelse(is.null(decoding), "Time series", "Decoded time series")
+    )
   } 
 }
