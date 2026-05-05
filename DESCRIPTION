@@ -11,12 +11,12 @@ Authors@R: c(
     person(given = "Timo", 
            family = "Adam", 
            role = "aut",
-           email = "ta59@st-andrews.ac.uk",
+           email = "timo.adam@uni-bielefeld.de",
            comment = c(ORCID = "0000-0001-9079-3259")),
     person(given = "Rouven", 
            family = "Michels",
            role = "aut",
-           email = "r.michels@uni-bielefeld.de",
+           email = "rouven.michels@tu-dortmund.de",
            comment = c(ORCID = "0000-0002-5433-6197")))
 Description: Fitting (hierarchical) hidden Markov models to financial data
     via maximum likelihood estimation. See Oelschläger, L. and Adam, T.
@@ -43,7 +43,7 @@ Imports:
     httr,
     jsonlite,
     MASS,
-    oeli (>= 0.3.0),
+    oeli (>= 0.7.6),
     padr,
     pracma,
     progress,
