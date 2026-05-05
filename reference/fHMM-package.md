@@ -26,10 +26,10 @@ Useful links:
 
 Authors:
 
-- Timo Adam <ta59@st-andrews.ac.uk>
+- Timo Adam <timo.adam@uni-bielefeld.de>
   ([ORCID](https://orcid.org/0000-0001-9079-3259))
 
-- Rouven Michels <r.michels@uni-bielefeld.de>
+- Rouven Michels <rouven.michels@tu-dortmund.de>
   ([ORCID](https://orcid.org/0000-0002-5433-6197))
 
 ## Examples
