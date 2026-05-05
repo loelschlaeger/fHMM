@@ -10,15 +10,20 @@ decode_states(x, verbose = TRUE)
 viterbi(observations, nstates, sdd, Gamma, mu, sigma = NULL, df = NULL)
 }
 \arguments{
-\item{x}{An object of class \code{\link{fHMM_model}}.}
+\item{x}{[\code{fHMM_model}]\cr
+An object of class \code{\link{fHMM_model}}.}
 
-\item{verbose}{Set to \code{TRUE} to print progress messages.}
+\item{verbose}{[\code{logical(1)}]\cr
+Set to \code{TRUE} to print progress messages.}
 
-\item{observations}{A \code{numeric} \code{vector} of state-dependent observations.}
+\item{observations}{[\code{numeric()}]\cr
+A \code{numeric} \code{vector} of state-dependent observations.}
 
-\item{nstates}{The number of states.}
+\item{nstates}{[\code{integer(1)}]\cr
+The number of states.}
 
-\item{sdd}{A \code{character}, specifying the state-dependent distribution. One of
+\item{sdd}{[\code{character(1)}]\cr
+A \code{character}, specifying the state-dependent distribution. One of
 \itemize{
 \item \code{"normal"} (the normal distribution),
 \item \code{"lognormal"} (the log-normal distribution),
@@ -27,20 +32,26 @@ viterbi(observations, nstates, sdd, Gamma, mu, sigma = NULL, df = NULL)
 \item \code{"poisson"} (the Poisson distribution).
 }}
 
-\item{Gamma}{A transition probability \code{matrix} of dimension \code{nstates}.}
+\item{Gamma}{[\code{matrix()}]\cr
+A transition probability \code{matrix} of dimension \code{nstates}.}
 
-\item{mu}{A \code{numeric} vector of expected values for the state-dependent
+\item{mu}{[\code{numeric(nstates)}]\cr
+A \code{numeric} vector of expected values for the state-dependent
 distribution in the different states of length \code{nstates}.
 
 For the gamma- or Poisson-distribution, \code{mu} must be positive.}
 
-\item{sigma}{A positive \code{numeric} vector of standard deviations for the
-state-dependent distribution in the different states of length \code{nstates}.
+\item{sigma}{[\code{NULL} | \code{numeric(nstates)}]\cr
+A positive \code{numeric} vector of standard deviations for the
+state-dependent distribution in the different states of length
+\code{nstates}.
 
 Not relevant in case of a state-dependent Poisson distribution.}
 
-\item{df}{A positive \code{numeric} vector of degrees of freedom for the
-state-dependent distribution in the different states of length \code{nstates}.
+\item{df}{[\code{NULL} | \code{numeric(nstates)}]\cr
+A positive \code{numeric} vector of degrees of freedom for the
+state-dependent distribution in the different states of length
+\code{nstates}.
 
 Only relevant in case of a state-dependent t-distribution.}
 }

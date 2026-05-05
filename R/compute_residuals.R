@@ -4,9 +4,9 @@
 #' This function computes (pseudo-) residuals of an \code{\link{fHMM_model}} 
 #' object.
 #'
-#' @param x
+#' @param x \[`fHMM_model`\]\cr
 #' An object of class \code{\link{fHMM_model}}.
-#' @param verbose
+#' @param verbose \[`logical(1)`\]\cr
 #' Set to \code{TRUE} (default) to print progress messages.
 #'
 #' @return
@@ -20,13 +20,23 @@
 
 compute_residuals <- function(x, verbose = TRUE) {
 
-  ### check input
-  if (!inherits(x,"fHMM_model")) {
-    stop("'x' must be of class 'fHMM_model'.", call. = FALSE)
-  }
-  if (!isTRUE(verbose) && !isFALSE(verbose)) {
-    stop("'verbose' must be either TRUE or FALSE.", call. = FALSE)
-  }
+  ### check inputs
+  oeli::input_check_response(
+    check = if (inherits(x, "fHMM_model")) {
+      TRUE
+    } else {
+      "'x' must be of class 'fHMM_model'."
+    },
+    var_name = "x"
+  )
+  oeli::input_check_response(
+    check = if (checkmate::test_flag(verbose)) {
+      TRUE
+    } else {
+      "'verbose' must be either TRUE or FALSE."
+    },
+    var_name = "verbose"
+  )
   if (is.null(x$decoding)) {
     warning(
       paste(

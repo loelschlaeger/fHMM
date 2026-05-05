@@ -7,10 +7,12 @@
 fHMM_colors(controls, colors = NULL)
 }
 \arguments{
-\item{controls}{An object of class \code{fHMM_controls}.
+\item{controls}{[\code{fHMM_controls}]\cr
+An object of class \code{fHMM_controls}.
 It can be created with \code{\link{set_controls}}.}
 
-\item{colors}{Either \code{NULL} (default) or a \code{character} vector of color names or
+\item{colors}{[\code{NULL} | \code{character()}]\cr
+Either \code{NULL} (default) or a \code{character} vector of color names or
 hexadecimal RGB triplets.}
 }
 \value{
@@ -20,8 +22,10 @@ An object of class \code{fHMM_colors}, which is:
 length \code{controls$states} of color codes,
 \item for \code{controls$hierarchy == TRUE} a \code{list} of
 \itemize{
-\item a \code{character} vector of length  \code{controls$states[1]} and
-\item a \code{character} matrix of dimensions \code{controls$states}
+\item a \code{character} vector of length
+\code{controls$states[1]} and
+\item a \code{character} matrix of dimensions
+\code{controls$states}
 }
 with color codes.
 }

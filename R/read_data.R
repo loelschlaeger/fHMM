@@ -8,9 +8,11 @@
 #' @return
 #' A \code{list} containing the following elements:
 #' \itemize{
-#'  \item the \code{matrix} of the \code{dates} if \code{controls$simulated = FALSE}
+#'  \item the \code{matrix} of the \code{dates} if
+#'        \code{controls$simulated = FALSE}
 #'        and \code{controls$data$data_column} is specified,
-#'  \item the \code{matrix} of the \code{time_points} if \code{controls$simulated = TRUE}
+#'  \item the \code{matrix} of the \code{time_points} if
+#'        \code{controls$simulated = TRUE}
 #'        or \code{controls$data$data_column} is not specified,
 #'  \item the \code{matrix} of the empirical \code{data} used for estimation,
 #'  \item the \code{matrix} named \code{time_series} of empirical data before 
@@ -24,12 +26,22 @@
 read_data <- function(controls) {
 
   ### check inputs
-  if (!inherits(controls, "fHMM_controls")) {
-    stop("'controls' is not of class 'fHMM_controls'.", call. = FALSE)
-  }
-  if (controls$simulated) {
-    stop("'controls$simulated' is not 'FALSE'.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (inherits(controls, "fHMM_controls")) {
+      TRUE
+    } else {
+      "'controls' is not of class 'fHMM_controls'."
+    },
+    var_name = "controls"
+  )
+  oeli::input_check_response(
+    check = if (!controls$simulated) {
+      TRUE
+    } else {
+      "'controls$simulated' is not 'FALSE'."
+    },
+    var_name = "controls$simulated"
+  )
 
   ### read data
   data_raw <- list()
@@ -71,7 +83,11 @@ read_data <- function(controls) {
     for (na_value in which(is.na(data_raw[[i]][[data_column[i]]]))) {
       incr <- 1
       while (TRUE) {
-        range <- unique(abs(c((na_value - incr):(na_value - 1), (na_value + 1):(na_value + incr))))
+        candidates <- c(
+          (na_value - incr):(na_value - 1),
+          (na_value + 1):(na_value + incr)
+        )
+        range <- unique(abs(candidates))
         replace <- mean(data_raw[[i]][[data_column[i]]][range], na.rm = TRUE)
         if (!is.nan(replace)) {
           data_raw[[i]][[data_column[i]]][na_value] <- replace
@@ -88,7 +104,10 @@ read_data <- function(controls) {
       data_length <- length(data_raw[[i]][[data_column[i]]])
       data_raw[[i]][["logreturns"]] <- numeric(data_length)
       for (t in seq_len(data_length)[-1]) {
-        data_raw[[i]][["logreturns"]][t] <- log(data_raw[[i]][[data_column[i]]][t] / data_raw[[i]][[data_column[i]]][t - 1])
+        data_raw[[i]][["logreturns"]][t] <- log(
+          data_raw[[i]][[data_column[i]]][t] /
+            data_raw[[i]][[data_column[i]]][t - 1]
+        )
       }
 
       ### remove 0 log-returns in case of gamma sdd to avoid numerical conflicts
@@ -98,7 +117,10 @@ read_data <- function(controls) {
             step <- 1
             cand <- 0
             while (cand == 0) {
-              cand <- mean(data_raw[[i]][["logreturns"]][abs((t - step):(t + step))], na.rm = TRUE)
+              cand <- mean(
+                data_raw[[i]][["logreturns"]][abs((t - step):(t + step))],
+                na.rm = TRUE
+              )
               step <- step + 1
             }
             data_raw[[i]][["logreturns"]][t] <- cand
@@ -112,8 +134,16 @@ read_data <- function(controls) {
 
     ### remove data points that do not occur in both files based on dates
     if (controls[["hierarchy"]]) {
-      data_raw[[1]] <- data_raw[[1]][data_raw[[1]][[date_column[1]]] %in% intersect(data_raw[[1]][[date_column[1]]], data_raw[[2]][[date_column[2]]]), ]
-      data_raw[[2]] <- data_raw[[2]][data_raw[[2]][[date_column[2]]] %in% intersect(data_raw[[2]][[date_column[2]]], data_raw[[1]][[date_column[1]]]), ]
+      common_dates <- intersect(
+        data_raw[[1]][[date_column[1]]],
+        data_raw[[2]][[date_column[2]]]
+      )
+      data_raw[[1]] <- data_raw[[1]][
+        data_raw[[1]][[date_column[1]]] %in% common_dates,
+      ]
+      data_raw[[2]] <- data_raw[[2]][
+        data_raw[[2]][[date_column[2]]] %in% common_dates,
+      ]
     }
     
     ### function to find exact or nearest position of 'date' in 'data'
@@ -136,7 +166,9 @@ read_data <- function(controls) {
     for (i in 1:ifelse(controls[["hierarchy"]], 2, 1)) {
       t_max <- controls[["data"]][["to"]]
       if (!is.na(t_max)) {
-        data_raw[[i]] <- data_raw[[i]][seq_len(find_date(t_max, data_raw[[i]])), ]
+        data_raw[[i]] <- data_raw[[i]][
+          seq_len(find_date(t_max, data_raw[[i]])),
+        ]
       }
       t_min <- controls[["data"]][["from"]]
       if (!is.na(t_min)) {
@@ -165,26 +197,41 @@ read_data <- function(controls) {
   if (controls[["hierarchy"]]) {
     data <- matrix(NA_real_, nrow = T, ncol = max(T_star) + 1)
     time_series <- matrix(NA_real_, nrow = T, ncol = max(T_star) + 1)
-    col_name <- if (controls[["data"]][["logreturns"]][2]) "logreturns" else data_column[2]
+    col_name <- if (controls[["data"]][["logreturns"]][2]) {
+      "logreturns"
+    } else {
+      data_column[2]
+    }
     for (t in seq_len(T)) {
+      chunk <- (sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])
       data[t, -1] <- c(
-        data_raw[[2]][[col_name]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])],
+        data_raw[[2]][[col_name]][chunk],
         rep(NA_real_, max(T_star) - T_star[t])
       )
       time_series[t, -1] <- c(
-        data_raw[[2]][[data_column[2]]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])],
+        data_raw[[2]][[data_column[2]]][chunk],
         rep(NA_real_, max(T_star) - T_star[t])
       )
     }
-    col_name <- if (controls[["data"]][["logreturns"]][1]) "logreturns" else data_column[1]
+    col_name <- if (controls[["data"]][["logreturns"]][1]) {
+      "logreturns"
+    } else {
+      data_column[1]
+    }
     for (t in seq_len(T)) {
-      cs_data_raw_t <- data_raw[[1]][[col_name]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])]
+      chunk <- (sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])
+      cs_data_raw_t <- data_raw[[1]][[col_name]][chunk]
       data[t, 1] <- controls[["data"]][["merge"]](cs_data_raw_t)
-      cs_data_raw_t <- data_raw[[1]][[data_column[1]]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])]
+      cs_data_raw_t <- data_raw[[1]][[data_column[1]]][chunk]
       time_series[t, 1] <- controls[["data"]][["merge"]](cs_data_raw_t)
     }
   } else {
-    data <- data_raw[[1]][, ifelse(controls[["data"]][["logreturns"]][1], "logreturns", data_column[i])]
+    data_col <- ifelse(
+      controls[["data"]][["logreturns"]][1],
+      "logreturns",
+      data_column[1]
+    )
+    data <- data_raw[[1]][, data_col]
     time_series <- data_raw[[1]][, data_column[1]]
   }
 
@@ -194,8 +241,9 @@ read_data <- function(controls) {
     if (controls[["hierarchy"]]) {
       dates <- matrix(NA_real_, nrow = T, ncol = max(T_star) + 1)
       for (t in seq_len(T)) {
+        chunk <- (sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])
         dates[t, -1] <- c(
-          data_raw[[2]][[date_column[2]]][(sum(T_star[seq_len(t - 1)]) + 1):sum(T_star[seq_len(t)])],
+          data_raw[[2]][[date_column[2]]][chunk],
           rep(NA_real_, max(T_star) - T_star[t])
         )
       }

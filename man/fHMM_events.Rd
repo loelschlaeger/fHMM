@@ -10,7 +10,8 @@ fHMM_events(events)
 \method{print}{fHMM_events}(x, ...)
 }
 \arguments{
-\item{events}{A \code{list} of two elements.
+\item{events}{[\code{list()}]\cr
+A \code{list} of two elements.
 \itemize{
 \item The first element is named \code{"dates"} and contains a \code{character}
 vector in format \code{"YYYY-MM-DD"}.
@@ -18,7 +19,8 @@ vector in format \code{"YYYY-MM-DD"}.
 vector of the same length as \code{"dates"}.
 }}
 
-\item{x}{An object of class \code{fHMM_events}.}
+\item{x}{[\code{fHMM_events}]\cr
+An object of class \code{fHMM_events}.}
 
 \item{...}{Currently not used.}
 }

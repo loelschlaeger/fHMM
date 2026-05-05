@@ -4,12 +4,13 @@
 #' This helper function computes confidence intervals for the estimates of an
 #' \code{\link{fHMM_model}} object using the inverse Fisher information.
 #'
-#' @param x
+#' @param x \[`fHMM_model`\]\cr
 #' An object of class \code{\link{fHMM_model}}.
 #'
-#' @param alpha
-#' A \code{numeric} between 0 and 1, the alpha level for the confidence interval.
-#' By default, \code{alpha = 0.05}, which computes a 95% confidence interval.
+#' @param alpha \[`numeric(1)`\]\cr
+#' The alpha level for the confidence interval. Must be between 0 and 1.
+#' By default, \code{alpha = 0.05}, which computes a 95 percent confidence
+#' interval.
 #'
 #' @return
 #' A \code{list} containing the following elements:
@@ -24,12 +25,25 @@
 compute_ci <- function(x, alpha = 0.05) {
 
   ### check inputs
-  if (!inherits(x,"fHMM_model")) {
-    stop("Input 'x' must be an 'fHMM_model' object.", call. = FALSE)
-  }
-  if (!is.numeric(alpha) || length(alpha) != 1 || alpha <= 0 || alpha >= 1) {
-    stop("Input 'alpha' must be a numeric between 0 and 1.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (inherits(x, "fHMM_model")) {
+      TRUE
+    } else {
+      "Input 'x' must be an 'fHMM_model' object."
+    },
+    var_name = "x"
+  )
+  oeli::input_check_response(
+    check = if (
+      checkmate::test_number(alpha, lower = 0, upper = 1) &&
+        alpha > 0 && alpha < 1
+    ) {
+      TRUE
+    } else {
+      "Input 'alpha' must be a numeric between 0 and 1."
+    },
+    var_name = "alpha"
+  )
 
   ### compute confidence intervals using the inverse Hessian approach
   inverse_fisher <- x$inverse_fisher
@@ -41,7 +55,7 @@ compute_ci <- function(x, alpha = 0.05) {
   ### if negative variance, replace by NA_real_
   bad_inverse_fisher <- which(
     !vapply(
-      inverse_fisher, checkmate::test_number, logical(1), na.ok = FALSE, 
+      inverse_fisher, checkmate::test_number, logical(1), na.ok = FALSE,
       finite = TRUE, lower = 0
     )
   )

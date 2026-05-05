@@ -3,7 +3,7 @@
 #' @description
 #' This function is the plot method for an object of class \code{fHMM_data}.
 #'
-#' @param x
+#' @param x \[`fHMM_data`\]\cr
 #' An object of class \code{fHMM_data}.
 #' @inheritParams plot.fHMM_model
 #'
@@ -19,23 +19,38 @@ plot.fHMM_data <- function(
     x, events = NULL, title = NULL, from = NULL, to = NULL, ...
   ) {
 
-  ### check input
-  if (!inherits(x, "fHMM_data")) {
-    stop("'x' is not of class 'fHMM_data'.", call. = FALSE)
-  }
+  ### check inputs
+  oeli::input_check_response(
+    check = if (inherits(x, "fHMM_data")) {
+      TRUE
+    } else {
+      "'x' is not of class 'fHMM_data'."
+    },
+    var_name = "x"
+  )
   if (!is.null(events)) {
-    if (!inherits(events, "fHMM_events")) {
-      stop("'events' is not of class 'fHMM_events'.", call. = FALSE)
-    }
+    oeli::input_check_response(
+      check = if (inherits(events, "fHMM_events")) {
+        TRUE
+      } else {
+        "'events' is not of class 'fHMM_events'."
+      },
+      var_name = "events"
+    )
     if (x$controls$simulated) {
       events <- NULL
       warning("Can't have 'events' for simulated data.", call. = FALSE)
     }
   }
   if (!is.null(title)) {
-    if (!(is.character(title) && length(title) == 1)) {
-      stop("'title' must be a single 'character' (or 'NULL').", call. = FALSE)
-    }
+    oeli::input_check_response(
+      check = if (checkmate::test_string(title)) {
+        TRUE
+      } else {
+        "'title' must be a single 'character' (or 'NULL')."
+      },
+      var_name = "title"
+    )
   }
 
   ### visualization
@@ -52,9 +67,9 @@ plot.fHMM_data <- function(
 #' This function is the plot method for an object of class 
 #' \code{\link{fHMM_model}}.
 #'
-#' @param x
+#' @param x \[`fHMM_model`\]\cr
 #' An object of class \code{\link{fHMM_model}}.
-#' @param plot_type
+#' @param plot_type \[`character()`\]\cr
 #' A character (vector), specifying the type of plot and can be one (or more) of
 #' \itemize{
 #'   \item \code{"ll"} for a visualization of the likelihood values in the
@@ -64,17 +79,17 @@ plot.fHMM_data <- function(
 #'   \item \code{"pr"} for a visualization of the model's (pseudo-) residuals,
 #'   \item \code{"ts"} for a visualization of the financial time series.
 #' }
-#' @param events
+#' @param events \[`NULL` | `fHMM_events`\]\cr
 #' An object of class \code{\link{fHMM_events}}.
-#' @param title
+#' @param title \[`NULL` | `character(1)`\]\cr
 #' Optionally a \code{character} for a custom title.
 #' @inheritParams fHMM_colors
 #' @inheritParams plot_ll
-#' @param from
+#' @param from \[`NULL` | `character(1)`\]\cr
 #' Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"}, 
 #' setting the lower date bound for plotting. 
 #' By default, \code{from = NULL}, i.e. no lower bound.
-#' @param to
+#' @param to \[`NULL` | `character(1)`\]\cr
 #' Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"}, 
 #' setting the upper date bound for plotting. 
 #' By default, \code{to = NULL}, i.e. no upper bound.
@@ -91,28 +106,47 @@ plot.fHMM_model <- function(
     title = NULL, from = NULL, to = NULL, ...
   ) {
 
-  ### check input
-  if (!inherits(x, "fHMM_model")) {
-    stop("'x' is not of class 'fHMM_model'.", call. = FALSE)
-  }
+  ### check inputs
+  oeli::input_check_response(
+    check = if (inherits(x, "fHMM_model")) {
+      TRUE
+    } else {
+      "'x' is not of class 'fHMM_model'."
+    },
+    var_name = "x"
+  )
   plot_type <- intersect(plot_type, c("ll", "sdds", "pr", "ts"))
-  if (length(plot_type) == 0) {
-    stop("'plot_type' is misspecified, please see the documentation.", 
-         call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (length(plot_type) > 0) {
+      TRUE
+    } else {
+      "'plot_type' is misspecified, please see the documentation."
+    },
+    var_name = "plot_type"
+  )
   if (!is.null(events)) {
-    if (!inherits(events, "fHMM_events")) {
-      stop("'events' is not of class 'fHMM_events'.", call. = FALSE)
-    }
+    oeli::input_check_response(
+      check = if (inherits(events, "fHMM_events")) {
+        TRUE
+      } else {
+        "'events' is not of class 'fHMM_events'."
+      },
+      var_name = "events"
+    )
     if (x$data$controls$simulated) {
       events <- NULL
       warning("Can't have 'events' for simulated data.", call. = FALSE)
     }
   }
   if (!is.null(title)) {
-    if (!(is.character(title) && length(title) == 1)) {
-      stop("'title' must be a single 'character' (or 'NULL').", call. = FALSE)
-    }
+    oeli::input_check_response(
+      check = if (checkmate::test_string(title)) {
+        TRUE
+      } else {
+        "'title' must be a single 'character' (or 'NULL')."
+      },
+      var_name = "title"
+    )
   }
 
   ### create and check colors
@@ -132,7 +166,8 @@ plot.fHMM_model <- function(
   if ("pr" %in% plot_type) {
     if (is.null(x$residuals)) {
       warning(
-        "Residuals are not available, please call 'compute_residuals()' first.", 
+        "Residuals are not available, ",
+        "please call 'compute_residuals()' first.",
         call. = FALSE
       )
     } else {
@@ -155,9 +190,9 @@ plot.fHMM_model <- function(
 #' This function plots the log-likelihood values of the different optimization 
 #' runs.
 #'
-#' @param lls
+#' @param lls \[`numeric()`\]\cr
 #' A \code{numeric} vector of log-likelihood values.
-#' @param ll_relative
+#' @param ll_relative \[`logical(1)`\]\cr
 #' A \code{logical}, set to \code{TRUE} (default) to plot the differences from
 #' the best log-likelihood value. Set to \code{FALSE} to plot the absolute 
 #' values.
@@ -168,23 +203,35 @@ plot.fHMM_model <- function(
 #' @keywords internal
 
 plot_ll <- function(lls, ll_relative = TRUE) {
-  if (!isTRUE(ll_relative) && !isFALSE(ll_relative)) {
-    stop("'ll_relative' must be 'TRUE' or 'FALSE'.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (checkmate::test_flag(ll_relative)) {
+      TRUE
+    } else {
+      "'ll_relative' must be 'TRUE' or 'FALSE'."
+    },
+    var_name = "ll_relative"
+  )
   max_ll_absolute <- max(lls, na.rm = TRUE)
   if (ll_relative) {
     lls <- lls - max_ll_absolute
   }
   max_ll <- max(lls, na.rm = TRUE)
   min_ll <- min(lls, na.rm = TRUE)
-  main <- ifelse(ll_relative, "Relative log-likelihoods", "Log-likelihood values") 
+  main <- ifelse(
+    ll_relative,
+    "Relative log-likelihoods",
+    "Log-likelihood values"
+  )
   if (length(lls) <= 5) {
     plot(lls,
       xaxt = "n", yaxt = "n", xlab = "Estimation run", ylab = "",
       main = main, pch = 16,
       ylim = c(floor(min_ll), ceiling(max_ll))
     )
-    graphics::axis(1, las = 1, at = seq_len(length(lls)), labels = seq_len(length(lls)))
+    graphics::axis(
+      1, las = 1, at = seq_len(length(lls)),
+      labels = seq_len(length(lls))
+    )
   } else {
     plot(lls,
       yaxt = "n", xlab = "Estimation run", ylab = "",
@@ -211,9 +258,9 @@ plot_ll <- function(lls, ll_relative = TRUE) {
 #' @description
 #' This function visualizes the pseudo residuals.
 #'
-#' @param residuals
+#' @param residuals \[`fHMM_residuals`\]\cr
 #' An object of class \code{fHMM_residuals}.
-#' @param hierarchy
+#' @param hierarchy \[`logical(1)`\]\cr
 #' The element \code{controls$hierarchy}.
 #'
 #' @return
@@ -223,8 +270,11 @@ plot_ll <- function(lls, ll_relative = TRUE) {
 
 plot_pr <- function(residuals, hierarchy) {
 
-  ### check input
-  stopifnot(inherits(residuals, "fHMM_residuals"))
+  ### check inputs
+  oeli::input_check_response(
+    check = checkmate::check_class(residuals, "fHMM_residuals"),
+    var_name = "residuals"
+  )
 
   ### reset of 'par' settings
   oldpar <- par(no.readonly = TRUE)
@@ -293,7 +343,10 @@ plot_pr <- function(residuals, hierarchy) {
     par(oma = oma, bty = "n")
     graphics::layout(matrix(1:8, 2, 4, byrow = TRUE))
     helper_pr(residuals = residuals[, 1])
-    main <- "Coarse-scale (top row) and fine-scale pseudo-residuals (bottom row)"
+    main <- paste(
+      "Coarse-scale (top row) and fine-scale pseudo-residuals",
+      "(bottom row)"
+    )
     graphics::title(main, line = 0, outer = TRUE)
     helper_pr(residuals = as.vector(residuals[, -1]))
   }
@@ -304,12 +357,12 @@ plot_pr <- function(residuals, hierarchy) {
 #' @description
 #' This function plots the estimated state-dependent distributions.
 #'
-#' @param est
+#' @param est \[`fHMM_parameters`\]\cr
 #' An object of class \code{fHMM_parameters} with estimated parameters.
-#' @param true
+#' @param true \[`NULL` | `fHMM_parameters`\]\cr
 #' Either \code{NULL} or an object of class \code{fHMM_parameters} with true
 #' parameters.
-#' @param controls
+#' @param controls \[`fHMM_controls`\]\cr
 #' An object of class \code{fHMM_controls}.
 #' @inheritParams plot.fHMM_model
 #'
@@ -320,11 +373,27 @@ plot_pr <- function(residuals, hierarchy) {
 
 plot_sdds <- function(est, true = NULL, controls, colors) {
 
-  ### check input
-  stopifnot(inherits(est, "fHMM_parameters"))
-  stopifnot(is.null(true) || inherits(true, "fHMM_parameters"))
-  stopifnot(inherits(controls, "fHMM_controls"))
-  stopifnot(inherits(colors, "fHMM_colors"))
+  ### check inputs
+  oeli::input_check_response(
+    check = checkmate::check_class(est, "fHMM_parameters"),
+    var_name = "est"
+  )
+  oeli::input_check_response(
+    check = if (is.null(true) || inherits(true, "fHMM_parameters")) {
+      TRUE
+    } else {
+      "'true' must be NULL or of class 'fHMM_parameters'."
+    },
+    var_name = "true"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_class(controls, "fHMM_controls"),
+    var_name = "controls"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_class(colors, "fHMM_colors"),
+    var_name = "colors"
+  )
 
   ### reset of 'par' settings
   oldpar <- graphics::par(no.readonly = TRUE)
@@ -361,8 +430,14 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
       xmin <- min(est$mu - 3 * est$sigma, na.rm = TRUE)
       xmax <- max(est$mu + 3 * est$sigma, na.rm = TRUE)
       if (!is.null(true)) {
-        xmin <- min(xmin, min(true$mu - 3 * true$sigma, na.rm = TRUE), na.rm = TRUE)
-        xmax <- max(xmax, max(true$mu + 3 * true$sigma, na.rm = TRUE), na.rm = TRUE)
+        xmin <- min(
+          xmin, min(true$mu - 3 * true$sigma, na.rm = TRUE),
+          na.rm = TRUE
+        )
+        xmax <- max(
+          xmax, max(true$mu + 3 * true$sigma, na.rm = TRUE),
+          na.rm = TRUE
+        )
       }
       if (name == "gamma") {
         xmin <- 0.01
@@ -468,8 +543,14 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
           NULL
         },
         xlim_fix = c(
-          min(mapply(function(x,y) x - 3*y, est$mu_star, est$sigma_star), na.rm = TRUE),
-          max(mapply(function(x,y) x + 3*y, est$mu_star, est$sigma_star), na.rm = TRUE)
+          min(
+            mapply(function(x, y) x - 3 * y, est$mu_star, est$sigma_star),
+            na.rm = TRUE
+          ),
+          max(
+            mapply(function(x, y) x + 3 * y, est$mu_star, est$sigma_star),
+            na.rm = TRUE
+          )
         )
       )
       legend(
@@ -486,9 +567,9 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 #' @description
 #' This function visualizes the data time series.
 #'
-#' @param data
+#' @param data \[`fHMM_data`\]\cr
 #' An object of class \code{fHMM_data}.
-#' @param decoding
+#' @param decoding \[`NULL` | `numeric()` | `matrix()`\]\cr
 #' Either \code{NULL} or an object of class \code{fHMM_decoding}.
 #' @inheritParams plot.fHMM_model
 #' 
@@ -572,7 +653,10 @@ plot_ts <- function(
     markdates <- seq(xmin, xmax, by = "year")
     markdates <- markdates[1:length(markdates) %% 2 == 1]
     axis(1, markdates, format(markdates, "%Y"))
-    y_ticks <- signif(seq(floor(min(ydata, na.rm = TRUE)), ymax, length.out = 3), digits = 3)
+    y_ticks <- signif(
+      seq(floor(min(ydata, na.rm = TRUE)), ymax, length.out = 3),
+      digits = 3
+    )
     axis(4, y_ticks)
     mtext(data_lab,
       side = 4, line = 3.5, at = mean(y_ticks),
@@ -581,7 +665,10 @@ plot_ts <- function(
     if (!controls[["hierarchy"]]) {
       if (!is.null(decoding)) {
         for (s in seq_len(controls[["states"]][1])) {
-          points(xdata[decoding == s], ydata[decoding == s], col = colors[s], pch = 20)
+          points(
+            xdata[decoding == s], ydata[decoding == s],
+            col = colors[s], pch = 20
+          )
         }
       }
     }
@@ -644,11 +731,16 @@ plot_ts <- function(
   }
   if (!controls[["simulated"]]) {
     if (!controls[["hierarchy"]]) {
-      text <- ifelse(controls$data$logreturns, "Log-returns", "Time series data")
+      text <- ifelse(
+        controls$data$logreturns, "Log-returns", "Time series data"
+      )
       mtext(text, side = 2, line = 3.5, at = 0, cex = 1.25, las = 3)
     }
     if (controls[["hierarchy"]]) {
-      mtext("Fine-scale data", side = 2, line = 3.5, at = 0, cex = 1.25, las = 3)
+      mtext(
+        "Fine-scale data",
+        side = 2, line = 3.5, at = 0, cex = 1.25, las = 3
+      )
     }
   }
   if (controls[["simulated"]]) {
@@ -675,29 +767,44 @@ plot_ts <- function(
   }
   if (!controls[["hierarchy"]] & !is.null(decoding)) {
     for (s in seq_len(controls[["states"]][1])) {
-      points(x_values[decoding == s], data[["data"]][decoding == s], col = colors[s], pch = 20)
+      points(
+        x_values[decoding == s], data[["data"]][decoding == s],
+        col = colors[s], pch = 20
+      )
     }
   }
   if (controls[["hierarchy"]] & !is.null(decoding)) {
     for (cs in seq_len(controls[["states"]][1])) {
       for (fs in seq_len(controls[["states"]][2])) {
-        points(x_values[decoding_cs == cs & decoding_fs == fs], fs_data[decoding_cs == cs & decoding_fs == fs], col = colors[["fs"]][cs, fs], pch = 20)
+        decoded_state <- decoding_cs == cs & decoding_fs == fs
+        points(
+          x_values[decoded_state], fs_data[decoded_state],
+          col = colors[["fs"]][cs, fs], pch = 20
+        )
       }
     }
   }
   if (!controls[["simulated"]] & !is.null(events)) {
-    events[["labels"]] <- events[["labels"]][events[["dates"]] > xmin & events[["dates"]] < xmax]
-    events[["dates"]] <- events[["dates"]][events[["dates"]] > xmin & events[["dates"]] < xmax]
+    events_in_range <- events[["dates"]] > xmin & events[["dates"]] < xmax
+    events[["labels"]] <- events[["labels"]][events_in_range]
+    events[["dates"]] <- events[["dates"]][events_in_range]
     if (length(events[["dates"]]) == 0) {
       warning("No events fall in the considered time period.", call. = FALSE)
     } else {
       for (l in seq_len(length(events[["dates"]]))) {
         if (events[["dates"]][l] > xmin & events[["dates"]][l] < xmax) {
           abline(v = as.Date(events[["dates"]][l]))
-          graphics::text(x = as.Date(events[["dates"]][l]), y = ymin, labels = l, pos = 2, cex = 1.25)
+          graphics::text(
+            x = as.Date(events[["dates"]][l]), y = ymin,
+            labels = l, pos = 2, cex = 1.25
+          )
         }
       }
-      mtext(paste0(seq_len(length(events[["labels"]])), ": ", events[["labels"]], collapse = "   "),
+      event_labels <- paste0(
+        seq_len(length(events[["labels"]])), ": ",
+        events[["labels"]], collapse = "   "
+      )
+      mtext(event_labels,
         side = 1, line = 4, cex = 1.25
       )
     }
@@ -717,7 +824,10 @@ plot_ts <- function(
     legend(
       legend = c(
         paste("Coarse-scale state", seq_len(controls[["states"]][1])),
-        paste0("Fine-scale state ", rep(1:controls[["states"]][2], each = controls[["states"]][1]))
+        paste0(
+          "Fine-scale state ",
+          rep(1:controls[["states"]][2], each = controls[["states"]][1])
+        )
       ),
       col = c(colors[["cs"]], as.vector(colors[["fs"]])),
       pt.lwd = c(rep(3, controls[["states"]][1]), rep(1, dim(eg)[1])),
@@ -754,15 +864,25 @@ plot_ts <- function(
       axis(4, c(ymin, ymax), labels = signif(c(ymin, ymax), 2))
     }
     if (controls[["simulated"]]) {
-      mtext("Simulated coarse-scale data", side = 4, line = 3.5, at = mean(c(ymin, ymax)), cex = 1.25, las = 3)
+      mtext(
+        "Simulated coarse-scale data",
+        side = 4, line = 3.5, at = mean(c(ymin, ymax)),
+        cex = 1.25, las = 3
+      )
     }
     if (!controls[["simulated"]]) {
-      mtext("Coarse-scale data", side = 4, line = 3.5, at = mean(c(ymin, ymax)), cex = 1.25, las = 3)
+      mtext(
+        "Coarse-scale data",
+        side = 4, line = 3.5, at = mean(c(ymin, ymax)),
+        cex = 1.25, las = 3
+      )
     }
   }
   if (!is.null(title)) {
     title(main = title)
   } else {
-    title(main = ifelse(is.null(decoding), "Time series", "Decoded time series"))
+    title(
+      main = ifelse(is.null(decoding), "Time series", "Decoded time series")
+    )
   } 
 }

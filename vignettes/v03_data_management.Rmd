@@ -21,11 +21,11 @@ knitr::opts_chunk$set(
 library("fHMM")
 ```
 
-This vignette^[This vignette was build using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] explains how to prepare or simulate data in `{fHMM}` for estimation.
+This vignette^[This vignette was built using R `r paste(R.Version()[c("major", "minor")], collapse = ".")` with the `{fHMM}` `r utils::packageVersion("fHMM")` package.] explains how to prepare or simulate data in `{fHMM}` for estimation.
 
 ## Empirical data
 
-Empirical data can be provided either as a `data.frame` or as a comma-separated values (.csv) file, see [the vignette on specifying the controls](https://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from <https://finance.yahoo.com/>.] The `{fHMM}` package comes with a dataset of the Deutscher Aktienindex for demonstration purpose that can be accessed as follows:
+Empirical data can be provided either as a `data.frame` or as a comma-separated values (.csv) file, see [the vignette on specifying the controls](https://loelschlaeger.de/fHMM/articles/v02_controls.html) for details.^[The `download_data()` function explained below provides a convenient tool for downloading stock data from <https://finance.yahoo.com/>.] The `{fHMM}` package comes with a dataset of the Deutscher Aktienindex for demonstration purposes that can be accessed as follows:
 
 ```{r, head dax, results = FALSE}
 system.file("extdata", "dax.csv", package = "fHMM")
@@ -37,10 +37,12 @@ The `prepare_data()` function prepares the data based on the `data` controls spe
 controls <- list(
   states = 3,
   sdds   = "t",
-  data   = list(file        = system.file("extdata", "dax.csv", package = "fHMM"),
-                date_column = "Date",
-                data_column = "Close",
-                logreturns  = TRUE)
+  data   = list(
+    file        = system.file("extdata", "dax.csv", package = "fHMM"),
+    date_column = "Date",
+    data_column = "Close",
+    logreturns  = TRUE
+  )
 )
 controls <- set_controls(controls)
 data <- prepare_data(controls)
@@ -77,10 +79,14 @@ Historical events can be highlighted by specifying a named list `events` with el
 ```{r, events}
 events <- fHMM:::fHMM_events(
   list(
-    dates = c("2001-09-11","2008-09-15","2020-01-27"),
-    labels = c("9/11 terrorist attack","Bankruptcy of Lehman Brothers","First COVID-19 case in Germany")
+    dates = c("2001-09-11", "2008-09-15", "2020-01-27"),
+    labels = c(
+      "9/11 terrorist attack",
+      "Bankruptcy of Lehman Brothers",
+      "First COVID-19 case in Germany"
     )
   )
+)
 print(events)
 plot(data, events = events)
 ```

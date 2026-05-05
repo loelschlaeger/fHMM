@@ -3,7 +3,7 @@
 #' @description
 #' This function checks the input \code{events}.
 #'
-#' @param events
+#' @param events \[`list()`\]\cr
 #' A \code{list} of two elements.
 #' * The first element is named \code{"dates"} and contains a \code{character}
 #'   vector in format \code{"YYYY-MM-DD"}.
@@ -29,23 +29,40 @@ fHMM_events <- function(events) {
   if (inherits(events, "fHMM_events")) {
     warning("This element already is of class 'fHMM_events'.", call. = FALSE)
   } else {
-    if (!inherits(events,"list")) {
-      stop("'events' must be a list.", call. = FALSE)
-    }
-    if (length(events) != 2) {
-      stop("'events' must be a list of two elements.", call. = FALSE)
-    }
-    if (!identical(names(events), c("dates", "labels"))) {
-      stop("'events' must be a list containing the elements 'dates' and 'labels'.",
-           call. = FALSE)
-    }
+    oeli::input_check_response(
+      check = if (inherits(events, "list")) {
+        TRUE
+      } else {
+        "'events' must be a list."
+      },
+      var_name = "events"
+    )
+    oeli::input_check_response(
+      check = if (length(events) == 2) {
+        TRUE
+      } else {
+        "'events' must be a list of two elements."
+      },
+      var_name = "events"
+    )
+    oeli::input_check_response(
+      check = if (identical(names(events), c("dates", "labels"))) {
+        TRUE
+      } else {
+        paste(
+          "'events' must be a list containing the elements",
+          "'dates' and 'labels'."
+        )
+      },
+      var_name = "events"
+    )
     events$dates <- check_date(events$dates)
     class(events) <- "fHMM_events"
   }
   return(events)
 }
 
-#' @param x
+#' @param x \[`fHMM_events`\]\cr
 #' An object of class \code{fHMM_events}.
 #' @param ...
 #' Currently not used.

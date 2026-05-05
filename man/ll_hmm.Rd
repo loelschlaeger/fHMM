@@ -16,28 +16,32 @@ ll_hmm(
 )
 }
 \arguments{
-\item{parUncon}{An object of class \code{parUncon}, which is a \code{numeric} \code{vector}
+\item{parUncon}{[\code{parUncon}]\cr
+An object of class \code{parUncon}, which is a \code{numeric} \code{vector}
 with identified and unconstrained model parameters in the following order:
 \enumerate{
 \item non-diagonal transition probabilities \code{gammasUncon}
 \item expectations \code{muUncon}
 \item standard deviations \code{sigmaUncon} (if any)
 \item degrees of freedom \code{dfUncon} (if any)
-\item fine-scale parameters for each coarse-scale state, in the same order (if any)
+\item fine-scale parameters for each coarse-scale state, in the same order
+(if any)
 }}
 
-\item{observations}{A \code{numeric} \code{vector} of time-series data.
+\item{observations}{[\code{numeric()} | \code{matrix()}]\cr
+A \code{numeric} \code{vector} of time-series data.
 
 In the hierarchical case (\code{hierarchy = TRUE}), a \code{matrix} with
 coarse-scale data in the first column and corresponding fine-scale data in
 the rows.}
 
-\item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
+\item{controls}{[\code{list()} | \code{fHMM_controls}]\cr
+Either a \code{list} or an object of class \code{fHMM_controls}.
 
 The \code{list} can contain the following elements, which are described
 in more detail below:
 \itemize{
-\item \code{hierarchy}, defines an hierarchical HMM,
+\item \code{hierarchy}, defines a hierarchical HMM,
 \item \code{states}, defines the number of states,
 \item \code{sdds}, defines the state-dependent distributions,
 \item \code{horizon}, defines the time horizon,
@@ -52,14 +56,16 @@ Unspecified parameters are set to their default values.
 Important: Specifications in \code{controls} always override individual
 specifications.}
 
-\item{hierarchy}{A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
+\item{hierarchy}{[\code{logical(1)}]\cr
+A \code{logical}, set to \code{TRUE} for a hierarchical HMM.
 
 If \code{hierarchy = TRUE}, some of the other controls must be specified for
 the coarse-scale and the fine-scale layer.
 
 By default, \code{hierarchy = FALSE}.}
 
-\item{states}{An \code{integer}, the number of states of the underlying Markov chain.
+\item{states}{[\code{integer(1)} | \code{integer(2)}]\cr
+An \code{integer}, the number of states of the underlying Markov chain.
 
 If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
 2. The first entry corresponds to the coarse-scale layer, while the second
@@ -68,7 +74,8 @@ entry corresponds to the fine-scale layer.
 By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
 
-\item{sdds}{A \code{character}, specifying the state-dependent distribution. One of
+\item{sdds}{[\code{character(1)} | \code{character(2)}]\cr
+A \code{character}, specifying the state-dependent distribution. One of
 \itemize{
 \item \code{"normal"} (the normal distribution),
 \item \code{"lognormal"} (the log-normal distribution),
@@ -95,10 +102,12 @@ corresponds to the fine-scale layer.
 By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
 \code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.}
 
-\item{negative}{Either \code{TRUE} to return the negative log-likelihood value (useful for
+\item{negative}{[\code{logical(1)}]\cr
+Either \code{TRUE} to return the negative log-likelihood value (useful for
 optimization) or \code{FALSE} (default), else.}
 
-\item{check_controls}{Either \code{TRUE} to check the defined controls or \code{FALSE} to not check
+\item{check_controls}{[\code{logical(1)}]\cr
+Either \code{TRUE} to check the defined controls or \code{FALSE} to not check
 them (which saves computation time), else.}
 }
 \value{

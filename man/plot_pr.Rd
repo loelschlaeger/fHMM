@@ -7,9 +7,11 @@
 plot_pr(residuals, hierarchy)
 }
 \arguments{
-\item{residuals}{An object of class \code{fHMM_residuals}.}
+\item{residuals}{[\code{fHMM_residuals}]\cr
+An object of class \code{fHMM_residuals}.}
 
-\item{hierarchy}{The element \code{controls$hierarchy}.}
+\item{hierarchy}{[\code{logical(1)}]\cr
+The element \code{controls$hierarchy}.}
 }
 \value{
 No return value. Draws a plot to the current device.

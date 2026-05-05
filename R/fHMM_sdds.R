@@ -20,65 +20,85 @@ fHMM_sdds <- function(sdds, states) {
   if (inherits(sdds, "fHMM_sdds")) {
     return(sdds)
   }
-  if (!checkmate::test_atomic_vector(states)) {
-    stop(
-      "The control 'states' must be a vector.", 
-      call. = FALSE
-    )
-  }
+  oeli::input_check_response(
+    check = if (checkmate::test_atomic_vector(states)) {
+      TRUE
+    } else {
+      "The control 'states' must be a vector."
+    },
+    var_name = "states"
+  )
   if (length(states) == 1) {
     hierarchy <- FALSE
-    if (!checkmate::test_integerish(states, lower = 2, len = 1)) {
-      stop(
-        "The control 'states' must be an integer greater or equal 2.",
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (checkmate::test_integerish(states, lower = 2, len = 1)) {
+        TRUE
+      } else {
+        "The control 'states' must be an integer greater or equal 2."
+      },
+      var_name = "states"
+    )
   } else if (length(states) == 2) {
     hierarchy <- TRUE
-    if (!checkmate::test_integerish(states, lower = 2, len = 2)) {
-      stop(
-        "The control 'states' must be a vector of integers greater or equal 2.",
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (checkmate::test_integerish(states, lower = 2, len = 2)) {
+        TRUE
+      } else {
+        "The control 'states' must be a vector of integers greater or equal 2."
+      },
+      var_name = "states"
+    )
   } else {
-    stop(
-      "The control 'states' must be a vector of length 1 or 2.",
-      call. = FALSE
+    oeli::input_check_response(
+      check = "The control 'states' must be a vector of length 1 or 2.",
+      var_name = "states"
     )
   }
-  if (!checkmate::test_character(
-    sdds, any.missing = FALSE, len = ifelse(hierarchy, 2, 1))
-  ) {
-    stop(
-      "The control 'sdds' must be a character ", 
-      if (hierarchy) "vector ", "of length ", ifelse(hierarchy, 2, 1), ".",
-      call. = FALSE
-    )
-  }
+  oeli::input_check_response(
+    check = if (
+      checkmate::test_character(
+        sdds, any.missing = FALSE, len = ifelse(hierarchy, 2, 1)
+      )
+    ) {
+      TRUE
+    } else {
+      paste0(
+        "The control 'sdds' must be a character ",
+        if (hierarchy) "vector of length " else "of length ",
+        ifelse(hierarchy, 2, 1), "."
+      )
+    },
+    var_name = "sdds"
+  )
   
   ### decode state-dependent distribution specification
   out <- list()
   for (i in if (hierarchy) 1:2 else 1) {
     sdd <- sdds[i]
-    checkmate::assert_string(sdd)
+    oeli::input_check_response(
+      check = checkmate::check_string(sdd),
+      var_name = "sdds"
+    )
     sdd_tws <- gsub(" ", "", sdd)
     sdd_tws_split <- unlist(strsplit(sdd_tws, split = "[()]"))
     distr <- sdd_tws_split[1]
-    if (!distr %in% c("normal", "lognormal", "t", "gamma", "poisson")) {
-      stop(
+    oeli::input_check_response(
+      check = if (
+        distr %in% c("normal", "lognormal", "t", "gamma", "poisson")
+      ) {
+        TRUE
+      } else {
         paste0(
           "Currently, only the following distributions are implemented:\n",
-          "- normal distribution ('normal')\n", 
-          "- log-normal distribution ('lognormal')\n", 
+          "- normal distribution ('normal')\n",
+          "- log-normal distribution ('lognormal')\n",
           "- t-distribution ('t')\n",
-          "- Gamma distribution ('gamma')\n", 
+          "- Gamma distribution ('gamma')\n",
           "- Poisson distribution ('poisson')"
-        ), 
-        call. = FALSE
-      )
-    }
+        )
+      },
+      var_name = "sdds"
+    )
     if (is.na(sdd_tws_split[2])) {
       pars <- list()
     } else {
@@ -96,13 +116,17 @@ fHMM_sdds <- function(sdds, states) {
     )
     names(pars) <- names
     for (par in names(pars)) {
-      if (!length(pars[[par]]) %in% c(1, states[i])) {
-        stop(
-          "Fixed values for the parameter '", par, 
-          "' must be of length 1 or ", states[i], ".",
-          call. = FALSE
-        )
-      }
+      oeli::input_check_response(
+        check = if (length(pars[[par]]) %in% c(1, states[i])) {
+          TRUE
+        } else {
+          paste0(
+            "Fixed values for the parameter '", par,
+            "' must be of length 1 or ", states[i], "."
+          )
+        },
+        var_name = par
+      )
     }
     if (distr %in% c("t")) {
       pars[!names(pars) %in% c("mu", "sigma", "df")] <- NULL
@@ -115,24 +139,41 @@ fHMM_sdds <- function(sdds, states) {
     }
     if (!is.null(pars$mu)) {
       if (distr %in% c("gamma", "poisson")) {
-        if (!checkmate::test_numeric(pars$mu) || any(pars$mu <= 0)) {
-          stop("'mu' must be a positive numeric.", call. = FALSE)
-        }
+        oeli::input_check_response(
+          check = if (checkmate::test_numeric(pars$mu) && all(pars$mu > 0)) {
+            TRUE
+          } else {
+            "'mu' must be a positive numeric."
+          },
+          var_name = "mu"
+        )
       }
     } else {
       pars$mu <- NULL
     }
     if (!is.null(pars$sigma)) {
-      if (!checkmate::test_numeric(pars$sigma) || any(pars$sigma <= 0)) {
-        stop("'sigma' must be a positive numeric.", call. = FALSE)
-      }
+      oeli::input_check_response(
+        check = if (
+          checkmate::test_numeric(pars$sigma) && all(pars$sigma > 0)
+        ) {
+          TRUE
+        } else {
+          "'sigma' must be a positive numeric."
+        },
+        var_name = "sigma"
+      )
     } else {
       pars$sigma <- NULL
     }
     if (!is.null(pars$df)) {
-      if (!checkmate::test_numeric(pars$df) || any(pars$df <= 0)) {
-        stop("'df' must be a positive numeric.", call. = FALSE)
-      }
+      oeli::input_check_response(
+        check = if (checkmate::test_numeric(pars$df) && all(pars$df > 0)) {
+          TRUE
+        } else {
+          "'df' must be a positive numeric."
+        },
+        var_name = "df"
+      )
     } else if (distr == "t") {
       pars$df <- NULL
     }

@@ -4,35 +4,35 @@
 #' This function constructs an object of class \code{\link{fHMM_model}}, which 
 #' contains details about the fitted (hierarchical) Hidden Markov model.
 #' 
-#' @param x,object
+#' @param x,object \[`fHMM_model`\]\cr
 #' An object of class \code{\link{fHMM_model}}.
 #' @param ...
 #' Currently not used.
-#' @param data
+#' @param data \[`fHMM_data`\]\cr
 #' An object of class \code{\link{fHMM_data}}.
-#' @param estimate
+#' @param estimate \[`numeric()`\]\cr
 #' A \code{numeric} vector of unconstrained model estimates.
-#' @param nlm_output
+#' @param nlm_output \[`list()`\]\cr
 #' The output of \code{\link[stats]{nlm}} for the selected optimization run.
-#' @param estimation_time
+#' @param estimation_time \[`difftime`\]\cr
 #' A \code{diff.time} object, the total estimation time.
-#' @param ll
+#' @param ll \[`numeric(1)`\]\cr
 #' A \code{numeric}, the model log-likelihood.
-#' @param lls
+#' @param lls \[`numeric()`\]\cr
 #' A \code{numeric} vector, the model log-likelihoods in all optimization runs.
-#' @param gradient
+#' @param gradient \[`numeric()`\]\cr
 #' A \code{numeric} vector, the gradient at the optimum.
-#' @param inverse_fisher
+#' @param inverse_fisher \[`numeric()`\]\cr
 #' A \code{numeric} vector, the inverse Fisher information for each parameter.
-#' @param decoding
+#' @param decoding \[`NULL` | `numeric()` | `matrix()`\]\cr
 #' A \code{numeric} vector, the decoded time series.
-#' @param alpha
+#' @param alpha \[`numeric(1)`\]\cr
 #' A \code{numeric} between 0 and 1, the confidence level.
-#' @param digits
+#' @param digits \[`integer(1)`\]\cr
 #' The number of decimal places.
-#' @param k
+#' @param k \[`numeric(1)`\]\cr
 #' Passed on to \code{\link[stats]{AIC}}.
-#' @param ahead
+#' @param ahead \[`integer(1)`\]\cr
 #' The number of time points to predict ahead.
 #' 
 #' @return 
@@ -64,7 +64,10 @@ fHMM_model <- function(
 
 print.fHMM_model <- function(x, ...) {
   cat("fHMM fitted model:\n")
-  cat("* total estimation time:", x$estimation_time, units(x$estimation_time), "\n")
+  cat(
+    "* total estimation time:", x$estimation_time,
+    units(x$estimation_time), "\n"
+  )
   cat("* accepted runs:", sum(!is.na(x$lls)), "of", length(x$lls), "\n")
   cat("* log-likelihood:", x$ll, "\n")
   invisible(x)
@@ -76,9 +79,14 @@ print.fHMM_model <- function(x, ...) {
 residuals.fHMM_model <- function(object, ...) {
   
   ### check input
-  if (!inherits(object,"fHMM_model")) {
-    stop("'object' must be of class 'fHMM_model'.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (inherits(object, "fHMM_model")) {
+      TRUE
+    } else {
+      "'object' must be of class 'fHMM_model'."
+    },
+    var_name = "object"
+  )
   if (is.null(object[["residuals"]])) {
     stop("No residuals contained in 'object'.",
          "Please call 'compute_residuals()' first. ", call. = FALSE)
@@ -224,7 +232,7 @@ coef.fHMM_model <- function(object, alpha = 0.05, digits = 2, ...) {
 
 AIC.fHMM_model <- function(object, ..., k = 2) {
   models <- list(...)
-  if(length(models) == 0){
+  if (length(models) == 0) {
     models <- list(object)
   } else {
     models <- c(list(object), models)
@@ -240,7 +248,7 @@ AIC.fHMM_model <- function(object, ..., k = 2) {
 
 BIC.fHMM_model <- function(object, ...) {
   models <- list(...)
-  if(length(models) == 0){
+  if (length(models) == 0) {
     models <- list(object)
   } else {
     models <- c(list(object), models)
@@ -279,7 +287,7 @@ npar <- function(object, ...) {
 
 npar.fHMM_model <- function(object, ...) {
   models <- list(...)
-  if(length(models) == 0){
+  if (length(models) == 0) {
     models <- list(object)
   } else {
     models <- c(list(object), models)
@@ -293,16 +301,31 @@ npar.fHMM_model <- function(object, ...) {
 
 predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
   
-  ### check input
-  if (!inherits(object,"fHMM_model")) {
-    stop("'object' must be of class 'fHMM_model'.", call. = FALSE)
-  }
-  if (!checkmate::test_count(ahead, positive = TRUE)) {
-    stop("'ahead' must be a positive integer.", call. = FALSE)
-  }
-  if (!checkmate::test_number(alpha, lower = 0, upper = 1)) {
-    stop("'alpha' must be a numeric between 0 and 1.", call. = FALSE)
-  }
+  ### check inputs
+  oeli::input_check_response(
+    check = if (inherits(object, "fHMM_model")) {
+      TRUE
+    } else {
+      "'object' must be of class 'fHMM_model'."
+    },
+    var_name = "object"
+  )
+  oeli::input_check_response(
+    check = if (checkmate::test_count(ahead, positive = TRUE)) {
+      TRUE
+    } else {
+      "'ahead' must be a positive integer."
+    },
+    var_name = "ahead"
+  )
+  oeli::input_check_response(
+    check = if (checkmate::test_number(alpha, lower = 0, upper = 1)) {
+      TRUE
+    } else {
+      "'alpha' must be a numeric between 0 and 1."
+    },
+    var_name = "alpha"
+  )
   if (is.null(object$decoding)) {
     stop(
       "Prediction not available, please call 'decode_states()' first.", 
@@ -318,7 +341,14 @@ predict.fHMM_model <- function(object, ahead = 5, alpha = 0.05, ...) {
   
   ### predict states
   state_prediction <- matrix(NA_real_, nrow = ahead, ncol = M)
-  last_state <- tail(if (object$data$controls$hierarchy) object$decoding[, 1] else object$decoding, n = 1)
+  last_state <- tail(
+    if (object$data$controls$hierarchy) {
+      object$decoding[, 1]
+    } else {
+      object$decoding
+    },
+    n = 1
+  )
   state_prob <- replace(numeric(M), last_state, 1)
   for (i in 1:ahead) {
     state_prob <- state_prob %*% par$Gamma

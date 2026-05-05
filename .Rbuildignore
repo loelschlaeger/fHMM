@@ -1,5 +1,3 @@
-^renv$
-^renv\.lock$
 ..Rcheck
 ^.*\.Rproj$
 ^\.Rproj\.user$
@@ -14,9 +12,7 @@ LICENSE
 docs/
 vignettes/figs/
 ^vignettes/.*cache
-^CRAN-RELEASE$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^sticker$
-^development_packages\.R$
-^fit_models\.R$
+^doc$

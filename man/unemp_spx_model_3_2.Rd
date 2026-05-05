@@ -13,7 +13,7 @@ data("unemp_spx_model_3_2")
 \description{
 A pre-computed HHMM with monthly unemployment rate in the US on the coarse
 scale using 3 states and S&P 500 index data on the fine scale using 2 states
-from 1970 to 2020 for demonstration purpose.
+from 1970 to 2020 for demonstration purposes.
 }
 \details{
 The model was estimated via:

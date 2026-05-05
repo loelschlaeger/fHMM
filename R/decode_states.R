@@ -7,9 +7,9 @@
 #' @references
 #' <https://en.wikipedia.org/wiki/Viterbi_algorithm>
 #'
-#' @param x
+#' @param x \[`fHMM_model`\]\cr
 #' An object of class \code{\link{fHMM_model}}.
-#' @param verbose
+#' @param verbose \[`logical(1)`\]\cr
 #' Set to \code{TRUE} to print progress messages.
 #'
 #' @return
@@ -24,13 +24,23 @@
 
 decode_states <- function(x, verbose = TRUE) {
 
-  ### check input
-  if (!inherits(x,"fHMM_model")) {
-    stop("'x' must be of class 'fHMM_model'.", call. = FALSE)
-  }
-  if (!isTRUE(verbose) && !isFALSE(verbose)) {
-    stop("'verbose' must be either TRUE or FALSE.", call. = FALSE)
-  }
+  ### check inputs
+  oeli::input_check_response(
+    check = if (inherits(x, "fHMM_model")) {
+      TRUE
+    } else {
+      "'x' must be of class 'fHMM_model'."
+    },
+    var_name = "x"
+  )
+  oeli::input_check_response(
+    check = if (checkmate::test_flag(verbose)) {
+      TRUE
+    } else {
+      "'verbose' must be either TRUE or FALSE."
+    },
+    var_name = "verbose"
+  )
 
   ### apply Viterbi algorithm
   par <- parUncon2par(x$estimate, x$data$controls)
@@ -76,11 +86,11 @@ decode_states <- function(x, verbose = TRUE) {
 }
 
 #' @rdname decode_states
-#' @param observations
+#' @param observations \[`numeric()`\]\cr
 #' A \code{numeric} \code{vector} of state-dependent observations.
-#' @param nstates
+#' @param nstates \[`integer(1)`\]\cr
 #' The number of states.
-#' @param sdd
+#' @param sdd \[`character(1)`\]\cr
 #' A \code{character}, specifying the state-dependent distribution. One of 
 #' \itemize{
 #'   \item \code{"normal"} (the normal distribution),
@@ -89,23 +99,25 @@ decode_states <- function(x, verbose = TRUE) {
 #'   \item \code{"gamma"} (the gamma distribution),
 #'   \item \code{"poisson"} (the Poisson distribution).
 #' }
-#' @param Gamma
+#' @param Gamma \[`matrix()`\]\cr
 #' A transition probability \code{matrix} of dimension \code{nstates}.
-#' @param mu
+#' @param mu \[`numeric(nstates)`\]\cr
 #' A \code{numeric} vector of expected values for the state-dependent 
 #' distribution in the different states of length \code{nstates}.
 #' 
 #' For the gamma- or Poisson-distribution, \code{mu} must be positive.
 #' 
-#' @param sigma
+#' @param sigma \[`NULL` | `numeric(nstates)`\]\cr
 #' A positive \code{numeric} vector of standard deviations for the 
-#' state-dependent distribution in the different states of length \code{nstates}. 
+#' state-dependent distribution in the different states of length
+#' \code{nstates}.
 #' 
 #' Not relevant in case of a state-dependent Poisson distribution.
 #' 
-#' @param df
+#' @param df \[`NULL` | `numeric(nstates)`\]\cr
 #' A positive \code{numeric} vector of degrees of freedom for the 
-#' state-dependent distribution in the different states of length \code{nstates}. 
+#' state-dependent distribution in the different states of length
+#' \code{nstates}.
 #' 
 #' Only relevant in case of a state-dependent t-distribution.
 #' 
@@ -123,6 +135,43 @@ decode_states <- function(x, verbose = TRUE) {
 viterbi <- function(
     observations, nstates, sdd, Gamma, mu, sigma = NULL, df = NULL
   ) {
+  ### check inputs
+  oeli::input_check_response(
+    check = checkmate::check_numeric(observations, any.missing = FALSE),
+    var_name = "observations"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_count(nstates, positive = TRUE),
+    var_name = "nstates"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_choice(
+      sdd, c("normal", "lognormal", "t", "gamma", "poisson")
+    ),
+    var_name = "sdd"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_matrix(
+      Gamma, mode = "numeric", nrows = nstates, ncols = nstates
+    ),
+    var_name = "Gamma"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_numeric(mu, len = nstates),
+    var_name = "mu"
+  )
+  if (sdd != "poisson") {
+    oeli::input_check_response(
+      check = checkmate::check_numeric(sigma, len = nstates, lower = 0),
+      var_name = "sigma"
+    )
+  }
+  if (sdd == "t") {
+    oeli::input_check_response(
+      check = checkmate::check_numeric(df, len = nstates, lower = 0),
+      var_name = "df"
+    )
+  }
   T <- length(observations)
   delta <- oeli::stationary_distribution(Gamma, soft_fail = TRUE)
   allprobs <- matrix(0, nstates, T)
@@ -140,14 +189,17 @@ viterbi <- function(
       )
     }
     if (sdd == "normal") {
-      allprobs[n, ] <- stats::dnorm(observations, mean = mu[n], sd = sigma[n])                            
+      allprobs[n, ] <- stats::dnorm(
+        observations, mean = mu[n], sd = sigma[n]
+      )
     }
     if (sdd == "lognormal") {
-      allprobs[n, ] <- stats::dlnorm(observations, meanlog = mu[n], 
-                                     sdlog = sigma[n])                            
+      allprobs[n, ] <- stats::dlnorm(
+        observations, meanlog = mu[n], sdlog = sigma[n]
+      )
     }
     if (sdd == "poisson") {
-      allprobs[n, ] <- stats::dpois(observations, lambda = mu[n])                            
+      allprobs[n, ] <- stats::dpois(observations, lambda = mu[n])
     }
   }
   xi <- matrix(0, nstates, T)

@@ -7,11 +7,14 @@
 nLL_hhmm(parUncon, observations, controls)
 }
 \arguments{
-\item{parUncon}{An object of class \code{parUncon}.}
+\item{parUncon}{[\code{parUncon}]\cr
+An object of class \code{parUncon}.}
 
-\item{observations}{The matrix of the simulated or empirical data used for estimation.}
+\item{observations}{[\code{matrix()}]\cr
+The matrix of the simulated or empirical data used for estimation.}
 
-\item{controls}{An object of class \code{fHMM_controls}.}
+\item{controls}{[\code{fHMM_controls}]\cr
+An object of class \code{fHMM_controls}.}
 }
 \value{
 The negative log-likelihood value.

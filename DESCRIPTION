@@ -1,7 +1,7 @@
 Package: fHMM
 Type: Package
 Title: Fitting Hidden Markov Models to Financial Data
-Version: 1.4.2
+Version: 1.4.3
 Authors@R: c(
     person(given = "Lennart",
            family = "Oelschl\U00E4ger",
@@ -11,12 +11,12 @@ Authors@R: c(
     person(given = "Timo", 
            family = "Adam", 
            role = "aut",
-           email = "ta59@st-andrews.ac.uk",
+           email = "timo.adam@uni-bielefeld.de",
            comment = c(ORCID = "0000-0001-9079-3259")),
     person(given = "Rouven", 
            family = "Michels",
            role = "aut",
-           email = "r.michels@uni-bielefeld.de",
+           email = "rouven.michels@tu-dortmund.de",
            comment = c(ORCID = "0000-0002-5433-6197")))
 Description: Fitting (hierarchical) hidden Markov models to financial data
     via maximum likelihood estimation. See Oelschläger, L. and Adam, T.
@@ -43,7 +43,7 @@ Imports:
     httr,
     jsonlite,
     MASS,
-    oeli (>= 0.3.0),
+    oeli (>= 0.7.6),
     padr,
     pracma,
     progress,
@@ -63,7 +63,7 @@ Suggests:
     testthat (>= 3.0.0),
     tseries
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 LazyData: true

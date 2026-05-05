@@ -27,7 +27,10 @@ double LL_HMM_Rcpp(
 	  // 'c' is a neutral constant for numerical stability
 		c = max(phi.col(t - 1));
 		for (i = 0; i < N; i++) {
-			phi(i, t) = log(sum(exp(phi.col(t - 1) + log(Gamma.col(i)) - c))) + c + log(allprobs(i,t));
+			phi(i, t) =
+			  log(sum(exp(phi.col(t - 1) + log(Gamma.col(i)) - c))) +
+			  c +
+			  log(allprobs(i, t));
 		}
 		
 	}
@@ -63,7 +66,11 @@ double LL_HHMM_Rcpp(
     // 'c' is a neutral constant for numerical stability
     c = max(phi.col(t - 1));
     for (i = 0; i < M; i++) {
-      phi(i, t) = log(sum(exp(phi.col(t - 1) + log(Gamma.col(i)) - c))) + c + log_likelihoods(i, t) + log(allprobs(i, t));
+      phi(i, t) =
+        log(sum(exp(phi.col(t - 1) + log(Gamma.col(i)) - c))) +
+        c +
+        log_likelihoods(i, t) +
+        log(allprobs(i, t));
     }
     
   }

@@ -50,35 +50,49 @@ npar(object, ...)
 \method{predict}{fHMM_model}(object, ahead = 5, alpha = 0.05, ...)
 }
 \arguments{
-\item{data}{An object of class \code{\link{fHMM_data}}.}
+\item{data}{[\code{fHMM_data}]\cr
+An object of class \code{\link{fHMM_data}}.}
 
-\item{estimate}{A \code{numeric} vector of unconstrained model estimates.}
+\item{estimate}{[\code{numeric()}]\cr
+A \code{numeric} vector of unconstrained model estimates.}
 
-\item{nlm_output}{The output of \code{\link[stats]{nlm}} for the selected optimization run.}
+\item{nlm_output}{[\code{list()}]\cr
+The output of \code{\link[stats]{nlm}} for the selected optimization run.}
 
-\item{estimation_time}{A \code{diff.time} object, the total estimation time.}
+\item{estimation_time}{[\code{difftime}]\cr
+A \code{diff.time} object, the total estimation time.}
 
-\item{ll}{A \code{numeric}, the model log-likelihood.}
+\item{ll}{[\code{numeric(1)}]\cr
+A \code{numeric}, the model log-likelihood.}
 
-\item{lls}{A \code{numeric} vector, the model log-likelihoods in all optimization runs.}
+\item{lls}{[\code{numeric()}]\cr
+A \code{numeric} vector, the model log-likelihoods in all optimization runs.}
 
-\item{gradient}{A \code{numeric} vector, the gradient at the optimum.}
+\item{gradient}{[\code{numeric()}]\cr
+A \code{numeric} vector, the gradient at the optimum.}
 
-\item{inverse_fisher}{A \code{numeric} vector, the inverse Fisher information for each parameter.}
+\item{inverse_fisher}{[\code{numeric()}]\cr
+A \code{numeric} vector, the inverse Fisher information for each parameter.}
 
-\item{decoding}{A \code{numeric} vector, the decoded time series.}
+\item{decoding}{[\code{NULL} | \code{numeric()} | \code{matrix()}]\cr
+A \code{numeric} vector, the decoded time series.}
 
-\item{x, object}{An object of class \code{\link{fHMM_model}}.}
+\item{x, object}{[\code{fHMM_model}]\cr
+An object of class \code{\link{fHMM_model}}.}
 
 \item{...}{Currently not used.}
 
-\item{alpha}{A \code{numeric} between 0 and 1, the confidence level.}
+\item{alpha}{[\code{numeric(1)}]\cr
+A \code{numeric} between 0 and 1, the confidence level.}
 
-\item{digits}{The number of decimal places.}
+\item{digits}{[\code{integer(1)}]\cr
+The number of decimal places.}
 
-\item{k}{Passed on to \code{\link[stats]{AIC}}.}
+\item{k}{[\code{numeric(1)}]\cr
+Passed on to \code{\link[stats]{AIC}}.}
 
-\item{ahead}{The number of time points to predict ahead.}
+\item{ahead}{[\code{integer(1)}]\cr
+The number of time points to predict ahead.}
 }
 \value{
 An object of class \code{\link{fHMM_model}}.

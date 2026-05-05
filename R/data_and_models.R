@@ -113,7 +113,7 @@
 #' @description
 #' A pre-computed HMM on closing prices of the DAX from 2000 to 2022
 #' with two hidden states and normal state-dependent distributions for
-#' demonstration purpose.
+#' demonstration purposes.
 #'
 #' @usage data("dax_model_2n")
 #'
@@ -150,7 +150,7 @@
 #' @description
 #' A pre-computed HMM on closing prices of the DAX from 2000 to 2022
 #' with three hidden states and state-dependent t-distributions for
-#' demonstration purpose.
+#' demonstration purposes.
 #'
 #' @usage data("dax_model_3t")
 #'
@@ -193,7 +193,7 @@
 #' A pre-computed HHMM with monthly averaged closing prices of the
 #' DAX from 2010 to 2022 on the coarse scale, Volkswagen AG stock data on the 
 #' fine scale, two hidden fine-scale and coarse-scale states, respectively, and
-#' state-dependent t-distributions for demonstration purpose.
+#' state-dependent t-distributions for demonstration purposes.
 #'
 #' @usage data("dax_vw_model")
 #'
@@ -235,7 +235,7 @@
 #' @description
 #' A pre-computed HHMM with monthly unemployment rate in the US on the coarse
 #' scale using 3 states and S&P 500 index data on the fine scale using 2 states
-#' from 1970 to 2020 for demonstration purpose.
+#' from 1970 to 2020 for demonstration purposes.
 #'
 #' @usage data("unemp_spx_model_3_2")
 #'

@@ -17,26 +17,26 @@
 #'   \item \code{Volume}: Trade volume.
 #' }
 #'
-#' @param symbol
+#' @param symbol \[`character(1)`\]\cr
 #' A \code{character}, the stock's symbol. 
 #' 
 #' It must match the identifier on <https://finance.yahoo.com/>.
-#' @param from
+#' @param from \[`character(1)`\]\cr
 #' A \code{character} in the format \code{"YYYY-MM-DD"}, setting the lower 
 #' data bound. 
 #' 
 #' Must not be earlier than \code{"1902-01-01"} (default).
-#' @param to
+#' @param to \[`character(1)`\]\cr
 #' A \code{character} in the format \code{"YYYY-MM-DD"}, setting the upper 
 #' data bound. 
 #' 
 #' Default is the current date \code{Sys.date()}.
-#' @param fill_dates
+#' @param fill_dates \[`logical(1)`\]\cr
 #' Set to \code{TRUE} to fill missing dates (e.g., days at which the stock 
 #' market is closed) with \code{NA}'s.
 #' 
 #' By default, \code{fill_dates = FALSE}.
-#' @param columns
+#' @param columns \[`character()`\]\cr
 #' A \code{character} of requested data columns, see the details.
 #' 
 #' By default, all columns are returned.
@@ -62,15 +62,33 @@ download_data <- function(
   if (!curl::has_internet()) {
     stop("This function requires an internet connection.", call. = FALSE)
   }
-  if (missing(symbol) || !is.character(symbol) || length(symbol) != 1) {
-    stop("'symbol' must be a single character.", call. = FALSE)
-  }
-  if (!isTRUE(fill_dates) && !isFALSE(fill_dates)) {
-    stop("'fill_dates' must be TRUE or FALSE.", call. = FALSE)
-  }
-  if (!is.character(columns)) {
-    stop("'columns' must be a character vector.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (
+      !missing(symbol) &&
+        checkmate::test_string(symbol, na.ok = FALSE)
+    ) {
+      TRUE
+    } else {
+      "'symbol' must be a single character."
+    },
+    var_name = "symbol"
+  )
+  oeli::input_check_response(
+    check = if (checkmate::test_flag(fill_dates)) {
+      TRUE
+    } else {
+      "'fill_dates' must be TRUE or FALSE."
+    },
+    var_name = "fill_dates"
+  )
+  oeli::input_check_response(
+    check = if (is.character(columns)) {
+      TRUE
+    } else {
+      "'columns' must be a character vector."
+    },
+    var_name = "columns"
+  )
   columns <- match.arg(columns, several.ok = TRUE)
   
   ### check range
@@ -81,12 +99,22 @@ download_data <- function(
     from <- min_date
   }
   to <- check_date(to)
-  if (to < from) {
-    stop("'to' must not be earlier than 'from'.", call. = FALSE)
-  }
-  if (to > Sys.Date()) {
-    stop("'to' cannot be in the future.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (to >= from) {
+      TRUE
+    } else {
+      "'to' must not be earlier than 'from'."
+    },
+    var_name = "to"
+  )
+  oeli::input_check_response(
+    check = if (to <= Sys.Date()) {
+      TRUE
+    } else {
+      "'to' cannot be in the future."
+    },
+    var_name = "to"
+  )
   
   ### API request
   url <- paste0("https://query2.finance.yahoo.com/v8/finance/chart/", symbol)

@@ -39,12 +39,13 @@ validate_controls(controls)
 \method{summary}{fHMM_controls}(object, ...)
 }
 \arguments{
-\item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
+\item{controls}{[\code{list()} | \code{fHMM_controls}]\cr
+Either a \code{list} or an object of class \code{fHMM_controls}.
 
 The \code{list} can contain the following elements, which are described
 in more detail below:
 \itemize{
-\item \code{hierarchy}, defines an hierarchical HMM,
+\item \code{hierarchy}, defines a hierarchical HMM,
 \item \code{states}, defines the number of states,
 \item \code{sdds}, defines the state-dependent distributions,
 \item \code{horizon}, defines the time horizon,
@@ -59,14 +60,16 @@ Unspecified parameters are set to their default values.
 Important: Specifications in \code{controls} always override individual
 specifications.}
 
-\item{hierarchy}{A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
+\item{hierarchy}{[\code{logical(1)}]\cr
+A \code{logical}, set to \code{TRUE} for a hierarchical HMM.
 
 If \code{hierarchy = TRUE}, some of the other controls must be specified for
 the coarse-scale and the fine-scale layer.
 
 By default, \code{hierarchy = FALSE}.}
 
-\item{states}{An \code{integer}, the number of states of the underlying Markov chain.
+\item{states}{[\code{integer(1)} | \code{integer(2)}]\cr
+An \code{integer}, the number of states of the underlying Markov chain.
 
 If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
 2. The first entry corresponds to the coarse-scale layer, while the second
@@ -75,7 +78,8 @@ entry corresponds to the fine-scale layer.
 By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
 
-\item{sdds}{A \code{character}, specifying the state-dependent distribution. One of
+\item{sdds}{[\code{character(1)} | \code{character(2)}]\cr
+A \code{character}, specifying the state-dependent distribution. One of
 \itemize{
 \item \code{"normal"} (the normal distribution),
 \item \code{"lognormal"} (the log-normal distribution),
@@ -102,7 +106,8 @@ corresponds to the fine-scale layer.
 By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
 \code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.}
 
-\item{horizon}{A \code{numeric}, specifying the length of the time horizon.
+\item{horizon}{[\code{integer(1)} | \code{integer(2)}]\cr
+A \code{numeric}, specifying the length of the time horizon.
 
 If \code{hierarchy = TRUE}, \code{horizon} must be a \code{vector} of length
 2. The first entry corresponds to the coarse-scale layer, while the second
@@ -115,7 +120,8 @@ If \code{data} is specified (i.e., not \code{NA}), the first entry of
 \code{horizon} is ignored and the (coarse-scale) time horizon is defined by
 available data.}
 
-\item{period}{Only relevant if \code{hierarchy = TRUE}.
+\item{period}{[\code{NA} | \code{character(1)}]\cr
+Only relevant if \code{hierarchy = TRUE}.
 
 In this case, a \code{character} which specifies a flexible, periodic
 fine-scale time horizon and can be one of
@@ -129,7 +135,8 @@ fine-scale time horizon and can be one of
 By default, \code{period = NA}. If \code{period} is not \code{NA}, it
 overrules \code{horizon[2]}.}
 
-\item{data}{Either \code{NA}, in which case data is simulated (the default), or a
+\item{data}{[\code{NA} | \code{list()}]\cr
+Either \code{NA}, in which case data is simulated (the default), or a
 \code{list} of controls specifying the empirical data set.
 
 The \code{list} can contain the following elements, which are described
@@ -149,7 +156,8 @@ Unspecified parameters are set to their default values, see below.
 
 Specifications in \code{data} override individual specifications.}
 
-\item{file}{A \code{data.frame} with data and dates for modeling.
+\item{file}{[\code{data.frame} | \code{character()} | \code{list()}]\cr
+A \code{data.frame} with data and dates for modeling.
 
 If \code{hierarchy = TRUE}, \code{file} can be a \code{list} of
 length 2. The first entry is a \code{data.frame} and provides the data for
@@ -160,7 +168,8 @@ layer. If \code{file} is a single \code{data.frame}, then the same
 Alternatively, it can be a \code{character} (of length two), the path to a
 .csv-file with financial data.}
 
-\item{date_column}{A \code{character}, the name of the column in \code{file} with dates.
+\item{date_column}{[\code{character(1)} | \code{character(2)}]\cr
+A \code{character}, the name of the column in \code{file} with dates.
 
 If \code{hierarchy = TRUE} and \code{file} is a \code{list} of two
 \code{data.frame}s, \code{data_column} must be a \code{vector} of
@@ -169,7 +178,8 @@ second entry corresponds to the fine-scale layer.
 
 By default, \code{date_column = "Date"}.}
 
-\item{data_column}{A \code{character}, the name of the column in \code{file} with observations.
+\item{data_column}{[\code{character(1)} | \code{character(2)}]\cr
+A \code{character}, the name of the column in \code{file} with observations.
 
 If \code{hierarchy = TRUE}, \code{data_column} must be a \code{vector} of
 length 2. The first entry corresponds to the coarse-scale layer, while the
@@ -178,13 +188,16 @@ second entry corresponds to the fine-scale layer.
 By default, \code{data_column = "Close"} if \code{hierarchy = FALSE} and
 \code{data_column = c("Close", "Close")} if \code{hierarchy = TRUE}.}
 
-\item{from}{A \code{character} of the format \code{"YYYY-MM-DD"}, setting a lower
+\item{from}{[\code{NA} | \code{character(1)}]\cr
+A \code{character} of the format \code{"YYYY-MM-DD"}, setting a lower
 date limit. No lower limit if \code{from = NA} (default).}
 
-\item{to}{A \code{character} of the format \code{"YYYY-MM-DD"}, setting an upper
+\item{to}{[\code{NA} | \code{character(1)}]\cr
+A \code{character} of the format \code{"YYYY-MM-DD"}, setting an upper
 date limit. No lower limit if \code{to = NA} (default).}
 
-\item{logreturns}{A \code{logical}, if \code{TRUE} the data is transformed to log-returns.
+\item{logreturns}{[\code{logical(1)} | \code{logical(2)}]\cr
+A \code{logical}, if \code{TRUE} the data is transformed to log-returns.
 
 If \code{hierarchy = TRUE}, \code{logreturns} must be a \code{vector} of
 length 2. The first entry corresponds to the coarse-scale layer, while the
@@ -193,7 +206,8 @@ second entry corresponds to the fine-scale layer.
 By default, \code{logreturns = FALSE} if \code{hierarchy = FALSE} and
 \code{logreturns = c(FALSE, FALSE)} if \code{hierarchy = TRUE}.}
 
-\item{merge}{Only relevant if \code{hierarchy = TRUE}.
+\item{merge}{[\code{function}]\cr
+Only relevant if \code{hierarchy = TRUE}.
 
 In this case, a \code{function}
 which merges an input numeric vector of fine-scale data \code{x} into one
@@ -209,7 +223,8 @@ absolute values,
 the relative change of the first to the last fine-scale observation.
 }}
 
-\item{fit}{A \code{list} of controls specifying the model fitting.
+\item{fit}{[\code{list()}]\cr
+A \code{list} of controls specifying the model fitting.
 
 The \code{list} can contain the following elements, which are described
 in more detail below:
@@ -228,13 +243,15 @@ Unspecified parameters are set to their default values, see below.
 
 Specifications in \code{fit} override individual specifications.}
 
-\item{runs}{An \code{integer}, setting the number of randomly initialized
+\item{runs}{[\code{integer(1)}]\cr
+An \code{integer}, setting the number of randomly initialized
 optimization runs of the model likelihood from which the best one is selected
 as the final model.
 
 By default, \code{runs = 10}.}
 
-\item{origin}{Only relevant for simulated data, i.e., if the \code{data} control is
+\item{origin}{[\code{logical(1)}]\cr
+Only relevant for simulated data, i.e., if the \code{data} control is
 \code{NA}.
 
 In this case, a \code{logical}. If \code{origin = TRUE} the optimization is
@@ -243,32 +260,38 @@ This sets \code{run = 1} and \code{accept = 1:5}.
 
 By default, \code{origin = FALSE}.}
 
-\item{accept}{An \code{integer} (vector), specifying which optimization runs are
+\item{accept}{[\code{integer()} | \code{"all"}]\cr
+An \code{integer} (vector), specifying which optimization runs are
 accepted based on the output code of \code{\link[stats]{nlm}}.
 
 By default, \code{accept = 1:3}.}
 
-\item{gradtol}{A positive \code{numeric} value, specifying the gradient tolerance, passed on
-to \code{\link[stats]{nlm}}.
+\item{gradtol}{[\code{numeric(1)}]\cr
+A positive \code{numeric} value, specifying the gradient tolerance, passed
+on to \code{\link[stats]{nlm}}.
 
 By default, \code{gradtol = 0.01}.}
 
-\item{iterlim}{A positive \code{integer} value, specifying the iteration limit, passed on
+\item{iterlim}{[\code{integer(1)}]\cr
+A positive \code{integer} value, specifying the iteration limit, passed on
 to \code{\link[stats]{nlm}}.
 
 By default, \code{iterlim = 100}.}
 
-\item{print.level}{One of \code{0}, \code{1}, and \code{2} to control the verbosity of the
+\item{print.level}{[\code{0} | \code{1} | \code{2}]\cr
+One of \code{0}, \code{1}, and \code{2} to control the verbosity of the
 numerical likelihood optimization, passed on to \code{\link[stats]{nlm}}.
 
 By default, \code{print.level = 0}.}
 
-\item{steptol}{A positive \code{numeric} value, specifying the step tolerance, passed on
+\item{steptol}{[\code{numeric(1)}]\cr
+A positive \code{numeric} value, specifying the step tolerance, passed on
 to \code{\link[stats]{nlm}}.
 
-By default, \code{gradtol = 0.01}.}
+By default, \code{steptol = 0.01}.}
 
-\item{x, object}{An object of class \code{fHMM_controls}.}
+\item{x, object}{[\code{fHMM_controls}]\cr
+An object of class \code{fHMM_controls}.}
 
 \item{...}{Currently not used.}
 }
@@ -305,7 +328,7 @@ set_controls(
   hierarchy = TRUE,                  # defines a hierarchy
   states    = c(3, 2),               # coarse scale and fine scale states
   sdds      = c("gamma", "poisson"), # distributions for both layers
-  horizon   = c(100, NA),            # 100 simulated coarse-scale data points 
+  horizon   = c(100, NA),            # 100 coarse-scale data points
   period    = "m"                    # monthly simulated fine-scale data
 )
 

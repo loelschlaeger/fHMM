@@ -4,10 +4,10 @@
 #' This helper function defines a color scheme for visualizations in the 
 #' \{fHMM\} package.
 #'
-#' @param controls
+#' @param controls \[`fHMM_controls`\]\cr
 #' An object of class \code{fHMM_controls}.
 #' It can be created with \code{\link{set_controls}}.
-#' @param colors
+#' @param colors \[`NULL` | `character()`\]\cr
 #' Either \code{NULL} (default) or a \code{character} vector of color names or 
 #' hexadecimal RGB triplets.
 #'
@@ -18,8 +18,10 @@
 #'         length \code{controls$states} of color codes,
 #'   \item for \code{controls$hierarchy == TRUE} a \code{list} of
 #'         \itemize{
-#'           \item a \code{character} vector of length  \code{controls$states[1]} and
-#'           \item a \code{character} matrix of dimensions \code{controls$states}
+#'           \item a \code{character} vector of length
+#'                 \code{controls$states[1]} and
+#'           \item a \code{character} matrix of dimensions
+#'                 \code{controls$states}
 #'         }
 #'         with color codes.
 #' }
@@ -35,25 +37,46 @@
 fHMM_colors <- function(controls, colors = NULL) {
 
   ### check inputs
-  if (!inherits(controls,"fHMM_controls")) {
-    stop("'controls' must be of class 'fHMM_controls'.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (inherits(controls, "fHMM_controls")) {
+      TRUE
+    } else {
+      "'controls' must be of class 'fHMM_controls'."
+    },
+    var_name = "controls"
+  )
   if (is.null(colors)) {
     colors <- c("darkred", "red", "orange", "yellow", "green", "darkgreen")
   }
-  if (!is.character(colors)) {
-    stop("'colors' must be a character vector.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (is.character(colors)) {
+      TRUE
+    } else {
+      "'colors' must be a character vector."
+    },
+    var_name = "colors"
+  )
   for (col in colors) {
-    out <- tryCatch(is.matrix(grDevices::col2rgb(col)), error = function(e) FALSE)
-    if (out == FALSE) {
-      stop("'", col, "' in 'colors' is not a valid color representation.",
-           call. = FALSE)
-    }
+    out <- tryCatch(
+      is.matrix(grDevices::col2rgb(col)),
+      error = function(e) FALSE
+    )
+    oeli::input_check_response(
+      check = if (out) {
+        TRUE
+      } else {
+        paste0(
+          "'", col, "' in 'colors' is not a valid color representation."
+        )
+      },
+      var_name = "colors"
+    )
   }
 
   ### helper functions
-  var_col <- function(col, n) grDevices::colorRampPalette(c("white", col, "black"))(n + 2)[2:(n + 1)]
+  var_col <- function(col, n) {
+    grDevices::colorRampPalette(c("white", col, "black"))(n + 2)[2:(n + 1)]
+  }
   base_col <- function(n) grDevices::colorRampPalette(colors)(n)
   col_alpha <- function(col, alpha = 0.6) grDevices::adjustcolor(col, alpha)
 

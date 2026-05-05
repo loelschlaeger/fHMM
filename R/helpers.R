@@ -15,9 +15,14 @@
 
 check_date <- function(date) {
   date <- try(as.Date(date, format = "%Y-%m-%d"), silent = TRUE)
-  if (inherits(date, "try-error") || anyNA(date)) {
-    stop("Date is not in required format 'YYYY-MM-DD'.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (!inherits(date, "try-error") && !anyNA(date)) {
+      TRUE
+    } else {
+      "Date is not in required format 'YYYY-MM-DD'."
+    },
+    var_name = "date"
+  )
   return(date)
 }
 
@@ -58,6 +63,9 @@ find_closest_year <- function(date) {
 #' @keywords internal
 
 list_to_vector <- function(x) {
-  stopifnot(is.list(x))
+  oeli::input_check_response(
+    check = checkmate::check_list(x),
+    var_name = "x"
+  )
   unlist(lapply(x, function(m) ifelse(is.null(m), NA, m)))
 }

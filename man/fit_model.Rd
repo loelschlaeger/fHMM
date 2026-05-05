@@ -22,14 +22,16 @@ fit_model(
 )
 }
 \arguments{
-\item{data}{An object of class \code{\link{fHMM_data}}.}
+\item{data}{[\code{fHMM_data}]\cr
+An object of class \code{\link{fHMM_data}}.}
 
-\item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
+\item{controls}{[\code{list()} | \code{fHMM_controls}]\cr
+Either a \code{list} or an object of class \code{fHMM_controls}.
 
 The \code{list} can contain the following elements, which are described
 in more detail below:
 \itemize{
-\item \code{hierarchy}, defines an hierarchical HMM,
+\item \code{hierarchy}, defines a hierarchical HMM,
 \item \code{states}, defines the number of states,
 \item \code{sdds}, defines the state-dependent distributions,
 \item \code{horizon}, defines the time horizon,
@@ -44,7 +46,8 @@ Unspecified parameters are set to their default values.
 Important: Specifications in \code{controls} always override individual
 specifications.}
 
-\item{fit}{A \code{list} of controls specifying the model fitting.
+\item{fit}{[\code{list()}]\cr
+A \code{list} of controls specifying the model fitting.
 
 The \code{list} can contain the following elements, which are described
 in more detail below:
@@ -63,13 +66,15 @@ Unspecified parameters are set to their default values, see below.
 
 Specifications in \code{fit} override individual specifications.}
 
-\item{runs}{An \code{integer}, setting the number of randomly initialized
+\item{runs}{[\code{integer(1)}]\cr
+An \code{integer}, setting the number of randomly initialized
 optimization runs of the model likelihood from which the best one is selected
 as the final model.
 
 By default, \code{runs = 10}.}
 
-\item{origin}{Only relevant for simulated data, i.e., if the \code{data} control is
+\item{origin}{[\code{logical(1)}]\cr
+Only relevant for simulated data, i.e., if the \code{data} control is
 \code{NA}.
 
 In this case, a \code{logical}. If \code{origin = TRUE} the optimization is
@@ -78,41 +83,50 @@ This sets \code{run = 1} and \code{accept = 1:5}.
 
 By default, \code{origin = FALSE}.}
 
-\item{accept}{An \code{integer} (vector), specifying which optimization runs are
+\item{accept}{[\code{integer()} | \code{"all"}]\cr
+An \code{integer} (vector), specifying which optimization runs are
 accepted based on the output code of \code{\link[stats]{nlm}}.
 
 By default, \code{accept = 1:3}.}
 
-\item{gradtol}{A positive \code{numeric} value, specifying the gradient tolerance, passed on
-to \code{\link[stats]{nlm}}.
+\item{gradtol}{[\code{numeric(1)}]\cr
+A positive \code{numeric} value, specifying the gradient tolerance, passed
+on to \code{\link[stats]{nlm}}.
 
 By default, \code{gradtol = 0.01}.}
 
-\item{iterlim}{A positive \code{integer} value, specifying the iteration limit, passed on
+\item{iterlim}{[\code{integer(1)}]\cr
+A positive \code{integer} value, specifying the iteration limit, passed on
 to \code{\link[stats]{nlm}}.
 
 By default, \code{iterlim = 100}.}
 
-\item{print.level}{One of \code{0}, \code{1}, and \code{2} to control the verbosity of the
+\item{print.level}{[\code{0} | \code{1} | \code{2}]\cr
+One of \code{0}, \code{1}, and \code{2} to control the verbosity of the
 numerical likelihood optimization, passed on to \code{\link[stats]{nlm}}.
 
 By default, \code{print.level = 0}.}
 
-\item{steptol}{A positive \code{numeric} value, specifying the step tolerance, passed on
+\item{steptol}{[\code{numeric(1)}]\cr
+A positive \code{numeric} value, specifying the step tolerance, passed on
 to \code{\link[stats]{nlm}}.
 
-By default, \code{gradtol = 0.01}.}
+By default, \code{steptol = 0.01}.}
 
-\item{ncluster}{Set the number of clusters for parallel optimization runs to reduce
+\item{ncluster}{[\code{integer(1)}]\cr
+Set the number of clusters for parallel optimization runs to reduce
 optimization time.
 By default, \code{ncluster = 1} (no clustering).}
 
-\item{seed}{Set a seed for the generation of initial values.
+\item{seed}{[\code{NULL} | \code{integer(1)}]\cr
+Set a seed for the generation of initial values.
 No seed by default.}
 
-\item{verbose}{Set to \code{TRUE} to print progress messages.}
+\item{verbose}{[\code{logical(1)}]\cr
+Set to \code{TRUE} to print progress messages.}
 
-\item{initial_estimate}{Optionally defines an initial estimate for the numerical likelihood
+\item{initial_estimate}{[\code{NULL} | \code{parUncon}]\cr
+Optionally defines an initial estimate for the numerical likelihood
 optimization. Good initial estimates can improve the optimization process.
 Can be:
 \itemize{
