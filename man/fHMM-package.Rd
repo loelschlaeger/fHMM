@@ -52,8 +52,8 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Timo Adam \email{ta59@st-andrews.ac.uk} (\href{https://orcid.org/0000-0001-9079-3259}{ORCID})
-  \item Rouven Michels \email{r.michels@uni-bielefeld.de} (\href{https://orcid.org/0000-0002-5433-6197}{ORCID})
+  \item Timo Adam \email{timo.adam@uni-bielefeld.de} (\href{https://orcid.org/0000-0001-9079-3259}{ORCID})
+  \item Rouven Michels \email{rouven.michels@tu-dortmund.de} (\href{https://orcid.org/0000-0002-5433-6197}{ORCID})
 }
 
 }
