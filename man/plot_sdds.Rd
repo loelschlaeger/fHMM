@@ -7,14 +7,18 @@
 plot_sdds(est, true = NULL, controls, colors)
 }
 \arguments{
-\item{est}{An object of class \code{fHMM_parameters} with estimated parameters.}
+\item{est}{[\code{fHMM_parameters}]\cr
+An object of class \code{fHMM_parameters} with estimated parameters.}
 
-\item{true}{Either \code{NULL} or an object of class \code{fHMM_parameters} with true
+\item{true}{[\code{NULL} | \code{fHMM_parameters}]\cr
+Either \code{NULL} or an object of class \code{fHMM_parameters} with true
 parameters.}
 
-\item{controls}{An object of class \code{fHMM_controls}.}
+\item{controls}{[\code{fHMM_controls}]\cr
+An object of class \code{fHMM_controls}.}
 
-\item{colors}{Either \code{NULL} (default) or a \code{character} vector of color names or
+\item{colors}{[\code{NULL} | \code{character()}]\cr
+Either \code{NULL} (default) or a \code{character} vector of color names or
 hexadecimal RGB triplets.}
 }
 \value{

@@ -7,9 +7,11 @@
 plot_ll(lls, ll_relative = TRUE)
 }
 \arguments{
-\item{lls}{A \code{numeric} vector of log-likelihood values.}
+\item{lls}{[\code{numeric()}]\cr
+A \code{numeric} vector of log-likelihood values.}
 
-\item{ll_relative}{A \code{logical}, set to \code{TRUE} (default) to plot the differences from
+\item{ll_relative}{[\code{logical(1)}]\cr
+A \code{logical}, set to \code{TRUE} (default) to plot the differences from
 the best log-likelihood value. Set to \code{FALSE} to plot the absolute
 values.}
 }

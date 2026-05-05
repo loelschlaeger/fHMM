@@ -26,12 +26,22 @@
 read_data <- function(controls) {
 
   ### check inputs
-  if (!inherits(controls, "fHMM_controls")) {
-    stop("'controls' is not of class 'fHMM_controls'.", call. = FALSE)
-  }
-  if (controls$simulated) {
-    stop("'controls$simulated' is not 'FALSE'.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (inherits(controls, "fHMM_controls")) {
+      TRUE
+    } else {
+      "'controls' is not of class 'fHMM_controls'."
+    },
+    var_name = "controls"
+  )
+  oeli::input_check_response(
+    check = if (!controls$simulated) {
+      TRUE
+    } else {
+      "'controls$simulated' is not 'FALSE'."
+    },
+    var_name = "controls$simulated"
+  )
 
   ### read data
   data_raw <- list()

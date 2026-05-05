@@ -3,7 +3,7 @@
 #' @description
 #' This function is the plot method for an object of class \code{fHMM_data}.
 #'
-#' @param x
+#' @param x \[`fHMM_data`\]\cr
 #' An object of class \code{fHMM_data}.
 #' @inheritParams plot.fHMM_model
 #'
@@ -19,23 +19,38 @@ plot.fHMM_data <- function(
     x, events = NULL, title = NULL, from = NULL, to = NULL, ...
   ) {
 
-  ### check input
-  if (!inherits(x, "fHMM_data")) {
-    stop("'x' is not of class 'fHMM_data'.", call. = FALSE)
-  }
+  ### check inputs
+  oeli::input_check_response(
+    check = if (inherits(x, "fHMM_data")) {
+      TRUE
+    } else {
+      "'x' is not of class 'fHMM_data'."
+    },
+    var_name = "x"
+  )
   if (!is.null(events)) {
-    if (!inherits(events, "fHMM_events")) {
-      stop("'events' is not of class 'fHMM_events'.", call. = FALSE)
-    }
+    oeli::input_check_response(
+      check = if (inherits(events, "fHMM_events")) {
+        TRUE
+      } else {
+        "'events' is not of class 'fHMM_events'."
+      },
+      var_name = "events"
+    )
     if (x$controls$simulated) {
       events <- NULL
       warning("Can't have 'events' for simulated data.", call. = FALSE)
     }
   }
   if (!is.null(title)) {
-    if (!(is.character(title) && length(title) == 1)) {
-      stop("'title' must be a single 'character' (or 'NULL').", call. = FALSE)
-    }
+    oeli::input_check_response(
+      check = if (checkmate::test_string(title)) {
+        TRUE
+      } else {
+        "'title' must be a single 'character' (or 'NULL')."
+      },
+      var_name = "title"
+    )
   }
 
   ### visualization
@@ -52,9 +67,9 @@ plot.fHMM_data <- function(
 #' This function is the plot method for an object of class 
 #' \code{\link{fHMM_model}}.
 #'
-#' @param x
+#' @param x \[`fHMM_model`\]\cr
 #' An object of class \code{\link{fHMM_model}}.
-#' @param plot_type
+#' @param plot_type \[`character()`\]\cr
 #' A character (vector), specifying the type of plot and can be one (or more) of
 #' \itemize{
 #'   \item \code{"ll"} for a visualization of the likelihood values in the
@@ -64,17 +79,17 @@ plot.fHMM_data <- function(
 #'   \item \code{"pr"} for a visualization of the model's (pseudo-) residuals,
 #'   \item \code{"ts"} for a visualization of the financial time series.
 #' }
-#' @param events
+#' @param events \[`NULL` | `fHMM_events`\]\cr
 #' An object of class \code{\link{fHMM_events}}.
-#' @param title
+#' @param title \[`NULL` | `character(1)`\]\cr
 #' Optionally a \code{character} for a custom title.
 #' @inheritParams fHMM_colors
 #' @inheritParams plot_ll
-#' @param from
+#' @param from \[`NULL` | `character(1)`\]\cr
 #' Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"}, 
 #' setting the lower date bound for plotting. 
 #' By default, \code{from = NULL}, i.e. no lower bound.
-#' @param to
+#' @param to \[`NULL` | `character(1)`\]\cr
 #' Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"}, 
 #' setting the upper date bound for plotting. 
 #' By default, \code{to = NULL}, i.e. no upper bound.
@@ -91,28 +106,47 @@ plot.fHMM_model <- function(
     title = NULL, from = NULL, to = NULL, ...
   ) {
 
-  ### check input
-  if (!inherits(x, "fHMM_model")) {
-    stop("'x' is not of class 'fHMM_model'.", call. = FALSE)
-  }
+  ### check inputs
+  oeli::input_check_response(
+    check = if (inherits(x, "fHMM_model")) {
+      TRUE
+    } else {
+      "'x' is not of class 'fHMM_model'."
+    },
+    var_name = "x"
+  )
   plot_type <- intersect(plot_type, c("ll", "sdds", "pr", "ts"))
-  if (length(plot_type) == 0) {
-    stop("'plot_type' is misspecified, please see the documentation.", 
-         call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (length(plot_type) > 0) {
+      TRUE
+    } else {
+      "'plot_type' is misspecified, please see the documentation."
+    },
+    var_name = "plot_type"
+  )
   if (!is.null(events)) {
-    if (!inherits(events, "fHMM_events")) {
-      stop("'events' is not of class 'fHMM_events'.", call. = FALSE)
-    }
+    oeli::input_check_response(
+      check = if (inherits(events, "fHMM_events")) {
+        TRUE
+      } else {
+        "'events' is not of class 'fHMM_events'."
+      },
+      var_name = "events"
+    )
     if (x$data$controls$simulated) {
       events <- NULL
       warning("Can't have 'events' for simulated data.", call. = FALSE)
     }
   }
   if (!is.null(title)) {
-    if (!(is.character(title) && length(title) == 1)) {
-      stop("'title' must be a single 'character' (or 'NULL').", call. = FALSE)
-    }
+    oeli::input_check_response(
+      check = if (checkmate::test_string(title)) {
+        TRUE
+      } else {
+        "'title' must be a single 'character' (or 'NULL')."
+      },
+      var_name = "title"
+    )
   }
 
   ### create and check colors
@@ -156,9 +190,9 @@ plot.fHMM_model <- function(
 #' This function plots the log-likelihood values of the different optimization 
 #' runs.
 #'
-#' @param lls
+#' @param lls \[`numeric()`\]\cr
 #' A \code{numeric} vector of log-likelihood values.
-#' @param ll_relative
+#' @param ll_relative \[`logical(1)`\]\cr
 #' A \code{logical}, set to \code{TRUE} (default) to plot the differences from
 #' the best log-likelihood value. Set to \code{FALSE} to plot the absolute 
 #' values.
@@ -169,9 +203,14 @@ plot.fHMM_model <- function(
 #' @keywords internal
 
 plot_ll <- function(lls, ll_relative = TRUE) {
-  if (!isTRUE(ll_relative) && !isFALSE(ll_relative)) {
-    stop("'ll_relative' must be 'TRUE' or 'FALSE'.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (checkmate::test_flag(ll_relative)) {
+      TRUE
+    } else {
+      "'ll_relative' must be 'TRUE' or 'FALSE'."
+    },
+    var_name = "ll_relative"
+  )
   max_ll_absolute <- max(lls, na.rm = TRUE)
   if (ll_relative) {
     lls <- lls - max_ll_absolute
@@ -219,9 +258,9 @@ plot_ll <- function(lls, ll_relative = TRUE) {
 #' @description
 #' This function visualizes the pseudo residuals.
 #'
-#' @param residuals
+#' @param residuals \[`fHMM_residuals`\]\cr
 #' An object of class \code{fHMM_residuals}.
-#' @param hierarchy
+#' @param hierarchy \[`logical(1)`\]\cr
 #' The element \code{controls$hierarchy}.
 #'
 #' @return
@@ -231,8 +270,11 @@ plot_ll <- function(lls, ll_relative = TRUE) {
 
 plot_pr <- function(residuals, hierarchy) {
 
-  ### check input
-  stopifnot(inherits(residuals, "fHMM_residuals"))
+  ### check inputs
+  oeli::input_check_response(
+    check = checkmate::check_class(residuals, "fHMM_residuals"),
+    var_name = "residuals"
+  )
 
   ### reset of 'par' settings
   oldpar <- par(no.readonly = TRUE)
@@ -315,12 +357,12 @@ plot_pr <- function(residuals, hierarchy) {
 #' @description
 #' This function plots the estimated state-dependent distributions.
 #'
-#' @param est
+#' @param est \[`fHMM_parameters`\]\cr
 #' An object of class \code{fHMM_parameters} with estimated parameters.
-#' @param true
+#' @param true \[`NULL` | `fHMM_parameters`\]\cr
 #' Either \code{NULL} or an object of class \code{fHMM_parameters} with true
 #' parameters.
-#' @param controls
+#' @param controls \[`fHMM_controls`\]\cr
 #' An object of class \code{fHMM_controls}.
 #' @inheritParams plot.fHMM_model
 #'
@@ -331,11 +373,27 @@ plot_pr <- function(residuals, hierarchy) {
 
 plot_sdds <- function(est, true = NULL, controls, colors) {
 
-  ### check input
-  stopifnot(inherits(est, "fHMM_parameters"))
-  stopifnot(is.null(true) || inherits(true, "fHMM_parameters"))
-  stopifnot(inherits(controls, "fHMM_controls"))
-  stopifnot(inherits(colors, "fHMM_colors"))
+  ### check inputs
+  oeli::input_check_response(
+    check = checkmate::check_class(est, "fHMM_parameters"),
+    var_name = "est"
+  )
+  oeli::input_check_response(
+    check = if (is.null(true) || inherits(true, "fHMM_parameters")) {
+      TRUE
+    } else {
+      "'true' must be NULL or of class 'fHMM_parameters'."
+    },
+    var_name = "true"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_class(controls, "fHMM_controls"),
+    var_name = "controls"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_class(colors, "fHMM_colors"),
+    var_name = "colors"
+  )
 
   ### reset of 'par' settings
   oldpar <- graphics::par(no.readonly = TRUE)
@@ -509,9 +567,9 @@ plot_sdds <- function(est, true = NULL, controls, colors) {
 #' @description
 #' This function visualizes the data time series.
 #'
-#' @param data
+#' @param data \[`fHMM_data`\]\cr
 #' An object of class \code{fHMM_data}.
-#' @param decoding
+#' @param decoding \[`NULL` | `numeric()` | `matrix()`\]\cr
 #' Either \code{NULL} or an object of class \code{fHMM_decoding}.
 #' @inheritParams plot.fHMM_model
 #' 

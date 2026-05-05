@@ -4,16 +4,16 @@
 #' This helper function computes lengths of fine-scale chunks in the 
 #' hierarchical case.
 #'
-#' @param horizon
+#' @param horizon \[`integer(2)`\]\cr
 #' The element \code{controls$horizon}, i.e., an integer vector of length 2,
 #' where the second entry can be \code{NA_integer_}.
-#' @param period
+#' @param period \[`character(1)`\]\cr
 #' The element \code{controls$period}, i.e. one of \code{"w"},
 #' \code{"m"}, \code{"q"}, or \code{"y"}.
-#' @param dates
+#' @param dates \[`NULL` | `character()`\]\cr
 #' A \code{character} vector of dates of empirical fine-scale data (if any).
 #' By default, \code{dates = NULL}.
-#' @param seed
+#' @param seed \[`NULL` | `integer(1)`\]\cr
 #' Set a seed for the simulation of flexible chunk lengths.
 #' By default, \code{seed = NULL} (i.e., no seed).
 #'

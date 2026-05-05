@@ -10,7 +10,7 @@
 #'
 #' @inheritParams set_controls
 #' 
-#' @param Gamma,Gamma_star
+#' @param Gamma,Gamma_star \[`NULL` | `matrix()` | `list()`\]\cr
 #' A transition probability \code{matrix}.
 #' 
 #' It should have dimension \code{states[1]}.
@@ -19,7 +19,7 @@
 #' matrices. The \code{list} must be of length \code{states[1]}.
 #' Each transition probability matrix must be of dimension \code{states[2]}.
 #' 
-#' @param mu,mu_star
+#' @param mu,mu_star \[`NULL` | `numeric()` | `list()`\]\cr
 #' A \code{numeric} vector of expected values for the state-dependent 
 #' distribution in the different states.
 #' 
@@ -31,7 +31,7 @@
 #' expectations. The \code{list} must be of length \code{states[1]}.
 #' Each \code{vector} must be of length \code{states[2]}.
 #' 
-#' @param sigma,sigma_star
+#' @param sigma,sigma_star \[`NULL` | `numeric()` | `list()`\]\cr
 #' A positive \code{numeric} vector of standard deviations for the 
 #' state-dependent distribution in the different states. 
 #' 
@@ -41,7 +41,7 @@
 #' standard deviations. The \code{list} must be of length \code{states[1]}.
 #' Each vector must be of length \code{states[2]}.
 #' 
-#' @param df,df_star
+#' @param df,df_star \[`NULL` | `numeric()` | `list()`\]\cr
 #' A positive \code{numeric} vector of degrees of freedom for the 
 #' state-dependent distribution in the different states. 
 #' 
@@ -54,7 +54,7 @@
 #' Each vector must be of length \code{states[2]}.
 #' Only relevant in case of a fine-scale state-dependent t-distribution.
 #' 
-#' @param scale_par
+#' @param scale_par \[`numeric(2)`\]\cr
 #' A positive \code{numeric} vector of length two, containing scales for sampled
 #' expectations and standard deviations. 
 #' 
@@ -62,10 +62,10 @@
 #' \code{mu} and \code{sigma}, the second entry is the scale for
 #' \code{mu_star} and \code{sigma_star} (if any). 
 #' 
-#' @param seed
+#' @param seed \[`NULL` | `integer(1)`\]\cr
 #' Sets a seed for the sampling of parameters.
 #' 
-#' @param check_controls
+#' @param check_controls \[`logical(1)`\]\cr
 #' Either \code{TRUE} to check the defined controls or \code{FALSE} to not check
 #' them (which saves computation time), else.
 #'
@@ -104,12 +104,14 @@ fHMM_parameters <- function(
       class = "fHMM_controls"
     )
   }
-  if (!checkmate::test_numeric(scale_par, len = 2, lower = 0)) {
-    stop(
-      "'scale_par' must be a positive numeric vector of length 2.",
-      call. = FALSE
-    )
-  }
+  oeli::input_check_response(
+    check = if (checkmate::test_numeric(scale_par, len = 2, lower = 0)) {
+      TRUE
+    } else {
+      "'scale_par' must be a positive numeric vector of length 2."
+    },
+    var_name = "scale_par"
+  )
   
   ### extract specifications
   M <- controls[["states"]][1] # number of (coarse-scale) states
@@ -262,118 +264,146 @@ fHMM_parameters <- function(
   ### check parameters
   oeli::assert_transition_probability_matrix(Gamma, dim = M)
   if (sdds[[1]]$name %in% c("t", "normal", "lognormal")) {
-    if (!checkmate::test_numeric(mu, len = M)) {
-      stop(
-        paste("'mu' must be a numeric vector of length", M),
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (checkmate::test_numeric(mu, len = M)) {
+        TRUE
+      } else {
+        paste("'mu' must be a numeric vector of length", M)
+      },
+      var_name = "mu"
+    )
   }
   if (sdds[[1]]$name %in% c("gamma", "poisson")) {
-    if (!checkmate::test_numeric(mu, len = M) || any(mu <= 0)) {
-      stop(
-        paste("'mu' must be a positive numeric vector of length", M),
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (checkmate::test_numeric(mu, len = M) && all(mu > 0)) {
+        TRUE
+      } else {
+        paste("'mu' must be a positive numeric vector of length", M)
+      },
+      var_name = "mu"
+    )
   }
   if (sdds[[1]]$name != "poisson") {
-    if (!checkmate::test_numeric(sigma, len = M, lower = 0)) {
-      stop(
-        paste("'sigma' must be a positive numeric vector of length", M),
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (checkmate::test_numeric(sigma, len = M, lower = 0)) {
+        TRUE
+      } else {
+        paste("'sigma' must be a positive numeric vector of length", M)
+      },
+      var_name = "sigma"
+    )
   }
   if (sdds[[1]]$name == "t") {
-    if (!checkmate::test_numeric(df, len = M, lower = 0)) {
-      stop(
-        paste("'df' must be a positive numeric vector of length", M),
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (checkmate::test_numeric(df, len = M, lower = 0)) {
+        TRUE
+      } else {
+        paste("'df' must be a positive numeric vector of length", M)
+      },
+      var_name = "df"
+    )
   }
   if (controls[["hierarchy"]]) {
-    if (!is.list(Gamma_star) || length(Gamma_star) != M) {
-      stop(
-        paste("'Gamma_star' must be a list of length", M),
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (is.list(Gamma_star) && length(Gamma_star) == M) {
+        TRUE
+      } else {
+        paste("'Gamma_star' must be a list of length", M)
+      },
+      var_name = "Gamma_star"
+    )
     for (i in 1:M) {
       oeli::assert_transition_probability_matrix(
         Gamma_star[[i]], dim = N, .var.name = paste0("Gamma_star[[", i, "]]")
       )
     }
-    if (!is.list(mu_star) || length(mu_star) != M) {
-      stop(
-        paste("'mu_star' must be a list of length", M),
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (is.list(mu_star) && length(mu_star) == M) {
+        TRUE
+      } else {
+        paste("'mu_star' must be a list of length", M)
+      },
+      var_name = "mu_star"
+    )
     for (i in 1:M) {
       if (sdds[[2]]$name %in% c("t", "normal", "lognormal")) {
-        if (!checkmate::test_numeric(mu_star[[i]], len = N)) {
-          stop(
+        oeli::input_check_response(
+          check = if (checkmate::test_numeric(mu_star[[i]], len = N)) {
+            TRUE
+          } else {
             paste(
               "Element", i, "in 'mu_star' must be a numeric vector of",
               "length", N
-            ),
-            call. = FALSE
-          )
-        }
+            )
+          },
+          var_name = paste0("mu_star[[", i, "]]")
+        )
       }
       if (sdds[[2]]$name %in% c("gamma", "poisson")) {
-        if (
-          !checkmate::test_numeric(mu_star[[i]], len = N) ||
-            any(mu_star[[i]] <= 0)
-        ) {
-          stop(
+        oeli::input_check_response(
+          check = if (
+            checkmate::test_numeric(mu_star[[i]], len = N) &&
+              all(mu_star[[i]] > 0)
+          ) {
+            TRUE
+          } else {
             paste(
               "Element", i, "in 'mu_star' must be a positive numeric",
               "vector of length", N
-            ),
-            call. = FALSE
-          )
-        }
+            )
+          },
+          var_name = paste0("mu_star[[", i, "]]")
+        )
       }
     }
     if (sdds[[2]]$name != "poisson") {
-      if (!is.list(sigma_star) || length(sigma_star) != M) {
-        stop(
-          paste("'sigma_star' must be a list of length", M),
-          call. = FALSE
-        )
-      }
+      oeli::input_check_response(
+        check = if (is.list(sigma_star) && length(sigma_star) == M) {
+          TRUE
+        } else {
+          paste("'sigma_star' must be a list of length", M)
+        },
+        var_name = "sigma_star"
+      )
       for (i in 1:M) {
-        if (!checkmate::test_numeric(sigma_star[[i]], len = N, lower = 0)) {
-          stop(
+        oeli::input_check_response(
+          check = if (
+            checkmate::test_numeric(sigma_star[[i]], len = N, lower = 0)
+          ) {
+            TRUE
+          } else {
             paste(
               "Element", i, "in 'sigma_star' must be a positive numeric",
               "vector of length", N
-            ),
-            call. = FALSE
-          )
-        }
+            )
+          },
+          var_name = paste0("sigma_star[[", i, "]]")
+        )
       }
     }
     if (sdds[[2]]$name == "t") {
-      if (!is.list(df_star) || length(df_star) != M) {
-        stop(
-          paste("'df_star' must be a list of length", M),
-          call. = FALSE
-        )
-      }
+      oeli::input_check_response(
+        check = if (is.list(df_star) && length(df_star) == M) {
+          TRUE
+        } else {
+          paste("'df_star' must be a list of length", M)
+        },
+        var_name = "df_star"
+      )
       for (i in 1:M) {
-        if (!checkmate::test_numeric(df_star[[i]], len = N, lower = 0)) {
-          stop(
+        oeli::input_check_response(
+          check = if (
+            checkmate::test_numeric(df_star[[i]], len = N, lower = 0)
+          ) {
+            TRUE
+          } else {
             paste(
               "Element", i, "in 'df_star' must be a positive numeric",
               "vector of length", N
-            ),
-            call. = FALSE
-          )
-        }
+            )
+          },
+          var_name = paste0("df_star[[", i, "]]")
+        )
       }
     }
   }
@@ -446,7 +476,7 @@ fHMM_parameters <- function(
 }
 
 #' @rdname fHMM_parameters
-#' @param x
+#' @param x \[`fHMM_parameters`\]\cr
 #' An object of class \code{fHMM_parameters}.
 #' @param ...
 #' Currently not used.
@@ -473,11 +503,11 @@ print.fHMM_parameters <- function(x, ...) {
 #' 
 #' @inheritParams set_controls
 #' 
-#' @param par
+#' @param par \[`fHMM_parameters`\]\cr
 #' An object of class \code{\link{fHMM_parameters}}, which is a \code{list}
 #' of model parameters.
 #'
-#' @param parCon
+#' @param parCon \[`parCon`\]\cr
 #' An object of class \code{parCon}, which is a \code{numeric} \code{vector} 
 #' with identified (and constrained) model parameters in the following order:
 #' \enumerate{
@@ -489,7 +519,7 @@ print.fHMM_parameters <- function(x, ...) {
 #'         (if any)
 #' }
 #'
-#' @param parUncon
+#' @param parUncon \[`parUncon`\]\cr
 #' An object of class \code{parUncon}, which is a \code{numeric} \code{vector} 
 #' with identified and unconstrained model parameters in the following order:
 #' \enumerate{
@@ -501,11 +531,11 @@ print.fHMM_parameters <- function(x, ...) {
 #'         (if any)
 #' }
 #' 
-#' @param link
+#' @param link \[`logical(1)`\]\cr
 #' Either \code{TRUE} or \code{FALSE}, determining whether to apply the link
 #' function.
 #' 
-#' @param numerical_safeguard
+#' @param numerical_safeguard \[`logical(1)`\]\cr
 #' Either \code{TRUE} or \code{FALSE}, determining whether to apply the 
 #' following small corrections to boundary parameters to improve numerical 
 #' performance when calculating and optimizing the likelihood function:
@@ -513,21 +543,21 @@ print.fHMM_parameters <- function(x, ...) {
 #'   by \code{1e-3}
 #' - standard deviations and degrees of freedom are bounded above by \code{100}
 #' 
-#' @param dim
+#' @param dim \[`integer(1)`\]\cr
 #' An \code{integer}, the dimension of the transition probability matrix.
 #'
-#' @param gammasCon,gammasUncon
+#' @param gammasCon,gammasUncon \[`numeric()`\]\cr
 #' A vector of (un-) constrained non-diagonal transition probabilities.
-#' @param muCon,muUncon
+#' @param muCon,muUncon \[`numeric()`\]\cr
 #' A vector of (un-) constrained expected values.
-#' @param sigmaCon,sigmaUncon
+#' @param sigmaCon,sigmaUncon \[`numeric()`\]\cr
 #' A vector of (un-) constrained standard deviations.
-#' @param dfCon,dfUncon
+#' @param dfCon,dfUncon \[`numeric()`\]\cr
 #' A vector of (un-) constrained degrees of freedom.
 #' 
-#' @param prefix
+#' @param prefix \[`character(1)`\]\cr
 #' A \code{character} prefix for labeling the parameters.
-#' @param use_parameter_labels
+#' @param use_parameter_labels \[`logical(1)`\]\cr
 #' Either \code{TRUE} to label the parameters or \code{FALSE}, if not (this can
 #' save computation time).
 #' 
@@ -541,8 +571,14 @@ NULL
 #' @export
 
 par2parUncon <- function(par, controls, use_parameter_labels = TRUE) {
-  stopifnot(inherits(par, "fHMM_parameters"))
-  stopifnot(inherits(controls, "fHMM_controls"))
+  oeli::input_check_response(
+    check = checkmate::check_class(par, "fHMM_parameters"),
+    var_name = "par"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_class(controls, "fHMM_controls"),
+    var_name = "controls"
+  )
   sdds <- controls[["sdds"]]
   states <- controls[["states"]]
   parUncon <- Gamma2gammasUncon(
@@ -642,8 +678,14 @@ par2parUncon <- function(par, controls, use_parameter_labels = TRUE) {
 parUncon2parCon <- function(
     parUncon, controls, use_parameter_labels = TRUE, numerical_safeguard = FALSE
   ) {
-  stopifnot(inherits(parUncon, "parUncon"))
-  stopifnot(inherits(controls, "fHMM_controls"))
+  oeli::input_check_response(
+    check = checkmate::check_class(parUncon, "parUncon"),
+    var_name = "parUncon"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_class(controls, "fHMM_controls"),
+    var_name = "controls"
+  )
   sdds <- controls[["sdds"]]
   M <- controls[["states"]][1]
   parCon <- gammasUncon2gammasCon(
@@ -762,8 +804,14 @@ parCon2par <- function(parCon, controls, use_parameter_labels = TRUE) {
   
   parCon_tmp <- parCon
   
-  stopifnot(inherits(parCon, "parCon"))
-  stopifnot(inherits(controls, "fHMM_controls"))
+  oeli::input_check_response(
+    check = checkmate::check_class(parCon, "parCon"),
+    var_name = "parCon"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_class(controls, "fHMM_controls"),
+    var_name = "controls"
+  )
   sdds <- controls[["sdds"]]
   M <- controls[["states"]][1]
   Gamma <- gammasCon2Gamma(
@@ -857,8 +905,14 @@ parCon2par <- function(parCon, controls, use_parameter_labels = TRUE) {
 #' @export
 
 par2parCon <- function(par, controls, use_parameter_labels = TRUE) {
-  stopifnot(inherits(par, "fHMM_parameters"))
-  stopifnot(inherits(controls, "fHMM_controls"))
+  oeli::input_check_response(
+    check = checkmate::check_class(par, "fHMM_parameters"),
+    var_name = "par"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_class(controls, "fHMM_controls"),
+    var_name = "controls"
+  )
   parUncon2parCon(
     par2parUncon(par, controls, use_parameter_labels = use_parameter_labels), 
     controls,
@@ -872,8 +926,14 @@ par2parCon <- function(par, controls, use_parameter_labels = TRUE) {
 #' @export
 
 parCon2parUncon <- function(parCon, controls, use_parameter_labels = TRUE) { 
-  stopifnot(inherits(parCon, "parCon"))
-  stopifnot(inherits(controls, "fHMM_controls"))
+  oeli::input_check_response(
+    check = checkmate::check_class(parCon, "parCon"),
+    var_name = "parCon"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_class(controls, "fHMM_controls"),
+    var_name = "controls"
+  )
   par2parUncon(
     parCon2par(parCon, controls, use_parameter_labels = use_parameter_labels), 
     controls,
@@ -889,8 +949,14 @@ parCon2parUncon <- function(parCon, controls, use_parameter_labels = TRUE) {
 parUncon2par <- function(
     parUncon, controls, use_parameter_labels = TRUE, numerical_safeguard = FALSE
   ) {
-  stopifnot(inherits(parUncon, "parUncon"))
-  stopifnot(inherits(controls, "fHMM_controls"))
+  oeli::input_check_response(
+    check = checkmate::check_class(parUncon, "parUncon"),
+    var_name = "parUncon"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_class(controls, "fHMM_controls"),
+    var_name = "controls"
+  )
   parCon2par(
     parUncon2parCon(
       parUncon, controls, use_parameter_labels = use_parameter_labels,

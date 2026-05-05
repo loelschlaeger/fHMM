@@ -1,5 +1,7 @@
 # fHMM 1.4.3
 
+* Improved documentation of input types and input checks.
+
 * Small documentation fixes.
 
 * Removed renv.

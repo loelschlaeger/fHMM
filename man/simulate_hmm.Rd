@@ -17,12 +17,13 @@ simulate_hmm(
 )
 }
 \arguments{
-\item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
+\item{controls}{[\code{list()} | \code{fHMM_controls}]\cr
+Either a \code{list} or an object of class \code{fHMM_controls}.
 
 The \code{list} can contain the following elements, which are described
 in more detail below:
 \itemize{
-\item \code{hierarchy}, defines an hierarchical HMM,
+\item \code{hierarchy}, defines a hierarchical HMM,
 \item \code{states}, defines the number of states,
 \item \code{sdds}, defines the state-dependent distributions,
 \item \code{horizon}, defines the time horizon,
@@ -37,14 +38,16 @@ Unspecified parameters are set to their default values.
 Important: Specifications in \code{controls} always override individual
 specifications.}
 
-\item{hierarchy}{A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
+\item{hierarchy}{[\code{logical(1)}]\cr
+A \code{logical}, set to \code{TRUE} for a hierarchical HMM.
 
 If \code{hierarchy = TRUE}, some of the other controls must be specified for
 the coarse-scale and the fine-scale layer.
 
 By default, \code{hierarchy = FALSE}.}
 
-\item{states}{An \code{integer}, the number of states of the underlying Markov chain.
+\item{states}{[\code{integer(1)} | \code{integer(2)}]\cr
+An \code{integer}, the number of states of the underlying Markov chain.
 
 If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
 2. The first entry corresponds to the coarse-scale layer, while the second
@@ -53,7 +56,8 @@ entry corresponds to the fine-scale layer.
 By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
 
-\item{sdds}{A \code{character}, specifying the state-dependent distribution. One of
+\item{sdds}{[\code{character(1)} | \code{character(2)}]\cr
+A \code{character}, specifying the state-dependent distribution. One of
 \itemize{
 \item \code{"normal"} (the normal distribution),
 \item \code{"lognormal"} (the log-normal distribution),
@@ -80,7 +84,8 @@ corresponds to the fine-scale layer.
 By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
 \code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.}
 
-\item{horizon}{A \code{numeric}, specifying the length of the time horizon.
+\item{horizon}{[\code{integer(1)} | \code{integer(2)}]\cr
+A \code{numeric}, specifying the length of the time horizon.
 
 If \code{hierarchy = TRUE}, \code{horizon} must be a \code{vector} of length
 2. The first entry corresponds to the coarse-scale layer, while the second
@@ -93,7 +98,8 @@ If \code{data} is specified (i.e., not \code{NA}), the first entry of
 \code{horizon} is ignored and the (coarse-scale) time horizon is defined by
 available data.}
 
-\item{period}{Only relevant if \code{hierarchy = TRUE}.
+\item{period}{[\code{NA} | \code{character(1)}]\cr
+Only relevant if \code{hierarchy = TRUE}.
 
 In this case, a \code{character} which specifies a flexible, periodic
 fine-scale time horizon and can be one of
@@ -107,11 +113,13 @@ fine-scale time horizon and can be one of
 By default, \code{period = NA}. If \code{period} is not \code{NA}, it
 overrules \code{horizon[2]}.}
 
-\item{true_parameters}{An object of class \code{fHMM_parameters}, used as simulation parameters.
+\item{true_parameters}{[\code{NULL} | \code{fHMM_parameters}]\cr
+An object of class \code{fHMM_parameters}, used as simulation parameters.
 By default, \code{true_parameters = NULL}, i.e., sampled true parameters.}
 
-\item{seed}{Set a seed for the data simulation.
-No seed per default.}
+\item{seed}{[\code{NULL} | \code{integer(1)}]\cr
+Set a seed for the data simulation.
+No seed by default.}
 }
 \value{
 A \code{list} containing the following elements:

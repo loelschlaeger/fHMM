@@ -7,9 +7,11 @@
 reorder_states(x, state_order = "mean")
 }
 \arguments{
-\item{x}{An object of class \code{\link{fHMM_model}}.}
+\item{x}{[\code{fHMM_model}]\cr
+An object of class \code{\link{fHMM_model}}.}
 
-\item{state_order}{Either
+\item{state_order}{[\code{character(1)} | \code{numeric()} | \code{matrix()}]\cr
+Either
 \itemize{
 \item \code{"mean"}, in which case the states are ordered according to the means
 of the state-dependent distributions,

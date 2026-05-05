@@ -7,17 +7,22 @@
 \method{plot}{fHMM_data}(x, events = NULL, title = NULL, from = NULL, to = NULL, ...)
 }
 \arguments{
-\item{x}{An object of class \code{fHMM_data}.}
+\item{x}{[\code{fHMM_data}]\cr
+An object of class \code{fHMM_data}.}
 
-\item{events}{An object of class \code{\link{fHMM_events}}.}
+\item{events}{[\code{NULL} | \code{fHMM_events}]\cr
+An object of class \code{\link{fHMM_events}}.}
 
-\item{title}{Optionally a \code{character} for a custom title.}
+\item{title}{[\code{NULL} | \code{character(1)}]\cr
+Optionally a \code{character} for a custom title.}
 
-\item{from}{Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"},
+\item{from}{[\code{NULL} | \code{character(1)}]\cr
+Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"},
 setting the lower date bound for plotting.
 By default, \code{from = NULL}, i.e. no lower bound.}
 
-\item{to}{Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"},
+\item{to}{[\code{NULL} | \code{character(1)}]\cr
+Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"},
 setting the upper date bound for plotting.
 By default, \code{to = NULL}, i.e. no upper bound.}
 

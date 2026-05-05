@@ -4,7 +4,7 @@
 #' This helper function generates a set of initial values for the numerical
 #' optimization of the model likelihood function.
 #' 
-#' @param initial_estimate
+#' @param initial_estimate \[`NULL` | `parUncon`\]\cr
 #' Optionally defines an initial estimate for the numerical likelihood 
 #' optimization. Good initial estimates can improve the optimization process.
 #' Can be:
@@ -16,7 +16,7 @@
 #'   unconstrained model parameters), for example the estimate of a 
 #'   previously fitted model (i.e. the element \code{model$estimate}). 
 #'   
-#' @param seed
+#' @param seed \[`NULL` | `integer(1)`\]\cr
 #' Set a seed for the generation of initial values.
 #' No seed by default.
 #' 
@@ -33,11 +33,23 @@ get_initial_values <- function(
   ) {
   
   ### input checks
-  checkmate::assert_class(data, "fHMM_data")
-  checkmate::assert_number(ncluster)
-  checkmate::assert_flag(verbose)
+  oeli::input_check_response(
+    check = checkmate::check_class(data, "fHMM_data"),
+    var_name = "data"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_number(ncluster),
+    var_name = "ncluster"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_flag(verbose),
+    var_name = "verbose"
+  )
   controls <- data[["controls"]]
-  checkmate::assert_class(controls, "fHMM_controls")
+  oeli::input_check_response(
+    check = checkmate::check_class(controls, "fHMM_controls"),
+    var_name = "controls"
+  )
   runs <- controls[["fit"]][["runs"]]
   
   ### set seed

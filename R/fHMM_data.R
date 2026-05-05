@@ -4,21 +4,21 @@
 #' This function constructs an object of class \code{fHMM_data}, which contains
 #' the financial data for modeling.
 #' 
-#' @param dates
+#' @param dates \[`any`\]\cr
 #' The dates in the empirical case.
-#' @param time_points
+#' @param time_points \[`any`\]\cr
 #' The time points in the simulated case.
-#' @param markov_chain
+#' @param markov_chain \[`any`\]\cr
 #' The states in the simulated case.
-#' @param data
+#' @param data \[`any`\]\cr
 #' The data for modeling.
-#' @param time_series
+#' @param time_series \[`any`\]\cr
 #' The data before transformation.
-#' @param T_star
+#' @param T_star \[`NULL` | `integer()`\]\cr
 #' The fine-scale chunk sizes.
-#' @param controls
+#' @param controls \[`fHMM_controls`\]\cr
 #' The \code{fHMM_controls} object.
-#' @param true_parameters
+#' @param true_parameters \[`NULL` | `fHMM_parameters`\]\cr
 #' The \code{fHMM_parameters} object in the simulated case.
 #' 
 #' @return 
@@ -66,14 +66,14 @@ fHMM_data <- function(
 #' @description
 #' This function simulates or reads financial data for the \{fHMM\} package.
 #'
-#' @param controls
+#' @param controls \[`fHMM_controls`\]\cr
 #' An object of class \code{fHMM_controls}.
-#' @param true_parameters
+#' @param true_parameters \[`NULL` | `fHMM_parameters`\]\cr
 #' An object of class \code{fHMM_parameters}, used as simulation parameters.
 #' By default, \code{true_parameters = NULL}, i.e., sampled true parameters.
-#' @param seed
+#' @param seed \[`NULL` | `integer(1)`\]\cr
 #' Set a seed for the data simulation.
-#' No seed per default.
+#' No seed by default.
 #'
 #' @return
 #' An object of class \code{\link{fHMM_data}}.
@@ -89,19 +89,28 @@ fHMM_data <- function(
 prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
 
   ### check inputs
-  if (!inherits(controls,"fHMM_controls")) {
-    stop("'controls' is not of class 'fHMM_controls'.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (inherits(controls, "fHMM_controls")) {
+      TRUE
+    } else {
+      "'controls' is not of class 'fHMM_controls'."
+    },
+    var_name = "controls"
+  )
 
   ### process data
   if (controls[["simulated"]]) {
     if (is.null(true_parameters)) {
       true_parameters <- fHMM_parameters(controls, seed = seed)
     }
-    if (!inherits(true_parameters,"fHMM_parameters")) {
-      stop("'true_parameters' is not of class 'fHMM_parameters'.", 
-           call. = FALSE)
-    }
+    oeli::input_check_response(
+      check = if (inherits(true_parameters, "fHMM_parameters")) {
+        TRUE
+      } else {
+        "'true_parameters' is not of class 'fHMM_parameters'."
+      },
+      var_name = "true_parameters"
+    )
     data <- simulate_hmm(
       controls = controls, true_parameters = true_parameters, seed = seed
     )
@@ -123,7 +132,7 @@ prepare_data <- function(controls, true_parameters = NULL, seed = NULL) {
 }
 
 #' @rdname fHMM_data
-#' @param x
+#' @param x \[`fHMM_data`\]\cr
 #' An object of class \code{fHMM_data}.
 #' @param ...
 #' Currently not used.
@@ -135,7 +144,7 @@ print.fHMM_data <- function(x, ...) {
 }
 
 #' @rdname fHMM_data
-#' @param object
+#' @param object \[`fHMM_data`\]\cr
 #' An object of class \code{fHMM_data}.
 #' @param ...
 #' Currently not used.

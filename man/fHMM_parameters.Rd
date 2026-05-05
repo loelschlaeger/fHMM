@@ -26,12 +26,13 @@ fHMM_parameters(
 \method{print}{fHMM_parameters}(x, ...)
 }
 \arguments{
-\item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
+\item{controls}{[\code{list()} | \code{fHMM_controls}]\cr
+Either a \code{list} or an object of class \code{fHMM_controls}.
 
 The \code{list} can contain the following elements, which are described
 in more detail below:
 \itemize{
-\item \code{hierarchy}, defines an hierarchical HMM,
+\item \code{hierarchy}, defines a hierarchical HMM,
 \item \code{states}, defines the number of states,
 \item \code{sdds}, defines the state-dependent distributions,
 \item \code{horizon}, defines the time horizon,
@@ -46,14 +47,16 @@ Unspecified parameters are set to their default values.
 Important: Specifications in \code{controls} always override individual
 specifications.}
 
-\item{hierarchy}{A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
+\item{hierarchy}{[\code{logical(1)}]\cr
+A \code{logical}, set to \code{TRUE} for a hierarchical HMM.
 
 If \code{hierarchy = TRUE}, some of the other controls must be specified for
 the coarse-scale and the fine-scale layer.
 
 By default, \code{hierarchy = FALSE}.}
 
-\item{states}{An \code{integer}, the number of states of the underlying Markov chain.
+\item{states}{[\code{integer(1)} | \code{integer(2)}]\cr
+An \code{integer}, the number of states of the underlying Markov chain.
 
 If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
 2. The first entry corresponds to the coarse-scale layer, while the second
@@ -62,7 +65,8 @@ entry corresponds to the fine-scale layer.
 By default, \code{states = 2} if \code{hierarchy = FALSE} and
 \code{states = c(2, 2)} if \code{hierarchy = TRUE}.}
 
-\item{sdds}{A \code{character}, specifying the state-dependent distribution. One of
+\item{sdds}{[\code{character(1)} | \code{character(2)}]\cr
+A \code{character}, specifying the state-dependent distribution. One of
 \itemize{
 \item \code{"normal"} (the normal distribution),
 \item \code{"lognormal"} (the log-normal distribution),
@@ -89,7 +93,8 @@ corresponds to the fine-scale layer.
 By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
 \code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.}
 
-\item{Gamma, Gamma_star}{A transition probability \code{matrix}.
+\item{Gamma, Gamma_star}{[\code{NULL} | \code{matrix()} | \code{list()}]\cr
+A transition probability \code{matrix}.
 
 It should have dimension \code{states[1]}.
 
@@ -97,7 +102,8 @@ It should have dimension \code{states[1]}.
 matrices. The \code{list} must be of length \code{states[1]}.
 Each transition probability matrix must be of dimension \code{states[2]}.}
 
-\item{mu, mu_star}{A \code{numeric} vector of expected values for the state-dependent
+\item{mu, mu_star}{[\code{NULL} | \code{numeric()} | \code{list()}]\cr
+A \code{numeric} vector of expected values for the state-dependent
 distribution in the different states.
 
 For the gamma- or Poisson-distribution, \code{mu} must be positive.
@@ -108,7 +114,8 @@ It should have length \code{states[1]}.
 expectations. The \code{list} must be of length \code{states[1]}.
 Each \code{vector} must be of length \code{states[2]}.}
 
-\item{sigma, sigma_star}{A positive \code{numeric} vector of standard deviations for the
+\item{sigma, sigma_star}{[\code{NULL} | \code{numeric()} | \code{list()}]\cr
+A positive \code{numeric} vector of standard deviations for the
 state-dependent distribution in the different states.
 
 It should have length \code{states[1]}.
@@ -117,7 +124,8 @@ It should have length \code{states[1]}.
 standard deviations. The \code{list} must be of length \code{states[1]}.
 Each vector must be of length \code{states[2]}.}
 
-\item{df, df_star}{A positive \code{numeric} vector of degrees of freedom for the
+\item{df, df_star}{[\code{NULL} | \code{numeric()} | \code{list()}]\cr
+A positive \code{numeric} vector of degrees of freedom for the
 state-dependent distribution in the different states.
 
 It should have length \code{states[1]}.
@@ -129,19 +137,23 @@ degrees of freedom. The \code{list} must be of length \code{states[1]}.
 Each vector must be of length \code{states[2]}.
 Only relevant in case of a fine-scale state-dependent t-distribution.}
 
-\item{scale_par}{A positive \code{numeric} vector of length two, containing scales for sampled
+\item{scale_par}{[\code{numeric(2)}]\cr
+A positive \code{numeric} vector of length two, containing scales for sampled
 expectations and standard deviations.
 
 The first entry is the scale for
 \code{mu} and \code{sigma}, the second entry is the scale for
 \code{mu_star} and \code{sigma_star} (if any).}
 
-\item{seed}{Sets a seed for the sampling of parameters.}
+\item{seed}{[\code{NULL} | \code{integer(1)}]\cr
+Sets a seed for the sampling of parameters.}
 
-\item{check_controls}{Either \code{TRUE} to check the defined controls or \code{FALSE} to not check
+\item{check_controls}{[\code{logical(1)}]\cr
+Either \code{TRUE} to check the defined controls or \code{FALSE} to not check
 them (which saves computation time), else.}
 
-\item{x}{An object of class \code{fHMM_parameters}.}
+\item{x}{[\code{fHMM_parameters}]\cr
+An object of class \code{fHMM_parameters}.}
 
 \item{...}{Currently not used.}
 }

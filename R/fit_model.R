@@ -8,15 +8,15 @@
 #' Multiple optimization runs starting from different initial values are 
 #' computed in parallel if \code{ncluster > 1}.
 #'
-#' @param data
+#' @param data \[`fHMM_data`\]\cr
 #' An object of class \code{\link{fHMM_data}}.
 #' 
-#' @param ncluster
+#' @param ncluster \[`integer(1)`\]\cr
 #' Set the number of clusters for parallel optimization runs to reduce 
 #' optimization time.
 #' By default, \code{ncluster = 1} (no clustering).
 #' 
-#' @param verbose
+#' @param verbose \[`logical(1)`\]\cr
 #' Set to \code{TRUE} to print progress messages.
 #' 
 #' @inheritParams set_controls
@@ -64,15 +64,30 @@ fit_model <- function(
 ) {
   
   ### check inputs
-  if (!inherits(data, "fHMM_data")) {
-    stop("'data' is not of class 'fHMM_data'.", call. = FALSE)
-  }
-  if (!checkmate::test_count(ncluster, positive = TRUE)) {
-    stop("'ncluster' must be a positive integer.", call. = FALSE)
-  }
-  if (!checkmate::test_flag(verbose)) {
-    stop("'verbose' must be either TRUE or FALSE.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (inherits(data, "fHMM_data")) {
+      TRUE
+    } else {
+      "'data' is not of class 'fHMM_data'."
+    },
+    var_name = "data"
+  )
+  oeli::input_check_response(
+    check = if (checkmate::test_count(ncluster, positive = TRUE)) {
+      TRUE
+    } else {
+      "'ncluster' must be a positive integer."
+    },
+    var_name = "ncluster"
+  )
+  oeli::input_check_response(
+    check = if (checkmate::test_flag(verbose)) {
+      TRUE
+    } else {
+      "'verbose' must be either TRUE or FALSE."
+    },
+    var_name = "verbose"
+  )
   data[["controls"]] <- set_controls(
     controls = controls,
     hierarchy = data[["controls"]][["hierarchy"]],

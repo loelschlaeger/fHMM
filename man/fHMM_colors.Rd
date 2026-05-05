@@ -7,10 +7,12 @@
 fHMM_colors(controls, colors = NULL)
 }
 \arguments{
-\item{controls}{An object of class \code{fHMM_controls}.
+\item{controls}{[\code{fHMM_controls}]\cr
+An object of class \code{fHMM_controls}.
 It can be created with \code{\link{set_controls}}.}
 
-\item{colors}{Either \code{NULL} (default) or a \code{character} vector of color names or
+\item{colors}{[\code{NULL} | \code{character()}]\cr
+Either \code{NULL} (default) or a \code{character} vector of color names or
 hexadecimal RGB triplets.}
 }
 \value{

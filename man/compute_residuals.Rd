@@ -7,9 +7,11 @@
 compute_residuals(x, verbose = TRUE)
 }
 \arguments{
-\item{x}{An object of class \code{\link{fHMM_model}}.}
+\item{x}{[\code{fHMM_model}]\cr
+An object of class \code{\link{fHMM_model}}.}
 
-\item{verbose}{Set to \code{TRUE} (default) to print progress messages.}
+\item{verbose}{[\code{logical(1)}]\cr
+Set to \code{TRUE} (default) to print progress messages.}
 }
 \value{
 An object of class \code{\link{fHMM_model}} with residuals included.

@@ -13,18 +13,23 @@ get_initial_values(
 )
 }
 \arguments{
-\item{data}{An object of class \code{\link{fHMM_data}}.}
+\item{data}{[\code{fHMM_data}]\cr
+An object of class \code{\link{fHMM_data}}.}
 
-\item{ncluster}{Set the number of clusters for parallel optimization runs to reduce
+\item{ncluster}{[\code{integer(1)}]\cr
+Set the number of clusters for parallel optimization runs to reduce
 optimization time.
 By default, \code{ncluster = 1} (no clustering).}
 
-\item{seed}{Set a seed for the generation of initial values.
+\item{seed}{[\code{NULL} | \code{integer(1)}]\cr
+Set a seed for the generation of initial values.
 No seed by default.}
 
-\item{verbose}{Set to \code{TRUE} to print progress messages.}
+\item{verbose}{[\code{logical(1)}]\cr
+Set to \code{TRUE} to print progress messages.}
 
-\item{initial_estimate}{Optionally defines an initial estimate for the numerical likelihood
+\item{initial_estimate}{[\code{NULL} | \code{parUncon}]\cr
+Optionally defines an initial estimate for the numerical likelihood
 optimization. Good initial estimates can improve the optimization process.
 Can be:
 \itemize{

@@ -10,6 +10,35 @@
 
 Fitting (hierarchical) hidden Markov models to financial data via maximum likelihood estimation. See Oelschläger, L. and Adam, T. "Detecting Bearish and Bullish Markets in Financial Time Series Using Hierarchical Hidden Markov Models" (2021, Statistical Modelling) \doi{10.1177/1471082X211034048} for a reference on the method. A user guide is provided by the accompanying software paper "fHMM: Hidden Markov Models for Financial Time Series in R", Oelschläger, L., Adam, T., and Michels, R. (2024, Journal of Statistical Software) \doi{10.18637/jss.v109.i09}.
 }
+\examples{
+### 2-state HMM with normal distributions
+
+# set specifications
+controls <- set_controls(
+  states = 2, sdds = "normal", horizon = 100, runs = 10
+)
+
+# define parameters
+parameters <- fHMM_parameters(controls, mu = c(-1, 1), seed = 1)
+
+# sample data
+data <- prepare_data(controls, true_parameter = parameters, seed = 1)
+
+# fit model
+model <- fit_model(data, seed = 1)
+
+# inspect fit
+summary(model)
+plot(model, "sdds")
+
+# decode states
+model <- decode_states(model)
+plot(model, "ts")
+
+# predict
+predict(model, ahead = 5)
+
+}
 \seealso{
 Useful links:
 \itemize{

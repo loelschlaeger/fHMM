@@ -33,12 +33,14 @@ compare_models <- function(...) {
 
   ### check if models are of class "fHMM_model"
   for (i in seq_len(length(models))) {
-    if (!inherits(models[[i]],"fHMM_model")) {
-      stop(
-        paste0("Input '", model_names[i], "' is not of class 'fHMM_model'."),
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (inherits(models[[i]], "fHMM_model")) {
+        TRUE
+      } else {
+        paste0("Input '", model_names[i], "' is not of class 'fHMM_model'.")
+      },
+      var_name = model_names[i]
+    )
   }
 
   ### check if data is the same for each model

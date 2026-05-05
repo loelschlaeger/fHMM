@@ -105,15 +105,17 @@ gammasUncon2gammasCon(
 )
 }
 \arguments{
-\item{par}{An object of class \code{\link{fHMM_parameters}}, which is a \code{list}
+\item{par}{[\code{fHMM_parameters}]\cr
+An object of class \code{\link{fHMM_parameters}}, which is a \code{list}
 of model parameters.}
 
-\item{controls}{Either a \code{list} or an object of class \code{fHMM_controls}.
+\item{controls}{[\code{list()} | \code{fHMM_controls}]\cr
+Either a \code{list} or an object of class \code{fHMM_controls}.
 
 The \code{list} can contain the following elements, which are described
 in more detail below:
 \itemize{
-\item \code{hierarchy}, defines an hierarchical HMM,
+\item \code{hierarchy}, defines a hierarchical HMM,
 \item \code{states}, defines the number of states,
 \item \code{sdds}, defines the state-dependent distributions,
 \item \code{horizon}, defines the time horizon,
@@ -128,10 +130,12 @@ Unspecified parameters are set to their default values.
 Important: Specifications in \code{controls} always override individual
 specifications.}
 
-\item{use_parameter_labels}{Either \code{TRUE} to label the parameters or \code{FALSE}, if not (this can
+\item{use_parameter_labels}{[\code{logical(1)}]\cr
+Either \code{TRUE} to label the parameters or \code{FALSE}, if not (this can
 save computation time).}
 
-\item{parUncon}{An object of class \code{parUncon}, which is a \code{numeric} \code{vector}
+\item{parUncon}{[\code{parUncon}]\cr
+An object of class \code{parUncon}, which is a \code{numeric} \code{vector}
 with identified and unconstrained model parameters in the following order:
 \enumerate{
 \item non-diagonal transition probabilities \code{gammasUncon}
@@ -142,7 +146,8 @@ with identified and unconstrained model parameters in the following order:
 (if any)
 }}
 
-\item{numerical_safeguard}{Either \code{TRUE} or \code{FALSE}, determining whether to apply the
+\item{numerical_safeguard}{[\code{logical(1)}]\cr
+Either \code{TRUE} or \code{FALSE}, determining whether to apply the
 following small corrections to boundary parameters to improve numerical
 performance when calculating and optimizing the likelihood function:
 \itemize{
@@ -151,7 +156,8 @@ by \code{1e-3}
 \item standard deviations and degrees of freedom are bounded above by \code{100}
 }}
 
-\item{parCon}{An object of class \code{parCon}, which is a \code{numeric} \code{vector}
+\item{parCon}{[\code{parCon}]\cr
+An object of class \code{parCon}, which is a \code{numeric} \code{vector}
 with identified (and constrained) model parameters in the following order:
 \enumerate{
 \item non-diagonal transition probabilities \code{gammasCon}
@@ -162,20 +168,27 @@ with identified (and constrained) model parameters in the following order:
 (if any)
 }}
 
-\item{muCon, muUncon}{A vector of (un-) constrained expected values.}
+\item{muCon, muUncon}{[\code{numeric()}]\cr
+A vector of (un-) constrained expected values.}
 
-\item{link}{Either \code{TRUE} or \code{FALSE}, determining whether to apply the link
+\item{link}{[\code{logical(1)}]\cr
+Either \code{TRUE} or \code{FALSE}, determining whether to apply the link
 function.}
 
-\item{prefix}{A \code{character} prefix for labeling the parameters.}
+\item{prefix}{[\code{character(1)}]\cr
+A \code{character} prefix for labeling the parameters.}
 
-\item{sigmaCon, sigmaUncon}{A vector of (un-) constrained standard deviations.}
+\item{sigmaCon, sigmaUncon}{[\code{numeric()}]\cr
+A vector of (un-) constrained standard deviations.}
 
-\item{dfCon, dfUncon}{A vector of (un-) constrained degrees of freedom.}
+\item{dfCon, dfUncon}{[\code{numeric()}]\cr
+A vector of (un-) constrained degrees of freedom.}
 
-\item{gammasCon, gammasUncon}{A vector of (un-) constrained non-diagonal transition probabilities.}
+\item{gammasCon, gammasUncon}{[\code{numeric()}]\cr
+A vector of (un-) constrained non-diagonal transition probabilities.}
 
-\item{dim}{An \code{integer}, the dimension of the transition probability matrix.}
+\item{dim}{[\code{integer(1)}]\cr
+An \code{integer}, the dimension of the transition probability matrix.}
 }
 \value{
 For \code{par2parUncon}: a vector of unconstrained model parameters.

@@ -7,13 +7,13 @@
 #' See the [vignette on controls](https://loelschlaeger.de/fHMM/articles/) 
 #' for more details.
 #' 
-#' @param controls
+#' @param controls \[`list()` | `fHMM_controls`\]\cr
 #' Either a \code{list} or an object of class \code{fHMM_controls}.
 #'
 #' The \code{list} can contain the following elements, which are described 
 #' in more detail below:
 #' \itemize{
-#'   \item \code{hierarchy}, defines an hierarchical HMM,
+#'   \item \code{hierarchy}, defines a hierarchical HMM,
 #'   \item \code{states}, defines the number of states,
 #'   \item \code{sdds}, defines the state-dependent distributions,
 #'   \item \code{horizon}, defines the time horizon,
@@ -28,15 +28,15 @@
 #' Important: Specifications in \code{controls} always override individual 
 #' specifications.
 #' 
-#' @param hierarchy
-#' A \code{logical}, set to \code{TRUE} for an hierarchical HMM.
+#' @param hierarchy \[`logical(1)`\]\cr
+#' A \code{logical}, set to \code{TRUE} for a hierarchical HMM.
 #'
 #' If \code{hierarchy = TRUE}, some of the other controls must be specified for
 #' the coarse-scale and the fine-scale layer.
 #' 
 #' By default, \code{hierarchy = FALSE}.
 #' 
-#' @param states
+#' @param states \[`integer(1)` | `integer(2)`\]\cr
 #' An \code{integer}, the number of states of the underlying Markov chain.
 #' 
 #' If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length 
@@ -46,7 +46,7 @@
 #' By default, \code{states = 2} if \code{hierarchy = FALSE} and 
 #' \code{states = c(2, 2)} if \code{hierarchy = TRUE}.
 #'
-#' @param sdds
+#' @param sdds \[`character(1)` | `character(2)`\]\cr
 #' A \code{character}, specifying the state-dependent distribution. One of 
 #' \itemize{
 #'   \item \code{"normal"} (the normal distribution),
@@ -74,7 +74,7 @@
 #' By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and 
 #' \code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.
 #'
-#' @param horizon
+#' @param horizon \[`integer(1)` | `integer(2)`\]\cr
 #' A \code{numeric}, specifying the length of the time horizon. 
 #' 
 #' If \code{hierarchy = TRUE}, \code{horizon} must be a \code{vector} of length 
@@ -88,7 +88,7 @@
 #' \code{horizon} is ignored and the (coarse-scale) time horizon is defined by
 #' available data.
 #'
-#' @param period
+#' @param period \[`NA` | `character(1)`\]\cr
 #' Only relevant if \code{hierarchy = TRUE}.
 #' 
 #' In this case, a \code{character} which specifies a flexible, periodic 
@@ -103,7 +103,7 @@
 #' By default, \code{period = NA}. If \code{period} is not \code{NA}, it
 #' overrules \code{horizon[2]}.
 #'
-#' @param data
+#' @param data \[`NA` | `list()`\]\cr
 #' Either \code{NA}, in which case data is simulated (the default), or a 
 #' \code{list} of controls specifying the empirical data set.
 #' 
@@ -124,7 +124,7 @@
 #' 
 #' Specifications in \code{data} override individual specifications.
 #'
-#' @param file
+#' @param file \[`data.frame` | `character()` | `list()`\]\cr
 #' A \code{data.frame} with data and dates for modeling.
 #' 
 #' If \code{hierarchy = TRUE}, \code{file} can be a \code{list} of 
@@ -136,7 +136,7 @@
 #' Alternatively, it can be a \code{character} (of length two), the path to a 
 #' .csv-file with financial data.
 #' 
-#' @param date_column
+#' @param date_column \[`character(1)` | `character(2)`\]\cr
 #' A \code{character}, the name of the column in \code{file} with dates. 
 #' 
 #' If \code{hierarchy = TRUE} and \code{file} is a \code{list} of two
@@ -146,7 +146,7 @@
 #' 
 #' By default, \code{date_column = "Date"}.
 #' 
-#' @param data_column
+#' @param data_column \[`character(1)` | `character(2)`\]\cr
 #' A \code{character}, the name of the column in \code{file} with observations. 
 #'
 #' If \code{hierarchy = TRUE}, \code{data_column} must be a \code{vector} of 
@@ -156,15 +156,15 @@
 #' By default, \code{data_column = "Close"} if \code{hierarchy = FALSE} and
 #' \code{data_column = c("Close", "Close")} if \code{hierarchy = TRUE}. 
 #' 
-#' @param from
+#' @param from \[`NA` | `character(1)`\]\cr
 #' A \code{character} of the format \code{"YYYY-MM-DD"}, setting a lower 
 #' date limit. No lower limit if \code{from = NA} (default). 
 #'
-#' @param to
+#' @param to \[`NA` | `character(1)`\]\cr
 #' A \code{character} of the format \code{"YYYY-MM-DD"}, setting an upper
 #' date limit. No lower limit if \code{to = NA} (default). 
 #'
-#' @param logreturns
+#' @param logreturns \[`logical(1)` | `logical(2)`\]\cr
 #' A \code{logical}, if \code{TRUE} the data is transformed to log-returns. 
 #'
 #' If \code{hierarchy = TRUE}, \code{logreturns} must be a \code{vector} of 
@@ -174,7 +174,7 @@
 #' By default, \code{logreturns = FALSE} if \code{hierarchy = FALSE} and
 #' \code{logreturns = c(FALSE, FALSE)} if \code{hierarchy = TRUE}. 
 #'
-#' @param merge
+#' @param merge \[`function`\]\cr
 #' Only relevant if \code{hierarchy = TRUE}. 
 #' 
 #' In this case, a \code{function}
@@ -191,7 +191,7 @@
 #'   the relative change of the first to the last fine-scale observation.
 #' } 
 #'
-#' @param fit
+#' @param fit \[`list()`\]\cr
 #' A \code{list} of controls specifying the model fitting.
 #' 
 #' The \code{list} can contain the following elements, which are described 
@@ -211,14 +211,14 @@
 #' 
 #' Specifications in \code{fit} override individual specifications.
 #' 
-#' @param runs
+#' @param runs \[`integer(1)`\]\cr
 #' An \code{integer}, setting the number of randomly initialized 
 #' optimization runs of the model likelihood from which the best one is selected
 #' as the final model.
 #'
 #' By default, \code{runs = 10}.
 #'
-#' @param origin
+#' @param origin \[`logical(1)`\]\cr
 #' Only relevant for simulated data, i.e., if the \code{data} control is 
 #' \code{NA}. 
 #'
@@ -228,37 +228,37 @@
 #'
 #' By default, \code{origin = FALSE}.
 #'
-#' @param accept
+#' @param accept \[`integer()` | `"all"`\]\cr
 #' An \code{integer} (vector), specifying which optimization runs are 
 #' accepted based on the output code of \code{\link[stats]{nlm}}. 
 #' 
 #' By default, \code{accept = 1:3}.
 #'
-#' @param gradtol
+#' @param gradtol \[`numeric(1)`\]\cr
 #' A positive \code{numeric} value, specifying the gradient tolerance, passed
 #' on to \code{\link[stats]{nlm}}.
 #'
 #' By default, \code{gradtol = 0.01}.
 #'
-#' @param iterlim
+#' @param iterlim \[`integer(1)`\]\cr
 #' A positive \code{integer} value, specifying the iteration limit, passed on 
 #' to \code{\link[stats]{nlm}}.
 #'
 #' By default, \code{iterlim = 100}. 
 #'
-#' @param print.level
+#' @param print.level \[`0` | `1` | `2`\]\cr
 #' One of \code{0}, \code{1}, and \code{2} to control the verbosity of the 
 #' numerical likelihood optimization, passed on to \code{\link[stats]{nlm}}.
 #'
 #' By default, \code{print.level = 0}.
 #'
-#' @param steptol
+#' @param steptol \[`numeric(1)`\]\cr
 #' A positive \code{numeric} value, specifying the step tolerance, passed on
 #' to \code{\link[stats]{nlm}}.
 #'
 #' By default, \code{steptol = 0.01}.
 #' 
-#' @param x,object
+#' @param x,object \[`fHMM_controls`\]\cr
 #' An object of class \code{fHMM_controls}.
 #' 
 #' @param ...
@@ -336,12 +336,17 @@ set_controls <- function(
 ) {
   
   ### check that input 'controls' is a 'list'
-  if (!is.list(controls)) {
-    stop(
-      "Input 'controls' must be a list or an object of class 'fHMM_controls'.", 
-      call. = FALSE
-    )
-  }
+  oeli::input_check_response(
+    check = if (is.list(controls)) {
+      TRUE
+    } else {
+      paste(
+        "Input 'controls' must be a list or an object of class",
+        "'fHMM_controls'."
+      )
+    },
+    var_name = "controls"
+  )
   
   ### define names of all possible elements in 'controls'
   all_controls <- c(
@@ -367,12 +372,14 @@ set_controls <- function(
   }
   if (!is.null(controls[["data"]]) && 
       !checkmate::test_scalar_na(controls[["data"]])) {
-    if (!is.list(controls[["data"]])) {
-      stop(
-        "Element 'data' in input 'controls' must be a list.", 
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (is.list(controls[["data"]])) {
+        TRUE
+      } else {
+        "Element 'data' in input 'controls' must be a list."
+      },
+      var_name = "controls$data"
+    )
     redundant_data_controls <- setdiff(
       names(controls[["data"]]), c(data_controls, "data_inside")
     )
@@ -399,19 +406,23 @@ set_controls <- function(
       )
       data[redundant_data_controls] <- NULL
     }
-  } else if (!is.na(data)) {
-    stop(
-      "Control 'data' must be a list or NA.",
-      call. = FALSE
+  } else if (
+    !(length(data) == 1 && is.atomic(data) && is.na(data))
+  ) {
+    oeli::input_check_response(
+      check = "Control 'data' must be a list or NA.",
+      var_name = "data"
     )
   }
   if (!is.null(controls[["fit"]])) {
-    if (!is.list(controls[["fit"]])) {
-      stop(
-        "Element 'fit' in input 'controls' must be a list.", 
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (is.list(controls[["fit"]])) {
+        TRUE
+      } else {
+        "Element 'fit' in input 'controls' must be a list."
+      },
+      var_name = "controls$fit"
+    )
     redundant_fit_controls <- setdiff(names(controls[["fit"]]), fit_controls)
     if (length(redundant_fit_controls) > 0) {
       warning(
@@ -435,9 +446,9 @@ set_controls <- function(
       fit[redundant_fit_controls] <- NULL
     }
   } else {
-    stop(
-      "Control 'fit' must be a list.",
-      call. = FALSE
+    oeli::input_check_response(
+      check = "Control 'fit' must be a list.",
+      var_name = "fit"
     )
   }
   
@@ -447,9 +458,14 @@ set_controls <- function(
   } else {
     controls[["hierarchy"]] <- hierarchy
   }
-  if (!checkmate::test_flag(hierarchy)) {
-    stop("The control 'hierarchy' must be TRUE or FALSE.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (checkmate::test_flag(hierarchy)) {
+      TRUE
+    } else {
+      "The control 'hierarchy' must be TRUE or FALSE."
+    },
+    var_name = "hierarchy"
+  )
   
   ### set missing general controls
   if (!"states" %in% names(controls)) {
@@ -479,9 +495,14 @@ set_controls <- function(
     }
     if (!"file" %in% names(controls[["data"]])) {
       if (!"file" %in% names(data)) {
-        if (identical(file, NA)) {
-          stop("Please specify 'file'.", call. = FALSE)
-        }
+        oeli::input_check_response(
+          check = if (!identical(file, NA)) {
+            TRUE
+          } else {
+            "Please specify 'file'."
+          },
+          var_name = "file"
+        )
         controls[["data"]][["file"]] <- file
       } else {
         controls[["data"]][["file"]] <- data[["file"]]
@@ -594,29 +615,47 @@ set_controls <- function(
 validate_controls <- function(controls) {
   
   ### check that 'controls' is a list
-  if (!is.list(controls)) {
-    stop("Input 'controls' must be a list.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (is.list(controls)) {
+      TRUE
+    } else {
+      "Input 'controls' must be a list."
+    },
+    var_name = "controls"
+  )
   
   ### check general controls
   hierarchy <- controls[["hierarchy"]]
-  if (!checkmate::test_flag(hierarchy)) {
-    stop("The control 'hierarchy' must be TRUE or FALSE.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (checkmate::test_flag(hierarchy)) {
+      TRUE
+    } else {
+      "The control 'hierarchy' must be TRUE or FALSE."
+    },
+    var_name = "hierarchy"
+  )
   if (hierarchy) {
-    if (!checkmate::test_integerish(controls[["states"]], lower = 2, len = 2)) {
-      stop(
-        "The control 'states' must be a vector of integers greater or equal 2.",
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (
+        checkmate::test_integerish(controls[["states"]], lower = 2, len = 2)
+      ) {
+        TRUE
+      } else {
+        "The control 'states' must be a vector of integers greater or equal 2."
+      },
+      var_name = "states"
+    )
   } else {
-    if (!checkmate::test_integerish(controls[["states"]], lower = 2, len = 1)) {
-      stop(
-        "The control 'states' must be an integer greater or equal 2.",
-        call. = FALSE
-      )
-    }
+    oeli::input_check_response(
+      check = if (
+        checkmate::test_integerish(controls[["states"]], lower = 2, len = 1)
+      ) {
+        TRUE
+      } else {
+        "The control 'states' must be an integer greater or equal 2."
+      },
+      var_name = "states"
+    )
   }
   controls[["sdds"]] <- fHMM_sdds(
     sdds = controls[["sdds"]], 
@@ -638,36 +677,51 @@ validate_controls <- function(controls) {
     if (is.na(controls[["horizon"]][2])) {
       controls[["horizon"]][2] <- NA_integer_
     }
-    if (length(controls[["horizon"]]) != 2) {
-      stop("The control 'horizon' must be a vector of length 2.", call. = FALSE)
-    } 
+    oeli::input_check_response(
+      check = if (length(controls[["horizon"]]) == 2) {
+        TRUE
+      } else {
+        "The control 'horizon' must be a vector of length 2."
+      },
+      var_name = "horizon"
+    )
     if (!all(is.na(controls[["horizon"]]))) {
-      if (!checkmate::test_integerish(
-        controls[["horizon"]], lower = 1, len = 2
-      )) {
-        stop(
-          "The control 'horizon' must be an integer vector of length 2.",
-          call. = FALSE
-        )
-      }
+      oeli::input_check_response(
+        check = if (
+          checkmate::test_integerish(
+            controls[["horizon"]], lower = 1, len = 2
+          )
+        ) {
+          TRUE
+        } else {
+          "The control 'horizon' must be an integer vector of length 2."
+        },
+        var_name = "horizon"
+      )
     }
     if (!is.na(controls[["period"]])) {
-      if (!controls[["period"]] %in% c("w", "m", "q", "y")) {
-        stop(
-          "The control 'period' must be one of 'w', 'm', 'q', 'y'.",
-          call. = FALSE
-        )
-      }
+      oeli::input_check_response(
+        check = if (controls[["period"]] %in% c("w", "m", "q", "y")) {
+          TRUE
+        } else {
+          "The control 'period' must be one of 'w', 'm', 'q', 'y'."
+        },
+        var_name = "period"
+      )
       controls[["horizon"]][2] <- NA_integer_
     }
   } else {
     if (!simulated) {
       controls[["horizon"]] <- NA_integer_
     } else {
-      if (!checkmate::test_int(controls[["horizon"]], lower = 1)) {
-        stop("The control 'horizon' must be a positive integer.",
-             call. = FALSE)
-      }
+      oeli::input_check_response(
+        check = if (checkmate::test_int(controls[["horizon"]], lower = 1)) {
+          TRUE
+        } else {
+          "The control 'horizon' must be a positive integer."
+        },
+        var_name = "horizon"
+      )
     }
     controls[["period"]] <- NA_character_
   }
@@ -690,68 +744,98 @@ validate_controls <- function(controls) {
         )
         controls[["data"]][["data_inside"]] <- TRUE
       } else if (checkmate::test_list(controls[["data"]][["file"]])) {
-        if (!checkmate::test_list(
-          controls[["data"]][["file"]], types = "data.frame", len = 2
-        )) {
-          stop(
-            "The control 'file' in 'data' must be a data.frame.\n",
-            "It can also be a list with 2 'data.frame's.",
-            call. = FALSE
-          )
-        }
+        oeli::input_check_response(
+          check = if (
+            checkmate::test_list(
+              controls[["data"]][["file"]], types = "data.frame", len = 2
+            )
+          ) {
+            TRUE
+          } else {
+            paste(
+              "The control 'file' in 'data' must be a data.frame.\n",
+              "It can also be a list with 2 'data.frame's."
+            )
+          },
+          var_name = "data$file"
+        )
         controls[["data"]][["data_inside"]] <- TRUE
       } else {
         controls[["data"]][["data_inside"]] <- FALSE
-        if (!checkmate::test_character(
-          controls[["data"]][["file"]], len = 2, any.missing = FALSE
-        )) {
-          stop(
-            "The control 'file' in 'data' must be a character vector ",
-            "of length two.",
-            call. = FALSE
+        oeli::input_check_response(
+          check = if (
+            checkmate::test_character(
+              controls[["data"]][["file"]], len = 2, any.missing = FALSE
+            )
+          ) {
+            TRUE
+          } else {
+            paste(
+              "The control 'file' in 'data' must be a character vector",
+              "of length two."
+            )
+          },
+          var_name = "data$file"
+        )
+      }
+      oeli::input_check_response(
+        check = if (
+          checkmate::test_character(
+            controls[["data"]][["date_column"]],
+            len = 2,
+            any.missing = TRUE
           )
-        }
-      }
-      if (!checkmate::test_character(
-        controls[["data"]][["date_column"]], len = 2, any.missing = TRUE
-      )) {
-        stop(
-          "'date_column' in 'data' must be a character vector of length two.",
-          call. = FALSE
-        )
-      }
-      if (!checkmate::test_character(
-        controls[["data"]][["data_column"]], len = 2
-      )) {
-        stop(
-          "'data_column' in 'data' must be a character vector of length two.",
-          call. = FALSE
-        )
-      }
-      if (!checkmate::test_logical(
-        controls[["data"]][["logreturns"]], len = 2
-      )) {
-        stop(
-          "'logreturns' in 'data' must be a boolean vector of length two.",
-          call. = FALSE
-        )
-      }
-      if (!is.function(controls[["data"]][["merge"]])) {
-        stop(
-          "The control 'merge' in 'data' must be a function.",
-          call. = FALSE
-        )
-      }
+        ) {
+          TRUE
+        } else {
+          "'date_column' in 'data' must be a character vector of length two."
+        },
+        var_name = "data$date_column"
+      )
+      oeli::input_check_response(
+        check = if (
+          checkmate::test_character(
+            controls[["data"]][["data_column"]], len = 2
+          )
+        ) {
+          TRUE
+        } else {
+          "'data_column' in 'data' must be a character vector of length two."
+        },
+        var_name = "data$data_column"
+      )
+      oeli::input_check_response(
+        check = if (
+          checkmate::test_logical(
+            controls[["data"]][["logreturns"]], len = 2
+          )
+        ) {
+          TRUE
+        } else {
+          "'logreturns' in 'data' must be a boolean vector of length two."
+        },
+        var_name = "data$logreturns"
+      )
+      oeli::input_check_response(
+        check = if (is.function(controls[["data"]][["merge"]])) {
+          TRUE
+        } else {
+          "The control 'merge' in 'data' must be a function."
+        },
+        var_name = "data$merge"
+      )
       try_merge <- try(controls[["data"]][["merge"]](-10:10), silent = TRUE)
-      if (
-        inherits(try_merge, "try-error") ||
-          !checkmate::test_number(try_merge)
-      ) {
-        stop(
-          "'merge' in 'data' should merge a vector into a single number.",
-          call. = FALSE
-        )
-      }
+      oeli::input_check_response(
+        check = if (
+          !inherits(try_merge, "try-error") &&
+            checkmate::test_number(try_merge)
+        ) {
+          TRUE
+        } else {
+          "'merge' in 'data' should merge a vector into a single number."
+        },
+        var_name = "data$merge"
+      )
     } else {
       if (is.data.frame(controls[["data"]][["file"]])) {
         controls[["data"]][["file"]] <- list(controls[["data"]][["file"]])
@@ -763,31 +847,44 @@ validate_controls <- function(controls) {
       )) {
         controls[["data"]][["data_inside"]] <- TRUE
       } else {
-        stop(
-          "The control 'file' in 'data' must be a 'data.frame' or a character.",
-          call. = FALSE
+        oeli::input_check_response(
+          check = paste(
+            "The control 'file' in 'data' must be a 'data.frame' or a",
+            "character."
+          ),
+          var_name = "data$file"
         )
       }
-      if (!checkmate::test_string(
-        controls[["data"]][["date_column"]], na.ok = TRUE)
-      ) {
-        stop(
-          "'date_column' in 'data' must be a single character.",
-          call. = FALSE
-        )
-      }
-      if (!checkmate::test_string(controls[["data"]][["data_column"]])) {
-        stop(
-          "'data_column' in 'data' must be a single character.",
-          call. = FALSE
-        )
-      }
-      if (!checkmate::test_flag(controls[["data"]][["logreturns"]])) {
-        stop(
-          "The control 'logreturns' in 'data' must be a boolean.",
-          call. = FALSE
-        )
-      }
+      oeli::input_check_response(
+        check = if (
+          checkmate::test_string(
+            controls[["data"]][["date_column"]], na.ok = TRUE
+          )
+        ) {
+          TRUE
+        } else {
+          "'date_column' in 'data' must be a single character."
+        },
+        var_name = "data$date_column"
+      )
+      oeli::input_check_response(
+        check = if (
+          checkmate::test_string(controls[["data"]][["data_column"]])
+        ) {
+          TRUE
+        } else {
+          "'data_column' in 'data' must be a single character."
+        },
+        var_name = "data$data_column"
+      )
+      oeli::input_check_response(
+        check = if (checkmate::test_flag(controls[["data"]][["logreturns"]])) {
+          TRUE
+        } else {
+          "The control 'logreturns' in 'data' must be a boolean."
+        },
+        var_name = "data$logreturns"
+      )
       controls[["data"]][["merge"]] <- NA
     }
     for (i in if (hierarchy) 1:2 else 1) {
@@ -795,56 +892,68 @@ validate_controls <- function(controls) {
         data <- controls[["data"]][["file"]][[i]]
         if (!is.na(controls[["data"]][["date_column"]][i])) {
           if (!controls[["data"]][["date_column"]][i] %in% colnames(data)) {
-            stop(
-              "Date column '", controls[["data"]][["date_column"]][i], 
-              "' not found in supplied data.frame.",
-              call. = FALSE
+            oeli::input_check_response(
+              check = paste0(
+                "Date column '", controls[["data"]][["date_column"]][i],
+                "' not found in supplied data.frame."
+              ),
+              var_name = "data$date_column"
             )
           }
         }
         if (!controls[["data"]][["data_column"]][i] %in% colnames(data)) {
-          stop(
-            "Data column '", controls[["data"]][["data_column"]][i], 
-            "' not found in supplied data.frame.",
-            call. = FALSE
+          oeli::input_check_response(
+            check = paste0(
+              "Data column '", controls[["data"]][["data_column"]][i],
+              "' not found in supplied data.frame."
+            ),
+            var_name = "data$data_column"
           )
         }
       } else {
         controls[["data"]][["file"]][i] <- suppressWarnings(
           normalizePath(controls[["data"]][["file"]][i])
         )
-        if (!file.exists(controls[["data"]][["file"]][i])) {
-          stop(
-            "File '", controls[["data"]][["file"]][i], "' not found.",
-            call. = FALSE
-          )
-        }
+        oeli::input_check_response(
+          check = if (file.exists(controls[["data"]][["file"]][i])) {
+            TRUE
+          } else {
+            paste0("File '", controls[["data"]][["file"]][i], "' not found.")
+          },
+          var_name = "data$file"
+        )
         read_try <- suppressWarnings(
           try(
             utils::read.csv(file = controls[["data"]][["file"]][i]), 
             silent = TRUE
           )
         )
-        if (inherits(read_try,"try-error")) {
-          stop(
-            "Unable to read '", controls[["data"]][["file"]][i], "'.",
-            call. = FALSE
-          )
-        }
+        oeli::input_check_response(
+          check = if (!inherits(read_try, "try-error")) {
+            TRUE
+          } else {
+            paste0("Unable to read '", controls[["data"]][["file"]][i], "'.")
+          },
+          var_name = "data$file"
+        )
         if (!is.na(controls[["data"]][["date_column"]][i])) {
           if (!controls[["data"]][["date_column"]][i] %in% colnames(read_try)) {
-            stop(
-              "Date column '", controls[["data"]][["date_column"]][i], 
-              "' not found in '", controls[["data"]][["file"]][i], "'.",
-              call. = FALSE
+            oeli::input_check_response(
+              check = paste0(
+                "Date column '", controls[["data"]][["date_column"]][i],
+                "' not found in '", controls[["data"]][["file"]][i], "'."
+              ),
+              var_name = "data$date_column"
             )
           }
         }
         if (!controls[["data"]][["data_column"]][i] %in% colnames(read_try)) {
-          stop(
-            "Data column '", controls[["data"]][["data_column"]][i], 
-            "' not found in '", controls[["data"]][["file"]][i], "'.",
-            call. = FALSE
+          oeli::input_check_response(
+            check = paste0(
+              "Data column '", controls[["data"]][["data_column"]][i],
+              "' not found in '", controls[["data"]][["file"]][i], "'."
+            ),
+            var_name = "data$data_column"
           )
         }
       }
@@ -852,18 +961,22 @@ validate_controls <- function(controls) {
   }
   
   ### check 'fit' controls
-  if (!checkmate::test_int(controls[["fit"]][["runs"]], lower = 1)) {
-    stop(
-      "The control 'runs' in 'fit' must be an integer.", 
-      call. = FALSE
-    )
-  }
-  if (!checkmate::test_flag(controls[["fit"]][["origin"]])) {
-    stop(
-      "The control 'origin' in 'fit' must be a boolean.",
-      call. = FALSE
-    )
-  }
+  oeli::input_check_response(
+    check = if (checkmate::test_int(controls[["fit"]][["runs"]], lower = 1)) {
+      TRUE
+    } else {
+      "The control 'runs' in 'fit' must be an integer."
+    },
+    var_name = "fit$runs"
+  )
+  oeli::input_check_response(
+    check = if (checkmate::test_flag(controls[["fit"]][["origin"]])) {
+      TRUE
+    } else {
+      "The control 'origin' in 'fit' must be a boolean."
+    },
+    var_name = "fit$origin"
+  )
   if (controls[["fit"]][["origin"]]) {
     controls[["fit"]][["runs"]] <- 1
     controls[["fit"]][["accept"]] <- 1:5
@@ -871,36 +984,59 @@ validate_controls <- function(controls) {
   if (any(controls[["fit"]][["accept"]] == "all")) {
     controls[["fit"]][["accept"]] <- 1:5
   }
-  if (!all(controls[["fit"]][["accept"]] %in% 1:5)) {
-    stop(
-      "The control 'accept' in 'fit' must be a vector of integers from 1 to 5.",
-      call. = FALSE
-    )
-  }
-  if (!checkmate::test_number(controls[["fit"]][["gradtol"]], lower = 0)) {
-    stop(
-      "The control 'gradtol' in 'fit' must be a positive number.",
-      call. = FALSE
-    )
-  }
-  if (!checkmate::test_int(controls[["fit"]][["iterlim"]], lower = 1)) {
-    stop("The control 'iterlim' in 'fit' must be a positive integer.",
-         call. = FALSE)
-  }
-  if (!checkmate::test_int(
-    controls[["fit"]][["print.level"]], lower = 0, upper = 2
-  )) {
-    stop(
-      "The control 'print.level' in 'fit' must be one of 0, 1, and 2.",
-      call. = FALSE
-    )
-  }
-  if (!checkmate::test_number(controls[["fit"]][["steptol"]], lower = 0)) {
-    stop(
-      "The control 'steptol' in 'fit' must be a positive number.",
-      call. = FALSE
-    )
-  }
+  oeli::input_check_response(
+    check = if (all(controls[["fit"]][["accept"]] %in% 1:5)) {
+      TRUE
+    } else {
+      paste(
+        "The control 'accept' in 'fit' must be a vector of integers",
+        "from 1 to 5."
+      )
+    },
+    var_name = "fit$accept"
+  )
+  oeli::input_check_response(
+    check = if (
+      checkmate::test_number(controls[["fit"]][["gradtol"]], lower = 0)
+    ) {
+      TRUE
+    } else {
+      "The control 'gradtol' in 'fit' must be a positive number."
+    },
+    var_name = "fit$gradtol"
+  )
+  oeli::input_check_response(
+    check = if (
+      checkmate::test_int(controls[["fit"]][["iterlim"]], lower = 1)
+    ) {
+      TRUE
+    } else {
+      "The control 'iterlim' in 'fit' must be a positive integer."
+    },
+    var_name = "fit$iterlim"
+  )
+  oeli::input_check_response(
+    check = if (
+      checkmate::test_int(
+        controls[["fit"]][["print.level"]], lower = 0, upper = 2
+      )
+    ) {
+      TRUE
+    } else {
+      "The control 'print.level' in 'fit' must be one of 0, 1, and 2."
+    },
+    var_name = "fit$print.level"
+  )
+  oeli::input_check_response(
+    check = if (
+      checkmate::test_number(controls[["fit"]][["steptol"]], lower = 0)
+    ) {
+      TRUE
+    } else {
+      "The control 'steptol' in 'fit' must be a positive number."
+    },
+    var_name = "fit$steptol"
+  )
   
   ### return validated controls
   structure(controls, class = c("fHMM_controls", "list"))
@@ -919,7 +1055,7 @@ print.fHMM_controls <- function(x, ...) {
   cat("\n")
   cat(
     "* number of runs:", x[["fit"]][["runs"]],
-    ifelse(x[["fit"]][["at_true"]], "(initialised at true values)", ""), "\n"
+    ifelse(x[["fit"]][["at_true"]], "(initialized at true values)", ""), "\n"
   )
   invisible(x)
 }
@@ -928,9 +1064,14 @@ print.fHMM_controls <- function(x, ...) {
 #' @exportS3Method
 
 summary.fHMM_controls <- function(object, ...) {
-  if (!inherits(object, "fHMM_controls")) {
-    stop("Not an object of class 'fHMM_controls'.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (inherits(object, "fHMM_controls")) {
+      TRUE
+    } else {
+      "Not an object of class 'fHMM_controls'."
+    },
+    var_name = "object"
+  )
   utils::str(object, give.attr = FALSE, give.length = FALSE, no.list = TRUE)
   invisible(object)
 }

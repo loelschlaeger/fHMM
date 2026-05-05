@@ -42,12 +42,22 @@ simulate_hmm <- function(
     controls = controls, hierarchy = hierarchy, states = states, sdds = sdds,
     horizon = horizon, period = period
   )
-  if (!inherits(true_parameters, "fHMM_parameters")) {
-    stop("'true_parameters' is not of class 'fHMM_parameters'.", call. = FALSE)
-  }
-  if (!controls$simulated) {
-    stop("'controls$simulated' is not 'TRUE'.", call. = FALSE)
-  }
+  oeli::input_check_response(
+    check = if (inherits(true_parameters, "fHMM_parameters")) {
+      TRUE
+    } else {
+      "'true_parameters' is not of class 'fHMM_parameters'."
+    },
+    var_name = "true_parameters"
+  )
+  oeli::input_check_response(
+    check = if (controls$simulated) {
+      TRUE
+    } else {
+      "'controls$simulated' is not 'TRUE'."
+    },
+    var_name = "controls$simulated"
+  )
   if (!is.null(seed)) {
     set.seed(seed)
   }
@@ -138,19 +148,19 @@ simulate_hmm <- function(
 #' @description
 #' This function simulates state-dependent observations.
 #'
-#' @param markov_chain
+#' @param markov_chain \[`integer()`\]\cr
 #' A \code{numeric} vector of states of a Markov chain.
-#' @param sdd
+#' @param sdd \[`character(1)`\]\cr
 #' A \code{character}, the name of the state-dependent distribution.
-#' @param mu
+#' @param mu \[`numeric()`\]\cr
 #' A \code{numeric} vector of expected values.
-#' @param sigma
+#' @param sigma \[`NULL` | `numeric()`\]\cr
 #' A \code{numeric} vector of standard deviations (if any).
-#' @param df
+#' @param df \[`NULL` | `numeric()`\]\cr
 #' A \code{numeric} vector of degrees of freedom (if any).
-#' @param seed
+#' @param seed \[`NULL` | `integer(1)`\]\cr
 #' Sets a seed for the observation sampling.
-#' @param total_length
+#' @param total_length \[`integer(1)`\]\cr
 #' An \code{integer}, the total length of the output vector.
 #' Must be greater or equal than \code{length(markov_chain)}.
 #'
@@ -167,8 +177,18 @@ simulate_observations <- function(
   ) {
 
   ### check inputs
-  checkmate::assert_integerish(markov_chain, lower = 1, any.missing = FALSE)
-  checkmate::assert_number(total_length, lower = length(markov_chain))
+  oeli::input_check_response(
+    check = checkmate::check_integerish(
+      markov_chain, lower = 1, any.missing = FALSE
+    ),
+    var_name = "markov_chain"
+  )
+  oeli::input_check_response(
+    check = checkmate::check_number(
+      total_length, lower = length(markov_chain)
+    ),
+    var_name = "total_length"
+  )
 
   ### set seed
   if (!is.null(seed)) {

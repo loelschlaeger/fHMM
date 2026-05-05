@@ -6,14 +6,14 @@
 #'
 #' @inheritParams fHMM_parameters
 #' @inheritParams parameter_transformations
-#' @param observations
+#' @param observations \[`numeric()` | `matrix()`\]\cr
 #' A \code{numeric} \code{vector} of time-series data.
 #' 
 #' In the hierarchical case (\code{hierarchy = TRUE}), a \code{matrix} with 
 #' coarse-scale data in the first column and corresponding fine-scale data in 
 #' the rows.
 #' @inheritParams set_controls
-#' @param negative
+#' @param negative \[`logical(1)`\]\cr
 #' Either \code{TRUE} to return the negative log-likelihood value (useful for
 #' optimization) or \code{FALSE} (default), else.
 #'
@@ -79,11 +79,11 @@ ll_hmm <- function(
 #' @description
 #' This function computes the negative log-likelihood of an HMM.
 #'
-#' @param parUncon
+#' @param parUncon \[`parUncon`\]\cr
 #' An object of class \code{parUncon}.
-#' @param observations
+#' @param observations \[`numeric()`\]\cr
 #' The vector of the simulated or empirical data used for estimation.
-#' @param controls
+#' @param controls \[`fHMM_controls`\]\cr
 #' An object of class \code{fHMM_controls}.
 #'
 #' @return
@@ -150,11 +150,11 @@ nLL_hmm <- function(parUncon, observations, controls) {
 #' @description
 #' This function computes the negative log-likelihood of an HHMM.
 #'
-#' @param parUncon
+#' @param parUncon \[`parUncon`\]\cr
 #' An object of class \code{parUncon}.
-#' @param observations
+#' @param observations \[`matrix()`\]\cr
 #' The matrix of the simulated or empirical data used for estimation.
-#' @param controls
+#' @param controls \[`fHMM_controls`\]\cr
 #' An object of class \code{fHMM_controls}.
 #'
 #' @return

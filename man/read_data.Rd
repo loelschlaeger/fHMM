@@ -7,7 +7,8 @@
 read_data(controls)
 }
 \arguments{
-\item{controls}{An object of class \code{fHMM_controls}.}
+\item{controls}{[\code{fHMM_controls}]\cr
+An object of class \code{fHMM_controls}.}
 }
 \value{
 A \code{list} containing the following elements:

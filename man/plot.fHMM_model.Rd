@@ -17,9 +17,11 @@
 )
 }
 \arguments{
-\item{x}{An object of class \code{\link{fHMM_model}}.}
+\item{x}{[\code{fHMM_model}]\cr
+An object of class \code{\link{fHMM_model}}.}
 
-\item{plot_type}{A character (vector), specifying the type of plot and can be one (or more) of
+\item{plot_type}{[\code{character()}]\cr
+A character (vector), specifying the type of plot and can be one (or more) of
 \itemize{
 \item \code{"ll"} for a visualization of the likelihood values in the
 different optimization runs,
@@ -29,22 +31,28 @@ distributions,
 \item \code{"ts"} for a visualization of the financial time series.
 }}
 
-\item{events}{An object of class \code{\link{fHMM_events}}.}
+\item{events}{[\code{NULL} | \code{fHMM_events}]\cr
+An object of class \code{\link{fHMM_events}}.}
 
-\item{colors}{Either \code{NULL} (default) or a \code{character} vector of color names or
+\item{colors}{[\code{NULL} | \code{character()}]\cr
+Either \code{NULL} (default) or a \code{character} vector of color names or
 hexadecimal RGB triplets.}
 
-\item{ll_relative}{A \code{logical}, set to \code{TRUE} (default) to plot the differences from
+\item{ll_relative}{[\code{logical(1)}]\cr
+A \code{logical}, set to \code{TRUE} (default) to plot the differences from
 the best log-likelihood value. Set to \code{FALSE} to plot the absolute
 values.}
 
-\item{title}{Optionally a \code{character} for a custom title.}
+\item{title}{[\code{NULL} | \code{character(1)}]\cr
+Optionally a \code{character} for a custom title.}
 
-\item{from}{Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"},
+\item{from}{[\code{NULL} | \code{character(1)}]\cr
+Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"},
 setting the lower date bound for plotting.
 By default, \code{from = NULL}, i.e. no lower bound.}
 
-\item{to}{Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"},
+\item{to}{[\code{NULL} | \code{character(1)}]\cr
+Optionally a \code{character}, a date in format \code{"YYYY-MM-DD"},
 setting the upper date bound for plotting.
 By default, \code{to = NULL}, i.e. no upper bound.}
 

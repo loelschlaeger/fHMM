@@ -1,5 +1,6 @@
 #' @useDynLib fHMM, .registration=TRUE
 #' @keywords internal
+#' @inherit fit_model examples
 "_PACKAGE"
 
 #' @noRd

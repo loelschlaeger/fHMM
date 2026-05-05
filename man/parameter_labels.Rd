@@ -7,9 +7,11 @@
 parameter_labels(controls, expected_length = NULL)
 }
 \arguments{
-\item{controls}{An object of class \code{fHMM_controls}.}
+\item{controls}{[\code{fHMM_controls}]\cr
+An object of class \code{fHMM_controls}.}
 
-\item{expected_length}{The expected output length. If \code{NULL} (default), this is not checked.}
+\item{expected_length}{[\code{NULL} | \code{integer(1)}]\cr
+The expected output length. If \code{NULL} (default), this is not checked.}
 }
 \value{
 A \code{character} vector of parameter labels.

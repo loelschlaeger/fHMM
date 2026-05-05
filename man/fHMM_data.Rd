@@ -22,27 +22,37 @@ fHMM_data(
 \method{summary}{fHMM_data}(object, ...)
 }
 \arguments{
-\item{dates}{The dates in the empirical case.}
+\item{dates}{[\code{any}]\cr
+The dates in the empirical case.}
 
-\item{time_points}{The time points in the simulated case.}
+\item{time_points}{[\code{any}]\cr
+The time points in the simulated case.}
 
-\item{markov_chain}{The states in the simulated case.}
+\item{markov_chain}{[\code{any}]\cr
+The states in the simulated case.}
 
-\item{data}{The data for modeling.}
+\item{data}{[\code{any}]\cr
+The data for modeling.}
 
-\item{time_series}{The data before transformation.}
+\item{time_series}{[\code{any}]\cr
+The data before transformation.}
 
-\item{T_star}{The fine-scale chunk sizes.}
+\item{T_star}{[\code{NULL} | \code{integer()}]\cr
+The fine-scale chunk sizes.}
 
-\item{controls}{The \code{fHMM_controls} object.}
+\item{controls}{[\code{fHMM_controls}]\cr
+The \code{fHMM_controls} object.}
 
-\item{true_parameters}{The \code{fHMM_parameters} object in the simulated case.}
+\item{true_parameters}{[\code{NULL} | \code{fHMM_parameters}]\cr
+The \code{fHMM_parameters} object in the simulated case.}
 
-\item{x}{An object of class \code{fHMM_data}.}
+\item{x}{[\code{fHMM_data}]\cr
+An object of class \code{fHMM_data}.}
 
 \item{...}{Currently not used.}
 
-\item{object}{An object of class \code{fHMM_data}.}
+\item{object}{[\code{fHMM_data}]\cr
+An object of class \code{fHMM_data}.}
 }
 \value{
 An object of class \code{fHMM_data}, which is a \code{list} containing

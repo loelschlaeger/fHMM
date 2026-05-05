@@ -10,7 +10,8 @@ fHMM_sdds(sdds, states)
 \method{print}{fHMM_sdds}(x, ...)
 }
 \arguments{
-\item{sdds}{A \code{character}, specifying the state-dependent distribution. One of
+\item{sdds}{[\code{character(1)} | \code{character(2)}]\cr
+A \code{character}, specifying the state-dependent distribution. One of
 \itemize{
 \item \code{"normal"} (the normal distribution),
 \item \code{"lognormal"} (the log-normal distribution),
@@ -37,7 +38,8 @@ corresponds to the fine-scale layer.
 By default, \code{sdds = "normal"} if \code{hierarchy = FALSE} and
 \code{sdds = c("normal", "normal")} if \code{hierarchy = TRUE}.}
 
-\item{states}{An \code{integer}, the number of states of the underlying Markov chain.
+\item{states}{[\code{integer(1)} | \code{integer(2)}]\cr
+An \code{integer}, the number of states of the underlying Markov chain.
 
 If \code{hierarchy = TRUE}, \code{states} must be a \code{vector} of length
 2. The first entry corresponds to the coarse-scale layer, while the second
