@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,7 +92,7 @@
 <ul>
 <li><p>If you encounter any issues, please <a href="https://github.com/loelschlaeger/fHMM/issues/new?assignees=&amp;labels=bug&amp;template=bug.md" class="external-link">submit bug reports as issues</a>.</p></li>
 <li><p>If you have any ideas for new features, please submit them as <a href="https://github.com/loelschlaeger/fHMM/issues/new?assignees=&amp;labels=future&amp;template=suggestion.md" class="external-link">feature requests</a>.</p></li>
-<li><p>If you would like to add extensions to the package, please fork the <code>master</code> branch and submit a merge request.</p></li>
+<li><p>If you would like to add extensions to the package, please fork the <code>master</code> branch and submit a pull request.</p></li>
 </ul>
 </div>
 <div class="section level2">
@@ -101,7 +101,7 @@
 <p>We fit a 3-state HMM with state-dependent t-distributions to the DAX log-returns from 2000 to 2022. The states can be interpreted as proxies for bearish (green below) and bullish markets (red) and an “in-between” market state (yellow).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://loelschlaeger.de/fHMM/">"fHMM"</a></span><span class="op">)</span></span></code></pre></div>
-<p>The package has a build-in function to download financial data from <a href="https://finance.yahoo.com/" class="external-link">Yahoo Finance</a>:</p>
+<p>The package has a built-in function to download financial data from <a href="https://finance.yahoo.com/" class="external-link">Yahoo Finance</a>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dax</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/download_data.html">download_data</a></span><span class="op">(</span>symbol <span class="op">=</span> <span class="st">"^GDAXI"</span><span class="op">)</span></span></code></pre></div>
 <p>We first need to define the model:</p>
@@ -172,8 +172,14 @@
 <p>Having estimated the model, we can visualize the state-dependent distributions and the decoded time series:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fHMM_events.html">fHMM_events</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2001-09-11"</span>, <span class="st">"2008-09-15"</span>, <span class="st">"2020-01-27"</span><span class="op">)</span>,</span>
-<span>       labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9/11 terrorist attack"</span>, <span class="st">"Bankruptcy Lehman Brothers"</span>, <span class="st">"First COVID-19 case Germany"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2001-09-11"</span>, <span class="st">"2008-09-15"</span>, <span class="st">"2020-01-27"</span><span class="op">)</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="st">"9/11 terrorist attack"</span>,</span>
+<span>      <span class="st">"Bankruptcy Lehman Brothers"</span>,</span>
+<span>      <span class="st">"First COVID-19 case Germany"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span>, plot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sdds"</span>,<span class="st">"ts"</span><span class="op">)</span>, events <span class="op">=</span> <span class="va">events</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot_model_fit-1.png"><!-- --><img src="reference/figures/README-plot_model_fit-2.png"><!-- --></p>
@@ -238,13 +244,14 @@
 </ol>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">optimization</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></span><span class="op">(</span></span>
-<span>  f <span class="op">=</span> <span class="va">ll_hmm</span>, p <span class="op">=</span> <span class="va">parUncon</span>, observations <span class="op">=</span> <span class="va">sim</span><span class="op">$</span><span class="va">data</span>, controls <span class="op">=</span> <span class="va">controls</span>, negative <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  f <span class="op">=</span> <span class="va">ll_hmm</span>, p <span class="op">=</span> <span class="va">parUncon</span>, observations <span class="op">=</span> <span class="va">sim</span><span class="op">$</span><span class="va">data</span>,</span>
+<span>  controls <span class="op">=</span> <span class="va">controls</span>, negative <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="op">(</span><span class="va">estimate</span> <span class="op">&lt;-</span> <span class="va">optimization</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] -3.46338992 -3.44065582  0.05999848  1.06452907  0.11517811  1.07946252</span></span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
-<li>To interpret the estimate, it needs to be back transformed to the constrained parameter space via the <code><a href="reference/parameter_transformations.html">parUncon2par()</a></code> function. The state-labeling is not identified.</li>
+<li>To interpret the estimate, it needs to be back-transformed to the constrained parameter space via the <code><a href="reference/parameter_transformations.html">parUncon2par()</a></code> function. The state labeling is not identified.</li>
 </ol>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">estimate</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"parUncon"</span></span>
@@ -335,7 +342,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

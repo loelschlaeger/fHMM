@@ -9,7 +9,7 @@ Markov model for given observations and parameter values."><meta property="og:im
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,26 +69,30 @@ Markov model for given observations and parameter values.</p>
 
 
 <dl><dt id="arg-paruncon">parUncon<a class="anchor" aria-label="anchor" href="#arg-paruncon"></a></dt>
-<dd><p>An object of class <code>parUncon</code>, which is a <code>numeric</code> <code>vector</code>
+<dd><p>[<code>parUncon</code>]<br>
+An object of class <code>parUncon</code>, which is a <code>numeric</code> <code>vector</code>
 with identified and unconstrained model parameters in the following order:</p><ol><li><p>non-diagonal transition probabilities <code>gammasUncon</code></p></li>
 <li><p>expectations <code>muUncon</code></p></li>
 <li><p>standard deviations <code>sigmaUncon</code> (if any)</p></li>
 <li><p>degrees of freedom <code>dfUncon</code> (if any)</p></li>
-<li><p>fine-scale parameters for each coarse-scale state, in the same order (if any)</p></li>
+<li><p>fine-scale parameters for each coarse-scale state, in the same order
+(if any)</p></li>
 </ol></dd>
 
 
 <dt id="arg-observations">observations<a class="anchor" aria-label="anchor" href="#arg-observations"></a></dt>
-<dd><p>A <code>numeric</code> <code>vector</code> of time-series data.</p>
+<dd><p>[<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code> | <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix()</a></code>]<br>
+A <code>numeric</code> <code>vector</code> of time-series data.</p>
 <p>In the hierarchical case (<code>hierarchy = TRUE</code>), a <code>matrix</code> with
 coarse-scale data in the first column and corresponding fine-scale data in
 the rows.</p></dd>
 
 
 <dt id="arg-controls">controls<a class="anchor" aria-label="anchor" href="#arg-controls"></a></dt>
-<dd><p>Either a <code>list</code> or an object of class <code>fHMM_controls</code>.</p>
+<dd><p>[<code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> | <code>fHMM_controls</code>]<br>
+Either a <code>list</code> or an object of class <code>fHMM_controls</code>.</p>
 <p>The <code>list</code> can contain the following elements, which are described
-in more detail below:</p><ul><li><p><code>hierarchy</code>, defines an hierarchical HMM,</p></li>
+in more detail below:</p><ul><li><p><code>hierarchy</code>, defines a hierarchical HMM,</p></li>
 <li><p><code>states</code>, defines the number of states,</p></li>
 <li><p><code>sdds</code>, defines the state-dependent distributions,</p></li>
 <li><p><code>horizon</code>, defines the time horizon,</p></li>
@@ -102,14 +106,16 @@ specifications.</p></dd>
 
 
 <dt id="arg-hierarchy">hierarchy<a class="anchor" aria-label="anchor" href="#arg-hierarchy"></a></dt>
-<dd><p>A <code>logical</code>, set to <code>TRUE</code> for an hierarchical HMM.</p>
+<dd><p>[<code>logical(1)</code>]<br>
+A <code>logical</code>, set to <code>TRUE</code> for a hierarchical HMM.</p>
 <p>If <code>hierarchy = TRUE</code>, some of the other controls must be specified for
 the coarse-scale and the fine-scale layer.</p>
 <p>By default, <code>hierarchy = FALSE</code>.</p></dd>
 
 
 <dt id="arg-states">states<a class="anchor" aria-label="anchor" href="#arg-states"></a></dt>
-<dd><p>An <code>integer</code>, the number of states of the underlying Markov chain.</p>
+<dd><p>[<code>integer(1)</code> | <code>integer(2)</code>]<br>
+An <code>integer</code>, the number of states of the underlying Markov chain.</p>
 <p>If <code>hierarchy = TRUE</code>, <code>states</code> must be a <code>vector</code> of length
 2. The first entry corresponds to the coarse-scale layer, while the second
 entry corresponds to the fine-scale layer.</p>
@@ -118,7 +124,8 @@ entry corresponds to the fine-scale layer.</p>
 
 
 <dt id="arg-sdds">sdds<a class="anchor" aria-label="anchor" href="#arg-sdds"></a></dt>
-<dd><p>A <code>character</code>, specifying the state-dependent distribution. One of</p><ul><li><p><code>"normal"</code> (the normal distribution),</p></li>
+<dd><p>[<code>character(1)</code> | <code>character(2)</code>]<br>
+A <code>character</code>, specifying the state-dependent distribution. One of</p><ul><li><p><code>"normal"</code> (the normal distribution),</p></li>
 <li><p><code>"lognormal"</code> (the log-normal distribution),</p></li>
 <li><p><code>"t"</code> (the t-distribution),</p></li>
 <li><p><code>"gamma"</code> (the gamma distribution),</p></li>
@@ -138,12 +145,14 @@ corresponds to the fine-scale layer.</p>
 
 
 <dt id="arg-negative">negative<a class="anchor" aria-label="anchor" href="#arg-negative"></a></dt>
-<dd><p>Either <code>TRUE</code> to return the negative log-likelihood value (useful for
+<dd><p>[<code>logical(1)</code>]<br>
+Either <code>TRUE</code> to return the negative log-likelihood value (useful for
 optimization) or <code>FALSE</code> (default), else.</p></dd>
 
 
 <dt id="arg-check-controls">check_controls<a class="anchor" aria-label="anchor" href="#arg-check-controls"></a></dt>
-<dd><p>Either <code>TRUE</code> to check the defined controls or <code>FALSE</code> to not check
+<dd><p>[<code>logical(1)</code>]<br>
+Either <code>TRUE</code> to check the defined controls or <code>FALSE</code> to not check
 them (which saves computation time), else.</p></dd>
 
 </dl></div>
@@ -183,7 +192,7 @@ them (which saves computation time), else.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

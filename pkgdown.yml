@@ -1,5 +1,5 @@
-pandoc: 3.1.11
-pkgdown: 2.1.2
+pandoc: 3.8.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   fHMM: fHMM.html
@@ -10,7 +10,7 @@ articles:
   v05_state_decoding_and_prediction: v05_state_decoding_and_prediction.html
   v06_model_checking: v06_model_checking.html
   v07_model_selection: v07_model_selection.html
-last_built: 2025-05-19T14:16Z
+last_built: 2026-05-05T12:37Z
 urls:
   reference: https://loelschlaeger.de/fHMM/reference
   article: https://loelschlaeger.de/fHMM/articles

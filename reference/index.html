@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,8 +46,7 @@
 
       <div class="section-desc"><p>Use these functions to prepare or simulate financial data.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -58,31 +57,36 @@
 
         </dt>
         <dd>Define and validate model specifications</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="download_data.html">download_data()</a></code>
 
         </dt>
         <dd>Download financial data from Yahoo Finance</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="simulate_hmm.html">simulate_hmm()</a></code>
 
         </dt>
         <dd>Simulate data</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="prepare_data.html">prepare_data()</a></code>
 
         </dt>
         <dd>Prepare data</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="fHMM_data.html">fHMM_data()</a></code> <code><a href="fHMM_data.html">print(<i>&lt;fHMM_data&gt;</i>)</a></code> <code><a href="fHMM_data.html">summary(<i>&lt;fHMM_data&gt;</i>)</a></code>
 
         </dt>
         <dd>Constructor of an <code>fHMM_data</code> object</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="plot.fHMM_data.html">plot(<i>&lt;fHMM_data&gt;</i>)</a></code>
 
@@ -93,8 +97,7 @@
 
       <div class="section-desc"><p>Use these functions to define and transform model parameters.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -105,7 +108,8 @@
 
         </dt>
         <dd>Set and check model parameters</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="parameter_transformations.html">par2parUncon()</a></code> <code><a href="parameter_transformations.html">parUncon2parCon()</a></code> <code><a href="parameter_transformations.html">parCon2par()</a></code> <code><a href="parameter_transformations.html">par2parCon()</a></code> <code><a href="parameter_transformations.html">parCon2parUncon()</a></code> <code><a href="parameter_transformations.html">parUncon2par()</a></code> <code><a href="parameter_transformations.html">muCon2muUncon()</a></code> <code><a href="parameter_transformations.html">muUncon2muCon()</a></code> <code><a href="parameter_transformations.html">sigmaCon2sigmaUncon()</a></code> <code><a href="parameter_transformations.html">sigmaUncon2sigmaCon()</a></code> <code><a href="parameter_transformations.html">dfCon2dfUncon()</a></code> <code><a href="parameter_transformations.html">dfUncon2dfCon()</a></code> <code><a href="parameter_transformations.html">Gamma2gammasCon()</a></code> <code><a href="parameter_transformations.html">Gamma2gammasUncon()</a></code> <code><a href="parameter_transformations.html">gammasCon2Gamma()</a></code> <code><a href="parameter_transformations.html">gammasCon2gammasUncon()</a></code> <code><a href="parameter_transformations.html">gammasUncon2Gamma()</a></code> <code><a href="parameter_transformations.html">gammasUncon2gammasCon()</a></code>
 
@@ -116,8 +120,7 @@
 
       <div class="section-desc"><p>Use these function for model estimation and state decoding.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -128,25 +131,29 @@
 
         </dt>
         <dd>Log-likelihood function of an (H)HMM</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="fit_model.html">fit_model()</a></code>
 
         </dt>
         <dd>Model fitting</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="fHMM_model.html">fHMM_model()</a></code> <code><a href="fHMM_model.html">print(<i>&lt;fHMM_model&gt;</i>)</a></code> <code><a href="fHMM_model.html">residuals(<i>&lt;fHMM_model&gt;</i>)</a></code> <code><a href="fHMM_model.html">summary(<i>&lt;fHMM_model&gt;</i>)</a></code> <code><a href="fHMM_model.html">coef(<i>&lt;fHMM_model&gt;</i>)</a></code> <code><a href="fHMM_model.html">AIC(<i>&lt;fHMM_model&gt;</i>)</a></code> <code><a href="fHMM_model.html">BIC(<i>&lt;fHMM_model&gt;</i>)</a></code> <code><a href="fHMM_model.html">nobs(<i>&lt;fHMM_model&gt;</i>)</a></code> <code><a href="fHMM_model.html">logLik(<i>&lt;fHMM_model&gt;</i>)</a></code> <code><a href="fHMM_model.html">npar()</a></code> <code><a href="fHMM_model.html">predict(<i>&lt;fHMM_model&gt;</i>)</a></code>
 
         </dt>
         <dd>Constructor of a model object</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="decode_states.html">decode_states()</a></code> <code><a href="decode_states.html">viterbi()</a></code>
 
         </dt>
         <dd>Decode the underlying hidden state sequence</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="reorder_states.html">reorder_states()</a></code>
 
@@ -157,8 +164,7 @@
 
       <div class="section-desc"><p>Use these functions to evaluate a fitted model.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -169,31 +175,36 @@
 
         </dt>
         <dd>Constructor of a model object</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="compare_models.html">compare_models()</a></code>
 
         </dt>
         <dd>Compare multiple models</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="compute_residuals.html">compute_residuals()</a></code>
 
         </dt>
         <dd>Compute (pseudo-) residuals</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="plot.fHMM_model.html">plot(<i>&lt;fHMM_model&gt;</i>)</a></code>
 
         </dt>
         <dd>Plot method for an object of class <code>fHMM_model</code></dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="fHMM_colors.html">fHMM_colors()</a></code>
 
         </dt>
         <dd>Set color scheme for visualizations</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="fHMM_events.html">fHMM_events()</a></code> <code><a href="fHMM_events.html">print(<i>&lt;fHMM_events&gt;</i>)</a></code>
 
@@ -204,8 +215,7 @@
 
       <div class="section-desc"><p>The following data sets are included in the package.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -216,19 +226,22 @@
 
         </dt>
         <dd>Deutscher Aktienindex (DAX) index data</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="spx.html">spx</a></code>
 
         </dt>
         <dd>Standard &amp; Poor’s 500 (S&amp;P 500) index data</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="unemp.html">unemp</a></code>
 
         </dt>
         <dd>Unemployment rate data USA</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="vw.html">vw</a></code>
 
@@ -239,8 +252,7 @@
 
       <div class="section-desc"><p>The following pre-computed models are included in the package.</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -251,25 +263,29 @@
 
         </dt>
         <dd>DAX 2-state HMM with normal distributions</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dax_model_3t.html">dax_model_3t</a></code>
 
         </dt>
         <dd>DAX 3-state HMM with t-distributions</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="dax_vw_model.html">dax_vw_model</a></code>
 
         </dt>
         <dd>DAX/VW hierarchical HMM with t-distributions</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="sim_model_2gamma.html">sim_model_2gamma</a></code>
 
         </dt>
         <dd>Simulated 2-state HMM with gamma distributions</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="unemp_spx_model_3_2.html">unemp_spx_model_3_2</a></code>
 
@@ -285,7 +301,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

@@ -9,7 +9,7 @@ applying the Viterbi algorithm for global decoding."><meta property="og:image" c
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,23 +62,28 @@ applying the Viterbi algorithm for global decoding.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An object of class <code><a href="fHMM_model.html">fHMM_model</a></code>.</p></dd>
+<dd><p>[<code>fHMM_model</code>]<br>
+An object of class <code><a href="fHMM_model.html">fHMM_model</a></code>.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>Set to <code>TRUE</code> to print progress messages.</p></dd>
+<dd><p>[<code>logical(1)</code>]<br>
+Set to <code>TRUE</code> to print progress messages.</p></dd>
 
 
 <dt id="arg-observations">observations<a class="anchor" aria-label="anchor" href="#arg-observations"></a></dt>
-<dd><p>A <code>numeric</code> <code>vector</code> of state-dependent observations.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A <code>numeric</code> <code>vector</code> of state-dependent observations.</p></dd>
 
 
 <dt id="arg-nstates">nstates<a class="anchor" aria-label="anchor" href="#arg-nstates"></a></dt>
-<dd><p>The number of states.</p></dd>
+<dd><p>[<code>integer(1)</code>]<br>
+The number of states.</p></dd>
 
 
 <dt id="arg-sdd">sdd<a class="anchor" aria-label="anchor" href="#arg-sdd"></a></dt>
-<dd><p>A <code>character</code>, specifying the state-dependent distribution. One of</p><ul><li><p><code>"normal"</code> (the normal distribution),</p></li>
+<dd><p>[<code>character(1)</code>]<br>
+A <code>character</code>, specifying the state-dependent distribution. One of</p><ul><li><p><code>"normal"</code> (the normal distribution),</p></li>
 <li><p><code>"lognormal"</code> (the log-normal distribution),</p></li>
 <li><p><code>"t"</code> (the t-distribution),</p></li>
 <li><p><code>"gamma"</code> (the gamma distribution),</p></li>
@@ -87,24 +92,30 @@ applying the Viterbi algorithm for global decoding.</p>
 
 
 <dt id="arg-gamma">Gamma<a class="anchor" aria-label="anchor" href="#arg-gamma"></a></dt>
-<dd><p>A transition probability <code>matrix</code> of dimension <code>nstates</code>.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix()</a></code>]<br>
+A transition probability <code>matrix</code> of dimension <code>nstates</code>.</p></dd>
 
 
 <dt id="arg-mu">mu<a class="anchor" aria-label="anchor" href="#arg-mu"></a></dt>
-<dd><p>A <code>numeric</code> vector of expected values for the state-dependent
+<dd><p>[<code>numeric(nstates)</code>]<br>
+A <code>numeric</code> vector of expected values for the state-dependent
 distribution in the different states of length <code>nstates</code>.</p>
 <p>For the gamma- or Poisson-distribution, <code>mu</code> must be positive.</p></dd>
 
 
 <dt id="arg-sigma">sigma<a class="anchor" aria-label="anchor" href="#arg-sigma"></a></dt>
-<dd><p>A positive <code>numeric</code> vector of standard deviations for the
-state-dependent distribution in the different states of length <code>nstates</code>.</p>
+<dd><p>[<code>NULL</code> | <code>numeric(nstates)</code>]<br>
+A positive <code>numeric</code> vector of standard deviations for the
+state-dependent distribution in the different states of length
+<code>nstates</code>.</p>
 <p>Not relevant in case of a state-dependent Poisson distribution.</p></dd>
 
 
 <dt id="arg-df">df<a class="anchor" aria-label="anchor" href="#arg-df"></a></dt>
-<dd><p>A positive <code>numeric</code> vector of degrees of freedom for the
-state-dependent distribution in the different states of length <code>nstates</code>.</p>
+<dd><p>[<code>NULL</code> | <code>numeric(nstates)</code>]<br>
+A positive <code>numeric</code> vector of degrees of freedom for the
+state-dependent distribution in the different states of length
+<code>nstates</code>.</p>
 <p>Only relevant in case of a state-dependent t-distribution.</p></dd>
 
 </dl></div>
@@ -148,7 +159,7 @@ included.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

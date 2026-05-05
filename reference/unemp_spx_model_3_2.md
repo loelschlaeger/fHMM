@@ -1,0 +1,42 @@
+# Unemployment rate and S&P 500 hierarchical HMM
+
+A pre-computed HHMM with monthly unemployment rate in the US on the
+coarse scale using 3 states and S&P 500 index data on the fine scale
+using 2 states from 1970 to 2020 for demonstration purposes.
+
+## Usage
+
+``` r
+data("unemp_spx_model_3_2")
+```
+
+## Format
+
+An object of class
+[`fHMM_model`](https://loelschlaeger.de/fHMM/reference/fHMM_model.md).
+
+## Details
+
+The model was estimated via:
+
+
+    controls <- list(
+      hierarchy = TRUE, states = c(3, 2),
+      sdds = c("t", "t"), period = "m",
+      data = list(
+        file = list(unemp, spx),
+        data_column = c("rate_diff", "Close"),
+        date_column = c("date", "Date"),
+        from = "1970-01-01", to = "2020-01-01",
+        logreturns = c(FALSE, TRUE)
+      ),
+      fit = list(runs = 50, iterlim = 1000, gradtol = 1e-6, steptol = 1e-6)
+    )
+    controls <- set_controls(controls)
+    unemp_spx_data <- prepare_data(controls)
+    unemp_spx_model_3_2 <- fit_model(unemp_spx_data, seed = 1, ncluster = 10)
+    unemp_spx_model_3_2 <- decode_states(unemp_spx_model_3_2)
+    unemp_spx_model_3_2 <- compute_residuals(unemp_spx_model_3_2)
+    summary(unemp_spx_model_3_2)
+    state_order <- matrix(c(3, 2, 1, 2, 2, 2, 1, 1, 1), 3, 3)
+    unemp_spx_model_3_2 <- reorder_states(unemp_spx_model_3_2, state_order)

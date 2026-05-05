@@ -9,7 +9,7 @@ maximization."><meta property="og:image" content="https://loelschlaeger.de/fHMM/
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,13 +75,15 @@ maximization.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>An object of class <code><a href="fHMM_data.html">fHMM_data</a></code>.</p></dd>
+<dd><p>[<code>fHMM_data</code>]<br>
+An object of class <code><a href="fHMM_data.html">fHMM_data</a></code>.</p></dd>
 
 
 <dt id="arg-controls">controls<a class="anchor" aria-label="anchor" href="#arg-controls"></a></dt>
-<dd><p>Either a <code>list</code> or an object of class <code>fHMM_controls</code>.</p>
+<dd><p>[<code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> | <code>fHMM_controls</code>]<br>
+Either a <code>list</code> or an object of class <code>fHMM_controls</code>.</p>
 <p>The <code>list</code> can contain the following elements, which are described
-in more detail below:</p><ul><li><p><code>hierarchy</code>, defines an hierarchical HMM,</p></li>
+in more detail below:</p><ul><li><p><code>hierarchy</code>, defines a hierarchical HMM,</p></li>
 <li><p><code>states</code>, defines the number of states,</p></li>
 <li><p><code>sdds</code>, defines the state-dependent distributions,</p></li>
 <li><p><code>horizon</code>, defines the time horizon,</p></li>
@@ -95,7 +97,8 @@ specifications.</p></dd>
 
 
 <dt id="arg-fit">fit<a class="anchor" aria-label="anchor" href="#arg-fit"></a></dt>
-<dd><p>A <code>list</code> of controls specifying the model fitting.</p>
+<dd><p>[<code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>]<br>
+A <code>list</code> of controls specifying the model fitting.</p>
 <p>The <code>list</code> can contain the following elements, which are described
 in more detail below:</p><ul><li><p><code>runs</code>, defines the number of numerical optimization runs,</p></li>
 <li><p><code>origin</code>, defines initialization at the true parameters,</p></li>
@@ -110,14 +113,16 @@ in more detail below:</p><ul><li><p><code>runs</code>, defines the number of num
 
 
 <dt id="arg-runs">runs<a class="anchor" aria-label="anchor" href="#arg-runs"></a></dt>
-<dd><p>An <code>integer</code>, setting the number of randomly initialized
+<dd><p>[<code>integer(1)</code>]<br>
+An <code>integer</code>, setting the number of randomly initialized
 optimization runs of the model likelihood from which the best one is selected
 as the final model.</p>
 <p>By default, <code>runs = 10</code>.</p></dd>
 
 
 <dt id="arg-origin">origin<a class="anchor" aria-label="anchor" href="#arg-origin"></a></dt>
-<dd><p>Only relevant for simulated data, i.e., if the <code>data</code> control is
+<dd><p>[<code>logical(1)</code>]<br>
+Only relevant for simulated data, i.e., if the <code>data</code> control is
 <code>NA</code>.</p>
 <p>In this case, a <code>logical</code>. If <code>origin = TRUE</code> the optimization is
 initialized at the true parameter values.
@@ -126,52 +131,61 @@ This sets <code>run = 1</code> and <code>accept = 1:5</code>.</p>
 
 
 <dt id="arg-accept">accept<a class="anchor" aria-label="anchor" href="#arg-accept"></a></dt>
-<dd><p>An <code>integer</code> (vector), specifying which optimization runs are
+<dd><p>[<code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code> | <code>"all"</code>]<br>
+An <code>integer</code> (vector), specifying which optimization runs are
 accepted based on the output code of <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
 <p>By default, <code>accept = 1:3</code>.</p></dd>
 
 
 <dt id="arg-gradtol">gradtol<a class="anchor" aria-label="anchor" href="#arg-gradtol"></a></dt>
-<dd><p>A positive <code>numeric</code> value, specifying the gradient tolerance, passed on
-to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
+<dd><p>[<code>numeric(1)</code>]<br>
+A positive <code>numeric</code> value, specifying the gradient tolerance, passed
+on to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
 <p>By default, <code>gradtol = 0.01</code>.</p></dd>
 
 
 <dt id="arg-iterlim">iterlim<a class="anchor" aria-label="anchor" href="#arg-iterlim"></a></dt>
-<dd><p>A positive <code>integer</code> value, specifying the iteration limit, passed on
+<dd><p>[<code>integer(1)</code>]<br>
+A positive <code>integer</code> value, specifying the iteration limit, passed on
 to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
 <p>By default, <code>iterlim = 100</code>.</p></dd>
 
 
 <dt id="arg-print-level">print.level<a class="anchor" aria-label="anchor" href="#arg-print-level"></a></dt>
-<dd><p>One of <code>0</code>, <code>1</code>, and <code>2</code> to control the verbosity of the
+<dd><p>[<code>0</code> | <code>1</code> | <code>2</code>]<br>
+One of <code>0</code>, <code>1</code>, and <code>2</code> to control the verbosity of the
 numerical likelihood optimization, passed on to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
 <p>By default, <code>print.level = 0</code>.</p></dd>
 
 
 <dt id="arg-steptol">steptol<a class="anchor" aria-label="anchor" href="#arg-steptol"></a></dt>
-<dd><p>A positive <code>numeric</code> value, specifying the step tolerance, passed on
+<dd><p>[<code>numeric(1)</code>]<br>
+A positive <code>numeric</code> value, specifying the step tolerance, passed on
 to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
-<p>By default, <code>gradtol = 0.01</code>.</p></dd>
+<p>By default, <code>steptol = 0.01</code>.</p></dd>
 
 
 <dt id="arg-ncluster">ncluster<a class="anchor" aria-label="anchor" href="#arg-ncluster"></a></dt>
-<dd><p>Set the number of clusters for parallel optimization runs to reduce
+<dd><p>[<code>integer(1)</code>]<br>
+Set the number of clusters for parallel optimization runs to reduce
 optimization time.
 By default, <code>ncluster = 1</code> (no clustering).</p></dd>
 
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
-<dd><p>Set a seed for the generation of initial values.
+<dd><p>[<code>NULL</code> | <code>integer(1)</code>]<br>
+Set a seed for the generation of initial values.
 No seed by default.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>Set to <code>TRUE</code> to print progress messages.</p></dd>
+<dd><p>[<code>logical(1)</code>]<br>
+Set to <code>TRUE</code> to print progress messages.</p></dd>
 
 
 <dt id="arg-initial-estimate">initial_estimate<a class="anchor" aria-label="anchor" href="#arg-initial-estimate"></a></dt>
-<dd><p>Optionally defines an initial estimate for the numerical likelihood
+<dd><p>[<code>NULL</code> | <code>parUncon</code>]<br>
+Optionally defines an initial estimate for the numerical likelihood
 optimization. Good initial estimates can improve the optimization process.
 Can be:</p><ul><li><p><code>NULL</code> (the default), in this case</p><ul><li><p>applies a heuristic to calculate a good initial estimate</p></li>
 <li><p>or uses the true parameter values (if available and
@@ -262,7 +276,7 @@ computed in parallel if <code>ncluster &gt; 1</code>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

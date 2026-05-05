@@ -9,7 +9,7 @@ comparison to true parameters or the interpretation of states."><meta property="
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,19 +60,21 @@ comparison to true parameters or the interpretation of states.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An object of class <code><a href="fHMM_model.html">fHMM_model</a></code>.</p></dd>
+<dd><p>[<code>fHMM_model</code>]<br>
+An object of class <code><a href="fHMM_model.html">fHMM_model</a></code>.</p></dd>
 
 
 <dt id="arg-state-order">state_order<a class="anchor" aria-label="anchor" href="#arg-state-order"></a></dt>
-<dd><p>Either</p><ul><li><p><code>"mean"</code>, in which case the states are ordered according to the means
+<dd><p>[<code>character(1)</code> | <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code> | <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix()</a></code>]<br>
+Either</p><ul><li><p><code>"mean"</code>, in which case the states are ordered according to the means
 of the state-dependent distributions,</p></li>
 <li><p>or a vector (or a matrix) which determines the new ordering:</p><ul><li><p>If <code>x$data$controls$hierarchy = FALSE</code>, <code>state_order</code> must
 be a vector of length <code>x$data$controls$states</code> with integer
 values from <code>1</code> to <code>x$data$controls$states</code>. If the old
 state number <code>x</code> should be the new state number <code>y</code>, put
 the value <code>x</code> at the position <code>y</code> of <code>state_order</code>.
-E.g. for a 2-state HMM, specifying <code>state_order = c(2, 1)</code> swaps
-the states.</p></li>
+E.g. for a 2-state HMM, specifying
+<code>state_order = c(2, 1)</code> swaps the states.</p></li>
 <li><p>If <code>x$data$controls$hierarchy = TRUE</code>, <code>state_order</code> must
 be a matrix of dimension <code>x$data$controls$states[1]</code> x
 <code>x$data$controls$states[2] + 1</code>. The first column orders the
@@ -80,8 +82,8 @@ coarse-scale states with the logic as described above. For each row,
 the elements from second to last position order the fine-scale states
 of the coarse-scale state specified by the first element. E.g. for an
 HHMM with 2 coarse-scale and 2 fine-scale states, specifying
-<code>state_order = matrix(c(2, 1, 2, 1, 1, 2), 2, 3)</code> swaps the
-coarse-scale states and the fine-scale states connected to
+<code>state_order = matrix(c(2, 1, 2, 1, 1, 2), 2, 3)</code>
+swaps the coarse-scale states and the fine-scale states connected to
 coarse-scale state 2.</p></li>
 </ul></li>
 </ul></dd>
@@ -107,7 +109,7 @@ coarse-scale state 2.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

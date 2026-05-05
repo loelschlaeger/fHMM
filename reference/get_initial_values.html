@@ -9,7 +9,7 @@ optimization of the model likelihood function."><meta property="og:image" conten
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,26 +66,31 @@ optimization of the model likelihood function.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>An object of class <code><a href="fHMM_data.html">fHMM_data</a></code>.</p></dd>
+<dd><p>[<code>fHMM_data</code>]<br>
+An object of class <code><a href="fHMM_data.html">fHMM_data</a></code>.</p></dd>
 
 
 <dt id="arg-ncluster">ncluster<a class="anchor" aria-label="anchor" href="#arg-ncluster"></a></dt>
-<dd><p>Set the number of clusters for parallel optimization runs to reduce
+<dd><p>[<code>integer(1)</code>]<br>
+Set the number of clusters for parallel optimization runs to reduce
 optimization time.
 By default, <code>ncluster = 1</code> (no clustering).</p></dd>
 
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
-<dd><p>Set a seed for the generation of initial values.
+<dd><p>[<code>NULL</code> | <code>integer(1)</code>]<br>
+Set a seed for the generation of initial values.
 No seed by default.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>Set to <code>TRUE</code> to print progress messages.</p></dd>
+<dd><p>[<code>logical(1)</code>]<br>
+Set to <code>TRUE</code> to print progress messages.</p></dd>
 
 
 <dt id="arg-initial-estimate">initial_estimate<a class="anchor" aria-label="anchor" href="#arg-initial-estimate"></a></dt>
-<dd><p>Optionally defines an initial estimate for the numerical likelihood
+<dd><p>[<code>NULL</code> | <code>parUncon</code>]<br>
+Optionally defines an initial estimate for the numerical likelihood
 optimization. Good initial estimates can improve the optimization process.
 Can be:</p><ul><li><p><code>NULL</code> (the default), in this case</p><ul><li><p>applies a heuristic to calculate a good initial estimate</p></li>
 <li><p>or uses the true parameter values (if available and
@@ -111,7 +116,7 @@ previously fitted model (i.e. the element <code>model$estimate</code>).</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

@@ -15,7 +15,7 @@ optimization."><meta property="og:image" content="https://loelschlaeger.de/fHMM/
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -148,14 +148,16 @@ optimization.</p>
 
 
 <dl><dt id="arg-par">par<a class="anchor" aria-label="anchor" href="#arg-par"></a></dt>
-<dd><p>An object of class <code><a href="fHMM_parameters.html">fHMM_parameters</a></code>, which is a <code>list</code>
+<dd><p>[<code>fHMM_parameters</code>]<br>
+An object of class <code><a href="fHMM_parameters.html">fHMM_parameters</a></code>, which is a <code>list</code>
 of model parameters.</p></dd>
 
 
 <dt id="arg-controls">controls<a class="anchor" aria-label="anchor" href="#arg-controls"></a></dt>
-<dd><p>Either a <code>list</code> or an object of class <code>fHMM_controls</code>.</p>
+<dd><p>[<code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> | <code>fHMM_controls</code>]<br>
+Either a <code>list</code> or an object of class <code>fHMM_controls</code>.</p>
 <p>The <code>list</code> can contain the following elements, which are described
-in more detail below:</p><ul><li><p><code>hierarchy</code>, defines an hierarchical HMM,</p></li>
+in more detail below:</p><ul><li><p><code>hierarchy</code>, defines a hierarchical HMM,</p></li>
 <li><p><code>states</code>, defines the number of states,</p></li>
 <li><p><code>sdds</code>, defines the state-dependent distributions,</p></li>
 <li><p><code>horizon</code>, defines the time horizon,</p></li>
@@ -169,22 +171,26 @@ specifications.</p></dd>
 
 
 <dt id="arg-use-parameter-labels">use_parameter_labels<a class="anchor" aria-label="anchor" href="#arg-use-parameter-labels"></a></dt>
-<dd><p>Either <code>TRUE</code> to label the parameters or <code>FALSE</code>, if not (this can
+<dd><p>[<code>logical(1)</code>]<br>
+Either <code>TRUE</code> to label the parameters or <code>FALSE</code>, if not (this can
 save computation time).</p></dd>
 
 
 <dt id="arg-paruncon">parUncon<a class="anchor" aria-label="anchor" href="#arg-paruncon"></a></dt>
-<dd><p>An object of class <code>parUncon</code>, which is a <code>numeric</code> <code>vector</code>
+<dd><p>[<code>parUncon</code>]<br>
+An object of class <code>parUncon</code>, which is a <code>numeric</code> <code>vector</code>
 with identified and unconstrained model parameters in the following order:</p><ol><li><p>non-diagonal transition probabilities <code>gammasUncon</code></p></li>
 <li><p>expectations <code>muUncon</code></p></li>
 <li><p>standard deviations <code>sigmaUncon</code> (if any)</p></li>
 <li><p>degrees of freedom <code>dfUncon</code> (if any)</p></li>
-<li><p>fine-scale parameters for each coarse-scale state, in the same order (if any)</p></li>
+<li><p>fine-scale parameters for each coarse-scale state, in the same order
+(if any)</p></li>
 </ol></dd>
 
 
 <dt id="arg-numerical-safeguard">numerical_safeguard<a class="anchor" aria-label="anchor" href="#arg-numerical-safeguard"></a></dt>
-<dd><p>Either <code>TRUE</code> or <code>FALSE</code>, determining whether to apply the
+<dd><p>[<code>logical(1)</code>]<br>
+Either <code>TRUE</code> or <code>FALSE</code>, determining whether to apply the
 following small corrections to boundary parameters to improve numerical
 performance when calculating and optimizing the likelihood function:</p><ul><li><p>transition probabilities equal to 0 or 1 are shifted towards the center
 by <code>1e-3</code></p></li>
@@ -193,42 +199,51 @@ by <code>1e-3</code></p></li>
 
 
 <dt id="arg-parcon">parCon<a class="anchor" aria-label="anchor" href="#arg-parcon"></a></dt>
-<dd><p>An object of class <code>parCon</code>, which is a <code>numeric</code> <code>vector</code>
+<dd><p>[<code>parCon</code>]<br>
+An object of class <code>parCon</code>, which is a <code>numeric</code> <code>vector</code>
 with identified (and constrained) model parameters in the following order:</p><ol><li><p>non-diagonal transition probabilities <code>gammasCon</code></p></li>
 <li><p>expectations <code>muCon</code></p></li>
 <li><p>standard deviations <code>sigmaCon</code> (if any)</p></li>
 <li><p>degrees of freedom <code>dfCon</code> (if any)</p></li>
-<li><p>fine-scale parameters for each coarse-scale state, in the same order (if any)</p></li>
+<li><p>fine-scale parameters for each coarse-scale state, in the same order
+(if any)</p></li>
 </ol></dd>
 
 
 <dt id="arg-mucon-muuncon">muCon, muUncon<a class="anchor" aria-label="anchor" href="#arg-mucon-muuncon"></a></dt>
-<dd><p>A vector of (un-) constrained expected values.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A vector of (un-) constrained expected values.</p></dd>
 
 
 <dt id="arg-link">link<a class="anchor" aria-label="anchor" href="#arg-link"></a></dt>
-<dd><p>Either <code>TRUE</code> or <code>FALSE</code>, determining whether to apply the link
+<dd><p>[<code>logical(1)</code>]<br>
+Either <code>TRUE</code> or <code>FALSE</code>, determining whether to apply the link
 function.</p></dd>
 
 
 <dt id="arg-prefix">prefix<a class="anchor" aria-label="anchor" href="#arg-prefix"></a></dt>
-<dd><p>A <code>character</code> prefix for labeling the parameters.</p></dd>
+<dd><p>[<code>character(1)</code>]<br>
+A <code>character</code> prefix for labeling the parameters.</p></dd>
 
 
 <dt id="arg-sigmacon-sigmauncon">sigmaCon, sigmaUncon<a class="anchor" aria-label="anchor" href="#arg-sigmacon-sigmauncon"></a></dt>
-<dd><p>A vector of (un-) constrained standard deviations.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A vector of (un-) constrained standard deviations.</p></dd>
 
 
 <dt id="arg-dfcon-dfuncon">dfCon, dfUncon<a class="anchor" aria-label="anchor" href="#arg-dfcon-dfuncon"></a></dt>
-<dd><p>A vector of (un-) constrained degrees of freedom.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A vector of (un-) constrained degrees of freedom.</p></dd>
 
 
 <dt id="arg-gammascon-gammasuncon">gammasCon, gammasUncon<a class="anchor" aria-label="anchor" href="#arg-gammascon-gammasuncon"></a></dt>
-<dd><p>A vector of (un-) constrained non-diagonal transition probabilities.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A vector of (un-) constrained non-diagonal transition probabilities.</p></dd>
 
 
 <dt id="arg-dim">dim<a class="anchor" aria-label="anchor" href="#arg-dim"></a></dt>
-<dd><p>An <code>integer</code>, the dimension of the transition probability matrix.</p></dd>
+<dd><p>[<code>integer(1)</code>]<br>
+An <code>integer</code>, the dimension of the transition probability matrix.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -267,7 +282,7 @@ elements of a transition probability matrix.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

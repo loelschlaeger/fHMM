@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,9 +88,10 @@
 
 
 <dl><dt id="arg-controls">controls<a class="anchor" aria-label="anchor" href="#arg-controls"></a></dt>
-<dd><p>Either a <code>list</code> or an object of class <code>fHMM_controls</code>.</p>
+<dd><p>[<code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> | <code>fHMM_controls</code>]<br>
+Either a <code>list</code> or an object of class <code>fHMM_controls</code>.</p>
 <p>The <code>list</code> can contain the following elements, which are described
-in more detail below:</p><ul><li><p><code>hierarchy</code>, defines an hierarchical HMM,</p></li>
+in more detail below:</p><ul><li><p><code>hierarchy</code>, defines a hierarchical HMM,</p></li>
 <li><p><code>states</code>, defines the number of states,</p></li>
 <li><p><code>sdds</code>, defines the state-dependent distributions,</p></li>
 <li><p><code>horizon</code>, defines the time horizon,</p></li>
@@ -104,14 +105,16 @@ specifications.</p></dd>
 
 
 <dt id="arg-hierarchy">hierarchy<a class="anchor" aria-label="anchor" href="#arg-hierarchy"></a></dt>
-<dd><p>A <code>logical</code>, set to <code>TRUE</code> for an hierarchical HMM.</p>
+<dd><p>[<code>logical(1)</code>]<br>
+A <code>logical</code>, set to <code>TRUE</code> for a hierarchical HMM.</p>
 <p>If <code>hierarchy = TRUE</code>, some of the other controls must be specified for
 the coarse-scale and the fine-scale layer.</p>
 <p>By default, <code>hierarchy = FALSE</code>.</p></dd>
 
 
 <dt id="arg-states">states<a class="anchor" aria-label="anchor" href="#arg-states"></a></dt>
-<dd><p>An <code>integer</code>, the number of states of the underlying Markov chain.</p>
+<dd><p>[<code>integer(1)</code> | <code>integer(2)</code>]<br>
+An <code>integer</code>, the number of states of the underlying Markov chain.</p>
 <p>If <code>hierarchy = TRUE</code>, <code>states</code> must be a <code>vector</code> of length
 2. The first entry corresponds to the coarse-scale layer, while the second
 entry corresponds to the fine-scale layer.</p>
@@ -120,7 +123,8 @@ entry corresponds to the fine-scale layer.</p>
 
 
 <dt id="arg-sdds">sdds<a class="anchor" aria-label="anchor" href="#arg-sdds"></a></dt>
-<dd><p>A <code>character</code>, specifying the state-dependent distribution. One of</p><ul><li><p><code>"normal"</code> (the normal distribution),</p></li>
+<dd><p>[<code>character(1)</code> | <code>character(2)</code>]<br>
+A <code>character</code>, specifying the state-dependent distribution. One of</p><ul><li><p><code>"normal"</code> (the normal distribution),</p></li>
 <li><p><code>"lognormal"</code> (the log-normal distribution),</p></li>
 <li><p><code>"t"</code> (the t-distribution),</p></li>
 <li><p><code>"gamma"</code> (the gamma distribution),</p></li>
@@ -140,7 +144,8 @@ corresponds to the fine-scale layer.</p>
 
 
 <dt id="arg-horizon">horizon<a class="anchor" aria-label="anchor" href="#arg-horizon"></a></dt>
-<dd><p>A <code>numeric</code>, specifying the length of the time horizon.</p>
+<dd><p>[<code>integer(1)</code> | <code>integer(2)</code>]<br>
+A <code>numeric</code>, specifying the length of the time horizon.</p>
 <p>If <code>hierarchy = TRUE</code>, <code>horizon</code> must be a <code>vector</code> of length
 2. The first entry corresponds to the coarse-scale layer, while the second
 entry corresponds to the fine-scale layer.</p>
@@ -152,7 +157,8 @@ available data.</p></dd>
 
 
 <dt id="arg-period">period<a class="anchor" aria-label="anchor" href="#arg-period"></a></dt>
-<dd><p>Only relevant if <code>hierarchy = TRUE</code>.</p>
+<dd><p>[<code>NA</code> | <code>character(1)</code>]<br>
+Only relevant if <code>hierarchy = TRUE</code>.</p>
 <p>In this case, a <code>character</code> which specifies a flexible, periodic
 fine-scale time horizon and can be one of</p><ul><li><p><code>"w"</code> for a week,</p></li>
 <li><p><code>"m"</code> for a month,</p></li>
@@ -163,7 +169,8 @@ overrules <code>horizon[2]</code>.</p></dd>
 
 
 <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>Either <code>NA</code>, in which case data is simulated (the default), or a
+<dd><p>[<code>NA</code> | <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>]<br>
+Either <code>NA</code>, in which case data is simulated (the default), or a
 <code>list</code> of controls specifying the empirical data set.</p>
 <p>The <code>list</code> can contain the following elements, which are described
 in more detail below:</p><ul><li><p><code>file</code>, defines the data set,</p></li>
@@ -179,7 +186,8 @@ in more detail below:</p><ul><li><p><code>file</code>, defines the data set,</p>
 
 
 <dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
-<dd><p>A <code>data.frame</code> with data and dates for modeling.</p>
+<dd><p>[<code>data.frame</code> | <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> | <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>]<br>
+A <code>data.frame</code> with data and dates for modeling.</p>
 <p>If <code>hierarchy = TRUE</code>, <code>file</code> can be a <code>list</code> of
 length 2. The first entry is a <code>data.frame</code> and provides the data for
 the coarse-scale layer, while the second entry corresponds to the fine-scale
@@ -190,7 +198,8 @@ layer. If <code>file</code> is a single <code>data.frame</code>, then the same
 
 
 <dt id="arg-date-column">date_column<a class="anchor" aria-label="anchor" href="#arg-date-column"></a></dt>
-<dd><p>A <code>character</code>, the name of the column in <code>file</code> with dates.</p>
+<dd><p>[<code>character(1)</code> | <code>character(2)</code>]<br>
+A <code>character</code>, the name of the column in <code>file</code> with dates.</p>
 <p>If <code>hierarchy = TRUE</code> and <code>file</code> is a <code>list</code> of two
 <code>data.frame</code>s, <code>data_column</code> must be a <code>vector</code> of
 length 2. The first entry corresponds to the coarse-scale layer, while the
@@ -199,7 +208,8 @@ second entry corresponds to the fine-scale layer.</p>
 
 
 <dt id="arg-data-column">data_column<a class="anchor" aria-label="anchor" href="#arg-data-column"></a></dt>
-<dd><p>A <code>character</code>, the name of the column in <code>file</code> with observations.</p>
+<dd><p>[<code>character(1)</code> | <code>character(2)</code>]<br>
+A <code>character</code>, the name of the column in <code>file</code> with observations.</p>
 <p>If <code>hierarchy = TRUE</code>, <code>data_column</code> must be a <code>vector</code> of
 length 2. The first entry corresponds to the coarse-scale layer, while the
 second entry corresponds to the fine-scale layer.</p>
@@ -208,17 +218,20 @@ second entry corresponds to the fine-scale layer.</p>
 
 
 <dt id="arg-from">from<a class="anchor" aria-label="anchor" href="#arg-from"></a></dt>
-<dd><p>A <code>character</code> of the format <code>"YYYY-MM-DD"</code>, setting a lower
+<dd><p>[<code>NA</code> | <code>character(1)</code>]<br>
+A <code>character</code> of the format <code>"YYYY-MM-DD"</code>, setting a lower
 date limit. No lower limit if <code>from = NA</code> (default).</p></dd>
 
 
 <dt id="arg-to">to<a class="anchor" aria-label="anchor" href="#arg-to"></a></dt>
-<dd><p>A <code>character</code> of the format <code>"YYYY-MM-DD"</code>, setting an upper
+<dd><p>[<code>NA</code> | <code>character(1)</code>]<br>
+A <code>character</code> of the format <code>"YYYY-MM-DD"</code>, setting an upper
 date limit. No lower limit if <code>to = NA</code> (default).</p></dd>
 
 
 <dt id="arg-logreturns">logreturns<a class="anchor" aria-label="anchor" href="#arg-logreturns"></a></dt>
-<dd><p>A <code>logical</code>, if <code>TRUE</code> the data is transformed to log-returns.</p>
+<dd><p>[<code>logical(1)</code> | <code>logical(2)</code>]<br>
+A <code>logical</code>, if <code>TRUE</code> the data is transformed to log-returns.</p>
 <p>If <code>hierarchy = TRUE</code>, <code>logreturns</code> must be a <code>vector</code> of
 length 2. The first entry corresponds to the coarse-scale layer, while the
 second entry corresponds to the fine-scale layer.</p>
@@ -227,7 +240,8 @@ second entry corresponds to the fine-scale layer.</p>
 
 
 <dt id="arg-merge">merge<a class="anchor" aria-label="anchor" href="#arg-merge"></a></dt>
-<dd><p>Only relevant if <code>hierarchy = TRUE</code>.</p>
+<dd><p>[<code>function</code>]<br>
+Only relevant if <code>hierarchy = TRUE</code>.</p>
 <p>In this case, a <code>function</code>
 which merges an input numeric vector of fine-scale data <code>x</code> into one
 coarse-scale observation. For example,</p><ul><li><p><code>merge = function(x) mean(x)</code> (default) defines the mean of the
@@ -242,7 +256,8 @@ the relative change of the first to the last fine-scale observation.</p></li>
 
 
 <dt id="arg-fit">fit<a class="anchor" aria-label="anchor" href="#arg-fit"></a></dt>
-<dd><p>A <code>list</code> of controls specifying the model fitting.</p>
+<dd><p>[<code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>]<br>
+A <code>list</code> of controls specifying the model fitting.</p>
 <p>The <code>list</code> can contain the following elements, which are described
 in more detail below:</p><ul><li><p><code>runs</code>, defines the number of numerical optimization runs,</p></li>
 <li><p><code>origin</code>, defines initialization at the true parameters,</p></li>
@@ -257,14 +272,16 @@ in more detail below:</p><ul><li><p><code>runs</code>, defines the number of num
 
 
 <dt id="arg-runs">runs<a class="anchor" aria-label="anchor" href="#arg-runs"></a></dt>
-<dd><p>An <code>integer</code>, setting the number of randomly initialized
+<dd><p>[<code>integer(1)</code>]<br>
+An <code>integer</code>, setting the number of randomly initialized
 optimization runs of the model likelihood from which the best one is selected
 as the final model.</p>
 <p>By default, <code>runs = 10</code>.</p></dd>
 
 
 <dt id="arg-origin">origin<a class="anchor" aria-label="anchor" href="#arg-origin"></a></dt>
-<dd><p>Only relevant for simulated data, i.e., if the <code>data</code> control is
+<dd><p>[<code>logical(1)</code>]<br>
+Only relevant for simulated data, i.e., if the <code>data</code> control is
 <code>NA</code>.</p>
 <p>In this case, a <code>logical</code>. If <code>origin = TRUE</code> the optimization is
 initialized at the true parameter values.
@@ -273,37 +290,43 @@ This sets <code>run = 1</code> and <code>accept = 1:5</code>.</p>
 
 
 <dt id="arg-accept">accept<a class="anchor" aria-label="anchor" href="#arg-accept"></a></dt>
-<dd><p>An <code>integer</code> (vector), specifying which optimization runs are
+<dd><p>[<code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code> | <code>"all"</code>]<br>
+An <code>integer</code> (vector), specifying which optimization runs are
 accepted based on the output code of <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
 <p>By default, <code>accept = 1:3</code>.</p></dd>
 
 
 <dt id="arg-gradtol">gradtol<a class="anchor" aria-label="anchor" href="#arg-gradtol"></a></dt>
-<dd><p>A positive <code>numeric</code> value, specifying the gradient tolerance, passed on
-to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
+<dd><p>[<code>numeric(1)</code>]<br>
+A positive <code>numeric</code> value, specifying the gradient tolerance, passed
+on to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
 <p>By default, <code>gradtol = 0.01</code>.</p></dd>
 
 
 <dt id="arg-iterlim">iterlim<a class="anchor" aria-label="anchor" href="#arg-iterlim"></a></dt>
-<dd><p>A positive <code>integer</code> value, specifying the iteration limit, passed on
+<dd><p>[<code>integer(1)</code>]<br>
+A positive <code>integer</code> value, specifying the iteration limit, passed on
 to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
 <p>By default, <code>iterlim = 100</code>.</p></dd>
 
 
 <dt id="arg-print-level">print.level<a class="anchor" aria-label="anchor" href="#arg-print-level"></a></dt>
-<dd><p>One of <code>0</code>, <code>1</code>, and <code>2</code> to control the verbosity of the
+<dd><p>[<code>0</code> | <code>1</code> | <code>2</code>]<br>
+One of <code>0</code>, <code>1</code>, and <code>2</code> to control the verbosity of the
 numerical likelihood optimization, passed on to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
 <p>By default, <code>print.level = 0</code>.</p></dd>
 
 
 <dt id="arg-steptol">steptol<a class="anchor" aria-label="anchor" href="#arg-steptol"></a></dt>
-<dd><p>A positive <code>numeric</code> value, specifying the step tolerance, passed on
+<dd><p>[<code>numeric(1)</code>]<br>
+A positive <code>numeric</code> value, specifying the step tolerance, passed on
 to <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code>.</p>
-<p>By default, <code>gradtol = 0.01</code>.</p></dd>
+<p>By default, <code>steptol = 0.01</code>.</p></dd>
 
 
 <dt id="arg-x-object">x, object<a class="anchor" aria-label="anchor" href="#arg-x-object"></a></dt>
-<dd><p>An object of class <code>fHMM_controls</code>.</p></dd>
+<dd><p>[<code>fHMM_controls</code>]<br>
+An object of class <code>fHMM_controls</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -356,7 +379,7 @@ for more details.</p>
 <span class="r-in"><span>  hierarchy <span class="op">=</span> <span class="cn">TRUE</span>,                  <span class="co"># defines a hierarchy</span></span></span>
 <span class="r-in"><span>  states    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span>,               <span class="co"># coarse scale and fine scale states</span></span></span>
 <span class="r-in"><span>  sdds      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gamma"</span>, <span class="st">"poisson"</span><span class="op">)</span>, <span class="co"># distributions for both layers</span></span></span>
-<span class="r-in"><span>  horizon   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="cn">NA</span><span class="op">)</span>,            <span class="co"># 100 simulated coarse-scale data points </span></span></span>
+<span class="r-in"><span>  horizon   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="cn">NA</span><span class="op">)</span>,            <span class="co"># 100 coarse-scale data points</span></span></span>
 <span class="r-in"><span>  period    <span class="op">=</span> <span class="st">"m"</span>                    <span class="co"># monthly simulated fine-scale data</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fHMM controls:</span>
@@ -397,7 +420,7 @@ for more details.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

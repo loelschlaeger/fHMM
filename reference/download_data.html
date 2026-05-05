@@ -9,7 +9,7 @@ and returns it as a data.frame."><meta property="og:image" content="https://loel
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,30 +66,35 @@ and returns it as a <code>data.frame</code>.</p>
 
 
 <dl><dt id="arg-symbol">symbol<a class="anchor" aria-label="anchor" href="#arg-symbol"></a></dt>
-<dd><p>A <code>character</code>, the stock's symbol.</p>
+<dd><p>[<code>character(1)</code>]<br>
+A <code>character</code>, the stock's symbol.</p>
 <p>It must match the identifier on <a href="https://finance.yahoo.com/" class="external-link">https://finance.yahoo.com/</a>.</p></dd>
 
 
 <dt id="arg-from">from<a class="anchor" aria-label="anchor" href="#arg-from"></a></dt>
-<dd><p>A <code>character</code> in the format <code>"YYYY-MM-DD"</code>, setting the lower
+<dd><p>[<code>character(1)</code>]<br>
+A <code>character</code> in the format <code>"YYYY-MM-DD"</code>, setting the lower
 data bound.</p>
 <p>Must not be earlier than <code>"1902-01-01"</code> (default).</p></dd>
 
 
 <dt id="arg-to">to<a class="anchor" aria-label="anchor" href="#arg-to"></a></dt>
-<dd><p>A <code>character</code> in the format <code>"YYYY-MM-DD"</code>, setting the upper
+<dd><p>[<code>character(1)</code>]<br>
+A <code>character</code> in the format <code>"YYYY-MM-DD"</code>, setting the upper
 data bound.</p>
 <p>Default is the current date <code>Sys.date()</code>.</p></dd>
 
 
 <dt id="arg-fill-dates">fill_dates<a class="anchor" aria-label="anchor" href="#arg-fill-dates"></a></dt>
-<dd><p>Set to <code>TRUE</code> to fill missing dates (e.g., days at which the stock
+<dd><p>[<code>logical(1)</code>]<br>
+Set to <code>TRUE</code> to fill missing dates (e.g., days at which the stock
 market is closed) with <code>NA</code>'s.</p>
 <p>By default, <code>fill_dates = FALSE</code>.</p></dd>
 
 
 <dt id="arg-columns">columns<a class="anchor" aria-label="anchor" href="#arg-columns"></a></dt>
-<dd><p>A <code>character</code> of requested data columns, see the details.</p>
+<dd><p>[<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>]<br>
+A <code>character</code> of requested data columns, see the details.</p>
 <p>By default, all columns are returned.</p></dd>
 
 </dl></div>
@@ -136,7 +141,7 @@ The following data columns are available:</p><ul><li><p><code>Date</code>: The d
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

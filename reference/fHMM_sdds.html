@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +60,8 @@
 
 
 <dl><dt id="arg-sdds">sdds<a class="anchor" aria-label="anchor" href="#arg-sdds"></a></dt>
-<dd><p>A <code>character</code>, specifying the state-dependent distribution. One of</p><ul><li><p><code>"normal"</code> (the normal distribution),</p></li>
+<dd><p>[<code>character(1)</code> | <code>character(2)</code>]<br>
+A <code>character</code>, specifying the state-dependent distribution. One of</p><ul><li><p><code>"normal"</code> (the normal distribution),</p></li>
 <li><p><code>"lognormal"</code> (the log-normal distribution),</p></li>
 <li><p><code>"t"</code> (the t-distribution),</p></li>
 <li><p><code>"gamma"</code> (the gamma distribution),</p></li>
@@ -80,7 +81,8 @@ corresponds to the fine-scale layer.</p>
 
 
 <dt id="arg-states">states<a class="anchor" aria-label="anchor" href="#arg-states"></a></dt>
-<dd><p>An <code>integer</code>, the number of states of the underlying Markov chain.</p>
+<dd><p>[<code>integer(1)</code> | <code>integer(2)</code>]<br>
+An <code>integer</code>, the number of states of the underlying Markov chain.</p>
 <p>If <code>hierarchy = TRUE</code>, <code>states</code> must be a <code>vector</code> of length
 2. The first entry corresponds to the coarse-scale layer, while the second
 entry corresponds to the fine-scale layer.</p>
@@ -109,7 +111,7 @@ set to <code>NULL</code>.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

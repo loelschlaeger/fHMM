@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,31 +65,38 @@
 
 
 <dl><dt id="arg-markov-chain">markov_chain<a class="anchor" aria-label="anchor" href="#arg-markov-chain"></a></dt>
-<dd><p>A <code>numeric</code> vector of states of a Markov chain.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code>]<br>
+A <code>numeric</code> vector of states of a Markov chain.</p></dd>
 
 
 <dt id="arg-sdd">sdd<a class="anchor" aria-label="anchor" href="#arg-sdd"></a></dt>
-<dd><p>A <code>character</code>, the name of the state-dependent distribution.</p></dd>
+<dd><p>[<code>character(1)</code>]<br>
+A <code>character</code>, the name of the state-dependent distribution.</p></dd>
 
 
 <dt id="arg-mu">mu<a class="anchor" aria-label="anchor" href="#arg-mu"></a></dt>
-<dd><p>A <code>numeric</code> vector of expected values.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A <code>numeric</code> vector of expected values.</p></dd>
 
 
 <dt id="arg-sigma">sigma<a class="anchor" aria-label="anchor" href="#arg-sigma"></a></dt>
-<dd><p>A <code>numeric</code> vector of standard deviations (if any).</p></dd>
+<dd><p>[<code>NULL</code> | <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A <code>numeric</code> vector of standard deviations (if any).</p></dd>
 
 
 <dt id="arg-df">df<a class="anchor" aria-label="anchor" href="#arg-df"></a></dt>
-<dd><p>A <code>numeric</code> vector of degrees of freedom (if any).</p></dd>
+<dd><p>[<code>NULL</code> | <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A <code>numeric</code> vector of degrees of freedom (if any).</p></dd>
 
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
-<dd><p>Sets a seed for the observation sampling.</p></dd>
+<dd><p>[<code>NULL</code> | <code>integer(1)</code>]<br>
+Sets a seed for the observation sampling.</p></dd>
 
 
 <dt id="arg-total-length">total_length<a class="anchor" aria-label="anchor" href="#arg-total-length"></a></dt>
-<dd><p>An <code>integer</code>, the total length of the output vector.
+<dd><p>[<code>integer(1)</code>]<br>
+An <code>integer</code>, the total length of the output vector.
 Must be greater or equal than <code>length(markov_chain)</code>.</p></dd>
 
 </dl></div>
@@ -109,7 +116,7 @@ Must be greater or equal than <code>length(markov_chain)</code>.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

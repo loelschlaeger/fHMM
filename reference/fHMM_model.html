@@ -9,7 +9,7 @@ contains details about the fitted (hierarchical) Hidden Markov model."><meta pro
 
     <a class="navbar-brand me-2" href="../index.html">fHMM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,43 +102,53 @@ contains details about the fitted (hierarchical) Hidden Markov model.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>An object of class <code><a href="fHMM_data.html">fHMM_data</a></code>.</p></dd>
+<dd><p>[<code>fHMM_data</code>]<br>
+An object of class <code><a href="fHMM_data.html">fHMM_data</a></code>.</p></dd>
 
 
 <dt id="arg-estimate">estimate<a class="anchor" aria-label="anchor" href="#arg-estimate"></a></dt>
-<dd><p>A <code>numeric</code> vector of unconstrained model estimates.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A <code>numeric</code> vector of unconstrained model estimates.</p></dd>
 
 
 <dt id="arg-nlm-output">nlm_output<a class="anchor" aria-label="anchor" href="#arg-nlm-output"></a></dt>
-<dd><p>The output of <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code> for the selected optimization run.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>]<br>
+The output of <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code> for the selected optimization run.</p></dd>
 
 
 <dt id="arg-estimation-time">estimation_time<a class="anchor" aria-label="anchor" href="#arg-estimation-time"></a></dt>
-<dd><p>A <code>diff.time</code> object, the total estimation time.</p></dd>
+<dd><p>[<code>difftime</code>]<br>
+A <code>diff.time</code> object, the total estimation time.</p></dd>
 
 
 <dt id="arg-ll">ll<a class="anchor" aria-label="anchor" href="#arg-ll"></a></dt>
-<dd><p>A <code>numeric</code>, the model log-likelihood.</p></dd>
+<dd><p>[<code>numeric(1)</code>]<br>
+A <code>numeric</code>, the model log-likelihood.</p></dd>
 
 
 <dt id="arg-lls">lls<a class="anchor" aria-label="anchor" href="#arg-lls"></a></dt>
-<dd><p>A <code>numeric</code> vector, the model log-likelihoods in all optimization runs.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A <code>numeric</code> vector, the model log-likelihoods in all optimization runs.</p></dd>
 
 
 <dt id="arg-gradient">gradient<a class="anchor" aria-label="anchor" href="#arg-gradient"></a></dt>
-<dd><p>A <code>numeric</code> vector, the gradient at the optimum.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A <code>numeric</code> vector, the gradient at the optimum.</p></dd>
 
 
 <dt id="arg-inverse-fisher">inverse_fisher<a class="anchor" aria-label="anchor" href="#arg-inverse-fisher"></a></dt>
-<dd><p>A <code>numeric</code> vector, the inverse Fisher information for each parameter.</p></dd>
+<dd><p>[<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>]<br>
+A <code>numeric</code> vector, the inverse Fisher information for each parameter.</p></dd>
 
 
 <dt id="arg-decoding">decoding<a class="anchor" aria-label="anchor" href="#arg-decoding"></a></dt>
-<dd><p>A <code>numeric</code> vector, the decoded time series.</p></dd>
+<dd><p>[<code>NULL</code> | <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code> | <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix()</a></code>]<br>
+A <code>numeric</code> vector, the decoded time series.</p></dd>
 
 
 <dt id="arg-x-object">x, object<a class="anchor" aria-label="anchor" href="#arg-x-object"></a></dt>
-<dd><p>An object of class <code>fHMM_model</code>.</p></dd>
+<dd><p>[<code>fHMM_model</code>]<br>
+An object of class <code>fHMM_model</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -146,19 +156,23 @@ contains details about the fitted (hierarchical) Hidden Markov model.</p>
 
 
 <dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
-<dd><p>A <code>numeric</code> between 0 and 1, the confidence level.</p></dd>
+<dd><p>[<code>numeric(1)</code>]<br>
+A <code>numeric</code> between 0 and 1, the confidence level.</p></dd>
 
 
 <dt id="arg-digits">digits<a class="anchor" aria-label="anchor" href="#arg-digits"></a></dt>
-<dd><p>The number of decimal places.</p></dd>
+<dd><p>[<code>integer(1)</code>]<br>
+The number of decimal places.</p></dd>
 
 
 <dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
-<dd><p>Passed on to <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></code>.</p></dd>
+<dd><p>[<code>numeric(1)</code>]<br>
+Passed on to <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></code>.</p></dd>
 
 
 <dt id="arg-ahead">ahead<a class="anchor" aria-label="anchor" href="#arg-ahead"></a></dt>
-<dd><p>The number of time points to predict ahead.</p></dd>
+<dd><p>[<code>integer(1)</code>]<br>
+The number of time points to predict ahead.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -175,7 +189,7 @@ contains details about the fitted (hierarchical) Hidden Markov model.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
